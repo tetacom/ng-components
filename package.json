@@ -11,7 +11,8 @@
     "sb": "yarn docs:json && start-storybook -p 6006",
     "build-sb": "yarn docs:json && build-storybook -o dist/storybook",
     "storybook": "yarn docs:json && start-storybook -p 6006",
-    "build-storybook": "yarn docs:json && build-storybook"
+    "build-storybook": "yarn docs:json && build-storybook",
+    "semantic-release": "semantic-release"
   },
   "private": true,
   "dependencies": {
@@ -64,7 +65,8 @@
     "karma-jasmine-html-reporter": "~1.7.0",
     "ng-packagr": "^13.0.0",
     "prettier": "^2.4.1",
-    "typescript": "~4.4.3"
+    "typescript": "~4.4.3",
+    "semantic-release": "^18.0.0"
   },
   "plugins": [
     "@semantic-release/commit-analyzer",
@@ -75,13 +77,10 @@
     "@semantic-release/git"
   ],
   "release": {
-    "branches": [
-      "main",
-      {
-        "name": "main",
-        "channel": "alpha",
-        "prerelease": true
-      }
-    ]
+    "branches": ["main"]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tetacom/ng-components.git"
   }
 }
