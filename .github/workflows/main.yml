@@ -27,15 +27,15 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Install and Build
-        run: | 
+        run: |
             yarn && yarn global add @angular/cli && ng build components
 
       # Runs a set of commands using the runners shell
       - name: Package
-        run: yarn pack --prefix dist/components 
-      
+        run: yarn pack --prefix dist/components
+
       # Runs a set of commands using the runners shell
       - name: Publish
         env:
           NPM_TOKEN: ${{ secrets.TETACOM_NPM_TOKEN }}
-        run: yarn publish dist/components --access public  
+        run: cd dist/components && npx semantic-release

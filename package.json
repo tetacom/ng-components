@@ -65,5 +65,13 @@
     "ng-packagr": "^13.0.0",
     "prettier": "^2.4.1",
     "typescript": "~4.4.3"
-  }
+  },
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    "@semantic-release/github",
+    "@semantic-release/npm",
+    "@semantic-release/git"
+  ]
 }
