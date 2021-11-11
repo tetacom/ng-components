@@ -1,0 +1,60 @@
+@import "util/color-util.scss";
+@import "util/font-util.scss";
+
+.tree {
+  display: inline-flex;
+  flex-direction: column;
+  @include getFont($fonts, 'body-3');
+
+  &__item-container {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+  }
+
+  &__item {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    height: 24px;
+    color: getColorVar('text', '90');
+    transition: background 0.4s;
+    padding: 0 12px;
+    min-width: 0;
+    grid-gap: 8px;
+
+    &_content {
+      display: flex;
+      align-items: center;
+      height: 24px;
+
+      @for $depth from 0 through 20 {
+        &-#{$depth} .tree__item {
+          padding-left: 12px + (12px * $depth);
+        }
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: getColorVar('text', '5');
+    }
+
+    &_active {
+      background-color: getColorVar('text', '10');
+    }
+  }
+
+  &__icon {
+    fill: getColorVar('text', '70');
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__children {
+    display: flex;
+    flex-direction: column;
+  }
+}

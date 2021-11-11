@@ -1,0 +1,4 @@
+@mixin scrollable() {
+  overflow-x: auto;
+  overflow-y: overlay;
+}

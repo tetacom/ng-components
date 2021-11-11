@@ -1,0 +1,51 @@
+@import "util/shadow-util.scss";
+
+.message {
+  @include shadow(5);
+  display: inline-flex;
+  flex-direction: column;
+  padding: 8px;
+  margin: 8px;
+  border: solid 0;
+  border-radius: 4px;
+  color: getColorVar('white', '50');
+  width: 240px;
+  @each $paletteName in $palettes {
+    &-#{$paletteName} {
+      background-color: getColorVar($paletteName, '50');
+    }
+  }
+}
+
+.message-host {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  z-index: 101;
+
+  &_left {
+    left: 0;
+  }
+
+  &_right {
+    right: 0;
+  }
+
+  &_center {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &_top {
+    left: 0;
+  }
+
+  &_bottom {
+    bottom: 0;
+  }
+
+  &_vertical-center {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}

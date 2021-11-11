@@ -1,0 +1,7 @@
+@import "util/font-util.scss";
+
+@each $fontName, $font in $fonts {
+  .font-#{$fontName} {
+    @include getFontDescription($font)
+  }
+}

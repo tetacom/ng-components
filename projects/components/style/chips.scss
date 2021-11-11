@@ -1,0 +1,23 @@
+@import "util/color-util.scss";
+
+.chip {
+  height: 24px;
+  border: solid transparent 0;
+  border-radius: 12px;
+  background: getColorVar('text', '10');
+  fill: getColorVar('text', '50');
+  color: getColorVar('text', '90');
+  margin-right: 4px;
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px 4px 6px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  teta-icon {
+    margin-right: 6px;
+  }
+}

@@ -1,0 +1,60 @@
+@import "util/shadow-util.scss";
+@import "util/color-util.scss";
+
+.tooltip {
+  @include shadow(1);
+  font-weight: normal;
+  padding: 12px;
+  white-space: nowrap;
+  z-index: 1;
+  background-color: getColorVar('white', '50');
+  color: getColorVar('text', '50');
+
+  &::before, &::after {
+    position: absolute;
+    display: block;
+    content: '';
+    width: 0;
+    height: 0;
+  }
+
+  &_top {
+    &::before {
+      bottom: -12px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 12px solid getColorVar('white', '50');
+    }
+
+    &::after {
+      bottom: -11px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 12px solid getColorVar('white', '50');
+    }
+  }
+
+  &_bottom {
+    &::before {
+      top: -12px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-bottom: 12px solid getColorVar('white', '50');
+    }
+
+    &::after {
+      top: -11px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-bottom: 12px solid getColorVar('white', '50');
+    }
+  }
+}

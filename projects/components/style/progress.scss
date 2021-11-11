@@ -1,0 +1,28 @@
+@import "util/color-util.scss";
+
+.progress {
+  width: 100%;
+  height: 4px;
+  display: flex;
+  background: getColorVar('text', '10');
+  position: relative;
+
+  &-bar {
+    background: getColorVar('primary', '20');
+  }
+
+  &-slider {
+    position: absolute;
+    height: 8px;
+    width: 8px;
+    border: solid 0;
+    margin-left: -2px;
+    margin-top: -2px;
+    border-radius: 4px;
+    background: getColorVar('primary', '50');
+  }
+
+  &:hover &-slider, &-slider_visible {
+    cursor: grab;
+  }
+}

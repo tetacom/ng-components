@@ -1,0 +1,12 @@
+<div class="font-caption color-text-90 align-center row nowrap overflow-hidden text-overflow-ellipsis"
+     [class.row_6]="horizontal"
+     [class.text-field_required]="required"
+     *ngIf="label?.length > 0">
+  {{label}}
+</div>
+<div class="input-container" [class.row_6]="horizontal">
+  <ng-content></ng-content>
+  <div class="input-message font-error-message">
+    <ng-content select="message"></ng-content>
+  </div>
+</div>

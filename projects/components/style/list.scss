@@ -1,0 +1,70 @@
+@import "util/color-util.scss";
+@import "util/font-util.scss";
+
+.list {
+  padding: 4px 0;
+  display: inline-flex;
+  flex-direction: column;
+  border-radius: 2px;
+  color: getColorVar('text', '90');
+  background-color: getColorVar('background', '50');
+  @include getFont($fonts, 'body-3');
+  position: relative;
+
+  &-item {
+    min-height: 24px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    white-space: nowrap;
+    background-color: transparent;
+    transition: background 0.4s;
+    grid-gap: 8px;
+
+    &-xl {
+      min-height: 44px;
+      padding: 0 16px;
+    }
+
+    &_interactive {
+      background-color: transparent;
+      transition: background 0.4s;
+
+      &:hover:not(&_disabled) {
+        background-color: getColorVar('text', '5');
+        cursor: pointer;
+      }
+    }
+
+    &_interactive#{&}_active {
+      background-color: getColorVar('text', '10');
+    }
+
+    &:hover > .sublist {
+      display: inherit;
+    }
+  }
+
+  &-divider {
+    height: 1px;
+    flex-shrink: 0;
+    margin: 4px 0;
+    background-color: getColorVar('text', '5');
+  }
+
+  &-title {
+    color: getColorVar('text', '50');
+    @include getFont($fonts, 'overline');
+  }
+}
+
+.sublist {
+  position: absolute;
+  top: -5px;
+  left: 100%;
+  display: none;
+
+  &:hover {
+    cursor: default;
+  }
+}

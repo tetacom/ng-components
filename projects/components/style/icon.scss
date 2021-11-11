@@ -1,0 +1,12 @@
+@import "util/color-util.scss";
+
+.icon {
+  display: inline-flex;
+  height: 16px;
+  width: 16px;
+  @each $paletteName in $palettes {
+    &.icon-#{$paletteName} {
+      fill: getColorVar($paletteName, '70');
+    }
+  }
+}

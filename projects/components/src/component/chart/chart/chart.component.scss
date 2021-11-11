@@ -1,0 +1,70 @@
+:host {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.chart-container {
+  position: relative;
+  min-height: 0;
+  flex-grow: 1;
+  flex-basis: 1px;
+}
+
+.chart-placeholder {
+  margin: auto;
+  width: 100%;
+}
+
+.chart-placeholder span {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+}
+
+.legend-container {
+  flex-shrink: 0;
+  flex-basis: 1px;
+}
+
+::ng-deep .grid line {
+  stroke-dasharray: 1, 4;
+}
+
+::ng-deep .tooltip-chart {
+  padding: 8px 12px;
+  border-radius: 2px;
+}
+
+::ng-deep .legend {
+  grid-gap: 8px;
+  padding-bottom: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+::ng-deep .legend .item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+::ng-deep .legend .item .swatch {
+  width: 10px;
+  height: 10px;
+}
+
+::ng-deep .legend .item .line {
+  width: 12px;
+  height: 2px;
+}
+
+::ng-deep .legend .item .label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 5px;
+}

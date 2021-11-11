@@ -1,0 +1,3 @@
+@function getColorVar($palette, $grade) {
+  @return var(--color-#{$palette}-#{$grade});
+}

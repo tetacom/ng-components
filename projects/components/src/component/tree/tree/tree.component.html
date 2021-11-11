@@ -1,0 +1,8 @@
+<ng-container *ngFor="let item of data">
+  <teta-tree-item [item]="item"
+                  [depth]="0"
+                  [padding]="padding"
+                  [childNodeName]="childNodeName"
+                  [noChildMode]="noChildMode"
+                  [template]="template?.template"></teta-tree-item>
+</ng-container>

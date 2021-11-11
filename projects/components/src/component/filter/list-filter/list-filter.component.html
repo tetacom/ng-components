@@ -1,0 +1,21 @@
+<div class="padding-2">
+  <teta-text-field [(ngModel)]="search"></teta-text-field>
+</div>
+<div class="list padding-v-2 scrollable">
+  <div class="list-item">
+    <teta-checkbox [binary]="true"
+                   [allowNull]="true"
+                   [ngModel]="all()"
+                   (ngModelChange)="setAll($event)">Все
+    </teta-checkbox>
+  </div>
+  <div class="list-divider"></div>
+  <div class="list-item" *ngFor="let option of visibleOptions">
+    <teta-checkbox [ngModel]="filter.value"
+                   (ngModelChange)="setFilter($event)"
+                   [value]="option.id"
+                   [binary]="false">
+      {{option.name}}
+    </teta-checkbox>
+  </div>
+</div>

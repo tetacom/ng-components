@@ -1,0 +1,9 @@
+<button teta-button [square]="true" (click)="up()" [palette]="'text'" [view]="'ghost'">
+  <teta-icon [name]="'arrowUpKey'"></teta-icon>
+</button>
+<div (wheel)="scroll($event);" class="row row_auto font-body-3 height-6 width-6 align-center justify-content-center">
+  {{value | tetaPrependZero: 2}}
+</div>
+<button teta-button [square]="true" (click)="down()" [palette]="'text'" [view]="'ghost'">
+  <teta-icon [name]="'arrowDownKey'"></teta-icon>
+</button>

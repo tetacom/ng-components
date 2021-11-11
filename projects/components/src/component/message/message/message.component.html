@@ -1,0 +1,18 @@
+<div class="row align-center justify-content-between">
+  <div class="font-title-3 padding-left-1">
+    {{message.title}}
+  </div>
+  <button teta-button
+          [square]="true"
+          [palette]="message.palette"
+          [view]="'primary'"
+          (click)="closeMe($event)">
+    <teta-icon [name]="'closeBig'"></teta-icon>
+  </button>
+</div>
+<div class="font-body-3 padding-v-1" *ngIf="!message.template && message.text">
+  {{message.text}}
+</div>
+<ng-container *ngIf="message.template">
+  <ng-container *ngTemplateOutlet="message.template; context: {$implicit: message}"></ng-container>
+</ng-container>

@@ -1,0 +1,47 @@
+@import "./util/font-util.scss";
+@import "./util/color-util.scss";
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+
+  &-item {
+    display: flex;
+    flex-direction: column;
+    min-height: 40px;
+
+    &_active {
+      flex-grow: 0;
+    }
+  }
+
+  &-head {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 8px;
+    grid-gap: 8px;
+    flex-shrink: 0;
+    border-bottom: solid 1px getColorVar('text', '5');
+    @include getFont($fonts, 'title-3');
+
+    &:hover:not(&_disabled) {
+      cursor: pointer;
+    }
+    &_open {
+      border: none;
+    }
+  }
+
+  &-toggle {
+    display: flex;
+
+  }
+
+  &-content {
+    display: flex;
+    flex-grow: 1;
+    min-height: 0;
+    border-bottom: solid 1px getColorVar('text', '5');
+  }
+}

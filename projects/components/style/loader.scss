@@ -1,0 +1,40 @@
+@import "util/color-util.scss";
+
+.loader {
+  position: fixed;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:before {
+    margin-left: -25px;
+    margin-top: -25px;
+    content: '';
+    display: block;
+    box-sizing: border-box;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 5px solid getColorVar('primary', '50');
+    border-top-color: transparent;
+    animation: spinner 1.5s linear infinite;
+  }
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loader-icon {
+  display: block;
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid;
+  border-top-color: transparent;
+  animation: spinner 1.5s linear infinite;
+}

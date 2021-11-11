@@ -1,0 +1,10 @@
+<span [style.display]="edit ? 'none' : 'block'" class="cell-text">
+  {{row.data[column.name] | date : 'dd.MM.yyyy HH:mm:ss'}}
+</span>
+<teta-date-picker class="datepicker-table" #input
+                  *ngIf="edit"
+                  [appendToBody]="true"
+                  [showTime]="true"
+                  [ngModel]="row.data[column.name]"
+                  (ngModelChange)="setValue($event)"
+></teta-date-picker>

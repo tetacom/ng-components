@@ -1,0 +1,18 @@
+<teta-icon *ngIf="leftIconName" [name]="leftIconName"></teta-icon>
+<input
+  #input
+  [ngModel]="value"
+  [tetaOnlyNumber]="onlyNumber"
+  (ngModelChange)="value = $event; onChange($event);"
+  [placeholder]="placeholder"
+  [disabled]="disabled"
+  (keydown)="keyPress($event)"
+  autocomplete="off"
+  type="text"
+/>
+<teta-icon
+  *ngIf="value && !disabled"
+  class="close-icon"
+  [name]="'closeCircle'"
+  (click)="value = ''; onChange('');"
+></teta-icon>

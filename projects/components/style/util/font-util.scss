@@ -1,0 +1,11 @@
+@use "sass:map";
+
+@mixin getFontDescription($fontObject) {
+  @each $key, $value in $fontObject {
+    #{$key}: #{$value};
+  }
+}
+
+@mixin getFont($fonts, $fontName) {
+  @include getFontDescription(map.get($fonts, $fontName));
+}

@@ -1,0 +1,16 @@
+.drop-area {
+  position: absolute;
+  width: 1px;
+  background: var(--color-text-50);
+  top: 0;
+  bottom: 0;
+  z-index: 10;
+
+  &_left {
+    left: -1px;
+  }
+
+  &_right {
+    right: -1px;
+  }
+}

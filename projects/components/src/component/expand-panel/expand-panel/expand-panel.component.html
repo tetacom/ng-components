@@ -1,0 +1,36 @@
+<ng-container *ngIf="open">
+  <teta-toolbar
+    style="display: flex"
+    [style.justifyContent]="direction === 'right' ? 'space-between' : 'unset'"
+    [style.flexDirection]="direction === 'right' ? 'row-reverse' : 'row'">
+    <button
+      teta-button
+      [square]="true"
+      [palette]="'text'"
+      [view]="'ghost'"
+      (click)="closePanel()"
+    >
+      <teta-icon [name]="direction === 'right' ? 'arrowRight' : 'arrowLeft'"></teta-icon>
+    </button>
+    <span class="font-title-2" style="display: contents"><ng-container *ngTemplateOutlet="head?.template"></ng-container></span>
+  </teta-toolbar>
+  <ng-container *ngTemplateOutlet="content?.template"></ng-container>
+</ng-container>
+<ng-container *ngIf="!open">
+  <div class="width-10 overflow-hidden" style="height: 100%;">
+    <button
+      teta-button
+      style="
+        transform-origin: 0 0;
+        transform: rotate(-90deg) translateX(-100%);
+        margin: 8px;
+      "
+      [palette]="'text'"
+      [view]="'ghost'"
+      (click)="openPanel()"
+    >
+      <div class="font-button-2 nowrap">{{ placeholder }}</div>
+      <teta-icon [name]="direction === 'right' ? 'arrowUp' : 'arrowDown'"></teta-icon>
+    </button>
+  </div>
+</ng-container>

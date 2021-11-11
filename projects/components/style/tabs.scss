@@ -1,0 +1,64 @@
+@import "util/color-util.scss";
+@import "util/font-util.scss";
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+
+  &-head {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 0;
+    height: 40px;
+
+    &-item {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      white-space: nowrap;
+      @include getFont($fonts, 'body-3');
+      color: getColorVar('text', '40');
+      fill: getColorVar('text', '40');
+
+      &_disabled, &[disabled] {
+        color: getColorVar('text', '20');
+        fill: getColorVar('text', '20');
+      }
+
+      &:hover:not([disabled]):not(&_disabled) {
+        cursor: pointer;
+        color: getColorVar('text', '70');
+        fill: getColorVar('text', '70');
+      }
+
+      &_active {
+        position: relative;
+        color: getColorVar('text', '90');
+        fill: getColorVar('text', '70');
+
+        &::after {
+          content: '';
+          position: absolute;
+          height: 2px;
+          background-color: getColorVar('primary', '50');
+          border: solid 0 transparent;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
+      }
+    }
+  }
+
+  &-title {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow-y: overlay;
+  }
+}

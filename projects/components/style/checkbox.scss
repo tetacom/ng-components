@@ -1,0 +1,31 @@
+@import "util/color-util.scss";
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+
+  &__tick {
+    border: solid 1px getColorVar('text', '30');
+    border-radius: 1px;
+    height: 14px;
+    width: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15) inset;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:hover &__tick {
+    border-color: getColorVar('text', '50');
+  }
+
+  @each $paletteName in $palettes {
+    &.checkbox-#{$paletteName} {
+      fill: getColorVar($paletteName, '50');
+    }
+  }
+}

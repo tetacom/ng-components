@@ -1,0 +1,45 @@
+@import "common.scss";
+
+$spacingTypes: margin, padding;
+
+@each $spacingType in $spacingTypes {
+  @for $i from 0 through $spacingLength {
+    .#{$spacingType}-h-#{$i} {
+      #{$spacingType}-left: $i * $spaceStep !important;
+      #{$spacingType}-right: $i * $spaceStep !important;
+    }
+    .#{$spacingType}-v-#{$i} {
+      #{$spacingType}-top: $i * $spaceStep !important;
+      #{$spacingType}-bottom: $i * $spaceStep !important;
+    }
+    @each $dir in $directions {
+      .#{$spacingType}-#{$dir}-#{$i} {
+        #{$spacingType}-#{$dir}: $i * $spaceStep !important;
+      }
+    }
+  }
+}
+
+@each $spacingType in $spacingTypes {
+  @for $i from 0 through $spacingLength {
+    .#{$spacingType}-#{$i} {
+      #{$spacingType}: $i * $spaceStep !important;
+    }
+  }
+}
+
+.margin-left-auto {
+  margin-left: auto;
+}
+
+.margin-right-auto {
+  margin-right: auto;
+}
+
+.margin-top-auto {
+  margin-top: auto;
+}
+
+.margin-bottom-auto {
+  margin-bottom: auto;
+}

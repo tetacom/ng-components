@@ -1,0 +1,162 @@
+@import "util/color-util.scss";
+@import "util/font-util.scss";
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  grid-gap: 8px;
+}
+
+.form-row {
+  display: flex;
+  grid-gap: 8px;
+  align-items: flex-end;
+}
+
+.input-container {
+  display: flex;
+  flex-grow: 1;
+  min-width: 0;
+  position: relative;
+}
+
+.input-message {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  height: 12px;
+  overflow: hidden;
+}
+
+.text-field, .input, .textarea {
+  padding: 4px;
+  border: solid 1px getColorVar('text', '20');
+  border-radius: 2px;
+  background-color: getColorVar('background', '50');
+  color: getColorVar('text', 90);
+  @include getFont($fonts, 'body-3');
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  grid-gap: 4px;
+  width: 100%;
+  min-width: 0;
+  transition: border-color 0.4s;
+
+  &_invalid {
+    border-color: getColorVar('red', '50');
+  }
+
+  &_required::after {
+    margin-left: 4px;
+    content: '*';
+    color: getColorVar('red', '50');
+  }
+
+  &::placeholder {
+    color: getColorVar('text', '40');
+  }
+
+  &:focus-within, &:focus {
+    border-color: getColorVar('primary', '50');
+  }
+
+  &:focus-within {
+    &::placeholder {
+      color: getColorVar('text', '20');
+    }
+
+    input::placeholder {
+      color: getColorVar('text', '20');
+    }
+  }
+
+  &:disabled, &[disabled], &_disabled {
+    border: 0;
+    background: getColorVar('text', '5');
+    color: getColorVar('text', '40');
+  }
+
+  &:hover:not([disabled]):not(&_disabled):not(:focus-within) {
+    border-color: getColorVar('text', '40');
+  }
+
+  .close-icon {
+    display: none;
+    position: absolute;
+    right: 4px;
+  }
+
+  &:hover:not([disabled]):not(&_disabled), &:focus-within {
+    .close-icon {
+      display: flex;
+    }
+  }
+}
+
+.text-field, .input {
+  height: 24px;
+}
+
+.text-field {
+  position: relative;
+
+  input {
+    color: getColorVar('text', 90);
+    border-width: 0;
+    width: 100%;
+  }
+
+  teta-icon {
+    fill: getColorVar('text', 40);
+  }
+}
+
+.textarea {
+  resize: none;
+}
+
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: getColorVar('background', '50');
+  border: dashed 1px getColorVar('text', '10');
+  border-radius: 4px;
+  transition: background 0.4s;
+  grid-gap: 8px;
+
+  &-label {
+    flex-grow: 0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+  &-input {
+    display: none;
+  }
+
+  &_active {
+    background-color: getColorVar('text', '10');
+  }
+}
+
+.form-group-title {
+  height: 24px;
+  display: flex;
+  align-items: center;
+  grid-gap: 8px;
+  color: getColorVar('text', '50');
+
+  &-text {
+    flex-shrink: 0;
+  }
+
+  &-line {
+    flex-grow: 1;
+    height: 1px;
+    background: getColorVar('text', '50');
+  }
+}

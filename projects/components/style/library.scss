@@ -1,0 +1,208 @@
+.clear {
+  clear: both;
+  height: 0;
+  line-height: 0;
+}
+.float {
+  &__right {
+    float: right;
+  }
+
+  &__left {
+    float: left;
+  }
+}
+.position {
+  &-relative {
+    position: relative;
+  }
+
+  &-absolute {
+    position: absolute;
+  }
+
+  &-fixed {
+    position: fixed;
+  }
+}
+.display {
+  &-block {
+    display: flex !important;
+  }
+
+  &-inline-block {
+    display: inline-block !important;
+  }
+
+  &-flex {
+    display: flex !important;
+  }
+
+  &-inline-flex {
+    display: inline-flex !important;
+  }
+
+  &-inline {
+    display: inline !important;
+  }
+}
+
+.flex {
+  display: flex !important;
+
+  &-column {
+    flex-direction: column !important;
+  }
+
+  &-wrap {
+    flex-wrap: wrap !important;
+  }
+
+  &-nowrap {
+    flex-wrap: nowrap !important;
+  }
+}
+.align {
+  &-center {
+    align-items: center;
+  }
+
+  &-start {
+    align-items: flex-start;
+  }
+
+  &-end {
+    align-items: flex-end;
+  }
+
+  &-stretch {
+    align-items: stretch;
+  }
+
+  &-baseline {
+    align-items: baseline;
+  }
+}
+.align-self {
+  &-center {
+    align-self: center;
+  }
+
+  &-start {
+    align-self: flex-start;
+  }
+
+  &-end {
+    align-self: flex-end;
+  }
+
+  &-stretch {
+    align-self: stretch;
+  }
+
+  &-baseline {
+    align-self: baseline;
+  }
+}
+.justify-content {
+  &-between {
+    justify-content: space-between;
+  }
+
+  &-around {
+    justify-content: space-around;
+  }
+
+  &-start {
+    justify-content: flex-start;
+  }
+
+  &-end {
+    justify-content: flex-end;
+  }
+
+  &-center {
+    justify-content: center;
+  }
+}
+.justify-self {
+  &-center {
+    justify-self: center;
+  }
+
+  &-start {
+    justify-self: flex-start;
+  }
+
+  &-end {
+    justify-self: flex-end;
+  }
+}
+.nowrap {
+  white-space: nowrap;
+}
+.overflow {
+  &-hidden {
+    overflow: hidden;
+  }
+
+  &-auto {
+    overflow: auto;
+  }
+
+  &-scroll {
+    overflow: scroll;
+  }
+
+  &-x-hidden {
+    overflow-x: hidden;
+  }
+
+  &-x-auto {
+    overflow-x: auto;
+  }
+
+  &-x-scroll {
+    overflow-x: scroll;
+  }
+
+  &-y-hidden {
+    overflow-y: hidden;
+  }
+
+  &-y-auto {
+    overflow-y: auto;
+  }
+
+  &-y-scroll {
+    overflow-y: scroll;
+  }
+}
+.text-align {
+  &-center {
+    text-align: center;
+  }
+
+  &-left {
+    text-align: left;
+  }
+
+  &-right {
+    text-align: right;
+  }
+}
+.cursor-pointer {
+  &:hover {
+    cursor: pointer;
+  }
+}
+.text-overflow {
+  &-ellipsis {
+    text-overflow: ellipsis;
+  }
+}
+.text-decoration {
+  &-none {
+    text-decoration: none;
+  }
+}

@@ -1,0 +1,11 @@
+<div class="list row_auto margin-top-2"
+     (wheel)="scrollYearSelector($event);">
+  <div class="list-item list-item_interactive"
+       [class.list-item_active]="year === currentYear"
+       [class.list-item_disabled]="isYearDisabled(year)"
+       (click)="setYear($event, year)"
+       (dblclick)="applyYear($event, year)"
+       *ngFor="let year of years">
+    {{year}}
+  </div>
+</div>

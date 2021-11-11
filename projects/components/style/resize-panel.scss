@@ -1,0 +1,58 @@
+@import "util/color-util.scss";
+
+.resize {
+  &-panel {
+    position: relative;
+  }
+
+  &-grab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    fill: getColorVar('text', '20');
+    z-index: 10;
+
+    &_active, &:hover {
+      fill: getColorVar('text', '90');
+    }
+
+    &_left, &_right, &_vertical {
+      width: 8px;
+      height: 100%;
+      top: 0;
+    }
+
+    &_left {
+      left: -8px;
+    }
+
+    &_right {
+      left: 100%;
+    }
+
+    &_top, &_bottom {
+      height: 8px;
+      width: 100%;
+      left: 0;
+    }
+
+    &_top {
+      top: -8px;
+    }
+
+    &_bottom {
+      top: 100%;
+    }
+  }
+
+  &-drag {
+    &_horizontal:hover, &_horizontal#{&}_active {
+      cursor: row-resize;
+    }
+
+    &_vertical:hover, &_vertical#{&}_active {
+      cursor: col-resize;
+    }
+  }
+}

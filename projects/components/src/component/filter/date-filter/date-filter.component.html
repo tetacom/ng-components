@@ -1,0 +1,14 @@
+<div class="form-row padding-3">
+  <teta-input [label]="'От'">
+    <teta-date-picker style="width: 110px"
+                      [ngModel]="filter.value?.greaterThan"
+                      [appendToBody]="true"
+                      (ngModelChange)="filter.value.greaterThan=$event"></teta-date-picker>
+  </teta-input>
+  <teta-input [label]="'До'">
+    <teta-date-picker style="width: 110px"
+                      [ngModel]="filter.value?.lessThan"
+                      [appendToBody]="true"
+                      (ngModelChange)="filter.value.lessThan=$event"></teta-date-picker>
+  </teta-input>
+</div>

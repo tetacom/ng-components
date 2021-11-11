@@ -1,0 +1,36 @@
+@import "util/font-util.scss";
+@import "util/color-util.scss";
+
+.switch {
+  display: inline-flex;
+  border: solid 0;
+  border-radius: 2px;
+  height: 24px;
+  @include getFont($fonts, 'button-2');
+  background: getColorVar('text', '5');
+  color: getColorVar('text', '90');
+  fill: getColorVar('text', '90');
+  overflow: hidden;
+
+  &-button {
+    display: inline-flex;
+    padding: 0 8px;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+    &:hover:not(&_active) {
+      background: getColorVar('text', '10');
+    }
+
+    &_active {
+      border: solid 0;
+      border-radius: 2px;
+      background: getColorVar('primary', '50');
+      fill: getColorVar('white', '50');
+      color: getColorVar('white', '50');
+    }
+  }
+}

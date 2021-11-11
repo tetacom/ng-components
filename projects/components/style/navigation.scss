@@ -1,0 +1,26 @@
+@import "util/color-util.scss";
+@import "util/font-util.scss";
+
+.navigation {
+  &-item {
+    padding: 0 12px;
+    grid-gap: 8px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    @include getFont($fonts, 'title-3');
+  }
+
+  @each $paletteName in $palettes {
+    &-#{$paletteName} {
+      background: getColorVar($paletteName, '50');
+    }
+    &-#{$paletteName} &-item:hover {
+      background: getColorVar($paletteName, '40');
+      cursor: pointer;
+    }
+    &-#{$paletteName} &-item_active {
+      background: getColorVar($paletteName, '30');
+    }
+  }
+}

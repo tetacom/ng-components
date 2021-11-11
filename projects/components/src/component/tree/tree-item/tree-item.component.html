@@ -1,0 +1,12 @@
+<div class="tree__item_content" [ngClass]="'tree__item_content-' + computedDepth" (click)="openItem()">
+  <ng-container
+    *ngTemplateOutlet="template; context: {$implicit: item, item: item, open: itemIsOpen, service: service, depth: depth}"></ng-container>
+</div>
+<div [@children] class="tree__children" *ngIf="itemIsOpen && item[childNodeName]?.length > 0">
+  <teta-tree-item *ngFor="let child of item[childNodeName];"
+                  [item]="child"
+                  [template]="template"
+                  [padding]="padding"
+                  [childNodeName]="childNodeName"
+                  [depth]="depth + 1"></teta-tree-item>
+</div>
