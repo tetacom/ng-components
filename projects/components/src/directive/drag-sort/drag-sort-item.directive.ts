@@ -9,7 +9,7 @@ import {
   OnInit,
   Renderer2,
 } from '@angular/core';
-import { DragSortContainerDirective } from './drag-sort-container.directive';
+import {DragSortContainerDirective} from './drag-sort-container.directive';
 
 @Directive({
   selector: '[tetaDragSortItem]',
@@ -29,7 +29,8 @@ export class DragSortItemDirective<T> implements OnInit, OnDestroy {
     @Host() private _container: DragSortContainerDirective<T>,
     private _elementRef: ElementRef,
     private _renderer: Renderer2
-  ) {}
+  ) {
+  }
 
   @HostListener('dragstart', ['$event']) dragstart(event: DragEvent): void {
     this._container.setDragItem(this.tetaDragSortItem);
