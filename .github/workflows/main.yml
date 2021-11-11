@@ -36,4 +36,6 @@ jobs:
       
       # Runs a set of commands using the runners shell
       - name: Publish
+        env:
+          NPM_TOKEN: ${{ secrets.TETACOM_NPM_TOKEN }}
         run: yarn publish dist/components --access public  
