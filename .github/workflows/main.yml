@@ -37,5 +37,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Publish
         env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.TETACOM_NPM_TOKEN }}
         run: cd dist/components && npx semantic-release

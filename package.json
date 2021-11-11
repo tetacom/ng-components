@@ -73,5 +73,15 @@
     "@semantic-release/github",
     "@semantic-release/npm",
     "@semantic-release/git"
-  ]
+  ],
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "main",
+        "channel": "alpha",
+        "prerelease": true
+      }
+    ]
+  }
 }
