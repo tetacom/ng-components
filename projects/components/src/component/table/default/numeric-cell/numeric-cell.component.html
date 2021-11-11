@@ -1,0 +1,11 @@
+<span [style.display]="edit ? 'none' : 'block'" class="cell-text cell-text_numeric">
+  {{row.data[column.name] | tetaNumber : 2}}
+</span>
+<input #input
+       *ngIf="edit"
+       tetaOnlyNumber
+       type="text"
+       class="input row_auto border-radius-0"
+       (blur)="setValue()"
+       [ngModel]="row.data[column.name]"
+       (ngModelChange)="row.data[column.name]=$event;"/>

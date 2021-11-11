@@ -1,0 +1,10 @@
+<span [style.display]="edit ? 'none' : 'block'" class="cell-text">
+  {{ row.data[column.name] }}
+</span>
+<teta-checkbox
+  #input
+  *ngIf="edit"
+  [binary]="true"
+  [(ngModel)]="row.data[column.name]"
+  (blur)="setValue()"
+></teta-checkbox>

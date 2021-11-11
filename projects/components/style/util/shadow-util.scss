@@ -1,0 +1,3 @@
+@mixin shadow($shadowName) {
+  box-shadow: var(--shadow-#{$shadowName});
+}

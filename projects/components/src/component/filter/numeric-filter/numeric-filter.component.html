@@ -1,0 +1,14 @@
+<div class="form-row padding-3">
+  <teta-input [label]="'От'">
+    <input class="input" type="text"
+           style="width: 110px"
+           [ngModel]="filter.value?.greaterThan"
+           (ngModelChange)="filter.value.greaterThan=$event"/>
+  </teta-input>
+  <teta-input [label]="'До'">
+    <input class="input" type="text"
+           style="width: 110px"
+           [ngModel]="filter.value?.lessThan"
+           (ngModelChange)="filter.value.lessThan=$event"/>
+  </teta-input>
+</div>

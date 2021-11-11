@@ -1,0 +1,35 @@
+html {
+  font-size: 10px;
+}
+
+*, *::after, *::before {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:focus {
+  outline: none;
+}
+
+body {
+  font-kerning: normal;
+  height: 100vh;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
+  background: transparent;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  fill: inherit;
+}

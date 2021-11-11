@@ -1,0 +1,13 @@
+@import "util/shadow-util.scss";
+@import "util/color-util.scss";
+
+.hint {
+  @include shadow(1);
+  padding: 4px 8px;
+  white-space: nowrap;
+  z-index: 3;
+  background-color: getColorVar('text', '10');
+  color: getColorVar('text', '90');
+  border: solid 0;
+  border-radius: 2px;
+}

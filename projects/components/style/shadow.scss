@@ -1,0 +1,23 @@
+@use "sass:map";
+@use "sass:list";
+@import "util/shadow-util.scss";
+
+body {
+  @each $shadowName, $shadow in map.get($shadows, "default") {
+    --shadow-#{$shadowName}: #{$shadow};
+  }
+}
+
+@each $themeName, $theme in $shadows {
+  .theme-#{$themeName} {
+    @each $shadowName, $shadow in $theme {
+      --shadow-#{$shadowName}: #{$shadow};
+    }
+  }
+}
+
+@for $i from 1 through 5 {
+  .shadow-#{$i} {
+    @include shadow($i);
+  }
+}

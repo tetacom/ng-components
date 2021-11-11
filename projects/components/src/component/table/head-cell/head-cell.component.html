@@ -1,0 +1,45 @@
+<div draggable="true" class="row row_auto">
+  <div class="table-head__cell__wrapper"
+       [ngClass]="column.headCellClass"
+       (click)="sortColumn(column, $event)">
+    <teta-icon *ngIf="iconName | async as icon"
+               [palette]="'text'"
+               [name]="icon"></teta-icon>
+    <teta-head-cell-host [column]="column"></teta-head-cell-host>
+    <teta-dropdown *ngIf="showHeadCellMenu"
+                   [verticalAlign]="verticalAlign.bottom"
+                   [appendToBody]="true"
+                   [(open)]="dropDownOpen"
+                   [align]="align.right"
+                   (click)="$event.preventDefault()"
+                   [class.table-head__cell__menu_open]="dropDownOpen"
+                   class="table-head__cell__menu">
+      <button tetaDropdownHead teta-button
+              [square]="true"
+              [palette]="'text'"
+              [view]="'ghost'">
+        <teta-icon [palette]="'text'" [name]="'menu'"></teta-icon>
+      </button>
+      <teta-head-cell-dropdown tetaDropdownContent
+                               (autosize)="autosizeColumn()"
+                               (autosizeAll)="autosizeAllColumns()"
+                               [column]="column"
+                               [columns]="columns | async"
+                               [state]="state | async"
+                               [(dropDownOpen)]="dropDownOpen"></teta-head-cell-dropdown>
+    </teta-dropdown>
+  </div>
+  <div class="drop-area"
+       draggable="false"
+       [class.drop-area_left]="showDrag === 'left'"
+       [class.drop-area_right]="showDrag === 'right'"
+       *ngIf="showDrag"></div>
+</div>
+<div class="table-head__cell__resize"
+     draggable="false"
+     (dragstart)="$event.preventDefault();$event.stopPropagation()"
+     (drag)="$event.preventDefault();$event.stopPropagation()"
+     [tetaResizeDrag]="'vertical'"
+     (resizeStart)="resizeStart($event)"
+     (resizeProcess)="resizeProcess($event)"
+     (resizeEnd)="resizeEnd()"></div>

@@ -1,0 +1,6 @@
+<teta-message
+  *ngFor="let message of messages; let i=index"
+  (closed)="closedItem($event)"
+  [message]="message"
+  [index]="i">
+</teta-message>

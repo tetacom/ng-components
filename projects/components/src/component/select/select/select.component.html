@@ -1,0 +1,92 @@
+<teta-dropdown [align]="align"
+               [verticalAlign]="verticalAlign"
+               [autoClose]="autoClose"
+               [autoCloseIgnore]="autoCloseIgnore"
+               [(open)]="open"
+               [appendToBody]="appendToBody"
+               [disabled]="disabled"
+               class="row row_auto">
+  <div tetaDropdownHead
+       class="row row_auto select-head"
+       [class.select-head_invalid]="invalid">
+    <div class="row_auto flex align-center">
+      <teta-icon *ngIf="icon" [name]="icon" class="margin-right-1"></teta-icon>
+      <span class="placeholder" *ngIf="(value == null || value?.length === 0) && placeholder">
+          {{placeholder}}
+        </span>
+      <ng-container
+        *ngTemplateOutlet="valueDirective ? valueDirective.template : valueDefault; context: {$implicit: value, value: value}"></ng-container>
+    </div>
+    <teta-icon [name]="'arrowDownSmall'"></teta-icon>
+  </div>
+  <div *ngIf="options?.length" tetaDropdownContent class="select-list scrollable row_auto">
+    <ng-container *ngIf="searchRef">
+      <div class="select-search">
+        <teta-text-field [ngModel]="searchText"
+                         (ngModelChange)="search($event)"
+                         [placeholder]="'Поиск'"
+                         [leftIconName]="'search'"></teta-text-field>
+      </div>
+      <div class="list-divider"></div>
+    </ng-container>
+    <ng-container *ngIf="!multiple && allowNull">
+      <div class="list-item list-item_interactive"
+           (click)="clear()"
+           [class.list-item_active]="value==null">
+        Не выбрано
+      </div>
+      <div class="list-divider"></div>
+    </ng-container>
+    <ng-container *ngIf="!virtual">
+      <div class="list-item list-item_interactive"
+           *ngFor="let option of visibleOptions"
+           [class.select-list-item_active]="itemSelected(option) && multiple"
+           [class.list-item_active]="itemSelected(option)"
+           [class.select-list-item]="multiple"
+           (click)="clickOption(option, $event)">
+        <teta-icon *ngIf="itemSelected(option) && multiple" [name]="'tick'" [palette]="'primary'"></teta-icon>
+        <span [tetaHighlight]="searchText">
+          <ng-container
+            *ngTemplateOutlet="optionDirective ? optionDirective.template : optionDefault; context: {$implicit: option, option: option}">
+          </ng-container>
+        </span>
+      </div>
+    </ng-container>
+    <cdk-virtual-scroll-viewport *ngIf="virtual"
+                                 [itemSize]="40"
+                                 minBufferPx="200"
+                                 maxBufferPx="600">
+      <div class="select-list-item select-list-item_interactive"
+           *cdkVirtualFor="let option of visibleOptions; templateCacheSize: 0;"
+           [class.select-list-item_active]="itemSelected(option)"
+           [tetaHighlight]="searchText"
+           (click)="clickOption(option, $event)">
+        <teta-icon *ngIf="itemSelected(option)" [name]="'tick'" [palette]="'primary'" class="margin-left-2"></teta-icon>
+        <div [tetaHighlight]="searchText">
+          <ng-container
+            *ngTemplateOutlet="optionDirective ? optionDirective.template : optionDefault; context: {$implicit: option, option: option}">
+          </ng-container>
+        </div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+    <div class="row row_auto select-chip-field flex-wrap" *ngIf="multiple && value?.length">
+      <div *ngFor="let item of value" class="chip">
+        <teta-icon [name]="'closeCircle'" (click)="removeItemClick(item, $event)"></teta-icon>
+        {{getText(item)}}
+      </div>
+    </div>
+  </div>
+</teta-dropdown>
+
+<ng-template #optionDefault let-option>
+  {{getText(option)}}
+</ng-template>
+<ng-template #valueDefault let-value>
+  <div class="row_auto overflow-hidden text-overflow-ellipsis" *ngIf="multiple">
+    <ng-container
+      *ngFor="let item of value; let i = index">{{getText(item) + (value.length === i + 1 ? '' : ', ') }}</ng-container>
+  </div>
+  <ng-container *ngIf="!multiple">
+    <span class="row row_auto  overflow-hidden text-overflow-ellipsis">{{getText(value)}}</span>
+  </ng-container>
+</ng-template>

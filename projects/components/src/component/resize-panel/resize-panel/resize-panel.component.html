@@ -1,0 +1,9 @@
+<ng-content></ng-content>
+<div #grab class="resize-grab"
+     (resizeStart)="resizeStart($event)"
+     (resizeProcess)="resizeProcess($event)"
+     (resizeEnd)="resizeEnd($event)"
+     [tetaResizeDrag]="direction"
+     [ngClass]="getClassName()">
+  <teta-icon [name]="direction"></teta-icon>
+</div>

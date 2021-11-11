@@ -1,0 +1,4 @@
+<teta-checkbox [binary]="true"
+               [noLabel]="true"
+               [ngModel]="selectedRows?.indexOf(row) >= 0"
+               (ngModelChange)="selectRow($event)"></teta-checkbox>

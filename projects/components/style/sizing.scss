@@ -1,0 +1,12 @@
+@import "common.scss";
+
+@for $i from 0 through $spacingLength {
+  .height-#{$i} {
+    height: $spaceStep * $i;
+    flex-shrink: 0;
+  }
+  .width-#{$i} {
+    width: $spaceStep * $i;
+    flex-shrink: 0;
+  }
+}

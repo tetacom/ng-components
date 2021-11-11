@@ -1,0 +1,24 @@
+<div class="column">
+  <teta-toolbar [palette]="'background'" class="justify-content-between">
+    <span>Создать проект</span>
+    <teta-icon [name]="'closeBig'" (click)="modal.close({reason: closeReason.exit})"></teta-icon>
+  </teta-toolbar>
+  <div class="padding-3 column">
+    <div class="margin-v-2">
+      <input class="input" type="text" [(ngModel)]="data.name" placeholder="Название">
+    </div>
+    <div class="margin-v-2">
+      <input class="input" type="text" [(ngModel)]="data.description" placeholder="Описание">
+    </div>
+  </div>
+  <teta-toolbar [palette]="'panel'">
+    <button teta-button [palette]="'primary'"
+            (click)="modal.close({reason: closeReason.exit })">
+      Отменить
+    </button>
+    <button teta-button [palette]="'primary'"
+            (click)="modal.close({reason: closeReason.resolve })">
+      Создать
+    </button>
+  </teta-toolbar>
+</div>

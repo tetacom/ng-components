@@ -1,0 +1,23 @@
+@import "util/font-util.scss";
+@import "util/color-util.scss";
+
+.toolbar {
+  height: 40px;
+  display: flex;
+  grid-gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+  flex-shrink: 0;
+  align-items: center;
+  @include getFont($fonts, 'title-3');
+
+  &_panel {
+    padding: 0 8px;
+  }
+
+  @each $paletteName in $palettes {
+    &.toolbar-#{$paletteName} {
+      background-color: getColorVar($paletteName, '50');
+    }
+  }
+}

@@ -1,0 +1,20 @@
+<div class="padding-2 font-body-2">
+  {{message | transloco}}
+</div>
+<teta-toolbar class="justify-content-end">
+  <button teta-button
+          *ngIf="showCancelButton"
+          (click)="cancel()"
+          [palette]="'text'"
+          [view]="'ghost'">
+    {{'common.cancel' | transloco}}
+  </button>
+
+  <button teta-button
+          (click)="ok()"
+          [square]="!buttonText?.length"
+          [palette]="buttonPalette">
+    <teta-icon *ngIf="buttonIcon" [name]="buttonIcon"></teta-icon>
+    <ng-container *ngIf="buttonText?.length > 0">{{buttonText | transloco}}</ng-container>
+  </button>
+</teta-toolbar>

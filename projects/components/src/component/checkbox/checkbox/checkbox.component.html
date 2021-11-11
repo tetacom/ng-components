@@ -1,0 +1,6 @@
+<div class="checkbox__tick">
+  <teta-icon [name]="checked ? 'tick' : checked === false ? '' : 'minus'"></teta-icon>
+</div>
+<span class="font-body-3 margin-left-1" *ngIf="!noLabel">
+  <ng-content></ng-content>
+</span>

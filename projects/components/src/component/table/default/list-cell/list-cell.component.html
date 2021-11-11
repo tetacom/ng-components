@@ -1,0 +1,15 @@
+<span [style.display]="edit ? 'none' : 'block'" class="cell-text">
+  {{value}}
+</span>
+<teta-select #input
+             class="row_auto select-table"
+             *ngIf="edit"
+             [allowNull]="!column.required"
+             [verticalAlign]="verticalAlign.auto"
+             [appendToBody]="false"
+             [options]="filterOptions"
+             [valueRef]="'id'"
+             [textRef]="'name'"
+             [ngModel]="row.data[column.name]"
+             (ngModelChange)="setValue($event)">
+</teta-select>

@@ -1,0 +1,24 @@
+<div class="tabs-head" role="tablist">
+  <div class="tabs-head-item"
+       *ngFor="let tab of tabs"
+       (click)="select(tab.id);"
+       [class.tabs-head-item_active]="tab.id === activeId"
+       [class.tabs-head-item_disabled]="tab.disabled">
+    <span [id]="tab.id" class="tabs-title"
+          role="tab"
+          [attr.tabindex]="(tab.disabled ? '-1': undefined)"
+          [attr.aria-controls]="(!destroyOnHide || tab.id === activeId ? tab.id + '-panel' : null)"
+          [attr.aria-expanded]="tab.id === activeId"
+          [attr.aria-disabled]="tab.disabled">
+      {{tab.title}}
+      <ng-template [ngTemplateOutlet]="tab.titleTpl?.template"></ng-template>
+    </span>
+  </div>
+</div>
+<div class="tabs-content">
+  <ng-template ngFor let-tab [ngForOf]="tabs">
+    <ng-container *ngIf="!destroyOnHide || tab.id === activeId">
+      <ng-template [ngTemplateOutlet]="tab.contentTpl?.template"></ng-template>
+    </ng-container>
+  </ng-template>
+</div>

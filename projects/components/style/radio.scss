@@ -1,0 +1,56 @@
+@import "util/color-util.scss";
+
+.radio {
+  display: grid;
+  grid-gap: 12px;
+  grid-auto-rows: max-content;
+
+  &-button {
+    grid-gap: 4px;
+    display: inline-flex;
+    align-items: center;
+
+    &_disabled {
+      filter: grayscale(50%);
+      color: getColorVar('text', '40');
+    }
+
+    &-icon {
+      height: 16px;
+      width: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: solid 1px getColorVar('text', '30');
+      border-radius: 8px;
+    }
+
+    &_disabled &-icon {
+      background-color: getColorVar('text', '5');
+      color: getColorVar('text', '40');
+    }
+
+    &-small-icon {
+      height: 8px;
+      width: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: solid 0 transparent;
+      border-radius: 4px;
+      background-color: getColorVar('primary', '50');
+    }
+
+    &_disabled &-small-icon {
+      background-color: getColorVar('text', '30');
+    }
+
+    &:hover:not(&_disabled) {
+      cursor: pointer;
+    }
+
+    &:hover:not(&_disabled) &-icon {
+      border: solid 1px getColorVar('text', '50');
+    }
+  }
+}

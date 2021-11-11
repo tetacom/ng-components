@@ -1,0 +1,14 @@
+<div *ngIf="backdrop && open"
+     [@sidebar]
+     (click)="setOpen(false)"
+     class="sidebar-backdrop"></div>
+<div class="sidebar"
+     [@sidebar]
+     [ngClass]="className"
+     [class.sidebar-top]="position === sidebarPosition.top"
+     [class.sidebar-bottom]="position === sidebarPosition.bottom"
+     [class.sidebar-left]="position === sidebarPosition.left"
+     [class.sidebar-right]="position === sidebarPosition.right"
+     *ngIf="open">
+  <ng-content></ng-content>
+</div>

@@ -1,0 +1,29 @@
+@import "util/color-util.scss";
+@import "util/shadow-util.scss";
+
+.modal {
+  &__backdrop {
+    background: getColorVar('backdrop', '50');
+    z-index: 99;
+  }
+
+  &__window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__container {
+    @include shadow(5);
+    background-color: getColorVar('background', '50');
+
+    &_resize {
+      resize: both;
+    }
+  }
+}

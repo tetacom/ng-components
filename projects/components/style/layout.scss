@@ -1,0 +1,109 @@
+@import "util/color-util";
+
+@function widthCol($n) {
+  @return (100% / $columns-count) * $n
+}
+
+body {
+  color: getColorVar('text', '90');
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.row {
+  display: flex;
+
+  &_auto {
+    flex-grow: 1;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  &_fixed {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  @for $n from 1 through $columns-count {
+    &_#{$n} {
+      flex: 1 1 widthCol($n);
+      min-width: 0;
+      min-height: 0;
+    }
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+
+  &_auto {
+    flex-grow: 1;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  &_fixed {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  @for $n from 0 through $columns-count {
+    &_#{$n} {
+      flex: 1 1 widthCol($n);
+      min-width: 0;
+      min-height: 0;
+    }
+  }
+}
+
+.overlay-container {
+  position: fixed;
+  z-index: 10;
+  width: 0;
+  height: 0;
+}
+
+.popup-content {
+  position: fixed;
+  z-index: 10;
+}
+
+.gap {
+  grid-gap: 8px
+}
+
+.grid {
+  display: grid;
+}
+
+.inline-grid {
+  display: inline-grid;
+}
+
+.grid-auto-flow-column {
+  grid-auto-flow: column;
+}
+
+.grid-auto-flow-row {
+  grid-auto-flow: row;
+}
+
+.grid-auto-max {
+  grid-auto-columns: max-content;
+}
+
+.grid-auto-min {
+  grid-auto-columns: min-content;
+}
+
+.content-block {
+  border: solid 0;
+  border-radius: 2px;
+  overflow: hidden;
+  background: getColorVar('background', 50);
+}
