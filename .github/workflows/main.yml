@@ -36,4 +36,4 @@ jobs:
       
       # Runs a set of commands using the runners shell
       - name: Publish
-        run: yarn publish --access public --prefix dist/components 
+        run: yarn publish dist/components --access public  
