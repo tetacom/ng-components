@@ -16,11 +16,8 @@ jobs:
         with:
           cache: npm
           node-version: 16
-      - name: Install and Build
+      - name: Install & Build
         run: yarn && yarn global add @angular/cli && ng build components
-      - name: Package
-        run: yarn pack --prefix dist/components
-
       - name: Publish
         run: cd dist/components && npx semantic-release
         env:
