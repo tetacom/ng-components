@@ -5,6 +5,7 @@ export class StringFilter extends FilterBase {
   override value: string;
   type: StringFilterType;
 
+
   constructor(options?: {
     value?: string;
     type?: StringFilterType;
