@@ -19,6 +19,7 @@ import {ArrayUtil} from '../../common/util/array-util';
 import {Align} from '../../common/enum/align.enum';
 import {VerticalAlign} from '../../common/enum/vertical-align.enum';
 import {DomUtil} from '../../common/util/dom-util';
+import Timeout = NodeJS.Timeout;
 
 @Directive({
   selector: '[tetaHint]',
@@ -38,7 +39,7 @@ export class HintDirective
     return this.tetaHint;
   }
 
-  private _timeout: number;
+  private _timeout: Timeout;
   private _componentRect: any;
 
   constructor(
