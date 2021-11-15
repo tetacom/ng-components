@@ -1,13 +1,12 @@
 name: Build & Release
 on:
-  # push:
-  #  branches: [ main ]
-  pull_request_target:
-    types: [synchronize]
+  pull_request:
+    types: [closed]
     branches: [main]
   workflow_dispatch:
 jobs:
   release:
+    if: ${{ github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.4.0
