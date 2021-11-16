@@ -1,0 +1,21 @@
+name: Release to NPM
+on:
+  workflow_dispatch:
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v2
+        with:
+          cache: npm
+          node-version: 16
+      - name: Install & Build
+        run: yarn && yarn global add @angular/cli && ng build components
+      - name: Publish
+        run: cd dist/components && npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.TETACOM_NPM_TOKEN }}
