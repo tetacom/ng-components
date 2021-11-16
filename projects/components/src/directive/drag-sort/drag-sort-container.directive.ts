@@ -1,14 +1,14 @@
 import {
-  ContentChildren,
+  // ContentChildren,
   Directive,
   EventEmitter,
   HostListener,
   Input,
   Output,
-  QueryList,
+  // QueryList,
 } from '@angular/core';
 import {DragSortEvent} from './drag-sort-event';
-import {DragSortItemDirective} from './drag-sort-item.directive';
+// import {DragSortItemDirective} from './drag-sort-item.directive';
 
 @Directive({
   selector: '[tetaDragSortContainer]',
@@ -17,8 +17,8 @@ export class DragSortContainerDirective<T> {
   @Input() dragSortList: T[];
   @Output() dragSorted: EventEmitter<DragSortEvent<T>> = new EventEmitter<DragSortEvent<T>>();
 
-  @ContentChildren(DragSortItemDirective, {descendants: true})
-  private items: QueryList<DragSortItemDirective<T>>;
+  // @ContentChildren(DragSortItemDirective, {descendants: true})
+  // private items: QueryList<DragSortItemDirective<T>>;
   private _dragItem: T;
 
   constructor() {
