@@ -7,10 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
-    "sb": "yarn docs:json && start-storybook -p 6006 -s .storybook/static",
-    "storybook": "yarn docs:json && start-storybook -p 6006",
-    "semantic-release": "semantic-release",
+    "docs:json": "compodoc -p ./tsconfig.json -e json -d ./compodoc",
+    "sb": "yarn build-styles && yarn docs:json && start-storybook -p 6006 -s .storybook/static",
     "build-styles": "webpack --config .storybook/build-styles.config.js",
     "build-storybook": "yarn build-styles && yarn docs:json && build-storybook -o dist/storybook -s .storybook/static"
   },
