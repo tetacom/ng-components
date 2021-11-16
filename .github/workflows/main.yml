@@ -1,4 +1,4 @@
-name: Build & Release
+name: Storybook
 on:
   pull_request:
     types: [closed]
@@ -17,12 +17,7 @@ jobs:
           cache: npm
           node-version: 16
       - name: Install & Build
-        run: yarn && yarn global add @angular/cli && ng build components
-      - name: Publish
-        run: cd dist/components && npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.TETACOM_NPM_TOKEN }}
+        run: yarn && yarn global add @angular/cli
       - name: Deploy To Github Pages
         run: npx -p @storybook/storybook-deployer storybook-to-ghpages --branch gh-pages --source-branch main --ci true
         env:
