@@ -1,4 +1,14 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit} from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterViewChecked,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit, SimpleChanges
+} from '@angular/core';
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from '../chart.service';
 import {Observable, Subject, tap} from 'rxjs';
@@ -10,7 +20,7 @@ import {throttleTime} from 'rxjs/operators';
   styleUrls: ['./chart-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChartContainerComponent implements OnInit {
+export class ChartContainerComponent implements OnInit, OnChanges, AfterViewChecked, AfterContentChecked {
   @Input() config: IChartConfig;
 
   size: Observable<DOMRect>;
@@ -24,7 +34,11 @@ export class ChartContainerComponent implements OnInit {
     this.size = this._size.asObservable().pipe(
       throttleTime(100, undefined, {trailing: true}),
       tap(() => {
-        setTimeout(() => this._cdr.detectChanges());
+        console.log('tap');
+        setTimeout(() => {
+          console.log('detectChanges');
+          this._cdr.detectChanges();
+        });
       }));
   }
 
@@ -33,5 +47,17 @@ export class ChartContainerComponent implements OnInit {
       this._size.next(entries[0].contentRect);
     });
     this._observer.observe(this._elementRef.nativeElement);
+  }
+
+  ngAfterContentChecked(): void {
+    console.log('ngAfterContentChecked');
+  }
+
+  ngAfterViewChecked(): void {
+    console.log('ngAfterViewChecked');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('ngOnChanges');
   }
 }
