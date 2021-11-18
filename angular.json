@@ -5,6 +5,11 @@
   "projects": {
     "components": {
       "projectType": "library",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "projects/components",
       "sourceRoot": "projects/components/src",
       "prefix": "teta",
@@ -30,6 +35,42 @@
             "main": "projects/components/src/test.ts",
             "tsConfig": "projects/components/tsconfig.spec.json",
             "karmaConfig": "projects/components/karma.conf.js"
+          }
+        }
+      }
+    },
+    "chart": {
+      "projectType": "library",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/chart",
+      "sourceRoot": "projects/chart/src",
+      "prefix": "teta",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/chart/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/chart/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/chart/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/chart/src/test.ts",
+            "tsConfig": "projects/chart/tsconfig.spec.json",
+            "karmaConfig": "projects/chart/karma.conf.js"
           }
         }
       }

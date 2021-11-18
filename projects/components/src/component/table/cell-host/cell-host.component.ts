@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   Input,
   OnChanges,
@@ -33,18 +32,14 @@ export class CellHostComponent<T> implements OnInit, OnDestroy, OnChanges {
   private _componentRef: ComponentRef<any>;
 
   constructor(
-    private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private viewContainerRef: ViewContainerRef
   ) {}
 
   ngOnInit(): void {
     if (!CellComponentBase.isPrototypeOf(this.column.cellComponent)) {
       this.column.cellComponent = getCellComponent(this.column);
     }
-    const compFactory = this.componentFactoryResolver.resolveComponentFactory(
-      this.column.cellComponent
-    );
-    this._componentRef = this.viewContainerRef.createComponent(compFactory);
+    this._componentRef = this.viewContainerRef.createComponent(this.column.cellComponent);
     this._componentRef.instance.column = this.column;
     this._componentRef.instance.row = this.row;
     this._componentRef.instance.filterOptions = this.filterOptions;

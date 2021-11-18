@@ -1,15 +1,14 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   Input,
   OnInit,
   ViewContainerRef,
 } from '@angular/core';
-import { HeadCellComponentBase } from '../base/head-cell-component-base';
-import { TableColumn } from '../contract/table-column';
-import { DefaultHeadCellComponent } from '../default/default-head-cell/default-head-cell.component';
+import {HeadCellComponentBase} from '../base/head-cell-component-base';
+import {TableColumn} from '../contract/table-column';
+import {DefaultHeadCellComponent} from '../default/default-head-cell/default-head-cell.component';
 
 @Component({
   selector: 'teta-head-cell-host',
@@ -35,20 +34,16 @@ export class HeadCellHostComponent implements OnInit {
   }
 
   constructor(
-    private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver
-  ) {}
+    private viewContainerRef: ViewContainerRef
+  ) {
+  }
 
   ngOnInit(): void {
     if (!HeadCellComponentBase.isPrototypeOf(this.column.headCellComponent)) {
       this.column.headCellComponent = DefaultHeadCellComponent;
     }
-    const compFactory =
-      this.componentFactoryResolver.resolveComponentFactory<HeadCellComponentBase>(
-        this.column.headCellComponent
-      );
     this.componentRef =
-      this.viewContainerRef.createComponent<HeadCellComponentBase>(compFactory);
+      this.viewContainerRef.createComponent<HeadCellComponentBase>(this.column.headCellComponent);
     this.componentRef.instance.column = this.column;
     this.init = true;
   }
