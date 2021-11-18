@@ -2,6 +2,8 @@
   <svg [style.width]="s.width" [style.height]="s.height">
     <g teta-x-axis *ngFor="let xAxis of config.xAxis"></g>
     <g teta-y-axis *ngFor="let yAxis of config.yAxis"></g>
+    <g teta-plot-line></g>
+    <g teta-plot-band></g>
     <g teta-gridlines></g>
     <g [teta-series-host]
        [series]="series"

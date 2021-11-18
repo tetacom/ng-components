@@ -9,6 +9,8 @@ import {LineSeriesComponent} from './chart-container/line-series/line-series.com
 import { GridlinesComponent } from './chart-container/gridlines/gridlines.component';
 import { XAxisComponent } from './chart-container/x-axis/x-axis.component';
 import { YAxisComponent } from './chart-container/y-axis/y-axis.component';
+import { PlotlineComponent } from './chart-container/plotline/plotline.component';
+import { PlotbandComponent } from './chart-container/plotband/plotband.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { YAxisComponent } from './chart-container/y-axis/y-axis.component';
     LineSeriesComponent,
     GridlinesComponent,
     XAxisComponent,
-    YAxisComponent
+    YAxisComponent,
+    PlotlineComponent,
+    PlotbandComponent
   ],
   exports: [
     ChartComponent
