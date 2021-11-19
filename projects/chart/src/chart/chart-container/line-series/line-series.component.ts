@@ -4,8 +4,8 @@ import {ChartService} from '../../chart.service';
 import {BasePoint} from '../../model/base-point';
 
 @Component({
-  selector: 'g [teta-line-series]',
-  templateUrl: './line-series.component.html',
+  selector: 'svg:svg[teta-line-series]',
+  template: '<svg:path d="M10 10 H 90 V 90 H 10 Z" fill="transparent" stroke="black"></svg:path>',
   styleUrls: ['./line-series.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -5,9 +5,16 @@
     <g teta-plot-line></g>
     <g teta-plot-band></g>
     <g teta-gridlines></g>
-    <g [teta-series-host]
-       [series]="series"
-       [size]="s"
-       *ngFor="let series of config.series"></g>
+    <ng-container *ngFor="let series of config.series">
+      <g [teta-series-host]
+         [series]="series"
+         [size]="s"></g>
+    </ng-container>
+
+
+    <!--    <g teta-line-series-->
+    <!--       [series]="series"-->
+    <!--       [size]="s"-->
+    <!--       *ngFor="let series of config.series"></g>-->
   </svg>
 </ng-container>

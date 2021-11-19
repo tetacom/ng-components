@@ -49,6 +49,7 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
     ) {
       this._componentRef.instance.series = this.series;
       this._componentRef.injector.get(ChangeDetectorRef).markForCheck();
+      this._componentRef.injector.get(ChangeDetectorRef).detectChanges();
     }
   }
 }
