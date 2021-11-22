@@ -1093,7 +1093,7 @@ export class TetaChart {
   private drawChart() {
     const series = this._options.series?.filter((_) => _.visible);
 
-    this._chart.selectAll('.series').remove();
+    this._chart.selectAll('.chart-container').remove();
 
     if (!series || series.length < 1) {
       d3.select(this._container.nativeElement)

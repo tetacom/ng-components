@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   EventEmitter,
   Input,
@@ -11,13 +10,13 @@ import {
   Output,
   ViewContainerRef,
 } from '@angular/core';
-import { FilterState } from '../contarct/filter-state';
-import { FilterItem } from '../contarct/filter-item';
-import { FilterBase } from '../base/filter-base';
-import { FilterComponentBase } from '../base/filter-component-base';
-import { takeWhile } from 'rxjs/operators';
-import { getFilterComponent } from '../contarct/filter-component-map';
-import { IIdName } from '../../../common/contract/i-id-name';
+import {FilterState} from '../contarct/filter-state';
+import {FilterItem} from '../contarct/filter-item';
+import {FilterBase} from '../base/filter-base';
+import {FilterComponentBase} from '../base/filter-component-base';
+import {takeWhile} from 'rxjs/operators';
+import {getFilterComponent} from '../contarct/filter-component-map';
+import {IIdName} from '../../../common/contract/i-id-name';
 
 @Component({
   selector: 'teta-filter-host',
@@ -63,20 +62,16 @@ export class FilterHostComponent implements OnInit, OnDestroy {
   private _init: boolean;
 
   constructor(
-    private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver
-  ) {}
+    private viewContainerRef: ViewContainerRef
+  ) {
+  }
 
   ngOnInit() {
     if (!FilterComponentBase.isPrototypeOf(this._column.filterComponent)) {
       this._column.filterComponent = getFilterComponent(this._column);
     }
-    const compFactory =
-      this.componentFactoryResolver.resolveComponentFactory<FilterComponentBase>(
-        this._column.filterComponent
-      );
     this._componentRef =
-      this.viewContainerRef.createComponent<FilterComponentBase>(compFactory);
+      this.viewContainerRef.createComponent<FilterComponentBase>(this._column.filterComponent);
     this._componentRef.instance.column = this._column;
     this._componentRef.instance.state = this._state;
     this._componentRef.instance.filterOptions = this._filterOptions;
