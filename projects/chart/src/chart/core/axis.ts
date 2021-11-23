@@ -1,11 +1,11 @@
-import {IChartConfig} from '../model/i-chart-config';
-import {AxisOrientation} from '../model/enum/axis-orientation';
-import {Series} from '../model/series';
-import {BasePoint} from '../model/base-point';
+import { IChartConfig } from '../model/i-chart-config';
+import { AxisOrientation } from '../model/enum/axis-orientation';
+import { Series } from '../model/series';
+import { BasePoint } from '../model/base-point';
 import * as d3 from 'd3';
-import {AxisOptions} from '../model/axis-options';
+import { AxisOptions } from '../model/axis-options';
 
-import {getTextWidth} from './utils/get-text-width';
+import { getTextWidth } from './utils/get-text-width';
 
 export class Axis {
   private chartConfig: IChartConfig;
@@ -49,9 +49,6 @@ export class Axis {
 
     const offset = axis.calculateOffset();
     axis.setOffset(offset);
-
-    console.log(offset);
-
     return axis;
   }
 
@@ -101,9 +98,9 @@ export class Axis {
 
   private setExtremes() {
     const options =
-      this.chartConfig[
-        this.locate === AxisOrientation.y ? 'yAxis' : 'xAxis'
-        ][this._index];
+      this.chartConfig[this.locate === AxisOrientation.y ? 'yAxis' : 'xAxis'][
+        this._index
+      ];
 
     const hasMin = options?.min != null;
     const hasMax = options?.max != null;
@@ -178,9 +175,9 @@ export class Axis {
       }
     }
 
-    return this.locate === AxisOrientation.y ?
-      this.calcYOffset(oppositeCount, nonOppositeCount) :
-      this.calcXOffset(oppositeCount, nonOppositeCount);
+    return this.locate === AxisOrientation.y
+      ? this.calcYOffset(oppositeCount, nonOppositeCount)
+      : this.calcXOffset(oppositeCount, nonOppositeCount);
   }
 
   private calcYOffset(oppositeCount, nonOppositeCount) {

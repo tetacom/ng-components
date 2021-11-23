@@ -23,13 +23,16 @@ const config: IChartConfig = {
   name: '123',
   xAxis: [
     {
-      type: AxisType.number,
+      type: AxisType.time,
       visible: true,
     },
+
     {
       type: AxisType.number,
       visible: true,
-      opposite: true
+      opposite: true,
+      min: 0,
+      max: 1500,
     },
   ],
   yAxis: [
@@ -83,7 +86,7 @@ const config: IChartConfig = {
       type: SeriesType.line,
       data: points2,
       name: 'Series 2',
-      xAxisIndex: 1,
+      xAxisIndex: 0,
       yAxisIndex: 1,
       color: 'blue',
     },
