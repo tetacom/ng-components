@@ -1,27 +1,32 @@
-import { IChartConfig } from '../model/i-chart-config';
-import { AxisLocate } from '../model/enum/axis-locate';
-import { Series } from '../model/series';
-import { BasePoint } from '../model/base-point';
+import {IChartConfig} from '../model/i-chart-config';
+import {AxisOrientation} from '../model/enum/axis-orientation';
+import {Series} from '../model/series';
+import {BasePoint} from '../model/base-point';
 import * as d3 from 'd3';
-import { AxisOptions } from '../model/axis-options';
+import {AxisOptions} from '../model/axis-options';
 
-import { getTextWidth } from './utils/get-text-width';
+import {getTextWidth} from './utils/get-text-width';
 
 export class Axis {
   private chartConfig: IChartConfig;
-  private locate: AxisLocate;
+  private locate: AxisOrientation;
   private _index: number | string;
   private _extremes: [number, number] = [0, 0];
-  private _width: number;
+  private _selfSize: number;
   private _offset: number;
+
+  private _axisSizeMap: Map<AxisOrientation, () => number>;
 
   constructor(config: IChartConfig) {
     this.chartConfig = config;
+    this._axisSizeMap = new Map<AxisOrientation, () => number>()
+      .set(AxisOrientation.y, this.getYAxisSize)
+      .set(AxisOrientation.x, this.getXAxisSize);
   }
 
   /**
    * Factory for creating x,y axes
-   * @param {AxisLocate} locate
+   * @param {AxisOrientation} locate
    * Axis type
    * @param {IChartConfig} config
    * Chart config
@@ -31,13 +36,22 @@ export class Axis {
    * New generated axis
    */
   public static createAxis(
-    locate: AxisLocate,
+    locate: AxisOrientation,
     config: IChartConfig,
     index: number
   ): Axis {
     const axis = new Axis(config);
     axis.setLocate(locate);
     axis.setIndex(index);
+    axis.setExtremes();
+
+    axis.setSelfSize();
+
+    const offset = axis.calculateOffset();
+    axis.setOffset(offset);
+
+    console.log(offset);
+
     return axis;
   }
 
@@ -46,7 +60,7 @@ export class Axis {
    * @param {locate} locate
    * Set locate axis x or y
    */
-  private setLocate(locate: AxisLocate): void {
+  private setLocate(locate: AxisOrientation): void {
     this.locate = locate;
   }
 
@@ -64,13 +78,13 @@ export class Axis {
    * Linked series
    */
   public linkedSeries(): Array<Series<BasePoint>> {
-    if (this.locate === AxisLocate.ordinatus) {
+    if (this.locate === AxisOrientation.y) {
       const linkedFilter = (serie: Series<BasePoint>) =>
         serie.yAxisIndex === this._index;
       return this.chartConfig?.series.filter(linkedFilter);
     }
 
-    if (this.locate === AxisLocate.abscissa) {
+    if (this.locate === AxisOrientation.x) {
       const linkedFilter = (serie: Series<BasePoint>) =>
         serie.xAxisIndex === this._index;
       return this.chartConfig?.series.filter(linkedFilter);
@@ -82,10 +96,14 @@ export class Axis {
    * Get axis extremes
    */
   get extremes(): [number, number] {
+    return this._extremes;
+  }
+
+  private setExtremes() {
     const options =
       this.chartConfig[
-        this.locate === AxisLocate.ordinatus ? 'yAxis' : 'xAxis'
-      ][this._index];
+        this.locate === AxisOrientation.y ? 'yAxis' : 'xAxis'
+        ][this._index];
 
     const hasMin = options?.min != null;
     const hasMax = options?.max != null;
@@ -95,7 +113,7 @@ export class Axis {
 
       const raw = linkedSeries.map((series: Series<BasePoint>) =>
         d3.extent(series?.data, (point: BasePoint) =>
-          this.locate === AxisLocate.abscissa ? point.x : point.y
+          this.locate === AxisOrientation.x ? point.x : point.y
         )
       );
 
@@ -115,33 +133,23 @@ export class Axis {
     if (hasMax) {
       this._extremes[1] = options?.max;
     }
-    const padding = 9;
-    const axisWidth =
-      padding + getTextWidth(this._extremes[1].toString(), 0.58);
-    this.setWidth(axisWidth);
-
-    const offset = this.calculateOffset();
-    this.setOffset(offset);
-
-    console.log(offset);
-
-    return this._extremes;
   }
 
-  private setWidth(width: number) {
-    this._width = width;
+  private setSelfSize() {
+    const axisSize = this._axisSizeMap.get(this.locate)();
+    this._selfSize = axisSize;
   }
 
   private setOffset(offset: number) {
     this._offset = offset;
   }
 
-  get width(): number {
-    return this._width;
+  get selfSize(): number {
+    return this._selfSize;
   }
 
-  private getAxesByType(type: AxisLocate) {
-    return type === AxisLocate.abscissa
+  private getAxesByType(type: AxisOrientation) {
+    return type === AxisOrientation.x
       ? this.chartConfig.xAxis
       : this.chartConfig.yAxis;
   }
@@ -170,13 +178,21 @@ export class Axis {
       }
     }
 
+    return this.locate === AxisOrientation.y ?
+      this.calcYOffset(oppositeCount, nonOppositeCount) :
+      this.calcXOffset(oppositeCount, nonOppositeCount);
+  }
+
+  private calcYOffset(oppositeCount, nonOppositeCount) {
     return this.options.opposite
-      ? oppositeCount > 1
-        ? this.width * (oppositeCount - 1)
-        : 0
-      : nonOppositeCount > 1
-      ? this.width * (nonOppositeCount - 1)
-      : 0;
+      ? this.selfSize * oppositeCount
+      : this.selfSize * nonOppositeCount;
+  }
+
+  private calcXOffset(oppositeCount, nonOppositeCount) {
+    return this.options.opposite
+      ? this.selfSize * oppositeCount
+      : this.selfSize * nonOppositeCount;
   }
 
   get index() {
@@ -184,8 +200,17 @@ export class Axis {
   }
 
   get options(): AxisOptions {
-    return this.locate === AxisLocate.abscissa
+    return this.locate === AxisOrientation.x
       ? this.chartConfig.xAxis[this.index]
       : this.chartConfig.yAxis[this.index];
   }
+
+  private getYAxisSize = () => {
+    const padding = 16;
+    return padding + getTextWidth(this._extremes[1], 0.58);
+  };
+  private getXAxisSize = () => {
+    const padding = 16;
+    return padding + 20;
+  };
 }

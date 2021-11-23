@@ -10,12 +10,12 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { IChartConfig } from '../model/i-chart-config';
-import { ChartService } from '../chart.service';
-import { Observable, tap } from 'rxjs';
-import { throttleTime } from 'rxjs/operators';
-import { AxesService } from '../axes.service';
-import { Axis } from '../core/axis';
+import {IChartConfig} from '../model/i-chart-config';
+import {ChartService} from '../chart.service';
+import {Observable, tap} from 'rxjs';
+import {throttleTime} from 'rxjs/operators';
+import {AxesService} from '../axes.service';
+import {Axis} from '../core/axis';
 
 @Component({
   selector: 'teta-chart-container',
@@ -24,11 +24,11 @@ import { Axis } from '../core/axis';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartContainerComponent
-  implements OnInit, OnChanges, AfterViewChecked, AfterContentChecked
-{
+  implements OnInit, OnChanges, AfterViewChecked, AfterContentChecked {
   @Input() config: IChartConfig;
 
   yAxes: Map<number, Axis>;
+  xAxes: Map<number, Axis>;
   size: Observable<DOMRect>;
 
   private _observer: ResizeObserver;
@@ -40,7 +40,7 @@ export class ChartContainerComponent
     private _axesService: AxesService
   ) {
     this.size = this._svc.size.pipe(
-      throttleTime(100, undefined, { trailing: true }),
+      throttleTime(100, undefined, {trailing: true}),
       tap(() => {
         setTimeout(() => {
           this._cdr.detectChanges();
@@ -49,6 +49,7 @@ export class ChartContainerComponent
     );
 
     this.yAxes = this._axesService.yAxis;
+    this.xAxes = this._axesService.xAxis;
   }
 
   ngOnInit(): void {
@@ -60,15 +61,27 @@ export class ChartContainerComponent
     this._svc.init(this.config);
   }
 
-  getTranslate(axis: Axis, size: DOMRect): string {
+  getYAxisTranslate(axis: Axis, size: DOMRect): string {
+    const translateTop = [...this.xAxes.values()].filter(_ => _.options.opposite).reduce((prev, curr) => prev + curr.selfSize, 0);
     return `translate(${
       axis.options.opposite ? size.width - axis.offset : axis.offset
-    }, 0)`;
+    }, ${translateTop})`;
   }
 
-  ngAfterContentChecked(): void {}
+  getXAxisTranslate(axis: Axis, size: DOMRect): string {
+    const left = [...this.yAxes.values()].filter(_ => _.options.opposite !== true);
+    const translateLeft = left.reduce((prev, curr) => prev + curr.selfSize, 0);
+    return `translate(${translateLeft}, ${
+      axis.options.opposite ? axis.offset : size.height - axis.offset
+    })`;
+  }
 
-  ngAfterViewChecked(): void {}
+  ngAfterContentChecked(): void {
+  }
 
-  ngOnChanges(changes: SimpleChanges): void {}
+  ngAfterViewChecked(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+  }
 }

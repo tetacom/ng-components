@@ -1,23 +1,28 @@
-import { Injectable } from '@angular/core';
-import { IChartConfig } from './model/i-chart-config';
-import { AxisLocate } from './model/enum/axis-locate';
-import { Axis } from './core/axis';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { number } from '@storybook/addon-knobs';
+import {Injectable} from '@angular/core';
+import {IChartConfig} from './model/i-chart-config';
+import {AxisOrientation} from './model/enum/axis-orientation';
+import {Axis} from './core/axis';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AxesService {
   public yAxis: Map<number, Axis> = new Map<number, Axis>();
+  public xAxis: Map<number, Axis> = new Map<number, Axis>();
 
-  constructor() {}
+  constructor() {
+  }
 
   init(config: IChartConfig) {
     config?.yAxis.forEach((_, index) => {
-      const axis = Axis.createAxis(AxisLocate.ordinatus, config, index);
+      const axis = Axis.createAxis(AxisOrientation.y, config, index);
 
       this.yAxis.set(index, axis);
+    });
+    config?.xAxis.forEach((_, index) => {
+      const axis = Axis.createAxis(AxisOrientation.x, config, index);
+
+      this.xAxis.set(index, axis);
     });
   }
 }

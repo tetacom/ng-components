@@ -1,21 +1,25 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
-import { AxesService } from './axes.service';
+import {AxesService} from './axes.service';
 import * as d3 from 'd3';
-import { AxisType } from './model/axis-type';
+import {AxisType} from './model/axis-type';
+import {Axis} from './core/axis';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ScaleService {
   public yScales: Map<number | string, any> = new Map<number | string, any>();
+  public xScales: Map<number | string, any> = new Map<number | string, any>();
 
-  constructor(private axesService: AxesService) {}
+  constructor(private axesService: AxesService) {
+  }
 
   public createScales(size: DOMRect) {
     this.yScales.clear();
+    this.xScales.clear();
 
-    for (const [, value] of this.axesService.yAxis) {
+    this.axesService.yAxis.forEach((value: Axis) => {
       let scale = null;
 
       if (value.options.type === AxisType.time) {
@@ -27,6 +31,20 @@ export class ScaleService {
       }
 
       this.yScales.set(value.index, scale);
-    }
+    });
+
+    this.axesService.xAxis.forEach((value: Axis) => {
+      let scale = null;
+
+      if (value.options.type === AxisType.time) {
+        scale = d3.scaleTime().domain(value.extremes).range([0, size.width]);
+      }
+
+      if (value.options.type === AxisType.number) {
+        scale = d3.scaleLinear().domain(value.extremes).range([0, size.width]);
+      }
+
+      this.xScales.set(value.index, scale);
+    });
   }
 }
