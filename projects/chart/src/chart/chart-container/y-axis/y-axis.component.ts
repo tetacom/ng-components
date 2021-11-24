@@ -56,8 +56,18 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
     const scale = this.scaleService.yScales.get(this.axis.index);
 
     const axis = this.axis.options.opposite
-      ? d3.axisRight(scale).tickValues(this.axis.tickValues)
-      : d3.axisLeft(scale).tickValues(this.axis.tickValues);
+      ? d3
+          .axisRight(scale)
+          .tickValues(this.axis.tickValues)
+          .tickFormat(
+            this.axis.options.tickFormat ?? this.axis.defaultFormatter()
+          )
+      : d3
+          .axisLeft(scale)
+          .tickValues(this.axis.tickValues)
+          .tickFormat(
+            this.axis.options.tickFormat ?? this.axis.defaultFormatter()
+          );
 
     d3.select(this.node.nativeElement).call(axis);
   }

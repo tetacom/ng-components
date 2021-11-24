@@ -174,7 +174,7 @@ export class Axis {
       (_) => _.toString().length
     );
 
-    const defaultFormatter = d3.format(',.3r');
+    const defaultFormatter = this.defaultFormatter();
 
     return (
       padding +
@@ -199,5 +199,9 @@ export class Axis {
     const ticks = d3.range(min, max + step, step);
 
     return ticks;
+  }
+
+  public defaultFormatter() {
+    return d3.format(',.2r');
   }
 }
