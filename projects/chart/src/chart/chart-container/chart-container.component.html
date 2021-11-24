@@ -1,21 +1,32 @@
 <ng-container *ngIf="size | async as s">
   <svg [attr.width]="s.width" [attr.height]="s.height">
-    <g *ngFor="let item of yAxes | keyvalue"
-       teta-y-axis
-       [axis]="item.value"
-       [attr.transform]="getYAxisTranslate(item.value, s)"></g>
-    <g *ngFor="let item of xAxes | keyvalue"
-       teta-x-axis
-       [axis]="item.value"
-       [attr.transform]="getXAxisTranslate(item.value, s)"></g>
+    <g class="y-axis-container">
+      <g *ngFor="let item of yAxes | keyvalue"
+         teta-y-axis
+         [axis]="item.value"
+         [attr.transform]="getYAxisTranslate(item.value, s)"></g>
+    </g>
+    <g class="x-axis-container">
+      <g *ngFor="let item of xAxes | keyvalue"
+         teta-x-axis
+         [axis]="item.value"
+         [attr.transform]="getXAxisTranslate(item.value, s)"></g>
+    </g>
     <g teta-gridlines></g>
-    <ng-container *ngFor="let series of config.series">
+    <g class="series-container">
       <g teta-series-host
+         *ngFor="let series of config.series"
          [series]="series"
          [size]="s"></g>
-    </ng-container>
-    <g teta-plot-line></g>
-    <g teta-plot-band></g>
+    </g>
+    <g class="x-axis-plotline-container">
+      <g teta-plot-line></g>
+    </g>
+    <g class="x-axis-plotband-container">
+      <g teta-plot-band></g>
+    </g>
+
+
     <!--    <g teta-line-series-->
     <!--       [series]="series"-->
     <!--       [size]="s"-->
