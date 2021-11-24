@@ -63,8 +63,31 @@ export class ChartContainerComponent
   }
 
   getYAxisTranslate(axis: Axis, size: DOMRect): string {
+    const nonOppositeList = [...this.yAxes.values()].filter(
+      (_) =>
+        _.options.opposite !== true &&
+        _.options.visible &&
+        axis.index <= _.index
+    );
+
+    const oppositeList = [...this.yAxes.values()].filter(
+      (_) => _.options.opposite && _.options.visible && axis.index <= _.index
+    );
+
+    const nonOppositeTranslate = nonOppositeList.reduce(
+      (prev, curr) => prev + curr.selfSize,
+      0
+    );
+
+    const oppositeTranslate = oppositeList.reduce(
+      (prev, curr) => prev + curr.selfSize,
+      0
+    );
+
     return `translate(${
-      axis.options.opposite ? size.width - axis.offset : axis.offset
+      axis.options.opposite
+        ? size.width - oppositeTranslate
+        : nonOppositeTranslate
     }, 0)`;
   }
 

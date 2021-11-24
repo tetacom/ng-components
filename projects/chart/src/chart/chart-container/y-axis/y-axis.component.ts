@@ -4,15 +4,16 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Input, OnDestroy,
+  Input,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {Axis} from '../../core/axis';
+import { Axis } from '../../core/axis';
 import * as d3 from 'd3';
-import {ScaleService} from '../../scale.service';
-import {ChartService} from '../../chart.service';
-import {takeWhile, tap} from 'rxjs';
+import { ScaleService } from '../../scale.service';
+import { ChartService } from '../../chart.service';
+import { takeWhile, tap } from 'rxjs';
 
 @Component({
   selector: '[teta-y-axis]',
@@ -34,32 +35,45 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(
         takeWhile(() => this._alive),
         tap(() => {
-          this.drawAxis();
+          this.draw();
           this.cdr.markForCheck();
         })
       )
       .subscribe();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this._alive = false;
   }
 
   ngAfterViewInit() {
-    this.drawAxis();
+    this.draw();
   }
 
-  private drawAxis() {
+  private draw() {
     const scale = this.scaleService.yScales.get(this.axis.index);
 
-    const axis = this.axis.options.opposite
-      ? d3.axisRight(scale)
-      : d3.axisLeft(scale);
+    const ticks = this.generateTicks(scale);
 
-    d3.select(this.node.nativeElement)
-      .call(axis);
+    const axis = this.axis.options.opposite
+      ? d3
+          .axisRight(scale)
+          .tickValues(ticks)
+          .tickFormat((_) => _.toString())
+      : d3
+          .axisLeft(scale)
+          .tickValues(ticks)
+          .tickFormat((_) => _.toString());
+
+    d3.select(this.node.nativeElement).call(axis);
+  }
+
+  private generateTicks(scale: any) {
+    const [min, max] = scale.domain();
+    const step = (max - min) / 10;
+    const ticks = d3.range(min, max + step, step);
+    return ticks;
   }
 }

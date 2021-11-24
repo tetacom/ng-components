@@ -204,10 +204,24 @@ export class Axis {
 
   private getYAxisSize = () => {
     const padding = 16;
-    return padding + getTextWidth(this._extremes[1], 0.58);
+
+    const ticks = this.generateTicks(this._extremes);
+    const maxElementLengthIndex = d3.maxIndex(
+      ticks,
+      (_) => _.toString().length
+    );
+    return padding + getTextWidth(ticks[maxElementLengthIndex], 0.58);
   };
+
   private getXAxisSize = () => {
     const padding = 16;
     return padding + 20;
   };
+
+  private generateTicks(extremes: [number, number]) {
+    const [min, max] = extremes;
+    const step = (max - min) / 10;
+    const ticks = d3.range(min, max + step, step);
+    return ticks;
+  }
 }

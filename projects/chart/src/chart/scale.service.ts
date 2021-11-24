@@ -45,8 +45,6 @@ export class ScaleService {
           .range([topBound, size.height - bottomBound]);
       }
 
-      scale.nice(true);
-
       this.yScales.set(value.index, scale);
     });
 
@@ -76,8 +74,6 @@ export class ScaleService {
           .domain(domain)
           .range([leftBound, size.width - rightBound]);
       }
-
-      scale.nice(true);
 
       this.xScales.set(value.index, scale);
     });
