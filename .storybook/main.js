@@ -11,7 +11,8 @@ module.exports = {
     "@storybook/addon-knobs",
     "@storybook/addon-docs",
     "@storybook/addon-links",
-    "@storybook/addon-essentials"
+    "@storybook/addon-essentials",
+    'storybook-addon-themes'
   ],
   "framework": "@storybook/angular",
   "core": {

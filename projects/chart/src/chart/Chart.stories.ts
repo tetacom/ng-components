@@ -1,14 +1,14 @@
-import { Meta } from '@storybook/angular/types-6-0';
-import { withKnobs } from '@storybook/addon-knobs';
-import { ChartComponent } from './chart/chart.component';
-import { ChartModule } from './chart.module';
+import {Meta} from '@storybook/angular/types-6-0';
+import {boolean, withKnobs} from '@storybook/addon-knobs';
+import {ChartComponent} from './chart/chart.component';
+import {ChartModule} from './chart.module';
 import {
   points1,
   points2,
 } from '../../../components/src/component/chart/chart-data';
-import { IChartConfig } from './model/i-chart-config';
-import { AxisType } from './model/axis-type';
-import { SeriesType } from './model/series-type';
+import {IChartConfig} from './model/i-chart-config';
+import {AxisType} from './model/axis-type';
+import {SeriesType} from './model/series-type';
 
 export default {
   title: 'Component/Chart',
@@ -98,7 +98,7 @@ export const basicChart = () => ({
     imports: [ChartModule],
   },
   props: {
-    config,
+    config
   },
   template: `<div class="font-body-3 padding-3 bg-background-0" style="width: auto; height: 600px;">
       <teta-chart [config]="config" class="bg-background-50 border border-text-50"></teta-chart>
