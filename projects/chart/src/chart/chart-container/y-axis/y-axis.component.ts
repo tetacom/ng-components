@@ -55,25 +55,10 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   private draw() {
     const scale = this.scaleService.yScales.get(this.axis.index);
 
-    const ticks = this.generateTicks(scale);
-
     const axis = this.axis.options.opposite
-      ? d3
-          .axisRight(scale)
-          .tickValues(ticks)
-          .tickFormat((_) => _.toString())
-      : d3
-          .axisLeft(scale)
-          .tickValues(ticks)
-          .tickFormat((_) => _.toString());
+      ? d3.axisRight(scale).tickValues(this.axis.tickValues)
+      : d3.axisLeft(scale).tickValues(this.axis.tickValues);
 
     d3.select(this.node.nativeElement).call(axis);
-  }
-
-  private generateTicks(scale: any) {
-    const [min, max] = scale.domain();
-    const step = (max - min) / 10;
-    const ticks = d3.range(min, max + step, step);
-    return ticks;
   }
 }

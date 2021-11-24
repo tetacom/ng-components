@@ -13,7 +13,7 @@ export class Axis {
   private _index: number | string;
   private _extremes: [number, number] = [0, 0];
   private _selfSize: number;
-  private _offset: number;
+  private _ticksValues: number[];
 
   private _axisSizeMap: Map<AxisOrientation, () => number>;
 
@@ -44,11 +44,9 @@ export class Axis {
     axis.setLocate(locate);
     axis.setIndex(index);
     axis.setExtremes();
-
+    axis.setTicksValues();
     axis.setSelfSize();
 
-    const offset = axis.calculateOffset();
-    axis.setOffset(offset);
     return axis;
   }
 
@@ -130,6 +128,8 @@ export class Axis {
     if (hasMax) {
       this._extremes[1] = options?.max;
     }
+
+    this._extremes = d3.nice(this._extremes[0], this._extremes[1], 10);
   }
 
   private setSelfSize() {
@@ -137,59 +137,23 @@ export class Axis {
     this._selfSize = axisSize;
   }
 
-  private setOffset(offset: number) {
-    this._offset = offset;
+  private setTicksValues() {
+    const ticks = this.generateTicks(this._extremes);
+    this._ticksValues = ticks;
   }
 
   get selfSize(): number {
     return this._selfSize;
   }
 
+  get tickValues(): number[] {
+    return this._ticksValues;
+  }
+
   private getAxesByType(type: AxisOrientation) {
     return type === AxisOrientation.x
       ? this.chartConfig.xAxis
       : this.chartConfig.yAxis;
-  }
-
-  get offset(): number {
-    return this._offset;
-  }
-
-  private calculateOffset(): number {
-    let oppositeCount = 0;
-    let nonOppositeCount = 0;
-
-    const axesList = this.getAxesByType(this.locate);
-
-    for (let i = 0; i <= axesList.length - 1; i++) {
-      if (axesList[i].visible) {
-        if (axesList[i]?.opposite) {
-          oppositeCount += 1;
-        } else {
-          nonOppositeCount += 1;
-        }
-      }
-
-      if (i === this.index) {
-        break;
-      }
-    }
-
-    return this.locate === AxisOrientation.y
-      ? this.calcYOffset(oppositeCount, nonOppositeCount)
-      : this.calcXOffset(oppositeCount, nonOppositeCount);
-  }
-
-  private calcYOffset(oppositeCount, nonOppositeCount) {
-    return this.options.opposite
-      ? this.selfSize * oppositeCount
-      : this.selfSize * nonOppositeCount;
-  }
-
-  private calcXOffset(oppositeCount, nonOppositeCount) {
-    return this.options.opposite
-      ? this.selfSize * oppositeCount
-      : this.selfSize * nonOppositeCount;
   }
 
   get index() {
@@ -205,12 +169,20 @@ export class Axis {
   private getYAxisSize = () => {
     const padding = 16;
 
-    const ticks = this.generateTicks(this._extremes);
     const maxElementLengthIndex = d3.maxIndex(
-      ticks,
+      this._ticksValues,
       (_) => _.toString().length
     );
-    return padding + getTextWidth(ticks[maxElementLengthIndex], 0.58);
+
+    const defaultFormatter = d3.format(',.3r');
+
+    return (
+      padding +
+      getTextWidth(
+        defaultFormatter(this._ticksValues[maxElementLengthIndex]),
+        0.58
+      )
+    );
   };
 
   private getXAxisSize = () => {
@@ -218,10 +190,14 @@ export class Axis {
     return padding + 20;
   };
 
-  private generateTicks(extremes: [number, number]) {
-    const [min, max] = extremes;
+  private generateTicks(extremes: number[]) {
+    const min = d3.min(extremes);
+    const max = d3.max(extremes);
+
     const step = (max - min) / 10;
+
     const ticks = d3.range(min, max + step, step);
+
     return ticks;
   }
 }

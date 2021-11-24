@@ -62,15 +62,15 @@ const config: IChartConfig = {
     {
       type: AxisType.number,
       visible: true,
-      min: 0.5,
-      max: 1,
+      min: -0.05,
+      max: 0.05,
       opposite: true,
     },
     {
       type: AxisType.number,
       visible: true,
-      min: 0.00004,
-      max: 0.5,
+      min: 1000000,
+      max: 2000000,
     },
   ],
   series: [

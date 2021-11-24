@@ -92,12 +92,31 @@ export class ChartContainerComponent
   }
 
   getXAxisTranslate(axis: Axis, size: DOMRect): string {
-    const left = [...this.yAxes.values()].filter(
-      (_) => _.options.opposite !== true && _.options.visible
+    const nonOppositeList = [...this.xAxes.values()].filter(
+      (_) =>
+        _.options.opposite !== true &&
+        _.options.visible &&
+        axis.index <= _.index
     );
-    const translateLeft = left.reduce((prev, curr) => prev + curr.selfSize, 0);
+
+    const oppositeList = [...this.xAxes.values()].filter(
+      (_) => _.options.opposite && _.options.visible && axis.index <= _.index
+    );
+
+    const nonOppositeTranslate = nonOppositeList.reduce(
+      (prev, curr) => prev + curr.selfSize,
+      0
+    );
+
+    const oppositeTranslate = oppositeList.reduce(
+      (prev, curr) => prev + curr.selfSize,
+      0
+    );
+
     return `translate(0, ${
-      axis.options.opposite ? axis.offset : size.height - axis.offset
+      axis.options.opposite
+        ? oppositeTranslate
+        : size.height - nonOppositeTranslate
     })`;
   }
 
