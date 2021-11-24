@@ -1,3 +1,10 @@
 :host {
   shape-rendering: crispEdges;
 }
+
+::ng-deep .tick text {
+  fill: var(--color-text-70);
+}
+::ng-deep .tick line {
+  stroke: var(--color-text-20);
+}

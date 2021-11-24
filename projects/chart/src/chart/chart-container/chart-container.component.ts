@@ -64,49 +64,79 @@ export class ChartContainerComponent
 
   private sumSize = (acc, curr) => acc + curr.selfSize;
 
-  private oppositeFilter(axis: Axis) {
+  private oppositeFilter(axis?: Axis) {
     return (_) =>
       _.options.opposite && _.options.visible && axis.index <= _.index;
   }
 
-  private nonOppositeFilter(axis: Axis) {
+  private nonOppositeFilter(axis?: Axis) {
     return (_) =>
       _.options.opposite !== true && _.options.visible && _.index <= axis.index;
+  }
+
+  getVisibleRect(size: DOMRect) {
+    const yAxesArray = [...this.yAxes.values()];
+    const xAxesArray = [...this.xAxes.values()];
+
+    const left = yAxesArray
+      .filter((_) => _.options.opposite !== true && _.options.visible)
+      .reduce(this.sumSize, 0);
+
+    const right = yAxesArray
+      .filter((_) => _.options.opposite && _.options.visible)
+      .reduce(this.sumSize, 0);
+
+    const bottom = xAxesArray
+      .filter((_) => _.options.opposite !== true && _.options.visible)
+      .reduce(this.sumSize, 0);
+
+    const top = xAxesArray
+      .filter((_) => _.options.opposite && _.options.visible)
+      .reduce(this.sumSize, 0);
+
+    const rect = {
+      left,
+      top,
+      width: size.width - left - right + 1,
+      height: size.height - top - bottom + 1,
+    };
+
+    return rect;
   }
 
   getYAxisTranslate(axis: Axis, size: DOMRect): string {
     const yAxesArray = [...this.yAxes.values()];
 
-    const nonOppositeTranslate = yAxesArray
+    const translateOpposite = yAxesArray
       .filter(this.nonOppositeFilter(axis))
       .reduce(this.sumSize, 0);
 
-    const oppositeTranslate = yAxesArray
+    const translateNonOpposite = yAxesArray
       .filter(this.oppositeFilter(axis))
       .reduce(this.sumSize, 0);
 
     return `translate(${
       axis.options.opposite
-        ? size.width - oppositeTranslate
-        : nonOppositeTranslate
+        ? size.width - translateNonOpposite
+        : translateOpposite
     }, 0)`;
   }
 
   getXAxisTranslate(axis: Axis, size: DOMRect): string {
     const xAxesArray = [...this.xAxes.values()];
 
-    const nonOppositeTranslate = xAxesArray
+    const translateNonOpposite = xAxesArray
       .filter(this.nonOppositeFilter(axis))
       .reduce(this.sumSize, 0);
 
-    const oppositeTranslate = xAxesArray
+    const translateOpposite = xAxesArray
       .filter(this.oppositeFilter(axis))
       .reduce(this.sumSize, 0);
 
     return `translate(0, ${
       axis.options.opposite
-        ? oppositeTranslate
-        : size.height - nonOppositeTranslate
+        ? translateOpposite
+        : size.height - translateNonOpposite
     })`;
   }
 

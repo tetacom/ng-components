@@ -1,5 +1,14 @@
 <ng-container *ngIf="size | async as s">
   <svg [attr.width]="s.width" [attr.height]="s.height">
+    <ng-container *ngIf="getVisibleRect(s) as rect">
+      <defs>
+        <clipPath id="visible-window">
+          <rect [attr.x]="rect.left" [attr.y]="rect.top" [attr.width]="rect.width" [attr.height]="rect.height"></rect>
+        </clipPath>
+      </defs>
+    </ng-container>
+
+
     <g class="y-axis-container">
       <g *ngFor="let item of yAxes | keyvalue"
          teta-y-axis
@@ -12,19 +21,22 @@
          [axis]="item.value"
          [attr.transform]="getXAxisTranslate(item.value, s)"></g>
     </g>
-    <g teta-gridlines></g>
-    <g class="series-container">
-      <g teta-series-host
-         *ngFor="let series of config.series"
-         [series]="series"
-         [size]="s"></g>
+    <g clip-path="url(#visible-window)">
+      <g class="gridlines" teta-gridlines [size]="s"></g>
+      <g class="series-container">
+        <g teta-series-host
+           *ngFor="let series of config.series"
+           [series]="series"
+           [size]="s"></g>
+      </g>
+      <g class="x-axis-plotline-container">
+        <g teta-plot-line></g>
+      </g>
+      <g class="x-axis-plotband-container">
+        <g teta-plot-band></g>
+      </g>
     </g>
-    <g class="x-axis-plotline-container">
-      <g teta-plot-line></g>
-    </g>
-    <g class="x-axis-plotband-container">
-      <g teta-plot-band></g>
-    </g>
+
 
 
     <!--    <g teta-line-series-->

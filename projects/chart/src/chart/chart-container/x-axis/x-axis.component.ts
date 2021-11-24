@@ -6,12 +6,12 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
-import {Axis} from '../../core/axis';
-import {ScaleService} from '../../scale.service';
-import {ChartService} from '../../chart.service';
-import {takeWhile, tap} from 'rxjs';
+import { Axis } from '../../core/axis';
+import { ScaleService } from '../../scale.service';
+import { ChartService } from '../../chart.service';
+import { takeWhile, tap } from 'rxjs';
 import * as d3 from 'd3';
 
 @Component({
@@ -34,32 +34,32 @@ export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(
         takeWhile(() => this._alive),
         tap(() => {
-          this.drawAxis();
+          this.draw();
           this.cdr.markForCheck();
         })
       )
       .subscribe();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this._alive = false;
   }
 
   ngAfterViewInit() {
-    this.drawAxis();
+    this.draw();
   }
 
-  private drawAxis() {
+  private draw() {
     const scale = this.scaleService.xScales.get(this.axis.index);
 
     const axis = this.axis.options.opposite
-      ? d3.axisTop(scale)
-      : d3.axisBottom(scale);
+      ? d3.axisTop(scale).tickValues(this.axis.tickValues)
+      : d3.axisBottom(scale).tickValues(this.axis.tickValues);
 
     d3.select(this.node.nativeElement)
-      .call(axis);
+      .call(axis)
+      .call((_) => _.select('.domain').remove());
   }
 }

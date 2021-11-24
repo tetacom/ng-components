@@ -69,6 +69,8 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
             this.axis.options.tickFormat ?? this.axis.defaultFormatter()
           );
 
-    d3.select(this.node.nativeElement).call(axis);
+    d3.select(this.node.nativeElement)
+      .call(axis)
+      .call((_) => _.select('.domain').remove());
   }
 }
