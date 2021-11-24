@@ -62,27 +62,28 @@ export class ChartContainerComponent
     this._svc.init(this.config);
   }
 
+  private sumSize = (acc, curr) => acc + curr.selfSize;
+
+  private oppositeFilter(axis: Axis) {
+    return (_) =>
+      _.options.opposite && _.options.visible && axis.index <= _.index;
+  }
+
+  private nonOppositeFilter(axis: Axis) {
+    return (_) =>
+      _.options.opposite !== true && _.options.visible && _.index <= axis.index;
+  }
+
   getYAxisTranslate(axis: Axis, size: DOMRect): string {
-    const nonOppositeList = [...this.yAxes.values()].filter(
-      (_) =>
-        _.options.opposite !== true &&
-        _.options.visible &&
-        axis.index <= _.index
-    );
+    const yAxesArray = [...this.yAxes.values()];
 
-    const oppositeList = [...this.yAxes.values()].filter(
-      (_) => _.options.opposite && _.options.visible && axis.index <= _.index
-    );
+    const nonOppositeTranslate = yAxesArray
+      .filter(this.nonOppositeFilter(axis))
+      .reduce(this.sumSize, 0);
 
-    const nonOppositeTranslate = nonOppositeList.reduce(
-      (prev, curr) => prev + curr.selfSize,
-      0
-    );
-
-    const oppositeTranslate = oppositeList.reduce(
-      (prev, curr) => prev + curr.selfSize,
-      0
-    );
+    const oppositeTranslate = yAxesArray
+      .filter(this.oppositeFilter(axis))
+      .reduce(this.sumSize, 0);
 
     return `translate(${
       axis.options.opposite
@@ -92,26 +93,15 @@ export class ChartContainerComponent
   }
 
   getXAxisTranslate(axis: Axis, size: DOMRect): string {
-    const nonOppositeList = [...this.xAxes.values()].filter(
-      (_) =>
-        _.options.opposite !== true &&
-        _.options.visible &&
-        axis.index <= _.index
-    );
+    const xAxesArray = [...this.xAxes.values()];
 
-    const oppositeList = [...this.xAxes.values()].filter(
-      (_) => _.options.opposite && _.options.visible && axis.index <= _.index
-    );
+    const nonOppositeTranslate = xAxesArray
+      .filter(this.nonOppositeFilter(axis))
+      .reduce(this.sumSize, 0);
 
-    const nonOppositeTranslate = nonOppositeList.reduce(
-      (prev, curr) => prev + curr.selfSize,
-      0
-    );
-
-    const oppositeTranslate = oppositeList.reduce(
-      (prev, curr) => prev + curr.selfSize,
-      0
-    );
+    const oppositeTranslate = xAxesArray
+      .filter(this.oppositeFilter(axis))
+      .reduce(this.sumSize, 0);
 
     return `translate(0, ${
       axis.options.opposite
