@@ -150,12 +150,6 @@ export class Axis {
     return this._ticksValues;
   }
 
-  private getAxesByType(type: AxisOrientation) {
-    return type === AxisOrientation.x
-      ? this.chartConfig.xAxis
-      : this.chartConfig.yAxis;
-  }
-
   get index() {
     return this._index;
   }
