@@ -1,5 +1,5 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
-import { NgControl } from '@angular/forms';
+import {Directive, ElementRef, HostListener, Input} from '@angular/core';
+import {NgControl} from '@angular/forms';
 
 @Directive({
   selector: '[tetaOnlyNumber]',
@@ -20,7 +20,8 @@ export class OnlyNumberDirective {
 
   private readonly _minusSign: string = '-';
 
-  constructor(private _elementRef: ElementRef, private _control: NgControl) {}
+  constructor(private _elementRef: ElementRef, private _control: NgControl) {
+  }
 
   @HostListener('change', ['$event']) onChange(e: any) {
     if (this.tetaOnlyNumber === false) {
@@ -108,7 +109,9 @@ export class OnlyNumberDirective {
     if (this.tetaOnlyNumber === false) {
       return;
     }
-    value = value.replace(',', '.');
+    console.log(value);
+    value = value.replace(',', '.').trim();
+    console.log(value);
     let regex: string = this._integerUnsigned;
     if (!this.allowDecimals && !this.allowSign) {
       regex = this._integerUnsigned;
@@ -144,7 +147,7 @@ export class OnlyNumberDirective {
       firstCharacter === '0' &&
       secondChar !== '' &&
       secondChar !== this.decimalSeparator
-    ) {
+      ) {
       value = value.substring(1);
       firstCharacter = value.charAt(0);
       secondChar = value.charAt(1);
@@ -167,7 +170,8 @@ export class OnlyNumberDirective {
     if (value === '-0.0') {
       value = '0.0';
     }
-    const valid: boolean = new RegExp(regex).test(value);
+    const valid: boolean = new RegExp(regex).test(value.toString());
+    console.log(value, valid);
     this._control.control.setValue(valid ? value : this._previousValue ?? 0);
   }
 }
