@@ -8,6 +8,10 @@
         "dist/canvas-charts/canvas-charts",
         "dist/canvas-charts"
       ],
+      "chart": [
+        "dist/chart/chart",
+        "dist/chart"
+      ],
       "components": [
         "dist/components/components",
         "dist/components"

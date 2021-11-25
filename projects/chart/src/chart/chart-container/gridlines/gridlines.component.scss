@@ -1,0 +1,8 @@
+:host {
+  shape-rendering: crispEdges;
+}
+
+:host line {
+  stroke-dasharray: 1,4;
+  stroke: var(--color-text-20);
+}
