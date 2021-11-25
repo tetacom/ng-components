@@ -6,12 +6,12 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { CellComponentBase } from '../../base/cell-component-base';
-import { TableColumn } from '../../contract/table-column';
-import { TableRow } from '../../contract/table-row';
-import { TableService } from '../../service/table.service';
-import { ICellCoordinates } from '../../contract/i-cell-coordinates';
-import { DatePickerComponent } from '../../../date-picker/date-picker/date-picker.component';
+import {CellComponentBase} from '../../base/cell-component-base';
+import {TableColumn} from '../../contract/table-column';
+import {TableRow} from '../../contract/table-row';
+import {TableService} from '../../service/table.service';
+import {ICellCoordinates} from '../../contract/i-cell-coordinates';
+import {DatePickerComponent} from '../../../date-picker/date-picker/date-picker.component';
 
 @Component({
   selector: 'teta-date-cell',
@@ -21,12 +21,11 @@ import { DatePickerComponent } from '../../../date-picker/date-picker/date-picke
 })
 export class DateCellComponent<T>
   extends CellComponentBase<T>
-  implements OnInit
-{
+  implements OnInit {
   @Input() override column: TableColumn;
   @Input() override row: TableRow<T>;
 
-  @ViewChild('input', { static: false }) input: DatePickerComponent;
+  @ViewChild('input', {static: false}) input: DatePickerComponent;
 
   constructor(
     protected override svc: TableService<T>,
@@ -40,7 +39,7 @@ export class DateCellComponent<T>
   }
 
   setValue(value: Date): void {
-    this.row.data[this.column.name] = value;
+    this.row.data[this.column.name] = value ? new Date(value) : value;
     this.valueChanged();
   }
 

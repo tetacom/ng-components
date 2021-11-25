@@ -1,10 +1,10 @@
-import { Meta } from '@storybook/angular/types-6-0';
-import { date, select, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { DatePickerModule } from './date-picker.module';
-import { DatePickerComponent } from './date-picker/date-picker.component';
-import { IconModule } from '../icon/icon.module';
-import { FormsModule } from '@angular/forms';
+import {Meta} from '@storybook/angular/types-6-0';
+import {date, select, withKnobs} from '@storybook/addon-knobs';
+import {action} from '@storybook/addon-actions';
+import {DatePickerModule} from './date-picker.module';
+import {DatePickerComponent} from './date-picker/date-picker.component';
+import {IconModule} from '../icon/icon.module';
+import {FormsModule} from '@angular/forms';
 
 export default {
   title: 'Component/DatePicker',
@@ -26,9 +26,10 @@ export const datePicker = () => ({
     },
     getDate: (num) => new Date(num),
   },
-  template: `<teta-date-picker [tetaIconSprite]="'assets/icons.svg'"
+  template: `<div>{{date}}</div>
+              <teta-date-picker [tetaIconSprite]="'assets/icons.svg'"
                                 [ngModel]="date"
-                                (ngModelChange)="log('date', $event)"></teta-date-picker>`,
+                                (ngModelChange)="date = $event; log('date', $event)"></teta-date-picker>`,
 });
 
 export const dateTimePicker = () => ({
@@ -42,8 +43,9 @@ export const dateTimePicker = () => ({
     },
     getDate: (num) => new Date(num),
   },
-  template: `<teta-date-picker [tetaIconSprite]="'assets/icons.svg'"
+  template: `<div>{{date}}</div>
+              <teta-date-picker [tetaIconSprite]="'assets/icons.svg'"
                                 [showTime]="true"
                                 [ngModel]="date"
-                                (ngModelChange)="log('date', $event)"></teta-date-picker>`,
+                                (ngModelChange)="date = $event;log('date', $event)"></teta-date-picker>`,
 });

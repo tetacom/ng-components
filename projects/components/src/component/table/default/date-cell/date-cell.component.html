@@ -1,7 +1,8 @@
 <span [style.display]="edit ? 'none' : 'block'" class="cell-text">
   {{row.data[column.name] | date : 'dd.MM.yyyy'}}
 </span>
-<teta-date-picker class="datepicker-table" #input
+<teta-date-picker class="datepicker-table"
+                  #input
                   *ngIf="edit"
                   [appendToBody]="false"
                   [showTime]="false"
