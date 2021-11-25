@@ -8,3 +8,6 @@
 ::ng-deep .tick line {
   stroke: var(--color-text-20);
 }
+:host .label-axis {
+  fill: var(--color-text-70);
+}

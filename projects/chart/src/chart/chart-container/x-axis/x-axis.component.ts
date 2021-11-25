@@ -55,8 +55,18 @@ export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
     const scale = this.scaleService.xScales.get(this.axis.index);
 
     const axis = this.axis.options.opposite
-      ? d3.axisTop(scale).tickValues(this.axis.tickValues)
-      : d3.axisBottom(scale).tickValues(this.axis.tickValues);
+      ? d3
+          .axisTop(scale)
+          .tickValues(this.axis.tickValues)
+          .tickFormat(
+            this.axis.options.tickFormat ?? this.axis.defaultFormatter()
+          )
+      : d3
+          .axisBottom(scale)
+          .tickValues(this.axis.tickValues)
+          .tickFormat(
+            this.axis.options.tickFormat ?? this.axis.defaultFormatter()
+          );
 
     d3.select(this.node.nativeElement)
       .call(axis)

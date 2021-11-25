@@ -22,25 +22,12 @@ import { takeWhile, tap } from 'rxjs';
 })
 export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() axis: Axis;
+  @Input() size: DOMRect;
   @ViewChild('svg') node: ElementRef;
 
   private _alive = true;
 
-  constructor(
-    private scaleService: ScaleService,
-    private chartService: ChartService,
-    private cdr: ChangeDetectorRef
-  ) {
-    this.chartService.size
-      .pipe(
-        takeWhile(() => this._alive),
-        tap(() => {
-          this.draw();
-          this.cdr.markForCheck();
-        })
-      )
-      .subscribe();
-  }
+  constructor(private scaleService: ScaleService) {}
 
   ngOnInit(): void {}
 
@@ -50,6 +37,16 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     this.draw();
+  }
+
+  getLabelTransform() {
+    return `translate(${
+      this.axis.options.opposite
+        ? this.axis.selfSize - 24
+        : -this.axis.selfSize + 24
+    }, ${this.size.height / 2}) rotate(${
+      this.axis.options.opposite ? '90' : '-90'
+    })`;
   }
 
   private draw() {

@@ -11,6 +11,7 @@
       <g *ngFor="let item of yAxes | keyvalue"
          teta-y-axis
          [axis]="item.value"
+         [size]="s"
          [attr.transform]="getYAxisTranslate(item.value, s)"></g>
     </g>
     <g class="x-axis-container">
