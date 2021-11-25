@@ -145,12 +145,12 @@ export class DropdownBase {
   }
 
   protected closeDropdown(): void {
-    if (this._body && this.container.contains(this._body)) {
+    if (this.open && this._body && this.container.contains(this._body)) {
       this._renderer.removeChild(this.container, this._body);
+      this._open = false;
+      this._body = null;
+      this.openChange.emit(this.open);
     }
-    this._open = false;
-    this._body = null;
-    this.openChange.emit(this.open);
   }
 
   private openDropdown(): void {

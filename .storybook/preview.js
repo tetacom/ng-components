@@ -15,12 +15,11 @@ export const parameters = {
   },
   docs: {inlineStories: true},
   themes: {
-    default: 'dark',
+    default: 'default',
     list: [
       {name: 'dark', class: 'theme-dark', color: '#000000'},
       {name: 'default', class: 'theme-default', color: '#ffffff'}
     ],
   },
-
 }
 addDecorator(moduleMetadata({imports: [BrowserAnimationsModule]}));

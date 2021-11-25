@@ -18174,12 +18174,12 @@
         },
         {
             "name": "DropdownBase",
-            "id": "directive-DropdownBase-5b88ff50cd58801784f341a3e8213fc2",
+            "id": "directive-DropdownBase-62dfa02748ff70f145486c0548088bf5",
             "file": "projects/components/src/component/dropdown/dropdown-base.ts",
             "type": "directive",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import {\r\n  ChangeDetectorRef,\r\n  ContentChild,\r\n  Directive,\r\n  ElementRef,\r\n  EventEmitter,\r\n  HostListener,\r\n  Input,\r\n  NgZone,\r\n  Output,\r\n  Renderer2,\r\n} from '@angular/core';\r\nimport { DomUtil } from '../../common/util/dom-util';\r\nimport { PositionUtil } from '../../common/util/position-util';\r\nimport { Align } from '../../common/enum/align.enum';\r\nimport { VerticalAlign } from '../../common/enum/vertical-align.enum';\r\nimport { DropdownHeadDirective } from './dropdown-head.directive';\r\nimport { DropdownContentDirective } from './dropdown-content.directive';\r\nimport { AutoCloseIgnoreCase } from '../../common/contract/auto-close-ignore-case';\r\nimport { IRect } from '../../common/contract/i-rect';\r\nimport { takeWhile, throttleTime } from 'rxjs/operators';\r\n\r\n@Directive()\r\n// eslint-disable-next-line @angular-eslint/directive-class-suffix\r\nexport class DropdownBase {\r\n  @Input() align: Align = Align.left;\r\n  @Input() verticalAlign: VerticalAlign = VerticalAlign.bottom;\r\n  @Input() appendToBody: boolean;\r\n  @Input() disabled: boolean;\r\n  @Input() shadow = true;\r\n  @Input() className: string | string[];\r\n\r\n  @Input()\r\n  set open(val: boolean) {\r\n    if (val != null && val !== this._open && !this.disabled) {\r\n      if (val) {\r\n        this.openDropdown();\r\n      } else {\r\n        this.closeDropdown();\r\n      }\r\n    }\r\n  }\r\n\r\n  get open(): boolean {\r\n    return this._open;\r\n  }\r\n\r\n  get container() {\r\n    return this.appendToBody\r\n      ? this._document.body\r\n      : this._elementRef.nativeElement;\r\n  }\r\n\r\n  @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();\r\n  @Input() autoClose = true;\r\n  @Input() autoCloseIgnore: Array<AutoCloseIgnoreCase> = ['inside'];\r\n\r\n  @ContentChild(DropdownHeadDirective, {\r\n    static: false,\r\n    read: ElementRef,\r\n  })\r\n  protected _head: ElementRef;\r\n\r\n  @ContentChild(DropdownContentDirective, { static: false })\r\n  protected _content: DropdownContentDirective;\r\n\r\n  protected _body: HTMLElement | null = null;\r\n  protected _open = false;\r\n  protected _alive = true;\r\n\r\n  constructor(\r\n    protected _cdr: ChangeDetectorRef,\r\n    protected _document: any,\r\n    protected _elementRef: ElementRef<HTMLElement>,\r\n    protected _zone: NgZone,\r\n    protected _renderer: Renderer2\r\n  ) {\r\n    this._zone.onStable\r\n      .pipe(\r\n        takeWhile((_) => this._alive),\r\n        throttleTime(10, undefined, { trailing: true })\r\n      )\r\n      .subscribe((_) => {\r\n        if (this._head?.nativeElement && this._body) {\r\n          setTimeout(() => {\r\n            if (this._head?.nativeElement && this._body) {\r\n              this.setPosition(this._head.nativeElement, this._body);\r\n            }\r\n          });\r\n        }\r\n      });\r\n  }\r\n\r\n  @HostListener('click', ['$event']) click(event: MouseEvent): void {\r\n    if (this.open) {\r\n      if (!DomUtil.clickedInside(this._body, event)) {\r\n        this.closeDropdown();\r\n      }\r\n    } else {\r\n      if (DomUtil.clickedInside(this._head.nativeElement, event)) {\r\n        this.openDropdown();\r\n      }\r\n    }\r\n  }\r\n\r\n  @HostListener('document:click', ['$event']) documentClick(\r\n    event: MouseEvent\r\n  ): void {\r\n    if (\r\n      !this.open ||\r\n      !this.autoClose ||\r\n      event.detail === 0 ||\r\n      DomUtil.clickedInside(this._head.nativeElement, event) ||\r\n      DomUtil.clickedInside(this._body, event)\r\n    ) {\r\n      return;\r\n    }\r\n    if (DomUtil.clickedInside(this._body, event)) {\r\n      if (this.autoCloseIgnore.indexOf('inside') < 0) {\r\n        this.closeDropdown();\r\n      }\r\n    } else {\r\n      if (this.autoCloseIgnore.indexOf('outside') < 0) {\r\n        this.closeDropdown();\r\n      }\r\n    }\r\n  }\r\n\r\n  @HostListener('window:keyup', ['$event']) keyUp(event: KeyboardEvent): void {\r\n    if (\r\n      !this.open ||\r\n      !this.autoClose ||\r\n      ['esc', 'enter'].every(\r\n        (_: 'esc' | 'enter') => this.autoCloseIgnore.indexOf(_) >= 0\r\n      )\r\n    ) {\r\n      return;\r\n    }\r\n    if (\r\n      (event.code === 'Escape' && this.autoCloseIgnore.indexOf('esc') < 0) ||\r\n      (event.code === 'Enter' && this.autoCloseIgnore.indexOf('enter') < 0)\r\n    ) {\r\n      this.closeDropdown();\r\n    }\r\n  }\r\n\r\n  protected closeDropdown(): void {\r\n    if (this._body && this.container.contains(this._body)) {\r\n      this._renderer.removeChild(this.container, this._body);\r\n    }\r\n    this._open = false;\r\n    this._body = null;\r\n    this.openChange.emit(this.open);\r\n  }\r\n\r\n  private openDropdown(): void {\r\n    if (this._open || !this._content || this.disabled) {\r\n      return;\r\n    }\r\n    this._open = true;\r\n    this.openChange.emit(this.open);\r\n    const renderer = this._renderer;\r\n    const content = this._content.nativeElement;\r\n    const container = (this._body =\r\n      this._body || renderer.createElement('div'));\r\n    renderer.addClass(container, 'dropdown');\r\n\r\n    if (this.className != null) {\r\n      if (this.className instanceof Array && this.className.length > 0) {\r\n        this.className.forEach((_) => {\r\n          renderer.addClass(container, _);\r\n        });\r\n      }\r\n      if (typeof this.className === 'string') {\r\n        renderer.addClass(container, this.className);\r\n      }\r\n    }\r\n\r\n    renderer.appendChild(container, content);\r\n    renderer.appendChild(this.container, container);\r\n\r\n    this.setPosition(this._head.nativeElement, this._body);\r\n  }\r\n\r\n  private setPosition(container: HTMLElement, target: HTMLElement): void {\r\n    const containerRect = container.getBoundingClientRect();\r\n    const rect: IRect = {\r\n      bottom: containerRect.bottom,\r\n      top: containerRect.top,\r\n      left: containerRect.left,\r\n      right: containerRect.right,\r\n    };\r\n    // const transformedParent = DomUtil.findTransformedParent(container);\r\n    // console.log(transformedParent);\r\n    // if (transformedParent) {\r\n    //   const parentPosition = transformedParent.getBoundingClientRect();\r\n    //   rect.left = rect.left - parentPosition.left;\r\n    //   rect.top = rect.top - parentPosition.top;\r\n    //   rect.bottom = parentPosition.bottom - rect.top;\r\n    //   rect.right = parentPosition.right - rect.right;\r\n    // }\r\n\r\n    const position = PositionUtil.getPosition(\r\n      rect,\r\n      target.getBoundingClientRect(),\r\n      this.align,\r\n      this.verticalAlign\r\n    );\r\n\r\n    PositionUtil.setElementPosition(target, position);\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  ChangeDetectorRef,\r\n  ContentChild,\r\n  Directive,\r\n  ElementRef,\r\n  EventEmitter,\r\n  HostListener,\r\n  Input,\r\n  NgZone,\r\n  Output,\r\n  Renderer2,\r\n} from '@angular/core';\r\nimport { DomUtil } from '../../common/util/dom-util';\r\nimport { PositionUtil } from '../../common/util/position-util';\r\nimport { Align } from '../../common/enum/align.enum';\r\nimport { VerticalAlign } from '../../common/enum/vertical-align.enum';\r\nimport { DropdownHeadDirective } from './dropdown-head.directive';\r\nimport { DropdownContentDirective } from './dropdown-content.directive';\r\nimport { AutoCloseIgnoreCase } from '../../common/contract/auto-close-ignore-case';\r\nimport { IRect } from '../../common/contract/i-rect';\r\nimport { takeWhile, throttleTime } from 'rxjs/operators';\r\n\r\n@Directive()\r\n// eslint-disable-next-line @angular-eslint/directive-class-suffix\r\nexport class DropdownBase {\r\n  @Input() align: Align = Align.left;\r\n  @Input() verticalAlign: VerticalAlign = VerticalAlign.bottom;\r\n  @Input() appendToBody: boolean;\r\n  @Input() disabled: boolean;\r\n  @Input() shadow = true;\r\n  @Input() className: string | string[];\r\n\r\n  @Input()\r\n  set open(val: boolean) {\r\n    if (val != null && val !== this._open && !this.disabled) {\r\n      if (val) {\r\n        this.openDropdown();\r\n      } else {\r\n        this.closeDropdown();\r\n      }\r\n    }\r\n  }\r\n\r\n  get open(): boolean {\r\n    return this._open;\r\n  }\r\n\r\n  get container() {\r\n    return this.appendToBody\r\n      ? this._document.body\r\n      : this._elementRef.nativeElement;\r\n  }\r\n\r\n  @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();\r\n  @Input() autoClose = true;\r\n  @Input() autoCloseIgnore: Array<AutoCloseIgnoreCase> = ['inside'];\r\n\r\n  @ContentChild(DropdownHeadDirective, {\r\n    static: false,\r\n    read: ElementRef,\r\n  })\r\n  protected _head: ElementRef;\r\n\r\n  @ContentChild(DropdownContentDirective, { static: false })\r\n  protected _content: DropdownContentDirective;\r\n\r\n  protected _body: HTMLElement | null = null;\r\n  protected _open = false;\r\n  protected _alive = true;\r\n\r\n  constructor(\r\n    protected _cdr: ChangeDetectorRef,\r\n    protected _document: any,\r\n    protected _elementRef: ElementRef<HTMLElement>,\r\n    protected _zone: NgZone,\r\n    protected _renderer: Renderer2\r\n  ) {\r\n    this._zone.onStable\r\n      .pipe(\r\n        takeWhile((_) => this._alive),\r\n        throttleTime(10, undefined, { trailing: true })\r\n      )\r\n      .subscribe((_) => {\r\n        if (this._head?.nativeElement && this._body) {\r\n          setTimeout(() => {\r\n            if (this._head?.nativeElement && this._body) {\r\n              this.setPosition(this._head.nativeElement, this._body);\r\n            }\r\n          });\r\n        }\r\n      });\r\n  }\r\n\r\n  @HostListener('click', ['$event']) click(event: MouseEvent): void {\r\n    if (this.open) {\r\n      if (!DomUtil.clickedInside(this._body, event)) {\r\n        this.closeDropdown();\r\n      }\r\n    } else {\r\n      if (DomUtil.clickedInside(this._head.nativeElement, event)) {\r\n        this.openDropdown();\r\n      }\r\n    }\r\n  }\r\n\r\n  @HostListener('document:click', ['$event']) documentClick(\r\n    event: MouseEvent\r\n  ): void {\r\n    if (\r\n      !this.open ||\r\n      !this.autoClose ||\r\n      event.detail === 0 ||\r\n      DomUtil.clickedInside(this._head.nativeElement, event) ||\r\n      DomUtil.clickedInside(this._body, event)\r\n    ) {\r\n      return;\r\n    }\r\n    if (DomUtil.clickedInside(this._body, event)) {\r\n      if (this.autoCloseIgnore.indexOf('inside') < 0) {\r\n        this.closeDropdown();\r\n      }\r\n    } else {\r\n      if (this.autoCloseIgnore.indexOf('outside') < 0) {\r\n        this.closeDropdown();\r\n      }\r\n    }\r\n  }\r\n\r\n  @HostListener('window:keyup', ['$event']) keyUp(event: KeyboardEvent): void {\r\n    if (\r\n      !this.open ||\r\n      !this.autoClose ||\r\n      ['esc', 'enter'].every(\r\n        (_: 'esc' | 'enter') => this.autoCloseIgnore.indexOf(_) >= 0\r\n      )\r\n    ) {\r\n      return;\r\n    }\r\n    if (\r\n      (event.code === 'Escape' && this.autoCloseIgnore.indexOf('esc') < 0) ||\r\n      (event.code === 'Enter' && this.autoCloseIgnore.indexOf('enter') < 0)\r\n    ) {\r\n      this.closeDropdown();\r\n    }\r\n  }\r\n\r\n  protected closeDropdown(): void {\r\n    if (this.open && this._body && this.container.contains(this._body)) {\r\n      this._renderer.removeChild(this.container, this._body);\r\n      this._open = false;\r\n      this._body = null;\r\n      this.openChange.emit(this.open);\r\n    }\r\n  }\r\n\r\n  private openDropdown(): void {\r\n    if (this._open || !this._content || this.disabled) {\r\n      return;\r\n    }\r\n    this._open = true;\r\n    this.openChange.emit(this.open);\r\n    const renderer = this._renderer;\r\n    const content = this._content.nativeElement;\r\n    const container = (this._body =\r\n      this._body || renderer.createElement('div'));\r\n    renderer.addClass(container, 'dropdown');\r\n\r\n    if (this.className != null) {\r\n      if (this.className instanceof Array && this.className.length > 0) {\r\n        this.className.forEach((_) => {\r\n          renderer.addClass(container, _);\r\n        });\r\n      }\r\n      if (typeof this.className === 'string') {\r\n        renderer.addClass(container, this.className);\r\n      }\r\n    }\r\n\r\n    renderer.appendChild(container, content);\r\n    renderer.appendChild(this.container, container);\r\n\r\n    this.setPosition(this._head.nativeElement, this._body);\r\n  }\r\n\r\n  private setPosition(container: HTMLElement, target: HTMLElement): void {\r\n    const containerRect = container.getBoundingClientRect();\r\n    const rect: IRect = {\r\n      bottom: containerRect.bottom,\r\n      top: containerRect.top,\r\n      left: containerRect.left,\r\n      right: containerRect.right,\r\n    };\r\n    // const transformedParent = DomUtil.findTransformedParent(container);\r\n    // console.log(transformedParent);\r\n    // if (transformedParent) {\r\n    //   const parentPosition = transformedParent.getBoundingClientRect();\r\n    //   rect.left = rect.left - parentPosition.left;\r\n    //   rect.top = rect.top - parentPosition.top;\r\n    //   rect.bottom = parentPosition.bottom - rect.top;\r\n    //   rect.right = parentPosition.right - rect.right;\r\n    // }\r\n\r\n    const position = PositionUtil.getPosition(\r\n      rect,\r\n      target.getBoundingClientRect(),\r\n      this.align,\r\n      this.verticalAlign\r\n    );\r\n\r\n    PositionUtil.setElementPosition(target, position);\r\n  }\r\n}\r\n",
             "providers": [],
             "inputsClass": [
                 {
@@ -22379,7 +22379,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 63,
+                    "line": 64,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -22395,7 +22395,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "inheritance": {
@@ -22421,7 +22421,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 119,
+                    "line": 121,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -22457,7 +22457,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 125,
+                    "line": 127,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -22473,7 +22473,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 48,
+                    "line": 49,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "inheritance": {
@@ -23212,7 +23212,7 @@
         },
         {
             "name": "CellComponentBase",
-            "id": "component-CellComponentBase-ca9264acfa601a69c47489d7de41d199",
+            "id": "component-CellComponentBase-3c76fb6722071d466add2ef482dac961",
             "file": "projects/components/src/component/table/base/cell-component-base.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -23315,7 +23315,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 63,
+                    "line": 64,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -23328,7 +23328,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -23338,7 +23338,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 59,
+                    "line": 60,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -23361,7 +23361,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 119,
+                    "line": 121,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -23407,7 +23407,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 131,
+                    "line": 133,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -23440,7 +23440,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 125,
+                    "line": 127,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -23453,7 +23453,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 136,
+                    "line": 138,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -23466,7 +23466,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 48,
+                    "line": 49,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -23487,7 +23487,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectorRef,\r\n  Component,\r\n  HostBinding,\r\n  OnDestroy,\r\n  OnInit,\r\n} from '@angular/core';\r\nimport { TableService } from '../service/table.service';\r\nimport { TableRow } from '../contract/table-row';\r\nimport { filter, takeWhile } from 'rxjs/operators';\r\nimport { ICellCoordinates } from '../contract/i-cell-coordinates';\r\nimport { TableColumn } from '../contract/table-column';\r\nimport { IIdName } from '../../../common/contract/i-id-name';\r\nimport { ICellValue } from '../contract/i-cell-value';\r\nimport { IDictionary } from '../../../common/contract/i-dictionary';\r\n\r\n@Component({\r\n  template: '',\r\n})\r\n// eslint-disable-next-line @angular-eslint/component-class-suffix\r\nexport abstract class CellComponentBase<T> implements OnInit, OnDestroy {\r\n  @HostBinding('class.cell-component')\r\n  private readonly tableCellComponent = true;\r\n\r\n  get edit() {\r\n    return (\r\n      this._edit &&\r\n      this.svc.boolOrFuncCallback(this.svc.cellEditable)({\r\n        column: this.column,\r\n        row: this.row,\r\n      })\r\n    );\r\n  }\r\n\r\n  _edit: boolean;\r\n  column: TableColumn;\r\n  filterOptions: IIdName<any>[] = [];\r\n  dict: IDictionary<IIdName<any>[]> = {};\r\n  row: TableRow<T>;\r\n\r\n  protected _alive = true;\r\n\r\n  protected constructor(\r\n    protected svc: TableService<T>,\r\n    protected cdr: ChangeDetectorRef\r\n  ) {}\r\n\r\n  valueChanged(): void {\r\n    this.svc.changeValue({\r\n      column: this.column,\r\n      row: this.row,\r\n    });\r\n  }\r\n\r\n  ngOnDestroy(): void {\r\n    this._alive = false;\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.init();\r\n  }\r\n\r\n  private init(): void {\r\n    this.svc.editRowStart\r\n      .pipe(\r\n        takeWhile((_) => this._alive),\r\n        filter((_) => this.column.editable)\r\n      )\r\n      .subscribe((cell: ICellCoordinates<T>) => {\r\n        if (\r\n          this.row === cell?.row &&\r\n          !this._edit &&\r\n          this.svc.boolOrFuncCallback(this.svc.cellEditable)({\r\n            column: this.column,\r\n            row: this.row,\r\n          })\r\n        ) {\r\n          this.start(cell, 'row');\r\n        }\r\n        if (this.row !== cell?.row && this._edit) {\r\n          this.stop();\r\n        }\r\n      });\r\n\r\n    this.svc.editCellStart\r\n      .pipe(\r\n        takeWhile((_) => this._alive),\r\n        filter((_) => this.column.editable)\r\n      )\r\n      .subscribe((cell: ICellCoordinates<T>) => {\r\n        if (\r\n          this.row === cell.row &&\r\n          this.column.name === cell.column.name &&\r\n          !this._edit\r\n        ) {\r\n          this.start(cell, 'cell');\r\n        }\r\n        if (\r\n          (this.row !== cell.row || this.column.name !== cell.column.name) &&\r\n          this._edit\r\n        ) {\r\n          this.stop();\r\n        }\r\n      });\r\n\r\n    this.svc.valueSet\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((cellValue: ICellValue<T>) => {\r\n        if (\r\n          this.row === cellValue.cell.row &&\r\n          this.column.name === cellValue.cell.column.name\r\n        ) {\r\n          this.row.data[this.column.name] = cellValue.value;\r\n          this.cdr.detectChanges();\r\n        }\r\n      });\r\n  }\r\n\r\n  private start(initiator: ICellCoordinates<T>, type: 'cell' | 'row') {\r\n    this._edit = true;\r\n    this.startEdit(initiator, type);\r\n    this.cdr.markForCheck();\r\n  }\r\n\r\n  private stop() {\r\n    this._edit = false;\r\n    this.stopEdit();\r\n    this.cdr.markForCheck();\r\n  }\r\n\r\n  abstract startEdit(\r\n    initiator: ICellCoordinates<T>,\r\n    type: 'cell' | 'row'\r\n  ): void;\r\n\r\n  abstract stopEdit(): void;\r\n}\r\n",
+            "sourceCode": "import {\r\n  ChangeDetectorRef,\r\n  Component,\r\n  HostBinding,\r\n  OnDestroy,\r\n  OnInit,\r\n} from '@angular/core';\r\nimport {TableService} from '../service/table.service';\r\nimport {TableRow} from '../contract/table-row';\r\nimport {filter, takeWhile} from 'rxjs/operators';\r\nimport {ICellCoordinates} from '../contract/i-cell-coordinates';\r\nimport {TableColumn} from '../contract/table-column';\r\nimport {IIdName} from '../../../common/contract/i-id-name';\r\nimport {ICellValue} from '../contract/i-cell-value';\r\nimport {IDictionary} from '../../../common/contract/i-dictionary';\r\n\r\n@Component({\r\n  template: '',\r\n})\r\n// eslint-disable-next-line @angular-eslint/component-class-suffix\r\nexport abstract class CellComponentBase<T> implements OnInit, OnDestroy {\r\n  @HostBinding('class.cell-component')\r\n  private readonly tableCellComponent = true;\r\n\r\n  get edit() {\r\n    return (\r\n      this._edit &&\r\n      this.svc.boolOrFuncCallback(this.svc.cellEditable)({\r\n        column: this.column,\r\n        row: this.row,\r\n      })\r\n    );\r\n  }\r\n\r\n  _edit: boolean;\r\n  column: TableColumn;\r\n  filterOptions: IIdName<any>[] = [];\r\n  dict: IDictionary<IIdName<any>[]> = {};\r\n  row: TableRow<T>;\r\n\r\n  protected _alive = true;\r\n\r\n  protected constructor(\r\n    protected svc: TableService<T>,\r\n    protected cdr: ChangeDetectorRef\r\n  ) {\r\n  }\r\n\r\n  valueChanged(): void {\r\n    this.svc.changeValue({\r\n      column: this.column,\r\n      row: this.row,\r\n    });\r\n  }\r\n\r\n  ngOnDestroy(): void {\r\n    this._alive = false;\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.init();\r\n  }\r\n\r\n  private init(): void {\r\n    this.svc.editRowStart\r\n      .pipe(\r\n        takeWhile((_) => this._alive),\r\n        filter((_) => this.column.editable)\r\n      )\r\n      .subscribe((cell: ICellCoordinates<T>) => {\r\n        if (\r\n          this.row === cell?.row &&\r\n          !this._edit &&\r\n          this.svc.boolOrFuncCallback(this.svc.cellEditable)({\r\n            column: this.column,\r\n            row: this.row,\r\n          })\r\n        ) {\r\n          this.start(cell, 'row');\r\n        }\r\n        if (this.row !== cell?.row && this._edit) {\r\n          this.stop();\r\n        }\r\n      });\r\n\r\n    this.svc.editCellStart\r\n      .pipe(\r\n        takeWhile((_) => this._alive),\r\n        filter((_) => this.column.editable)\r\n      )\r\n      .subscribe((cell: ICellCoordinates<T>) => {\r\n        if (\r\n          this.row === cell.row &&\r\n          this.column.name === cell.column.name &&\r\n          !this._edit\r\n        ) {\r\n          this.start(cell, 'cell');\r\n        }\r\n        if (\r\n          (this.row !== cell.row || this.column.name !== cell.column.name) &&\r\n          this._edit\r\n        ) {\r\n          this.stop();\r\n        }\r\n      });\r\n\r\n    this.svc.valueSet\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((cellValue: ICellValue<T>) => {\r\n        console.log(cellValue);\r\n        if (\r\n          this.row === cellValue.cell.row &&\r\n          this.column.name === cellValue.cell.column.name\r\n        ) {\r\n          this.row.data[this.column.name] = cellValue.value;\r\n          this.cdr.detectChanges();\r\n        }\r\n      });\r\n  }\r\n\r\n  private start(initiator: ICellCoordinates<T>, type: 'cell' | 'row') {\r\n    this._edit = true;\r\n    this.startEdit(initiator, type);\r\n    this.cdr.markForCheck();\r\n  }\r\n\r\n  private stop() {\r\n    this._edit = false;\r\n    this.stopEdit();\r\n    this.cdr.markForCheck();\r\n  }\r\n\r\n  abstract startEdit(\r\n    initiator: ICellCoordinates<T>,\r\n    type: 'cell' | 'row'\r\n  ): void;\r\n\r\n  abstract stopEdit(): void;\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -25734,9 +25734,8 @@
         },
         {
             "name": "DateCellComponent",
-            "id": "component-DateCellComponent-f0fec61c92e54d10051603c7351a04b1",
+            "id": "component-DateCellComponent-15d8cb30a9b4e7cd921da974026e6f68",
             "file": "projects/components/src/component/table/default/date-cell/date-cell.component.ts",
-            "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -25756,14 +25755,14 @@
                     "name": "column",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 26,
+                    "line": 25,
                     "type": "TableColumn"
                 },
                 {
                     "name": "row",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 27,
+                    "line": 26,
                     "type": "TableRow<T>"
                 }
             ],
@@ -25776,7 +25775,7 @@
                     "type": "DatePickerComponent",
                     "optional": false,
                     "description": "",
-                    "line": 29,
+                    "line": 28,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -25893,7 +25892,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 38,
+                    "line": 37,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -25916,7 +25915,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 42,
+                    "line": 41,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -25950,7 +25949,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 47,
+                    "line": 49,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -25983,7 +25982,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 56,
+                    "line": 58,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "inheritance": {
@@ -25996,7 +25995,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 63,
+                    "line": 64,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -26012,7 +26011,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "inheritance": {
@@ -26038,7 +26037,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 119,
+                    "line": 121,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -26074,7 +26073,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 125,
+                    "line": 127,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -26090,7 +26089,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 48,
+                    "line": 49,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "inheritance": {
@@ -26117,7 +26116,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  Input,\r\n  OnInit,\r\n  ViewChild,\r\n} from '@angular/core';\r\nimport { CellComponentBase } from '../../base/cell-component-base';\r\nimport { TableColumn } from '../../contract/table-column';\r\nimport { TableRow } from '../../contract/table-row';\r\nimport { TableService } from '../../service/table.service';\r\nimport { ICellCoordinates } from '../../contract/i-cell-coordinates';\r\nimport { DatePickerComponent } from '../../../date-picker/date-picker/date-picker.component';\r\n\r\n@Component({\r\n  selector: 'teta-date-cell',\r\n  templateUrl: './date-cell.component.html',\r\n  styleUrls: ['./date-cell.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class DateCellComponent<T>\r\n  extends CellComponentBase<T>\r\n  implements OnInit\r\n{\r\n  @Input() override column: TableColumn;\r\n  @Input() override row: TableRow<T>;\r\n\r\n  @ViewChild('input', { static: false }) input: DatePickerComponent;\r\n\r\n  constructor(\r\n    protected override svc: TableService<T>,\r\n    protected override cdr: ChangeDetectorRef\r\n  ) {\r\n    super(svc, cdr);\r\n  }\r\n\r\n  override ngOnInit(): void {\r\n    super.ngOnInit();\r\n  }\r\n\r\n  setValue(value: Date): void {\r\n    this.row.data[this.column.name] = value;\r\n    this.valueChanged();\r\n  }\r\n\r\n  startEdit(initiator: ICellCoordinates<T>, type: 'cell' | 'row'): void {\r\n    if (initiator?.column.name === this.column.name) {\r\n      setTimeout(() => {\r\n        this.input?.focus();\r\n        this.cdr.markForCheck();\r\n      }, 0);\r\n    }\r\n  }\r\n\r\n  stopEdit(): void {\r\n    this.cdr.markForCheck();\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  Input,\r\n  OnInit,\r\n  ViewChild,\r\n} from '@angular/core';\r\nimport {CellComponentBase} from '../../base/cell-component-base';\r\nimport {TableColumn} from '../../contract/table-column';\r\nimport {TableRow} from '../../contract/table-row';\r\nimport {TableService} from '../../service/table.service';\r\nimport {ICellCoordinates} from '../../contract/i-cell-coordinates';\r\nimport {DatePickerComponent} from '../../../date-picker/date-picker/date-picker.component';\r\n\r\n@Component({\r\n  selector: 'teta-date-cell',\r\n  templateUrl: './date-cell.component.html',\r\n  styleUrls: ['./date-cell.component.scss'],\r\n  // changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class DateCellComponent<T>\r\n  extends CellComponentBase<T>\r\n  implements OnInit {\r\n  @Input() override column: TableColumn;\r\n  @Input() override row: TableRow<T>;\r\n\r\n  @ViewChild('input', {static: false}) input: DatePickerComponent;\r\n\r\n  constructor(\r\n    protected override svc: TableService<T>,\r\n    protected override cdr: ChangeDetectorRef\r\n  ) {\r\n    super(svc, cdr);\r\n  }\r\n\r\n  override ngOnInit(): void {\r\n    super.ngOnInit();\r\n  }\r\n\r\n  setValue(value: Date): void {\r\n    console.log('setValue', value)\r\n    this.row.data[this.column.name] = value;\r\n    console.log(this.row.data[this.column.name])\r\n    this.valueChanged();\r\n    setTimeout(()=>this.cdr.detectChanges())\r\n  }\r\n\r\n  startEdit(initiator: ICellCoordinates<T>, type: 'cell' | 'row'): void {\r\n    if (initiator?.column.name === this.column.name) {\r\n      setTimeout(() => {\r\n        this.input?.focus();\r\n        this.cdr.markForCheck();\r\n      }, 0);\r\n    }\r\n  }\r\n\r\n  stopEdit(): void {\r\n    this.cdr.markForCheck();\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -26145,7 +26144,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 29,
+                "line": 28,
                 "jsdoctags": [
                     {
                         "name": "svc",
@@ -26171,7 +26170,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<span [style.display]=\"edit ? 'none' : 'block'\" class=\"cell-text\">\r\n  {{row.data[column.name] | date : 'dd.MM.yyyy'}}\r\n</span>\r\n<teta-date-picker class=\"datepicker-table\" #input\r\n                  *ngIf=\"edit\"\r\n                  [appendToBody]=\"false\"\r\n                  [showTime]=\"false\"\r\n                  [ngModel]=\"row.data[column.name]\"\r\n                  (ngModelChange)=\"setValue($event)\"\r\n></teta-date-picker>\r\n"
+            "templateData": "{{row.data[column.name]}}\r\n<span [style.display]=\"edit ? 'none' : 'block'\" class=\"cell-text\">\r\n  {{row.data[column.name] | date : 'dd.MM.yyyy'}}\r\n</span>\r\n<teta-date-picker class=\"datepicker-table\"\r\n                  #input\r\n                  *ngIf=\"edit\"\r\n                  [appendToBody]=\"false\"\r\n                  [showTime]=\"false\"\r\n                  [ngModel]=\"row.data[column.name]\"\r\n                  (ngModelChange)=\"row.data[column.name] = $event; setValue($event)\"\r\n></teta-date-picker>\r\n"
         },
         {
             "name": "DateFilterComponent",
@@ -27658,7 +27657,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 63,
+                    "line": 64,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -27674,7 +27673,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "inheritance": {
@@ -27700,7 +27699,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 119,
+                    "line": 121,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -27736,7 +27735,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 125,
+                    "line": 127,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -27752,7 +27751,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 48,
+                    "line": 49,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "inheritance": {
@@ -33543,7 +33542,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 63,
+                    "line": 64,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -33559,7 +33558,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "inheritance": {
@@ -33585,7 +33584,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 119,
+                    "line": 121,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -33621,7 +33620,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 125,
+                    "line": 127,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -33637,7 +33636,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 48,
+                    "line": 49,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "inheritance": {
@@ -36762,7 +36761,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 63,
+                    "line": 64,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -36778,7 +36777,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "inheritance": {
@@ -36804,7 +36803,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 119,
+                    "line": 121,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -36840,7 +36839,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 125,
+                    "line": 127,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -36856,7 +36855,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 48,
+                    "line": 49,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "inheritance": {
@@ -42646,7 +42645,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 63,
+                    "line": 64,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -42662,7 +42661,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "inheritance": {
@@ -42688,7 +42687,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 119,
+                    "line": 121,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -42724,7 +42723,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 125,
+                    "line": 127,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -42740,7 +42739,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 48,
+                    "line": 49,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "inheritance": {
@@ -44563,7 +44562,7 @@
         },
         {
             "name": "TableComponent",
-            "id": "component-TableComponent-9e05ee27a642df5fbb6a841a4f502a3a",
+            "id": "component-TableComponent-ae17c93b1507ca7d9d67e2a90040d2fc",
             "file": "projects/components/src/component/table/table/table.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -44589,21 +44588,21 @@
                     "name": "activeRow",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 64,
+                    "line": 63,
                     "type": "TableRow<T>"
                 },
                 {
                     "name": "aggregate",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 67,
+                    "line": 66,
                     "type": "boolean"
                 },
                 {
                     "name": "cellEditable",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 77,
+                    "line": 76,
                     "type": "boolean | "
                 },
                 {
@@ -44611,7 +44610,7 @@
                     "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 52,
+                    "line": 51,
                     "type": "TableColumn[]"
                 },
                 {
@@ -44619,14 +44618,14 @@
                     "defaultValue": "new TableContextMenuConfig()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 84,
+                    "line": 83,
                     "type": "TableContextMenuConfig"
                 },
                 {
                     "name": "cookieName",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 61,
+                    "line": 60,
                     "type": "string"
                 },
                 {
@@ -44634,42 +44633,42 @@
                     "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 51,
+                    "line": 50,
                     "type": "T[]"
                 },
                 {
                     "name": "detailComponent",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 63,
+                    "line": 62,
                     "type": "Type<DetailComponentBase<T>>"
                 },
                 {
                     "name": "dict",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 53,
+                    "line": 52,
                     "type": "IDictionary<IIdName[]>"
                 },
                 {
                     "name": "editEvent",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 75,
+                    "line": 74,
                     "type": "EditEvent"
                 },
                 {
                     "name": "editType",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 74,
+                    "line": 73,
                     "type": "EditType"
                 },
                 {
                     "name": "grouping",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 68,
+                    "line": 67,
                     "type": "boolean"
                 },
                 {
@@ -44677,28 +44676,28 @@
                     "defaultValue": "GroupRowComponent",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 69,
+                    "line": 68,
                     "type": "Type<GroupRowComponentBase<T>>"
                 },
                 {
                     "name": "openLevels",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 71,
+                    "line": 70,
                     "type": "number"
                 },
                 {
                     "name": "rowClass",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 78,
+                    "line": 77,
                     "type": "function"
                 },
                 {
                     "name": "rowEditable",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 76,
+                    "line": 75,
                     "type": "boolean | "
                 },
                 {
@@ -44706,21 +44705,21 @@
                     "defaultValue": "24",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 60,
+                    "line": 59,
                     "type": "number"
                 },
                 {
                     "name": "scrollToIndex",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 80,
+                    "line": 79,
                     "type": "number"
                 },
                 {
                     "name": "selectedRows",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 65,
+                    "line": 64,
                     "type": "TableRow<T>[]"
                 },
                 {
@@ -44728,7 +44727,7 @@
                     "defaultValue": "SelectType.none",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 66,
+                    "line": 65,
                     "type": "SelectType"
                 },
                 {
@@ -44736,35 +44735,35 @@
                     "defaultValue": "true",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 87,
+                    "line": 86,
                     "type": "boolean"
                 },
                 {
                     "name": "state",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 56,
+                    "line": 55,
                     "type": ""
                 },
                 {
                     "name": "trackBy",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 73,
+                    "line": 72,
                     "type": "function"
                 },
                 {
                     "name": "tree",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 72,
+                    "line": 71,
                     "type": "boolean"
                 },
                 {
                     "name": "virtual",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 62,
+                    "line": 61,
                     "type": "boolean"
                 }
             ],
@@ -44774,7 +44773,7 @@
                     "defaultValue": "new EventEmitter()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 92,
+                    "line": 91,
                     "type": "EventEmitter<TableRow<T>>"
                 },
                 {
@@ -44782,7 +44781,7 @@
                     "defaultValue": "new EventEmitter<void>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 107,
+                    "line": 106,
                     "type": "EventEmitter"
                 },
                 {
@@ -44790,7 +44789,7 @@
                     "defaultValue": "new EventEmitter<TableRow<T>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 91,
+                    "line": 90,
                     "type": "EventEmitter"
                 },
                 {
@@ -44798,7 +44797,7 @@
                     "defaultValue": "new EventEmitter<ICellEvent<T>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 98,
+                    "line": 97,
                     "type": "EventEmitter"
                 },
                 {
@@ -44806,7 +44805,7 @@
                     "defaultValue": "new EventEmitter<ICellEvent<T>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 99,
+                    "line": 98,
                     "type": "EventEmitter"
                 },
                 {
@@ -44814,7 +44813,7 @@
                     "defaultValue": "new EventEmitter<ICellCoordinates<T>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 102,
+                    "line": 101,
                     "type": "EventEmitter"
                 },
                 {
@@ -44822,7 +44821,7 @@
                     "defaultValue": "new EventEmitter<ICellCoordinates<T>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 101,
+                    "line": 100,
                     "type": "EventEmitter"
                 },
                 {
@@ -44830,7 +44829,7 @@
                     "defaultValue": "new EventEmitter<ICellEvent<T>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 100,
+                    "line": 99,
                     "type": "EventEmitter"
                 },
                 {
@@ -44838,7 +44837,7 @@
                     "defaultValue": "new EventEmitter<ICellEvent<T>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 104,
+                    "line": 103,
                     "type": "EventEmitter"
                 },
                 {
@@ -44846,7 +44845,7 @@
                     "defaultValue": "new EventEmitter<TableRow<T>[]>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 108,
+                    "line": 107,
                     "type": "EventEmitter"
                 },
                 {
@@ -44854,7 +44853,7 @@
                     "defaultValue": "new EventEmitter<any[]>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 106,
+                    "line": 105,
                     "type": "EventEmitter"
                 },
                 {
@@ -44862,7 +44861,7 @@
                     "defaultValue": "new EventEmitter<TableRow<T>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 97,
+                    "line": 96,
                     "type": "EventEmitter"
                 },
                 {
@@ -44870,7 +44869,7 @@
                     "defaultValue": "new EventEmitter<TableRow<T>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 96,
+                    "line": 95,
                     "type": "EventEmitter"
                 },
                 {
@@ -44878,7 +44877,7 @@
                     "defaultValue": "new EventEmitter<TableRow<T>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 95,
+                    "line": 94,
                     "type": "EventEmitter"
                 },
                 {
@@ -44886,7 +44885,7 @@
                     "defaultValue": "new EventEmitter()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 93,
+                    "line": 92,
                     "type": "EventEmitter<TableRow[]>"
                 },
                 {
@@ -44894,7 +44893,7 @@
                     "defaultValue": "new EventEmitter<FilterState>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 90,
+                    "line": 89,
                     "type": "EventEmitter<FilterState>"
                 },
                 {
@@ -44902,7 +44901,7 @@
                     "defaultValue": "new EventEmitter<TableService<T>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 109,
+                    "line": 108,
                     "type": "EventEmitter"
                 },
                 {
@@ -44910,7 +44909,7 @@
                     "defaultValue": "new EventEmitter<ICellCoordinates<T>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 103,
+                    "line": 102,
                     "type": "EventEmitter"
                 }
             ],
@@ -44923,7 +44922,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 118,
+                    "line": 117,
                     "modifierKind": [
                         121
                     ]
@@ -44935,7 +44934,7 @@
                     "type": "HTMLElement",
                     "optional": false,
                     "description": "",
-                    "line": 119,
+                    "line": 118,
                     "modifierKind": [
                         121
                     ]
@@ -44947,7 +44946,7 @@
                     "type": "HTMLElement",
                     "optional": false,
                     "description": "",
-                    "line": 120,
+                    "line": 119,
                     "modifierKind": [
                         121
                     ]
@@ -44959,7 +44958,7 @@
                     "type": "FilterState",
                     "optional": false,
                     "description": "",
-                    "line": 122,
+                    "line": 121,
                     "modifierKind": [
                         121
                     ]
@@ -44971,7 +44970,7 @@
                     "type": "ICellCoordinates<T>",
                     "optional": false,
                     "description": "",
-                    "line": 116
+                    "line": 115
                 },
                 {
                     "name": "menu",
@@ -44980,7 +44979,7 @@
                     "type": "ElementRef",
                     "optional": false,
                     "description": "",
-                    "line": 111,
+                    "line": 110,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -44996,7 +44995,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 384,
+                    "line": 373,
                     "modifierKind": [
                         121
                     ]
@@ -45008,7 +45007,7 @@
                     "type": "TableRow<T>[]",
                     "optional": false,
                     "description": "",
-                    "line": 115
+                    "line": 114
                 },
                 {
                     "name": "showContextMenu",
@@ -45017,7 +45016,7 @@
                     "type": "boolean",
                     "optional": false,
                     "description": "",
-                    "line": 114
+                    "line": 113
                 },
                 {
                     "name": "tableClass",
@@ -45027,7 +45026,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 112,
+                    "line": 111,
                     "decorators": [
                         {
                             "name": "HostBinding",
@@ -45054,7 +45053,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 230,
+                    "line": 229,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "decorators": [
@@ -45088,7 +45087,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 250,
+                    "line": 249,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -45116,7 +45115,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 196,
+                    "line": 195,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "decorators": [
@@ -45150,13 +45149,44 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 263,
+                    "line": 262,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "rows",
                             "type": "TableRow<T>[]",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "eventIsOnRow",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 348,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
@@ -45178,7 +45208,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 185,
+                    "line": 184,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "decorators": [
@@ -45218,7 +45248,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 425,
+                    "line": 414,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -45246,37 +45276,6 @@
                     ]
                 },
                 {
-                    "name": "getCell",
-                    "args": [
-                        {
-                            "name": "element",
-                            "type": "HTMLElement",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "HTMLElement | null",
-                    "typeParameters": [],
-                    "line": 343,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "modifierKind": [
-                        121
-                    ],
-                    "jsdoctags": [
-                        {
-                            "name": "element",
-                            "type": "HTMLElement",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                },
-                {
                     "name": "getCoordinates",
                     "args": [
                         {
@@ -45289,7 +45288,38 @@
                     "optional": false,
                     "returnType": "ICellEvent | null",
                     "typeParameters": [],
-                    "line": 366,
+                    "line": 355,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getEventCell",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "HTMLElement | null",
+                    "typeParameters": [],
+                    "line": 342,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -45313,7 +45343,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 388,
+                    "line": 377,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -45339,7 +45369,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 450,
+                    "line": 439,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -45379,7 +45409,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 170,
+                    "line": 169,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "decorators": [
@@ -45401,37 +45431,6 @@
                     ]
                 },
                 {
-                    "name": "isRow",
-                    "args": [
-                        {
-                            "name": "element",
-                            "type": "HTMLElement",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "boolean",
-                    "typeParameters": [],
-                    "line": 353,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "modifierKind": [
-                        121
-                    ],
-                    "jsdoctags": [
-                        {
-                            "name": "element",
-                            "type": "HTMLElement",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                },
-                {
                     "name": "keyup",
                     "args": [
                         {
@@ -45444,7 +45443,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 207,
+                    "line": 206,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "decorators": [
@@ -45478,7 +45477,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 224,
+                    "line": 223,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "decorators": [
@@ -45505,7 +45504,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 289,
+                    "line": 288,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -45522,7 +45521,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 303,
+                    "line": 302,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -45543,7 +45542,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 298,
+                    "line": 297,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -45553,7 +45552,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 283,
+                    "line": 282,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -45563,7 +45562,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 269,
+                    "line": 268,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -45576,7 +45575,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 244,
+                    "line": 243,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -45593,7 +45592,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 396,
+                    "line": 385,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -45624,7 +45623,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 334,
+                    "line": 333,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -45661,7 +45660,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 411,
+                    "line": 400,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -45697,7 +45696,7 @@
                     "defaultValue": "true",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 112,
+                    "line": 111,
                     "type": "true"
                 }
             ],
@@ -45717,7 +45716,7 @@
                     ],
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 230
+                    "line": 229
                 },
                 {
                     "name": "dblclick",
@@ -45734,7 +45733,7 @@
                     ],
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 196
+                    "line": 195
                 },
                 {
                     "name": "document:click",
@@ -45751,7 +45750,7 @@
                     ],
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 170
+                    "line": 169
                 },
                 {
                     "name": "focusin",
@@ -45768,7 +45767,7 @@
                     ],
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 185
+                    "line": 184
                 },
                 {
                     "name": "mousedown",
@@ -45785,7 +45784,7 @@
                     ],
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 224
+                    "line": 223
                 },
                 {
                     "name": "window:keyup",
@@ -45802,13 +45801,13 @@
                     ],
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 207
+                    "line": 206
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  AfterViewInit,\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  ElementRef,\r\n  EventEmitter,\r\n  HostBinding,\r\n  HostListener,\r\n  Input,\r\n  OnChanges,\r\n  OnDestroy,\r\n  OnInit,\r\n  Output,\r\n  SimpleChanges,\r\n  Type,\r\n  ViewChild,\r\n} from '@angular/core';\r\nimport { TableRow } from '../contract/table-row';\r\nimport { TableService } from '../service/table.service';\r\nimport { TableColumn } from '../contract/table-column';\r\nimport { FilterState } from '../../filter/contarct/filter-state';\r\nimport { DetailComponentBase } from '../base/detail-component-base';\r\nimport { ICellEvent } from '../contract/i-cell-event';\r\nimport { ICellCoordinates } from '../contract/i-cell-coordinates';\r\nimport { GroupRowComponentBase } from '../base/group-row-component-base';\r\nimport { GroupRowComponent } from '../default/group-row/group-row.component';\r\nimport { filter, takeWhile, withLatestFrom } from 'rxjs/operators';\r\nimport { EditType } from '../enum/edit-type.enum';\r\nimport { EditEvent } from '../enum/edit-event.enum';\r\nimport { SelectType } from '../enum/select-type.enum';\r\nimport { IIdName } from '../../../common/contract/i-id-name';\r\nimport { IDictionary } from '../../../common/contract/i-dictionary';\r\nimport { of } from 'rxjs';\r\nimport { ArrayUtil } from '../../../common/util/array-util';\r\nimport { PositionUtil } from '../../../common/util/position-util';\r\nimport { Align } from '../../../common/enum/align.enum';\r\nimport { VerticalAlign } from '../../../common/enum/vertical-align.enum';\r\nimport { FilterType } from '../../filter/enum/filter-type.enum';\r\nimport { TableContextMenuConfig } from '../contract/table-context-menu-config';\r\n\r\n@Component({\r\n  selector: 'teta-table',\r\n  templateUrl: './table.component.html',\r\n  styleUrls: ['./table.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n  providers: [TableService],\r\n})\r\nexport class TableComponent<T>\r\n  implements OnInit, OnDestroy, AfterViewInit, OnChanges\r\n{\r\n  @Input() data: T[] = [];\r\n  @Input() columns: TableColumn[] = [];\r\n  @Input() dict: IDictionary<IIdName<any>[]>;\r\n\r\n  @Input()\r\n  set state(state: FilterState) {\r\n    this._state = state;\r\n  }\r\n\r\n  @Input() rowHeight = 24;\r\n  @Input() cookieName: string;\r\n  @Input() virtual: boolean;\r\n  @Input() detailComponent: Type<DetailComponentBase<T>>;\r\n  @Input() activeRow: TableRow<T>;\r\n  @Input() selectedRows: TableRow<T>[];\r\n  @Input() selectType: SelectType = SelectType.none;\r\n  @Input() aggregate: boolean;\r\n  @Input() grouping: boolean;\r\n  @Input() groupRowComponent: Type<GroupRowComponentBase<T>> =\r\n    GroupRowComponent;\r\n  @Input() openLevels: number;\r\n  @Input() tree: boolean;\r\n  @Input() trackBy: (row: TableRow<T>) => any;\r\n  @Input() editType: EditType;\r\n  @Input() editEvent: EditEvent;\r\n  @Input() rowEditable: boolean | ((row: TableRow<T>) => boolean);\r\n  @Input() cellEditable: boolean | ((row: ICellCoordinates<T>) => boolean);\r\n  @Input() rowClass: (row: TableRow<T>, index?: number) => string;\r\n\r\n  @Input() set scrollToIndex(index: number) {\r\n    this._svc.scrollToIndex(index);\r\n  }\r\n\r\n  @Input() contextMenuConfig: TableContextMenuConfig =\r\n    new TableContextMenuConfig();\r\n\r\n  @Input() showHeadCellMenu = true;\r\n\r\n  @Output()\r\n  stateChange: EventEmitter<FilterState> = new EventEmitter<FilterState>();\r\n  @Output() bodyLeft = new EventEmitter<TableRow<T>>();\r\n  @Output() activeRowChange: EventEmitter<TableRow<T>> = new EventEmitter();\r\n  @Output() selectedRowsChange: EventEmitter<TableRow<T>[]> =\r\n    new EventEmitter();\r\n  @Output() rowLeft = new EventEmitter<TableRow<T>>();\r\n  @Output() rowEditStart = new EventEmitter<TableRow<T>>();\r\n  @Output() rowEditEnd = new EventEmitter<TableRow<T>>();\r\n  @Output() cellClick = new EventEmitter<ICellEvent<T>>();\r\n  @Output() cellDoubleClick = new EventEmitter<ICellEvent<T>>();\r\n  @Output() cellFocus = new EventEmitter<ICellEvent<T>>();\r\n  @Output() cellEditStart = new EventEmitter<ICellCoordinates<T>>();\r\n  @Output() cellEditEnd = new EventEmitter<ICellCoordinates<T>>();\r\n  @Output() valueChange = new EventEmitter<ICellCoordinates<T>>();\r\n  @Output() cellKeyUp = new EventEmitter<ICellEvent<T>>();\r\n\r\n  @Output() pasteRows = new EventEmitter<any[]>();\r\n  @Output() addRow = new EventEmitter<void>();\r\n  @Output() deleteRows = new EventEmitter<TableRow<T>[]>();\r\n  @Output() tableService = new EventEmitter<TableService<T>>();\r\n\r\n  @ViewChild('contextMenu', { static: true }) menu: ElementRef;\r\n  @HostBinding('class.table') private readonly tableClass = true;\r\n\r\n  showContextMenu: boolean;\r\n  selectedRowsList: TableRow<T>[];\r\n  contextMenuTarget: ICellCoordinates<T>;\r\n\r\n  private _alive = true;\r\n  private _bodyElement: HTMLElement;\r\n  private _headElement: HTMLElement;\r\n\r\n  private _state: FilterState;\r\n\r\n  constructor(private _svc: TableService<T>, private _elementRef: ElementRef) {\r\n    this._svc.state\r\n      .pipe(\r\n        takeWhile((_) => this._alive),\r\n        filter((state) => state !== this._state)\r\n      )\r\n      .subscribe((state: FilterState) => this.stateChange.next(state));\r\n\r\n    this._svc.editCellStart\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((item: ICellCoordinates<T>) => this.cellEditStart.emit(item));\r\n\r\n    this._svc.editCellStop\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((item: ICellCoordinates<T>) => this.cellEditEnd.emit(item));\r\n\r\n    this._svc.editRowStart\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((item: ICellCoordinates<T>) =>\r\n        this.rowEditStart.emit(item?.row)\r\n      );\r\n\r\n    this._svc.editRowStop\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((item: ICellCoordinates<T>) =>\r\n        this.rowEditEnd.emit(item?.row)\r\n      );\r\n\r\n    this._svc.selectedRows\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((items: TableRow<T>[]) => {\r\n        this.selectedRowsList = items;\r\n        this.selectedRowsChange.emit(items);\r\n      });\r\n\r\n    this._svc.activeRow\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((item: TableRow<T>) => this.activeRowChange.emit(item));\r\n\r\n    this._svc.valueChanged\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((coordinates: ICellCoordinates<T>) => {\r\n        this.valueChange.emit(coordinates);\r\n      });\r\n  }\r\n\r\n  @HostListener('document:click', ['$event']) handleClickOutsideAnyRow(\r\n    event: MouseEvent\r\n  ) {\r\n    const coordinates = this.getCoordinates(event);\r\n    if (coordinates) {\r\n      this.cellClick.emit(coordinates);\r\n      if (this.editEvent === EditEvent.click) {\r\n        this.startEditRowOrCell(coordinates);\r\n      }\r\n    }\r\n    if (!this.isRow(event.target as HTMLElement)) {\r\n      this._svc.startEditRow(null);\r\n    }\r\n  }\r\n\r\n  @HostListener('focusin', ['$event']) focusIn(event: any) {\r\n    const coordinates = this.getCoordinates(event);\r\n    if (coordinates) {\r\n      this.cellFocus.emit(coordinates);\r\n      if (this.editEvent === EditEvent.focus) {\r\n        this.startEditRowOrCell(coordinates);\r\n      }\r\n    }\r\n  }\r\n\r\n  @HostListener('dblclick', ['$event'])\r\n  dblclick(event: MouseEvent) {\r\n    const coordinates = this.getCoordinates(event);\r\n    if (coordinates) {\r\n      this.cellDoubleClick.emit(coordinates);\r\n      if (this.editEvent === EditEvent.doubleClick) {\r\n        this.startEditRowOrCell(coordinates);\r\n      }\r\n    }\r\n  }\r\n\r\n  @HostListener('window:keyup', ['$event'])\r\n  keyup(event: KeyboardEvent) {\r\n    const coordinates = this.getCoordinates(event);\r\n    if (coordinates) {\r\n      this.cellKeyUp.emit(coordinates);\r\n    }\r\n    switch (event.key) {\r\n      case 'Enter':\r\n        this._svc.startEditRow(null);\r\n        break;\r\n      case 'Escape':\r\n        this._svc.startEditRow(null);\r\n        break;\r\n      default:\r\n        break;\r\n    }\r\n  }\r\n\r\n  @HostListener('mousedown', ['$event']) mousedown(event: MouseEvent) {\r\n    if (event.button === 2) {\r\n      event.preventDefault();\r\n    }\r\n  }\r\n\r\n  @HostListener('contextmenu', ['$event']) contextMenu(event: MouseEvent) {\r\n    if (\r\n      this.getSelectedText() ||\r\n      this.contextMenuConfig?.contextMenu === false\r\n    ) {\r\n      return;\r\n    }\r\n    event.preventDefault();\r\n    event.stopPropagation();\r\n    this.contextMenuTarget = this.getCoordinates(event);\r\n    this.showContextMenu = true;\r\n    this.setPosition(event);\r\n  }\r\n\r\n  rowAdd() {\r\n    this.addRow.emit();\r\n    this.contextMenuTarget = null;\r\n    this.showContextMenu = false;\r\n  }\r\n\r\n  copy(rows: TableRow<T>[]) {\r\n    of(1)\r\n      .pipe(withLatestFrom(this._svc.columns, this._svc.hiddenColumns))\r\n      .subscribe((data: [number, TableColumn[], string[]]) => {\r\n        const [, columns, hidden] = data;\r\n        navigator.clipboard.writeText(\r\n          this.toClipboardString(rows, this.getVisibleColumns(columns, hidden))\r\n        );\r\n        this.contextMenuTarget = null;\r\n        this.showContextMenu = false;\r\n      });\r\n  }\r\n\r\n  delete(rows: TableRow<T>[]) {\r\n    this.deleteRows.emit(rows);\r\n    this.contextMenuTarget = null;\r\n    this.showContextMenu = false;\r\n  }\r\n\r\n  async pasteData() {\r\n    const result = await navigator.clipboard.readText();\r\n    of(1)\r\n      .pipe(withLatestFrom(this._svc.columns, this._svc.hiddenColumns))\r\n      .subscribe((data: [number, TableColumn[], string[]]) => {\r\n        const [, columns, hidden] = data;\r\n        this.pasteRows.emit(\r\n          this.fromClipboard(result, this.getVisibleColumns(columns, hidden))\r\n        );\r\n      });\r\n    this.contextMenuTarget = null;\r\n    this.showContextMenu = false;\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this._svc.restoreState();\r\n    this._svc.restoreHiddenColumns();\r\n    this.tableService.emit(this._svc);\r\n  }\r\n\r\n  ngAfterViewInit(): void {\r\n    this._headElement =\r\n      this._elementRef.nativeElement.querySelector('.table-head');\r\n    this._bodyElement = this._elementRef.nativeElement.querySelector(\r\n      '.table-body-container'\r\n    );\r\n    this._bodyElement.addEventListener('scroll', this.onScroll);\r\n  }\r\n\r\n  ngOnDestroy(): void {\r\n    this._alive = false;\r\n    this._bodyElement.removeEventListener('scroll', this.onScroll);\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges): void {\r\n    if (changes.hasOwnProperty('editType')) {\r\n      this._svc.editType = this.editType;\r\n    }\r\n    if (changes.hasOwnProperty('selectType')) {\r\n      this._svc.selectType = this.selectType;\r\n    }\r\n    if (changes.hasOwnProperty('selectedRows')) {\r\n      this._svc.selectRows(this.selectedRows);\r\n    }\r\n    if (changes.hasOwnProperty('rowEditable')) {\r\n      this._svc.rowEditable = this.rowEditable;\r\n    }\r\n    if (changes.hasOwnProperty('cellEditable')) {\r\n      this._svc.cellEditable = this.cellEditable;\r\n    }\r\n    if (changes.hasOwnProperty('cookieName')) {\r\n      this._svc.setCookieName(this.cookieName);\r\n    }\r\n    if (changes.hasOwnProperty('columns')) {\r\n      this._svc.setColumns(this.columns);\r\n    }\r\n    if (changes.hasOwnProperty('data')) {\r\n      this._svc.setData(this.data);\r\n      this._svc.selectRows([]);\r\n    }\r\n    if (changes.hasOwnProperty('dict')) {\r\n      this._svc.setDict(this.dict);\r\n    }\r\n  }\r\n\r\n  private startEditRowOrCell(coordinates: ICellCoordinates<T>): void {\r\n    if (this.editType === EditType.row) {\r\n      this._svc.startEditRow(coordinates);\r\n    }\r\n    if (this.editType === EditType.cell) {\r\n      this._svc.startEditCell(coordinates);\r\n    }\r\n  }\r\n\r\n  private getCell(element: HTMLElement): HTMLElement | null {\r\n    if (!element.parentElement) {\r\n      return null;\r\n    }\r\n    if (element.tagName.toLowerCase() === 'teta-cell') {\r\n      return element;\r\n    }\r\n    return this.getCell(element.parentElement);\r\n  }\r\n\r\n  private isRow(element: HTMLElement): boolean {\r\n    if (!element.parentElement) {\r\n      return false;\r\n    }\r\n    if (\r\n      this._elementRef.nativeElement.contains(element) &&\r\n      element.getAttribute('data-row')\r\n    ) {\r\n      return true;\r\n    }\r\n    return this.isRow(element.parentElement);\r\n  }\r\n\r\n  private getCoordinates(event: Event): ICellEvent<T> | null {\r\n    const cell = this.getCell(event.target as HTMLElement);\r\n    if (cell) {\r\n      const rowIndex = cell.getAttribute('data-row');\r\n      const columnName = cell.getAttribute('data-column');\r\n      if (rowIndex && columnName) {\r\n        const row = this._svc.getRowByIndex(rowIndex);\r\n        const column = this._svc.getColumnByName(columnName);\r\n        return {\r\n          row,\r\n          column: column ? column : new TableColumn(),\r\n          event,\r\n        };\r\n      }\r\n    }\r\n    return null;\r\n  }\r\n\r\n  private onScroll = () => {\r\n    this._headElement.scrollLeft = this._bodyElement.scrollLeft;\r\n  };\r\n\r\n  private getSelectedText() {\r\n    let text = '';\r\n    if (typeof window.getSelection != 'undefined') {\r\n      text = window.getSelection().toString();\r\n    }\r\n    return text;\r\n  }\r\n\r\n  private setPosition(event: MouseEvent) {\r\n    const position = PositionUtil.getPosition(\r\n      {\r\n        top: event.y,\r\n        bottom: event.y,\r\n        left: event.x,\r\n        right: event.x,\r\n      },\r\n      this.menu.nativeElement.getBoundingClientRect(),\r\n      Align.left,\r\n      VerticalAlign.auto\r\n    );\r\n    PositionUtil.setElementPosition(this.menu.nativeElement, position);\r\n  }\r\n\r\n  private toClipboardString(rows: TableRow<T>[], columns: TableColumn[]) {\r\n    return rows.reduce(\r\n      (res: string, currentRow: TableRow<T>, i: number) =>\r\n        `${res}${i === 0 ? '' : '\\n'}${columns.reduce(\r\n          (columnResult: string, column: TableColumn, j: number) =>\r\n            `${columnResult}${j === 0 ? '' : '\\t'}${\r\n              currentRow.data[column.name] ?? ''\r\n            }`,\r\n          ''\r\n        )}`,\r\n      ''\r\n    );\r\n  }\r\n\r\n  private fromClipboard(data: string, columns: TableColumn[]) {\r\n    const rows = data.split('\\n').filter((_) => _?.length > 0);\r\n    const result = rows.map((_) =>\r\n      _.replace('\\r', '').replace('\\n', '').split('\\t')\r\n    );\r\n    return result.map((row: string[]) =>\r\n      row.reduce((res, item, index) => {\r\n        let value: any = item;\r\n        if (\r\n          columns[index]?.filterType === FilterType.number ||\r\n          columns[index]?.filterType === FilterType.list\r\n        ) {\r\n          value = parseFloat(item);\r\n        }\r\n        if (columns[index]?.filterType === FilterType.boolean) {\r\n          value = Boolean(JSON.parse(item.toLowerCase()));\r\n        }\r\n        if (columns[index]) {\r\n          res[columns[index].name] = value;\r\n        }\r\n        return res;\r\n      }, {})\r\n    );\r\n  }\r\n\r\n  private getVisibleColumns(columns: TableColumn[], hidden: string[]) {\r\n    const visible = ArrayUtil.flatten(columns, 'columns', true).filter(\r\n      (_) => hidden.indexOf(_.name) < 0\r\n    );\r\n    return visible.sort((a, b) => Number(b.locked) - Number(a.locked));\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  AfterViewInit,\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  ElementRef,\r\n  EventEmitter,\r\n  HostBinding,\r\n  HostListener,\r\n  Input,\r\n  OnChanges,\r\n  OnDestroy,\r\n  OnInit,\r\n  Output,\r\n  SimpleChanges,\r\n  Type,\r\n  ViewChild,\r\n} from '@angular/core';\r\nimport {TableRow} from '../contract/table-row';\r\nimport {TableService} from '../service/table.service';\r\nimport {TableColumn} from '../contract/table-column';\r\nimport {FilterState} from '../../filter/contarct/filter-state';\r\nimport {DetailComponentBase} from '../base/detail-component-base';\r\nimport {ICellEvent} from '../contract/i-cell-event';\r\nimport {ICellCoordinates} from '../contract/i-cell-coordinates';\r\nimport {GroupRowComponentBase} from '../base/group-row-component-base';\r\nimport {GroupRowComponent} from '../default/group-row/group-row.component';\r\nimport {filter, takeWhile, withLatestFrom} from 'rxjs/operators';\r\nimport {EditType} from '../enum/edit-type.enum';\r\nimport {EditEvent} from '../enum/edit-event.enum';\r\nimport {SelectType} from '../enum/select-type.enum';\r\nimport {IIdName} from '../../../common/contract/i-id-name';\r\nimport {IDictionary} from '../../../common/contract/i-dictionary';\r\nimport {of} from 'rxjs';\r\nimport {ArrayUtil} from '../../../common/util/array-util';\r\nimport {PositionUtil} from '../../../common/util/position-util';\r\nimport {Align} from '../../../common/enum/align.enum';\r\nimport {VerticalAlign} from '../../../common/enum/vertical-align.enum';\r\nimport {FilterType} from '../../filter/enum/filter-type.enum';\r\nimport {TableContextMenuConfig} from '../contract/table-context-menu-config';\r\n\r\n@Component({\r\n  selector: 'teta-table',\r\n  templateUrl: './table.component.html',\r\n  styleUrls: ['./table.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n  providers: [TableService],\r\n})\r\nexport class TableComponent<T>\r\n  implements OnInit, OnDestroy, AfterViewInit, OnChanges {\r\n  @Input() data: T[] = [];\r\n  @Input() columns: TableColumn[] = [];\r\n  @Input() dict: IDictionary<IIdName<any>[]>;\r\n\r\n  @Input()\r\n  set state(state: FilterState) {\r\n    this._state = state;\r\n  }\r\n\r\n  @Input() rowHeight = 24;\r\n  @Input() cookieName: string;\r\n  @Input() virtual: boolean;\r\n  @Input() detailComponent: Type<DetailComponentBase<T>>;\r\n  @Input() activeRow: TableRow<T>;\r\n  @Input() selectedRows: TableRow<T>[];\r\n  @Input() selectType: SelectType = SelectType.none;\r\n  @Input() aggregate: boolean;\r\n  @Input() grouping: boolean;\r\n  @Input() groupRowComponent: Type<GroupRowComponentBase<T>> =\r\n    GroupRowComponent;\r\n  @Input() openLevels: number;\r\n  @Input() tree: boolean;\r\n  @Input() trackBy: (row: TableRow<T>) => any;\r\n  @Input() editType: EditType;\r\n  @Input() editEvent: EditEvent;\r\n  @Input() rowEditable: boolean | ((row: TableRow<T>) => boolean);\r\n  @Input() cellEditable: boolean | ((row: ICellCoordinates<T>) => boolean);\r\n  @Input() rowClass: (row: TableRow<T>, index?: number) => string;\r\n\r\n  @Input() set scrollToIndex(index: number) {\r\n    this._svc.scrollToIndex(index);\r\n  }\r\n\r\n  @Input() contextMenuConfig: TableContextMenuConfig =\r\n    new TableContextMenuConfig();\r\n\r\n  @Input() showHeadCellMenu = true;\r\n\r\n  @Output()\r\n  stateChange: EventEmitter<FilterState> = new EventEmitter<FilterState>();\r\n  @Output() bodyLeft = new EventEmitter<TableRow<T>>();\r\n  @Output() activeRowChange: EventEmitter<TableRow<T>> = new EventEmitter();\r\n  @Output() selectedRowsChange: EventEmitter<TableRow<T>[]> =\r\n    new EventEmitter();\r\n  @Output() rowLeft = new EventEmitter<TableRow<T>>();\r\n  @Output() rowEditStart = new EventEmitter<TableRow<T>>();\r\n  @Output() rowEditEnd = new EventEmitter<TableRow<T>>();\r\n  @Output() cellClick = new EventEmitter<ICellEvent<T>>();\r\n  @Output() cellDoubleClick = new EventEmitter<ICellEvent<T>>();\r\n  @Output() cellFocus = new EventEmitter<ICellEvent<T>>();\r\n  @Output() cellEditStart = new EventEmitter<ICellCoordinates<T>>();\r\n  @Output() cellEditEnd = new EventEmitter<ICellCoordinates<T>>();\r\n  @Output() valueChange = new EventEmitter<ICellCoordinates<T>>();\r\n  @Output() cellKeyUp = new EventEmitter<ICellEvent<T>>();\r\n\r\n  @Output() pasteRows = new EventEmitter<any[]>();\r\n  @Output() addRow = new EventEmitter<void>();\r\n  @Output() deleteRows = new EventEmitter<TableRow<T>[]>();\r\n  @Output() tableService = new EventEmitter<TableService<T>>();\r\n\r\n  @ViewChild('contextMenu', {static: true}) menu: ElementRef;\r\n  @HostBinding('class.table') private readonly tableClass = true;\r\n\r\n  showContextMenu: boolean;\r\n  selectedRowsList: TableRow<T>[];\r\n  contextMenuTarget: ICellCoordinates<T>;\r\n\r\n  private _alive = true;\r\n  private _bodyElement: HTMLElement;\r\n  private _headElement: HTMLElement;\r\n\r\n  private _state: FilterState;\r\n\r\n  constructor(private _svc: TableService<T>, private _elementRef: ElementRef) {\r\n    this._svc.state\r\n      .pipe(\r\n        takeWhile((_) => this._alive),\r\n        filter((state) => state !== this._state)\r\n      )\r\n      .subscribe((state: FilterState) => this.stateChange.next(state));\r\n\r\n    this._svc.editCellStart\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((item: ICellCoordinates<T>) => this.cellEditStart.emit(item));\r\n\r\n    this._svc.editCellStop\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((item: ICellCoordinates<T>) => this.cellEditEnd.emit(item));\r\n\r\n    this._svc.editRowStart\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((item: ICellCoordinates<T>) =>\r\n        this.rowEditStart.emit(item?.row)\r\n      );\r\n\r\n    this._svc.editRowStop\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((item: ICellCoordinates<T>) =>\r\n        this.rowEditEnd.emit(item?.row)\r\n      );\r\n\r\n    this._svc.selectedRows\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((items: TableRow<T>[]) => {\r\n        this.selectedRowsList = items;\r\n        this.selectedRowsChange.emit(items);\r\n      });\r\n\r\n    this._svc.activeRow\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((item: TableRow<T>) => this.activeRowChange.emit(item));\r\n\r\n    this._svc.valueChanged\r\n      .pipe(takeWhile((_) => this._alive))\r\n      .subscribe((coordinates: ICellCoordinates<T>) => {\r\n        this.valueChange.emit(coordinates);\r\n      });\r\n  }\r\n\r\n  @HostListener('document:click', ['$event']) handleClickOutsideAnyRow(\r\n    event: MouseEvent\r\n  ) {\r\n    const coordinates = this.getCoordinates(event);\r\n    if (coordinates) {\r\n      this.cellClick.emit(coordinates);\r\n      if (this.editEvent === EditEvent.click) {\r\n        this.startEditRowOrCell(coordinates);\r\n      }\r\n    }\r\n    if (!this.eventIsOnRow(event)) {\r\n      this._svc.startEditRow(null);\r\n    }\r\n  }\r\n\r\n  @HostListener('focusin', ['$event']) focusIn(event: any) {\r\n    const coordinates = this.getCoordinates(event);\r\n    if (coordinates) {\r\n      this.cellFocus.emit(coordinates);\r\n      if (this.editEvent === EditEvent.focus) {\r\n        this.startEditRowOrCell(coordinates);\r\n      }\r\n    }\r\n  }\r\n\r\n  @HostListener('dblclick', ['$event'])\r\n  dblclick(event: MouseEvent) {\r\n    const coordinates = this.getCoordinates(event);\r\n    if (coordinates) {\r\n      this.cellDoubleClick.emit(coordinates);\r\n      if (this.editEvent === EditEvent.doubleClick) {\r\n        this.startEditRowOrCell(coordinates);\r\n      }\r\n    }\r\n  }\r\n\r\n  @HostListener('window:keyup', ['$event'])\r\n  keyup(event: KeyboardEvent) {\r\n    const coordinates = this.getCoordinates(event);\r\n    if (coordinates) {\r\n      this.cellKeyUp.emit(coordinates);\r\n    }\r\n    switch (event.key) {\r\n      case 'Enter':\r\n        this._svc.startEditRow(null);\r\n        break;\r\n      case 'Escape':\r\n        this._svc.startEditRow(null);\r\n        break;\r\n      default:\r\n        break;\r\n    }\r\n  }\r\n\r\n  @HostListener('mousedown', ['$event']) mousedown(event: MouseEvent) {\r\n    if (event.button === 2) {\r\n      event.preventDefault();\r\n    }\r\n  }\r\n\r\n  @HostListener('contextmenu', ['$event']) contextMenu(event: MouseEvent) {\r\n    if (\r\n      this.getSelectedText() ||\r\n      this.contextMenuConfig?.contextMenu === false\r\n    ) {\r\n      return;\r\n    }\r\n    event.preventDefault();\r\n    event.stopPropagation();\r\n    this.contextMenuTarget = this.getCoordinates(event);\r\n    this.showContextMenu = true;\r\n    this.setPosition(event);\r\n  }\r\n\r\n  rowAdd() {\r\n    this.addRow.emit();\r\n    this.contextMenuTarget = null;\r\n    this.showContextMenu = false;\r\n  }\r\n\r\n  copy(rows: TableRow<T>[]) {\r\n    of(1)\r\n      .pipe(withLatestFrom(this._svc.columns, this._svc.hiddenColumns))\r\n      .subscribe((data: [number, TableColumn[], string[]]) => {\r\n        const [, columns, hidden] = data;\r\n        navigator.clipboard.writeText(\r\n          this.toClipboardString(rows, this.getVisibleColumns(columns, hidden))\r\n        );\r\n        this.contextMenuTarget = null;\r\n        this.showContextMenu = false;\r\n      });\r\n  }\r\n\r\n  delete(rows: TableRow<T>[]) {\r\n    this.deleteRows.emit(rows);\r\n    this.contextMenuTarget = null;\r\n    this.showContextMenu = false;\r\n  }\r\n\r\n  async pasteData() {\r\n    const result = await navigator.clipboard.readText();\r\n    of(1)\r\n      .pipe(withLatestFrom(this._svc.columns, this._svc.hiddenColumns))\r\n      .subscribe((data: [number, TableColumn[], string[]]) => {\r\n        const [, columns, hidden] = data;\r\n        this.pasteRows.emit(\r\n          this.fromClipboard(result, this.getVisibleColumns(columns, hidden))\r\n        );\r\n      });\r\n    this.contextMenuTarget = null;\r\n    this.showContextMenu = false;\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this._svc.restoreState();\r\n    this._svc.restoreHiddenColumns();\r\n    this.tableService.emit(this._svc);\r\n  }\r\n\r\n  ngAfterViewInit(): void {\r\n    this._headElement =\r\n      this._elementRef.nativeElement.querySelector('.table-head');\r\n    this._bodyElement = this._elementRef.nativeElement.querySelector(\r\n      '.table-body-container'\r\n    );\r\n    this._bodyElement.addEventListener('scroll', this.onScroll);\r\n  }\r\n\r\n  ngOnDestroy(): void {\r\n    this._alive = false;\r\n    this._bodyElement.removeEventListener('scroll', this.onScroll);\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges): void {\r\n    if (changes.hasOwnProperty('editType')) {\r\n      this._svc.editType = this.editType;\r\n    }\r\n    if (changes.hasOwnProperty('selectType')) {\r\n      this._svc.selectType = this.selectType;\r\n    }\r\n    if (changes.hasOwnProperty('selectedRows')) {\r\n      this._svc.selectRows(this.selectedRows);\r\n    }\r\n    if (changes.hasOwnProperty('rowEditable')) {\r\n      this._svc.rowEditable = this.rowEditable;\r\n    }\r\n    if (changes.hasOwnProperty('cellEditable')) {\r\n      this._svc.cellEditable = this.cellEditable;\r\n    }\r\n    if (changes.hasOwnProperty('cookieName')) {\r\n      this._svc.setCookieName(this.cookieName);\r\n    }\r\n    if (changes.hasOwnProperty('columns')) {\r\n      this._svc.setColumns(this.columns);\r\n    }\r\n    if (changes.hasOwnProperty('data')) {\r\n      this._svc.setData(this.data);\r\n      this._svc.selectRows([]);\r\n    }\r\n    if (changes.hasOwnProperty('dict')) {\r\n      this._svc.setDict(this.dict);\r\n    }\r\n  }\r\n\r\n  private startEditRowOrCell(coordinates: ICellCoordinates<T>): void {\r\n    if (this.editType === EditType.row) {\r\n      this._svc.startEditRow(coordinates);\r\n    }\r\n    if (this.editType === EditType.cell) {\r\n      this._svc.startEditCell(coordinates);\r\n    }\r\n  }\r\n\r\n  private getEventCell(event: Event): HTMLElement | null {\r\n    return event.composedPath().find((target: HTMLElement) => {\r\n      return target.tagName?.toLowerCase() === 'teta-cell';\r\n    }) as HTMLElement;\r\n  }\r\n\r\n  private eventIsOnRow(event: Event): boolean {\r\n    const row = event.composedPath().find((target: HTMLElement) => {\r\n      return target?.getAttribute && target?.getAttribute('data-row');\r\n    });\r\n    return row && this._elementRef.nativeElement.contains(row);\r\n  }\r\n\r\n  private getCoordinates(event: Event): ICellEvent<T> | null {\r\n    const cell = this.getEventCell(event);\r\n    if (cell) {\r\n      const rowIndex = cell.getAttribute('data-row');\r\n      const columnName = cell.getAttribute('data-column');\r\n      if (rowIndex && columnName) {\r\n        const row = this._svc.getRowByIndex(rowIndex);\r\n        const column = this._svc.getColumnByName(columnName);\r\n        return {\r\n          row,\r\n          column: column ? column : new TableColumn(),\r\n          event,\r\n        };\r\n      }\r\n    }\r\n    return null;\r\n  }\r\n\r\n  private onScroll = () => {\r\n    this._headElement.scrollLeft = this._bodyElement.scrollLeft;\r\n  };\r\n\r\n  private getSelectedText() {\r\n    let text = '';\r\n    if (typeof window.getSelection != 'undefined') {\r\n      text = window.getSelection().toString();\r\n    }\r\n    return text;\r\n  }\r\n\r\n  private setPosition(event: MouseEvent) {\r\n    const position = PositionUtil.getPosition(\r\n      {\r\n        top: event.y,\r\n        bottom: event.y,\r\n        left: event.x,\r\n        right: event.x,\r\n      },\r\n      this.menu.nativeElement.getBoundingClientRect(),\r\n      Align.left,\r\n      VerticalAlign.auto\r\n    );\r\n    PositionUtil.setElementPosition(this.menu.nativeElement, position);\r\n  }\r\n\r\n  private toClipboardString(rows: TableRow<T>[], columns: TableColumn[]) {\r\n    return rows.reduce(\r\n      (res: string, currentRow: TableRow<T>, i: number) =>\r\n        `${res}${i === 0 ? '' : '\\n'}${columns.reduce(\r\n          (columnResult: string, column: TableColumn, j: number) =>\r\n            `${columnResult}${j === 0 ? '' : '\\t'}${\r\n              currentRow.data[column.name] ?? ''\r\n            }`,\r\n          ''\r\n        )}`,\r\n      ''\r\n    );\r\n  }\r\n\r\n  private fromClipboard(data: string, columns: TableColumn[]) {\r\n    const rows = data.split('\\n').filter((_) => _?.length > 0);\r\n    const result = rows.map((_) =>\r\n      _.replace('\\r', '').replace('\\n', '').split('\\t')\r\n    );\r\n    return result.map((row: string[]) =>\r\n      row.reduce((res, item, index) => {\r\n        let value: any = item;\r\n        if (\r\n          columns[index]?.filterType === FilterType.number ||\r\n          columns[index]?.filterType === FilterType.list\r\n        ) {\r\n          value = parseFloat(item);\r\n        }\r\n        if (columns[index]?.filterType === FilterType.boolean) {\r\n          value = Boolean(JSON.parse(item.toLowerCase()));\r\n        }\r\n        if (columns[index]) {\r\n          res[columns[index].name] = value;\r\n        }\r\n        return res;\r\n      }, {})\r\n    );\r\n  }\r\n\r\n  private getVisibleColumns(columns: TableColumn[], hidden: string[]) {\r\n    const visible = ArrayUtil.flatten(columns, 'columns', true).filter(\r\n      (_) => hidden.indexOf(_.name) < 0\r\n    );\r\n    return visible.sort((a, b) => Number(b.locked) - Number(a.locked));\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -45836,7 +45835,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 122,
+                "line": 121,
                 "jsdoctags": [
                     {
                         "name": "_svc",
@@ -45881,7 +45880,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 56,
+                        "line": 55,
                         "jsdoctags": [
                             {
                                 "name": "state",
@@ -45911,7 +45910,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 80,
+                        "line": 79,
                         "jsdoctags": [
                             {
                                 "name": "index",
@@ -52440,7 +52439,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [ChartModule],\r\n  },\r\n  props: {\r\n    config,\r\n    dark: boolean('dark', true)\r\n  },\r\n  template: `<div class=\"font-body-3 padding-3 bg-background-0\" [class.theme-dark]=\"dark\" style=\"width: auto; height: 600px;\">\r\n      <teta-chart [config]=\"config\" class=\"bg-background-50 border border-text-50\"></teta-chart>\r\n    </div>`,\r\n})"
+                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [ChartModule],\r\n  },\r\n  props: {\r\n    config\r\n  },\r\n  template: `<div class=\"font-body-3 padding-3 bg-background-0\" style=\"width: auto; height: 600px;\">\r\n      <teta-chart [config]=\"config\" class=\"bg-background-50 border border-text-50\"></teta-chart>\r\n    </div>`,\r\n})"
             },
             {
                 "name": "basicContextMenu",
@@ -52490,7 +52489,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [TableModule, IconModule],\r\n    entryComponents: [\r\n      DefaultHeadCellComponent,\r\n      StringCellComponent,\r\n      DateCellComponent,\r\n      NumericCellComponent,\r\n      ListCellComponent,\r\n      StringFilterComponent,\r\n      ListFilterComponent,\r\n      NumericFilterComponent,\r\n      PopupContentComponent,\r\n      DateFilterComponent,\r\n    ],\r\n    providers: [TableService],\r\n  },\r\n  props: {\r\n    data: getData(15),\r\n    editType: select(\r\n      'editType',\r\n      {\r\n        row: EditType.row,\r\n        cell: EditType.cell,\r\n      },\r\n      EditType.cell\r\n    ),\r\n    selectType: select(\r\n      'selectType',\r\n      {\r\n        none: SelectType.none,\r\n        multiple: SelectType.multiple,\r\n        single: SelectType.single,\r\n      },\r\n      SelectType.multiple\r\n    ),\r\n    editEvent: select(\r\n      'editEvent',\r\n      {\r\n        focus: EditEvent.focus,\r\n        click: EditEvent.click,\r\n        doubleClick: EditEvent.doubleClick,\r\n      },\r\n      EditEvent.focus\r\n    ),\r\n    columns,\r\n    dict,\r\n    log: (name, value) => {\r\n      action(name)(value);\r\n    },\r\n  },\r\n  template: `<div [tetaIconSprite]=\"'assets/icons.svg'\" class=\"bg-panel-50 padding-3\" style=\"display: flex; width: 1200px; height: 600px;\">\r\n              <div [tetaIconSprite]=\"'assets/color-icons.svg'\"></div>\r\n              <teta-table [data]=\"data\"\r\n                          [cookieName]=\"'table-stories'\"\r\n                          [columns]=\"columns\"\r\n                          [dict]=\"dict\"\r\n                          [editType]=\"editType\"\r\n                          [editEvent]=\"editEvent\"\r\n                          [selectType]=\"selectType\"\r\n                          (bodyLeft)=\"log('bodyLeft', $event)\"\r\n                          (cellClick)=\"log('cellClick', $event)\"\r\n                          (cellDoubleClick)=\"log('cellDoubleClick', $event)\"\r\n                          (cellEditEnd)=\"log('cellEditEnd', $event)\"\r\n                          (cellEditStart)=\"log('cellEditStart', $event)\"\r\n                          (cellFocus)=\"log('cellFocus', $event)\"\r\n                          (cellKeyUp)=\"log('cellKeyUp', $event)\"\r\n                          (rowEditEnd)=\"log('rowEditEnd', $event)\"\r\n                          (rowEditStart)=\"log('rowEditStart', $event)\"\r\n                          (rowLeft)=\"log('rowLeft', $event)\"\r\n                          (selectedRowsChange)=\"log('selectedRowsChange', $event)\"\r\n                          (stateChange)=\"log('stateChange', $event)\"\r\n                          (valueChange)=\"log('valueChange', $event)\"\r\n                          (activeRowChange)=\"log('activeRowChange', $event)\"></teta-table>\r\n            </div>`,\r\n})"
+                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [TableModule, IconModule],\r\n    entryComponents: [\r\n      DefaultHeadCellComponent,\r\n      StringCellComponent,\r\n      DateCellComponent,\r\n      NumericCellComponent,\r\n      ListCellComponent,\r\n      StringFilterComponent,\r\n      ListFilterComponent,\r\n      NumericFilterComponent,\r\n      PopupContentComponent,\r\n      DateFilterComponent,\r\n    ],\r\n    providers: [TableService],\r\n  },\r\n  props: {\r\n    data: getData(15),\r\n    ...props\r\n  },\r\n  template: `<div [tetaIconSprite]=\"'assets/icons.svg'\" class=\"bg-panel-50 padding-3\" style=\"display: flex; width: 1200px; height: 600px;\">\r\n              <div [tetaIconSprite]=\"'assets/color-icons.svg'\"></div>\r\n              <teta-table [data]=\"data\"\r\n                          [cookieName]=\"'table-stories'\"\r\n                          [columns]=\"columns\"\r\n                          [dict]=\"dict\"\r\n                          [editType]=\"editType\"\r\n                          [editEvent]=\"editEvent\"\r\n                          [selectType]=\"selectType\"\r\n                          (bodyLeft)=\"log('bodyLeft', $event)\"\r\n                          (cellClick)=\"log('cellClick', $event)\"\r\n                          (cellDoubleClick)=\"log('cellDoubleClick', $event)\"\r\n                          (cellEditEnd)=\"log('cellEditEnd', $event)\"\r\n                          (cellEditStart)=\"log('cellEditStart', $event)\"\r\n                          (cellFocus)=\"log('cellFocus', $event)\"\r\n                          (cellKeyUp)=\"log('cellKeyUp', $event)\"\r\n                          (rowEditEnd)=\"log('rowEditEnd', $event)\"\r\n                          (rowEditStart)=\"log('rowEditStart', $event)\"\r\n                          (rowLeft)=\"log('rowLeft', $event)\"\r\n                          (selectedRowsChange)=\"log('selectedRowsChange', $event)\"\r\n                          (stateChange)=\"log('stateChange', $event)\"\r\n                          (valueChange)=\"log('valueChange', $event)\"\r\n                          (activeRowChange)=\"log('activeRowChange', $event)\"></teta-table>\r\n            </div>`,\r\n})"
             },
             {
                 "name": "basicToolbar",
@@ -52660,7 +52659,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [DatePickerModule, IconModule, FormsModule],\r\n  },\r\n  props: {\r\n    date: new Date(),\r\n    log: (name, value) => {\r\n      action(name)(value);\r\n    },\r\n    getDate: (num) => new Date(num),\r\n  },\r\n  template: `<teta-date-picker [tetaIconSprite]=\"'assets/icons.svg'\"\r\n                                [ngModel]=\"date\"\r\n                                (ngModelChange)=\"log('date', $event)\"></teta-date-picker>`,\r\n})"
+                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [DatePickerModule, IconModule, FormsModule],\r\n  },\r\n  props: {\r\n    date: new Date(),\r\n    log: (name, value) => {\r\n      action(name)(value);\r\n    },\r\n    getDate: (num) => new Date(num),\r\n  },\r\n  template: `<div>{{date}}</div>\r\n              <teta-date-picker [tetaIconSprite]=\"'assets/icons.svg'\"\r\n                                [ngModel]=\"date\"\r\n                                (ngModelChange)=\"date = $event; log('date', $event)\"></teta-date-picker>`,\r\n})"
             },
             {
                 "name": "dateTimePicker",
@@ -52670,7 +52669,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [DatePickerModule, IconModule, FormsModule],\r\n  },\r\n  props: {\r\n    date: null,\r\n    log: (name, value) => {\r\n      action(name)(value);\r\n    },\r\n    getDate: (num) => new Date(num),\r\n  },\r\n  template: `<teta-date-picker [tetaIconSprite]=\"'assets/icons.svg'\"\r\n                                [showTime]=\"true\"\r\n                                [ngModel]=\"date\"\r\n                                (ngModelChange)=\"log('date', $event)\"></teta-date-picker>`,\r\n})"
+                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [DatePickerModule, IconModule, FormsModule],\r\n  },\r\n  props: {\r\n    date: null,\r\n    log: (name, value) => {\r\n      action(name)(value);\r\n    },\r\n    getDate: (num) => new Date(num),\r\n  },\r\n  template: `<div>{{date}}</div>\r\n              <teta-date-picker [tetaIconSprite]=\"'assets/icons.svg'\"\r\n                                [showTime]=\"true\"\r\n                                [ngModel]=\"date\"\r\n                                (ngModelChange)=\"date = $event;log('date', $event)\"></teta-date-picker>`,\r\n})"
             },
             {
                 "name": "DAY_SELECT_CONTROL_VALUE_ACCESSOR",
@@ -52730,7 +52729,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\r\n  ram: [\r\n    { id: 8, name: 8 },\r\n    { id: 16, name: 16 },\r\n    { id: 32, name: 32 },\r\n    { id: 64, name: 64 },\r\n    { id: 128, name: 128 },\r\n  ],\r\n  long: getLong(),\r\n}"
+                "defaultValue": "{\r\n  ram: [\r\n    {id: 8, name: 8},\r\n    {id: 16, name: 16},\r\n    {id: 32, name: 32},\r\n    {id: 64, name: 64},\r\n    {id: 128, name: 128},\r\n  ],\r\n  long: getLong(),\r\n}"
             },
             {
                 "name": "dragSort",
@@ -52860,7 +52859,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "(size) => {\r\n  const res = [];\r\n  for (let i = 0; i < size; i++) {\r\n    res.push({\r\n      name: `${faker.name.firstName()} ${faker.name.lastName()}`,\r\n      date: faker.date.between(new Date(2010, 0, 1), new Date(2021, 0, 1)),\r\n      long: faker.helpers.randomize([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),\r\n      value: faker.datatype.number({ min: 0, max: 100 }),\r\n      summary: faker.datatype.number({ min: 0, max: 100000 }),\r\n      ram: faker.helpers.randomize([8, 16, 32, 64, 128]),\r\n      address: faker.address.streetAddress(),\r\n      state: faker.address.state(),\r\n      city: faker.address.city(),\r\n      zip: faker.address.zipCode(),\r\n    });\r\n  }\r\n  return res;\r\n}"
+                "defaultValue": "(size) => {\r\n  const res = [];\r\n  for (let i = 0; i < size; i++) {\r\n    res.push({\r\n      name: `${faker.name.firstName()} ${faker.name.lastName()}`,\r\n      date: faker.date.between(new Date(2010, 0, 1), new Date(2021, 0, 1)),\r\n      long: faker.helpers.randomize([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),\r\n      value: faker.datatype.number({min: 0, max: 100}),\r\n      summary: faker.datatype.number({min: 0, max: 100000}),\r\n      ram: faker.helpers.randomize([8, 16, 32, 64, 128]),\r\n      address: faker.address.streetAddress(),\r\n      state: faker.address.state(),\r\n      city: faker.address.city(),\r\n      zip: faker.address.zipCode(),\r\n    });\r\n  }\r\n  return res;\r\n}"
             },
             {
                 "name": "getFilterComponent",
@@ -53173,6 +53172,16 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "props",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/component/table/Table.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\r\n  editType: select(\r\n    'editType',\r\n    {\r\n      row: EditType.row,\r\n      cell: EditType.cell,\r\n    },\r\n    EditType.row\r\n  ),\r\n  selectType: select(\r\n    'selectType',\r\n    {\r\n      none: SelectType.none,\r\n      multiple: SelectType.multiple,\r\n      single: SelectType.single,\r\n    },\r\n    SelectType.multiple\r\n  ),\r\n  editEvent: select(\r\n    'editEvent',\r\n    {\r\n      focus: EditEvent.focus,\r\n      click: EditEvent.click,\r\n      doubleClick: EditEvent.doubleClick,\r\n    },\r\n    EditEvent.focus\r\n  ),\r\n  columns,\r\n  dict,\r\n  log: (name, value) => {\r\n    action(name)(value);\r\n  },\r\n}"
+            },
+            {
                 "name": "radioButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -53354,21 +53363,21 @@
                 "name": "treeData",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/component/toolbar/Toolbar.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "[]",
-                "defaultValue": "[\r\n  {\r\n    name: 'Тетакомовское м-р (4)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Скважины для тестирования',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'Тестовая скважина №1',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n          {\r\n            name: 'Стресс-тест',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n  {\r\n    name: 'Test only (1)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Group (1)',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'well',\r\n            icon: 'well',\r\n            children: [\r\n              {\r\n                name: 'ГИС',\r\n                icon: 'map',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Конструкция',\r\n                icon: 'tubes',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'D1',\r\n                icon: 'angle',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Дизайн №1 copy',\r\n                icon: 'angle',\r\n                children: [\r\n                  {\r\n                    name: 'Зоны продуктивности',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'План закачки',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Опции',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Результаты',\r\n                    children: [],\r\n                  },\r\n                ],\r\n              },\r\n            ],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n]"
-            },
-            {
-                "name": "treeData",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/component/tree/Tree.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "[]",
                 "defaultValue": "[{\r\n  name: 'Тетакомовское м-р (4)',\r\n  icon: 'layers',\r\n  children: [\r\n    {\r\n      name: 'Скважины для тестирования',\r\n      icon: 'folder',\r\n      children: [\r\n        {\r\n          name: 'Тестовая скважина №1',\r\n          icon: 'well',\r\n          children: []\r\n        }, {\r\n          name: 'Стресс-тест',\r\n          icon: 'well',\r\n          children: []\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}, {\r\n  name: 'Test only (1)',\r\n  icon: 'layers',\r\n  children: [\r\n    {\r\n      name: 'Group (1)',\r\n      icon: 'folder',\r\n      children: [\r\n        {\r\n          name: 'well',\r\n          icon: 'well',\r\n          children: [{\r\n            name: 'ГИС',\r\n            icon: 'map',\r\n            children: []\r\n          }, {\r\n            name: 'Конструкция',\r\n            icon: 'tubes',\r\n            children: []\r\n          }, {\r\n            name: 'D1',\r\n            icon: 'angle',\r\n            children: []\r\n          }, {\r\n            name: 'Дизайн №1 copy',\r\n            icon: 'angle',\r\n            children: [{\r\n              name: 'Зоны продуктивности',\r\n              children: []\r\n            }, {\r\n              name: 'План закачки',\r\n              children: []\r\n            }, {\r\n              name: 'Опции',\r\n              children: []\r\n            }, {\r\n              name: 'Результаты',\r\n              children: []\r\n            }]\r\n          }]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}]"
+            },
+            {
+                "name": "treeData",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/component/toolbar/Toolbar.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "[]",
+                "defaultValue": "[\r\n  {\r\n    name: 'Тетакомовское м-р (4)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Скважины для тестирования',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'Тестовая скважина №1',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n          {\r\n            name: 'Стресс-тест',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n  {\r\n    name: 'Test only (1)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Group (1)',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'well',\r\n            icon: 'well',\r\n            children: [\r\n              {\r\n                name: 'ГИС',\r\n                icon: 'map',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Конструкция',\r\n                icon: 'tubes',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'D1',\r\n                icon: 'angle',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Дизайн №1 copy',\r\n                icon: 'angle',\r\n                children: [\r\n                  {\r\n                    name: 'Зоны продуктивности',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'План закачки',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Опции',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Результаты',\r\n                    children: [],\r\n                  },\r\n                ],\r\n              },\r\n            ],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n]"
             },
             {
                 "name": "vertical",
@@ -53398,7 +53407,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [TableModule, IconModule],\r\n    entryComponents: [\r\n      DefaultHeadCellComponent,\r\n      StringCellComponent,\r\n      DateCellComponent,\r\n      NumericCellComponent,\r\n      ListCellComponent,\r\n      StringFilterComponent,\r\n      ListFilterComponent,\r\n      NumericFilterComponent,\r\n      PopupContentComponent,\r\n      DateFilterComponent,\r\n    ],\r\n    providers: [TableService],\r\n  },\r\n  props: {\r\n    data: getData(1000),\r\n    editType: select(\r\n      'editType',\r\n      {\r\n        row: EditType.row,\r\n        cell: EditType.cell,\r\n      },\r\n      EditType.cell\r\n    ),\r\n    selectType: select(\r\n      'selectType',\r\n      {\r\n        none: SelectType.none,\r\n        multiple: SelectType.multiple,\r\n        single: SelectType.single,\r\n      },\r\n      SelectType.multiple\r\n    ),\r\n    editEvent: select(\r\n      'editEvent',\r\n      {\r\n        focus: EditEvent.focus,\r\n        click: EditEvent.click,\r\n        doubleClick: EditEvent.doubleClick,\r\n      },\r\n      EditEvent.focus\r\n    ),\r\n    columns,\r\n    dict,\r\n    log: (name, value) => {\r\n      action(name)(value);\r\n    },\r\n  },\r\n  template: `<div [tetaIconSprite]=\"'assets/icons.svg'\" class=\"bg-panel-50 padding-3\" style=\"display: flex; width: 1200px; height: 600px;\">\r\n              <teta-table [data]=\"data\"\r\n                          [cookieName]=\"'table-stories'\"\r\n                          [columns]=\"columns\"\r\n                          [dict]=\"dict\"\r\n                          [editType]=\"editType\"\r\n                          [editEvent]=\"editEvent\"\r\n                          [selectType]=\"selectType\"\r\n                          [virtual]=\"true\"\r\n                          (bodyLeft)=\"log('bodyLeft', $event)\"\r\n                          (cellClick)=\"log('cellClick', $event)\"\r\n                          (cellDoubleClick)=\"log('cellDoubleClick', $event)\"\r\n                          (cellEditEnd)=\"log('cellEditEnd', $event)\"\r\n                          (cellEditStart)=\"log('cellEditStart', $event)\"\r\n                          (cellFocus)=\"log('cellFocus', $event)\"\r\n                          (cellKeyUp)=\"log('cellKeyUp', $event)\"\r\n                          (rowEditEnd)=\"log('rowEditEnd', $event)\"\r\n                          (rowEditStart)=\"log('rowEditStart', $event)\"\r\n                          (rowLeft)=\"log('rowLeft', $event)\"\r\n                          (selectedRowsChange)=\"log('selectedRowsChange', $event)\"\r\n                          (stateChange)=\"log('stateChange', $event)\"\r\n                          (valueChange)=\"log('valueChange', $event)\"\r\n                          (activeRowChange)=\"log('activeRowChange', $event)\"></teta-table>\r\n            </div>`,\r\n})"
+                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [TableModule, IconModule],\r\n    entryComponents: [\r\n      DefaultHeadCellComponent,\r\n      StringCellComponent,\r\n      DateCellComponent,\r\n      NumericCellComponent,\r\n      ListCellComponent,\r\n      StringFilterComponent,\r\n      ListFilterComponent,\r\n      NumericFilterComponent,\r\n      PopupContentComponent,\r\n      DateFilterComponent,\r\n    ],\r\n    providers: [TableService],\r\n  },\r\n  props: {\r\n    data: getData(1000),\r\n    ...props\r\n  },\r\n  template: `<div [tetaIconSprite]=\"'assets/icons.svg'\" class=\"bg-panel-50 padding-3\" style=\"display: flex; width: 1200px; height: 600px;\">\r\n              <teta-table [data]=\"data\"\r\n                          [cookieName]=\"'table-stories'\"\r\n                          [columns]=\"columns\"\r\n                          [dict]=\"dict\"\r\n                          [editType]=\"editType\"\r\n                          [editEvent]=\"editEvent\"\r\n                          [selectType]=\"selectType\"\r\n                          [virtual]=\"true\"\r\n                          (bodyLeft)=\"log('bodyLeft', $event)\"\r\n                          (cellClick)=\"log('cellClick', $event)\"\r\n                          (cellDoubleClick)=\"log('cellDoubleClick', $event)\"\r\n                          (cellEditEnd)=\"log('cellEditEnd', $event)\"\r\n                          (cellEditStart)=\"log('cellEditStart', $event)\"\r\n                          (cellFocus)=\"log('cellFocus', $event)\"\r\n                          (cellKeyUp)=\"log('cellKeyUp', $event)\"\r\n                          (rowEditEnd)=\"log('rowEditEnd', $event)\"\r\n                          (rowEditStart)=\"log('rowEditStart', $event)\"\r\n                          (rowLeft)=\"log('rowLeft', $event)\"\r\n                          (selectedRowsChange)=\"log('selectedRowsChange', $event)\"\r\n                          (stateChange)=\"log('stateChange', $event)\"\r\n                          (valueChange)=\"log('valueChange', $event)\"\r\n                          (activeRowChange)=\"log('activeRowChange', $event)\"></teta-table>\r\n            </div>`,\r\n})"
             }
         ],
         "functions": [],
@@ -54228,7 +54237,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [ChartModule],\r\n  },\r\n  props: {\r\n    config,\r\n    dark: boolean('dark', true)\r\n  },\r\n  template: `<div class=\"font-body-3 padding-3 bg-background-0\" [class.theme-dark]=\"dark\" style=\"width: auto; height: 600px;\">\r\n      <teta-chart [config]=\"config\" class=\"bg-background-50 border border-text-50\"></teta-chart>\r\n    </div>`,\r\n})"
+                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [ChartModule],\r\n  },\r\n  props: {\r\n    config\r\n  },\r\n  template: `<div class=\"font-body-3 padding-3 bg-background-0\" style=\"width: auto; height: 600px;\">\r\n      <teta-chart [config]=\"config\" class=\"bg-background-50 border border-text-50\"></teta-chart>\r\n    </div>`,\r\n})"
                 },
                 {
                     "name": "config",
@@ -54308,7 +54317,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [TableModule, IconModule],\r\n    entryComponents: [\r\n      DefaultHeadCellComponent,\r\n      StringCellComponent,\r\n      DateCellComponent,\r\n      NumericCellComponent,\r\n      ListCellComponent,\r\n      StringFilterComponent,\r\n      ListFilterComponent,\r\n      NumericFilterComponent,\r\n      PopupContentComponent,\r\n      DateFilterComponent,\r\n    ],\r\n    providers: [TableService],\r\n  },\r\n  props: {\r\n    data: getData(15),\r\n    editType: select(\r\n      'editType',\r\n      {\r\n        row: EditType.row,\r\n        cell: EditType.cell,\r\n      },\r\n      EditType.cell\r\n    ),\r\n    selectType: select(\r\n      'selectType',\r\n      {\r\n        none: SelectType.none,\r\n        multiple: SelectType.multiple,\r\n        single: SelectType.single,\r\n      },\r\n      SelectType.multiple\r\n    ),\r\n    editEvent: select(\r\n      'editEvent',\r\n      {\r\n        focus: EditEvent.focus,\r\n        click: EditEvent.click,\r\n        doubleClick: EditEvent.doubleClick,\r\n      },\r\n      EditEvent.focus\r\n    ),\r\n    columns,\r\n    dict,\r\n    log: (name, value) => {\r\n      action(name)(value);\r\n    },\r\n  },\r\n  template: `<div [tetaIconSprite]=\"'assets/icons.svg'\" class=\"bg-panel-50 padding-3\" style=\"display: flex; width: 1200px; height: 600px;\">\r\n              <div [tetaIconSprite]=\"'assets/color-icons.svg'\"></div>\r\n              <teta-table [data]=\"data\"\r\n                          [cookieName]=\"'table-stories'\"\r\n                          [columns]=\"columns\"\r\n                          [dict]=\"dict\"\r\n                          [editType]=\"editType\"\r\n                          [editEvent]=\"editEvent\"\r\n                          [selectType]=\"selectType\"\r\n                          (bodyLeft)=\"log('bodyLeft', $event)\"\r\n                          (cellClick)=\"log('cellClick', $event)\"\r\n                          (cellDoubleClick)=\"log('cellDoubleClick', $event)\"\r\n                          (cellEditEnd)=\"log('cellEditEnd', $event)\"\r\n                          (cellEditStart)=\"log('cellEditStart', $event)\"\r\n                          (cellFocus)=\"log('cellFocus', $event)\"\r\n                          (cellKeyUp)=\"log('cellKeyUp', $event)\"\r\n                          (rowEditEnd)=\"log('rowEditEnd', $event)\"\r\n                          (rowEditStart)=\"log('rowEditStart', $event)\"\r\n                          (rowLeft)=\"log('rowLeft', $event)\"\r\n                          (selectedRowsChange)=\"log('selectedRowsChange', $event)\"\r\n                          (stateChange)=\"log('stateChange', $event)\"\r\n                          (valueChange)=\"log('valueChange', $event)\"\r\n                          (activeRowChange)=\"log('activeRowChange', $event)\"></teta-table>\r\n            </div>`,\r\n})"
+                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [TableModule, IconModule],\r\n    entryComponents: [\r\n      DefaultHeadCellComponent,\r\n      StringCellComponent,\r\n      DateCellComponent,\r\n      NumericCellComponent,\r\n      ListCellComponent,\r\n      StringFilterComponent,\r\n      ListFilterComponent,\r\n      NumericFilterComponent,\r\n      PopupContentComponent,\r\n      DateFilterComponent,\r\n    ],\r\n    providers: [TableService],\r\n  },\r\n  props: {\r\n    data: getData(15),\r\n    ...props\r\n  },\r\n  template: `<div [tetaIconSprite]=\"'assets/icons.svg'\" class=\"bg-panel-50 padding-3\" style=\"display: flex; width: 1200px; height: 600px;\">\r\n              <div [tetaIconSprite]=\"'assets/color-icons.svg'\"></div>\r\n              <teta-table [data]=\"data\"\r\n                          [cookieName]=\"'table-stories'\"\r\n                          [columns]=\"columns\"\r\n                          [dict]=\"dict\"\r\n                          [editType]=\"editType\"\r\n                          [editEvent]=\"editEvent\"\r\n                          [selectType]=\"selectType\"\r\n                          (bodyLeft)=\"log('bodyLeft', $event)\"\r\n                          (cellClick)=\"log('cellClick', $event)\"\r\n                          (cellDoubleClick)=\"log('cellDoubleClick', $event)\"\r\n                          (cellEditEnd)=\"log('cellEditEnd', $event)\"\r\n                          (cellEditStart)=\"log('cellEditStart', $event)\"\r\n                          (cellFocus)=\"log('cellFocus', $event)\"\r\n                          (cellKeyUp)=\"log('cellKeyUp', $event)\"\r\n                          (rowEditEnd)=\"log('rowEditEnd', $event)\"\r\n                          (rowEditStart)=\"log('rowEditStart', $event)\"\r\n                          (rowLeft)=\"log('rowLeft', $event)\"\r\n                          (selectedRowsChange)=\"log('selectedRowsChange', $event)\"\r\n                          (stateChange)=\"log('stateChange', $event)\"\r\n                          (valueChange)=\"log('valueChange', $event)\"\r\n                          (activeRowChange)=\"log('activeRowChange', $event)\"></teta-table>\r\n            </div>`,\r\n})"
                 },
                 {
                     "name": "columns",
@@ -54328,7 +54337,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\r\n  ram: [\r\n    { id: 8, name: 8 },\r\n    { id: 16, name: 16 },\r\n    { id: 32, name: 32 },\r\n    { id: 64, name: 64 },\r\n    { id: 128, name: 128 },\r\n  ],\r\n  long: getLong(),\r\n}"
+                    "defaultValue": "{\r\n  ram: [\r\n    {id: 8, name: 8},\r\n    {id: 16, name: 16},\r\n    {id: 32, name: 32},\r\n    {id: 64, name: 64},\r\n    {id: 128, name: 128},\r\n  ],\r\n  long: getLong(),\r\n}"
                 },
                 {
                     "name": "getData",
@@ -54338,7 +54347,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "(size) => {\r\n  const res = [];\r\n  for (let i = 0; i < size; i++) {\r\n    res.push({\r\n      name: `${faker.name.firstName()} ${faker.name.lastName()}`,\r\n      date: faker.date.between(new Date(2010, 0, 1), new Date(2021, 0, 1)),\r\n      long: faker.helpers.randomize([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),\r\n      value: faker.datatype.number({ min: 0, max: 100 }),\r\n      summary: faker.datatype.number({ min: 0, max: 100000 }),\r\n      ram: faker.helpers.randomize([8, 16, 32, 64, 128]),\r\n      address: faker.address.streetAddress(),\r\n      state: faker.address.state(),\r\n      city: faker.address.city(),\r\n      zip: faker.address.zipCode(),\r\n    });\r\n  }\r\n  return res;\r\n}"
+                    "defaultValue": "(size) => {\r\n  const res = [];\r\n  for (let i = 0; i < size; i++) {\r\n    res.push({\r\n      name: `${faker.name.firstName()} ${faker.name.lastName()}`,\r\n      date: faker.date.between(new Date(2010, 0, 1), new Date(2021, 0, 1)),\r\n      long: faker.helpers.randomize([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),\r\n      value: faker.datatype.number({min: 0, max: 100}),\r\n      summary: faker.datatype.number({min: 0, max: 100000}),\r\n      ram: faker.helpers.randomize([8, 16, 32, 64, 128]),\r\n      address: faker.address.streetAddress(),\r\n      state: faker.address.state(),\r\n      city: faker.address.city(),\r\n      zip: faker.address.zipCode(),\r\n    });\r\n  }\r\n  return res;\r\n}"
                 },
                 {
                     "name": "getLong",
@@ -54351,6 +54360,16 @@
                     "defaultValue": "() => {\r\n  const res = [];\r\n  for (let i = 0; i <= 10; i++) {\r\n    res.push({\r\n      id: i,\r\n      name: `${faker.address.city()} ${faker.address.country()} ${faker.address.state()} ${faker.address.zipCode()}`,\r\n    });\r\n  }\r\n  return res;\r\n}"
                 },
                 {
+                    "name": "props",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/component/table/Table.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\r\n  editType: select(\r\n    'editType',\r\n    {\r\n      row: EditType.row,\r\n      cell: EditType.cell,\r\n    },\r\n    EditType.row\r\n  ),\r\n  selectType: select(\r\n    'selectType',\r\n    {\r\n      none: SelectType.none,\r\n      multiple: SelectType.multiple,\r\n      single: SelectType.single,\r\n    },\r\n    SelectType.multiple\r\n  ),\r\n  editEvent: select(\r\n    'editEvent',\r\n    {\r\n      focus: EditEvent.focus,\r\n      click: EditEvent.click,\r\n      doubleClick: EditEvent.doubleClick,\r\n    },\r\n    EditEvent.focus\r\n  ),\r\n  columns,\r\n  dict,\r\n  log: (name, value) => {\r\n    action(name)(value);\r\n  },\r\n}"
+                },
+                {
                     "name": "virtualTable",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
@@ -54358,7 +54377,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [TableModule, IconModule],\r\n    entryComponents: [\r\n      DefaultHeadCellComponent,\r\n      StringCellComponent,\r\n      DateCellComponent,\r\n      NumericCellComponent,\r\n      ListCellComponent,\r\n      StringFilterComponent,\r\n      ListFilterComponent,\r\n      NumericFilterComponent,\r\n      PopupContentComponent,\r\n      DateFilterComponent,\r\n    ],\r\n    providers: [TableService],\r\n  },\r\n  props: {\r\n    data: getData(1000),\r\n    editType: select(\r\n      'editType',\r\n      {\r\n        row: EditType.row,\r\n        cell: EditType.cell,\r\n      },\r\n      EditType.cell\r\n    ),\r\n    selectType: select(\r\n      'selectType',\r\n      {\r\n        none: SelectType.none,\r\n        multiple: SelectType.multiple,\r\n        single: SelectType.single,\r\n      },\r\n      SelectType.multiple\r\n    ),\r\n    editEvent: select(\r\n      'editEvent',\r\n      {\r\n        focus: EditEvent.focus,\r\n        click: EditEvent.click,\r\n        doubleClick: EditEvent.doubleClick,\r\n      },\r\n      EditEvent.focus\r\n    ),\r\n    columns,\r\n    dict,\r\n    log: (name, value) => {\r\n      action(name)(value);\r\n    },\r\n  },\r\n  template: `<div [tetaIconSprite]=\"'assets/icons.svg'\" class=\"bg-panel-50 padding-3\" style=\"display: flex; width: 1200px; height: 600px;\">\r\n              <teta-table [data]=\"data\"\r\n                          [cookieName]=\"'table-stories'\"\r\n                          [columns]=\"columns\"\r\n                          [dict]=\"dict\"\r\n                          [editType]=\"editType\"\r\n                          [editEvent]=\"editEvent\"\r\n                          [selectType]=\"selectType\"\r\n                          [virtual]=\"true\"\r\n                          (bodyLeft)=\"log('bodyLeft', $event)\"\r\n                          (cellClick)=\"log('cellClick', $event)\"\r\n                          (cellDoubleClick)=\"log('cellDoubleClick', $event)\"\r\n                          (cellEditEnd)=\"log('cellEditEnd', $event)\"\r\n                          (cellEditStart)=\"log('cellEditStart', $event)\"\r\n                          (cellFocus)=\"log('cellFocus', $event)\"\r\n                          (cellKeyUp)=\"log('cellKeyUp', $event)\"\r\n                          (rowEditEnd)=\"log('rowEditEnd', $event)\"\r\n                          (rowEditStart)=\"log('rowEditStart', $event)\"\r\n                          (rowLeft)=\"log('rowLeft', $event)\"\r\n                          (selectedRowsChange)=\"log('selectedRowsChange', $event)\"\r\n                          (stateChange)=\"log('stateChange', $event)\"\r\n                          (valueChange)=\"log('valueChange', $event)\"\r\n                          (activeRowChange)=\"log('activeRowChange', $event)\"></teta-table>\r\n            </div>`,\r\n})"
+                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [TableModule, IconModule],\r\n    entryComponents: [\r\n      DefaultHeadCellComponent,\r\n      StringCellComponent,\r\n      DateCellComponent,\r\n      NumericCellComponent,\r\n      ListCellComponent,\r\n      StringFilterComponent,\r\n      ListFilterComponent,\r\n      NumericFilterComponent,\r\n      PopupContentComponent,\r\n      DateFilterComponent,\r\n    ],\r\n    providers: [TableService],\r\n  },\r\n  props: {\r\n    data: getData(1000),\r\n    ...props\r\n  },\r\n  template: `<div [tetaIconSprite]=\"'assets/icons.svg'\" class=\"bg-panel-50 padding-3\" style=\"display: flex; width: 1200px; height: 600px;\">\r\n              <teta-table [data]=\"data\"\r\n                          [cookieName]=\"'table-stories'\"\r\n                          [columns]=\"columns\"\r\n                          [dict]=\"dict\"\r\n                          [editType]=\"editType\"\r\n                          [editEvent]=\"editEvent\"\r\n                          [selectType]=\"selectType\"\r\n                          [virtual]=\"true\"\r\n                          (bodyLeft)=\"log('bodyLeft', $event)\"\r\n                          (cellClick)=\"log('cellClick', $event)\"\r\n                          (cellDoubleClick)=\"log('cellDoubleClick', $event)\"\r\n                          (cellEditEnd)=\"log('cellEditEnd', $event)\"\r\n                          (cellEditStart)=\"log('cellEditStart', $event)\"\r\n                          (cellFocus)=\"log('cellFocus', $event)\"\r\n                          (cellKeyUp)=\"log('cellKeyUp', $event)\"\r\n                          (rowEditEnd)=\"log('rowEditEnd', $event)\"\r\n                          (rowEditStart)=\"log('rowEditStart', $event)\"\r\n                          (rowLeft)=\"log('rowLeft', $event)\"\r\n                          (selectedRowsChange)=\"log('selectedRowsChange', $event)\"\r\n                          (stateChange)=\"log('stateChange', $event)\"\r\n                          (valueChange)=\"log('valueChange', $event)\"\r\n                          (activeRowChange)=\"log('activeRowChange', $event)\"></teta-table>\r\n            </div>`,\r\n})"
                 }
             ],
             "projects/components/src/component/toolbar/Toolbar.stories.ts": [
@@ -54656,7 +54675,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [DatePickerModule, IconModule, FormsModule],\r\n  },\r\n  props: {\r\n    date: new Date(),\r\n    log: (name, value) => {\r\n      action(name)(value);\r\n    },\r\n    getDate: (num) => new Date(num),\r\n  },\r\n  template: `<teta-date-picker [tetaIconSprite]=\"'assets/icons.svg'\"\r\n                                [ngModel]=\"date\"\r\n                                (ngModelChange)=\"log('date', $event)\"></teta-date-picker>`,\r\n})"
+                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [DatePickerModule, IconModule, FormsModule],\r\n  },\r\n  props: {\r\n    date: new Date(),\r\n    log: (name, value) => {\r\n      action(name)(value);\r\n    },\r\n    getDate: (num) => new Date(num),\r\n  },\r\n  template: `<div>{{date}}</div>\r\n              <teta-date-picker [tetaIconSprite]=\"'assets/icons.svg'\"\r\n                                [ngModel]=\"date\"\r\n                                (ngModelChange)=\"date = $event; log('date', $event)\"></teta-date-picker>`,\r\n})"
                 },
                 {
                     "name": "dateTimePicker",
@@ -54666,7 +54685,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [DatePickerModule, IconModule, FormsModule],\r\n  },\r\n  props: {\r\n    date: null,\r\n    log: (name, value) => {\r\n      action(name)(value);\r\n    },\r\n    getDate: (num) => new Date(num),\r\n  },\r\n  template: `<teta-date-picker [tetaIconSprite]=\"'assets/icons.svg'\"\r\n                                [showTime]=\"true\"\r\n                                [ngModel]=\"date\"\r\n                                (ngModelChange)=\"log('date', $event)\"></teta-date-picker>`,\r\n})"
+                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [DatePickerModule, IconModule, FormsModule],\r\n  },\r\n  props: {\r\n    date: null,\r\n    log: (name, value) => {\r\n      action(name)(value);\r\n    },\r\n    getDate: (num) => new Date(num),\r\n  },\r\n  template: `<div>{{date}}</div>\r\n              <teta-date-picker [tetaIconSprite]=\"'assets/icons.svg'\"\r\n                                [showTime]=\"true\"\r\n                                [ngModel]=\"date\"\r\n                                (ngModelChange)=\"date = $event;log('date', $event)\"></teta-date-picker>`,\r\n})"
                 }
             ],
             "projects/components/src/component/date-picker/day-select/day-select.component.ts": [
@@ -58176,6 +58195,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "getLong",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/component/table/Table.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "props",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

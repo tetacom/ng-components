@@ -15,28 +15,28 @@ import {
   Type,
   ViewChild,
 } from '@angular/core';
-import { TableRow } from '../contract/table-row';
-import { TableService } from '../service/table.service';
-import { TableColumn } from '../contract/table-column';
-import { FilterState } from '../../filter/contarct/filter-state';
-import { DetailComponentBase } from '../base/detail-component-base';
-import { ICellEvent } from '../contract/i-cell-event';
-import { ICellCoordinates } from '../contract/i-cell-coordinates';
-import { GroupRowComponentBase } from '../base/group-row-component-base';
-import { GroupRowComponent } from '../default/group-row/group-row.component';
-import { filter, takeWhile, withLatestFrom } from 'rxjs/operators';
-import { EditType } from '../enum/edit-type.enum';
-import { EditEvent } from '../enum/edit-event.enum';
-import { SelectType } from '../enum/select-type.enum';
-import { IIdName } from '../../../common/contract/i-id-name';
-import { IDictionary } from '../../../common/contract/i-dictionary';
-import { of } from 'rxjs';
-import { ArrayUtil } from '../../../common/util/array-util';
-import { PositionUtil } from '../../../common/util/position-util';
-import { Align } from '../../../common/enum/align.enum';
-import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
-import { FilterType } from '../../filter/enum/filter-type.enum';
-import { TableContextMenuConfig } from '../contract/table-context-menu-config';
+import {TableRow} from '../contract/table-row';
+import {TableService} from '../service/table.service';
+import {TableColumn} from '../contract/table-column';
+import {FilterState} from '../../filter/contarct/filter-state';
+import {DetailComponentBase} from '../base/detail-component-base';
+import {ICellEvent} from '../contract/i-cell-event';
+import {ICellCoordinates} from '../contract/i-cell-coordinates';
+import {GroupRowComponentBase} from '../base/group-row-component-base';
+import {GroupRowComponent} from '../default/group-row/group-row.component';
+import {filter, takeWhile, withLatestFrom} from 'rxjs/operators';
+import {EditType} from '../enum/edit-type.enum';
+import {EditEvent} from '../enum/edit-event.enum';
+import {SelectType} from '../enum/select-type.enum';
+import {IIdName} from '../../../common/contract/i-id-name';
+import {IDictionary} from '../../../common/contract/i-dictionary';
+import {of} from 'rxjs';
+import {ArrayUtil} from '../../../common/util/array-util';
+import {PositionUtil} from '../../../common/util/position-util';
+import {Align} from '../../../common/enum/align.enum';
+import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
+import {FilterType} from '../../filter/enum/filter-type.enum';
+import {TableContextMenuConfig} from '../contract/table-context-menu-config';
 
 @Component({
   selector: 'teta-table',
@@ -46,8 +46,7 @@ import { TableContextMenuConfig } from '../contract/table-context-menu-config';
   providers: [TableService],
 })
 export class TableComponent<T>
-  implements OnInit, OnDestroy, AfterViewInit, OnChanges
-{
+  implements OnInit, OnDestroy, AfterViewInit, OnChanges {
   @Input() data: T[] = [];
   @Input() columns: TableColumn[] = [];
   @Input() dict: IDictionary<IIdName<any>[]>;
@@ -108,7 +107,7 @@ export class TableComponent<T>
   @Output() deleteRows = new EventEmitter<TableRow<T>[]>();
   @Output() tableService = new EventEmitter<TableService<T>>();
 
-  @ViewChild('contextMenu', { static: true }) menu: ElementRef;
+  @ViewChild('contextMenu', {static: true}) menu: ElementRef;
   @HostBinding('class.table') private readonly tableClass = true;
 
   showContextMenu: boolean;
@@ -177,7 +176,7 @@ export class TableComponent<T>
         this.startEditRowOrCell(coordinates);
       }
     }
-    if (!this.isRow(event.target as HTMLElement)) {
+    if (!this.eventIsOnRow(event)) {
       this._svc.startEditRow(null);
     }
   }
@@ -340,31 +339,21 @@ export class TableComponent<T>
     }
   }
 
-  private getCell(element: HTMLElement): HTMLElement | null {
-    if (!element.parentElement) {
-      return null;
-    }
-    if (element.tagName.toLowerCase() === 'teta-cell') {
-      return element;
-    }
-    return this.getCell(element.parentElement);
+  private getEventCell(event: Event): HTMLElement | null {
+    return event.composedPath().find((target: HTMLElement) => {
+      return target.tagName?.toLowerCase() === 'teta-cell';
+    }) as HTMLElement;
   }
 
-  private isRow(element: HTMLElement): boolean {
-    if (!element.parentElement) {
-      return false;
-    }
-    if (
-      this._elementRef.nativeElement.contains(element) &&
-      element.getAttribute('data-row')
-    ) {
-      return true;
-    }
-    return this.isRow(element.parentElement);
+  private eventIsOnRow(event: Event): boolean {
+    const row = event.composedPath().find((target: HTMLElement) => {
+      return target?.getAttribute && target?.getAttribute('data-row');
+    });
+    return row && this._elementRef.nativeElement.contains(row);
   }
 
   private getCoordinates(event: Event): ICellEvent<T> | null {
-    const cell = this.getCell(event.target as HTMLElement);
+    const cell = this.getEventCell(event);
     if (cell) {
       const rowIndex = cell.getAttribute('data-row');
       const columnName = cell.getAttribute('data-column');

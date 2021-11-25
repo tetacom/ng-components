@@ -5,14 +5,14 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { TableService } from '../service/table.service';
-import { TableRow } from '../contract/table-row';
-import { filter, takeWhile } from 'rxjs/operators';
-import { ICellCoordinates } from '../contract/i-cell-coordinates';
-import { TableColumn } from '../contract/table-column';
-import { IIdName } from '../../../common/contract/i-id-name';
-import { ICellValue } from '../contract/i-cell-value';
-import { IDictionary } from '../../../common/contract/i-dictionary';
+import {TableService} from '../service/table.service';
+import {TableRow} from '../contract/table-row';
+import {filter, takeWhile} from 'rxjs/operators';
+import {ICellCoordinates} from '../contract/i-cell-coordinates';
+import {TableColumn} from '../contract/table-column';
+import {IIdName} from '../../../common/contract/i-id-name';
+import {ICellValue} from '../contract/i-cell-value';
+import {IDictionary} from '../../../common/contract/i-dictionary';
 
 @Component({
   template: '',
@@ -43,7 +43,8 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   protected constructor(
     protected svc: TableService<T>,
     protected cdr: ChangeDetectorRef
-  ) {}
+  ) {
+  }
 
   valueChanged(): void {
     this.svc.changeValue({
