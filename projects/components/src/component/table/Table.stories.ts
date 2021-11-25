@@ -1,25 +1,25 @@
-import { Meta } from '@storybook/angular/types-6-0';
-import { select, withKnobs } from '@storybook/addon-knobs';
-import { TableModule } from './table.module';
-import { StringCellComponent } from './default/string-cell/string-cell.component';
-import { TableColumn } from './contract/table-column';
-import { TableService } from './service/table.service';
-import { DefaultHeadCellComponent } from './default/default-head-cell/default-head-cell.component';
+import {Meta} from '@storybook/angular/types-6-0';
+import {select, withKnobs} from '@storybook/addon-knobs';
+import {TableModule} from './table.module';
+import {StringCellComponent} from './default/string-cell/string-cell.component';
+import {TableColumn} from './contract/table-column';
+import {TableService} from './service/table.service';
+import {DefaultHeadCellComponent} from './default/default-head-cell/default-head-cell.component';
 import * as faker from 'faker';
-import { ListFilterComponent } from '../filter/list-filter/list-filter.component';
-import { StringFilterComponent } from '../filter/string-filter/string-filter.component';
-import { NumericFilterComponent } from '../filter/numeric-filter/numeric-filter.component';
-import { DateFilterComponent } from '../filter/date-filter/date-filter.component';
-import { DateCellComponent } from './default/date-cell/date-cell.component';
-import { NumericCellComponent } from './default/numeric-cell/numeric-cell.component';
-import { ListCellComponent } from './default/list-cell/list-cell.component';
-import { FilterType } from '../filter/enum/filter-type.enum';
-import { EditType } from './enum/edit-type.enum';
-import { EditEvent } from './enum/edit-event.enum';
-import { action } from '@storybook/addon-actions';
-import { SelectType } from './enum/select-type.enum';
-import { PopupContentComponent } from '../dynamic-component/popup-content/popup-content.component';
-import { IconModule } from '../icon/icon.module';
+import {ListFilterComponent} from '../filter/list-filter/list-filter.component';
+import {StringFilterComponent} from '../filter/string-filter/string-filter.component';
+import {NumericFilterComponent} from '../filter/numeric-filter/numeric-filter.component';
+import {DateFilterComponent} from '../filter/date-filter/date-filter.component';
+import {DateCellComponent} from './default/date-cell/date-cell.component';
+import {NumericCellComponent} from './default/numeric-cell/numeric-cell.component';
+import {ListCellComponent} from './default/list-cell/list-cell.component';
+import {FilterType} from '../filter/enum/filter-type.enum';
+import {EditType} from './enum/edit-type.enum';
+import {EditEvent} from './enum/edit-event.enum';
+import {action} from '@storybook/addon-actions';
+import {SelectType} from './enum/select-type.enum';
+import {PopupContentComponent} from '../dynamic-component/popup-content/popup-content.component';
+import {IconModule} from '../icon/icon.module';
 
 export default {
   title: 'Component/Table',
@@ -47,8 +47,8 @@ const getData = (size) => {
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,
       date: faker.date.between(new Date(2010, 0, 1), new Date(2021, 0, 1)),
       long: faker.helpers.randomize([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      value: faker.datatype.number({ min: 0, max: 100 }),
-      summary: faker.datatype.number({ min: 0, max: 100000 }),
+      value: faker.datatype.number({min: 0, max: 100}),
+      summary: faker.datatype.number({min: 0, max: 100000}),
       ram: faker.helpers.randomize([8, 16, 32, 64, 128]),
       address: faker.address.streetAddress(),
       state: faker.address.state(),
@@ -78,37 +78,7 @@ export const basicTable = () => ({
   },
   props: {
     data: getData(15),
-    editType: select(
-      'editType',
-      {
-        row: EditType.row,
-        cell: EditType.cell,
-      },
-      EditType.cell
-    ),
-    selectType: select(
-      'selectType',
-      {
-        none: SelectType.none,
-        multiple: SelectType.multiple,
-        single: SelectType.single,
-      },
-      SelectType.multiple
-    ),
-    editEvent: select(
-      'editEvent',
-      {
-        focus: EditEvent.focus,
-        click: EditEvent.click,
-        doubleClick: EditEvent.doubleClick,
-      },
-      EditEvent.focus
-    ),
-    columns,
-    dict,
-    log: (name, value) => {
-      action(name)(value);
-    },
+    ...props
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="bg-panel-50 padding-3" style="display: flex; width: 1200px; height: 600px;">
               <div [tetaIconSprite]="'assets/color-icons.svg'"></div>
@@ -155,37 +125,7 @@ export const virtualTable = () => ({
   },
   props: {
     data: getData(1000),
-    editType: select(
-      'editType',
-      {
-        row: EditType.row,
-        cell: EditType.cell,
-      },
-      EditType.cell
-    ),
-    selectType: select(
-      'selectType',
-      {
-        none: SelectType.none,
-        multiple: SelectType.multiple,
-        single: SelectType.single,
-      },
-      SelectType.multiple
-    ),
-    editEvent: select(
-      'editEvent',
-      {
-        focus: EditEvent.focus,
-        click: EditEvent.click,
-        doubleClick: EditEvent.doubleClick,
-      },
-      EditEvent.focus
-    ),
-    columns,
-    dict,
-    log: (name, value) => {
-      action(name)(value);
-    },
+    ...props
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="bg-panel-50 padding-3" style="display: flex; width: 1200px; height: 600px;">
               <teta-table [data]="data"
@@ -214,11 +154,11 @@ export const virtualTable = () => ({
 });
 const dict = {
   ram: [
-    { id: 8, name: 8 },
-    { id: 16, name: 16 },
-    { id: 32, name: 32 },
-    { id: 64, name: 64 },
-    { id: 128, name: 128 },
+    {id: 8, name: 8},
+    {id: 16, name: 16},
+    {id: 32, name: 32},
+    {id: 64, name: 64},
+    {id: 128, name: 128},
   ],
   long: getLong(),
 };
@@ -276,3 +216,37 @@ const columns = [
     ],
   }),
 ];
+
+const props = {
+  editType: select(
+    'editType',
+    {
+      row: EditType.row,
+      cell: EditType.cell,
+    },
+    EditType.row
+  ),
+  selectType: select(
+    'selectType',
+    {
+      none: SelectType.none,
+      multiple: SelectType.multiple,
+      single: SelectType.single,
+    },
+    SelectType.multiple
+  ),
+  editEvent: select(
+    'editEvent',
+    {
+      focus: EditEvent.focus,
+      click: EditEvent.click,
+      doubleClick: EditEvent.doubleClick,
+    },
+    EditEvent.focus
+  ),
+  columns,
+  dict,
+  log: (name, value) => {
+    action(name)(value);
+  },
+};
