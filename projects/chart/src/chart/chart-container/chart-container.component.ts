@@ -15,7 +15,7 @@ import { ChartService } from '../chart.service';
 import { Observable, tap } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
 import { AxesService } from '../axes.service';
-import { Axis } from '../core/axis';
+import { Axis } from '../core/axis/axis';
 
 @Component({
   selector: 'teta-chart-container',

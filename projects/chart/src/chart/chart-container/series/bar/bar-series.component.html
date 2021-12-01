@@ -1,0 +1,3 @@
+<svg:rect *ngFor="let point of series.data" [attr.y]="getY(point)" [attr.x]="getX(point)" [attr.width]="width()"
+          [attr.height]="height(point)"
+          [attr.fill]="point.color"></svg:rect>

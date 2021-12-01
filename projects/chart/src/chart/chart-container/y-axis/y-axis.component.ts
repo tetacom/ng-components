@@ -9,7 +9,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Axis } from '../../core/axis';
+import { Axis } from '../../core/axis/axis';
 import * as d3 from 'd3';
 import { ScaleService } from '../../scale.service';
 import { ChartService } from '../../chart.service';

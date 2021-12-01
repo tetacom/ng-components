@@ -1,5 +1,5 @@
 <ng-container *ngIf="size | async as s">
-  <svg [attr.width]="s.width" [attr.height]="s.height">
+  <svg [attr.width]="s.width" [attr.height]="s.height" [tetaChartTooltip]>
     <ng-container *ngIf="getVisibleRect(s) as rect">
       <defs>
         <clipPath id="visible-window">

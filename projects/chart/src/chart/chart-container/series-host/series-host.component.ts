@@ -9,12 +9,15 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { SeriesBaseComponent } from '../../base/series-base.component';
-import { LineSeriesComponent } from '../line-series/line-series.component';
+import { LineSeriesComponent } from '../series/line/line-series.component';
+import { BarSeriesComponent } from '../series/bar/bar-series.component';
+
 import { Series } from '../../model/series';
 import { BasePoint } from '../../model/base-point';
 import { ChartService } from '../../chart.service';
 import { tap } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
+import { SeriesType } from '../../model/series-type';
 
 @Component({
   selector: '[teta-series-host]',
@@ -24,6 +27,13 @@ import { throttleTime } from 'rxjs/operators';
 export class SeriesHostComponent<T extends BasePoint> implements OnInit {
   @Input() series: Series<T>;
   @Input() size: DOMRect;
+
+  private defaultSeriesTypeMapping = new Map<
+    SeriesType,
+    typeof SeriesBaseComponent
+  >()
+    .set(SeriesType.line, LineSeriesComponent)
+    .set(SeriesType.bar, BarSeriesComponent);
 
   private _init = false;
   private _componentRef: ComponentRef<any>;
@@ -44,8 +54,11 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
 
   ngOnInit(): void {
     if (!SeriesBaseComponent.isPrototypeOf(this.series.component)) {
-      this.series.component = LineSeriesComponent;
+      this.series.component =
+        this.defaultSeriesTypeMapping.get(this.series.type) ||
+        LineSeriesComponent;
     }
+
     this._componentRef = this.viewContainerRef.createComponent(
       this.series.component
     );

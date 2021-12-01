@@ -1,15 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  Input,
+  OnInit,
+} from '@angular/core';
+import { Series } from '../model/series';
+import { BasePoint } from '../model/base-point';
+import { SeriesType } from '../model/series-type';
 
 @Component({
   selector: 'teta-legend',
   templateUrl: './legend.component.html',
-  styleUrls: ['./legend.component.scss']
+  styleUrls: ['./legend.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LegendComponent implements OnInit {
+  private sizeMapping = new Map<SeriesType, number>()
+    .set(SeriesType.line, 2)
+    .set(SeriesType.bar, 12);
 
-  constructor() { }
+  @Input() series: Array<Series<BasePoint>>;
+  @HostBinding('class.padding-bottom-4') classLegend = true;
+
+  constructor() {}
 
   ngOnInit(): void {
+    this.series = this.series?.filter((_) => _.showInLegend !== false);
   }
 
+  getHeight(serie: Series<BasePoint>) {
+    return this.sizeMapping.get(serie.type);
+  }
 }

@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {IChartConfig} from './model/i-chart-config';
-import {AxisOrientation} from './model/enum/axis-orientation';
-import {Axis} from './core/axis';
+import { Injectable } from '@angular/core';
+import { IChartConfig } from './model/i-chart-config';
+import { AxisOrientation } from './model/enum/axis-orientation';
+import { Axis } from './core/axis/axis';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +10,7 @@ export class AxesService {
   public yAxis: Map<number, Axis> = new Map<number, Axis>();
   public xAxis: Map<number, Axis> = new Map<number, Axis>();
 
-  constructor() {
-  }
+  constructor() {}
 
   init(config: IChartConfig) {
     config?.yAxis.forEach((_, index) => {

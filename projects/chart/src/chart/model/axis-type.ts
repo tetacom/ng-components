@@ -1,5 +1,7 @@
 export enum AxisType {
   number,
   time,
-  category
+  category,
+  log,
+  pow,
 }

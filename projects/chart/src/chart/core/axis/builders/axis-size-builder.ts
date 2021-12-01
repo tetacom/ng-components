@@ -1,8 +1,8 @@
 import { Axis } from '../axis';
-import { AxisOrientation } from '../../model/enum/axis-orientation';
+import { AxisOrientation } from '../../../model/enum/axis-orientation';
 import { maxIndex } from 'd3-array';
-import { getTextWidth } from '../utils/public-api';
-import { IBuilder } from '../../model/i-builder';
+import { getTextWidth } from '../../utils/public-api';
+import { IBuilder } from '../../../model/i-builder';
 
 export class AxisSizeBuilder implements IBuilder<Axis, number> {
   private titlePadding = 8;

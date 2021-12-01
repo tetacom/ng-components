@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LineSeriesComponent } from './line-series.component';
+import { BarSeriesComponent } from './bar-series.component';
 
-describe('LineSeriesComponent', () => {
-  let component: LineSeriesComponent;
-  let fixture: ComponentFixture<LineSeriesComponent>;
+describe('BarSeriesComponent', () => {
+  let component: BarSeriesComponent;
+  let fixture: ComponentFixture<BarSeriesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LineSeriesComponent ]
+      declarations: [ BarSeriesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LineSeriesComponent);
+    fixture = TestBed.createComponent(BarSeriesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
