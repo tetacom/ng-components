@@ -169,7 +169,6 @@ export class OnlyNumberDirective {
       value = '0.0';
     }
     const valid: boolean = new RegExp(regex).test(value.toString());
-    console.log(value, valid);
     this._control.control.setValue(valid ? value : this._previousValue ?? 0);
   }
 }
