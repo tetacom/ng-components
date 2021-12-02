@@ -17,7 +17,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/components/ng-package.json"
+            "project": "projects/components/ng-package.json",
+            "styles": ["projects/components/style/assembly.scss"]
           },
           "configurations": {
             "production": {

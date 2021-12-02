@@ -1,14 +1,16 @@
-import { Meta } from '@storybook/angular/types-6-0';
-import { withKnobs } from '@storybook/addon-knobs';
-import { IconComponent } from '../icon/icon/icon.component';
-import { IconModule } from '../icon/icon.module';
-import { InputModule } from './input.module';
-import { FormsModule } from '@angular/forms';
-import { SelectModule } from '../select/select.module';
-import { RadioModule } from '../radio/radio.module';
-import { DatePickerModule } from '../date-picker/date-picker.module';
-import { ToggleModule } from '../toggle/toggle.module';
-import { CheckboxModule } from '../checkbox/checkbox.module';
+import {Meta} from '@storybook/angular/types-6-0';
+import {withKnobs} from '@storybook/addon-knobs';
+import {IconComponent} from '../icon/icon/icon.component';
+import {IconModule} from '../icon/icon.module';
+import {InputModule} from './input.module';
+import {FormsModule} from '@angular/forms';
+import {SelectModule} from '../select/select.module';
+import {RadioModule} from '../radio/radio.module';
+import {DatePickerModule} from '../date-picker/date-picker.module';
+import {ToggleModule} from '../toggle/toggle.module';
+import {CheckboxModule} from '../checkbox/checkbox.module';
+import {action} from '@storybook/addon-actions';
+import {SampleInputModule} from './sample-input/sample-input.module';
 
 export default {
   title: 'Component/Input',
@@ -18,6 +20,30 @@ export default {
     imports: [IconModule],
   },
 } as Meta;
+
+export const reactiveForm = () => ({
+  moduleMetadata: {
+    imports: [
+      SampleInputModule,
+      IconModule,
+      InputModule,
+      FormsModule,
+      SelectModule,
+      RadioModule,
+      DatePickerModule,
+      ToggleModule,
+      CheckboxModule,
+    ],
+  },
+  props: {
+    log: (name, value) => {
+      action(name)(value);
+    },
+  },
+  template: `<div [tetaIconSprite]="'assets/icons.svg'" class="border border-text-10 padding-3" style="width: 500px;">
+              <teta-sample-input></teta-sample-input>
+            </div>`,
+});
 
 export const basicInput = () => ({
   moduleMetadata: {
