@@ -12640,12 +12640,12 @@
         },
         {
             "name": "PlotBand",
-            "id": "class-PlotBand-b0634fc9f93f3721c0ac4e770e556e95",
+            "id": "class-PlotBand-32f31555d8bfb26d9944680e20cf2be8",
             "file": "projects/components/src/component/chart/model/plot-band.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "export class PlotBand {\r\n  id: any;\r\n  from: number;\r\n  to: number;\r\n  label?: string;\r\n  color?: string;\r\n  showGrabbers?: boolean;\r\n  draggable?: boolean;\r\n  resizable?: boolean;\r\n  min?: number;\r\n  max?: number;\r\n  opacity?: number;\r\n\r\n  constructor(options?: {\r\n    id: any;\r\n    from: number;\r\n    to: number;\r\n    label?: string;\r\n    color?: string;\r\n    showGrabbers?: boolean;\r\n    draggable?: boolean;\r\n    resizable?: boolean;\r\n    min?: number;\r\n    max?: number;\r\n    opacity?: number;\r\n  }) {\r\n    this.id = options?.id;\r\n    this.from = options?.from;\r\n    this.to = options?.to;\r\n    this.label = options?.label;\r\n    this.color = options?.color || '#59AE501A';\r\n    this.showGrabbers =\r\n      options?.showGrabbers != null ? options.showGrabbers : true;\r\n    this.draggable = options?.draggable != null ? options?.draggable : false;\r\n    this.resizable = options?.resizable != null ? options?.resizable : true;\r\n    this.min = options?.min;\r\n    this.max = options?.max;\r\n    this.opacity = options?.opacity;\r\n  }\r\n}\r\n",
+            "sourceCode": "export class PlotBand {\r\n  id: any;\r\n  from: number;\r\n  to: number;\r\n  label?: string;\r\n  color?: string;\r\n  image?: string;\r\n  showGrabbers?: boolean;\r\n  draggable?: boolean;\r\n  resizable?: boolean;\r\n  min?: number;\r\n  max?: number;\r\n  opacity?: number;\r\n\r\n  constructor(options?: {\r\n    id: any;\r\n    from: number;\r\n    to: number;\r\n    label?: string;\r\n    color?: string;\r\n    image?: string;\r\n    showGrabbers?: boolean;\r\n    draggable?: boolean;\r\n    resizable?: boolean;\r\n    min?: number;\r\n    max?: number;\r\n    opacity?: number;\r\n  }) {\r\n    this.id = options?.id;\r\n    this.from = options?.from;\r\n    this.to = options?.to;\r\n    this.label = options?.label;\r\n    this.color = options?.color || '#59AE501A';\r\n    this.image = options?.image;\r\n    this.showGrabbers =\r\n      options?.showGrabbers != null ? options.showGrabbers : true;\r\n    this.draggable = options?.draggable != null ? options?.draggable : false;\r\n    this.resizable = options?.resizable != null ? options?.resizable : true;\r\n    this.min = options?.min;\r\n    this.max = options?.max;\r\n    this.opacity = options?.opacity;\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -12660,7 +12660,7 @@
                         "optional": true
                     }
                 ],
-                "line": 12,
+                "line": 13,
                 "jsdoctags": [
                     {
                         "name": "options",
@@ -12691,7 +12691,7 @@
                     "type": "boolean",
                     "optional": true,
                     "description": "",
-                    "line": 8
+                    "line": 9
                 },
                 {
                     "name": "from",
@@ -12712,6 +12712,15 @@
                     "line": 2
                 },
                 {
+                    "name": "image",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 7
+                },
+                {
                     "name": "label",
                     "deprecated": false,
                     "deprecationMessage": "",
@@ -12727,7 +12736,7 @@
                     "type": "number",
                     "optional": true,
                     "description": "",
-                    "line": 11
+                    "line": 12
                 },
                 {
                     "name": "min",
@@ -12736,7 +12745,7 @@
                     "type": "number",
                     "optional": true,
                     "description": "",
-                    "line": 10
+                    "line": 11
                 },
                 {
                     "name": "opacity",
@@ -12745,7 +12754,7 @@
                     "type": "number",
                     "optional": true,
                     "description": "",
-                    "line": 12
+                    "line": 13
                 },
                 {
                     "name": "resizable",
@@ -12754,7 +12763,7 @@
                     "type": "boolean",
                     "optional": true,
                     "description": "",
-                    "line": 9
+                    "line": 10
                 },
                 {
                     "name": "showGrabbers",
@@ -12763,7 +12772,7 @@
                     "type": "boolean",
                     "optional": true,
                     "description": "",
-                    "line": 7
+                    "line": 8
                 },
                 {
                     "name": "to",
@@ -15793,12 +15802,12 @@
         },
         {
             "name": "TetaChart",
-            "id": "class-TetaChart-5821e669a258b4de383344607b126a06",
+            "id": "class-TetaChart-a54ca8341bf1a965bf052b20686ab559",
             "file": "projects/components/src/component/chart/core/chart.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { ElementRef } from '@angular/core';\r\nimport { Observable, Subject } from 'rxjs';\r\nimport * as d3 from 'd3';\r\nimport { D3ZoomEvent, zoomIdentity, ZoomTransform } from 'd3';\r\nimport * as d3annotation from 'd3-svg-annotation';\r\nimport { Scale } from '../model/enum/scale';\r\nimport { ChartOptions } from '../model/chart-options';\r\nimport { AxisOptions } from '../model/axis-options';\r\nimport { Series } from '../model/series';\r\nimport { BasePoint } from '../model/point/base-point';\r\nimport { SeriesType } from '../model/enum/series-type';\r\nimport { defaultDrawerMapping } from '../drawer/default-drawer-mapping';\r\nimport { defaultLegendDrawerMapping } from '../legend-drawer/default-drawer-legend-mapping';\r\nimport { LegendType } from '../model/enum/legend-type';\r\nimport { Axis } from './axis-creator';\r\nimport { AxisType } from '../model/enum/axis-type';\r\nimport { PlotLine } from '../model/plot-line';\r\nimport { PlotBand } from '../model/plot-band';\r\nimport { ScaleType } from '../model/enum/scale-type';\r\nimport { ZoomType } from '../model/enum/zoom-type';\r\nimport { IDragEvent } from '../model/i-drag-event';\r\nimport { DispatchType } from '../model/enum/dispatch-type';\r\nimport { IZoomEvent } from '../model/i-zoom-event';\r\n\r\ntype ChartSize = { width: number; height: number };\r\n\r\nexport class TetaChart {\r\n  plotLinesMove: Observable<IDragEvent<PlotLine>>;\r\n  plotBandsMove: Observable<IDragEvent<PlotBand>>;\r\n\r\n  zoom: Observable<IZoomEvent>;\r\n  seriesMove: Observable<IDragEvent<Series<BasePoint>>>;\r\n\r\n  private plotLinesMove$: Subject<IDragEvent<PlotLine>> = new Subject<\r\n    IDragEvent<PlotLine>\r\n  >();\r\n  private plotBandsMove$: Subject<IDragEvent<PlotBand>> = new Subject<\r\n    IDragEvent<PlotBand>\r\n  >();\r\n\r\n  private seriesMove$: Subject<IDragEvent<Series<BasePoint>>> = new Subject<\r\n    IDragEvent<Series<BasePoint>>\r\n  >();\r\n\r\n  private zoom$: Subject<IZoomEvent> = new Subject<IZoomEvent>();\r\n\r\n  private _container: ElementRef = null;\r\n  private _canvas: any;\r\n  private _width = 0;\r\n  private _height = 0;\r\n\r\n  private _zoomYCache: Map<number, ZoomTransform> = new Map<\r\n    number,\r\n    ZoomTransform\r\n  >();\r\n\r\n  private _zoomXCache: Map<number, ZoomTransform> = new Map<\r\n    number,\r\n    ZoomTransform\r\n  >();\r\n\r\n  private _zoom = d3.zoom();\r\n  private _commonZoomTransform: ZoomTransform;\r\n\r\n  private visibleChartWindowWidth = 0;\r\n\r\n  private _options: ChartOptions;\r\n  private _xAxisList: Axis[];\r\n  private _yAxisList: Axis[];\r\n  private _xScales: Map<number, any> = new Map<number, any>();\r\n  private _yScales: Map<number, any> = new Map<number, any>();\r\n\r\n  private _clonedX = new Map<number, any>();\r\n  private _clonedY = new Map<number, any>();\r\n\r\n  private _chart: d3.Selection<any, unknown, null, undefined>;\r\n\r\n  private offsetOpposite = 0;\r\n  private offsetNonOpposite = 0;\r\n\r\n  private uniqId: string;\r\n  private _zoomAdded = false;\r\n\r\n  constructor(options: ChartOptions, element: ElementRef) {\r\n    this._options = options;\r\n    this.selectNode(element);\r\n    this.createTooltip();\r\n\r\n    this.plotLinesMove = this.plotLinesMove$.asObservable();\r\n    this.plotBandsMove = this.plotBandsMove$.asObservable();\r\n    this.seriesMove = this.seriesMove$.asObservable();\r\n    this.zoom = this.zoom$.asObservable();\r\n  }\r\n\r\n  public redraw(options?: ChartOptions) {\r\n    if (options) {\r\n      this._options = options;\r\n    }\r\n\r\n    this.createAxis();\r\n    this.createScales();\r\n    this.createMarkers();\r\n    this.createVisibleWindow();\r\n    this._redraw();\r\n    this.drawLegend();\r\n\r\n    if (this._commonZoomTransform) {\r\n      this._chart.call(this._zoom.transform, this._commonZoomTransform);\r\n    }\r\n\r\n    if (!this._zoomAdded) {\r\n      this.addZoom();\r\n      this._zoomAdded = true;\r\n    }\r\n\r\n    this.addAxesZoom();\r\n  }\r\n\r\n  public setZoom(zoom: IZoomEvent) {\r\n    if (!this._zoom) {\r\n      return;\r\n    }\r\n\r\n    this._chart.call(this._zoom.transform, zoom?.zoomTransform ?? zoomIdentity);\r\n  }\r\n\r\n  public setSize(size: ChartSize = { width: 0, height: 0 }) {\r\n    this._height = size.height;\r\n    this._width = size.width;\r\n\r\n    this._chart.attr('width', this._width).attr('height', this._height);\r\n    this._canvas.attr('width', this._width).attr('height', this._height);\r\n\r\n    const extent = [\r\n      [\r\n        this.offsetNonOpposite\r\n          ? this.offsetNonOpposite\r\n          : this._options.bounds.left,\r\n        this._options.bounds.top,\r\n      ],\r\n      [\r\n        this._width -\r\n          (this.offsetOpposite\r\n            ? this.offsetOpposite\r\n            : this._options.bounds.right),\r\n        this._height - this._options.bounds.bottom,\r\n      ],\r\n    ] as any;\r\n\r\n    this._zoom\r\n      .scaleExtent([1, Infinity])\r\n      .translateExtent(extent)\r\n      .extent(extent);\r\n  }\r\n\r\n  private createVisibleWindow() {\r\n    this.uniqId = (Date.now() + Math.random()).toString(36);\r\n\r\n    this._chart.selectAll('defs').remove();\r\n\r\n    this._chart\r\n      .append('defs')\r\n      .append('clipPath')\r\n      .attr('id', `draw-window-${this.uniqId}`)\r\n      .append('rect')\r\n      .attr(\r\n        'x',\r\n        this.offsetNonOpposite === 0\r\n          ? this._options.bounds.left\r\n          : this.offsetNonOpposite\r\n      )\r\n      .attr('y', this._options.bounds.top)\r\n      .attr('width', this.visibleChartWindowWidth + 1)\r\n      .attr(\r\n        'height',\r\n        this._height -\r\n          this._options.bounds.bottom -\r\n          this._options.bounds.top +\r\n          1 >\r\n          0\r\n          ? this._height -\r\n              this._options.bounds.bottom -\r\n              this._options.bounds.top +\r\n              1\r\n          : 0\r\n      );\r\n  }\r\n\r\n  private createAxis() {\r\n    this._xAxisList = this._options.xAxis.map(\r\n      (_, index) =>\r\n        new Axis({\r\n          type: AxisType.abscissa,\r\n          index,\r\n          chartOptions: this._options,\r\n        })\r\n    );\r\n\r\n    this._yAxisList = this._options.yAxis.map((_, index) => {\r\n      const axis = new Axis({\r\n        type: AxisType.ordinatus,\r\n        index,\r\n        chartOptions: this._options,\r\n        height: this._height,\r\n      });\r\n      return axis;\r\n    });\r\n\r\n    const nonTitleOffset = 6;\r\n\r\n    this.offsetNonOpposite = d3.reduce(\r\n      this._yAxisList.filter(\r\n        (_) => _.options?.opposite !== true && _.options?.visible\r\n      ),\r\n      (sum, axis) => {\r\n        const offset =\r\n          sum +\r\n          axis.width +\r\n          (axis?.options?.title ? Axis.offsetFactor : nonTitleOffset);\r\n        axis.setOffset(offset);\r\n        return offset;\r\n      },\r\n      0\r\n    );\r\n\r\n    this.offsetOpposite = d3.reduce(\r\n      this._yAxisList.filter(\r\n        (_) => _.options?.opposite === true && _.options?.visible\r\n      ),\r\n      (sum, axis) => {\r\n        const offset =\r\n          sum +\r\n          axis.width +\r\n          (axis?.options?.title ? Axis.offsetFactor : nonTitleOffset);\r\n        axis.setOffset(offset);\r\n        return offset;\r\n      },\r\n      0\r\n    );\r\n\r\n    this.visibleChartWindowWidth = this.caluclateChartWidth();\r\n  }\r\n\r\n  private _redraw() {\r\n    this.drawChart();\r\n    this.drawAxis();\r\n    this.drawGridLines();\r\n    this.drawPlotBands();\r\n    this.drawPlotLines();\r\n    this.drawAnnotations();\r\n  }\r\n\r\n  private addZoom() {\r\n    if (this._options?.zoom?.enable) {\r\n      const hasXZoom = [ZoomType.x, ZoomType.xy].includes(\r\n        this._options.zoom.zoomType\r\n      );\r\n      const hasYZoom = [ZoomType.y, ZoomType.xy].includes(\r\n        this._options.zoom.zoomType\r\n      );\r\n\r\n      this._chart.call(\r\n        this._zoom.on('start end zoom', (event) => {\r\n          if (hasXZoom) {\r\n            for (const [key, value] of this._clonedX.entries()) {\r\n              const rescaled = event.transform.rescaleX(value);\r\n              this._xScales.set(key, rescaled);\r\n\r\n              if (event.sourceEvent) {\r\n                this.zoom$.next({\r\n                  domain: rescaled.domain(),\r\n                  zoomTransform: event.transform,\r\n                  zoomType: ZoomType.x,\r\n                  event,\r\n                });\r\n              }\r\n            }\r\n          }\r\n\r\n          if (hasYZoom) {\r\n            for (const [key, value] of this._clonedY.entries()) {\r\n              const rescaled = event.transform.rescaleY(value);\r\n              this._yScales.set(key, rescaled);\r\n\r\n              if (event.type === 'zoom') {\r\n                if (event.sourceEvent) {\r\n                  this.zoom$.next({\r\n                    domain: rescaled.domain(),\r\n                    zoomTransform: event.transform,\r\n                    zoomType: ZoomType.y,\r\n                    event,\r\n                  });\r\n                }\r\n              }\r\n            }\r\n          }\r\n\r\n          if (event.type === 'end') {\r\n            this._commonZoomTransform = event.transform;\r\n          }\r\n\r\n          this._redraw();\r\n        })\r\n      );\r\n    }\r\n  }\r\n\r\n  private addAxesZoom() {\r\n    this._chart.selectAll('.zoom-behavior').remove();\r\n\r\n    [...this._yAxisList, ...this._xAxisList]\r\n      .filter((axis) => axis.options.visible && axis.options.zoom)\r\n      .forEach((axis) => {\r\n        const foundNode = this._chart\r\n          .select(\r\n            `[data-${axis.type === AxisType.abscissa ? 'x' : 'y'}-scale-id='${\r\n              axis.index\r\n            }']`\r\n          )\r\n          .node() as any;\r\n\r\n        if (!foundNode) {\r\n          return;\r\n        }\r\n\r\n        const bBox = foundNode.getBBox();\r\n\r\n        const translateX =\r\n          axis.type === AxisType.abscissa\r\n            ? this.offsetNonOpposite\r\n              ? this.offsetNonOpposite\r\n              : this._options.bounds.left + this.offsetNonOpposite\r\n            : axis.options.opposite\r\n            ? this._width - axis.offset\r\n            : axis.offset - bBox.width;\r\n\r\n        const zoom = d3\r\n          .zoom()\r\n          .scaleExtent([1, Infinity])\r\n          .on('zoom end', (event: D3ZoomEvent<any, any>) => {\r\n            if (axis.type === AxisType.abscissa) {\r\n              const scale = this._clonedX.get(axis.index);\r\n              this._xScales.set(axis.index, event.transform.rescaleX(scale));\r\n            } else {\r\n              const scale = this._clonedY.get(axis.index);\r\n              this._yScales.set(axis.index, event.transform.rescaleY(scale));\r\n            }\r\n\r\n            if (event.type === 'end') {\r\n              if (axis.type === AxisType.ordinatus) {\r\n                this._zoomYCache.set(axis.index, event.transform);\r\n              }\r\n\r\n              if (axis.type === AxisType.abscissa) {\r\n                this._zoomXCache.set(axis.index, event.transform);\r\n                this._chart.call(this._zoom.transform, event.transform);\r\n              }\r\n            }\r\n\r\n            this._redraw();\r\n          });\r\n\r\n        const restoredTransform: ZoomTransform =\r\n          axis.type === AxisType.ordinatus\r\n            ? this._zoomYCache.get(axis.index)\r\n            : this._zoomXCache.get(axis.index);\r\n\r\n        this._chart\r\n          .append('rect')\r\n          .attr('class', 'zoom-behavior')\r\n          .attr('height', bBox.height)\r\n          .attr('width', bBox.width)\r\n          .attr(\r\n            'transform',\r\n            `translate(${translateX}, ${\r\n              axis.type === AxisType.abscissa\r\n                ? this._height - this._options.bounds.bottom\r\n                : this._options.bounds.top\r\n            })`\r\n          )\r\n          .style('opacity', '0')\r\n          .style('pointer-events', 'all')\r\n          .call(zoom.transform, restoredTransform ?? d3.zoomIdentity)\r\n          .call(zoom);\r\n      });\r\n  }\r\n\r\n  private selectNode(element: ElementRef) {\r\n    this._container = element;\r\n\r\n    d3.select(element.nativeElement).selectAll('.tooltip-chart').remove();\r\n\r\n    d3.select(element.nativeElement).selectAll('svg').remove();\r\n    d3.select(element.nativeElement).selectAll('canvas').remove();\r\n\r\n    this._chart = d3\r\n      .select(element.nativeElement)\r\n      .append('svg')\r\n      .attr('position', 'relative')\r\n      .style('z-index', 0);\r\n\r\n    this._canvas = d3\r\n      .select(element.nativeElement)\r\n      .append('canvas')\r\n      .attr('class', 'main-canvas')\r\n      .style('transform', 'translate(35, 0)')\r\n      .style('position', 'absolute')\r\n      .style('z-index', 1);\r\n  }\r\n\r\n  private drawAnnotations() {\r\n    this._chart.selectAll('.annotations').remove();\r\n\r\n    const annotations = this._options.annotations?.map((annotation) => {\r\n      const x = this._xScales.get(annotation.xAxisIndex);\r\n      const y = this._yScales.get(annotation.yAxisIndex);\r\n\r\n      return {\r\n        note: annotation.note,\r\n        connector: annotation.connector,\r\n        x: x(annotation.point?.x),\r\n        y: y(annotation.point?.y),\r\n        dx: annotation.dx,\r\n        dy: annotation.dy,\r\n        type: annotation.type,\r\n        className: annotation.className,\r\n      };\r\n    });\r\n\r\n    const makeAnnotations = d3annotation\r\n      .annotation()\r\n      .annotations(annotations ?? []);\r\n\r\n    this._chart\r\n      .append('g')\r\n      .attr('class', 'annotations')\r\n      .attr('clip-path', `url(#draw-window-${this.uniqId})`)\r\n      .call(makeAnnotations as any)\r\n      .lower();\r\n  }\r\n\r\n  private drawPlotLines() {\r\n    this._chart.selectAll('.plotlines').remove();\r\n\r\n    const plotlineGroup = this._chart\r\n      .append('g')\r\n      .attr('class', 'plotlines')\r\n      .style('shape-rendering', 'crispEdges')\r\n      .attr('clip-path', `url(#draw-window-${this.uniqId})`);\r\n\r\n    this._xAxisList\r\n      .filter((_) => _.options.plotLines.length > 0)\r\n      .forEach((axis) => {\r\n        const [min, max] = axis.extent;\r\n        const x = this._xScales.get(axis.index);\r\n\r\n        const plotlinesPoints = axis.options.plotLines;\r\n\r\n        const getTextCenterPointPx = (d: PlotLine, idx: number) =>\r\n          x(\r\n            (d?.value +\r\n              (plotlinesPoints[idx - 1]\r\n                ? plotlinesPoints[idx - 1]?.value\r\n                : 0)) /\r\n              2\r\n          );\r\n\r\n        const opacity = (d: PlotLine, idx: number) => {\r\n          const displayWidth = 20;\r\n\r\n          const width =\r\n            x(d?.value) -\r\n            x(plotlinesPoints[idx - 1] ? plotlinesPoints[idx - 1]?.value : 0);\r\n          return width <= displayWidth ? 0 : 1;\r\n        };\r\n\r\n        plotlineGroup\r\n          .selectAll('.label')\r\n          .data(plotlinesPoints)\r\n          .join('text')\r\n          .attr('class', 'label font-body-3 fill-text-70')\r\n          .attr('x', getTextCenterPointPx)\r\n          .attr('y', (d) => this._height / 2)\r\n          .attr('text-anchor', 'middle')\r\n          .attr('dominant-baseline', 'central')\r\n          .attr(\r\n            'transform',\r\n            (d, idx) =>\r\n              `rotate(-90, ${getTextCenterPointPx(d, idx)}, ${\r\n                this._height / 2\r\n              })`\r\n          )\r\n          .text((d) => d?.label ?? '')\r\n          .style('opacity', opacity);\r\n\r\n        plotlineGroup\r\n          .selectAll('.plotline')\r\n          .data(plotlinesPoints)\r\n          .join('line')\r\n          .attr('class', 'plotline')\r\n          .attr('data-plotline-id', (d) => d.id)\r\n          .attr('x1', (d) => x(d.value))\r\n          .attr('x2', (d) => x(d.value))\r\n          .attr('y1', 0)\r\n          .attr(\r\n            'y2',\r\n            this._height -\r\n              this._options.bounds.top -\r\n              this._options.bounds.bottom\r\n          )\r\n          .attr('transform', `translate(0, ${this._options.bounds.top})`)\r\n          .style('stroke-width', (d) => d.width)\r\n          .style('stroke', (d) => d.color)\r\n          .style('stroke-dasharray', (d) => (d.dashed ? '8, 8' : '0, 0'));\r\n\r\n        const emit = (event: DragEvent, plotLine: PlotLine) => {\r\n          this.plotLinesMove$.next({ event, target: plotLine });\r\n        };\r\n\r\n        plotlineGroup\r\n          .selectAll('.drag-plotline')\r\n          .data(plotlinesPoints)\r\n          .join('line')\r\n          .attr('class', 'drag-plotline')\r\n          .attr('x1', (d) => x(d.value))\r\n          .attr('x2', (d) => x(d.value))\r\n          .attr('y1', 0)\r\n          .attr(\r\n            'y2',\r\n            this._height -\r\n              this._options.bounds.top -\r\n              this._options.bounds.bottom\r\n          )\r\n          .attr('transform', `translate(0, ${this._options.bounds.top})`)\r\n          .style('stroke-width', 8)\r\n          .style('stroke', 'rgba(0, 0, 0, 0)')\r\n          .style('cursor', 'col-resize')\r\n          .call(\r\n            d3\r\n              .drag()\r\n              .on('drag', function (event, d: PlotLine) {\r\n                const group = d3.select(this).node().parentElement;\r\n\r\n                const draggedPlotLine = d3\r\n                  .select(group)\r\n                  .select(`[data-plotline-id='${d.id}']`);\r\n\r\n                d.value = x.invert(event.x);\r\n\r\n                const minValue = d.min ?? min;\r\n                const maxValue = d.max ?? max;\r\n\r\n                const borderLeftReached = d.value <= minValue;\r\n                const borderRightReached = d.value >= maxValue;\r\n\r\n                if (borderLeftReached) {\r\n                  d.value = minValue;\r\n                }\r\n\r\n                if (borderRightReached) {\r\n                  d.value = maxValue;\r\n                }\r\n\r\n                d3.select(this).attr('x1', x(d.value)).attr('x2', x(d.value));\r\n\r\n                draggedPlotLine.attr('x1', x(d.value)).attr('x2', x(d.value));\r\n\r\n                emit(event, d);\r\n              })\r\n              .on('end', (event: DragEvent, d: PlotLine) => {\r\n                emit(event, d);\r\n              }) as any\r\n          );\r\n      });\r\n\r\n    this._yAxisList\r\n      .filter((_) => _.options.plotLines.length > 0)\r\n      .forEach((axis) => {\r\n        const [min, max] = axis.extent;\r\n        const y = this._yScales.get(axis.index);\r\n\r\n        const plotlinesPoints = axis.options.plotLines;\r\n\r\n        plotlineGroup\r\n          .selectAll('.plotline')\r\n          .data(plotlinesPoints)\r\n          .join('line')\r\n          .attr('class', 'plotline')\r\n          .attr('data-plotline-id', (d) => d.id)\r\n          .attr('y1', (d) => y(d.value))\r\n          .attr('y2', (d) => y(d.value))\r\n          .attr('x1', 0)\r\n          .attr(\r\n            'x2',\r\n            this._width - this._options.bounds.left - this._options.bounds.right\r\n          )\r\n          .attr('transform', `translate(${this._options.bounds.left}, 0)`)\r\n          .style('stroke-width', (d) => d.width)\r\n          .style('stroke', (d) => d.color)\r\n          .style('stroke-dasharray', (d) => (d.dashed ? '8, 8' : '0, 0'));\r\n\r\n        const emit = (event: DragEvent, plotLine: PlotLine) => {\r\n          this.plotLinesMove$.next({ event, target: plotLine });\r\n        };\r\n\r\n        plotlineGroup\r\n          .selectAll('.drag-plotline')\r\n          .data(plotlinesPoints)\r\n          .join('line')\r\n          .attr('class', 'drag-plotline')\r\n          .attr('y1', (d) => y(d.value))\r\n          .attr('y2', (d) => y(d.value))\r\n          .attr('x1', 0)\r\n          .attr(\r\n            'x2',\r\n            this._width - this._options.bounds.left - this._options.bounds.right\r\n          )\r\n          .attr('transform', `translate(${this._options.bounds.left}, 0)`)\r\n          .style('stroke-width', 8)\r\n          .style('stroke', 'rgba(0, 0, 0, 0)')\r\n          .style('cursor', 'row-resize')\r\n          .call(\r\n            d3\r\n              .drag()\r\n              .on('drag', function (event, d: PlotLine) {\r\n                const group = d3.select(this).node().parentElement;\r\n\r\n                const draggedPlotLine = d3\r\n                  .select(group)\r\n                  .select(`[data-plotline-id='${d.id}']`);\r\n\r\n                d.value = y.invert(event.y);\r\n\r\n                const minValue = d.min ?? min;\r\n                const maxValue = d.max ?? max;\r\n\r\n                const borderTopReached = d.value <= minValue;\r\n                const borderBottomReached = d.value >= maxValue;\r\n\r\n                if (borderTopReached) {\r\n                  d.value = minValue;\r\n                }\r\n\r\n                if (borderBottomReached) {\r\n                  d.value = maxValue;\r\n                }\r\n\r\n                d3.select(this).attr('y1', y(d.value)).attr('y2', y(d.value));\r\n\r\n                draggedPlotLine.attr('y1', y(d.value)).attr('y2', y(d.value));\r\n\r\n                emit(event, d);\r\n              })\r\n              .on('end', (event: DragEvent, d: PlotLine) => {\r\n                emit(event, d);\r\n              }) as any\r\n          );\r\n      });\r\n  }\r\n\r\n  private drawPlotBands() {\r\n    this._chart.selectAll('.plotbands').remove();\r\n\r\n    const plotBandGroup = this._chart\r\n      .append('g')\r\n      .attr('class', 'plotbands')\r\n      .attr('clip-path', `url(#draw-window-${this.uniqId})`);\r\n\r\n    this._xAxisList\r\n      .filter((_) => _.options.plotBands.length > 0)\r\n      .forEach((axis) => {\r\n        const x = this._xScales.get(axis.index);\r\n\r\n        const [min, max] = axis.extent;\r\n\r\n        const plotband = plotBandGroup\r\n          .append('g')\r\n          .style('shape-rendering', 'crispEdges');\r\n\r\n        const plotBandHeight =\r\n          this._height - this._options.bounds.top - this._options.bounds.bottom;\r\n\r\n        const emit = (event: DragEvent, plotBand: PlotBand) => {\r\n          this.plotBandsMove$.next({\r\n            event,\r\n            target: plotBand,\r\n          });\r\n        };\r\n\r\n        plotband\r\n          .selectAll('rect')\r\n          .data(axis.options.plotBands)\r\n          .on('start', (_) => {\r\n            this._chart.selectAll('.marker').style('display', 'none');\r\n            d3.select(this._container.nativeElement)\r\n              .select('.tooltip-chart')\r\n              .style('display', 'none');\r\n          })\r\n          .join('rect')\r\n          .attr('data-plotband-id', (d) => d.id)\r\n          .attr('x', (d) => x(d.from))\r\n          .attr('y', 0)\r\n          .attr('width', (d) => Math.abs(x(d.to) - x(d.from)))\r\n          .attr('fill', (d) => d.color)\r\n          .style('opacity', (d) => d.opacity ?? 1)\r\n          .attr('height', plotBandHeight > 0 ? plotBandHeight : 0)\r\n          .attr('transform', `translate(0, ${this._options.bounds.top})`);\r\n\r\n        plotband\r\n          .selectAll('.line-left')\r\n          .data(axis.options.plotBands)\r\n          .join('line')\r\n          .attr('data-line-left-id', (d) => d.id)\r\n          .attr('class', 'line-left')\r\n          .attr('x1', (d) => x(d.from))\r\n          .attr('x2', (d) => x(d.from))\r\n          .attr('y1', 0)\r\n          .attr(\r\n            'y2',\r\n            this._height -\r\n              this._options.bounds.top -\r\n              this._options.bounds.bottom\r\n          )\r\n          .attr('transform', `translate(0, ${this._options.bounds.top})`)\r\n          .style('stroke-width', 1)\r\n          .style('stroke-dasharray', '8, 8')\r\n          .style('stroke', 'var(--color-text-90)')\r\n          .style('opacity', (d) => (d.showGrabbers ? 1 : 0));\r\n\r\n        plotband\r\n          .selectAll('.drag-left')\r\n          .data(axis.options.plotBands)\r\n          .join('line')\r\n          .attr('x1', (d) => x(d.from))\r\n          .attr('x2', (d) => x(d.from))\r\n          .attr('y1', 0)\r\n          .attr(\r\n            'y2',\r\n            this._height -\r\n              this._options.bounds.top -\r\n              this._options.bounds.bottom\r\n          )\r\n          .attr('transform', `translate(0, ${this._options.bounds.top})`)\r\n          .style('stroke-width', 8)\r\n          .style('stroke', 'rgba(0, 0, 0, 0)')\r\n          .style('cursor', 'col-resize')\r\n          .call(\r\n            d3\r\n              .drag()\r\n              .on('drag', function (event: DragEvent, d: PlotBand) {\r\n                const group = d3.select(this).node().parentElement;\r\n                const draggedBand = d3\r\n                  .select(group)\r\n                  .select(`[data-plotband-id='${d.id}']`);\r\n\r\n                const draggedLine = d3\r\n                  .select(group)\r\n                  .select(`[data-line-left-id='${d.id}']`);\r\n\r\n                d.from = x.invert(event.x);\r\n\r\n                const minValue = d.min ?? min;\r\n\r\n                const borderReached = d.from <= minValue;\r\n\r\n                if (borderReached) {\r\n                  d.from = minValue;\r\n                }\r\n\r\n                if (d.from >= d.to) {\r\n                  d.from = d.to;\r\n                }\r\n\r\n                d3.select(this).attr('x1', x(d.from)).attr('x2', x(d.from));\r\n\r\n                draggedBand\r\n                  .attr('x', x(d.from))\r\n                  .attr('width', x(d.to) - x(d.from));\r\n\r\n                draggedLine.attr('x1', x(d.from)).attr('x2', x(d.from));\r\n\r\n                emit(event, d);\r\n              })\r\n              .on('end', (event: DragEvent, d: PlotBand) =>\r\n                emit(event, d)\r\n              ) as any\r\n          );\r\n\r\n        plotband\r\n          .selectAll('.line-right')\r\n          .data(axis.options.plotBands)\r\n          .join('line')\r\n          .attr('data-line-right-id', (d) => d.id)\r\n          .attr('class', 'line-right')\r\n          .attr('x1', (d) => x(d.to))\r\n          .attr('x2', (d) => x(d.to))\r\n          .attr('y1', 0)\r\n          .attr(\r\n            'y2',\r\n            this._height -\r\n              this._options.bounds.top -\r\n              this._options.bounds.bottom\r\n          )\r\n          .attr('transform', `translate(0, ${this._options.bounds.top})`)\r\n          .style('stroke-width', 1)\r\n          .style('stroke-dasharray', '8, 8')\r\n          .style('stroke', 'var(--color-text-90)')\r\n          .style('opacity', (d) => (d.showGrabbers ? 1 : 0));\r\n\r\n        plotband\r\n          .selectAll('.drag-right')\r\n          .data(axis.options.plotBands)\r\n          .join('line')\r\n          .attr('class', 'drag-right')\r\n          .attr('x1', (d) => x(d.to))\r\n          .attr('x2', (d) => x(d.to))\r\n          .attr('y1', 0)\r\n          .attr(\r\n            'y2',\r\n            this._height -\r\n              this._options.bounds.top -\r\n              this._options.bounds.bottom\r\n          )\r\n          .attr('transform', `translate(0, ${this._options.bounds.top})`)\r\n          .style('stroke-width', 8)\r\n          .style('stroke', 'rgba(0, 0, 0, 0)')\r\n          .style('cursor', 'col-resize')\r\n          .call(\r\n            d3\r\n              .drag()\r\n              .on('drag', function (event: DragEvent, d: PlotBand) {\r\n                const group = d3.select(this).node().parentElement;\r\n\r\n                const draggedBand = d3\r\n                  .select(group)\r\n                  .select(`[data-plotband-id='${d.id}']`);\r\n\r\n                const draggedLine = d3\r\n                  .select(group)\r\n                  .select(`[data-line-right-id='${d.id}']`);\r\n\r\n                d.to = x.invert(event.x);\r\n\r\n                const maxValue = d.max ?? max;\r\n\r\n                const borderReached = d.to >= maxValue;\r\n\r\n                if (borderReached) {\r\n                  d.to = maxValue;\r\n                }\r\n\r\n                if (d.to <= d.from) {\r\n                  d.to = d.from;\r\n                }\r\n\r\n                d3.select(this).attr('x1', x(d.to)).attr('x2', x(d.to));\r\n                draggedBand.attr('width', x(d.to) - x(d.from));\r\n                draggedLine.attr('x1', x(d.to)).attr('x2', x(d.to));\r\n\r\n                emit(event, d);\r\n              })\r\n              .on('end', (event: DragEvent, d: PlotBand) =>\r\n                emit(event, d)\r\n              ) as any\r\n          );\r\n      });\r\n\r\n    this._yAxisList\r\n      .filter((_) => _.options.plotBands.length > 0)\r\n      .forEach((axis) => {\r\n        const y = this._yScales.get(axis.index);\r\n\r\n        const [min, max] = axis.extent;\r\n\r\n        const plotband = plotBandGroup\r\n          .append('g')\r\n          .style('shape-rendering', 'crispEdges');\r\n\r\n        const plotBandWidth =\r\n          this._width - this._options.bounds.left - this._options.bounds.right; // TODO add multiaxis support width\r\n\r\n        const emit = (event: DragEvent, plotBand: PlotBand) => {\r\n          this.plotBandsMove$.next({\r\n            event,\r\n            target: plotBand,\r\n          });\r\n        };\r\n\r\n        const dragPlotband = d3\r\n          .drag()\r\n          .subject(function () {\r\n            const element = d3.select(this);\r\n            return { y: element.attr('y') };\r\n          })\r\n          .on('start drag end', function (event: any, d: PlotBand) {\r\n            const element = d3.select(this);\r\n\r\n            const height = parseFloat(element.attr('height'));\r\n\r\n            d.to = y.invert(event.y + height);\r\n            d.from = y.invert(event.y);\r\n\r\n            const minValue = d.min ?? min;\r\n            const maxValue = d.max ?? max;\r\n\r\n            const borderReachedMin = d.from <= minValue;\r\n            const borderReachedMax = d.to >= maxValue;\r\n\r\n            if (borderReachedMin) {\r\n              d.to = y.invert(y(minValue) + height);\r\n              d.from = minValue;\r\n            }\r\n\r\n            if (borderReachedMax) {\r\n              d.to = maxValue;\r\n              d.from = y.invert(y(maxValue) - height);\r\n            }\r\n\r\n            element.attr('y', y(d.from));\r\n\r\n            const group = element.node().parentElement;\r\n\r\n            d3.select(group)\r\n              .select(`[data-line-left-id='${d.id}']`)\r\n              .attr('y1', y(d.from))\r\n              .attr('y2', y(d.from));\r\n\r\n            d3.select(group)\r\n              .select(`[data-grab-left-id='${d.id}']`)\r\n              .attr('y1', y(d.from))\r\n              .attr('y2', y(d.from));\r\n\r\n            d3.select(group)\r\n              .select(`[data-line-right-id='${d.id}']`)\r\n              .attr('y1', y(d.to))\r\n              .attr('y2', y(d.to));\r\n\r\n            d3.select(group)\r\n              .select(`[data-grab-right-id='${d.id}']`)\r\n              .attr('y1', y(d.to))\r\n              .attr('y2', y(d.to));\r\n\r\n            emit(event, d);\r\n          }) as any;\r\n\r\n        const leftGrabDrag = d3\r\n          .drag()\r\n          .on('drag', function (event: DragEvent, d: PlotBand) {\r\n            const group = d3.select(this).node().parentElement;\r\n            const draggedBand = d3\r\n              .select(group)\r\n              .select(`[data-plotband-id='${d.id}']`);\r\n\r\n            const draggedLine = d3\r\n              .select(group)\r\n              .select(`[data-line-left-id='${d.id}']`);\r\n\r\n            d.from = y.invert(event.y);\r\n\r\n            const minValue = d.min ?? min;\r\n\r\n            const borderReached = d.from <= minValue;\r\n\r\n            if (borderReached) {\r\n              d.from = minValue;\r\n            }\r\n\r\n            if (d.from >= d.to) {\r\n              d.from = d.to;\r\n            }\r\n\r\n            d3.select(this).attr('y1', y(d.from)).attr('y2', y(d.from));\r\n\r\n            draggedBand\r\n              .attr('y', y(d.from))\r\n              .attr('height', Math.abs(y(d.to) - y(d.from)));\r\n            draggedLine.attr('y1', y(d.from)).attr('y2', y(d.from));\r\n\r\n            emit(event, d);\r\n          })\r\n          .on('end', (event: DragEvent, d: PlotBand) => emit(event, d)) as any;\r\n\r\n        const rightGrabDrag = d3\r\n          .drag()\r\n          .on('drag', function (event: DragEvent, d: PlotBand) {\r\n            const group = d3.select(this).node().parentElement;\r\n\r\n            const draggedBand = d3\r\n              .select(group)\r\n              .select(`[data-plotband-id='${d.id}']`);\r\n\r\n            const draggedLine = d3\r\n              .select(group)\r\n              .select(`[data-line-right-id='${d.id}']`);\r\n\r\n            d.to = y.invert(event.y);\r\n\r\n            const maxValue = d.max ?? max;\r\n\r\n            const borderReached = d.to >= maxValue;\r\n\r\n            if (borderReached) {\r\n              d.to = maxValue;\r\n            }\r\n\r\n            if (d.to <= d.from) {\r\n              d.to = d.from;\r\n            }\r\n\r\n            d3.select(this).attr('y1', y(d.to)).attr('y2', y(d.to));\r\n\r\n            draggedBand\r\n              .attr('y', y(d.from))\r\n              .attr('height', Math.abs(y(d.to) - y(d.from)));\r\n            draggedLine.attr('y1', y(d.to)).attr('y2', y(d.to));\r\n\r\n            emit(event, d);\r\n          })\r\n          .on('end', (event: DragEvent, d: PlotBand) => emit(event, d)) as any;\r\n\r\n        plotband\r\n          .selectAll('rect')\r\n          .data(axis.options.plotBands)\r\n          .join('rect')\r\n          .attr('data-plotband-id', (d) => d.id)\r\n          .attr('x', 0)\r\n          .attr('y', (d) => y(d.from))\r\n          .attr('width', (d) => plotBandWidth)\r\n          .attr('fill', (d) => d.color)\r\n          .style('opacity', (d) => d.opacity ?? 1)\r\n          .attr('height', (d) => Math.abs(y(d.to) - y(d.from)))\r\n          .attr('cursor', (d) => (d.draggable ? 'move' : 'default'));\r\n\r\n        plotband\r\n          .selectAll('.line-left')\r\n          .data(axis.options.plotBands.filter((d) => d.resizable))\r\n          .join('line')\r\n          .attr('data-line-left-id', (d) => d.id)\r\n          .attr('class', 'line-left')\r\n          .attr('y1', (d) => y(d.from))\r\n          .attr('y2', (d) => y(d.from))\r\n          .attr('x1', 0)\r\n          .attr('x2', plotBandWidth)\r\n          .style('stroke-width', 1)\r\n          .style('stroke-dasharray', '8, 8')\r\n          .style('stroke', 'var(--color-text-90)')\r\n          .style('opacity', (d) => (d.showGrabbers ? 1 : 0));\r\n\r\n        plotband\r\n          .selectAll('.drag-left')\r\n          .data(axis.options.plotBands.filter((d) => d.resizable))\r\n          .join('line')\r\n          .attr('data-grab-left-id', (d) => d.id)\r\n          .attr('y1', (d) => y(d.from))\r\n          .attr('y2', (d) => y(d.from))\r\n          .attr('x1', 0)\r\n          .attr('x2', plotBandWidth)\r\n          .style('stroke-width', 8)\r\n          .style('stroke', 'rgba(0, 0, 0, 0)')\r\n          .style('cursor', (d) => (d.resizable ? 'row-resize' : 'default'));\r\n\r\n        plotband\r\n          .selectAll('.line-right')\r\n          .data(axis.options.plotBands.filter((d) => d.resizable))\r\n          .join('line')\r\n          .attr('data-line-right-id', (d) => d.id)\r\n          .attr('class', 'line-right')\r\n          .attr('y1', (d) => y(d.to))\r\n          .attr('y2', (d) => y(d.to))\r\n          .attr('x1', 0)\r\n          .attr('x2', plotBandWidth)\r\n          .style('stroke-width', 1)\r\n          .style('stroke-dasharray', '8, 8')\r\n          .style('stroke', 'var(--color-text-90)')\r\n          .style('opacity', (d) => (d.showGrabbers ? 1 : 0));\r\n\r\n        plotband\r\n          .selectAll('.drag-right')\r\n          .data(axis.options.plotBands.filter((d) => d.resizable))\r\n          .join('line')\r\n          .attr('class', 'drag-right')\r\n          .attr('data-grab-right-id', (d) => d.id)\r\n          .attr('y1', (d) => y(d.to))\r\n          .attr('y2', (d) => y(d.to))\r\n          .attr('x1', 0)\r\n          .attr('x2', plotBandWidth)\r\n          .style('stroke-width', 8)\r\n          .style('stroke', 'rgba(0, 0, 0, 0)')\r\n          .style('cursor', (d) => (d.resizable ? 'row-resize' : 'default'));\r\n\r\n        axis.options.plotBands.forEach((_) => {\r\n          if (_.draggable) {\r\n            plotband.select(`[data-plotband-id='${_.id}']`).call(dragPlotband);\r\n          }\r\n\r\n          if (_.resizable) {\r\n            plotband.select(`[data-grab-left-id='${_.id}']`).call(leftGrabDrag);\r\n            plotband\r\n              .select(`[data-grab-right-id='${_.id}']`)\r\n              .call(rightGrabDrag);\r\n          }\r\n        });\r\n      });\r\n  }\r\n\r\n  private drawChart() {\r\n    const series = this._options.series?.filter((_) => _.visible);\r\n\r\n    this._chart.selectAll('.series').remove();\r\n\r\n    if (!series || series.length < 1) {\r\n      d3.select(this._container.nativeElement)\r\n        .select('canvas')\r\n        .style('display', 'none');\r\n    }\r\n\r\n    const group = this._chart\r\n      .append('g')\r\n      .attr('class', 'series')\r\n      .attr('clip-path', `url(#draw-window-${this.uniqId})`);\r\n\r\n    series?.forEach((seriesItem: Series<BasePoint>, index) => {\r\n      if (seriesItem.renderTo === 'canvas') {\r\n        d3.select(this._container.nativeElement)\r\n          .select('canvas')\r\n          .style('display', null);\r\n\r\n        d3.select(this._container.nativeElement)\r\n          .select('svg')\r\n          .style('position', 'absolute');\r\n      } else {\r\n        d3.select(this._container.nativeElement)\r\n          .select('canvas')\r\n          .style('display', 'none');\r\n      }\r\n      if (\r\n        !this._xScales.has(seriesItem.xAxisIndex) ||\r\n        !this._yScales.has(seriesItem.yAxisIndex)\r\n      ) {\r\n        return;\r\n      }\r\n\r\n      const foundX = this._xScales.get(seriesItem.xAxisIndex);\r\n      const foundY = this._yScales.get(seriesItem.yAxisIndex);\r\n\r\n      const drawer =\r\n        seriesItem.drawer != null\r\n          ? seriesItem.drawer\r\n          : defaultDrawerMapping.get(seriesItem.type);\r\n\r\n      if (!drawer) {\r\n        throw new Error(\r\n          `No drawer for series ${seriesItem.name}, type ${\r\n            SeriesType[seriesItem.type]\r\n          }`\r\n        );\r\n      }\r\n\r\n      if (seriesItem.renderTo === 'canvas') {\r\n        const context = this._canvas.node().getContext('2d');\r\n        context.clearRect(0, 0, this._width, this._height);\r\n      }\r\n\r\n      let [xMin, xMax] = foundX.domain();\r\n      let [yMin, yMax] = foundY.domain();\r\n\r\n      xMin = xMin instanceof Date ? xMin.getTime() : xMin;\r\n      xMax = xMax instanceof Date ? xMax.getTime() : xMax;\r\n\r\n      yMin = yMin instanceof Date ? yMin.getTime() : yMin;\r\n      yMax = yMax instanceof Date ? yMax.getTime() : yMax;\r\n\r\n      const visiblePoints = (\r\n        point: BasePoint,\r\n        idx: number,\r\n        arr: Array<BasePoint>\r\n      ) =>\r\n        (point.x <= xMax ||\r\n          point.x1 <= xMax ||\r\n          (arr[idx - 1] && arr[idx - 1].x <= xMax) ||\r\n          (arr[idx - 1] && arr[idx - 1].x1 <= xMax)) &&\r\n        (point.x >= xMin ||\r\n          point.x1 >= xMin ||\r\n          (arr[idx + 1] && arr[idx + 1].x >= xMin) ||\r\n          (arr[idx + 1] && arr[idx + 1].x1 >= xMin)) &&\r\n        (point.y <= yMax ||\r\n          point.y1 <= yMax ||\r\n          (arr[idx - 1] && arr[idx - 1].y <= yMax) ||\r\n          (arr[idx - 1] && arr[idx - 1].y1 <= yMax)) &&\r\n        (point.y >= yMin ||\r\n          point.y1 >= yMin ||\r\n          (arr[idx + 1] && arr[idx + 1].y >= yMin) ||\r\n          (arr[idx + 1] && arr[idx + 1].y1 >= yMin));\r\n\r\n      const filteredData = seriesItem.data; //.filter(visiblePoints);\r\n\r\n      const serie = {\r\n        ...seriesItem,\r\n        data: filteredData,\r\n      };\r\n\r\n      drawer.draw(\r\n        serie,\r\n        seriesItem.renderTo === 'canvas' ? this._canvas : group,\r\n        foundX,\r\n        foundY,\r\n        this._options\r\n      );\r\n\r\n      const emit = (event: IDragEvent<Series<BasePoint>>) => {\r\n        this.seriesMove$.next(event);\r\n      };\r\n\r\n      drawer?.dispatch?.on(DispatchType.moveLine, function () {\r\n        emit(this);\r\n      });\r\n    });\r\n  }\r\n\r\n  private createTooltip() {\r\n    d3.select(this._container.nativeElement)\r\n      .append('div')\r\n      .attr('class', 'tooltip-chart color-text-90 bg-background-50 shadow-2')\r\n      .style('position', 'fixed')\r\n      .style('top', 'unset')\r\n      .style('right', 'unset')\r\n      .style('bottom', 'unset')\r\n      .style('left', 'unset')\r\n      .style('pointer-events', 'none')\r\n      .style('display', 'none');\r\n  }\r\n\r\n  private handleMouseMove(options) {\r\n    const mouse = d3.pointer(options.event);\r\n    const { top, right, bottom, left } = this.tooltipPosition(options.event);\r\n\r\n    const tooltipsData = [];\r\n\r\n    this._chart\r\n      .select('.marker-line')\r\n      .attr('transform', `translate(${0}, ${mouse[1] - 2})`);\r\n\r\n    this._chart\r\n      .selectAll('.marker')\r\n      .attr('transform', (d: Series<BasePoint>) => {\r\n        if (!d.data.length) {\r\n          return;\r\n        }\r\n\r\n        if (\r\n          !this._xScales.has(d.xAxisIndex) ||\r\n          !this._yScales.has(d.yAxisIndex)\r\n        ) {\r\n          return;\r\n        }\r\n\r\n        const foundX = this._xScales.get(d.xAxisIndex);\r\n        const foundY = this._yScales.get(d.yAxisIndex);\r\n\r\n        if (this._options.tooltip.tracking === 'x') {\r\n          const [min, max] = foundX.domain();\r\n          const filteredData = d.data.filter(\r\n            (point) => point.x <= max && point.x >= min\r\n          );\r\n\r\n          const sorted = [...filteredData].sort((a, b) =>\r\n            d3.ascending(a.x, b.x)\r\n          );\r\n\r\n          const bisect = d3.bisector((dd: any) => dd.x).left;\r\n          const x0 = foundX.invert(mouse[0]);\r\n\r\n          const index = bisect(sorted, x0);\r\n\r\n          const data = sorted[index] ? sorted[index] : sorted[index - 1];\r\n\r\n          tooltipsData.push({\r\n            point: data,\r\n            color: d.color,\r\n            name: d.name,\r\n          });\r\n\r\n          return `translate(${!isNaN(data?.x) ? foundX(data.x) : -10}, ${\r\n            !isNaN(data?.y) ? foundY(data.y) : -10\r\n          })`;\r\n        }\r\n\r\n        if (this._options.tooltip.tracking === 'y') {\r\n          const sorted = [...d.data].sort((a, b) => d3.ascending(a.y, b.y));\r\n          const bisect = d3.bisector((dd: any) => dd.y).left;\r\n          const y0 = foundY.invert(mouse[1]);\r\n\r\n          const index = bisect(sorted, y0, 0);\r\n\r\n          const data = sorted[index] ? sorted[index] : sorted[index - 1];\r\n\r\n          tooltipsData.push({\r\n            point: data,\r\n            color: d.color,\r\n            name: d.name,\r\n          });\r\n\r\n          return `translate(${foundX(data.x)}, ${foundY(data.y)})`;\r\n        }\r\n      });\r\n\r\n    if (this._options.tooltip?.format) {\r\n      const formatted = this._options.tooltip?.format(tooltipsData);\r\n\r\n      d3.select(this._container.nativeElement)\r\n        .select('.tooltip-chart')\r\n        .style('top', top)\r\n        .style('right', right)\r\n        .style('bottom', bottom)\r\n        .style('left', left)\r\n        .html(formatted);\r\n    }\r\n  }\r\n\r\n  private tooltipPosition(event) {\r\n    const centerX = this._width / 2;\r\n    const centerY = this._height / 2;\r\n\r\n    const padding = { x: 10, y: 10 };\r\n\r\n    const scene = {\r\n      left: event.pageX > centerX ? 'initial' : `${event.pageX + padding.x}px`,\r\n      top: event.pageY > centerY ? 'initial' : `${event.pageY + padding.y}px`,\r\n      bottom:\r\n        event.pageY > centerY\r\n          ? `${window.innerHeight - event.pageY}px`\r\n          : 'initial',\r\n      right:\r\n        event.pageX > centerX\r\n          ? `${window.innerWidth - event.pageX + padding.x}px`\r\n          : 'initial',\r\n    };\r\n\r\n    return scene;\r\n  }\r\n\r\n  private createMarkers() {\r\n    if (this._options.tooltip === undefined) {\r\n      return;\r\n    }\r\n\r\n    if (!this._options.tooltip.enable) {\r\n      return;\r\n    }\r\n\r\n    this._chart.selectAll('.marker').remove();\r\n    this._chart.select('.marker-line').remove();\r\n\r\n    this._chart\r\n      .append('line')\r\n      .attr('class', 'marker-line')\r\n      .attr('x1', 35)\r\n      .attr('x2', this._width)\r\n      .style('stroke-width', 0.5)\r\n      .style('stroke', 'var(--color-text-40)')\r\n      .style('display', 'none');\r\n\r\n    const { series } = this._options;\r\n\r\n    if (!series) {\r\n      return;\r\n    }\r\n\r\n    const markers = this._chart\r\n      .selectAll()\r\n      .data(series.filter((_) => _.visible));\r\n    markers\r\n      .enter()\r\n      .append('circle')\r\n      .attr('class', 'marker')\r\n      .attr('pointer-events', 'none')\r\n      .attr('r', 3)\r\n      .attr('fill', (_, i) => _.color)\r\n      .style('display', 'none');\r\n\r\n    const mouseoutEvent = () => {\r\n      this._chart.selectAll('.marker').style('display', 'none');\r\n      this._chart.select('.marker-line').style('display', 'none');\r\n\r\n      d3.select(this._container.nativeElement)\r\n        .select('.tooltip-chart')\r\n        .style('display', 'none');\r\n    };\r\n\r\n    const mouseMoveEvent = (event) => {\r\n      const options = {\r\n        event,\r\n        series,\r\n      };\r\n\r\n      this.handleMouseMove(options);\r\n    };\r\n\r\n    const mouseOverEvent = () => {\r\n      if (this._options.tooltip.showMarkers) {\r\n        this._chart\r\n          .selectAll('.marker')\r\n          .style('display', (d: Series<BasePoint>) => {\r\n            if (d.data.length) {\r\n              return null;\r\n            }\r\n            return 'none';\r\n          });\r\n      }\r\n\r\n      if (this._options.tooltip.showLine) {\r\n        this._chart.select('.marker-line').style('display', null);\r\n      }\r\n\r\n      d3.select(this._container.nativeElement)\r\n        .select('.tooltip-chart')\r\n        .style('display', null);\r\n    };\r\n\r\n    this._chart\r\n      .on('mouseover', mouseOverEvent)\r\n      .on('mousemove', mouseMoveEvent)\r\n      .on('mouseleave', mouseoutEvent);\r\n  }\r\n\r\n  private drawLegend() {\r\n    if (this._options.legend?.visible === false) {\r\n      return;\r\n    }\r\n\r\n    this._chart.selectAll('.legend').remove();\r\n\r\n    const drawer = this._options.legend?.type\r\n      ? defaultLegendDrawerMapping.get(this._options.legend.type)\r\n      : defaultLegendDrawerMapping.get(LegendType.swatches);\r\n\r\n    const context = this._container.nativeElement as HTMLElement;\r\n\r\n    if (!drawer) {\r\n      throw new Error(\r\n        `No drawer for legend\r\n        }`\r\n      );\r\n    }\r\n\r\n    drawer.draw({\r\n      context,\r\n      series: this._options.series.filter((_) => _.showInLegend),\r\n      width: this._width,\r\n      height: this._height,\r\n    });\r\n  }\r\n\r\n  private caluclateChartWidth() {\r\n    let width = -this._width;\r\n\r\n    if (this.offsetOpposite > 0) {\r\n      width = -this._width + this.offsetOpposite + this.offsetNonOpposite;\r\n    }\r\n\r\n    if (this.offsetNonOpposite > 0) {\r\n      width =\r\n        -this._width + this._options.bounds.right + this.offsetNonOpposite;\r\n    }\r\n\r\n    if (\r\n      this.offsetOpposite >= Axis.offsetFactor &&\r\n      this.offsetNonOpposite === 0\r\n    ) {\r\n      width = -this._width + this.offsetOpposite + this._options.bounds.left;\r\n    }\r\n\r\n    if (this.offsetOpposite > 0 && this.offsetNonOpposite > 0) {\r\n      width = -this._width + this.offsetOpposite + this.offsetNonOpposite;\r\n    }\r\n\r\n    return Math.abs(width);\r\n  }\r\n\r\n  private drawGridLines() {\r\n    if (this._options.gridLines === false) {\r\n      return;\r\n    }\r\n\r\n    const translateX =\r\n      this.offsetNonOpposite > 0\r\n        ? this.offsetNonOpposite\r\n        : this._options.bounds.left + this.offsetNonOpposite;\r\n\r\n    this._chart.selectAll('.grid').remove();\r\n\r\n    const yList = this._yAxisList.filter(\r\n      (_) => _.options.visible && !_.options.opposite\r\n    );\r\n\r\n    const y: any =\r\n      yList?.length > 0\r\n        ? this._yScales.get(yList[yList.length - 1].index)\r\n        : this._yScales.get(0);\r\n\r\n    const x = this._xScales.get(0);\r\n\r\n    if (!y || !x) {\r\n      return;\r\n    }\r\n\r\n    const TICK_HEIGHT = 40;\r\n    const TICK_WIDTH = 60;\r\n\r\n    const tickCount = Math.round(this._height / TICK_HEIGHT);\r\n    const tickCountX = Math.round(this._width / TICK_WIDTH);\r\n\r\n    const gridY = this._chart\r\n      .append('g')\r\n      .attr('class', 'grid color-text-10')\r\n      .style('shape-rendering', 'crispEdges');\r\n\r\n    const gridlinesY = d3\r\n      .axisLeft(y)\r\n      .tickFormat('' as any)\r\n      .tickSize(-this.visibleChartWindowWidth);\r\n\r\n    const hasBarSeriesType = this._options.series.some(\r\n      (_) => _.type === SeriesType.bar\r\n    );\r\n\r\n    if (!hasBarSeriesType) {\r\n      const gridX = this._chart\r\n        .append('g')\r\n        .attr('class', 'grid color-text-10')\r\n        .style('shape-rendering', 'crispEdges');\r\n\r\n      const gridlinesX = d3\r\n        .axisBottom(x)\r\n        .ticks(tickCountX)\r\n        .tickFormat('' as any)\r\n        .tickSize(\r\n          this._height - this._options.bounds.bottom - this._options.bounds.top\r\n        );\r\n\r\n      gridX\r\n        .call(gridlinesX)\r\n        .attr('transform', `translate(0, ${this._options.bounds.top})`)\r\n        .lower();\r\n    }\r\n\r\n    gridY\r\n      .call(gridlinesY)\r\n      .attr('transform', `translate(${translateX}, ${0})`)\r\n      .lower();\r\n\r\n    this._chart.selectAll('.grid path').remove();\r\n  }\r\n\r\n  private createScales() {\r\n    this._xScales.clear();\r\n    this._yScales.clear();\r\n\r\n    const defaultScaleMapping: Map<ScaleType, any> = new Map<ScaleType, any>()\r\n      .set(ScaleType.linear, d3.scaleLinear)\r\n      .set(ScaleType.log, d3.scaleLog)\r\n      .set(ScaleType.sqrt, d3.scaleSqrt)\r\n      .set(ScaleType.pow, d3.scalePow);\r\n\r\n    const xRange = [\r\n      this.offsetNonOpposite\r\n        ? this.offsetNonOpposite\r\n        : this._options.bounds.left,\r\n      this._width -\r\n        (this.offsetOpposite\r\n          ? this.offsetOpposite\r\n          : this._options.bounds.right),\r\n    ];\r\n\r\n    const yRange = [\r\n      this._height - this._options.bounds.bottom,\r\n      this._options.bounds.top,\r\n    ];\r\n\r\n    this._xAxisList.forEach((axis, index) => {\r\n      let scale = null;\r\n\r\n      if (axis.options.type === Scale.time) {\r\n        scale = d3\r\n          .scaleTime()\r\n          .domain(axis.extent)\r\n          .range(axis.options.inverted ? [...xRange].reverse() : xRange);\r\n      }\r\n\r\n      if (axis.options.type === Scale.number) {\r\n        scale = defaultScaleMapping\r\n          .get(axis.options.scaleOptions.type)()\r\n          .domain(axis.extent)\r\n          .range(axis.options.inverted ? [...xRange].reverse() : xRange);\r\n      }\r\n\r\n      if (axis.options.niceTicks) {\r\n        scale.nice();\r\n      }\r\n\r\n      if (axis.options.scaleOptions.type === ScaleType.log) {\r\n        scale.base(axis.options.scaleOptions.base);\r\n      }\r\n\r\n      if (axis.options.scaleOptions.type === ScaleType.pow) {\r\n        scale.exponent(axis.options.scaleOptions.base);\r\n      }\r\n\r\n      this._xScales.set(index, scale);\r\n    });\r\n\r\n    this._yAxisList.forEach((axis, index) => {\r\n      let scale = null;\r\n\r\n      if (axis.options.type === Scale.number) {\r\n        scale = defaultScaleMapping\r\n          .get(axis.options.scaleOptions.type)()\r\n          .domain(axis.extent)\r\n          .range(axis.options.inverted ? [...yRange].reverse() : yRange);\r\n      }\r\n\r\n      if (axis.options.type === Scale.time) {\r\n        scale = d3\r\n          .scaleTime()\r\n          .domain(axis.extent)\r\n          .range(axis.options.inverted ? [...yRange].reverse() : yRange);\r\n      }\r\n\r\n      if (axis.options.niceTicks) {\r\n        scale.nice();\r\n      }\r\n\r\n      if (axis.options.scaleOptions.type === ScaleType.log) {\r\n        scale.base(axis.options.scaleOptions.base);\r\n      }\r\n\r\n      if (axis.options.scaleOptions.type === ScaleType.pow) {\r\n        scale.exponent(axis.options.scaleOptions.base);\r\n      }\r\n\r\n      this._yScales.set(index, scale);\r\n    });\r\n\r\n    for (const [key, value] of this._yScales) {\r\n      this._clonedY.set(key, value.copy());\r\n    }\r\n\r\n    for (const [key, value] of this._xScales) {\r\n      this._clonedX.set(key, value.copy());\r\n    }\r\n  }\r\n\r\n  private drawAxis() {\r\n    const hasVisibleAxis = [...this._xAxisList, ...this._yAxisList].filter(\r\n      (axis) => axis.options.visible\r\n    );\r\n\r\n    if (!hasVisibleAxis) {\r\n      return;\r\n    }\r\n\r\n    const negative = false;\r\n\r\n    this._chart.selectAll('.axes').remove();\r\n\r\n    const axes = this._chart\r\n      .append('g')\r\n      .attr('class', 'axes')\r\n      .style('shape-rendering', 'crispEdges');\r\n\r\n    const TICK_HEIGHT = 40;\r\n    const TICK_WIDTH = 60;\r\n\r\n    const tickCount = Math.round(this._height / TICK_HEIGHT);\r\n    const tickCountX = Math.round(this._width / TICK_WIDTH);\r\n\r\n    this._xAxisList.forEach((axis) => {\r\n      const options: AxisOptions = axis.options;\r\n\r\n      const translate = `translate(${0}, ${\r\n        this._height - this._options.bounds.bottom\r\n      })`;\r\n\r\n      const x = this._xScales.get(axis.index);\r\n\r\n      const xAxis = d3.axisBottom(x).ticks(tickCountX);\r\n\r\n      if (axis.options?.tickFormat) {\r\n        xAxis.tickFormat(axis.options.tickFormat);\r\n      }\r\n\r\n      if (options.visible !== false) {\r\n        const translateX = this.offsetNonOpposite\r\n          ? this.offsetNonOpposite\r\n          : this._options.bounds.left + this.offsetNonOpposite;\r\n\r\n        axes\r\n          .append('g')\r\n          .attr('class', 'x-axis-label')\r\n          .append('text')\r\n          .style('fill', 'var(--color-text-50)')\r\n          .attr(\r\n            'transform',\r\n            'translate(' +\r\n              this._width / 2 +\r\n              ' ,' +\r\n              (this._height - this._options.bounds.bottom) +\r\n              ')'\r\n          )\r\n          .style('text-anchor', 'middle')\r\n          .attr('dy', '3em')\r\n          .text(options.title ?? '');\r\n\r\n        axes\r\n          .append('g')\r\n          .attr('class', 'x-axis font-caption')\r\n          .attr('data-x-scale-id', axis.index)\r\n          .attr('transform', translate)\r\n          .style('pointer-events', 'none')\r\n          .call(xAxis)\r\n          .call((_) => {\r\n            _.select('.domain').remove();\r\n            _.selectAll('.tick').attr('class', 'color-text-50');\r\n\r\n            if (negative) {\r\n              _.append('line')\r\n                .attr('y1', 0)\r\n                .attr('y2', this._height)\r\n                .attr('transform', `translate(${x(0)}, -${this._height})`)\r\n                .style('stroke-width', 0.5)\r\n                .style('stroke', 'var(--color-text-50)');\r\n            }\r\n\r\n            _.append('line')\r\n              .attr('x1', 0)\r\n              .attr('x2', this.visibleChartWindowWidth)\r\n              .attr('transform', `translate(${translateX}, ${0})`)\r\n              .style('stroke-width', 0.5)\r\n              .style('stroke', 'var(--color-text-50)');\r\n          });\r\n      }\r\n    });\r\n\r\n    this._yAxisList.forEach((axis) => {\r\n      const translate = axis.options.opposite\r\n        ? `translate(${this._width - axis.offset}, ${0})`\r\n        : `translate(${axis.offset}, ${0})`;\r\n\r\n      const y = this._yScales.get(axis.index);\r\n\r\n      const yAxis = axis.options.opposite ? d3.axisRight(y) : d3.axisLeft(y);\r\n\r\n      if (axis.options.visible !== false) {\r\n        const labelOffset = axis.options.opposite\r\n          ? this._width - axis.offset + axis.width\r\n          : axis.offset - axis.width;\r\n\r\n        axes\r\n          .append('g')\r\n          .attr('class', 'y-axis-label')\r\n          .append('text')\r\n          .style('fill', 'var(--color-text-50)')\r\n          .attr('transform', 'rotate(-90)')\r\n          .attr('y', labelOffset)\r\n          .attr('x', 0 - this._height / 2)\r\n          .attr('dy', axis.options.opposite ? '12px' : '-3px')\r\n          .style('text-anchor', 'middle')\r\n          .text(axis.options.title ?? '');\r\n\r\n        axes\r\n          .append('g')\r\n          .attr('class', 'y-axis font-caption')\r\n          .attr('data-y-scale-id', axis.index)\r\n          .attr('transform', translate)\r\n          .call(yAxis)\r\n          .style('pointer-events', 'none')\r\n          .call((_) => {\r\n            _.select('.domain').remove();\r\n            _.selectAll('.tick').attr('class', 'color-text-50');\r\n\r\n            if (!negative) {\r\n              _.append('line')\r\n                .attr('y1', 0)\r\n                .attr(\r\n                  'y2',\r\n                  this._height -\r\n                    this._options.bounds.top -\r\n                    this._options.bounds.bottom\r\n                )\r\n                .attr(\r\n                  'transform',\r\n                  `translate(${0}, ${this._options.bounds.top})`\r\n                )\r\n                .style('stroke-width', 0.5)\r\n                .style('stroke', 'var(--color-text-50)');\r\n            }\r\n          });\r\n      }\r\n    });\r\n  }\r\n}\r\n",
+            "sourceCode": "import {ElementRef} from '@angular/core';\r\nimport {Observable, Subject} from 'rxjs';\r\nimport * as d3 from 'd3';\r\nimport {D3ZoomEvent, zoomIdentity, ZoomTransform} from 'd3';\r\nimport * as d3annotation from 'd3-svg-annotation';\r\nimport {Scale} from '../model/enum/scale';\r\nimport {ChartOptions} from '../model/chart-options';\r\nimport {AxisOptions} from '../model/axis-options';\r\nimport {Series} from '../model/series';\r\nimport {BasePoint} from '../model/point/base-point';\r\nimport {SeriesType} from '../model/enum/series-type';\r\nimport {defaultDrawerMapping} from '../drawer/default-drawer-mapping';\r\nimport {defaultLegendDrawerMapping} from '../legend-drawer/default-drawer-legend-mapping';\r\nimport {LegendType} from '../model/enum/legend-type';\r\nimport {Axis} from './axis-creator';\r\nimport {AxisType} from '../model/enum/axis-type';\r\nimport {PlotLine} from '../model/plot-line';\r\nimport {PlotBand} from '../model/plot-band';\r\nimport {ScaleType} from '../model/enum/scale-type';\r\nimport {ZoomType} from '../model/enum/zoom-type';\r\nimport {IDragEvent} from '../model/i-drag-event';\r\nimport {DispatchType} from '../model/enum/dispatch-type';\r\nimport {IZoomEvent} from '../model/i-zoom-event';\r\n\r\ntype ChartSize = { width: number; height: number };\r\n\r\nexport class TetaChart {\r\n  plotLinesMove: Observable<IDragEvent<PlotLine>>;\r\n  plotBandsMove: Observable<IDragEvent<PlotBand>>;\r\n\r\n  zoom: Observable<IZoomEvent>;\r\n  seriesMove: Observable<IDragEvent<Series<BasePoint>>>;\r\n\r\n  private plotLinesMove$: Subject<IDragEvent<PlotLine>> = new Subject<IDragEvent<PlotLine>>();\r\n  private plotBandsMove$: Subject<IDragEvent<PlotBand>> = new Subject<IDragEvent<PlotBand>>();\r\n\r\n  private seriesMove$: Subject<IDragEvent<Series<BasePoint>>> = new Subject<IDragEvent<Series<BasePoint>>>();\r\n\r\n  private zoom$: Subject<IZoomEvent> = new Subject<IZoomEvent>();\r\n\r\n  private _container: ElementRef = null;\r\n  private _canvas: any;\r\n  private _width = 0;\r\n  private _height = 0;\r\n\r\n  private _zoomYCache: Map<number, ZoomTransform> = new Map<number,\r\n    ZoomTransform>();\r\n\r\n  private _zoomXCache: Map<number, ZoomTransform> = new Map<number,\r\n    ZoomTransform>();\r\n\r\n  private _zoom = d3.zoom();\r\n  private _commonZoomTransform: ZoomTransform;\r\n\r\n  private visibleChartWindowWidth = 0;\r\n\r\n  private _options: ChartOptions;\r\n  private _xAxisList: Axis[];\r\n  private _yAxisList: Axis[];\r\n  private _xScales: Map<number, any> = new Map<number, any>();\r\n  private _yScales: Map<number, any> = new Map<number, any>();\r\n\r\n  private _clonedX = new Map<number, any>();\r\n  private _clonedY = new Map<number, any>();\r\n\r\n  private _chart: d3.Selection<any, unknown, null, undefined>;\r\n\r\n  private offsetOpposite = 0;\r\n  private offsetNonOpposite = 0;\r\n\r\n  private uniqId: string;\r\n  private _zoomAdded = false;\r\n\r\n  constructor(options: ChartOptions, element: ElementRef) {\r\n    this._options = options;\r\n    this.selectNode(element);\r\n    this.createTooltip();\r\n\r\n    this.plotLinesMove = this.plotLinesMove$.asObservable();\r\n    this.plotBandsMove = this.plotBandsMove$.asObservable();\r\n    this.seriesMove = this.seriesMove$.asObservable();\r\n    this.zoom = this.zoom$.asObservable();\r\n  }\r\n\r\n  public redraw(options?: ChartOptions) {\r\n    if (options) {\r\n      this._options = options;\r\n    }\r\n\r\n    this.createAxis();\r\n    this.createScales();\r\n    this.createMarkers();\r\n    this.createVisibleWindow();\r\n    this._redraw();\r\n    this.drawLegend();\r\n\r\n    if (this._commonZoomTransform) {\r\n      this._chart.call(this._zoom.transform, this._commonZoomTransform);\r\n    }\r\n\r\n    if (!this._zoomAdded) {\r\n      this.addZoom();\r\n      this._zoomAdded = true;\r\n    }\r\n\r\n    this.addAxesZoom();\r\n  }\r\n\r\n  public setZoom(zoom: IZoomEvent) {\r\n    if (!this._zoom) {\r\n      return;\r\n    }\r\n\r\n    this._chart.call(this._zoom.transform, zoom?.zoomTransform ?? zoomIdentity);\r\n  }\r\n\r\n  public setSize(size: ChartSize = {width: 0, height: 0}) {\r\n    this._height = size.height;\r\n    this._width = size.width;\r\n\r\n    this._chart.attr('width', this._width).attr('height', this._height);\r\n    this._canvas.attr('width', this._width).attr('height', this._height);\r\n\r\n    const extent = [\r\n      [\r\n        this.offsetNonOpposite\r\n          ? this.offsetNonOpposite\r\n          : this._options.bounds.left,\r\n        this._options.bounds.top,\r\n      ],\r\n      [\r\n        this._width -\r\n        (this.offsetOpposite\r\n          ? this.offsetOpposite\r\n          : this._options.bounds.right),\r\n        this._height - this._options.bounds.bottom,\r\n      ],\r\n    ] as any;\r\n\r\n    this._zoom\r\n      .scaleExtent([1, Infinity])\r\n      .translateExtent(extent)\r\n      .extent(extent);\r\n  }\r\n\r\n  private createVisibleWindow() {\r\n    this.uniqId = (Date.now() + Math.random()).toString(36);\r\n\r\n    this._chart.selectAll('defs').remove();\r\n\r\n    this._chart\r\n      .append('defs')\r\n      .append('clipPath')\r\n      .attr('id', `draw-window-${this.uniqId}`)\r\n      .append('rect')\r\n      .attr(\r\n        'x',\r\n        this.offsetNonOpposite === 0\r\n          ? this._options.bounds.left\r\n          : this.offsetNonOpposite\r\n      )\r\n      .attr('y', this._options.bounds.top)\r\n      .attr('width', this.visibleChartWindowWidth + 1)\r\n      .attr(\r\n        'height',\r\n        this._height -\r\n        this._options.bounds.bottom -\r\n        this._options.bounds.top +\r\n        1 >\r\n        0\r\n          ? this._height -\r\n          this._options.bounds.bottom -\r\n          this._options.bounds.top +\r\n          1\r\n          : 0\r\n      );\r\n  }\r\n\r\n  private createAxis() {\r\n    this._xAxisList = this._options.xAxis.map(\r\n      (_, index) =>\r\n        new Axis({\r\n          type: AxisType.abscissa,\r\n          index,\r\n          chartOptions: this._options,\r\n        })\r\n    );\r\n\r\n    this._yAxisList = this._options.yAxis.map((_, index) => {\r\n      const axis = new Axis({\r\n        type: AxisType.ordinatus,\r\n        index,\r\n        chartOptions: this._options,\r\n        height: this._height,\r\n      });\r\n      return axis;\r\n    });\r\n\r\n    const nonTitleOffset = 6;\r\n\r\n    this.offsetNonOpposite = d3.reduce(\r\n      this._yAxisList.filter(\r\n        (_) => _.options?.opposite !== true && _.options?.visible\r\n      ),\r\n      (sum, axis) => {\r\n        const offset =\r\n          sum +\r\n          axis.width +\r\n          (axis?.options?.title ? Axis.offsetFactor : nonTitleOffset);\r\n        axis.setOffset(offset);\r\n        return offset;\r\n      },\r\n      0\r\n    );\r\n\r\n    this.offsetOpposite = d3.reduce(\r\n      this._yAxisList.filter(\r\n        (_) => _.options?.opposite === true && _.options?.visible\r\n      ),\r\n      (sum, axis) => {\r\n        const offset =\r\n          sum +\r\n          axis.width +\r\n          (axis?.options?.title ? Axis.offsetFactor : nonTitleOffset);\r\n        axis.setOffset(offset);\r\n        return offset;\r\n      },\r\n      0\r\n    );\r\n\r\n    this.visibleChartWindowWidth = this.caluclateChartWidth();\r\n  }\r\n\r\n  private _redraw() {\r\n    this.drawChart();\r\n    this.drawAxis();\r\n    this.drawGridLines();\r\n    this.drawPlotBands();\r\n    this.drawPlotLines();\r\n    this.drawAnnotations();\r\n  }\r\n\r\n  private addZoom() {\r\n    if (this._options?.zoom?.enable) {\r\n      const hasXZoom = [ZoomType.x, ZoomType.xy].includes(\r\n        this._options.zoom.zoomType\r\n      );\r\n      const hasYZoom = [ZoomType.y, ZoomType.xy].includes(\r\n        this._options.zoom.zoomType\r\n      );\r\n\r\n      this._chart.call(\r\n        this._zoom.on('start end zoom', (event) => {\r\n          if (hasXZoom) {\r\n            for (const [key, value] of this._clonedX.entries()) {\r\n              const rescaled = event.transform.rescaleX(value);\r\n              this._xScales.set(key, rescaled);\r\n\r\n              if (event.sourceEvent) {\r\n                this.zoom$.next({\r\n                  domain: rescaled.domain(),\r\n                  zoomTransform: event.transform,\r\n                  zoomType: ZoomType.x,\r\n                  event,\r\n                });\r\n              }\r\n            }\r\n          }\r\n\r\n          if (hasYZoom) {\r\n            for (const [key, value] of this._clonedY.entries()) {\r\n              const rescaled = event.transform.rescaleY(value);\r\n              this._yScales.set(key, rescaled);\r\n\r\n              if (event.type === 'zoom') {\r\n                if (event.sourceEvent) {\r\n                  this.zoom$.next({\r\n                    domain: rescaled.domain(),\r\n                    zoomTransform: event.transform,\r\n                    zoomType: ZoomType.y,\r\n                    event,\r\n                  });\r\n                }\r\n              }\r\n            }\r\n          }\r\n\r\n          if (event.type === 'end') {\r\n            this._commonZoomTransform = event.transform;\r\n          }\r\n\r\n          this._redraw();\r\n        })\r\n      );\r\n    }\r\n  }\r\n\r\n  private addAxesZoom() {\r\n    this._chart.selectAll('.zoom-behavior').remove();\r\n\r\n    [...this._yAxisList, ...this._xAxisList]\r\n      .filter((axis) => axis.options.visible && axis.options.zoom)\r\n      .forEach((axis) => {\r\n        const foundNode = this._chart\r\n          .select(\r\n            `[data-${axis.type === AxisType.abscissa ? 'x' : 'y'}-scale-id='${\r\n              axis.index\r\n            }']`\r\n          )\r\n          .node() as any;\r\n\r\n        if (!foundNode) {\r\n          return;\r\n        }\r\n\r\n        const bBox = foundNode.getBBox();\r\n\r\n        const translateX =\r\n          axis.type === AxisType.abscissa\r\n            ? this.offsetNonOpposite\r\n              ? this.offsetNonOpposite\r\n              : this._options.bounds.left + this.offsetNonOpposite\r\n            : axis.options.opposite\r\n              ? this._width - axis.offset\r\n              : axis.offset - bBox.width;\r\n\r\n        const zoom = d3\r\n          .zoom()\r\n          .scaleExtent([1, Infinity])\r\n          .on('zoom end', (event: D3ZoomEvent<any, any>) => {\r\n            if (axis.type === AxisType.abscissa) {\r\n              const scale = this._clonedX.get(axis.index);\r\n              this._xScales.set(axis.index, event.transform.rescaleX(scale));\r\n            } else {\r\n              const scale = this._clonedY.get(axis.index);\r\n              this._yScales.set(axis.index, event.transform.rescaleY(scale));\r\n            }\r\n\r\n            if (event.type === 'end') {\r\n              if (axis.type === AxisType.ordinatus) {\r\n                this._zoomYCache.set(axis.index, event.transform);\r\n              }\r\n\r\n              if (axis.type === AxisType.abscissa) {\r\n                this._zoomXCache.set(axis.index, event.transform);\r\n                this._chart.call(this._zoom.transform, event.transform);\r\n              }\r\n            }\r\n\r\n            this._redraw();\r\n          });\r\n\r\n        const restoredTransform: ZoomTransform =\r\n          axis.type === AxisType.ordinatus\r\n            ? this._zoomYCache.get(axis.index)\r\n            : this._zoomXCache.get(axis.index);\r\n\r\n        this._chart\r\n          .append('rect')\r\n          .attr('class', 'zoom-behavior')\r\n          .attr('height', bBox.height)\r\n          .attr('width', bBox.width)\r\n          .attr(\r\n            'transform',\r\n            `translate(${translateX}, ${\r\n              axis.type === AxisType.abscissa\r\n                ? this._height - this._options.bounds.bottom\r\n                : this._options.bounds.top\r\n            })`\r\n          )\r\n          .style('opacity', '0')\r\n          .style('pointer-events', 'all')\r\n          .call(zoom.transform, restoredTransform ?? d3.zoomIdentity)\r\n          .call(zoom);\r\n      });\r\n  }\r\n\r\n  private selectNode(element: ElementRef) {\r\n    this._container = element;\r\n\r\n    d3.select(element.nativeElement).selectAll('.tooltip-chart').remove();\r\n\r\n    d3.select(element.nativeElement).selectAll('svg').remove();\r\n    d3.select(element.nativeElement).selectAll('canvas').remove();\r\n\r\n    this._chart = d3\r\n      .select(element.nativeElement)\r\n      .append('svg')\r\n      .attr('position', 'relative')\r\n      .style('z-index', 0);\r\n\r\n    this._canvas = d3\r\n      .select(element.nativeElement)\r\n      .append('canvas')\r\n      .attr('class', 'main-canvas')\r\n      .style('transform', 'translate(35, 0)')\r\n      .style('position', 'absolute')\r\n      .style('z-index', 1);\r\n  }\r\n\r\n  private drawAnnotations() {\r\n    this._chart.selectAll('.annotations').remove();\r\n\r\n    const annotations = this._options.annotations?.map((annotation) => {\r\n      const x = this._xScales.get(annotation.xAxisIndex);\r\n      const y = this._yScales.get(annotation.yAxisIndex);\r\n\r\n      return {\r\n        note: annotation.note,\r\n        connector: annotation.connector,\r\n        x: x(annotation.point?.x),\r\n        y: y(annotation.point?.y),\r\n        dx: annotation.dx,\r\n        dy: annotation.dy,\r\n        type: annotation.type,\r\n        className: annotation.className,\r\n      };\r\n    });\r\n\r\n    const makeAnnotations = d3annotation\r\n      .annotation()\r\n      .annotations(annotations ?? []);\r\n\r\n    this._chart\r\n      .append('g')\r\n      .attr('class', 'annotations')\r\n      .attr('clip-path', `url(#draw-window-${this.uniqId})`)\r\n      .call(makeAnnotations as any)\r\n      .lower();\r\n  }\r\n\r\n  private drawPlotLines() {\r\n    this._chart.selectAll('.plotlines').remove();\r\n\r\n    const plotlineGroup = this._chart\r\n      .append('g')\r\n      .attr('class', 'plotlines')\r\n      .style('shape-rendering', 'crispEdges')\r\n      .attr('clip-path', `url(#draw-window-${this.uniqId})`);\r\n\r\n    this._xAxisList\r\n      .filter((_) => _.options.plotLines.length > 0)\r\n      .forEach((axis) => {\r\n        const [min, max] = axis.extent;\r\n        const x = this._xScales.get(axis.index);\r\n\r\n        const plotlinesPoints = axis.options.plotLines;\r\n\r\n        const getTextCenterPointPx = (d: PlotLine, idx: number) =>\r\n          x(\r\n            (d?.value +\r\n              (plotlinesPoints[idx - 1]\r\n                ? plotlinesPoints[idx - 1]?.value\r\n                : 0)) /\r\n            2\r\n          );\r\n\r\n        const opacity = (d: PlotLine, idx: number) => {\r\n          const displayWidth = 20;\r\n\r\n          const width =\r\n            x(d?.value) -\r\n            x(plotlinesPoints[idx - 1] ? plotlinesPoints[idx - 1]?.value : 0);\r\n          return width <= displayWidth ? 0 : 1;\r\n        };\r\n\r\n        plotlineGroup\r\n          .selectAll('.label')\r\n          .data(plotlinesPoints)\r\n          .join('text')\r\n          .attr('class', 'label font-body-3 fill-text-70')\r\n          .attr('x', getTextCenterPointPx)\r\n          .attr('y', (d) => this._height / 2)\r\n          .attr('text-anchor', 'middle')\r\n          .attr('dominant-baseline', 'central')\r\n          .attr(\r\n            'transform',\r\n            (d, idx) =>\r\n              `rotate(-90, ${getTextCenterPointPx(d, idx)}, ${\r\n                this._height / 2\r\n              })`\r\n          )\r\n          .text((d) => d?.label ?? '')\r\n          .style('opacity', opacity);\r\n\r\n        plotlineGroup\r\n          .selectAll('.plotline')\r\n          .data(plotlinesPoints)\r\n          .join('line')\r\n          .attr('class', 'plotline')\r\n          .attr('data-plotline-id', (d) => d.id)\r\n          .attr('x1', (d) => x(d.value))\r\n          .attr('x2', (d) => x(d.value))\r\n          .attr('y1', 0)\r\n          .attr(\r\n            'y2',\r\n            this._height -\r\n            this._options.bounds.top -\r\n            this._options.bounds.bottom\r\n          )\r\n          .attr('transform', `translate(0, ${this._options.bounds.top})`)\r\n          .style('stroke-width', (d) => d.width)\r\n          .style('stroke', (d) => d.color)\r\n          .style('stroke-dasharray', (d) => (d.dashed ? '8, 8' : '0, 0'));\r\n\r\n        const emit = (event: DragEvent, plotLine: PlotLine) => {\r\n          this.plotLinesMove$.next({event, target: plotLine});\r\n        };\r\n\r\n        plotlineGroup\r\n          .selectAll('.drag-plotline')\r\n          .data(plotlinesPoints)\r\n          .join('line')\r\n          .attr('class', 'drag-plotline')\r\n          .attr('x1', (d) => x(d.value))\r\n          .attr('x2', (d) => x(d.value))\r\n          .attr('y1', 0)\r\n          .attr(\r\n            'y2',\r\n            this._height -\r\n            this._options.bounds.top -\r\n            this._options.bounds.bottom\r\n          )\r\n          .attr('transform', `translate(0, ${this._options.bounds.top})`)\r\n          .style('stroke-width', 8)\r\n          .style('stroke', 'rgba(0, 0, 0, 0)')\r\n          .style('cursor', 'col-resize')\r\n          .call(\r\n            d3\r\n              .drag()\r\n              .on('drag', function (event, d: PlotLine) {\r\n                const group = d3.select(this).node().parentElement;\r\n\r\n                const draggedPlotLine = d3\r\n                  .select(group)\r\n                  .select(`[data-plotline-id='${d.id}']`);\r\n\r\n                d.value = x.invert(event.x);\r\n\r\n                const minValue = d.min ?? min;\r\n                const maxValue = d.max ?? max;\r\n\r\n                const borderLeftReached = d.value <= minValue;\r\n                const borderRightReached = d.value >= maxValue;\r\n\r\n                if (borderLeftReached) {\r\n                  d.value = minValue;\r\n                }\r\n\r\n                if (borderRightReached) {\r\n                  d.value = maxValue;\r\n                }\r\n\r\n                d3.select(this).attr('x1', x(d.value)).attr('x2', x(d.value));\r\n\r\n                draggedPlotLine.attr('x1', x(d.value)).attr('x2', x(d.value));\r\n\r\n                emit(event, d);\r\n              })\r\n              .on('end', (event: DragEvent, d: PlotLine) => {\r\n                emit(event, d);\r\n              }) as any\r\n          );\r\n      });\r\n\r\n    this._yAxisList\r\n      .filter((_) => _.options.plotLines.length > 0)\r\n      .forEach((axis) => {\r\n        const [min, max] = axis.extent;\r\n        const y = this._yScales.get(axis.index);\r\n\r\n        const plotlinesPoints = axis.options.plotLines;\r\n\r\n        plotlineGroup\r\n          .selectAll('.plotline')\r\n          .data(plotlinesPoints)\r\n          .join('line')\r\n          .attr('class', 'plotline')\r\n          .attr('data-plotline-id', (d) => d.id)\r\n          .attr('y1', (d) => y(d.value))\r\n          .attr('y2', (d) => y(d.value))\r\n          .attr('x1', 0)\r\n          .attr(\r\n            'x2',\r\n            this._width - this._options.bounds.left - this._options.bounds.right\r\n          )\r\n          .attr('transform', `translate(${this._options.bounds.left}, 0)`)\r\n          .style('stroke-width', (d) => d.width)\r\n          .style('stroke', (d) => d.color)\r\n          .style('stroke-dasharray', (d) => (d.dashed ? '8, 8' : '0, 0'));\r\n\r\n        const emit = (event: DragEvent, plotLine: PlotLine) => {\r\n          this.plotLinesMove$.next({event, target: plotLine});\r\n        };\r\n\r\n        plotlineGroup\r\n          .selectAll('.drag-plotline')\r\n          .data(plotlinesPoints)\r\n          .join('line')\r\n          .attr('class', 'drag-plotline')\r\n          .attr('y1', (d) => y(d.value))\r\n          .attr('y2', (d) => y(d.value))\r\n          .attr('x1', 0)\r\n          .attr(\r\n            'x2',\r\n            this._width - this._options.bounds.left - this._options.bounds.right\r\n          )\r\n          .attr('transform', `translate(${this._options.bounds.left}, 0)`)\r\n          .style('stroke-width', 8)\r\n          .style('stroke', 'rgba(0, 0, 0, 0)')\r\n          .style('cursor', 'row-resize')\r\n          .call(\r\n            d3\r\n              .drag()\r\n              .on('drag', function (event, d: PlotLine) {\r\n                const group = d3.select(this).node().parentElement;\r\n\r\n                const draggedPlotLine = d3\r\n                  .select(group)\r\n                  .select(`[data-plotline-id='${d.id}']`);\r\n\r\n                d.value = y.invert(event.y);\r\n\r\n                const minValue = d.min ?? min;\r\n                const maxValue = d.max ?? max;\r\n\r\n                const borderTopReached = d.value <= minValue;\r\n                const borderBottomReached = d.value >= maxValue;\r\n\r\n                if (borderTopReached) {\r\n                  d.value = minValue;\r\n                }\r\n\r\n                if (borderBottomReached) {\r\n                  d.value = maxValue;\r\n                }\r\n\r\n                d3.select(this).attr('y1', y(d.value)).attr('y2', y(d.value));\r\n\r\n                draggedPlotLine.attr('y1', y(d.value)).attr('y2', y(d.value));\r\n\r\n                emit(event, d);\r\n              })\r\n              .on('end', (event: DragEvent, d: PlotLine) => {\r\n                emit(event, d);\r\n              }) as any\r\n          );\r\n      });\r\n  }\r\n\r\n  private drawPlotBands() {\r\n    this._chart.selectAll('.plotbands').remove();\r\n\r\n    const plotBandGroup = this._chart\r\n      .append('g')\r\n      .attr('class', 'plotbands')\r\n      .attr('clip-path', `url(#draw-window-${this.uniqId})`);\r\n\r\n    this._xAxisList\r\n      .filter((_) => _.options.plotBands.length > 0)\r\n      .forEach((axis) => {\r\n        const x = this._xScales.get(axis.index);\r\n\r\n        const [min, max] = axis.extent;\r\n\r\n        const plotband = plotBandGroup\r\n          .append('g')\r\n          .style('shape-rendering', 'crispEdges');\r\n\r\n        const plotBandHeight =\r\n          this._height - this._options.bounds.top - this._options.bounds.bottom;\r\n\r\n        const emit = (event: DragEvent, plotBand: PlotBand) => {\r\n          this.plotBandsMove$.next({\r\n            event,\r\n            target: plotBand,\r\n          });\r\n        };\r\n\r\n        plotband\r\n          .selectAll('rect')\r\n          .data(axis.options.plotBands)\r\n          .on('start', (_) => {\r\n            this._chart.selectAll('.marker').style('display', 'none');\r\n            d3.select(this._container.nativeElement)\r\n              .select('.tooltip-chart')\r\n              .style('display', 'none');\r\n          })\r\n          .join('rect')\r\n          .attr('data-plotband-id', (d) => d.id)\r\n          .attr('x', (d) => x(d.from))\r\n          .attr('y', 0)\r\n          .attr('width', (d) => Math.abs(x(d.to) - x(d.from)))\r\n          .attr('fill', (d) => d.color)\r\n          .style('opacity', (d) => d.opacity ?? 1)\r\n          .attr('height', plotBandHeight > 0 ? plotBandHeight : 0)\r\n          .attr('transform', `translate(0, ${this._options.bounds.top})`);\r\n\r\n        plotband\r\n          .selectAll('.line-left')\r\n          .data(axis.options.plotBands)\r\n          .join('line')\r\n          .attr('data-line-left-id', (d) => d.id)\r\n          .attr('class', 'line-left')\r\n          .attr('x1', (d) => x(d.from))\r\n          .attr('x2', (d) => x(d.from))\r\n          .attr('y1', 0)\r\n          .attr(\r\n            'y2',\r\n            this._height -\r\n            this._options.bounds.top -\r\n            this._options.bounds.bottom\r\n          )\r\n          .attr('transform', `translate(0, ${this._options.bounds.top})`)\r\n          .style('stroke-width', 1)\r\n          .style('stroke-dasharray', '8, 8')\r\n          .style('stroke', 'var(--color-text-90)')\r\n          .style('opacity', (d) => (d.showGrabbers ? 1 : 0));\r\n\r\n        plotband\r\n          .selectAll('.drag-left')\r\n          .data(axis.options.plotBands)\r\n          .join('line')\r\n          .attr('x1', (d) => x(d.from))\r\n          .attr('x2', (d) => x(d.from))\r\n          .attr('y1', 0)\r\n          .attr(\r\n            'y2',\r\n            this._height -\r\n            this._options.bounds.top -\r\n            this._options.bounds.bottom\r\n          )\r\n          .attr('transform', `translate(0, ${this._options.bounds.top})`)\r\n          .style('stroke-width', 8)\r\n          .style('stroke', 'rgba(0, 0, 0, 0)')\r\n          .style('cursor', 'col-resize')\r\n          .call(\r\n            d3\r\n              .drag()\r\n              .on('drag', function (event: DragEvent, d: PlotBand) {\r\n                const group = d3.select(this).node().parentElement;\r\n                const draggedBand = d3\r\n                  .select(group)\r\n                  .select(`[data-plotband-id='${d.id}']`);\r\n\r\n                const draggedLine = d3\r\n                  .select(group)\r\n                  .select(`[data-line-left-id='${d.id}']`);\r\n\r\n                d.from = x.invert(event.x);\r\n\r\n                const minValue = d.min ?? min;\r\n\r\n                const borderReached = d.from <= minValue;\r\n\r\n                if (borderReached) {\r\n                  d.from = minValue;\r\n                }\r\n\r\n                if (d.from >= d.to) {\r\n                  d.from = d.to;\r\n                }\r\n\r\n                d3.select(this).attr('x1', x(d.from)).attr('x2', x(d.from));\r\n\r\n                draggedBand\r\n                  .attr('x', x(d.from))\r\n                  .attr('width', x(d.to) - x(d.from));\r\n\r\n                draggedLine.attr('x1', x(d.from)).attr('x2', x(d.from));\r\n\r\n                emit(event, d);\r\n              })\r\n              .on('end', (event: DragEvent, d: PlotBand) =>\r\n                emit(event, d)\r\n              ) as any\r\n          );\r\n\r\n        plotband\r\n          .selectAll('.line-right')\r\n          .data(axis.options.plotBands)\r\n          .join('line')\r\n          .attr('data-line-right-id', (d) => d.id)\r\n          .attr('class', 'line-right')\r\n          .attr('x1', (d) => x(d.to))\r\n          .attr('x2', (d) => x(d.to))\r\n          .attr('y1', 0)\r\n          .attr(\r\n            'y2',\r\n            this._height -\r\n            this._options.bounds.top -\r\n            this._options.bounds.bottom\r\n          )\r\n          .attr('transform', `translate(0, ${this._options.bounds.top})`)\r\n          .style('stroke-width', 1)\r\n          .style('stroke-dasharray', '8, 8')\r\n          .style('stroke', 'var(--color-text-90)')\r\n          .style('opacity', (d) => (d.showGrabbers ? 1 : 0));\r\n\r\n        plotband\r\n          .selectAll('.drag-right')\r\n          .data(axis.options.plotBands)\r\n          .join('line')\r\n          .attr('class', 'drag-right')\r\n          .attr('x1', (d) => x(d.to))\r\n          .attr('x2', (d) => x(d.to))\r\n          .attr('y1', 0)\r\n          .attr(\r\n            'y2',\r\n            this._height -\r\n            this._options.bounds.top -\r\n            this._options.bounds.bottom\r\n          )\r\n          .attr('transform', `translate(0, ${this._options.bounds.top})`)\r\n          .style('stroke-width', 8)\r\n          .style('stroke', 'rgba(0, 0, 0, 0)')\r\n          .style('cursor', 'col-resize')\r\n          .call(\r\n            d3\r\n              .drag()\r\n              .on('drag', function (event: DragEvent, d: PlotBand) {\r\n                const group = d3.select(this).node().parentElement;\r\n\r\n                const draggedBand = d3\r\n                  .select(group)\r\n                  .select(`[data-plotband-id='${d.id}']`);\r\n\r\n                const draggedLine = d3\r\n                  .select(group)\r\n                  .select(`[data-line-right-id='${d.id}']`);\r\n\r\n                d.to = x.invert(event.x);\r\n\r\n                const maxValue = d.max ?? max;\r\n\r\n                const borderReached = d.to >= maxValue;\r\n\r\n                if (borderReached) {\r\n                  d.to = maxValue;\r\n                }\r\n\r\n                if (d.to <= d.from) {\r\n                  d.to = d.from;\r\n                }\r\n\r\n                d3.select(this).attr('x1', x(d.to)).attr('x2', x(d.to));\r\n                draggedBand.attr('width', x(d.to) - x(d.from));\r\n                draggedLine.attr('x1', x(d.to)).attr('x2', x(d.to));\r\n\r\n                emit(event, d);\r\n              })\r\n              .on('end', (event: DragEvent, d: PlotBand) =>\r\n                emit(event, d)\r\n              ) as any\r\n          );\r\n      });\r\n\r\n    this._yAxisList\r\n      .filter((_) => _.options.plotBands.length > 0)\r\n      .forEach((axis) => {\r\n        const y = this._yScales.get(axis.index);\r\n\r\n        const [min, max] = axis.extent;\r\n\r\n        const plotband = plotBandGroup\r\n          .append('g')\r\n          .style('shape-rendering', 'crispEdges');\r\n\r\n        const plotBandWidth =\r\n          this._width - this._options.bounds.left - this._options.bounds.right; // TODO add multiaxis support width\r\n\r\n        const emit = (event: DragEvent, plotBand: PlotBand) => {\r\n          this.plotBandsMove$.next({\r\n            event,\r\n            target: plotBand,\r\n          });\r\n        };\r\n\r\n        const dragPlotband = d3\r\n          .drag()\r\n          .subject(function () {\r\n            const element = d3.select(this);\r\n            return {y: element.attr('y')};\r\n          })\r\n          .on('start drag end', function (event: any, d: PlotBand) {\r\n            const element = d3.select(this);\r\n\r\n            const height = parseFloat(element.attr('height'));\r\n\r\n            d.to = y.invert(event.y + height);\r\n            d.from = y.invert(event.y);\r\n\r\n            const minValue = d.min ?? min;\r\n            const maxValue = d.max ?? max;\r\n\r\n            const borderReachedMin = d.from <= minValue;\r\n            const borderReachedMax = d.to >= maxValue;\r\n\r\n            if (borderReachedMin) {\r\n              d.to = y.invert(y(minValue) + height);\r\n              d.from = minValue;\r\n            }\r\n\r\n            if (borderReachedMax) {\r\n              d.to = maxValue;\r\n              d.from = y.invert(y(maxValue) - height);\r\n            }\r\n\r\n            element.attr('y', y(d.from));\r\n\r\n            const group = element.node().parentElement;\r\n\r\n            d3.select(group)\r\n              .select(`[data-line-left-id='${d.id}']`)\r\n              .attr('y1', y(d.from))\r\n              .attr('y2', y(d.from));\r\n\r\n            d3.select(group)\r\n              .select(`[data-grab-left-id='${d.id}']`)\r\n              .attr('y1', y(d.from))\r\n              .attr('y2', y(d.from));\r\n\r\n            d3.select(group)\r\n              .select(`[data-line-right-id='${d.id}']`)\r\n              .attr('y1', y(d.to))\r\n              .attr('y2', y(d.to));\r\n\r\n            d3.select(group)\r\n              .select(`[data-grab-right-id='${d.id}']`)\r\n              .attr('y1', y(d.to))\r\n              .attr('y2', y(d.to));\r\n\r\n            emit(event, d);\r\n          }) as any;\r\n\r\n        const leftGrabDrag = d3\r\n          .drag()\r\n          .on('drag', function (event: DragEvent, d: PlotBand) {\r\n            const group = d3.select(this).node().parentElement;\r\n            const draggedBand = d3\r\n              .select(group)\r\n              .select(`[data-plotband-id='${d.id}']`);\r\n\r\n            const draggedLine = d3\r\n              .select(group)\r\n              .select(`[data-line-left-id='${d.id}']`);\r\n\r\n            d.from = y.invert(event.y);\r\n\r\n            const minValue = d.min ?? min;\r\n\r\n            const borderReached = d.from <= minValue;\r\n\r\n            if (borderReached) {\r\n              d.from = minValue;\r\n            }\r\n\r\n            if (d.from >= d.to) {\r\n              d.from = d.to;\r\n            }\r\n\r\n            d3.select(this).attr('y1', y(d.from)).attr('y2', y(d.from));\r\n\r\n            draggedBand\r\n              .attr('y', y(d.from))\r\n              .attr('height', Math.abs(y(d.to) - y(d.from)));\r\n            draggedLine.attr('y1', y(d.from)).attr('y2', y(d.from));\r\n\r\n            emit(event, d);\r\n          })\r\n          .on('end', (event: DragEvent, d: PlotBand) => emit(event, d)) as any;\r\n\r\n        const rightGrabDrag = d3\r\n          .drag()\r\n          .on('drag', function (event: DragEvent, d: PlotBand) {\r\n            const group = d3.select(this).node().parentElement;\r\n\r\n            const draggedBand = d3\r\n              .select(group)\r\n              .select(`[data-plotband-id='${d.id}']`);\r\n\r\n            const draggedLine = d3\r\n              .select(group)\r\n              .select(`[data-line-right-id='${d.id}']`);\r\n\r\n            d.to = y.invert(event.y);\r\n\r\n            const maxValue = d.max ?? max;\r\n\r\n            const borderReached = d.to >= maxValue;\r\n\r\n            if (borderReached) {\r\n              d.to = maxValue;\r\n            }\r\n\r\n            if (d.to <= d.from) {\r\n              d.to = d.from;\r\n            }\r\n\r\n            d3.select(this).attr('y1', y(d.to)).attr('y2', y(d.to));\r\n\r\n            draggedBand\r\n              .attr('y', y(d.from))\r\n              .attr('height', Math.abs(y(d.to) - y(d.from)));\r\n            draggedLine.attr('y1', y(d.to)).attr('y2', y(d.to));\r\n\r\n            emit(event, d);\r\n          })\r\n          .on('end', (event: DragEvent, d: PlotBand) => emit(event, d)) as any;\r\n\r\n        plotband\r\n          .selectAll('rect')\r\n          .data(axis.options.plotBands)\r\n          .join('rect')\r\n          .attr('data-plotband-id', (d) => d.id)\r\n          .attr('x', 0)\r\n          .attr('y', (d) => y(d.from))\r\n          .attr('width', (d) => plotBandWidth)\r\n          .attr('fill', (d) => {\r\n            if (d.image) {\r\n              return `url(#${d.image})`;\r\n            }\r\n            return d.color;\r\n          })\r\n          .style('opacity', (d) => d.opacity ?? 1)\r\n          .attr('height', (d) => Math.abs(y(d.to) - y(d.from)))\r\n          .attr('cursor', (d) => (d.draggable ? 'move' : 'default'));\r\n\r\n        plotband\r\n          .selectAll('.line-left')\r\n          .data(axis.options.plotBands.filter((d) => d.resizable))\r\n          .join('line')\r\n          .attr('data-line-left-id', (d) => d.id)\r\n          .attr('class', 'line-left')\r\n          .attr('y1', (d) => y(d.from))\r\n          .attr('y2', (d) => y(d.from))\r\n          .attr('x1', 0)\r\n          .attr('x2', plotBandWidth)\r\n          .style('stroke-width', 1)\r\n          .style('stroke-dasharray', '8, 8')\r\n          .style('stroke', 'var(--color-text-90)')\r\n          .style('opacity', (d) => (d.showGrabbers ? 1 : 0));\r\n\r\n        plotband\r\n          .selectAll('.drag-left')\r\n          .data(axis.options.plotBands.filter((d) => d.resizable))\r\n          .join('line')\r\n          .attr('data-grab-left-id', (d) => d.id)\r\n          .attr('y1', (d) => y(d.from))\r\n          .attr('y2', (d) => y(d.from))\r\n          .attr('x1', 0)\r\n          .attr('x2', plotBandWidth)\r\n          .style('stroke-width', 8)\r\n          .style('stroke', 'rgba(0, 0, 0, 0)')\r\n          .style('cursor', (d) => (d.resizable ? 'row-resize' : 'default'));\r\n\r\n        plotband\r\n          .selectAll('.line-right')\r\n          .data(axis.options.plotBands.filter((d) => d.resizable))\r\n          .join('line')\r\n          .attr('data-line-right-id', (d) => d.id)\r\n          .attr('class', 'line-right')\r\n          .attr('y1', (d) => y(d.to))\r\n          .attr('y2', (d) => y(d.to))\r\n          .attr('x1', 0)\r\n          .attr('x2', plotBandWidth)\r\n          .style('stroke-width', 1)\r\n          .style('stroke-dasharray', '8, 8')\r\n          .style('stroke', 'var(--color-text-90)')\r\n          .style('opacity', (d) => (d.showGrabbers ? 1 : 0));\r\n\r\n        plotband\r\n          .selectAll('.drag-right')\r\n          .data(axis.options.plotBands.filter((d) => d.resizable))\r\n          .join('line')\r\n          .attr('class', 'drag-right')\r\n          .attr('data-grab-right-id', (d) => d.id)\r\n          .attr('y1', (d) => y(d.to))\r\n          .attr('y2', (d) => y(d.to))\r\n          .attr('x1', 0)\r\n          .attr('x2', plotBandWidth)\r\n          .style('stroke-width', 8)\r\n          .style('stroke', 'rgba(0, 0, 0, 0)')\r\n          .style('cursor', (d) => (d.resizable ? 'row-resize' : 'default'));\r\n\r\n        axis.options.plotBands.forEach((_) => {\r\n          if (_.draggable) {\r\n            plotband.select(`[data-plotband-id='${_.id}']`).call(dragPlotband);\r\n          }\r\n\r\n          if (_.resizable) {\r\n            plotband.select(`[data-grab-left-id='${_.id}']`).call(leftGrabDrag);\r\n            plotband\r\n              .select(`[data-grab-right-id='${_.id}']`)\r\n              .call(rightGrabDrag);\r\n          }\r\n        });\r\n      });\r\n  }\r\n\r\n  private drawChart() {\r\n    const series = this._options.series?.filter((_) => _.visible);\r\n\r\n    this._chart.selectAll('.series').remove();\r\n\r\n    if (!series || series.length < 1) {\r\n      d3.select(this._container.nativeElement)\r\n        .select('canvas')\r\n        .style('display', 'none');\r\n    }\r\n\r\n    const group = this._chart\r\n      .append('g')\r\n      .attr('class', 'series')\r\n      .attr('clip-path', `url(#draw-window-${this.uniqId})`);\r\n\r\n    series?.forEach((seriesItem: Series<BasePoint>, index) => {\r\n      if (seriesItem.renderTo === 'canvas') {\r\n        d3.select(this._container.nativeElement)\r\n          .select('canvas')\r\n          .style('display', null);\r\n\r\n        d3.select(this._container.nativeElement)\r\n          .select('svg')\r\n          .style('position', 'absolute');\r\n      } else {\r\n        d3.select(this._container.nativeElement)\r\n          .select('canvas')\r\n          .style('display', 'none');\r\n      }\r\n      if (\r\n        !this._xScales.has(seriesItem.xAxisIndex) ||\r\n        !this._yScales.has(seriesItem.yAxisIndex)\r\n      ) {\r\n        return;\r\n      }\r\n\r\n      const foundX = this._xScales.get(seriesItem.xAxisIndex);\r\n      const foundY = this._yScales.get(seriesItem.yAxisIndex);\r\n\r\n      const drawer =\r\n        seriesItem.drawer != null\r\n          ? seriesItem.drawer\r\n          : defaultDrawerMapping.get(seriesItem.type);\r\n\r\n      if (!drawer) {\r\n        throw new Error(\r\n          `No drawer for series ${seriesItem.name}, type ${\r\n            SeriesType[seriesItem.type]\r\n          }`\r\n        );\r\n      }\r\n\r\n      if (seriesItem.renderTo === 'canvas') {\r\n        const context = this._canvas.node().getContext('2d');\r\n        context.clearRect(0, 0, this._width, this._height);\r\n      }\r\n\r\n      let [xMin, xMax] = foundX.domain();\r\n      let [yMin, yMax] = foundY.domain();\r\n\r\n      xMin = xMin instanceof Date ? xMin.getTime() : xMin;\r\n      xMax = xMax instanceof Date ? xMax.getTime() : xMax;\r\n\r\n      yMin = yMin instanceof Date ? yMin.getTime() : yMin;\r\n      yMax = yMax instanceof Date ? yMax.getTime() : yMax;\r\n\r\n      const visiblePoints = (\r\n        point: BasePoint,\r\n        idx: number,\r\n        arr: Array<BasePoint>\r\n      ) =>\r\n        (point.x <= xMax ||\r\n          point.x1 <= xMax ||\r\n          (arr[idx - 1] && arr[idx - 1].x <= xMax) ||\r\n          (arr[idx - 1] && arr[idx - 1].x1 <= xMax)) &&\r\n        (point.x >= xMin ||\r\n          point.x1 >= xMin ||\r\n          (arr[idx + 1] && arr[idx + 1].x >= xMin) ||\r\n          (arr[idx + 1] && arr[idx + 1].x1 >= xMin)) &&\r\n        (point.y <= yMax ||\r\n          point.y1 <= yMax ||\r\n          (arr[idx - 1] && arr[idx - 1].y <= yMax) ||\r\n          (arr[idx - 1] && arr[idx - 1].y1 <= yMax)) &&\r\n        (point.y >= yMin ||\r\n          point.y1 >= yMin ||\r\n          (arr[idx + 1] && arr[idx + 1].y >= yMin) ||\r\n          (arr[idx + 1] && arr[idx + 1].y1 >= yMin));\r\n\r\n      const filteredData = seriesItem.data; //.filter(visiblePoints);\r\n\r\n      const serie = {\r\n        ...seriesItem,\r\n        data: filteredData,\r\n      };\r\n\r\n      drawer.draw(\r\n        serie,\r\n        seriesItem.renderTo === 'canvas' ? this._canvas : group,\r\n        foundX,\r\n        foundY,\r\n        this._options\r\n      );\r\n\r\n      const emit = (event: IDragEvent<Series<BasePoint>>) => {\r\n        this.seriesMove$.next(event);\r\n      };\r\n\r\n      drawer?.dispatch?.on(DispatchType.moveLine, function () {\r\n        emit(this);\r\n      });\r\n    });\r\n  }\r\n\r\n  private createTooltip() {\r\n    d3.select(this._container.nativeElement)\r\n      .append('div')\r\n      .attr('class', 'tooltip-chart color-text-90 bg-background-50 shadow-2')\r\n      .style('position', 'fixed')\r\n      .style('top', 'unset')\r\n      .style('right', 'unset')\r\n      .style('bottom', 'unset')\r\n      .style('left', 'unset')\r\n      .style('pointer-events', 'none')\r\n      .style('display', 'none');\r\n  }\r\n\r\n  private handleMouseMove(options) {\r\n    const mouse = d3.pointer(options.event);\r\n    const {top, right, bottom, left} = this.tooltipPosition(options.event);\r\n\r\n    const tooltipsData = [];\r\n\r\n    this._chart\r\n      .select('.marker-line')\r\n      .attr('transform', `translate(${0}, ${mouse[1] - 2})`);\r\n\r\n    this._chart\r\n      .selectAll('.marker')\r\n      .attr('transform', (d: Series<BasePoint>) => {\r\n        if (!d.data.length) {\r\n          return;\r\n        }\r\n\r\n        if (\r\n          !this._xScales.has(d.xAxisIndex) ||\r\n          !this._yScales.has(d.yAxisIndex)\r\n        ) {\r\n          return;\r\n        }\r\n\r\n        const foundX = this._xScales.get(d.xAxisIndex);\r\n        const foundY = this._yScales.get(d.yAxisIndex);\r\n\r\n        if (this._options.tooltip.tracking === 'x') {\r\n          const [min, max] = foundX.domain();\r\n          const filteredData = d.data.filter(\r\n            (point) => point.x <= max && point.x >= min\r\n          );\r\n\r\n          const sorted = [...filteredData].sort((a, b) =>\r\n            d3.ascending(a.x, b.x)\r\n          );\r\n\r\n          const bisect = d3.bisector((dd: any) => dd.x).left;\r\n          const x0 = foundX.invert(mouse[0]);\r\n\r\n          const index = bisect(sorted, x0);\r\n\r\n          const data = sorted[index] ? sorted[index] : sorted[index - 1];\r\n\r\n          tooltipsData.push({\r\n            point: data,\r\n            color: d.color,\r\n            name: d.name,\r\n          });\r\n\r\n          return `translate(${!isNaN(data?.x) ? foundX(data.x) : -10}, ${\r\n            !isNaN(data?.y) ? foundY(data.y) : -10\r\n          })`;\r\n        }\r\n\r\n        if (this._options.tooltip.tracking === 'y') {\r\n          const sorted = [...d.data].sort((a, b) => d3.ascending(a.y, b.y));\r\n          const bisect = d3.bisector((dd: any) => dd.y).left;\r\n          const y0 = foundY.invert(mouse[1]);\r\n\r\n          const index = bisect(sorted, y0, 0);\r\n\r\n          const data = sorted[index] ? sorted[index] : sorted[index - 1];\r\n\r\n          tooltipsData.push({\r\n            point: data,\r\n            color: d.color,\r\n            name: d.name,\r\n          });\r\n\r\n          return `translate(${foundX(data.x)}, ${foundY(data.y)})`;\r\n        }\r\n      });\r\n\r\n    if (this._options.tooltip?.format) {\r\n      const formatted = this._options.tooltip?.format(tooltipsData);\r\n\r\n      d3.select(this._container.nativeElement)\r\n        .select('.tooltip-chart')\r\n        .style('top', top)\r\n        .style('right', right)\r\n        .style('bottom', bottom)\r\n        .style('left', left)\r\n        .html(formatted);\r\n    }\r\n  }\r\n\r\n  private tooltipPosition(event) {\r\n    const centerX = this._width / 2;\r\n    const centerY = this._height / 2;\r\n\r\n    const padding = {x: 10, y: 10};\r\n\r\n    const scene = {\r\n      left: event.pageX > centerX ? 'initial' : `${event.pageX + padding.x}px`,\r\n      top: event.pageY > centerY ? 'initial' : `${event.pageY + padding.y}px`,\r\n      bottom:\r\n        event.pageY > centerY\r\n          ? `${window.innerHeight - event.pageY}px`\r\n          : 'initial',\r\n      right:\r\n        event.pageX > centerX\r\n          ? `${window.innerWidth - event.pageX + padding.x}px`\r\n          : 'initial',\r\n    };\r\n\r\n    return scene;\r\n  }\r\n\r\n  private createMarkers() {\r\n    if (this._options.tooltip === undefined) {\r\n      return;\r\n    }\r\n\r\n    if (!this._options.tooltip.enable) {\r\n      return;\r\n    }\r\n\r\n    this._chart.selectAll('.marker').remove();\r\n    this._chart.select('.marker-line').remove();\r\n\r\n    this._chart\r\n      .append('line')\r\n      .attr('class', 'marker-line')\r\n      .attr('x1', 35)\r\n      .attr('x2', this._width)\r\n      .style('stroke-width', 0.5)\r\n      .style('stroke', 'var(--color-text-40)')\r\n      .style('display', 'none');\r\n\r\n    const {series} = this._options;\r\n\r\n    if (!series) {\r\n      return;\r\n    }\r\n\r\n    const markers = this._chart\r\n      .selectAll()\r\n      .data(series.filter((_) => _.visible));\r\n    markers\r\n      .enter()\r\n      .append('circle')\r\n      .attr('class', 'marker')\r\n      .attr('pointer-events', 'none')\r\n      .attr('r', 3)\r\n      .attr('fill', (_, i) => _.color)\r\n      .style('display', 'none');\r\n\r\n    const mouseoutEvent = () => {\r\n      this._chart.selectAll('.marker').style('display', 'none');\r\n      this._chart.select('.marker-line').style('display', 'none');\r\n\r\n      d3.select(this._container.nativeElement)\r\n        .select('.tooltip-chart')\r\n        .style('display', 'none');\r\n    };\r\n\r\n    const mouseMoveEvent = (event) => {\r\n      const options = {\r\n        event,\r\n        series,\r\n      };\r\n\r\n      this.handleMouseMove(options);\r\n    };\r\n\r\n    const mouseOverEvent = () => {\r\n      if (this._options.tooltip.showMarkers) {\r\n        this._chart\r\n          .selectAll('.marker')\r\n          .style('display', (d: Series<BasePoint>) => {\r\n            if (d.data.length) {\r\n              return null;\r\n            }\r\n            return 'none';\r\n          });\r\n      }\r\n\r\n      if (this._options.tooltip.showLine) {\r\n        this._chart.select('.marker-line').style('display', null);\r\n      }\r\n\r\n      d3.select(this._container.nativeElement)\r\n        .select('.tooltip-chart')\r\n        .style('display', null);\r\n    };\r\n\r\n    this._chart\r\n      .on('mouseover', mouseOverEvent)\r\n      .on('mousemove', mouseMoveEvent)\r\n      .on('mouseleave', mouseoutEvent);\r\n  }\r\n\r\n  private drawLegend() {\r\n    if (this._options.legend?.visible === false) {\r\n      return;\r\n    }\r\n\r\n    this._chart.selectAll('.legend').remove();\r\n\r\n    const drawer = this._options.legend?.type\r\n      ? defaultLegendDrawerMapping.get(this._options.legend.type)\r\n      : defaultLegendDrawerMapping.get(LegendType.swatches);\r\n\r\n    const context = this._container.nativeElement as HTMLElement;\r\n\r\n    if (!drawer) {\r\n      throw new Error(\r\n        `No drawer for legend\r\n        }`\r\n      );\r\n    }\r\n\r\n    drawer.draw({\r\n      context,\r\n      series: this._options.series.filter((_) => _.showInLegend),\r\n      width: this._width,\r\n      height: this._height,\r\n    });\r\n  }\r\n\r\n  private caluclateChartWidth() {\r\n    let width = -this._width;\r\n\r\n    if (this.offsetOpposite > 0) {\r\n      width = -this._width + this.offsetOpposite + this.offsetNonOpposite;\r\n    }\r\n\r\n    if (this.offsetNonOpposite > 0) {\r\n      width =\r\n        -this._width + this._options.bounds.right + this.offsetNonOpposite;\r\n    }\r\n\r\n    if (\r\n      this.offsetOpposite >= Axis.offsetFactor &&\r\n      this.offsetNonOpposite === 0\r\n    ) {\r\n      width = -this._width + this.offsetOpposite + this._options.bounds.left;\r\n    }\r\n\r\n    if (this.offsetOpposite > 0 && this.offsetNonOpposite > 0) {\r\n      width = -this._width + this.offsetOpposite + this.offsetNonOpposite;\r\n    }\r\n\r\n    return Math.abs(width);\r\n  }\r\n\r\n  private drawGridLines() {\r\n    if (this._options.gridLines === false) {\r\n      return;\r\n    }\r\n\r\n    const translateX =\r\n      this.offsetNonOpposite > 0\r\n        ? this.offsetNonOpposite\r\n        : this._options.bounds.left + this.offsetNonOpposite;\r\n\r\n    this._chart.selectAll('.grid').remove();\r\n\r\n    const yList = this._yAxisList.filter(\r\n      (_) => _.options.visible && !_.options.opposite\r\n    );\r\n\r\n    const y: any =\r\n      yList?.length > 0\r\n        ? this._yScales.get(yList[yList.length - 1].index)\r\n        : this._yScales.get(0);\r\n\r\n    const x = this._xScales.get(0);\r\n\r\n    if (!y || !x) {\r\n      return;\r\n    }\r\n\r\n    const TICK_HEIGHT = 40;\r\n    const TICK_WIDTH = 60;\r\n\r\n    const tickCount = Math.round(this._height / TICK_HEIGHT);\r\n    const tickCountX = Math.round(this._width / TICK_WIDTH);\r\n\r\n    const gridY = this._chart\r\n      .append('g')\r\n      .attr('class', 'grid color-text-10')\r\n      .style('shape-rendering', 'crispEdges');\r\n\r\n    const gridlinesY = d3\r\n      .axisLeft(y)\r\n      .tickFormat('' as any)\r\n      .tickSize(-this.visibleChartWindowWidth);\r\n\r\n    const hasBarSeriesType = this._options.series.some(\r\n      (_) => _.type === SeriesType.bar\r\n    );\r\n\r\n    if (!hasBarSeriesType) {\r\n      const gridX = this._chart\r\n        .append('g')\r\n        .attr('class', 'grid color-text-10')\r\n        .style('shape-rendering', 'crispEdges');\r\n\r\n      const gridlinesX = d3\r\n        .axisBottom(x)\r\n        .ticks(tickCountX)\r\n        .tickFormat('' as any)\r\n        .tickSize(\r\n          this._height - this._options.bounds.bottom - this._options.bounds.top\r\n        );\r\n\r\n      gridX\r\n        .call(gridlinesX)\r\n        .attr('transform', `translate(0, ${this._options.bounds.top})`)\r\n        .lower();\r\n    }\r\n\r\n    gridY\r\n      .call(gridlinesY)\r\n      .attr('transform', `translate(${translateX}, ${0})`)\r\n      .lower();\r\n\r\n    this._chart.selectAll('.grid path').remove();\r\n  }\r\n\r\n  private createScales() {\r\n    this._xScales.clear();\r\n    this._yScales.clear();\r\n\r\n    const defaultScaleMapping: Map<ScaleType, any> = new Map<ScaleType, any>()\r\n      .set(ScaleType.linear, d3.scaleLinear)\r\n      .set(ScaleType.log, d3.scaleLog)\r\n      .set(ScaleType.sqrt, d3.scaleSqrt)\r\n      .set(ScaleType.pow, d3.scalePow);\r\n\r\n    const xRange = [\r\n      this.offsetNonOpposite\r\n        ? this.offsetNonOpposite\r\n        : this._options.bounds.left,\r\n      this._width -\r\n      (this.offsetOpposite\r\n        ? this.offsetOpposite\r\n        : this._options.bounds.right),\r\n    ];\r\n\r\n    const yRange = [\r\n      this._height - this._options.bounds.bottom,\r\n      this._options.bounds.top,\r\n    ];\r\n\r\n    this._xAxisList.forEach((axis, index) => {\r\n      let scale = null;\r\n\r\n      if (axis.options.type === Scale.time) {\r\n        scale = d3\r\n          .scaleTime()\r\n          .domain(axis.extent)\r\n          .range(axis.options.inverted ? [...xRange].reverse() : xRange);\r\n      }\r\n\r\n      if (axis.options.type === Scale.number) {\r\n        scale = defaultScaleMapping\r\n          .get(axis.options.scaleOptions.type)()\r\n          .domain(axis.extent)\r\n          .range(axis.options.inverted ? [...xRange].reverse() : xRange);\r\n      }\r\n\r\n      if (axis.options.niceTicks) {\r\n        scale.nice();\r\n      }\r\n\r\n      if (axis.options.scaleOptions.type === ScaleType.log) {\r\n        scale.base(axis.options.scaleOptions.base);\r\n      }\r\n\r\n      if (axis.options.scaleOptions.type === ScaleType.pow) {\r\n        scale.exponent(axis.options.scaleOptions.base);\r\n      }\r\n\r\n      this._xScales.set(index, scale);\r\n    });\r\n\r\n    this._yAxisList.forEach((axis, index) => {\r\n      let scale = null;\r\n\r\n      if (axis.options.type === Scale.number) {\r\n        scale = defaultScaleMapping\r\n          .get(axis.options.scaleOptions.type)()\r\n          .domain(axis.extent)\r\n          .range(axis.options.inverted ? [...yRange].reverse() : yRange);\r\n      }\r\n\r\n      if (axis.options.type === Scale.time) {\r\n        scale = d3\r\n          .scaleTime()\r\n          .domain(axis.extent)\r\n          .range(axis.options.inverted ? [...yRange].reverse() : yRange);\r\n      }\r\n\r\n      if (axis.options.niceTicks) {\r\n        scale.nice();\r\n      }\r\n\r\n      if (axis.options.scaleOptions.type === ScaleType.log) {\r\n        scale.base(axis.options.scaleOptions.base);\r\n      }\r\n\r\n      if (axis.options.scaleOptions.type === ScaleType.pow) {\r\n        scale.exponent(axis.options.scaleOptions.base);\r\n      }\r\n\r\n      this._yScales.set(index, scale);\r\n    });\r\n\r\n    for (const [key, value] of this._yScales) {\r\n      this._clonedY.set(key, value.copy());\r\n    }\r\n\r\n    for (const [key, value] of this._xScales) {\r\n      this._clonedX.set(key, value.copy());\r\n    }\r\n  }\r\n\r\n  private drawAxis() {\r\n    const hasVisibleAxis = [...this._xAxisList, ...this._yAxisList].filter(\r\n      (axis) => axis.options.visible\r\n    );\r\n\r\n    if (!hasVisibleAxis) {\r\n      return;\r\n    }\r\n\r\n    const negative = false;\r\n\r\n    this._chart.selectAll('.axes').remove();\r\n\r\n    const axes = this._chart\r\n      .append('g')\r\n      .attr('class', 'axes')\r\n      .style('shape-rendering', 'crispEdges');\r\n\r\n    const TICK_HEIGHT = 40;\r\n    const TICK_WIDTH = 60;\r\n\r\n    const tickCount = Math.round(this._height / TICK_HEIGHT);\r\n    const tickCountX = Math.round(this._width / TICK_WIDTH);\r\n\r\n    this._xAxisList.forEach((axis) => {\r\n      const options: AxisOptions = axis.options;\r\n\r\n      const translate = `translate(${0}, ${\r\n        this._height - this._options.bounds.bottom\r\n      })`;\r\n\r\n      const x = this._xScales.get(axis.index);\r\n\r\n      const xAxis = d3.axisBottom(x).ticks(tickCountX);\r\n\r\n      if (axis.options?.tickFormat) {\r\n        xAxis.tickFormat(axis.options.tickFormat);\r\n      }\r\n\r\n      if (options.visible !== false) {\r\n        const translateX = this.offsetNonOpposite\r\n          ? this.offsetNonOpposite\r\n          : this._options.bounds.left + this.offsetNonOpposite;\r\n\r\n        axes\r\n          .append('g')\r\n          .attr('class', 'x-axis-label')\r\n          .append('text')\r\n          .style('fill', 'var(--color-text-50)')\r\n          .attr(\r\n            'transform',\r\n            'translate(' +\r\n            this._width / 2 +\r\n            ' ,' +\r\n            (this._height - this._options.bounds.bottom) +\r\n            ')'\r\n          )\r\n          .style('text-anchor', 'middle')\r\n          .attr('dy', '3em')\r\n          .text(options.title ?? '');\r\n\r\n        axes\r\n          .append('g')\r\n          .attr('class', 'x-axis font-caption')\r\n          .attr('data-x-scale-id', axis.index)\r\n          .attr('transform', translate)\r\n          .style('pointer-events', 'none')\r\n          .call(xAxis)\r\n          .call((_) => {\r\n            _.select('.domain').remove();\r\n            _.selectAll('.tick').attr('class', 'color-text-50');\r\n\r\n            if (negative) {\r\n              _.append('line')\r\n                .attr('y1', 0)\r\n                .attr('y2', this._height)\r\n                .attr('transform', `translate(${x(0)}, -${this._height})`)\r\n                .style('stroke-width', 0.5)\r\n                .style('stroke', 'var(--color-text-50)');\r\n            }\r\n\r\n            _.append('line')\r\n              .attr('x1', 0)\r\n              .attr('x2', this.visibleChartWindowWidth)\r\n              .attr('transform', `translate(${translateX}, ${0})`)\r\n              .style('stroke-width', 0.5)\r\n              .style('stroke', 'var(--color-text-50)');\r\n          });\r\n      }\r\n    });\r\n\r\n    this._yAxisList.forEach((axis) => {\r\n      const translate = axis.options.opposite\r\n        ? `translate(${this._width - axis.offset}, ${0})`\r\n        : `translate(${axis.offset}, ${0})`;\r\n\r\n      const y = this._yScales.get(axis.index);\r\n\r\n      const yAxis = axis.options.opposite ? d3.axisRight(y) : d3.axisLeft(y);\r\n\r\n      if (axis.options.visible !== false) {\r\n        const labelOffset = axis.options.opposite\r\n          ? this._width - axis.offset + axis.width\r\n          : axis.offset - axis.width;\r\n\r\n        axes\r\n          .append('g')\r\n          .attr('class', 'y-axis-label')\r\n          .append('text')\r\n          .style('fill', 'var(--color-text-50)')\r\n          .attr('transform', 'rotate(-90)')\r\n          .attr('y', labelOffset)\r\n          .attr('x', 0 - this._height / 2)\r\n          .attr('dy', axis.options.opposite ? '12px' : '-3px')\r\n          .style('text-anchor', 'middle')\r\n          .text(axis.options.title ?? '');\r\n\r\n        axes\r\n          .append('g')\r\n          .attr('class', 'y-axis font-caption')\r\n          .attr('data-y-scale-id', axis.index)\r\n          .attr('transform', translate)\r\n          .call(yAxis)\r\n          .style('pointer-events', 'none')\r\n          .call((_) => {\r\n            _.select('.domain').remove();\r\n            _.selectAll('.tick').attr('class', 'color-text-50');\r\n\r\n            if (!negative) {\r\n              _.append('line')\r\n                .attr('y1', 0)\r\n                .attr(\r\n                  'y2',\r\n                  this._height -\r\n                  this._options.bounds.top -\r\n                  this._options.bounds.bottom\r\n                )\r\n                .attr(\r\n                  'transform',\r\n                  `translate(${0}, ${this._options.bounds.top})`\r\n                )\r\n                .style('stroke-width', 0.5)\r\n                .style('stroke', 'var(--color-text-50)');\r\n            }\r\n          });\r\n      }\r\n    });\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -15818,7 +15827,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 82,
+                "line": 72,
                 "jsdoctags": [
                     {
                         "name": "options",
@@ -15848,7 +15857,7 @@
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 48,
+                    "line": 42,
                     "modifierKind": [
                         121
                     ]
@@ -15860,7 +15869,7 @@
                     "type": "d3.Selection<any |  |  | undefined>",
                     "optional": false,
                     "description": "",
-                    "line": 76,
+                    "line": 66,
                     "modifierKind": [
                         121
                     ]
@@ -15873,7 +15882,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 73,
+                    "line": 63,
                     "modifierKind": [
                         121
                     ]
@@ -15886,7 +15895,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 74,
+                    "line": 64,
                     "modifierKind": [
                         121
                     ]
@@ -15898,7 +15907,7 @@
                     "type": "ZoomTransform",
                     "optional": false,
                     "description": "",
-                    "line": 63,
+                    "line": 53,
                     "modifierKind": [
                         121
                     ]
@@ -15911,7 +15920,7 @@
                     "type": "ElementRef",
                     "optional": false,
                     "description": "",
-                    "line": 47,
+                    "line": 41,
                     "modifierKind": [
                         121
                     ]
@@ -15924,7 +15933,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 50,
+                    "line": 44,
                     "modifierKind": [
                         121
                     ]
@@ -15936,7 +15945,7 @@
                     "type": "ChartOptions",
                     "optional": false,
                     "description": "",
-                    "line": 67,
+                    "line": 57,
                     "modifierKind": [
                         121
                     ]
@@ -15949,7 +15958,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 49,
+                    "line": 43,
                     "modifierKind": [
                         121
                     ]
@@ -15961,7 +15970,7 @@
                     "type": "Axis[]",
                     "optional": false,
                     "description": "",
-                    "line": 68,
+                    "line": 58,
                     "modifierKind": [
                         121
                     ]
@@ -15974,7 +15983,7 @@
                     "type": "Map<number | any>",
                     "optional": false,
                     "description": "",
-                    "line": 70,
+                    "line": 60,
                     "modifierKind": [
                         121
                     ]
@@ -15986,7 +15995,7 @@
                     "type": "Axis[]",
                     "optional": false,
                     "description": "",
-                    "line": 69,
+                    "line": 59,
                     "modifierKind": [
                         121
                     ]
@@ -15999,7 +16008,7 @@
                     "type": "Map<number | any>",
                     "optional": false,
                     "description": "",
-                    "line": 71,
+                    "line": 61,
                     "modifierKind": [
                         121
                     ]
@@ -16012,7 +16021,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 62,
+                    "line": 52,
                     "modifierKind": [
                         121
                     ]
@@ -16025,33 +16034,33 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 82,
+                    "line": 72,
                     "modifierKind": [
                         121
                     ]
                 },
                 {
                     "name": "_zoomXCache",
-                    "defaultValue": "new Map<\r\n    number,\r\n    ZoomTransform\r\n  >()",
+                    "defaultValue": "new Map<number,\r\n    ZoomTransform>()",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Map<number | ZoomTransform>",
                     "optional": false,
                     "description": "",
-                    "line": 57,
+                    "line": 49,
                     "modifierKind": [
                         121
                     ]
                 },
                 {
                     "name": "_zoomYCache",
-                    "defaultValue": "new Map<\r\n    number,\r\n    ZoomTransform\r\n  >()",
+                    "defaultValue": "new Map<number,\r\n    ZoomTransform>()",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Map<number | ZoomTransform>",
                     "optional": false,
                     "description": "",
-                    "line": 52,
+                    "line": 46,
                     "modifierKind": [
                         121
                     ]
@@ -16064,7 +16073,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 79,
+                    "line": 69,
                     "modifierKind": [
                         121
                     ]
@@ -16077,7 +16086,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 78,
+                    "line": 68,
                     "modifierKind": [
                         121
                     ]
@@ -16093,13 +16102,13 @@
                 },
                 {
                     "name": "plotBandsMove$",
-                    "defaultValue": "new Subject<\r\n    IDragEvent<PlotBand>\r\n  >()",
+                    "defaultValue": "new Subject<IDragEvent<PlotBand>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Subject<IDragEvent<PlotBand>>",
                     "optional": false,
                     "description": "",
-                    "line": 37,
+                    "line": 35,
                     "modifierKind": [
                         121
                     ]
@@ -16115,7 +16124,7 @@
                 },
                 {
                     "name": "plotLinesMove$",
-                    "defaultValue": "new Subject<\r\n    IDragEvent<PlotLine>\r\n  >()",
+                    "defaultValue": "new Subject<IDragEvent<PlotLine>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Subject<IDragEvent<PlotLine>>",
@@ -16137,13 +16146,13 @@
                 },
                 {
                     "name": "seriesMove$",
-                    "defaultValue": "new Subject<\r\n    IDragEvent<Series<BasePoint>>\r\n  >()",
+                    "defaultValue": "new Subject<IDragEvent<Series<BasePoint>>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Subject<IDragEvent<Series<BasePoint>>>",
                     "optional": false,
                     "description": "",
-                    "line": 41,
+                    "line": 37,
                     "modifierKind": [
                         121
                     ]
@@ -16155,7 +16164,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 81,
+                    "line": 71,
                     "modifierKind": [
                         121
                     ]
@@ -16168,7 +16177,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 65,
+                    "line": 55,
                     "modifierKind": [
                         121
                     ]
@@ -16190,7 +16199,7 @@
                     "type": "Subject<IZoomEvent>",
                     "optional": false,
                     "description": "",
-                    "line": 45,
+                    "line": 39,
                     "modifierKind": [
                         121
                     ]
@@ -16203,7 +16212,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 244,
+                    "line": 234,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16216,7 +16225,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 308,
+                    "line": 298,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16229,7 +16238,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 253,
+                    "line": 243,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16242,7 +16251,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 1454,
+                    "line": 1449,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16255,7 +16264,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 189,
+                    "line": 179,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16268,7 +16277,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 1342,
+                    "line": 1337,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16281,7 +16290,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 1555,
+                    "line": 1550,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16294,7 +16303,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 1220,
+                    "line": 1215,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16307,7 +16316,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 156,
+                    "line": 146,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16320,7 +16329,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 411,
+                    "line": 401,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16333,7 +16342,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 1653,
+                    "line": 1648,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16346,7 +16355,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 1106,
+                    "line": 1101,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16359,7 +16368,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 1480,
+                    "line": 1475,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16372,7 +16381,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 1426,
+                    "line": 1421,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16385,7 +16394,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 661,
+                    "line": 651,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16398,7 +16407,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 442,
+                    "line": 432,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16418,7 +16427,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 1233,
+                    "line": 1228,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16450,7 +16459,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 95,
+                    "line": 85,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16482,7 +16491,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 388,
+                    "line": 378,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16508,13 +16517,13 @@
                             "type": "ChartSize",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "defaultValue": "{ width: 0, height: 0 }"
+                            "defaultValue": "{width: 0, height: 0}"
                         }
                     ],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 127,
+                    "line": 117,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16526,7 +16535,7 @@
                             "type": "ChartSize",
                             "deprecated": false,
                             "deprecationMessage": "",
-                            "defaultValue": "{ width: 0, height: 0 }",
+                            "defaultValue": "{width: 0, height: 0}",
                             "tagName": {
                                 "text": "param"
                             }
@@ -16546,7 +16555,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 119,
+                    "line": 109,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -16577,7 +16586,7 @@
                     "optional": false,
                     "returnType": "{ left: string; top: string; bottom: string; right: string; }",
                     "typeParameters": [],
-                    "line": 1320,
+                    "line": 1315,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -40890,6 +40899,106 @@
             "templateData": "<ng-content></ng-content>\r\n<div #grab class=\"resize-grab\"\r\n     (resizeStart)=\"resizeStart($event)\"\r\n     (resizeProcess)=\"resizeProcess($event)\"\r\n     (resizeEnd)=\"resizeEnd($event)\"\r\n     [tetaResizeDrag]=\"direction\"\r\n     [ngClass]=\"getClassName()\">\r\n  <teta-icon [name]=\"direction\"></teta-icon>\r\n</div>\r\n"
         },
         {
+            "name": "SampleInputComponent",
+            "id": "component-SampleInputComponent-f7ea955ff9a92858f4a3d82126572cdb",
+            "file": "projects/components/src/component/input/sample-input/sample-input/sample-input.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "teta-sample-input",
+            "styleUrls": [
+                "./sample-input.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./sample-input.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "form",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "FormGroup",
+                    "optional": false,
+                    "description": "",
+                    "line": 10
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "log",
+                    "args": [
+                        {
+                            "name": "text",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 30,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "text",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 34,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import {Component, OnInit} from '@angular/core';\nimport {FormControl, FormGroup} from '@angular/forms';\n\n@Component({\n  selector: 'teta-sample-input',\n  templateUrl: './sample-input.component.html',\n  styleUrls: ['./sample-input.component.scss']\n})\nexport class SampleInputComponent implements OnInit {\n  form: FormGroup;\n\n  constructor() {\n    this.form = new FormGroup({\n      name: new FormControl('', {\n        updateOn: 'blur'\n      }),\n      name2: new FormControl('', {\n        updateOn: 'blur'\n      }),\n      surname: new FormControl('', {\n        updateOn: 'change'\n      })\n    });\n\n    this.form.valueChanges.subscribe((changes) => {\n      console.log('changes', changes);\n    });\n  }\n\n  log(text) {\n    console.log(text);\n  }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./sample-input.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 10
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<form [formGroup]=\"form\">\n  <teta-input label=\"onBlur\">\n    <teta-text-field [formControlName]=\"'name'\"></teta-text-field>\n  </teta-input>\n  <teta-input label=\"onBlur\">\n    <input [formControlName]=\"'name2'\"/>\n  </teta-input>\n  <teta-input label=\"onChange\">\n    <teta-text-field [formControlName]=\"'surname'\"></teta-text-field>\n  </teta-input>\n</form>\n"
+        },
+        {
             "name": "SelectComponent",
             "id": "component-SelectComponent-3717a75d3f017d532eb689213271da70",
             "file": "projects/components/src/component/select/select/select.component.ts",
@@ -46926,7 +47035,7 @@
         },
         {
             "name": "TextFieldComponent",
-            "id": "component-TextFieldComponent-645816983ca37822993176fbfb4fa1cc",
+            "id": "component-TextFieldComponent-d819b89777bd36bceb74f8cc20464ab0",
             "file": "projects/components/src/component/input/text-field/text-field.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -47006,6 +47115,26 @@
                     ]
                 },
                 {
+                    "name": "tabindex",
+                    "defaultValue": "0",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 39,
+                    "decorators": [
+                        {
+                            "name": "HostBinding",
+                            "stringifiedArguments": "'attr.tabindex'"
+                        }
+                    ],
+                    "modifierKind": [
+                        121,
+                        143
+                    ]
+                },
+                {
                     "name": "textField",
                     "defaultValue": "true",
                     "deprecated": false,
@@ -47013,7 +47142,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 40,
+                    "line": 41,
                     "decorators": [
                         {
                             "name": "HostBinding",
@@ -47033,10 +47162,20 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 41
+                    "line": 42
                 }
             ],
             "methodsClass": [
+                {
+                    "name": "emitBlur",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 57,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
                 {
                     "name": "keyPress",
                     "args": [
@@ -47050,7 +47189,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 49,
+                    "line": 51,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -47078,7 +47217,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 73,
+                    "line": 79,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -47099,7 +47238,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 45,
+                    "line": 47,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "decorators": [
@@ -47111,31 +47250,13 @@
                 },
                 {
                     "name": "onTouched",
-                    "args": [
-                        {
-                            "name": "input",
-                            "type": "string",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
+                    "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 75,
+                    "line": 82,
                     "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "name": "input",
-                            "type": "string",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
+                    "deprecationMessage": ""
                 },
                 {
                     "name": "registerOnChange",
@@ -47150,7 +47271,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 61,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -47178,7 +47299,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 59,
+                    "line": 65,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -47206,7 +47327,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 63,
+                    "line": 69,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -47234,7 +47355,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 68,
+                    "line": 74,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -47254,11 +47375,19 @@
             "deprecationMessage": "",
             "hostBindings": [
                 {
+                    "name": "attr.tabindex",
+                    "defaultValue": "0",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 39,
+                    "type": "0"
+                },
+                {
                     "name": "class.text-field",
                     "defaultValue": "true",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 40,
+                    "line": 41,
                     "type": "true"
                 }
             ],
@@ -47269,13 +47398,13 @@
                     "argsDecorator": [],
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 45
+                    "line": 47
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  ElementRef,\r\n  forwardRef,\r\n  HostBinding,\r\n  HostListener,\r\n  Input,\r\n  ViewChild,\r\n} from '@angular/core';\r\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\r\n\r\n@Component({\r\n  selector: 'teta-text-field',\r\n  templateUrl: './text-field.component.html',\r\n  styleUrls: ['./text-field.component.scss'],\r\n  providers: [\r\n    {\r\n      provide: NG_VALUE_ACCESSOR,\r\n      useExisting: forwardRef(() => TextFieldComponent),\r\n      multi: true,\r\n    },\r\n  ],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class TextFieldComponent implements ControlValueAccessor {\r\n  @Input() placeholder = '';\r\n  @Input() leftIconName?: string;\r\n  @HostBinding('class.text-field_disabled')\r\n  @Input()\r\n  disabled = false;\r\n  @Input() onlyNumber = false;\r\n  @HostBinding('class.text-field_invalid')\r\n  @Input()\r\n  invalid: boolean;\r\n  @ViewChild('input', { static: false }) input: ElementRef;\r\n\r\n  @HostBinding('class.text-field')\r\n  private readonly textField = true;\r\n  value = '';\r\n\r\n  constructor(private _cdr: ChangeDetectorRef) {}\r\n\r\n  @HostListener('click') onFocus() {\r\n    this.input.nativeElement.focus();\r\n  }\r\n\r\n  keyPress(event: KeyboardEvent) {\r\n    if (event.key === 'Enter' || event.keyCode === 13) {\r\n      this.input.nativeElement.blur();\r\n    }\r\n  }\r\n\r\n  registerOnChange(fn: any): void {\r\n    this.onChange = fn;\r\n  }\r\n\r\n  registerOnTouched(fn: any): void {\r\n    this.onTouched = fn;\r\n  }\r\n\r\n  setDisabledState(isDisabled: boolean): void {\r\n    this.disabled = isDisabled;\r\n    this._cdr.detectChanges();\r\n  }\r\n\r\n  writeValue(input: string): void {\r\n    this.value = input;\r\n    this._cdr.detectChanges();\r\n  }\r\n\r\n  onChange(input: string): void {}\r\n\r\n  onTouched(input: string): void {}\r\n}\r\n",
+            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  ElementRef,\r\n  forwardRef,\r\n  HostBinding,\r\n  HostListener,\r\n  Input,\r\n  ViewChild,\r\n} from '@angular/core';\r\nimport {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';\r\n\r\n@Component({\r\n  selector: 'teta-text-field',\r\n  templateUrl: './text-field.component.html',\r\n  styleUrls: ['./text-field.component.scss'],\r\n  providers: [\r\n    {\r\n      provide: NG_VALUE_ACCESSOR,\r\n      useExisting: forwardRef(() => TextFieldComponent),\r\n      multi: true,\r\n    },\r\n  ],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class TextFieldComponent implements ControlValueAccessor {\r\n  @Input() placeholder = '';\r\n  @Input() leftIconName?: string;\r\n  @HostBinding('class.text-field_disabled')\r\n  @Input()\r\n  disabled = false;\r\n  @Input() onlyNumber = false;\r\n  @HostBinding('class.text-field_invalid')\r\n  @Input()\r\n  invalid: boolean;\r\n  @ViewChild('input', {static: false}) input: ElementRef;\r\n  @HostBinding('attr.tabindex')\r\n  private readonly tabindex = 0;\r\n  @HostBinding('class.text-field')\r\n  private readonly textField = true;\r\n  value = '';\r\n\r\n  constructor(private _cdr: ChangeDetectorRef) {\r\n  }\r\n\r\n  @HostListener('click') onFocus() {\r\n    this.input.nativeElement.focus();\r\n  }\r\n\r\n  keyPress(event: KeyboardEvent) {\r\n    if (event.key === 'Enter' || event.keyCode === 13) {\r\n      this.input.nativeElement.blur();\r\n    }\r\n  }\r\n\r\n  emitBlur() {\r\n    this.onTouched();\r\n  }\r\n\r\n  registerOnChange(fn: any): void {\r\n    this.onChange = fn;\r\n  }\r\n\r\n  registerOnTouched(fn: any): void {\r\n    this.onTouched = fn;\r\n  }\r\n\r\n  setDisabledState(isDisabled: boolean): void {\r\n    this.disabled = isDisabled;\r\n    this._cdr.detectChanges();\r\n  }\r\n\r\n  writeValue(input: string): void {\r\n    this.value = input;\r\n    this._cdr.detectChanges();\r\n  }\r\n\r\n  onChange(input: string): void {\r\n  }\r\n\r\n  onTouched(): void {\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -47297,7 +47426,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 41,
+                "line": 42,
                 "jsdoctags": [
                     {
                         "name": "_cdr",
@@ -47313,7 +47442,7 @@
             "implements": [
                 "ControlValueAccessor"
             ],
-            "templateData": "<teta-icon *ngIf=\"leftIconName\" [name]=\"leftIconName\"></teta-icon>\r\n<input\r\n  #input\r\n  [ngModel]=\"value\"\r\n  [tetaOnlyNumber]=\"onlyNumber\"\r\n  (ngModelChange)=\"value = $event; onChange($event);\"\r\n  [placeholder]=\"placeholder\"\r\n  [disabled]=\"disabled\"\r\n  (keydown)=\"keyPress($event)\"\r\n  autocomplete=\"off\"\r\n  type=\"text\"\r\n/>\r\n<teta-icon\r\n  *ngIf=\"value && !disabled\"\r\n  class=\"close-icon\"\r\n  [name]=\"'closeCircle'\"\r\n  (click)=\"value = ''; onChange('');\"\r\n></teta-icon>\r\n"
+            "templateData": "<teta-icon *ngIf=\"leftIconName\" [name]=\"leftIconName\"></teta-icon>\r\n<input\r\n  #input\r\n  [ngModel]=\"value\"\r\n  [tetaOnlyNumber]=\"onlyNumber\"\r\n  (ngModelChange)=\"value = $event; onChange($event);\"\r\n  [placeholder]=\"placeholder\"\r\n  [disabled]=\"disabled\"\r\n  (blur)=\"emitBlur()\"\r\n  (keydown)=\"keyPress($event)\"\r\n  autocomplete=\"off\"\r\n  type=\"text\"\r\n/>\r\n<teta-icon\r\n  *ngIf=\"value && !disabled\"\r\n  class=\"close-icon\"\r\n  [name]=\"'closeCircle'\"\r\n  (click)=\"value = ''; onChange('');\"\r\n></teta-icon>\r\n"
         },
         {
             "name": "ThemeSwitchComponent",
@@ -51832,6 +51961,54 @@
             ]
         },
         {
+            "name": "SampleInputModule",
+            "id": "module-SampleInputModule-344351b52be42b2a6df881dc88f026ca",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "projects/components/src/component/input/sample-input/sample-input.module.ts",
+            "methods": [],
+            "sourceCode": "import {NgModule} from '@angular/core';\nimport {CommonModule} from '@angular/common';\nimport {SampleInputComponent} from './sample-input/sample-input.component';\nimport {InputModule} from '../input.module';\nimport {ReactiveFormsModule} from '@angular/forms';\n\n@NgModule({\n  declarations: [\n    SampleInputComponent\n  ],\n  exports: [\n    SampleInputComponent\n  ],\n  imports: [\n    CommonModule,\n    InputModule,\n    ReactiveFormsModule\n  ]\n})\nexport class SampleInputModule {\n}\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "SampleInputComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": [
+                        {
+                            "name": "InputModule"
+                        }
+                    ]
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "SampleInputComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
             "name": "SelectModule",
             "id": "module-SelectModule-c7693fb92eb315155c3b53c91228d4f0",
             "description": "",
@@ -52738,6 +52915,16 @@
                 "defaultValue": "[\r\n  'gisColor',\r\n  'gisInnerColor',\r\n  'gisSimpleColor',\r\n  'grpAddColor',\r\n  'grpColor',\r\n  'handbagAddColor',\r\n  'handbagColor',\r\n  'improveColor',\r\n  'lineColor',\r\n  'lineDashedColor',\r\n  'lineGradientColor',\r\n  'liquidAddColor',\r\n  'liquidSystemColor',\r\n  'lithotypeColor',\r\n  'mapColor',\r\n  'nktColor',\r\n  'opzAddColor',\r\n  'opzColor',\r\n  'sortDownColor',\r\n  'sortUpColor',\r\n  'sumAddColor',\r\n  'sumColor',\r\n  'wellAddColor',\r\n  'wellColor',\r\n  'wellConstructionColor',\r\n  'addColor',\r\n  'areasColor',\r\n  'barChart',\r\n  'barChart',\r\n  'calcColor',\r\n  'calendarColor',\r\n  'chartLineColor',\r\n  'chartLineDashed',\r\n  'chartLineGradientColor',\r\n  'clusterColor',\r\n  'coinColor',\r\n  'deleteColor',\r\n  'documentColor',\r\n  'favorite',\r\n  'filterColor',\r\n  'filterSortDownColor',\r\n  'filterSortUpColor',\r\n  'folderAddColor',\r\n  'folderColor',\r\n  'geomechColor',\r\n]"
             },
             {
+                "name": "colorList",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/component/chart/color-list.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "[]",
+                "defaultValue": "[\r\n  'rgb(99,114,255)',\r\n  'rgb(218,241,152)',\r\n  'rgb(231,153,70,1)',\r\n  'rgb(176,51,181)',\r\n  'rgb(245,111,97,1)',\r\n  'rgb(128,194,231,1)',\r\n  'rgb(50,135,85,1)',\r\n  'rgb(156,110,107,1)',\r\n  'rgb(236,189,138,1)',\r\n  'rgb(138,146,215,1)',\r\n  'rgb(49,149,89,1)',\r\n  'rgb(212,180,93,1)',\r\n  'rgb(93,150,163,1)',\r\n  'rgb(212,104,93,1)',\r\n  'rgb(139,117,57,1)',\r\n  'rgb(127,217,162,1)',\r\n  'rgb(129,62,134,1)',\r\n  'rgb(192,157,154,1)',\r\n  'rgb(236,147,138,1)',\r\n  'rgb(79,169,115,1)',\r\n]"
+            },
+            {
                 "name": "columns",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -52775,7 +52962,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "ChartOptions",
-                "defaultValue": "new ChartOptions({\r\n  name: '123',\r\n  zoom: { enable: true },\r\n  xAxis: [\r\n    new AxisOptions({\r\n      type: 'time',\r\n    }),\r\n  ],\r\n  yAxis: [new AxisOptions()],\r\n  series: [\r\n    new Series<BasePoint>({\r\n      type: SeriesType.line,\r\n      data: points1,\r\n      name: 'Serie 1',\r\n      xAxisIndex: 0,\r\n      yAxisIndex: 0,\r\n      color: 'red',\r\n    }),\r\n    new Series<BasePoint>({\r\n      type: SeriesType.line,\r\n      data: points2,\r\n      name: 'Serie 2',\r\n      xAxisIndex: 0,\r\n      yAxisIndex: 0,\r\n      color: 'steelblue',\r\n    }),\r\n  ],\r\n})"
+                "defaultValue": "new ChartOptions({\r\n  name: '123',\r\n  zoom: {enable: true},\r\n  xAxis: [\r\n    new AxisOptions({\r\n      type: 'number',\r\n      plotBands\r\n    }),\r\n  ],\r\n  yAxis: [new AxisOptions()],\r\n  series,\r\n})"
             },
             {
                 "name": "context",
@@ -53145,7 +53332,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [ChartModule],\r\n  },\r\n  props: {\r\n    config,\r\n  },\r\n  template: `<div style=\"height: 100vh\"><teta-chart [config]=\"config\"></teta-chart></div>`,\r\n})"
+                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [ChartModule, IconModule],\r\n  },\r\n  props: {\r\n    config,\r\n  },\r\n  template: `<div style=\"height: 100vh\" [tetaIconSprite]=\"['assets/icons.svg', 'assets/lithotype-icons.svg']\" >\r\n  <teta-chart [config]=\"config\"></teta-chart>\r\n</div>`,\r\n})"
             },
             {
                 "name": "list",
@@ -53288,6 +53475,16 @@
                 "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [ExpandPanelModule],\r\n  },\r\n  template: `<div [tetaIconSprite]=\"'assets/icons.svg'\" class=\"font-body-3 padding-3\">\r\n    <teta-expand-panel></teta-expand-panel>\r\n  </div>`,\r\n})"
             },
             {
+                "name": "plotBands",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/component/chart/Chart.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "[]",
+                "defaultValue": "[new PlotBand({\r\n  id: 0,\r\n  from: 10,\r\n  to: 12,\r\n  color: 'green',\r\n  opacity: 0.2\r\n}), new PlotBand({\r\n  id: 0,\r\n  from: 20,\r\n  to: 25,\r\n  color: 'green',\r\n  image: 'intersect',\r\n  opacity: 0.2\r\n})]"
+            },
+            {
                 "name": "points1",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -53348,6 +53545,16 @@
                 "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [RadioModule, FormsModule, IconModule],\r\n  },\r\n  template: `<div class=\"padding-4 bg-panel-50\" [tetaIconSprite]=\"'assets/icons.svg'\">\r\n    <teta-radio [(ngModel)]=\"aaa\">\r\n      <teta-radio-button [value]=\"1\">1</teta-radio-button>\r\n      <teta-radio-button [value]=\"2\">2</teta-radio-button>\r\n      <teta-radio-button [value]=\"3\" [disabled]=\"true\">4</teta-radio-button>\r\n    </teta-radio>\r\n  </div>`,\r\n})"
             },
             {
+                "name": "reactiveForm",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/component/input/Input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [\r\n      SampleInputModule,\r\n      IconModule,\r\n      InputModule,\r\n      FormsModule,\r\n      SelectModule,\r\n      RadioModule,\r\n      DatePickerModule,\r\n      ToggleModule,\r\n      CheckboxModule,\r\n    ],\r\n  },\r\n  props: {\r\n    log: (name, value) => {\r\n      action(name)(value);\r\n    },\r\n  },\r\n  template: `<div [tetaIconSprite]=\"'assets/icons.svg'\" class=\"border border-text-10 padding-3\" style=\"width: 500px;\">\r\n              <teta-sample-input></teta-sample-input>\r\n            </div>`,\r\n})"
+            },
+            {
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -53404,6 +53611,26 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "series",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/component/chart/Chart.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Series[]",
+                "defaultValue": "seriesType.map((type: SeriesType, index: number) => {\r\n  return new Series<BasePoint>({\r\n    type,\r\n    name: type.toString(),\r\n    color: colorList[index],\r\n    data: Array.from(Array(50).keys()).map((key) => ({\r\n      x: key,\r\n      y: faker.datatype.number({min: 0, max: 100})\r\n    }))\r\n  });\r\n})"
+            },
+            {
+                "name": "seriesType",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/component/chart/Chart.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "[]",
+                "defaultValue": "[\r\n  SeriesType.scatter,\r\n  SeriesType.line,\r\n  SeriesType.spline]"
             },
             {
                 "name": "simplePropertyGrid",
@@ -54428,6 +54655,16 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [\r\n      IconModule,\r\n      InputModule,\r\n      FormsModule,\r\n      SelectModule,\r\n      RadioModule,\r\n      DatePickerModule,\r\n      ToggleModule,\r\n      CheckboxModule,\r\n    ],\r\n  },\r\n  template: `<div [tetaIconSprite]=\"'assets/icons.svg'\" class=\"border border-text-10 padding-3\" style=\"width: 500px;\">\r\n  <div class=\"form-container\">\r\n    <div class=\"form-row\">\r\n      <teta-input [label]=\"'text-field'\">\r\n        <teta-text-field [leftIconName]=\"'user'\" [placeholder]=\"'placeholder'\"></teta-text-field>\r\n      </teta-input>\r\n      <teta-input [label]=\"'text-field disabled'\">\r\n        <teta-text-field [leftIconName]=\"'user'\" [disabled]=\"true\" [placeholder]=\"'placeholder'\"></teta-text-field>\r\n      </teta-input>\r\n      <teta-input [label]=\"'text-field invalid'\">\r\n        <teta-text-field [leftIconName]=\"'user'\" [invalid]=\"true\" [placeholder]=\"'placeholder'\"></teta-text-field>\r\n        <div ngProjectAs=\"message\" class=\"color-red-50\">\r\n          Has errors\r\n        </div>\r\n      </teta-input>\r\n    </div>\r\n    <div class=\"form-row\">\r\n      <teta-input [label]=\"'input'\">\r\n        <input class=\"input\" [placeholder]=\"'placeholder'\" />\r\n      </teta-input>\r\n      <teta-input [label]=\"'input disabled'\">\r\n        <input class=\"input\" disabled [placeholder]=\"'placeholder'\" />\r\n      </teta-input>\r\n      <teta-input [label]=\"'input invalid'\">\r\n        <input class=\"input\" [class.input_invalid]=\"true\" [placeholder]=\"'placeholder'\" />\r\n        <div ngProjectAs=\"message\" class=\"color-red-50\">\r\n          Has errors\r\n        </div>\r\n      </teta-input>\r\n    </div>\r\n    <div class=\"form-row\">\r\n      <teta-input [label]=\"'input required'\" [required]=\"true\">\r\n        <input class=\"input\" [placeholder]=\"'placeholder'\" />\r\n      </teta-input>\r\n    </div>\r\n    <div class=\"form-row\">\r\n      <teta-input [label]=\"'Select'\">\r\n        <teta-select></teta-select>\r\n      </teta-input>\r\n      <teta-input [label]=\"'Select disabled'\">\r\n        <teta-select [disabled]=\"true\"></teta-select>\r\n      </teta-input>\r\n      <teta-input [label]=\"'Select invalid'\">\r\n        <teta-select [invalid]=\"true\"></teta-select>\r\n      </teta-input>\r\n    </div>\r\n    <teta-input [label]=\"'Selection'\">\r\n      <teta-radio>\r\n        <teta-radio-button>Option 1</teta-radio-button>\r\n        <teta-radio-button>Option 2</teta-radio-button>\r\n        <teta-radio-button [disabled]=\"true\">Option 3</teta-radio-button>\r\n      </teta-radio>\r\n    </teta-input>\r\n    <teta-toggle>Off / On</teta-toggle>\r\n    <teta-toggle [disabled]=\"true\">Off / On</teta-toggle>\r\n    <div class=\"form-row\">\r\n      <teta-input [label]=\"'Date'\">\r\n        <teta-date-picker></teta-date-picker>\r\n      </teta-input>\r\n      <teta-input [label]=\"'Date disabled'\">\r\n        <teta-date-picker [disabled]=\"true\"></teta-date-picker>\r\n      </teta-input>\r\n      <teta-input [label]=\"'Date invalid'\">\r\n        <teta-date-picker [invalid]=\"true\"></teta-date-picker>\r\n      </teta-input>\r\n    </div>\r\n    <teta-checkbox [binary]=\"true\">Check Me, babe</teta-checkbox>\r\n    <teta-checkbox [binary]=\"true\" [disabled]=\"true\">I am disabled</teta-checkbox>\r\n    <div class=\"form-row\">\r\n      <teta-input [label]=\"'textarea'\">\r\n        <textarea class=\"textarea\" [placeholder]=\"'textarea'\"></textarea>\r\n      </teta-input>\r\n      <teta-input [label]=\"'textarea disabled'\">\r\n        <textarea class=\"textarea\" disabled [placeholder]=\"'textarea'\"></textarea>\r\n      </teta-input>\r\n      <teta-input [label]=\"'textarea invalid'\">\r\n        <textarea class=\"textarea textarea_invalid\" [placeholder]=\"'textarea'\"></textarea>\r\n      </teta-input>\r\n    </div>\r\n  </div>\r\n</div>`,\r\n})"
+                },
+                {
+                    "name": "reactiveForm",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/component/input/Input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [\r\n      SampleInputModule,\r\n      IconModule,\r\n      InputModule,\r\n      FormsModule,\r\n      SelectModule,\r\n      RadioModule,\r\n      DatePickerModule,\r\n      ToggleModule,\r\n      CheckboxModule,\r\n    ],\r\n  },\r\n  props: {\r\n    log: (name, value) => {\r\n      action(name)(value);\r\n    },\r\n  },\r\n  template: `<div [tetaIconSprite]=\"'assets/icons.svg'\" class=\"border border-text-10 padding-3\" style=\"width: 500px;\">\r\n              <teta-sample-input></teta-sample-input>\r\n            </div>`,\r\n})"
                 }
             ],
             "projects/components/src/component/list/List.stories.ts": [
@@ -54704,6 +54941,18 @@
                     "defaultValue": "[\r\n  'add',\r\n  'addArea',\r\n  'addCircle',\r\n  'addComment',\r\n  'arrowDown',\r\n  'arrowDownKey',\r\n  'arrowDownSmall',\r\n  'arrowLeft',\r\n  'arrowLeftKey',\r\n  'arrowLeftSmall',\r\n  'arrowRight',\r\n  'arrowRightKey',\r\n  'arrowRightSmall',\r\n  'arrowUp',\r\n  'arrowUpDownSmall',\r\n  'arrowUpKey',\r\n  'arrowUpSmall',\r\n  'autoSize',\r\n  'autoSizeAll',\r\n  'backspace',\r\n  'bullet',\r\n  'calc',\r\n  'calendar',\r\n  'camera',\r\n  'chart',\r\n  'checkCircle',\r\n  'clock',\r\n  'clockChange',\r\n  'closeBig',\r\n  'closeCircle',\r\n  'comment',\r\n  'copy',\r\n  'copySelected',\r\n  'cut',\r\n  'dash',\r\n  'delete',\r\n  'deleteSelected',\r\n  'document',\r\n  'documentAnalyze',\r\n  'dots',\r\n  'download',\r\n  'drop',\r\n  'edit',\r\n  'end',\r\n  'eye',\r\n  'fader',\r\n  'filter',\r\n  'filterSortDown',\r\n  'filterSortUp',\r\n  'flag',\r\n  'folder',\r\n  'fullScreen',\r\n  'gantt',\r\n  'gisMonochrome',\r\n  'handbag',\r\n  'info',\r\n  'isoline',\r\n  'lamp',\r\n  'layers',\r\n  'layersLines',\r\n  'link',\r\n  'list',\r\n  'lock',\r\n  'map',\r\n  'measurement',\r\n  'menu',\r\n  'minus',\r\n  'monitoringDepth',\r\n  'monitoringTime',\r\n  'moreHorizontal',\r\n  'moreVertical',\r\n  'multiCopy',\r\n  'newTemplate',\r\n  'noSignal',\r\n  'paste',\r\n  'pause',\r\n  'pc',\r\n  'pdf',\r\n  'pieChart',\r\n  'pin',\r\n  'play',\r\n  'playBackRight',\r\n  'playForwardRight',\r\n  'print',\r\n  'question',\r\n  'redo',\r\n  'rewBack',\r\n  'rewForward',\r\n  'ring',\r\n  'save',\r\n  'search',\r\n  'settings',\r\n  'signal',\r\n  'square',\r\n  'star',\r\n  'start',\r\n  'stop',\r\n  'sum',\r\n  'table',\r\n  'tabletGraph',\r\n  'templateDownload',\r\n  'templateSettings',\r\n  'templateUpload',\r\n  'tick',\r\n  'timeOut',\r\n  'tree',\r\n  'treeTurn',\r\n  'undo',\r\n  'unpin',\r\n  'update',\r\n  'upload',\r\n  'user',\r\n  'warning',\r\n  'well',\r\n  'wrench',\r\n  'xls',\r\n  'xyz',\r\n  'horizontal',\r\n  'vertical',\r\n  'srt',\r\n  'nolteAnalysis',\r\n  'miniFrac',\r\n  'hornerAnalysis',\r\n]"
                 }
             ],
+            "projects/components/src/component/chart/color-list.ts": [
+                {
+                    "name": "colorList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/component/chart/color-list.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[]",
+                    "defaultValue": "[\r\n  'rgb(99,114,255)',\r\n  'rgb(218,241,152)',\r\n  'rgb(231,153,70,1)',\r\n  'rgb(176,51,181)',\r\n  'rgb(245,111,97,1)',\r\n  'rgb(128,194,231,1)',\r\n  'rgb(50,135,85,1)',\r\n  'rgb(156,110,107,1)',\r\n  'rgb(236,189,138,1)',\r\n  'rgb(138,146,215,1)',\r\n  'rgb(49,149,89,1)',\r\n  'rgb(212,180,93,1)',\r\n  'rgb(93,150,163,1)',\r\n  'rgb(212,104,93,1)',\r\n  'rgb(139,117,57,1)',\r\n  'rgb(127,217,162,1)',\r\n  'rgb(129,62,134,1)',\r\n  'rgb(192,157,154,1)',\r\n  'rgb(236,147,138,1)',\r\n  'rgb(79,169,115,1)',\r\n]"
+                }
+            ],
             "projects/components/src/component/property-grid/PropertyGrid.stories.ts": [
                 {
                     "name": "columns",
@@ -54755,7 +55004,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "ChartOptions",
-                    "defaultValue": "new ChartOptions({\r\n  name: '123',\r\n  zoom: { enable: true },\r\n  xAxis: [\r\n    new AxisOptions({\r\n      type: 'time',\r\n    }),\r\n  ],\r\n  yAxis: [new AxisOptions()],\r\n  series: [\r\n    new Series<BasePoint>({\r\n      type: SeriesType.line,\r\n      data: points1,\r\n      name: 'Serie 1',\r\n      xAxisIndex: 0,\r\n      yAxisIndex: 0,\r\n      color: 'red',\r\n    }),\r\n    new Series<BasePoint>({\r\n      type: SeriesType.line,\r\n      data: points2,\r\n      name: 'Serie 2',\r\n      xAxisIndex: 0,\r\n      yAxisIndex: 0,\r\n      color: 'steelblue',\r\n    }),\r\n  ],\r\n})"
+                    "defaultValue": "new ChartOptions({\r\n  name: '123',\r\n  zoom: {enable: true},\r\n  xAxis: [\r\n    new AxisOptions({\r\n      type: 'number',\r\n      plotBands\r\n    }),\r\n  ],\r\n  yAxis: [new AxisOptions()],\r\n  series,\r\n})"
                 },
                 {
                     "name": "line",
@@ -54765,7 +55014,37 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [ChartModule],\r\n  },\r\n  props: {\r\n    config,\r\n  },\r\n  template: `<div style=\"height: 100vh\"><teta-chart [config]=\"config\"></teta-chart></div>`,\r\n})"
+                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [ChartModule, IconModule],\r\n  },\r\n  props: {\r\n    config,\r\n  },\r\n  template: `<div style=\"height: 100vh\" [tetaIconSprite]=\"['assets/icons.svg', 'assets/lithotype-icons.svg']\" >\r\n  <teta-chart [config]=\"config\"></teta-chart>\r\n</div>`,\r\n})"
+                },
+                {
+                    "name": "plotBands",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/component/chart/Chart.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[]",
+                    "defaultValue": "[new PlotBand({\r\n  id: 0,\r\n  from: 10,\r\n  to: 12,\r\n  color: 'green',\r\n  opacity: 0.2\r\n}), new PlotBand({\r\n  id: 0,\r\n  from: 20,\r\n  to: 25,\r\n  color: 'green',\r\n  image: 'intersect',\r\n  opacity: 0.2\r\n})]"
+                },
+                {
+                    "name": "series",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/component/chart/Chart.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Series[]",
+                    "defaultValue": "seriesType.map((type: SeriesType, index: number) => {\r\n  return new Series<BasePoint>({\r\n    type,\r\n    name: type.toString(),\r\n    color: colorList[index],\r\n    data: Array.from(Array(50).keys()).map((key) => ({\r\n      x: key,\r\n      y: faker.datatype.number({min: 0, max: 100})\r\n    }))\r\n  });\r\n})"
+                },
+                {
+                    "name": "seriesType",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/component/chart/Chart.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[]",
+                    "defaultValue": "[\r\n  SeriesType.scatter,\r\n  SeriesType.line,\r\n  SeriesType.spline]"
                 }
             ],
             "projects/chart/src/test.ts": [
@@ -56742,6 +57021,36 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/components/src/component/chart/Chart.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "plotBands",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/component/chart/Chart.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "series",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/component/chart/Chart.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "seriesType",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/components/src/component/chart/chart-data.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -56768,6 +57077,16 @@
                 "name": "ChartComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/25",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/component/chart/color-list.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "colorList",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
@@ -56996,7 +57315,7 @@
                 "linktype": "classe",
                 "name": "PlotBand",
                 "coveragePercent": 0,
-                "coverageCount": "0/13",
+                "coverageCount": "0/14",
                 "status": "low"
             },
             {
@@ -57725,6 +58044,16 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/components/src/component/input/Input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "reactiveForm",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/components/src/component/input/form-group-title/form-group-title.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -57743,12 +58072,21 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/components/src/component/input/sample-input/sample-input/sample-input.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "SampleInputComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/components/src/component/input/text-field/text-field.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "TextFieldComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/20",
+                "coverageCount": "0/23",
                 "status": "low"
             },
             {

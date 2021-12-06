@@ -5,13 +5,20 @@ import {IconService} from './icon.service';
   selector: '[tetaIconSprite]'
 })
 export class IconSpriteDirective implements OnInit {
-  @Input() tetaIconSprite: string;
+  @Input() tetaIconSprite: string | string[];
   @Input() bypassInterceptors = true;
 
   constructor(private _iconService: IconService) {
   }
 
   ngOnInit(): void {
-    this._iconService.addSprite(this.tetaIconSprite, this.bypassInterceptors);
+    if (typeof this.tetaIconSprite === 'string') {
+      this._iconService.addSprite(this.tetaIconSprite, this.bypassInterceptors);
+    }
+    if (this.tetaIconSprite instanceof Array && this.tetaIconSprite?.length) {
+      this.tetaIconSprite.forEach((sprite: string) => {
+        this._iconService.addSprite(sprite, this.bypassInterceptors);
+      });
+    }
   }
 }

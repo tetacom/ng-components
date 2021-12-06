@@ -376,7 +376,7 @@
       </clipPath>
     </defs>
   </symbol>
-  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" id="intersect">
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" id="intersect">
     <path fill-rule="evenodd" clip-rule="evenodd" d="M1.29539 8H0V6.70446L6.70446 0H8V1.29539L1.29539 8ZM8 6.70446V8H6.70446L8 6.70446ZM1.29539 0L0 1.29539V0H1.29539Z" fill="#474747"/>
   </symbol>
   <defs>
@@ -422,7 +422,7 @@
     <pattern id="patternicon14" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
       <use width="16" height="16" xlink:href="#icon14"></use>
     </pattern>
-    <pattern id="intersect" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+    <pattern id="patternintersect" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
       <use width="8" height="8" xlink:href="#intersect"></use>
     </pattern>
   </defs>
