@@ -1280,8 +1280,8 @@ export class TetaChart {
             name: d.name,
           });
 
-          return `translate(${!isNaN(data?.x) ? foundX(data.x) : -10}, ${
-            !isNaN(data?.y) ? foundY(data.y) : -10
+          return `translate(${!isNaN(data?.x) && data?.x != null ? foundX(data.x) : -10}, ${
+            !isNaN(data?.y) && data?.y != null ? foundY(data.y) : -10
           })`;
         }
 
@@ -1300,7 +1300,9 @@ export class TetaChart {
             name: d.name,
           });
 
-          return `translate(${foundX(data.x)}, ${foundY(data.y)})`;
+          return `translate(${!isNaN(data?.x) && data?.x != null ? foundX(data.x) : -10}, ${
+            !isNaN(data?.y) && data?.y != null ? foundY(data.y) : -10
+          })`;
         }
       });
 
