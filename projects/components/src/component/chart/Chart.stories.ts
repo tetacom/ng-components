@@ -23,7 +23,6 @@ export default {
 } as Meta;
 
 const seriesType = [
-  SeriesType.scatter,
   SeriesType.line,
   SeriesType.spline];
 
@@ -32,10 +31,13 @@ const series: Series<BasePoint>[] = seriesType.map((type: SeriesType, index: num
     type,
     name: type.toString(),
     color: colorList[index],
-    data: Array.from(Array(50).keys()).map((key) => ({
-      x: key,
-      y: faker.datatype.number({min: 0, max: 100})
-    }))
+    data: Array.from(Array(50).keys()).map((key) => {
+      const num = faker.datatype.number({min: 0, max: 100});
+      return {
+        x: key,
+        y: (num > 50 && num < 60) ? null : num
+      };
+    })
   });
 });
 

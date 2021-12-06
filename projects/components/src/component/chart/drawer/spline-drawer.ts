@@ -15,6 +15,7 @@ export class SplineDrawer implements IDrawer<BasePoint> {
     const path = d3
       .line()
       .curve(d3.curveCatmullRom)
+      .defined((d: any) => d.x != null && d.y != null)
       .x((d: any) => scaleX(d.x))
       .y((d: any) => scaleY(d.y));
 
