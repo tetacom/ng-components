@@ -1,5 +1,6 @@
 <ng-container *ngIf="size | async as s">
-  <svg [attr.width]="s.width" [attr.height]="s.height" [tetaChartTooltip]>
+  <teta-tooltip [size]="s"></teta-tooltip>
+  <svg [attr.width]="s.width" [attr.height]="s.height" (mousemove)="mouseMove($event)">
     <ng-container *ngIf="getVisibleRect(s) as rect">
       <defs>
         <clipPath id="visible-window">
@@ -28,12 +29,15 @@
            [series]="series"
            [size]="s"></g>
       </g>
+
       <g class="x-axis-plotline-container">
         <g teta-plot-line></g>
       </g>
       <g class="x-axis-plotband-container">
         <g teta-plot-band></g>
       </g>
+      <g class="series-tooltip-line-marker"></g>
     </g>
   </svg>
+
 </ng-container>

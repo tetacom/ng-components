@@ -240,7 +240,7 @@ const config: IChartConfig = {
       strokeWidth: 2,
     },
     {
-      type: SeriesType.bar,
+      type: SeriesType.line,
       data: points2.map((point) => {
         return { ...point, color: cssColorNames[randomColor()] };
       }),

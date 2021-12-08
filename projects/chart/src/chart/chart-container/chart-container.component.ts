@@ -16,6 +16,7 @@ import { Observable, tap } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
 import { AxesService } from '../axes.service';
 import { Axis } from '../core/axis/axis';
+import { IPointer } from '../model/i-pointer';
 
 @Component({
   selector: 'teta-chart-container',
@@ -138,6 +139,10 @@ export class ChartContainerComponent
         ? translateOpposite
         : size.height - translateNonOpposite
     })`;
+  }
+
+  mouseMove(event: IPointer) {
+    this._svc.setPointerMove(event);
   }
 
   ngAfterContentChecked(): void {}

@@ -13,6 +13,7 @@ import { PlotlineComponent } from './chart-container/plotline/plotline.component
 import { PlotbandComponent } from './chart-container/plotband/plotband.component';
 import { BarSeriesComponent } from './chart-container/series/bar/bar-series.component';
 import { TooltipDirective } from './directives/tooltip.directive';
+import { TooltipComponent } from './chart-container/tooltip/tooltip.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { TooltipDirective } from './directives/tooltip.directive';
     PlotbandComponent,
     BarSeriesComponent,
     TooltipDirective,
+    TooltipComponent,
   ],
   exports: [ChartComponent],
   imports: [CommonModule],

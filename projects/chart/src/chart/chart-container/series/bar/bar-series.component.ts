@@ -55,6 +55,4 @@ export class BarSeriesComponent<T extends BasePoint>
   getY(point: BasePoint) {
     return this.y(point.y);
   }
-
-  pointer(): void {}
 }
