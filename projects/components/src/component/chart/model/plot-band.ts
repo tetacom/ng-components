@@ -4,6 +4,7 @@ export class PlotBand {
   to: number;
   label?: string;
   color?: string;
+  image?: string;
   showGrabbers?: boolean;
   draggable?: boolean;
   resizable?: boolean;
@@ -17,6 +18,7 @@ export class PlotBand {
     to: number;
     label?: string;
     color?: string;
+    image?: string;
     showGrabbers?: boolean;
     draggable?: boolean;
     resizable?: boolean;
@@ -29,6 +31,7 @@ export class PlotBand {
     this.to = options?.to;
     this.label = options?.label;
     this.color = options?.color || '#59AE501A';
+    this.image = options?.image;
     this.showGrabbers =
       options?.showGrabbers != null ? options.showGrabbers : true;
     this.draggable = options?.draggable != null ? options?.draggable : false;

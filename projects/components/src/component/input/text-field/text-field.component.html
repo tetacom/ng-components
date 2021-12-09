@@ -6,6 +6,7 @@
   (ngModelChange)="value = $event; onChange($event);"
   [placeholder]="placeholder"
   [disabled]="disabled"
+  (blur)="emitBlur()"
   (keydown)="keyPress($event)"
   autocomplete="off"
   type="text"

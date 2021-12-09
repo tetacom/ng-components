@@ -1,26 +1,26 @@
-import { ElementRef } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import {ElementRef} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
 import * as d3 from 'd3';
-import { D3ZoomEvent, zoomIdentity, ZoomTransform } from 'd3';
+import {D3ZoomEvent, zoomIdentity, ZoomTransform} from 'd3';
 import * as d3annotation from 'd3-svg-annotation';
-import { Scale } from '../model/enum/scale';
-import { ChartOptions } from '../model/chart-options';
-import { AxisOptions } from '../model/axis-options';
-import { Series } from '../model/series';
-import { BasePoint } from '../model/point/base-point';
-import { SeriesType } from '../model/enum/series-type';
-import { defaultDrawerMapping } from '../drawer/default-drawer-mapping';
-import { defaultLegendDrawerMapping } from '../legend-drawer/default-drawer-legend-mapping';
-import { LegendType } from '../model/enum/legend-type';
-import { Axis } from './axis-creator';
-import { AxisType } from '../model/enum/axis-type';
-import { PlotLine } from '../model/plot-line';
-import { PlotBand } from '../model/plot-band';
-import { ScaleType } from '../model/enum/scale-type';
-import { ZoomType } from '../model/enum/zoom-type';
-import { IDragEvent } from '../model/i-drag-event';
-import { DispatchType } from '../model/enum/dispatch-type';
-import { IZoomEvent } from '../model/i-zoom-event';
+import {Scale} from '../model/enum/scale';
+import {ChartOptions} from '../model/chart-options';
+import {AxisOptions} from '../model/axis-options';
+import {Series} from '../model/series';
+import {BasePoint} from '../model/point/base-point';
+import {SeriesType} from '../model/enum/series-type';
+import {defaultDrawerMapping} from '../drawer/default-drawer-mapping';
+import {defaultLegendDrawerMapping} from '../legend-drawer/default-drawer-legend-mapping';
+import {LegendType} from '../model/enum/legend-type';
+import {Axis} from './axis-creator';
+import {AxisType} from '../model/enum/axis-type';
+import {PlotLine} from '../model/plot-line';
+import {PlotBand} from '../model/plot-band';
+import {ScaleType} from '../model/enum/scale-type';
+import {ZoomType} from '../model/enum/zoom-type';
+import {IDragEvent} from '../model/i-drag-event';
+import {DispatchType} from '../model/enum/dispatch-type';
+import {IZoomEvent} from '../model/i-zoom-event';
 
 type ChartSize = { width: number; height: number };
 
@@ -31,16 +31,10 @@ export class TetaChart {
   zoom: Observable<IZoomEvent>;
   seriesMove: Observable<IDragEvent<Series<BasePoint>>>;
 
-  private plotLinesMove$: Subject<IDragEvent<PlotLine>> = new Subject<
-    IDragEvent<PlotLine>
-  >();
-  private plotBandsMove$: Subject<IDragEvent<PlotBand>> = new Subject<
-    IDragEvent<PlotBand>
-  >();
+  private plotLinesMove$: Subject<IDragEvent<PlotLine>> = new Subject<IDragEvent<PlotLine>>();
+  private plotBandsMove$: Subject<IDragEvent<PlotBand>> = new Subject<IDragEvent<PlotBand>>();
 
-  private seriesMove$: Subject<IDragEvent<Series<BasePoint>>> = new Subject<
-    IDragEvent<Series<BasePoint>>
-  >();
+  private seriesMove$: Subject<IDragEvent<Series<BasePoint>>> = new Subject<IDragEvent<Series<BasePoint>>>();
 
   private zoom$: Subject<IZoomEvent> = new Subject<IZoomEvent>();
 
@@ -49,15 +43,11 @@ export class TetaChart {
   private _width = 0;
   private _height = 0;
 
-  private _zoomYCache: Map<number, ZoomTransform> = new Map<
-    number,
-    ZoomTransform
-  >();
+  private _zoomYCache: Map<number, ZoomTransform> = new Map<number,
+    ZoomTransform>();
 
-  private _zoomXCache: Map<number, ZoomTransform> = new Map<
-    number,
-    ZoomTransform
-  >();
+  private _zoomXCache: Map<number, ZoomTransform> = new Map<number,
+    ZoomTransform>();
 
   private _zoom = d3.zoom();
   private _commonZoomTransform: ZoomTransform;
@@ -124,7 +114,7 @@ export class TetaChart {
     this._chart.call(this._zoom.transform, zoom?.zoomTransform ?? zoomIdentity);
   }
 
-  public setSize(size: ChartSize = { width: 0, height: 0 }) {
+  public setSize(size: ChartSize = {width: 0, height: 0}) {
     this._height = size.height;
     this._width = size.width;
 
@@ -140,9 +130,9 @@ export class TetaChart {
       ],
       [
         this._width -
-          (this.offsetOpposite
-            ? this.offsetOpposite
-            : this._options.bounds.right),
+        (this.offsetOpposite
+          ? this.offsetOpposite
+          : this._options.bounds.right),
         this._height - this._options.bounds.bottom,
       ],
     ] as any;
@@ -174,14 +164,14 @@ export class TetaChart {
       .attr(
         'height',
         this._height -
+        this._options.bounds.bottom -
+        this._options.bounds.top +
+        1 >
+        0
+          ? this._height -
           this._options.bounds.bottom -
           this._options.bounds.top +
-          1 >
-          0
-          ? this._height -
-              this._options.bounds.bottom -
-              this._options.bounds.top +
-              1
+          1
           : 0
       );
   }
@@ -331,8 +321,8 @@ export class TetaChart {
               ? this.offsetNonOpposite
               : this._options.bounds.left + this.offsetNonOpposite
             : axis.options.opposite
-            ? this._width - axis.offset
-            : axis.offset - bBox.width;
+              ? this._width - axis.offset
+              : axis.offset - bBox.width;
 
         const zoom = d3
           .zoom()
@@ -462,7 +452,7 @@ export class TetaChart {
               (plotlinesPoints[idx - 1]
                 ? plotlinesPoints[idx - 1]?.value
                 : 0)) /
-              2
+            2
           );
 
         const opacity = (d: PlotLine, idx: number) => {
@@ -505,8 +495,8 @@ export class TetaChart {
           .attr(
             'y2',
             this._height -
-              this._options.bounds.top -
-              this._options.bounds.bottom
+            this._options.bounds.top -
+            this._options.bounds.bottom
           )
           .attr('transform', `translate(0, ${this._options.bounds.top})`)
           .style('stroke-width', (d) => d.width)
@@ -514,7 +504,7 @@ export class TetaChart {
           .style('stroke-dasharray', (d) => (d.dashed ? '8, 8' : '0, 0'));
 
         const emit = (event: DragEvent, plotLine: PlotLine) => {
-          this.plotLinesMove$.next({ event, target: plotLine });
+          this.plotLinesMove$.next({event, target: plotLine});
         };
 
         plotlineGroup
@@ -528,8 +518,8 @@ export class TetaChart {
           .attr(
             'y2',
             this._height -
-              this._options.bounds.top -
-              this._options.bounds.bottom
+            this._options.bounds.top -
+            this._options.bounds.bottom
           )
           .attr('transform', `translate(0, ${this._options.bounds.top})`)
           .style('stroke-width', 8)
@@ -600,7 +590,7 @@ export class TetaChart {
           .style('stroke-dasharray', (d) => (d.dashed ? '8, 8' : '0, 0'));
 
         const emit = (event: DragEvent, plotLine: PlotLine) => {
-          this.plotLinesMove$.next({ event, target: plotLine });
+          this.plotLinesMove$.next({event, target: plotLine});
         };
 
         plotlineGroup
@@ -701,7 +691,12 @@ export class TetaChart {
           .attr('x', (d) => x(d.from))
           .attr('y', 0)
           .attr('width', (d) => Math.abs(x(d.to) - x(d.from)))
-          .attr('fill', (d) => d.color)
+          .attr('fill', (d) => {
+            if (d.image) {
+              return `url(#${d.image})`;
+            }
+            return d.color;
+          })
           .style('opacity', (d) => d.opacity ?? 1)
           .attr('height', plotBandHeight > 0 ? plotBandHeight : 0)
           .attr('transform', `translate(0, ${this._options.bounds.top})`);
@@ -718,8 +713,8 @@ export class TetaChart {
           .attr(
             'y2',
             this._height -
-              this._options.bounds.top -
-              this._options.bounds.bottom
+            this._options.bounds.top -
+            this._options.bounds.bottom
           )
           .attr('transform', `translate(0, ${this._options.bounds.top})`)
           .style('stroke-width', 1)
@@ -737,8 +732,8 @@ export class TetaChart {
           .attr(
             'y2',
             this._height -
-              this._options.bounds.top -
-              this._options.bounds.bottom
+            this._options.bounds.top -
+            this._options.bounds.bottom
           )
           .attr('transform', `translate(0, ${this._options.bounds.top})`)
           .style('stroke-width', 8)
@@ -798,8 +793,8 @@ export class TetaChart {
           .attr(
             'y2',
             this._height -
-              this._options.bounds.top -
-              this._options.bounds.bottom
+            this._options.bounds.top -
+            this._options.bounds.bottom
           )
           .attr('transform', `translate(0, ${this._options.bounds.top})`)
           .style('stroke-width', 1)
@@ -818,8 +813,8 @@ export class TetaChart {
           .attr(
             'y2',
             this._height -
-              this._options.bounds.top -
-              this._options.bounds.bottom
+            this._options.bounds.top -
+            this._options.bounds.bottom
           )
           .attr('transform', `translate(0, ${this._options.bounds.top})`)
           .style('stroke-width', 8)
@@ -890,7 +885,7 @@ export class TetaChart {
           .drag()
           .subject(function () {
             const element = d3.select(this);
-            return { y: element.attr('y') };
+            return {y: element.attr('y')};
           })
           .on('start drag end', function (event: any, d: PlotBand) {
             const element = d3.select(this);
@@ -1026,7 +1021,12 @@ export class TetaChart {
           .attr('x', 0)
           .attr('y', (d) => y(d.from))
           .attr('width', (d) => plotBandWidth)
-          .attr('fill', (d) => d.color)
+          .attr('fill', (d) => {
+            if (d.image) {
+              return `url(#${d.image})`;
+            }
+            return d.color;
+          })
           .style('opacity', (d) => d.opacity ?? 1)
           .attr('height', (d) => Math.abs(y(d.to) - y(d.from)))
           .attr('cursor', (d) => (d.draggable ? 'move' : 'default'));
@@ -1232,7 +1232,7 @@ export class TetaChart {
 
   private handleMouseMove(options) {
     const mouse = d3.pointer(options.event);
-    const { top, right, bottom, left } = this.tooltipPosition(options.event);
+    const {top, right, bottom, left} = this.tooltipPosition(options.event);
 
     const tooltipsData = [];
 
@@ -1280,8 +1280,8 @@ export class TetaChart {
             name: d.name,
           });
 
-          return `translate(${!isNaN(data?.x) ? foundX(data.x) : -10}, ${
-            !isNaN(data?.y) ? foundY(data.y) : -10
+          return `translate(${!isNaN(data?.x) && data?.x != null ? foundX(data.x) : -10}, ${
+            !isNaN(data?.y) && data?.y != null ? foundY(data.y) : -10
           })`;
         }
 
@@ -1300,7 +1300,9 @@ export class TetaChart {
             name: d.name,
           });
 
-          return `translate(${foundX(data.x)}, ${foundY(data.y)})`;
+          return `translate(${!isNaN(data?.x) && data?.x != null ? foundX(data.x) : -10}, ${
+            !isNaN(data?.y) && data?.y != null ? foundY(data.y) : -10
+          })`;
         }
       });
 
@@ -1321,7 +1323,7 @@ export class TetaChart {
     const centerX = this._width / 2;
     const centerY = this._height / 2;
 
-    const padding = { x: 10, y: 10 };
+    const padding = {x: 10, y: 10};
 
     const scene = {
       left: event.pageX > centerX ? 'initial' : `${event.pageX + padding.x}px`,
@@ -1360,7 +1362,7 @@ export class TetaChart {
       .style('stroke', 'var(--color-text-40)')
       .style('display', 'none');
 
-    const { series } = this._options;
+    const {series} = this._options;
 
     if (!series) {
       return;
@@ -1568,9 +1570,9 @@ export class TetaChart {
         ? this.offsetNonOpposite
         : this._options.bounds.left,
       this._width -
-        (this.offsetOpposite
-          ? this.offsetOpposite
-          : this._options.bounds.right),
+      (this.offsetOpposite
+        ? this.offsetOpposite
+        : this._options.bounds.right),
     ];
 
     const yRange = [
@@ -1703,10 +1705,10 @@ export class TetaChart {
           .attr(
             'transform',
             'translate(' +
-              this._width / 2 +
-              ' ,' +
-              (this._height - this._options.bounds.bottom) +
-              ')'
+            this._width / 2 +
+            ' ,' +
+            (this._height - this._options.bounds.bottom) +
+            ')'
           )
           .style('text-anchor', 'middle')
           .attr('dy', '3em')
@@ -1785,8 +1787,8 @@ export class TetaChart {
                 .attr(
                   'y2',
                   this._height -
-                    this._options.bounds.top -
-                    this._options.bounds.bottom
+                  this._options.bounds.top -
+                  this._options.bounds.bottom
                 )
                 .attr(
                   'transform',

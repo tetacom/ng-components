@@ -54,7 +54,7 @@ export const dropdownDirective = () => ({
       <button teta-button tetaDropdownHead [palette]="'primary'">
       Click to open
       </button>
-      <div tetaDropdownContent class="list overflow-auto" style="width: 200px">
+      <div tetaDropdownContent class="list scrollable" style="width: 200px">
         <ng-container *ngFor="let i of [1,2,3]">
           <div class="list-item">
             <teta-icon [name]="'user'" [palette]="'text'" class="margin-right-2"></teta-icon>Jerome Bell
