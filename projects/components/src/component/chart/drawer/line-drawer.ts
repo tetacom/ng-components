@@ -10,7 +10,7 @@ export class LineDrawer implements IDrawer<BasePoint> {
   dispatch: d3.Dispatch<IDragEvent<Series<BasePoint>>>;
 
   constructor() {
-    this.dispatch = d3.dispatch(DispatchType.moveLine);
+    this.dispatch = d3.dispatch(DispatchType.moveLine, DispatchType.movePoint);
   }
 
   draw(
@@ -22,13 +22,58 @@ export class LineDrawer implements IDrawer<BasePoint> {
   ): void {
     const points = series.data;
 
+    const markerPoints = points.filter((_) => _.marker);
+
     const path = d3
       .line<BasePoint>()
       .curve(series.curveType)
       .defined((d) => d.x != null && d.y != null)
       .x((d) => scaleX(d.x))
       .y((d) => scaleY(d.y));
+
     const seriesIndex = options.series.findIndex((_) => _.id === series.id);
+
+    if (markerPoints?.length) {
+      const emit = (event: DragEvent, target: BasePoint) => {
+        this.dispatch.apply(DispatchType.movePoint, {
+          target: series,
+          point: {
+            ...target,
+          },
+          event,
+        });
+      };
+
+      context
+        .selectAll('circle')
+        .data(markerPoints)
+        .enter()
+        .append('circle')
+        .attr('class', 'draggable-marker')
+        .attr('r', (d) => d.marker?.style?.radius || 5)
+        .attr('cx', function (d) {
+          return scaleX(d.x);
+        })
+        .attr('cy', function (d) {
+          return scaleY(d.y);
+        })
+        .style('cursor', 'pointer')
+        .style('fill', (d) => d.marker?.style?.color || 'red')
+        .attr('stroke', (d) => d.marker?.style?.stroke || 'none')
+        .attr('stroke-width', (d) => d.marker?.style?.strokeWidth || 0);
+
+      context.selectAll('.draggable-marker').call(
+        d3.drag().on('drag start end', function dragged(event, d: BasePoint) {
+          d.x = scaleX.invert(event.sourceEvent?.offsetX);
+          d.y = scaleY.invert(event.sourceEvent?.offsetY);
+
+          d3.select(this).attr('cx', scaleX(d.x)).attr('cy', scaleY(d.y));
+          context.select('path').attr('d', path);
+
+          emit(event, d);
+        })
+      );
+    }
 
     context
       .append('path')
