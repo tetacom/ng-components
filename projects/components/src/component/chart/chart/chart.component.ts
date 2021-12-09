@@ -211,7 +211,6 @@ export class ChartComponent
         this._chart.pointMove
           .pipe(takeWhile((_) => this._alive))
           .subscribe((_) => {
-            console.log(_);
             this.pointMove.emit(_);
           });
 
