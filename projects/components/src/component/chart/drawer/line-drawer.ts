@@ -87,7 +87,7 @@ export class LineDrawer implements IDrawer<BasePoint> {
       .attr('stroke-width', series.strokeWidth ? series.strokeWidth : 1)
       .style('cursor', series?.drag?.enable ? 'move' : 'default')
       .datum(points)
-      .attr('d', path as any);
+      .attr('d', path);
 
     const u = context.append('g').attr('class', 'grabbers');
 
