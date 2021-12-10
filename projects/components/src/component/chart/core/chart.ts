@@ -247,11 +247,13 @@ export class TetaChart {
   }
 
   private _redraw() {
+    this.drawPlotBands();
+    this.drawPlotLines();
+
     this.drawChart();
     this.drawAxis();
     this.drawGridLines();
-    this.drawPlotBands();
-    this.drawPlotLines();
+
     this.drawAnnotations();
   }
 

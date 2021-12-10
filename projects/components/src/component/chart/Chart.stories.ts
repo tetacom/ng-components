@@ -13,6 +13,7 @@ import {
 import * as faker from 'faker';
 import { colorList } from './color-list';
 import { IconModule } from '../icon/icon.module';
+import { DragPointType } from './model/enum/drag-point-type';
 
 export default {
   title: 'Component/Chart',
@@ -23,11 +24,12 @@ export default {
   },
 } as Meta;
 
-const seriesType = [SeriesType.line, SeriesType.spline];
+const seriesType = [SeriesType.line, SeriesType.line];
 
 const series: Series<BasePoint>[] = seriesType.map(
   (type: SeriesType, index: number) => {
     return new Series<BasePoint>({
+      id: index,
       type,
       name: type.toString(),
       color: colorList[index],
@@ -39,8 +41,9 @@ const series: Series<BasePoint>[] = seriesType.map(
           y: num > 50 && num < 60 ? null : num,
           marker: {
             draggable: true,
+            dragType: DragPointType.y,
             style: {
-              radius: 3,
+              radius: 5,
               color: 'steelblue',
             },
           },
