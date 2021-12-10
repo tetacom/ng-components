@@ -171,7 +171,7 @@ export class LineDrawer implements IDrawer<BasePoint> {
           return scaleY(d.y);
         })
         .style('cursor', 'pointer')
-        .style('fill', (d) => d.marker?.style?.color || 'red')
+        .style('fill', (d) => d.marker?.style?.color || 'none')
         .attr('stroke', (d) => d.marker?.style?.stroke || 'none')
         .attr('stroke-width', (d) => d.marker?.style?.strokeWidth || 0);
 
