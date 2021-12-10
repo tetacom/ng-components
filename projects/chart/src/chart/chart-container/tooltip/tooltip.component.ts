@@ -10,7 +10,7 @@ import {
   tap,
 } from 'rxjs';
 import { ChartService } from '../../chart.service';
-import { IPointer } from '../../model/i-pointer';
+// import { IPointer } from '../../model/i-pointer';
 
 @Component({
   selector: 'teta-tooltip',
@@ -30,42 +30,42 @@ export class TooltipComponent implements OnInit {
   constructor(private svc: ChartService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.position = this.svc.pointerMove.pipe(
-      filter(({ event }) => event),
-      map((_) => {
-        return this.getPoisition(_);
-      }),
-      tap((_) => this.cdr.detectChanges())
-    );
-
-    this.svc.tooltips
-      .pipe(
-        map((_) => {
-          console.log(_);
-        })
-      )
-      .subscribe();
+    // this.position = this.svc.pointerMove.pipe(
+    //   filter(({ event }) => event),
+    //   map((_) => {
+    //     return this.getPoisition(_);
+    //   }),
+    //   tap((_) => this.cdr.detectChanges())
+    // );
+    //
+    // this.svc.tooltips
+    //   .pipe(
+    //     map((_) => {
+    //       console.log(_);
+    //     })
+    //   )
+    //   .subscribe();
   }
 
-  private getPoisition({ event }: IPointer) {
-    const centerX = this.size.width / 2;
-    const centerY = this.size.height / 2;
-
-    const padding = { x: 10, y: 10 };
-
-    const scene = {
-      left: event.pageX > centerX ? 'initial' : `${event.pageX + padding.x}px`,
-      top: event.pageY > centerY ? 'initial' : `${event.pageY + padding.y}px`,
-      bottom:
-        event.pageY > centerY
-          ? `${window.innerHeight - event.pageY}px`
-          : 'initial',
-      right:
-        event.pageX > centerX
-          ? `${window.innerWidth - event.pageX + padding.x}px`
-          : 'initial',
-    };
-
-    return scene;
-  }
+  // private getPoisition({ event }: IPointer) {
+  //   const centerX = this.size.width / 2;
+  //   const centerY = this.size.height / 2;
+  //
+  //   const padding = { x: 10, y: 10 };
+  //
+  //   const scene = {
+  //     left: event.pageX > centerX ? 'initial' : `${event.pageX + padding.x}px`,
+  //     top: event.pageY > centerY ? 'initial' : `${event.pageY + padding.y}px`,
+  //     bottom:
+  //       event.pageY > centerY
+  //         ? `${window.innerHeight - event.pageY}px`
+  //         : 'initial',
+  //     right:
+  //       event.pageX > centerX
+  //         ? `${window.innerWidth - event.pageX + padding.x}px`
+  //         : 'initial',
+  //   };
+  //
+  //   return scene;
+  // }
 }
