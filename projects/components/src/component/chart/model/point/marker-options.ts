@@ -5,7 +5,7 @@ export interface MarkerOptions {
   dragType: DragPointType;
   style?: {
     radius?: number;
-    stroke?: number;
+    stroke?: string;
     strokeWidth?: number;
     color?: string;
   };
