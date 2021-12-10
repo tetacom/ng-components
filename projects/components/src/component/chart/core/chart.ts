@@ -752,6 +752,7 @@ export class TetaChart {
               this._options.bounds.top -
               this._options.bounds.bottom
           )
+          .style('display', (d) => (d?.resizable ? 'unset' : 'none'))
           .attr('transform', `translate(0, ${this._options.bounds.top})`)
           .style('stroke-width', 8)
           .style('stroke', 'rgba(0, 0, 0, 0)')
@@ -760,6 +761,7 @@ export class TetaChart {
             d3
               .drag()
               .on('drag', function (event: DragEvent, d: PlotBand) {
+
                 const group = d3.select(this).node().parentElement;
                 const draggedBand = d3
                   .select(group)
@@ -824,6 +826,7 @@ export class TetaChart {
           .data(axis.options.plotBands)
           .join('line')
           .attr('class', 'drag-right')
+          .style('display', (d) => (d?.resizable ? 'unset' : 'none'))
           .attr('x1', (d) => x(d.to))
           .attr('x2', (d) => x(d.to))
           .attr('y1', 0)
