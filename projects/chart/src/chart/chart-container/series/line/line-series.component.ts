@@ -64,10 +64,9 @@ export class LineSeriesComponent<T extends BasePoint>
     const bisect = d3.bisector((_: BasePoint) => _.x).left;
     const x0 = foundX.invert(mouse[0]);
 
-    const index = bisect(this.series.data, x0);
-    const foundPoint = this.series.data[index]
-      ? this.series.data[index]
-      : this.series.data[index - 1];
+    const index = bisect(this.series.data, x0, 0);
+
+    const foundPoint = this.series.data[index] ? this.series.data[index] : null;
 
     this.svc.setTooltip(foundPoint);
 

@@ -44,3 +44,4 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+projects/components/src/component/chart/Chart.stories.ts

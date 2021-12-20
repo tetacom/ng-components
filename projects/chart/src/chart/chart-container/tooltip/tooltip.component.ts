@@ -1,12 +1,34 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   bufferCount,
+  combineLatest,
+  concat,
+  concatAll,
+  concatMap,
   debounce,
   debounceTime,
+  distinctUntilChanged,
   filter,
+  last,
   map,
+  merge,
+  mergeAll,
+  mergeMap,
   Observable,
+  of,
+  pairwise,
+  reduce,
+  scan,
   shareReplay,
+  switchMap,
+  takeLast,
+  takeWhile,
   tap,
 } from 'rxjs';
 import { ChartService } from '../../chart.service';
@@ -17,7 +39,7 @@ import { IPointer } from '../../model/i-pointer';
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],
 })
-export class TooltipComponent implements OnInit {
+export class TooltipComponent implements OnInit, OnDestroy {
   @Input() size: DOMRect;
 
   position: Observable<{
@@ -26,6 +48,10 @@ export class TooltipComponent implements OnInit {
     bottom: string;
     right: string;
   }>;
+
+  tooltips = [];
+
+  private alive = true;
 
   constructor(private svc: ChartService, private cdr: ChangeDetectorRef) {}
 
@@ -38,11 +64,18 @@ export class TooltipComponent implements OnInit {
       tap((_) => this.cdr.detectChanges())
     );
 
-    this.svc.tooltips
+    merge(
+      this.svc.pointerMove.pipe(tap((_) => (this.tooltips = []))),
+      this.svc.tooltips
+    )
       .pipe(
-        bufferCount(2),
-        map((_) => {
-          console.log(_);
+        takeWhile((_) => this.alive),
+        filter((_) => !_?.event),
+        map((tooltip: any) => {
+          if (tooltip) {
+            this.tooltips.push(tooltip);
+          }
+          return this.tooltips;
         })
       )
       .subscribe();
@@ -68,5 +101,9 @@ export class TooltipComponent implements OnInit {
     };
 
     return scene;
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 }
