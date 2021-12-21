@@ -80,8 +80,9 @@ export const basicTable = () => ({
     data: getData(15),
     ...props
   },
-  template: `<div [tetaIconSprite]="'assets/icons.svg'" class="bg-panel-50 padding-3" style="display: flex; width: 1200px; height: 600px;">
-              <div [tetaIconSprite]="'assets/color-icons.svg'"></div>
+  template: `<div [tetaIconSprite]="['assets/icons.svg', 'assets/color-icons.svg']"
+                  class="bg-panel-50 padding-3"
+                  style="display: flex; width: 1200px; height: 600px;">
               <teta-table [data]="data"
                           [cookieName]="'table-stories'"
                           [columns]="columns"
@@ -247,6 +248,7 @@ const props = {
   columns,
   dict,
   log: (name, value) => {
-    action(name)(value);
+    // action(name)(value);
+    console.log(name, value)
   },
 };

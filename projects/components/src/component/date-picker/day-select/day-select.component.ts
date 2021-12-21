@@ -168,8 +168,9 @@ export class DaySelectComponent
     if (event instanceof WheelEvent) {
       this.preventEvent(event);
     }
-
     this.currentValue = DatePickerUtil.scrollMonth(deltaY, this.currentValue);
+    this.monthSelected.emit(this.currentValue.getMonth());
+    this.yearSelected.emit(this.currentValue.getFullYear());
     this._cdr.detectChanges();
   }
 
