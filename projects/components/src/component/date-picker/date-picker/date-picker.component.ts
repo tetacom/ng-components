@@ -265,12 +265,12 @@ export class DatePickerComponent
       this.applyValue(this.currentValue);
     }
     this.open = show;
-    this.onTouched();
     this._cdr.markForCheck();
   };
 
   closePicker = () => {
     this.openPicker(false);
+    this.onTouched();
   };
 
   preventEvent = (event: any) => {
