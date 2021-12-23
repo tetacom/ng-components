@@ -17,7 +17,6 @@ import { IDictionary } from '../../../common/contract/i-dictionary';
 @Component({
   template: '',
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   @HostBinding('class.cell-component')
   private readonly tableCellComponent = true;

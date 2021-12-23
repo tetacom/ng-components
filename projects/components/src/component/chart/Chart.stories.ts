@@ -1,17 +1,19 @@
-import {Meta} from '@storybook/angular/types-6-0';
+import { Meta } from '@storybook/angular/types-6-0';
 
-import {ChartComponent} from './chart/chart.component';
-import {ChartModule} from './chart.module';
+import { ChartComponent } from './chart/chart.component';
+import { ChartModule } from './chart.module';
 import {
   AxisOptions,
   BasePoint,
-  ChartOptions, PlotBand,
+  ChartOptions,
+  PlotBand,
   Series,
   SeriesType,
 } from './model/public-api';
 import * as faker from 'faker';
-import {colorList} from './color-list';
-import {IconModule} from '../icon/icon.module';
+import { colorList } from './color-list';
+import { IconModule } from '../icon/icon.module';
+import { DragPointType } from './model/enum/drag-point-type';
 
 export default {
   title: 'Component/Chart',
@@ -22,47 +24,60 @@ export default {
   },
 } as Meta;
 
-const seriesType = [
-  SeriesType.line,
-  SeriesType.spline];
+const seriesType = [SeriesType.line, SeriesType.line];
 
-const series: Series<BasePoint>[] = seriesType.map((type: SeriesType, index: number) => {
-  return new Series<BasePoint>({
-    type,
-    name: type.toString(),
-    color: colorList[index],
-    data: Array.from(Array(50).keys()).map((key) => {
-      const num = faker.datatype.number({min: 0, max: 100});
-      return {
-        x: key,
-        y: (num > 50 && num < 60) ? null : num
-      };
-    })
-  });
-});
+const series: Series<BasePoint>[] = seriesType.map(
+  (type: SeriesType, index: number) => {
+    return new Series<BasePoint>({
+      id: index,
+      type,
+      name: type.toString(),
+      color: colorList[index],
 
-const plotBands = [new PlotBand({
-  id: 0,
-  from: 10,
-  to: 12,
-  color: 'green',
-  opacity: 0.2
-}), new PlotBand({
-  id: 1,
-  from: 20,
-  to: 25,
-  color: 'red',
-  image: 'patternintersect',
-  opacity: 0.3
-})];
+      data: Array.from(Array(50).keys()).map((key, index) => {
+        const num = faker.datatype.number({ min: 0, max: 100 });
+        return {
+          x: key,
+          y: num > 50 && num < 60 ? null : num,
+          marker: {
+            draggable: true,
+            dragType: DragPointType.y,
+            style: {
+              radius: 5,
+              color: 'steelblue',
+            },
+          },
+        };
+      }),
+    });
+  }
+);
+
+const plotBands = [
+  new PlotBand({
+    id: 0,
+    from: 10,
+    to: 12,
+    color: 'green',
+    opacity: 0.2,
+  }),
+  new PlotBand({
+    id: 1,
+    from: 20,
+    to: 25,
+    color: 'red',
+    image: 'patternintersect',
+    opacity: 0.3,
+  }),
+];
 
 const config: ChartOptions = new ChartOptions({
   name: '123',
-  zoom: {enable: true},
+  zoom: { enable: true },
   xAxis: [
     new AxisOptions({
       type: 'number',
-      plotBands
+      plotBands,
     }),
   ],
   yAxis: [new AxisOptions()],

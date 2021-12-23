@@ -41,6 +41,7 @@ export class DateCellComponent<T>
   setValue(value: Date): void {
     this.row.data[this.column.name] = value ? new Date(value) : value;
     this.valueChanged();
+    this.cdr.detectChanges();
   }
 
   startEdit(initiator: ICellCoordinates<T>, type: 'cell' | 'row'): void {

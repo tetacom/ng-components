@@ -15,18 +15,18 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import {Subject} from 'rxjs';
-import {map, takeWhile, throttleTime} from 'rxjs/operators';
-import {TetaChart} from '../core/chart';
-import {ChartOptions} from '../model/chart-options';
-import {BasePoint} from '../model/point/base-point';
-import {Series} from '../model/series';
-import {PlotLine} from '../model/plot-line';
-import {PlotBand} from '../model/plot-band';
-import {IDragEvent} from '../model/i-drag-event';
-import {IZoomEvent} from '../model/i-zoom-event';
-import {SeriesType} from '../model/enum/series-type';
-import {BarPoint} from '../model/point/bar-point';
+import { Subject } from 'rxjs';
+import { map, takeWhile, throttleTime } from 'rxjs/operators';
+import { TetaChart } from '../core/chart';
+import { ChartOptions } from '../model/chart-options';
+import { BasePoint } from '../model/point/base-point';
+import { Series } from '../model/series';
+import { PlotLine } from '../model/plot-line';
+import { PlotBand } from '../model/plot-band';
+import { IDragEvent } from '../model/i-drag-event';
+import { IZoomEvent } from '../model/i-zoom-event';
+import { SeriesType } from '../model/enum/series-type';
+import { BarPoint } from '../model/point/bar-point';
 
 @Component({
   selector: 'teta-chart',
@@ -35,18 +35,30 @@ import {BarPoint} from '../model/point/bar-point';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartComponent
-  implements OnInit, AfterViewInit, OnDestroy, OnChanges {
+  implements OnInit, AfterViewInit, OnDestroy, OnChanges
+{
   @Input() zoom: IZoomEvent;
 
   @Input() config: ChartOptions;
 
   @Output()
-  plotLinesMove: EventEmitter<IDragEvent<PlotLine>> = new EventEmitter<IDragEvent<PlotLine>>();
+  plotLinesMove: EventEmitter<IDragEvent<PlotLine>> = new EventEmitter<
+    IDragEvent<PlotLine>
+  >();
   @Output()
-  plotBandsMove: EventEmitter<IDragEvent<PlotBand>> = new EventEmitter<IDragEvent<PlotBand>>();
+  plotBandsMove: EventEmitter<IDragEvent<PlotBand>> = new EventEmitter<
+    IDragEvent<PlotBand>
+  >();
 
   @Output()
-  seriesMove: EventEmitter<IDragEvent<Series<BasePoint>>> = new EventEmitter<IDragEvent<Series<BasePoint>>>();
+  seriesMove: EventEmitter<IDragEvent<Series<BasePoint>>> = new EventEmitter<
+    IDragEvent<Series<BasePoint>>
+  >();
+
+  @Output()
+  pointMove: EventEmitter<IDragEvent<Series<BasePoint>>> = new EventEmitter<
+    IDragEvent<Series<BasePoint>>
+  >();
 
   @Output()
   zoomChange: EventEmitter<IZoomEvent> = new EventEmitter<IZoomEvent>();
@@ -64,8 +76,7 @@ export class ChartComponent
   private _chart: TetaChart;
   private _zoom: IZoomEvent;
 
-  constructor(private _zone: NgZone) {
-  }
+  constructor(private _zone: NgZone) {}
 
   @HostListener('click', ['$event']) click(event: any): void {
     const composedPath = event.composedPath();
@@ -89,7 +100,7 @@ export class ChartComponent
 
         this._config.series[foundSerie.id].data = this._config.series[
           foundSerie.id
-          ].data.map((_: BasePoint & BarPoint) => {
+        ].data.map((_: BasePoint & BarPoint) => {
           if (clickedElement.id === _.id) {
             return {
               ..._,
@@ -136,19 +147,18 @@ export class ChartComponent
     }
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this._observer = new ResizeObserver((entries) => {
-      const {contentRect} = entries[0];
+      const { contentRect } = entries[0];
       this.size$.next(contentRect);
     });
 
     this._observer.observe(this.chart.nativeElement);
 
     this.size$
-      .pipe(throttleTime(100, undefined, {trailing: true}))
+      .pipe(throttleTime(100, undefined, { trailing: true }))
       .pipe(
         takeWhile((_) => this._alive),
         map((_) => {
@@ -171,7 +181,7 @@ export class ChartComponent
   }
 
   private resize(contentRect: any) {
-    const {width, height} = contentRect;
+    const { width, height } = contentRect;
     this._chart.setSize({
       width,
       height,
@@ -197,6 +207,12 @@ export class ChartComponent
         this._chart.seriesMove
           .pipe(takeWhile((_) => this._alive))
           .subscribe((_) => this.seriesMove.emit(_));
+
+        this._chart.pointMove
+          .pipe(takeWhile((_) => this._alive))
+          .subscribe((_) => {
+            this.pointMove.emit(_);
+          });
 
         this._chart.zoom
           .pipe(

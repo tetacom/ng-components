@@ -5,12 +5,13 @@ import * as d3 from 'd3';
 import { ChartOptions } from '../model/chart-options';
 import { IDragEvent } from '../model/i-drag-event';
 import { DispatchType } from '../model/enum/dispatch-type';
+import { DragPointType } from '../model/enum/drag-point-type';
 
 export class LineDrawer implements IDrawer<BasePoint> {
   dispatch: d3.Dispatch<IDragEvent<Series<BasePoint>>>;
 
   constructor() {
-    this.dispatch = d3.dispatch(DispatchType.moveLine);
+    this.dispatch = d3.dispatch(DispatchType.moveLine, DispatchType.movePoint);
   }
 
   draw(
@@ -22,18 +23,21 @@ export class LineDrawer implements IDrawer<BasePoint> {
   ): void {
     const points = series.data;
 
+    const markerPoints = points.filter((_) => _.marker);
+
     const path = d3
       .line<BasePoint>()
       .curve(series.curveType)
       .defined((d) => d.x != null && d.y != null)
       .x((d) => scaleX(d.x))
       .y((d) => scaleY(d.y));
+
     const seriesIndex = options.series.findIndex((_) => _.id === series.id);
 
     context
       .append('path')
       .attr('class', (d: BasePoint) =>
-        series?.drag.enable ? 'draggable' : null
+        series?.drag.enable ? 'draggable' : `series-${seriesIndex}`
       )
       .attr('data-draggable-id', seriesIndex)
       .attr('fill', 'none')
@@ -42,7 +46,7 @@ export class LineDrawer implements IDrawer<BasePoint> {
       .attr('stroke-width', series.strokeWidth ? series.strokeWidth : 1)
       .style('cursor', series?.drag?.enable ? 'move' : 'default')
       .datum(points)
-      .attr('d', path as any);
+      .attr('d', path);
 
     const u = context.append('g').attr('class', 'grabbers');
 
@@ -140,6 +144,60 @@ export class LineDrawer implements IDrawer<BasePoint> {
 
     if (series?.drag?.extendLine && points?.length) {
       drawExtendedLine();
+    }
+
+    if (markerPoints?.length) {
+      const emit = (event: DragEvent, target: BasePoint) => {
+        this.dispatch.apply(DispatchType.movePoint, {
+          target: series,
+          point: {
+            ...target,
+          },
+          event,
+        });
+      };
+
+      context
+        .selectAll(`draggable-marker-${seriesIndex}`)
+        .data(markerPoints)
+        .enter()
+        .append('circle')
+        .attr('class', `draggable-marker-${seriesIndex}`)
+        .attr('r', (d) => d.marker?.style?.radius || 5)
+        .attr('cx', function (d) {
+          return scaleX(d.x);
+        })
+        .attr('cy', function (d) {
+          return scaleY(d.y);
+        })
+        .style('cursor', 'pointer')
+        .style('fill', (d) => d.marker?.style?.color || 'none')
+        .attr('stroke', (d) => d.marker?.style?.stroke || 'none')
+        .attr('stroke-width', (d) => d.marker?.style?.strokeWidth || 0);
+
+      context.selectAll(`.draggable-marker-${seriesIndex}`).call(
+        d3.drag().on('drag start end', function dragged(event, d: BasePoint) {
+          const node = d3.select(this);
+
+          if (event.type === 'start') {
+            node.raise().classed('active', true);
+          }
+
+          if (d.marker?.dragType === DragPointType.x) {
+            d.x = scaleX.invert(event.sourceEvent?.offsetX);
+            node.attr('cx', scaleX(d.x));
+          }
+
+          if (d.marker?.dragType === DragPointType.y) {
+            d.y = scaleY.invert(event.sourceEvent?.offsetY);
+            node.attr('cy', scaleY(d.y));
+          }
+
+          context.select(`.series-${seriesIndex}`).attr('d', path);
+
+          emit(event, d);
+        })
+      );
     }
   }
 }
