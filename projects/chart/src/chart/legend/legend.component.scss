@@ -1,0 +1,20 @@
+:host {
+  display: flex;
+  grid-gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+:host .legend-item {
+  display: flex;
+  align-items: center;
+}
+
+:host .legend-icon-form {
+  width: 12px;
+}
+
+:host .legend-label {
+  margin-left: 5px;
+}

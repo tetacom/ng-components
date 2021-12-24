@@ -1399,6 +1399,7 @@ export class TetaChart {
     const markers = this._chart
       .selectAll()
       .data(series.filter((_) => _.visible));
+
     markers
       .enter()
       .append('circle')

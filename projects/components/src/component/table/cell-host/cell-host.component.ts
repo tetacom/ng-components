@@ -31,15 +31,15 @@ export class CellHostComponent<T> implements OnInit, OnDestroy, OnChanges {
   private _init = false;
   private _componentRef: ComponentRef<any>;
 
-  constructor(
-    private viewContainerRef: ViewContainerRef
-  ) {}
+  constructor(private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit(): void {
     if (!CellComponentBase.isPrototypeOf(this.column.cellComponent)) {
       this.column.cellComponent = getCellComponent(this.column);
     }
-    this._componentRef = this.viewContainerRef.createComponent(this.column.cellComponent);
+    this._componentRef = this.viewContainerRef.createComponent(
+      this.column.cellComponent
+    );
     this._componentRef.instance.column = this.column;
     this._componentRef.instance.row = this.row;
     this._componentRef.instance.filterOptions = this.filterOptions;

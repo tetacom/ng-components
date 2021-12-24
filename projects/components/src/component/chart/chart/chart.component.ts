@@ -169,6 +169,10 @@ export class ChartComponent
       .subscribe();
   }
 
+  get showLegend(): boolean {
+    return this._config?.legend?.visible;
+  }
+
   ngOnDestroy() {
     this._alive = false;
     this._observer?.unobserve(this.chart.nativeElement);

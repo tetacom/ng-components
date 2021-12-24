@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LineSeriesComponent } from './line-series.component';
+import { TooltipComponent } from './tooltip.component';
 
-describe('LineSeriesComponent', () => {
-  let component: LineSeriesComponent;
-  let fixture: ComponentFixture<LineSeriesComponent>;
+describe('TooltipComponent', () => {
+  let component: TooltipComponent;
+  let fixture: ComponentFixture<TooltipComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LineSeriesComponent ]
+      declarations: [ TooltipComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LineSeriesComponent);
+    fixture = TestBed.createComponent(TooltipComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

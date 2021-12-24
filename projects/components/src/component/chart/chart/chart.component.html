@@ -1,6 +1,6 @@
 <div [style.display]="hasSeriesData ? 'contents' : 'none'">
   <div #chart class="chart-container"></div>
-  <div class="legend-container"></div>
+  <div *ngIf="showLegend" class="legend-container"></div>
 </div>
 <div [style.display]="!hasSeriesData ? 'block' : 'none'" class="chart-placeholder text-align-center">
   <span class="font-body-3 color-text-40">Данные отсутствуют</span>

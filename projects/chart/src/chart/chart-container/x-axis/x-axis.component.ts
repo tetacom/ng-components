@@ -8,7 +8,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Axis } from '../../core/axis';
+import { Axis } from '../../core/axis/axis';
 import { ScaleService } from '../../scale.service';
 import { ChartService } from '../../chart.service';
 import { takeWhile, tap } from 'rxjs';

@@ -1,11 +1,11 @@
-import { IChartConfig } from '../model/i-chart-config';
-import { AxisOrientation } from '../model/enum/axis-orientation';
-import { Series } from '../model/series';
-import { BasePoint } from '../model/base-point';
+import { IChartConfig } from '../../model/i-chart-config';
+import { AxisOrientation } from '../../model/enum/axis-orientation';
+import { Series } from '../../model/series';
+import { BasePoint } from '../../model/base-point';
 import * as d3 from 'd3';
-import { AxisOptions } from '../model/axis-options';
+import { AxisOptions } from '../../model/axis-options';
 import { AxisSizeBuilder, ExtremesBuilder } from './builders/public-api';
-import { AxisType } from '../model/axis-type';
+import { AxisType } from '../../model/axis-type';
 
 export class Axis {
   private chartConfig: IChartConfig;
@@ -17,7 +17,8 @@ export class Axis {
 
   private defaultFormatters = new Map<AxisType, any>()
     .set(AxisType.number, d3.format(',.2r'))
-    .set(AxisType.time, d3.timeFormat('%B %d, %Y'));
+    .set(AxisType.time, d3.timeFormat('%B %d, %Y'))
+    .set(AxisType.log, d3.format(',.2r'));
 
   constructor(config: IChartConfig) {
     this.chartConfig = config;

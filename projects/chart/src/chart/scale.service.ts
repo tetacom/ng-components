@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { AxesService } from './axes.service';
 import * as d3 from 'd3';
 import { AxisType } from './model/axis-type';
-import { Axis } from './core/axis';
+import { Axis } from './core/axis/axis';
+import { AxisOrientation } from './model/enum/axis-orientation';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,12 @@ import { Axis } from './core/axis';
 export class ScaleService {
   public yScales: Map<number | string, any> = new Map<number | string, any>();
   public xScales: Map<number | string, any> = new Map<number | string, any>();
+
+  private scaleMapping = new Map<AxisType, any>()
+    .set(AxisType.number, d3.scaleLinear)
+    .set(AxisType.time, d3.scaleTime)
+    .set(AxisType.category, d3.scaleOrdinal)
+    .set(AxisType.log, d3.scaleLog);
 
   constructor(private axesService: AxesService) {}
 
@@ -26,26 +33,13 @@ export class ScaleService {
       .filter((_) => _.options?.visible && _.options?.opposite !== true)
       .reduce((acc, cur) => acc + cur.selfSize, 0);
 
-    this.axesService.yAxis.forEach((value: Axis) => {
-      let scale = null;
+    this.axesService.yAxis.forEach((axis: Axis) => {
+      const scale = this.getScale(axis).range([
+        topBound,
+        size.height - bottomBound,
+      ]);
 
-      const domain = [...value.extremes].reverse();
-
-      if (value.options.type === AxisType.time) {
-        scale = d3
-          .scaleTime()
-          .domain(domain)
-          .range([topBound, size.height - bottomBound]);
-      }
-
-      if (value.options.type === AxisType.number) {
-        scale = d3
-          .scaleLinear()
-          .domain(domain)
-          .range([topBound, size.height - bottomBound]);
-      }
-
-      this.yScales.set(value.index, scale);
+      this.yScales.set(axis.index, scale);
     });
 
     const leftBound = [...this.axesService.yAxis.values()]
@@ -56,26 +50,22 @@ export class ScaleService {
       .filter((_) => _.options?.visible && _.options.opposite)
       .reduce((acc, cur) => acc + cur.selfSize, 0);
 
-    this.axesService.xAxis.forEach((value: Axis) => {
-      let scale = null;
-
-      const domain = value.extremes;
-
-      if (value.options.type === AxisType.time) {
-        scale = d3
-          .scaleTime()
-          .domain(domain)
-          .range([leftBound, size.width - rightBound]);
-      }
-
-      if (value.options.type === AxisType.number) {
-        scale = d3
-          .scaleLinear()
-          .domain(domain)
-          .range([leftBound, size.width - rightBound]);
-      }
-
-      this.xScales.set(value.index, scale);
+    this.axesService.xAxis.forEach((axis: Axis) => {
+      const scale = this.getScale(axis).range([
+        leftBound,
+        size.width - rightBound,
+      ]);
+      this.xScales.set(axis.index, scale);
     });
+  }
+
+  private getScale(axis: Axis) {
+    return this.scaleMapping
+      .get(axis.options?.type)()
+      .domain(
+        axis.orientation === AxisOrientation.y
+          ? [...axis.extremes].reverse()
+          : axis.extremes
+      );
   }
 }

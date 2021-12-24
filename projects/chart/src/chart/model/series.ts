@@ -1,6 +1,6 @@
-import {BasePoint} from './base-point';
-import {SeriesType} from './series-type';
-import {SeriesBaseComponent} from '../base/series-base.component';
+import { BasePoint } from './base-point';
+import { SeriesType } from './series-type';
+import { SeriesBaseComponent } from '../base/series-base.component';
 
 export interface Series<T extends BasePoint> {
   id?: number | string;
@@ -14,6 +14,5 @@ export interface Series<T extends BasePoint> {
   strokeDasharray?: string;
   visible?: boolean;
   color?: string;
-  extend?: boolean;
   showInLegend?: boolean;
 }
