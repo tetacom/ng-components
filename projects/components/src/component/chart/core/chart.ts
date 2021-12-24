@@ -125,7 +125,6 @@ export class TetaChart {
     if (!this._zoom) {
       return;
     }
-
     this._chart.call(this._zoom.transform, zoom?.zoomTransform ?? zoomIdentity);
   }
 
@@ -761,7 +760,6 @@ export class TetaChart {
             d3
               .drag()
               .on('drag', function (event: DragEvent, d: PlotBand) {
-
                 const group = d3.select(this).node().parentElement;
                 const draggedBand = d3
                   .select(group)
