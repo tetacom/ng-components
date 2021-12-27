@@ -94,8 +94,8 @@ export class TableUtil {
     const filterDate = (row: T) => {
       const item = row as any;
       return (filter.value.lessThan === null || filter.value.lessThan === undefined
-        ? true
-        : filter.value.lessThan.getTime() > item[filter.field].getTime()) &&
+          ? true
+          : filter.value.lessThan.getTime() > item[filter.field].getTime()) &&
         (filter.value.greaterThan === null || filter.value.greaterThan === undefined
           ? true
           : filter.value.greaterThan.getTime() < item[filter.field].getTime());
@@ -107,8 +107,8 @@ export class TableUtil {
     const filterNumber = (row: T) => {
       const item = row as any;
       return (filter.value.lessThan === null || filter.value.lessThan === undefined
-        ? true
-        : filter.value.lessThan > item[filter.field]) &&
+          ? true
+          : filter.value.lessThan > item[filter.field]) &&
         (filter.value.greaterThan === null || filter.value.greaterThan === undefined
           ? true
           : filter.value.greaterThan < item[filter.field]) &&
