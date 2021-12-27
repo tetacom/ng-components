@@ -1,9 +1,9 @@
-import { FilterItem } from '../../filter/contarct/filter-item';
-import { FilterType } from '../../filter/enum/filter-type.enum';
-import { StringFilterType } from '../../filter/enum/string-filter-type.enum';
-import { ListFilterType } from '../../filter/enum/list-filter-type.enum';
-import { TableRow } from './table-row';
-import { AggregationType } from '../enum/aggregation-type.enum';
+import {FilterItem} from '../../filter/contarct/filter-item';
+import {FilterType} from '../../filter/enum/filter-type.enum';
+import {StringFilterType} from '../../filter/enum/string-filter-type.enum';
+import {ListFilterType} from '../../filter/enum/list-filter-type.enum';
+import {TableRow} from './table-row';
+import {AggregationType} from '../enum/aggregation-type.enum';
 
 export class TableColumn extends FilterItem {
   /**
@@ -140,47 +140,25 @@ export class TableColumn extends FilterItem {
     required?: boolean;
   }) {
     super(options);
-    if (options) {
-      if (options.width && options.width > 0) {
-        this.width = options.width;
-      }
-
-      if (options.flex) {
-        this.flex = options.flex;
-      }
-      this.sortOrder = options.sortOrder || Number.MAX_VALUE;
-      this.headCellClass = !options.headCellClass ? [] : options.headCellClass;
-      this.cellClass = !options.cellClass ? [] : options.cellClass;
-      this.locked = options.locked || false;
-      this.name = options.name || '';
-      this.parentName = options.parentName;
-      this.caption =
-        options.caption === null || options.caption === undefined
-          ? this.name
-          : options.caption;
-      this.unit = options.unit || '';
-      this.data = options.data;
-      this.editable =
-        options.editable === null || options.editable === undefined
-          ? true
-          : options.editable;
-
-      if (options.columns && options.columns.length) {
-        this.columns = [];
-        this.columns = options.columns.map((x) => new TableColumn(x));
-      }
-
-      this.groupBy = options.groupBy ? options.groupBy : false;
-      this.groupingOrder = options.groupingOrder ? options.groupingOrder : 0;
-      this.groupByFn = options.groupByFn;
-
-      this.headCellComponent = options.headCellComponent;
-      this.cellComponent = options.cellComponent;
-      this.aggregate = options.aggregate;
-      this.defaultValue = options.defaultValue;
-      this.maxValue = options.maxValue;
-      this.minValue = options.minValue;
-      this.required = options.required;
-    }
+    this.width = options?.width ?? 150;
+    this.flex = options?.flex ?? 0;
+    this.headCellClass = options?.headCellClass ?? [];
+    this.cellClass = options?.cellClass ?? [];
+    this.locked = options?.locked ?? false;
+    this.parentName = options?.parentName;
+    this.unit = options?.unit ?? '';
+    this.data = options?.data;
+    this.editable = options?.editable ?? true;
+    this.groupBy = options?.groupBy ?? false;
+    this.groupingOrder = options?.groupingOrder ?? 0;
+    this.groupByFn = options?.groupByFn;
+    this.headCellComponent = options?.headCellComponent;
+    this.cellComponent = options?.cellComponent;
+    this.aggregate = options?.aggregate;
+    this.defaultValue = options?.defaultValue;
+    this.maxValue = options?.maxValue;
+    this.minValue = options?.minValue;
+    this.required = options?.required;
+    this.columns = options?.columns?.map((x) => new TableColumn(x)) ?? [];
   }
 }

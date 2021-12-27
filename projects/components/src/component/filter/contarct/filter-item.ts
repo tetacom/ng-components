@@ -77,27 +77,19 @@ export class FilterItem {
     filterComponent?: any;
     columns?: FilterItem[];
   }) {
-    if (options) {
-      this.sortOrder = options.sortOrder || Number.MAX_VALUE;
-      this.name = options.name || '';
-      this.caption = options.caption === null || options.caption === undefined ? this.name : options.caption;
-      this.hint = options.hint === null || options.hint === undefined ? '' : options.hint;
-      this.sortable = options.sortable === null || options.sortable === undefined ? true : options.sortable;
-      this.filterable = options.filterable === null || options.filterable === undefined ? true : options.filterable;
-      this.sortField = options.sortField === null || options.sortField === undefined ? this.name : options.sortField;
-      this.filterField = options.filterField === null || options.filterField === undefined ? this.name : options.filterField;
-      this.filterType = options.filterType === null || options.filterType === undefined ? null : options.filterType;
-      this.stringFilterType = options.stringFilterType === null || options.stringFilterType === undefined
-        ? StringFilterType.Contains
-        : options.stringFilterType;
-      this.listFilterType = options.listFilterType === null || options.listFilterType === undefined
-        ? ListFilterType.None
-        : options.listFilterType;
-      this.strict = options.strict || false;
-      this.filterComponent = options.filterComponent;
-      if (options.columns && options.columns.length) {
-        this.columns = options.columns.map(_ => new FilterItem(_));
-      }
-    }
+    this.sortOrder = options?.sortOrder ?? Number.MAX_VALUE;
+    this.name = options?.name ?? '';
+    this.caption = options?.caption ?? this.name;
+    this.hint = options?.hint ?? '';
+    this.sortable = options?.sortable ?? true;
+    this.filterable = options?.filterable ?? true;
+    this.sortField = options?.sortField ?? this.name;
+    this.filterField = options?.filterField ?? this.name;
+    this.filterType = options?.filterType;
+    this.stringFilterType = options?.stringFilterType ?? StringFilterType.Contains;
+    this.listFilterType = options?.listFilterType ?? ListFilterType.None;
+    this.strict = options?.strict ?? false;
+    this.filterComponent = options?.filterComponent;
+    this.columns = options?.columns?.map(_ => new FilterItem(_)) ?? [];
   }
 }

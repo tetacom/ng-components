@@ -41,6 +41,9 @@
       <teta-icon [name]="'copy'" [palette]="'text'"></teta-icon>
       Копировать строку
     </div>
+    <div class="list-divider"></div>
+  </ng-container>
+  <ng-container *ngIf="contextMenuConfig?.paste">
     <div class="list-item list-item_interactive"
          (click)="pasteData()">
       <teta-icon [name]="'paste'" [palette]="'text'"></teta-icon>

@@ -10,20 +10,21 @@ import {
   Type,
   ViewChild,
 } from '@angular/core';
-import { TableRow } from '../contract/table-row';
-import { TableColumn } from '../contract/table-column';
-import { GroupRowComponentBase } from '../base/group-row-component-base';
-import { TableService } from '../service/table.service';
-import { DetailComponentBase } from '../base/detail-component-base';
-import { takeWhile } from 'rxjs/operators';
-import { TableUtil } from '../util/table-util';
-import { SelectType } from '../enum/select-type.enum';
-import { combineLatest } from 'rxjs';
-import { ArrayUtil } from '../../../common/util/array-util';
-import { IDictionary } from '../../../common/contract/i-dictionary';
-import { IIdName } from '../../../common/contract/i-id-name';
-import { AggregationType } from '../enum/aggregation-type.enum';
-import { Datasource, IDatasource, SizeStrategy } from 'ngx-ui-scroll';
+import {TableRow} from '../contract/table-row';
+import {TableColumn} from '../contract/table-column';
+import {GroupRowComponentBase} from '../base/group-row-component-base';
+import {TableService} from '../service/table.service';
+import {DetailComponentBase} from '../base/detail-component-base';
+import {takeWhile} from 'rxjs/operators';
+import {TableUtil} from '../util/table-util';
+import {SelectType} from '../enum/select-type.enum';
+import {combineLatest} from 'rxjs';
+import {ArrayUtil} from '../../../common/util/array-util';
+import {IDictionary} from '../../../common/contract/i-dictionary';
+import {IIdName} from '../../../common/contract/i-id-name';
+import {AggregationType} from '../enum/aggregation-type.enum';
+import {Datasource, IDatasource, SizeStrategy} from 'ngx-ui-scroll';
+import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'teta-table-body',
@@ -44,7 +45,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   @Input() selectType: SelectType;
   @Input() rowClass: (row: TableRow<T>, index?: number) => string;
 
-  @ViewChild('viewport', { static: false }) viewport: ElementRef;
+  @ViewChild(CdkVirtualScrollViewport, {static: false}) viewport: CdkVirtualScrollViewport;
 
   @HostBinding('class.table-body') private readonly tableBodyClass = true;
 
@@ -114,11 +115,14 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     this._svc.scrollIndex
       .pipe(takeWhile((_) => this._alive))
       .subscribe(async (_) => {
-        if (this.viewport && this.dataSource && _ !== null) {
-          await this.dataSource.adapter.relax();
-          await this.dataSource.adapter.fix({
-            scrollPosition: (_ + 1) * 24,
-          });
+        // if (this.viewport && this.dataSource && _ !== null) {
+        //   await this.dataSource.adapter.relax();
+        //   await this.dataSource.adapter.fix({
+        //     scrollPosition: (_ + 1) * 24,
+        //   });
+        // }
+        if (this.viewport) {
+          this.viewport.scrollToIndex(_, 'smooth');
         }
         this._cdr.markForCheck();
       });
@@ -147,7 +151,8 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     return success(data);
   };
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngOnDestroy(): void {
     this._alive = false;
@@ -212,7 +217,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   }
 
   trackRow(index: number, row: TableRow<T>): any {
-    return row.hash;
+    return index;
   }
 
   trackColumns(index: number, column: TableColumn): any {
