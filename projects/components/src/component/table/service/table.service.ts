@@ -1,31 +1,31 @@
-import { Injectable } from '@angular/core';
-import { TableRow } from '../contract/table-row';
-import { ICellCoordinates } from '../contract/i-cell-coordinates';
-import { TableColumn } from '../contract/table-column';
-import { FilterState } from '../../filter/contarct/filter-state';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { ColumnResizeEvent } from '../contract/column-resize-event';
-import { ColumnReorderEvent } from '../contract/column-reorder-event';
-import { SortEvent } from '../contract/sort-event';
-import { ArrayUtil } from '../../../common/util/array-util';
-import { StateUtil } from '../util/state-util';
-import { SelectType } from '../enum/select-type.enum';
-import { EditType } from '../enum/edit-type.enum';
-import { EditEvent } from '../enum/edit-event.enum';
-import { ListFilterType } from '../../filter/enum/list-filter-type.enum';
-import { ListFilter } from '../../filter/contarct/list-filter';
-import { FilterType } from '../../filter/enum/filter-type.enum';
-import { NumericFilterValue } from '../../filter/contarct/numeric-filter-value';
-import { NumericFilter } from '../../filter/contarct/numeric-filter';
-import { StringFilter } from '../../filter/contarct/string-filter';
-import { DateFilterValue } from '../../filter/contarct/date-filter-value';
-import { DateFilter } from '../../filter/contarct/date-filter';
-import { IDictionary } from '../../../common/contract/i-dictionary';
-import { IIdName } from '../../../common/contract/i-id-name';
-import { DateUtil } from '../../../util/date-util';
+import {Injectable} from '@angular/core';
+import {TableRow} from '../contract/table-row';
+import {ICellCoordinates} from '../contract/i-cell-coordinates';
+import {TableColumn} from '../contract/table-column';
+import {FilterState} from '../../filter/contarct/filter-state';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {ColumnResizeEvent} from '../contract/column-resize-event';
+import {ColumnReorderEvent} from '../contract/column-reorder-event';
+import {SortEvent} from '../contract/sort-event';
+import {ArrayUtil} from '../../../common/util/array-util';
+import {StateUtil} from '../util/state-util';
+import {SelectType} from '../enum/select-type.enum';
+import {EditType} from '../enum/edit-type.enum';
+import {EditEvent} from '../enum/edit-event.enum';
+import {ListFilterType} from '../../filter/enum/list-filter-type.enum';
+import {ListFilter} from '../../filter/contarct/list-filter';
+import {FilterType} from '../../filter/enum/filter-type.enum';
+import {NumericFilterValue} from '../../filter/contarct/numeric-filter-value';
+import {NumericFilter} from '../../filter/contarct/numeric-filter';
+import {StringFilter} from '../../filter/contarct/string-filter';
+import {DateFilterValue} from '../../filter/contarct/date-filter-value';
+import {DateFilter} from '../../filter/contarct/date-filter';
+import {IDictionary} from '../../../common/contract/i-dictionary';
+import {IIdName} from '../../../common/contract/i-id-name';
+import {DateUtil} from '../../../util/date-util';
 import * as hash from 'object-hash';
-import { TableColumnStore } from '../contract/table-column-store';
-import { ICellValue } from '../contract/i-cell-value';
+import {TableColumnStore} from '../contract/table-column-store';
+import {ICellValue} from '../contract/i-cell-value';
 
 @Injectable({
   providedIn: 'root',
@@ -59,15 +59,12 @@ export class TableService<T> {
     return this._dragSource;
   }
 
+  private initialColumnsHash: string;
   private initialColumns: TableColumn[] = [];
   private displayColumns: TableColumn[] = [];
-  private _columns: BehaviorSubject<TableColumn[]> = new BehaviorSubject<
-    TableColumn[]
-  >([]);
+  private _columns: BehaviorSubject<TableColumn[]> = new BehaviorSubject<TableColumn[]>([]);
   private initialData: TableRow<T>[] = [];
-  private _displayData: BehaviorSubject<TableRow<T>[]> = new BehaviorSubject<
-    TableRow<T>[]
-  >([]);
+  private _displayData: BehaviorSubject<TableRow<T>[]> = new BehaviorSubject<TableRow<T>[]>([]);
   private _dict: BehaviorSubject<IDictionary<IIdName<any>[]>> =
     new BehaviorSubject<IDictionary<IIdName<any>[]>>({});
   private _state: BehaviorSubject<FilterState> =
@@ -124,6 +121,7 @@ export class TableService<T> {
 
   setColumns(columns: TableColumn[]): void {
     this.initialColumns = columns ? columns.map((_) => new TableColumn(_)) : [];
+    this.initialColumnsHash = hash.sha1(this.initialColumns);
     const restored = this.restoreColumns();
 
     if (restored) {
@@ -148,7 +146,7 @@ export class TableService<T> {
       localStorage.setItem(
         this._columnsCookieName,
         JSON.stringify({
-          hash: hash.sha1(this.initialColumns),
+          hash: this.initialColumnsHash,
           columns: this.displayColumns.map((_) => new TableColumnStore(_)),
         })
       );
@@ -168,7 +166,7 @@ export class TableService<T> {
     const savedColumns = JSON.parse(
       localStorage.getItem(this._columnsCookieName)
     );
-    if (savedColumns && savedColumns.hash === hash.sha1(this.initialColumns)) {
+    if (savedColumns && savedColumns.hash === this.initialColumnsHash) {
       return this.restoreColumnsState(savedColumns.columns);
     }
     return null;
@@ -562,6 +560,6 @@ export class TableService<T> {
       }
     });
     column.flex = 0;
-    column.width = maxWidth > 50 ? maxWidth + 10 : 50;
+    column.width = maxWidth + 20;
   }
 }

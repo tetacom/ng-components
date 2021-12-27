@@ -42,3 +42,7 @@ export * from './contract/public-api';
  * enum
  */
 export * from './enum/public-api';
+/**
+ * enum
+ */
+export * from './util/public-api';
