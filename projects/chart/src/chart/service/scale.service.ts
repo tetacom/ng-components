@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 
 import { AxesService } from './axes.service';
 import * as d3 from 'd3';
-import { AxisType } from './model/axis-type';
-import { Axis } from './core/axis/axis';
-import { AxisOrientation } from './model/enum/axis-orientation';
+import { AxisType } from '../model/axis-type';
+import { Axis } from '../core/axis/axis';
+import { AxisOrientation } from '../model/enum/axis-orientation';
 
 @Injectable({
   providedIn: 'root',

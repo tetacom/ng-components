@@ -5,34 +5,10 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import {
-  bufferCount,
-  combineLatest,
-  concat,
-  concatAll,
-  concatMap,
-  debounce,
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  last,
-  map,
-  merge,
-  mergeAll,
-  mergeMap,
-  Observable,
-  of,
-  pairwise,
-  reduce,
-  scan,
-  shareReplay,
-  switchMap,
-  takeLast,
-  takeWhile,
-  tap,
-} from 'rxjs';
-import { ChartService } from '../../chart.service';
-import { IPointer } from '../../model/i-pointer';
+import { filter, map, merge, Observable, takeWhile, tap } from 'rxjs';
+import { ChartService } from '../../service/chart.service';
+import { ZoomService } from '../../service/zoom.service';
+import { IChartEvent } from '../../model/i-chart-event';
 
 @Component({
   selector: 'teta-tooltip',
@@ -53,9 +29,26 @@ export class TooltipComponent implements OnInit, OnDestroy {
 
   private alive = true;
 
-  constructor(private svc: ChartService, private cdr: ChangeDetectorRef) {}
+  display: Observable<number>;
+
+  constructor(
+    private svc: ChartService,
+    private cdr: ChangeDetectorRef,
+    private zoomService: ZoomService
+  ) {}
 
   ngOnInit(): void {
+    this.display = merge(this.svc.pointerMove, this.zoomService.zoomed).pipe(
+      map(({ event }) => {
+        return event?.type === 'mousemove' || event?.type === 'end' ? 1 : 0;
+      }),
+      tap(() =>
+        setTimeout(() => {
+          this.cdr.detectChanges();
+        })
+      )
+    );
+
     this.position = this.svc.pointerMove.pipe(
       filter(({ event }) => event),
       map((_) => {
@@ -81,7 +74,7 @@ export class TooltipComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  private getPoisition({ event }: IPointer) {
+  private getPoisition({ event }: IChartEvent) {
     const centerX = this.size.width / 2;
     const centerY = this.size.height / 2;
 

@@ -1,6 +1,7 @@
 <ng-container *ngIf="size | async as s">
   <teta-tooltip [size]="s"></teta-tooltip>
-  <svg [attr.width]="s.width" [attr.height]="s.height" (mousemove)="mouseMove($event)">
+  <svg [tetaZoomable] [attr.width]="s.width" [attr.height]="s.height" (mouseleave)="mouseLeave($event)"
+       (mousemove)="mouseMove($event)">
     <ng-container *ngIf="getVisibleRect(s) as rect">
       <defs>
         <clipPath id="visible-window">
@@ -19,6 +20,7 @@
       <g *ngFor="let item of xAxes | keyvalue"
          teta-x-axis
          [axis]="item.value"
+         [size]="s"
          [attr.transform]="getXAxisTranslate(item.value, s)"></g>
     </g>
     <g clip-path="url(#visible-window)">
@@ -39,5 +41,6 @@
       <g class="series-tooltip-line-marker"></g>
     </g>
   </svg>
+
 
 </ng-container>

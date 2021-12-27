@@ -11,14 +11,16 @@ import {
 } from '@angular/core';
 import { Axis } from '../../core/axis/axis';
 import * as d3 from 'd3';
-import { ScaleService } from '../../scale.service';
-import { ChartService } from '../../chart.service';
-import { takeWhile, tap } from 'rxjs';
+import { ScaleService } from '../../service/scale.service';
+import { ChartService } from '../../service/chart.service';
+import { ZoomService } from '../../service/zoom.service';
+import { merge, takeWhile, tap } from 'rxjs';
 
 @Component({
   selector: '[teta-y-axis]',
   templateUrl: './y-axis.component.html',
   styleUrls: ['./y-axis.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() axis: Axis;
@@ -27,7 +29,22 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private _alive = true;
 
-  constructor(private scaleService: ScaleService) {}
+  constructor(
+    private scaleService: ScaleService,
+    private chartService: ChartService,
+    private cdr: ChangeDetectorRef,
+    private zoomService: ZoomService
+  ) {
+    merge(this.chartService.size, this.zoomService.zoomed)
+      .pipe(
+        takeWhile(() => this._alive),
+        tap((_) => {
+          this.draw();
+          this.cdr.markForCheck();
+        })
+      )
+      .subscribe();
+  }
 
   ngOnInit(): void {}
 
@@ -55,13 +72,13 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
     const axis = this.axis.options.opposite
       ? d3
           .axisRight(scale)
-          .tickValues(this.axis.tickValues)
+          // .tickValues(this.axis.tickValues)
           .tickFormat(
             this.axis.options.tickFormat ?? this.axis.defaultFormatter()
           )
       : d3
           .axisLeft(scale)
-          .tickValues(this.axis.tickValues)
+          // .tickValues(this.axis.tickValues)
           .tickFormat(
             this.axis.options.tickFormat ?? this.axis.defaultFormatter()
           );

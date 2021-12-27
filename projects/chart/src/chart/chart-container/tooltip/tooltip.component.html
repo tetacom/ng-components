@@ -1,7 +1,8 @@
 <ng-container *ngIf="position | async as p">
-  <div class="color-text-90 bg-background-50 shadow-2"
+  <div class="chart-tooltip color-text-90 bg-background-50 shadow-2"
        [style.position]="'fixed'"
-       style="pointer-events: none"
+       [style.opacity]="display | async"
+       style="pointer-events: none;"
        [style.left]="p.left"
        [style.top]="p.top"
        [style.bottom]="p.bottom"

@@ -1,15 +1,15 @@
 import { Meta } from '@storybook/angular/types-6-0';
-import { color, withKnobs } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
 import { ChartComponent } from './chart/chart.component';
 import { ChartModule } from './chart.module';
-import {
-  points1,
-  points2,
-} from '../../../components/src/component/chart/chart-data';
 import { IChartConfig } from './model/i-chart-config';
 import { AxisType } from './model/axis-type';
 import { SeriesType } from './model/series-type';
 import { randomInt } from 'd3-random';
+import { Series } from './model/series';
+import { BasePoint } from './model/base-point';
+import * as faker from 'faker';
+import { ZoomType } from './model/enum/zoom-type';
 
 export default {
   title: 'Component/Chart',
@@ -173,19 +173,34 @@ const cssColorNames = [
 
 const randomColor = randomInt(0, cssColorNames.length - 1);
 
+const seriesType = [SeriesType.line, SeriesType.line];
+
+const series: Series<BasePoint>[] = seriesType.map(
+  (type: SeriesType, index: number) => {
+    return {
+      id: index,
+      type,
+      name: type.toString(),
+      yAxisIndex: 0,
+      xAxisIndex: 0,
+      color: cssColorNames[randomColor()].toLowerCase(),
+      data: Array.from(Array(500).keys()).map((key, index) => {
+        const num = faker.datatype.number({ min: 0, max: 100 });
+        return {
+          x: key,
+          y: num,
+        };
+      }),
+    };
+  }
+);
+
 const config: IChartConfig = {
   name: '123',
   xAxis: [
     {
-      type: AxisType.time,
-      visible: true,
-    },
-    {
       type: AxisType.number,
       visible: true,
-      opposite: true,
-      min: 1,
-      max: 1500,
     },
   ],
   yAxis: [
@@ -197,60 +212,17 @@ const config: IChartConfig = {
     {
       type: AxisType.number,
       visible: true,
-      min: -500,
-      max: 10000,
-      title: 'кг/см2',
-    },
-    {
-      type: AxisType.number,
-      visible: true,
-      min: -200,
-      max: 200,
-    },
-    {
-      type: AxisType.number,
-      visible: true,
-      min: 5000,
-      max: 7000,
+      title: 'атм',
       opposite: true,
-    },
-    {
-      type: AxisType.number,
-      visible: true,
-      min: -0.05,
-      max: 0.05,
-      opposite: true,
-      title: 'тн',
-    },
-    {
-      type: AxisType.log,
-      visible: true,
-      min: 1000000,
-      max: 2000000,
+      min: 0,
+      max: 2000,
     },
   ],
-  series: [
-    {
-      type: SeriesType.line,
-      data: points1,
-      name: 'Series 1',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-      color: cssColorNames[randomColor()].toLowerCase(),
-      strokeWidth: 2,
-    },
-    {
-      type: SeriesType.line,
-      data: points2.map((point) => {
-        return { ...point, color: cssColorNames[randomColor()] };
-      }),
-      name: 'Series 2',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-      strokeWidth: 1.5,
-      color: cssColorNames[randomColor()].toLowerCase(),
-    },
-  ],
+  zoom: {
+    enable: true,
+    type: ZoomType.xy,
+  },
+  series,
 };
 
 export const basicChart = () => ({

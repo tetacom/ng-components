@@ -4,7 +4,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { ChartService } from '../chart.service';
+import { ChartService } from '../service/chart.service';
 import { IChartConfig } from '../model/i-chart-config';
 import { defaultChartConfig } from '../default/default-chart-config';
 import { BasePoint } from '../model/base-point';

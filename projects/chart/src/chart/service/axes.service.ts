@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { IChartConfig } from './model/i-chart-config';
-import { AxisOrientation } from './model/enum/axis-orientation';
-import { Axis } from './core/axis/axis';
+import { IChartConfig } from '../model/i-chart-config';
+import { AxisOrientation } from '../model/enum/axis-orientation';
+import { Axis } from '../core/axis/axis';
 
 @Injectable({
   providedIn: 'root',

@@ -12,8 +12,8 @@ import { YAxisComponent } from './chart-container/y-axis/y-axis.component';
 import { PlotlineComponent } from './chart-container/plotline/plotline.component';
 import { PlotbandComponent } from './chart-container/plotband/plotband.component';
 import { BarSeriesComponent } from './chart-container/series/bar/bar-series.component';
-import { TooltipDirective } from './directives/tooltip.directive';
 import { TooltipComponent } from './chart-container/tooltip/tooltip.component';
+import { ZoomableDirective } from './directives/zoomable.directive';
 
 @NgModule({
   declarations: [
@@ -29,8 +29,8 @@ import { TooltipComponent } from './chart-container/tooltip/tooltip.component';
     PlotlineComponent,
     PlotbandComponent,
     BarSeriesComponent,
-    TooltipDirective,
     TooltipComponent,
+    ZoomableDirective,
   ],
   exports: [ChartComponent],
   imports: [CommonModule],

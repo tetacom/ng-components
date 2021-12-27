@@ -11,12 +11,11 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { IChartConfig } from '../model/i-chart-config';
-import { ChartService } from '../chart.service';
+import { ChartService } from '../service/chart.service';
 import { Observable, tap } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
-import { AxesService } from '../axes.service';
+import { AxesService } from '../service/axes.service';
 import { Axis } from '../core/axis/axis';
-import { IPointer } from '../model/i-pointer';
 
 @Component({
   selector: 'teta-chart-container',
@@ -141,7 +140,11 @@ export class ChartContainerComponent
     })`;
   }
 
-  mouseMove(event: IPointer) {
+  mouseMove(event) {
+    this._svc.setPointerMove(event);
+  }
+
+  mouseLeave(event) {
     this._svc.setPointerMove(event);
   }
 

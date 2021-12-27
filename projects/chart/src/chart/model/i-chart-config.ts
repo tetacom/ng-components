@@ -1,10 +1,15 @@
 import { Series } from './series';
 import { BasePoint } from './base-point';
 import { AxisOptions } from './axis-options';
+import { ZoomType } from './enum/zoom-type';
 
 export interface IChartConfig {
   name?: string;
   series?: Series<BasePoint>[];
+  zoom?: {
+    enable: boolean;
+    type: ZoomType;
+  };
   xAxis: AxisOptions[];
   yAxis: AxisOptions[];
   gridLines?: boolean;

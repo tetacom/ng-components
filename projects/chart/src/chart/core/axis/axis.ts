@@ -7,6 +7,8 @@ import { AxisOptions } from '../../model/axis-options';
 import { AxisSizeBuilder, ExtremesBuilder } from './builders/public-api';
 import { AxisType } from '../../model/axis-type';
 
+import { generateTicks } from '../utils/public-api';
+
 export class Axis {
   private chartConfig: IChartConfig;
   private _orientation: AxisOrientation;
@@ -94,7 +96,7 @@ export class Axis {
   }
 
   private setTicksValues(): void {
-    const ticks = this.generateTicks(this._extremes);
+    const ticks = generateTicks(this._extremes);
     this._ticksValues = ticks;
   }
 
@@ -126,18 +128,5 @@ export class Axis {
 
   public defaultFormatter() {
     return this.defaultFormatters.get(this.options.type);
-  }
-
-  private generateTicks(extremes: number[]) {
-    const [min, max] = extremes;
-
-    const tickCount = 10;
-    const tickStep = (max - min) / tickCount;
-
-    const ticks = d3
-      .range(min, max + tickStep, tickStep)
-      .filter((step) => step <= max);
-
-    return ticks;
   }
 }

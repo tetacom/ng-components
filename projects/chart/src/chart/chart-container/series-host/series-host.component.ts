@@ -14,7 +14,7 @@ import { BarSeriesComponent } from '../series/bar/bar-series.component';
 
 import { Series } from '../../model/series';
 import { BasePoint } from '../../model/base-point';
-import { ChartService } from '../../chart.service';
+import { ChartService } from '../../service/chart.service';
 import { tap } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
 import { SeriesType } from '../../model/series-type';

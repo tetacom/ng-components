@@ -2,8 +2,9 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { SeriesBaseComponent } from '../../../base/series-base.component';
 import { BasePoint } from '../../../model/base-point';
-import { ChartService } from '../../../chart.service';
-import { ScaleService } from '../../../scale.service';
+import { ChartService } from '../../../service/chart.service';
+import { ScaleService } from '../../../service/scale.service';
+import { ZoomService } from '../../../service/zoom.service';
 
 @Component({
   selector: 'svg:svg[teta-bar-series]',
@@ -20,9 +21,10 @@ export class BarSeriesComponent<T extends BasePoint>
   constructor(
     protected override svc: ChartService,
     protected override cdr: ChangeDetectorRef,
-    protected override scaleService: ScaleService
+    protected override scaleService: ScaleService,
+    protected override zoomService: ZoomService
   ) {
-    super(svc, cdr, scaleService);
+    super(svc, cdr, scaleService, zoomService);
   }
 
   override ngOnInit(): void {

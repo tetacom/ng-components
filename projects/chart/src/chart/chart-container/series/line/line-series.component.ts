@@ -2,16 +2,16 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  HostListener,
   OnInit,
 } from '@angular/core';
 import * as d3 from 'd3';
 import { SeriesBaseComponent } from '../../../base/series-base.component';
-import { ChartService } from '../../../chart.service';
+import { ChartService } from '../../../service/chart.service';
 import { BasePoint } from '../../../model/base-point';
-import { ScaleService } from '../../../scale.service';
-import { filter, interval, map, Observable, tap } from 'rxjs';
-import { IPointer } from '../../../model/i-pointer';
+import { ScaleService } from '../../../service/scale.service';
+import { filter, map, Observable, tap } from 'rxjs';
+
+import { ZoomService } from '../../../service/zoom.service';
 
 @Component({
   selector: 'svg:svg[teta-line-series]',
@@ -24,16 +24,24 @@ export class LineSeriesComponent<T extends BasePoint>
   implements OnInit
 {
   transform: Observable<string>;
+  display: Observable<number>;
 
   constructor(
     protected override svc: ChartService,
     protected override cdr: ChangeDetectorRef,
-    protected override scaleService: ScaleService
+    protected override scaleService: ScaleService,
+    protected override zoomService: ZoomService
   ) {
-    super(svc, cdr, scaleService);
+    super(svc, cdr, scaleService, zoomService);
   }
 
   override ngOnInit(): void {
+    this.display = this.zoomService.zoomed.pipe(
+      map(({ event }) => {
+        return event?.type === 'end' ? 1 : 0;
+      })
+    );
+
     this.transform = this.svc.pointerMove.pipe(
       filter(({ event }) => event),
       map(({ event }) => {
