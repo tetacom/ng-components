@@ -8,17 +8,17 @@
   position: relative;
 
   &-bar {
-    background: getColorVar('primary', '20');
+    background: getColorVar('primary', '50');
   }
 
   &-slider {
     position: absolute;
-    height: 8px;
-    width: 8px;
+    height: 12px;
+    width: 12px;
     border: solid 0;
-    margin-left: -2px;
-    margin-top: -2px;
-    border-radius: 4px;
+    margin-left: -6px;
+    margin-top: -4px;
+    border-radius: 6px;
     background: getColorVar('primary', '50');
   }
 
