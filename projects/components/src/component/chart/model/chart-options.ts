@@ -68,7 +68,11 @@ export class ChartOptions {
     this.gridLines = options?.gridLines == null ? true : options.gridLines;
     this.width = options?.width;
     this.height = options?.height;
-    this.legend = { ...options?.legend };
+    this.legend = {
+      ...options?.legend,
+      visible: true,
+      type: LegendType.swatches,
+    };
     this.bounds = { ...this.bounds, ...options?.bounds };
     this.annotations = options?.annotations;
   }
