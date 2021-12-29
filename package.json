@@ -9,7 +9,6 @@
     "test": "ng test",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d ./compodoc",
     "sb": "yarn docs:json && start-storybook -p 6006",
-    "build-styles": "webpack --config .storybook/build-styles.config.js",
     "build-storybook": "yarn docs:json && build-storybook -o dist/storybook"
   },
   "private": true,
