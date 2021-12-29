@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IChartConfig } from '../model/i-chart-config';
 import { AxesService } from './axes.service';
-import { map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
 import { ScaleService } from './scale.service';
 import { IChartEvent } from '../model/i-chart-event';
 

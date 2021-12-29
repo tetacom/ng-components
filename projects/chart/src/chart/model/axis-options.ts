@@ -1,4 +1,5 @@
-import { AxisType } from './axis-type';
+import { AxisType } from './enum/axis-type';
+import { Plotband } from './plotband';
 
 export interface AxisOptions {
   title?: string;
@@ -11,4 +12,5 @@ export interface AxisOptions {
   inverted?: boolean;
   negative?: boolean;
   opposite?: boolean;
+  plotbands?: Plotband[];
 }

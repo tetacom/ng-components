@@ -1,6 +1,6 @@
 <ng-container *ngIf="size | async as s">
   <teta-tooltip [size]="s"></teta-tooltip>
-  <svg [tetaZoomable] [attr.width]="s.width" [attr.height]="s.height" (mouseleave)="mouseLeave($event)"
+  <svg [tetaZoomable] [config]="config" [attr.width]="s.width" [attr.height]="s.height" (mouseleave)="mouseLeave($event)"
        (mousemove)="mouseMove($event)">
     <ng-container *ngIf="getVisibleRect(s) as rect">
       <defs>
@@ -36,7 +36,10 @@
         <g teta-plot-line></g>
       </g>
       <g class="x-axis-plotband-container">
-        <g teta-plot-band></g>
+        <ng-container *ngFor="let axis of config.xAxis; let i = index">
+          <g teta-plot-band *ngFor="let plotband of axis.plotbands" [plotband]="plotband" [size]="s"
+             [axis]="xAxes.get(i)"></g>
+        </ng-container>
       </g>
       <g class="series-tooltip-line-marker"></g>
     </g>

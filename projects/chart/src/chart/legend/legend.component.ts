@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Series } from '../model/series';
 import { BasePoint } from '../model/base-point';
-import { SeriesType } from '../model/series-type';
+import { SeriesType } from '../model/enum/series-type';
 
 @Component({
   selector: 'teta-legend',

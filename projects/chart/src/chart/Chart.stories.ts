@@ -2,21 +2,23 @@ import { Meta } from '@storybook/angular/types-6-0';
 import { withKnobs } from '@storybook/addon-knobs';
 import { ChartComponent } from './chart/chart.component';
 import { ChartModule } from './chart.module';
+import { IconModule } from '../../../components/src/component/icon/icon.module';
 import { IChartConfig } from './model/i-chart-config';
-import { AxisType } from './model/axis-type';
-import { SeriesType } from './model/series-type';
+import { AxisType } from './model/enum/axis-type';
+import { SeriesType } from './model/enum/series-type';
 import { randomInt } from 'd3-random';
 import { Series } from './model/series';
 import { BasePoint } from './model/base-point';
 import * as faker from 'faker';
 import { ZoomType } from './model/enum/zoom-type';
+import { Plotband } from './model/plotband';
 
 export default {
   title: 'Component/Chart',
   decorators: [withKnobs],
   component: ChartComponent,
   moduleMetadata: {
-    imports: [ChartModule],
+    imports: [ChartModule, IconModule],
   },
 } as Meta;
 
@@ -175,12 +177,14 @@ const randomColor = randomInt(0, cssColorNames.length - 1);
 
 const seriesType = [SeriesType.line, SeriesType.line];
 
+faker.locale = 'ru';
+
 const series: Series<BasePoint>[] = seriesType.map(
   (type: SeriesType, index: number) => {
     return {
       id: index,
       type,
-      name: type.toString(),
+      name: faker.address.cityName(),
       yAxisIndex: 0,
       xAxisIndex: 0,
       color: cssColorNames[randomColor()].toLowerCase(),
@@ -195,12 +199,50 @@ const series: Series<BasePoint>[] = seriesType.map(
   }
 );
 
+const plotbands1 = [
+  new Plotband({
+    id: 0,
+    from: 10,
+    to: 12,
+    style: {
+      plotband: {
+        opacity: 0.2,
+        fill: 'red',
+      },
+    },
+  }),
+];
+
+const plotbands2 = [
+  new Plotband({
+    id: 0,
+    from: 1100,
+    to: 1200,
+    draggable: true,
+    style: {
+      plotband: {
+        opacity: 0.3,
+        fill: 'green',
+      },
+    },
+  }),
+];
+
 const config: IChartConfig = {
   name: '123',
   xAxis: [
     {
       type: AxisType.number,
       visible: true,
+      plotbands: plotbands1,
+    },
+    {
+      type: AxisType.number,
+      visible: true,
+      opposite: true,
+      min: 1000,
+      max: 2000,
+      plotbands: plotbands2,
     },
   ],
   yAxis: [
@@ -220,19 +262,19 @@ const config: IChartConfig = {
   ],
   zoom: {
     enable: true,
-    type: ZoomType.xy,
+    type: ZoomType.x,
   },
   series,
 };
 
 export const basicChart = () => ({
   moduleMetadata: {
-    imports: [ChartModule],
+    imports: [ChartModule, IconModule],
   },
   props: {
     config,
   },
-  template: `<div class="font-body-3 padding-3 bg-background-0" style="width: auto; height: 600px;">
+  template: `<div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: auto; height: 600px;">
       <teta-chart [config]="config" class="bg-background-50 border border-text-50"></teta-chart>
     </div>`,
 });

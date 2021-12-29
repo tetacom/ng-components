@@ -1,0 +1,10 @@
+:host rect:hover {
+  cursor: grab;
+}
+:host rect:active {
+  cursor: grabbing;
+}
+
+:host .grabber {
+  cursor: col-resize;
+}

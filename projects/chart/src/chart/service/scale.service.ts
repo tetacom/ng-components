@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { AxesService } from './axes.service';
 import * as d3 from 'd3';
-import { AxisType } from '../model/axis-type';
+import { AxisType } from '../model/enum/axis-type';
 import { Axis } from '../core/axis/axis';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 
@@ -55,6 +55,7 @@ export class ScaleService {
         leftBound,
         size.width - rightBound,
       ]);
+
       this.xScales.set(axis.index, scale);
     });
   }

@@ -4,7 +4,7 @@ import { BasePoint } from '../../../model/base-point';
 import { AxisOrientation } from '../../../model/enum/axis-orientation';
 
 import * as d3 from 'd3';
-import { AxisType } from '../../../model/axis-type';
+import { AxisType } from '../../../model/enum/axis-type';
 
 export class ExtremesBuilder implements IBuilder<Axis, [number, number]> {
   private extentAccessorMap = new Map<

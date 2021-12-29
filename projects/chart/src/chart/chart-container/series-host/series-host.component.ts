@@ -17,7 +17,7 @@ import { BasePoint } from '../../model/base-point';
 import { ChartService } from '../../service/chart.service';
 import { tap } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
-import { SeriesType } from '../../model/series-type';
+import { SeriesType } from '../../model/enum/series-type';
 
 @Component({
   selector: '[teta-series-host]',

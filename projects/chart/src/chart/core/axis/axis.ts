@@ -5,7 +5,7 @@ import { BasePoint } from '../../model/base-point';
 import * as d3 from 'd3';
 import { AxisOptions } from '../../model/axis-options';
 import { AxisSizeBuilder, ExtremesBuilder } from './builders/public-api';
-import { AxisType } from '../../model/axis-type';
+import { AxisType } from '../../model/enum/axis-type';
 
 import { generateTicks } from '../utils/public-api';
 

@@ -6,8 +6,9 @@ export function generateTicks(extremes: number[]) {
   const tickCount = 10;
   const tickStep = (max - min) / tickCount;
 
-  const ticks = d3.range(min, max + tickStep, tickStep);
-  //.filter((step) => step <= max);
+  const ticks = d3
+    .range(min, max + tickStep, tickStep)
+    .filter((step) => step <= max);
 
   return ticks;
 }

@@ -16,7 +16,7 @@ import { ScaleService } from '../../service/scale.service';
 import { ChartService } from '../../service/chart.service';
 import * as d3 from 'd3';
 import { ZoomService } from '../../service/zoom.service';
-import { merge, takeWhile, tap } from 'rxjs';
+import { concat, map, merge, takeWhile, tap } from 'rxjs';
 
 @Component({
   selector: '[teta-x-axis]',
@@ -30,6 +30,7 @@ export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('svg') node: ElementRef;
 
   private _alive = true;
+  private scale: any;
 
   constructor(
     private scaleService: ScaleService,
@@ -37,7 +38,7 @@ export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private zoomService: ZoomService
   ) {
-    merge(this.chartService.size, this.zoomService.zoomed)
+    this.zoomService.zoomed
       .pipe(
         takeWhile(() => this._alive),
         tap((_) => {

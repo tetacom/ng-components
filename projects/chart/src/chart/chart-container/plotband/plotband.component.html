@@ -1,1 +1,26 @@
-<svg:rect></svg:rect>
+<svg:rect class="plotband"
+          [attr.fill]="getFill(plotband)"
+          [attr.opacity]="plotband.style?.plotband?.opacity"
+          [attr.width]="width"
+          [attr.height]="height"
+          [attr.x]="from">
+</svg:rect>
+
+
+<svg:line class="grabber"
+          [attr.stroke]="plotband.style?.grabbers?.stroke || 'red'"
+          [attr.stroke-width]="plotband.style?.grabbers?.strokeWidth || 4"
+          [attr.x1]="from"
+          [attr.x2]="from"
+          [attr.data-grabber]="'from'"
+          [attr.y1]="0"
+          [attr.y2]="height"></svg:line>
+
+<svg:line class="grabber"
+          [attr.stroke]="plotband.style?.grabbers?.stroke || 'red'"
+          [attr.stroke-width]="plotband.style?.grabbers?.strokeWidth || 4"
+          [attr.x1]="to"
+          [attr.x2]="to"
+          [attr.data-grabber]="'to'"
+          [attr.y1]="0"
+          [attr.y2]="height"></svg:line>

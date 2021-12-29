@@ -1,5 +1,5 @@
 import { BasePoint } from './base-point';
-import { SeriesType } from './series-type';
+import { SeriesType } from './enum/series-type';
 import { SeriesBaseComponent } from '../base/series-base.component';
 
 export interface Series<T extends BasePoint> {
