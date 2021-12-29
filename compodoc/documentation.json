@@ -7024,272 +7024,7 @@
         },
         {
             "name": "Axis",
-            "id": "class-Axis-e29b3d537243d4607eed4ec785a185ff",
-            "file": "projects/components/src/component/chart/core/axis-creator.ts",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "type": "class",
-            "sourceCode": "import * as d3 from 'd3';\r\nimport { AxisType } from '../model/enum/axis-type';\r\nimport { Series } from '../model/series';\r\nimport { BasePoint } from '../model/point/base-point';\r\nimport { ChartOptions } from '../model/chart-options';\r\n\r\nexport class Axis {\r\n  public static offsetFactor = 22;\r\n  public readonly width: number;\r\n\r\n  private _type: AxisType;\r\n  private _chartOptions: ChartOptions;\r\n  private _extents: [number, number] = [0, 0];\r\n  private _index: number;\r\n  private _height: number;\r\n  private _offset: number;\r\n  private _ticks: any;\r\n\r\n  constructor(options: {\r\n    type: AxisType;\r\n    index: number;\r\n    chartOptions: ChartOptions;\r\n    height?: number;\r\n  }) {\r\n    this._type = options?.type;\r\n    this._index = options?.index || 0;\r\n    this._chartOptions = options?.chartOptions;\r\n    this._height = options?.height;\r\n\r\n    if (this._chartOptions == null) {\r\n      throw new Error(`No chartOptions for axis ${AxisType[this._type]}`);\r\n    }\r\n\r\n    this.createExtents();\r\n    this.width = this.calculateAxisWidth();\r\n  }\r\n\r\n  get index() {\r\n    return this._index;\r\n  }\r\n\r\n  get options() {\r\n    return this._type === AxisType.abscissa\r\n      ? this._chartOptions.xAxis[this.index]\r\n      : this._chartOptions.yAxis[this.index];\r\n  }\r\n\r\n  get extent(): [number, number] {\r\n    return this._extents;\r\n  }\r\n\r\n  get type(): AxisType {\r\n    return this._type;\r\n  }\r\n\r\n  get offset(): number {\r\n    return this._offset;\r\n  }\r\n\r\n  get ticks() {\r\n    return this._ticks;\r\n  }\r\n\r\n  setOffset(offset: number) {\r\n    this._offset = offset;\r\n  }\r\n\r\n  private calculateAxisWidth(): number {\r\n    if (this.type === AxisType.abscissa) {\r\n      return 0;\r\n    }\r\n\r\n    const y = d3\r\n      .scaleLinear()\r\n      .domain([this.extent[0], this.extent[1]])\r\n      .range([0, this._height])\r\n      .nice();\r\n\r\n    const body = d3\r\n      .select('body')\r\n      .append('svg')\r\n      .attr('class', 'calculate-offset')\r\n      .style('position', 'absolute')\r\n      .style('left', '-9999px');\r\n    const axis = d3.axisRight(y).tickValues(this.ticks);\r\n    const element = body.append('g').attr('class', 'font-caption').call(axis);\r\n\r\n    const bBox = element.node().getBBox();\r\n\r\n    d3.selectAll('.calculate-offset').remove();\r\n\r\n    return bBox.width;\r\n  }\r\n\r\n  private createExtents() {\r\n    const hasMin = this.options?.min != null;\r\n    const hasMax = this.options?.max != null;\r\n\r\n    if (!hasMin || !hasMax) {\r\n      const filtered = this._chartOptions?.series?.filter(\r\n        (serie: Series<BasePoint>) =>\r\n          this._index ===\r\n          serie[this._type === AxisType.abscissa ? 'xAxisIndex' : 'yAxisIndex']\r\n      );\r\n\r\n      const raw = filtered.map((series: Series<BasePoint>) =>\r\n        d3.extent(series?.data, (point: BasePoint) =>\r\n          this._type === AxisType.abscissa ? point.x : point.y\r\n        )\r\n      );\r\n\r\n      const merged = [].concat(...(raw ?? []));\r\n\r\n      const abs = (num) => Math.abs(num);\r\n\r\n      this._extents = this.options.negative\r\n        ? [-Math.abs(d3.max(merged.map(abs))), d3.max(merged.map(abs))]\r\n        : [d3.min(merged), d3.max(merged)];\r\n    }\r\n\r\n    if (hasMin) {\r\n      this._extents[0] = this.options?.min;\r\n    }\r\n\r\n    if (hasMax) {\r\n      this._extents[1] = this.options?.max;\r\n    }\r\n  }\r\n}\r\n",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "args": [
-                    {
-                        "name": "options",
-                        "type": "literal type",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    }
-                ],
-                "line": 17,
-                "jsdoctags": [
-                    {
-                        "name": "options",
-                        "type": "literal type",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    }
-                ]
-            },
-            "properties": [
-                {
-                    "name": "_chartOptions",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "ChartOptions",
-                    "optional": false,
-                    "description": "",
-                    "line": 12,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_extents",
-                    "defaultValue": "[0, 0]",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "[number, number]",
-                    "optional": false,
-                    "description": "",
-                    "line": 13,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_height",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 15,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_index",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 14,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_offset",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 16,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_ticks",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "any",
-                    "optional": false,
-                    "description": "",
-                    "line": 17,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_type",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "AxisType",
-                    "optional": false,
-                    "description": "",
-                    "line": 11,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "offsetFactor",
-                    "defaultValue": "22",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 8,
-                    "modifierKind": [
-                        124
-                    ]
-                },
-                {
-                    "name": "width",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 9,
-                    "modifierKind": [
-                        123,
-                        143
-                    ]
-                }
-            ],
-            "methods": [
-                {
-                    "name": "calculateAxisWidth",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "number",
-                    "typeParameters": [],
-                    "line": 68,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "createExtents",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 95,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "setOffset",
-                    "args": [
-                        {
-                            "name": "offset",
-                            "type": "number",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 64,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "name": "offset",
-                            "type": "number",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                }
-            ],
-            "indexSignatures": [],
-            "accessors": {
-                "index": {
-                    "name": "index",
-                    "getSignature": {
-                        "name": "index",
-                        "type": "",
-                        "returnType": "",
-                        "line": 38
-                    }
-                },
-                "options": {
-                    "name": "options",
-                    "getSignature": {
-                        "name": "options",
-                        "type": "",
-                        "returnType": "",
-                        "line": 42
-                    }
-                },
-                "extent": {
-                    "name": "extent",
-                    "getSignature": {
-                        "name": "extent",
-                        "type": "",
-                        "returnType": "",
-                        "line": 48
-                    }
-                },
-                "type": {
-                    "name": "type",
-                    "getSignature": {
-                        "name": "type",
-                        "type": "",
-                        "returnType": "AxisType",
-                        "line": 52
-                    }
-                },
-                "offset": {
-                    "name": "offset",
-                    "getSignature": {
-                        "name": "offset",
-                        "type": "number",
-                        "returnType": "number",
-                        "line": 56
-                    }
-                },
-                "ticks": {
-                    "name": "ticks",
-                    "getSignature": {
-                        "name": "ticks",
-                        "type": "",
-                        "returnType": "",
-                        "line": 60
-                    }
-                }
-            },
-            "inputsClass": [],
-            "outputsClass": [],
-            "hostBindings": [],
-            "hostListeners": []
-        },
-        {
-            "name": "Axis",
-            "id": "class-Axis-f2aac1bfabd5adbcf47278dcf5a45903-1",
+            "id": "class-Axis-f2aac1bfabd5adbcf47278dcf5a45903",
             "file": "projects/chart/src/chart/core/axis/axis.ts",
             "deprecated": false,
             "deprecationMessage": "",
@@ -7922,6 +7657,271 @@
                         "type": "",
                         "returnType": "AxisOptions",
                         "line": 121
+                    }
+                }
+            },
+            "inputsClass": [],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": []
+        },
+        {
+            "name": "Axis",
+            "id": "class-Axis-e29b3d537243d4607eed4ec785a185ff-1",
+            "file": "projects/components/src/component/chart/core/axis-creator.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "import * as d3 from 'd3';\r\nimport { AxisType } from '../model/enum/axis-type';\r\nimport { Series } from '../model/series';\r\nimport { BasePoint } from '../model/point/base-point';\r\nimport { ChartOptions } from '../model/chart-options';\r\n\r\nexport class Axis {\r\n  public static offsetFactor = 22;\r\n  public readonly width: number;\r\n\r\n  private _type: AxisType;\r\n  private _chartOptions: ChartOptions;\r\n  private _extents: [number, number] = [0, 0];\r\n  private _index: number;\r\n  private _height: number;\r\n  private _offset: number;\r\n  private _ticks: any;\r\n\r\n  constructor(options: {\r\n    type: AxisType;\r\n    index: number;\r\n    chartOptions: ChartOptions;\r\n    height?: number;\r\n  }) {\r\n    this._type = options?.type;\r\n    this._index = options?.index || 0;\r\n    this._chartOptions = options?.chartOptions;\r\n    this._height = options?.height;\r\n\r\n    if (this._chartOptions == null) {\r\n      throw new Error(`No chartOptions for axis ${AxisType[this._type]}`);\r\n    }\r\n\r\n    this.createExtents();\r\n    this.width = this.calculateAxisWidth();\r\n  }\r\n\r\n  get index() {\r\n    return this._index;\r\n  }\r\n\r\n  get options() {\r\n    return this._type === AxisType.abscissa\r\n      ? this._chartOptions.xAxis[this.index]\r\n      : this._chartOptions.yAxis[this.index];\r\n  }\r\n\r\n  get extent(): [number, number] {\r\n    return this._extents;\r\n  }\r\n\r\n  get type(): AxisType {\r\n    return this._type;\r\n  }\r\n\r\n  get offset(): number {\r\n    return this._offset;\r\n  }\r\n\r\n  get ticks() {\r\n    return this._ticks;\r\n  }\r\n\r\n  setOffset(offset: number) {\r\n    this._offset = offset;\r\n  }\r\n\r\n  private calculateAxisWidth(): number {\r\n    if (this.type === AxisType.abscissa) {\r\n      return 0;\r\n    }\r\n\r\n    const y = d3\r\n      .scaleLinear()\r\n      .domain([this.extent[0], this.extent[1]])\r\n      .range([0, this._height])\r\n      .nice();\r\n\r\n    const body = d3\r\n      .select('body')\r\n      .append('svg')\r\n      .attr('class', 'calculate-offset')\r\n      .style('position', 'absolute')\r\n      .style('left', '-9999px');\r\n    const axis = d3.axisRight(y).tickValues(this.ticks);\r\n    const element = body.append('g').attr('class', 'font-caption').call(axis);\r\n\r\n    const bBox = element.node().getBBox();\r\n\r\n    d3.selectAll('.calculate-offset').remove();\r\n\r\n    return bBox.width;\r\n  }\r\n\r\n  private createExtents() {\r\n    const hasMin = this.options?.min != null;\r\n    const hasMax = this.options?.max != null;\r\n\r\n    if (!hasMin || !hasMax) {\r\n      const filtered = this._chartOptions?.series?.filter(\r\n        (serie: Series<BasePoint>) =>\r\n          this._index ===\r\n          serie[this._type === AxisType.abscissa ? 'xAxisIndex' : 'yAxisIndex']\r\n      );\r\n\r\n      const raw = filtered.map((series: Series<BasePoint>) =>\r\n        d3.extent(series?.data, (point: BasePoint) =>\r\n          this._type === AxisType.abscissa ? point.x : point.y\r\n        )\r\n      );\r\n\r\n      const merged = [].concat(...(raw ?? []));\r\n\r\n      const abs = (num) => Math.abs(num);\r\n\r\n      this._extents = this.options.negative\r\n        ? [-Math.abs(d3.max(merged.map(abs))), d3.max(merged.map(abs))]\r\n        : [d3.min(merged), d3.max(merged)];\r\n    }\r\n\r\n    if (hasMin) {\r\n      this._extents[0] = this.options?.min;\r\n    }\r\n\r\n    if (hasMax) {\r\n      this._extents[1] = this.options?.max;\r\n    }\r\n  }\r\n}\r\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "options",
+                        "type": "literal type",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 17,
+                "jsdoctags": [
+                    {
+                        "name": "options",
+                        "type": "literal type",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "properties": [
+                {
+                    "name": "_chartOptions",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ChartOptions",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_extents",
+                    "defaultValue": "[0, 0]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[number, number]",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_height",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 15,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_index",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_offset",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_ticks",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_type",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "AxisType",
+                    "optional": false,
+                    "description": "",
+                    "line": 11,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "offsetFactor",
+                    "defaultValue": "22",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 8,
+                    "modifierKind": [
+                        124
+                    ]
+                },
+                {
+                    "name": "width",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 9,
+                    "modifierKind": [
+                        123,
+                        143
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "calculateAxisWidth",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "number",
+                    "typeParameters": [],
+                    "line": 68,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "createExtents",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 95,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "setOffset",
+                    "args": [
+                        {
+                            "name": "offset",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 64,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "offset",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "accessors": {
+                "index": {
+                    "name": "index",
+                    "getSignature": {
+                        "name": "index",
+                        "type": "",
+                        "returnType": "",
+                        "line": 38
+                    }
+                },
+                "options": {
+                    "name": "options",
+                    "getSignature": {
+                        "name": "options",
+                        "type": "",
+                        "returnType": "",
+                        "line": 42
+                    }
+                },
+                "extent": {
+                    "name": "extent",
+                    "getSignature": {
+                        "name": "extent",
+                        "type": "",
+                        "returnType": "",
+                        "line": 48
+                    }
+                },
+                "type": {
+                    "name": "type",
+                    "getSignature": {
+                        "name": "type",
+                        "type": "",
+                        "returnType": "AxisType",
+                        "line": 52
+                    }
+                },
+                "offset": {
+                    "name": "offset",
+                    "getSignature": {
+                        "name": "offset",
+                        "type": "number",
+                        "returnType": "number",
+                        "line": 56
+                    }
+                },
+                "ticks": {
+                    "name": "ticks",
+                    "getSignature": {
+                        "name": "ticks",
+                        "type": "",
+                        "returnType": "",
+                        "line": 60
                     }
                 }
             },
@@ -21693,7 +21693,60 @@
         },
         {
             "name": "TooltipDirective",
-            "id": "directive-TooltipDirective-203fa8a4dcd091b988be82c216466745",
+            "id": "directive-TooltipDirective-d28c23fa885228ba582832d69ee2d9b8",
+            "file": "projects/chart/src/chart/directives/tooltip.directive.ts",
+            "type": "directive",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Directive, ElementRef, Input } from '@angular/core';\r\n\r\nimport * as d3 from 'd3';\r\nimport { Series } from '../model/series';\r\nimport { BasePoint } from '../model/base-point';\r\n\r\n@Directive({\r\n  selector: '[tetaChartTooltip]',\r\n})\r\nexport class TooltipDirective {\r\n  @Input() series: Series<BasePoint>[];\r\n  @Input() size: DOMRect;\r\n\r\n  constructor() {}\r\n\r\n  ngOnInit() {}\r\n}\r\n",
+            "selector": "[tetaChartTooltip]",
+            "providers": [],
+            "inputsClass": [
+                {
+                    "name": "series",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 11,
+                    "type": "Series<BasePoint>[]"
+                },
+                {
+                    "name": "size",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 12,
+                    "type": "DOMRect"
+                }
+            ],
+            "outputsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 16,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 12
+            }
+        },
+        {
+            "name": "TooltipDirective",
+            "id": "directive-TooltipDirective-203fa8a4dcd091b988be82c216466745-1",
             "file": "projects/components/src/directive/tooltip/tooltip.directive.ts",
             "type": "directive",
             "description": "",
@@ -21970,59 +22023,6 @@
                         "line": 41
                     }
                 }
-            }
-        },
-        {
-            "name": "TooltipDirective",
-            "id": "directive-TooltipDirective-d28c23fa885228ba582832d69ee2d9b8-1",
-            "file": "projects/chart/src/chart/directives/tooltip.directive.ts",
-            "type": "directive",
-            "description": "",
-            "rawdescription": "\n",
-            "sourceCode": "import { Directive, ElementRef, Input } from '@angular/core';\r\n\r\nimport * as d3 from 'd3';\r\nimport { Series } from '../model/series';\r\nimport { BasePoint } from '../model/base-point';\r\n\r\n@Directive({\r\n  selector: '[tetaChartTooltip]',\r\n})\r\nexport class TooltipDirective {\r\n  @Input() series: Series<BasePoint>[];\r\n  @Input() size: DOMRect;\r\n\r\n  constructor() {}\r\n\r\n  ngOnInit() {}\r\n}\r\n",
-            "selector": "[tetaChartTooltip]",
-            "providers": [],
-            "inputsClass": [
-                {
-                    "name": "series",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 11,
-                    "type": "Series<BasePoint>[]"
-                },
-                {
-                    "name": "size",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 12,
-                    "type": "DOMRect"
-                }
-            ],
-            "outputsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "propertiesClass": [],
-            "methodsClass": [
-                {
-                    "name": "ngOnInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 16,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                }
-            ],
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "args": [],
-                "line": 12
             },
             "isDuplicate": true,
             "duplicateId": 1,
@@ -41098,7 +41098,7 @@
         },
         {
             "name": "ResizePanelComponent",
-            "id": "component-ResizePanelComponent-ca6f8b3d626095df6e469aa9800b852e",
+            "id": "component-ResizePanelComponent-b94fc1cc828b633a2bd56b1aa80c501b",
             "file": "projects/components/src/component/resize-panel/resize-panel/resize-panel.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -41484,7 +41484,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  ElementRef,\r\n  HostBinding,\r\n  Inject,\r\n  Input,\r\n  OnDestroy,\r\n  OnInit,\r\n  Renderer2,\r\n} from '@angular/core';\r\nimport {DOCUMENT} from '@angular/common';\r\n\r\n@Component({\r\n  selector: 'teta-resize-panel',\r\n  templateUrl: './resize-panel.component.html',\r\n  styleUrls: ['./resize-panel.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ResizePanelComponent implements OnInit, OnDestroy {\r\n  @Input()\r\n  set direction(val: 'vertical' | 'horizontal') {\r\n    this._direction = val;\r\n  }\r\n\r\n  get direction() {\r\n    return this._direction;\r\n  }\r\n\r\n  @Input()\r\n  set grabPosition(val: 'top' | 'left' | 'bottom' | 'right') {\r\n    this._grabPosition = val;\r\n  }\r\n\r\n  get grabPosition() {\r\n    if (this.direction === 'vertical') {\r\n      if (['left', 'right'].includes(this._grabPosition)) {\r\n        return this._grabPosition;\r\n      }\r\n      return 'left';\r\n    }\r\n    if (['top', 'bottom'].includes(this._grabPosition)) {\r\n      return this._grabPosition;\r\n    }\r\n    return 'bottom';\r\n  }\r\n\r\n  @Input() name: string;\r\n  @Input() minSize: number;\r\n  @Input() maxSize: number;\r\n  @HostBinding('class.resize-panel') private readonly resizePanelClass = true;\r\n\r\n  private _direction: 'vertical' | 'horizontal' = 'horizontal';\r\n  private _grabPosition: 'top' | 'left' | 'bottom' | 'right' = 'left';\r\n  private _startSize: number;\r\n  private _startPosition: number;\r\n\r\n  private _positionMap: Map<string, string> = new Map<string, string>()\r\n    .set('left', 'resize-grab_left')\r\n    .set('right', 'resize-grab_right')\r\n    .set('top', 'resize-grab_top')\r\n    .set('bottom', 'resize-grab_bottom');\r\n\r\n  constructor(\r\n    private _elementRef: ElementRef,\r\n    private _renderer: Renderer2,\r\n    @Inject(DOCUMENT) private _document: any\r\n  ) {\r\n  }\r\n\r\n  resizeStart(event: MouseEvent) {\r\n    this.setStartPosition();\r\n    if (this.direction === 'vertical') {\r\n      this._startSize = this._elementRef.nativeElement.clientWidth;\r\n      this._startPosition = event.clientX;\r\n    } else {\r\n      this._startSize = this._elementRef.nativeElement.clientHeight;\r\n      this._startPosition = event.clientY;\r\n    }\r\n  }\r\n\r\n  resizeProcess(event: MouseEvent) {\r\n    event.preventDefault();\r\n    if (this.direction === 'vertical') {\r\n      this.manageVertical(event);\r\n    } else {\r\n      this.manageHorizontal(event);\r\n    }\r\n  }\r\n\r\n  resizeEnd(event: MouseEvent) {\r\n    window.dispatchEvent(new Event('resize'));\r\n  }\r\n\r\n  ngOnInit() {\r\n    this.restorePosition();\r\n  }\r\n\r\n  ngOnDestroy(): void {\r\n  }\r\n\r\n  getClassName() {\r\n    return this._positionMap.get(this.grabPosition) || '';\r\n  }\r\n\r\n  private setStartPosition() {\r\n    if (this.direction === 'vertical') {\r\n      this._renderer.setStyle(\r\n        this._elementRef.nativeElement,\r\n        'width',\r\n        `${this._elementRef.nativeElement.offsetWidth}px`\r\n      );\r\n    } else {\r\n      this._renderer.setStyle(\r\n        this._elementRef.nativeElement,\r\n        'height',\r\n        `${this._elementRef.nativeElement.offsetHeight}px`\r\n      );\r\n    }\r\n    this._renderer.setStyle(this._elementRef.nativeElement, 'flex-grow', `0`);\r\n    this._renderer.setStyle(this._elementRef.nativeElement, 'flex-shrink', `0`);\r\n    this._renderer.setStyle(this._elementRef.nativeElement, 'flex', `none`);\r\n  }\r\n\r\n  private manageHorizontal(event: MouseEvent) {\r\n    let newSize =\r\n      this.grabPosition === 'bottom'\r\n        ? this._startSize + (event.clientY - this._startPosition)\r\n        : this._startSize - (event.clientY - this._startPosition);\r\n    if (this.maxSize && newSize > this.maxSize) {\r\n      newSize = this.maxSize;\r\n    }\r\n    if (this.minSize && newSize < this.minSize) {\r\n      newSize = this.minSize;\r\n    }\r\n    this._renderer.setStyle(\r\n      this._elementRef.nativeElement,\r\n      'height',\r\n      `${newSize}px`\r\n    );\r\n    this.save();\r\n  }\r\n\r\n  private manageVertical(event: MouseEvent) {\r\n    let newSize =\r\n      this.grabPosition === 'right'\r\n        ? this._startSize + (event.clientX - this._startPosition)\r\n        : this._startSize - (event.clientX - this._startPosition);\r\n    if (this.maxSize && newSize > this.maxSize) {\r\n      newSize = this.maxSize;\r\n    }\r\n    if (this.minSize && newSize < this.minSize) {\r\n      newSize = this.minSize;\r\n    }\r\n    this._renderer.setStyle(\r\n      this._elementRef.nativeElement,\r\n      'width',\r\n      `${newSize}px`\r\n    );\r\n    this.save();\r\n  }\r\n\r\n  private restore() {\r\n    if (this.name?.length > 0) {\r\n      return JSON.parse(localStorage.getItem(`resize-panel${this.name}`) || '');\r\n    }\r\n  }\r\n\r\n  private restorePosition() {\r\n    const savedSize = this.restore();\r\n    if (savedSize) {\r\n      if (this.direction === 'vertical') {\r\n        this._renderer.setStyle(\r\n          this._elementRef.nativeElement,\r\n          'width',\r\n          `${savedSize}px`\r\n        );\r\n      } else {\r\n        this._renderer.setStyle(\r\n          this._elementRef.nativeElement,\r\n          'height',\r\n          `${savedSize}px`\r\n        );\r\n      }\r\n      this._renderer.setStyle(this._elementRef.nativeElement, 'flex-grow', `0`);\r\n      this._renderer.setStyle(\r\n        this._elementRef.nativeElement,\r\n        'flex-shrink',\r\n        `0`\r\n      );\r\n      this._renderer.setStyle(this._elementRef.nativeElement, 'flex', `none`);\r\n    }\r\n  }\r\n\r\n  private save() {\r\n    if (this.name?.length > 0) {\r\n      if (this.direction === 'vertical') {\r\n        localStorage.setItem(\r\n          `resize-panel${this.name}`,\r\n          this._elementRef.nativeElement.clientWidth\r\n        );\r\n      } else {\r\n        localStorage.setItem(\r\n          `resize-panel${this.name}`,\r\n          this._elementRef.nativeElement.clientHeight\r\n        );\r\n      }\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  ElementRef,\r\n  HostBinding,\r\n  Inject,\r\n  Input,\r\n  OnDestroy,\r\n  OnInit,\r\n  Renderer2,\r\n} from '@angular/core';\r\nimport {DOCUMENT} from '@angular/common';\r\n\r\n@Component({\r\n  selector: 'teta-resize-panel',\r\n  templateUrl: './resize-panel.component.html',\r\n  styleUrls: ['./resize-panel.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ResizePanelComponent implements OnInit, OnDestroy {\r\n  @Input()\r\n  set direction(val: 'vertical' | 'horizontal') {\r\n    this._direction = val;\r\n  }\r\n\r\n  get direction() {\r\n    return this._direction;\r\n  }\r\n\r\n  @Input()\r\n  set grabPosition(val: 'top' | 'left' | 'bottom' | 'right') {\r\n    this._grabPosition = val;\r\n  }\r\n\r\n  get grabPosition() {\r\n    if (this.direction === 'vertical') {\r\n      if (['left', 'right'].includes(this._grabPosition)) {\r\n        return this._grabPosition;\r\n      }\r\n      return 'left';\r\n    }\r\n    if (['top', 'bottom'].includes(this._grabPosition)) {\r\n      return this._grabPosition;\r\n    }\r\n    return 'bottom';\r\n  }\r\n\r\n  @Input() name: string;\r\n  @Input() minSize: number;\r\n  @Input() maxSize: number;\r\n  @HostBinding('class.resize-panel') private readonly resizePanelClass = true;\r\n\r\n  private _direction: 'vertical' | 'horizontal' = 'horizontal';\r\n  private _grabPosition: 'top' | 'left' | 'bottom' | 'right' = 'left';\r\n  private _startSize: number;\r\n  private _startPosition: number;\r\n\r\n  private _positionMap: Map<string, string> = new Map<string, string>()\r\n    .set('left', 'resize-grab_left')\r\n    .set('right', 'resize-grab_right')\r\n    .set('top', 'resize-grab_top')\r\n    .set('bottom', 'resize-grab_bottom');\r\n\r\n  constructor(\r\n    private _elementRef: ElementRef,\r\n    private _renderer: Renderer2,\r\n    @Inject(DOCUMENT) private _document: any\r\n  ) {\r\n  }\r\n\r\n  resizeStart(event: MouseEvent) {\r\n    this.setStartPosition();\r\n    if (this.direction === 'vertical') {\r\n      this._startSize = this._elementRef.nativeElement.clientWidth;\r\n      this._startPosition = event.clientX;\r\n    } else {\r\n      this._startSize = this._elementRef.nativeElement.clientHeight;\r\n      this._startPosition = event.clientY;\r\n    }\r\n  }\r\n\r\n  resizeProcess(event: MouseEvent) {\r\n    event.preventDefault();\r\n    if (this.direction === 'vertical') {\r\n      this.manageVertical(event);\r\n    } else {\r\n      this.manageHorizontal(event);\r\n    }\r\n  }\r\n\r\n  resizeEnd(event: MouseEvent) {\r\n    window.dispatchEvent(new Event('resize'));\r\n  }\r\n\r\n  ngOnInit() {\r\n    this.restorePosition();\r\n  }\r\n\r\n  ngOnDestroy(): void {\r\n  }\r\n\r\n  getClassName() {\r\n    return this._positionMap.get(this.grabPosition) || '';\r\n  }\r\n\r\n  private setStartPosition() {\r\n    if (this.direction === 'vertical') {\r\n      this._renderer.setStyle(\r\n        this._elementRef.nativeElement,\r\n        'width',\r\n        `${this._elementRef.nativeElement.offsetWidth}px`\r\n      );\r\n    } else {\r\n      this._renderer.setStyle(\r\n        this._elementRef.nativeElement,\r\n        'height',\r\n        `${this._elementRef.nativeElement.offsetHeight}px`\r\n      );\r\n    }\r\n    this._renderer.setStyle(this._elementRef.nativeElement, 'flex-grow', `0`);\r\n    this._renderer.setStyle(this._elementRef.nativeElement, 'flex-shrink', `0`);\r\n    this._renderer.setStyle(this._elementRef.nativeElement, 'flex', `none`);\r\n  }\r\n\r\n  private manageHorizontal(event: MouseEvent) {\r\n    let newSize =\r\n      this.grabPosition === 'bottom'\r\n        ? this._startSize + (event.clientY - this._startPosition)\r\n        : this._startSize - (event.clientY - this._startPosition);\r\n    if (this.maxSize && newSize > this.maxSize) {\r\n      newSize = this.maxSize;\r\n    }\r\n    if (this.minSize && newSize < this.minSize) {\r\n      newSize = this.minSize;\r\n    }\r\n    this._renderer.setStyle(\r\n      this._elementRef.nativeElement,\r\n      'height',\r\n      `${newSize}px`\r\n    );\r\n    this.save();\r\n  }\r\n\r\n  private manageVertical(event: MouseEvent) {\r\n    let newSize =\r\n      this.grabPosition === 'right'\r\n        ? this._startSize + (event.clientX - this._startPosition)\r\n        : this._startSize - (event.clientX - this._startPosition);\r\n    if (this.maxSize && newSize > this.maxSize) {\r\n      newSize = this.maxSize;\r\n    }\r\n    if (this.minSize && newSize < this.minSize) {\r\n      newSize = this.minSize;\r\n    }\r\n    this._renderer.setStyle(\r\n      this._elementRef.nativeElement,\r\n      'width',\r\n      `${newSize}px`\r\n    );\r\n    this.save();\r\n  }\r\n\r\n  private restore() {\r\n    if (this.name?.length > 0) {\r\n      return JSON.parse(localStorage.getItem(`resize-panel${this.name}`));\r\n    }\r\n  }\r\n\r\n  private restorePosition() {\r\n    const savedSize = this.restore();\r\n    if (savedSize) {\r\n      if (this.direction === 'vertical') {\r\n        this._renderer.setStyle(\r\n          this._elementRef.nativeElement,\r\n          'width',\r\n          `${savedSize}px`\r\n        );\r\n      } else {\r\n        this._renderer.setStyle(\r\n          this._elementRef.nativeElement,\r\n          'height',\r\n          `${savedSize}px`\r\n        );\r\n      }\r\n      this._renderer.setStyle(this._elementRef.nativeElement, 'flex-grow', `0`);\r\n      this._renderer.setStyle(\r\n        this._elementRef.nativeElement,\r\n        'flex-shrink',\r\n        `0`\r\n      );\r\n      this._renderer.setStyle(this._elementRef.nativeElement, 'flex', `none`);\r\n    }\r\n  }\r\n\r\n  private save() {\r\n    if (this.name?.length > 0) {\r\n      if (this.direction === 'vertical') {\r\n        localStorage.setItem(\r\n          `resize-panel${this.name}`,\r\n          this._elementRef.nativeElement.clientWidth\r\n        );\r\n      } else {\r\n        localStorage.setItem(\r\n          `resize-panel${this.name}`,\r\n          this._elementRef.nativeElement.clientHeight\r\n        );\r\n      }\r\n    }\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -51240,6 +51240,9 @@
                             "name": "TooltipComponent"
                         },
                         {
+                            "name": "TooltipDirective"
+                        },
+                        {
                             "name": "XAxisComponent"
                         },
                         {
@@ -51285,7 +51288,11 @@
                 },
                 {
                     "type": "declarations",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "ChartComponent"
+                        }
+                    ]
                 },
                 {
                     "type": "imports",
@@ -53770,11 +53777,7 @@
                 },
                 {
                     "type": "exports",
-                    "elements": [
-                        {
-                            "name": "TooltipDirective"
-                        }
-                    ]
+                    "elements": []
                 },
                 {
                     "type": "bootstrap",
@@ -54096,7 +54099,7 @@
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/test.ts",
+                "file": "projects/chart/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -54106,7 +54109,7 @@
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/chart/src/test.ts",
+                "file": "projects/components/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -54666,7 +54669,7 @@
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/test.ts",
+                "file": "projects/chart/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "literal type"
@@ -54675,7 +54678,7 @@
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/chart/src/test.ts",
+                "file": "projects/components/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "literal type"
@@ -56167,27 +56170,6 @@
                     "defaultValue": "[SeriesType.line, SeriesType.line]"
                 }
             ],
-            "projects/components/src/test.ts": [
-                {
-                    "name": "context",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
-                },
-                {
-                    "name": "require",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "literal type"
-                }
-            ],
             "projects/chart/src/test.ts": [
                 {
                     "name": "context",
@@ -56204,6 +56186,27 @@
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "projects/chart/src/test.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type"
+                }
+            ],
+            "projects/components/src/test.ts": [
+                {
+                    "name": "context",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/test.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
+                },
+                {
+                    "name": "require",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/test.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "literal type"
