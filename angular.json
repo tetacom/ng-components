@@ -74,7 +74,34 @@
           }
         }
       }
+    },
+    "storybook": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "index": "",
+            "main": "",
+            "outputPath": "",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/components/assets",
+                "output": "/assets/"
+              }
+            ],
+            "styles": [
+              ".storybook/sb.scss",
+              "projects/components/style/assembly.scss"
+            ],
+            "tsConfig": "tsconfig.json"
+          }
+        }
+      }
     }
   },
-  "defaultProject": "components"
+  "defaultProject": "storybook"
 }
