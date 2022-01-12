@@ -4,4 +4,5 @@ export interface BasePoint {
   y: number;
   y1?: number;
   color?: string | number;
+  marker?: any;
 }

@@ -1,5 +1,6 @@
 import { AxisType } from './enum/axis-type';
 import { Plotband } from './plotband';
+import { PlotLine } from './plotline';
 
 export interface AxisOptions {
   title?: string;
@@ -13,4 +14,5 @@ export interface AxisOptions {
   negative?: boolean;
   opposite?: boolean;
   plotbands?: Plotband[];
+  plotlines?: PlotLine[];
 }

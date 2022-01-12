@@ -9,6 +9,7 @@ export interface IChartConfig {
   zoom?: {
     enable: boolean;
     type: ZoomType;
+    syncChannel?: string;
   };
   xAxis: AxisOptions[];
   yAxis: AxisOptions[];

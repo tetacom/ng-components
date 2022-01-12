@@ -1,3 +1,3 @@
-export interface IChartEvent {
-  event: any;
+export interface IChartEvent<T> {
+  event: T;
 }

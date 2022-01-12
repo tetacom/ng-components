@@ -40,13 +40,15 @@ export class TooltipComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.display = merge(this.svc.pointerMove, this.zoomService.zoomed).pipe(
       map(({ event }) => {
-        return event?.type === 'mousemove' || event?.type === 'end' ? 1 : 0;
+        const opacity = event?.type === 'mousemove' ? 1 : 0;
+
+        return opacity;
       }),
-      tap(() =>
-        setTimeout(() => {
+      tap(() => {
+        requestAnimationFrame(() => {
           this.cdr.detectChanges();
-        })
-      )
+        });
+      })
     );
 
     this.position = this.svc.pointerMove.pipe(
@@ -74,7 +76,7 @@ export class TooltipComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  private getPoisition({ event }: IChartEvent) {
+  private getPoisition({ event }: IChartEvent<any>) {
     const centerX = this.size.width / 2;
     const centerY = this.size.height / 2;
 

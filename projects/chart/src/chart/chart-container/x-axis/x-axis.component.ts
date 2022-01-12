@@ -30,7 +30,6 @@ export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('svg') node: ElementRef;
 
   private _alive = true;
-  private scale: any;
 
   constructor(
     private scaleService: ScaleService,
@@ -38,12 +37,12 @@ export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private zoomService: ZoomService
   ) {
-    this.zoomService.zoomed
+    merge(this.zoomService.zoomed, this.chartService.size)
       .pipe(
         takeWhile(() => this._alive),
         tap((_) => {
           this.draw();
-          this.cdr.markForCheck();
+          this.cdr.detectChanges();
         })
       )
       .subscribe();

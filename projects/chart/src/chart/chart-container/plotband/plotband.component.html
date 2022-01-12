@@ -1,26 +1,58 @@
 <svg:rect class="plotband"
           [attr.fill]="getFill(plotband)"
           [attr.opacity]="plotband.style?.plotband?.opacity"
-          [attr.width]="width"
-          [attr.height]="height"
-          [attr.x]="from">
+          [attr.height]="axis.orientation === orientation.x ? height : bandSize"
+          [attr.width]="axis.orientation === orientation.x ? bandSize : width"
+          [attr.y]="axis.orientation === orientation.y ? to : null"
+          [attr.x]="axis.orientation === orientation.x ? from : null">
 </svg:rect>
 
-
-<svg:line class="grabber"
+<svg:line class="display-grabber"
           [attr.stroke]="plotband.style?.grabbers?.stroke || 'red'"
           [attr.stroke-width]="plotband.style?.grabbers?.strokeWidth || 4"
-          [attr.x1]="from"
-          [attr.x2]="from"
+          [attr.stroke-dasharray]="plotband.style?.grabbers?.strokeDasharray"
+          [attr.x1]="axis.orientation === orientation.x ? from : 0"
+          [attr.x2]="axis.orientation === orientation.x ? from : width"
           [attr.data-grabber]="'from'"
-          [attr.y1]="0"
-          [attr.y2]="height"></svg:line>
+          [attr.y1]="axis.orientation === orientation.x ? 0 : from"
+          [attr.y2]="axis.orientation === orientation.x ? height : from">
+</svg:line>
 
-<svg:line class="grabber"
+<svg:line class="display-grabber"
           [attr.stroke]="plotband.style?.grabbers?.stroke || 'red'"
           [attr.stroke-width]="plotband.style?.grabbers?.strokeWidth || 4"
-          [attr.x1]="to"
-          [attr.x2]="to"
+          [attr.stroke-dasharray]="plotband.style?.grabbers?.strokeDasharray"
+          [attr.x1]="axis.orientation === orientation.x ? to : 0"
+          [attr.x2]="axis.orientation === orientation.x ? to : width"
           [attr.data-grabber]="'to'"
-          [attr.y1]="0"
-          [attr.y2]="height"></svg:line>
+          [attr.y1]="axis.orientation === orientation.x ? 0 : to"
+          [attr.y2]="axis.orientation === orientation.x ? height : to">
+</svg:line>
+
+<svg:line class="grabber"
+          [class.x-grabber]="axis.orientation === orientation.x"
+          [class.y-grabber]="axis.orientation === orientation.y"
+          [attr.stroke]="'red'"
+          [attr.stroke-width]="8"
+          opacity="0"
+          [attr.x1]="axis.orientation === orientation.x ? from : 0"
+          [attr.x2]="axis.orientation === orientation.x ? from : width"
+          [attr.data-grabber]="'from'"
+          [attr.y1]="axis.orientation === orientation.x ? 0 : from"
+          [attr.y2]="axis.orientation === orientation.x ? height : from">
+</svg:line>
+
+<svg:line class="grabber"
+          [class.x-grabber]="axis.orientation === orientation.x"
+          [class.y-grabber]="axis.orientation === orientation.y"
+          [attr.stroke]="'red'"
+          [attr.stroke-width]="8"
+          opacity="0"
+          [attr.x1]="axis.orientation === orientation.x ? to : 0"
+          [attr.x2]="axis.orientation === orientation.x ? to : width"
+          [attr.data-grabber]="'to'"
+          [attr.y1]="axis.orientation === orientation.x ? 0 : to"
+          [attr.y2]="axis.orientation === orientation.x ? height : to">
+</svg:line>
+
+

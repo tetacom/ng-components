@@ -1,10 +1,8 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
-  HostBinding,
   Input,
   OnInit,
 } from '@angular/core';
@@ -15,6 +13,7 @@ import { ScaleService } from '../../service/scale.service';
 
 import { Axis } from '../../core/axis/axis';
 import { ZoomService } from '../../service/zoom.service';
+import { AxisOrientation } from '../../model/enum/axis-orientation';
 
 @Component({
   selector: '[teta-plot-band]',
@@ -22,12 +21,14 @@ import { ZoomService } from '../../service/zoom.service';
   styleUrls: ['./plotband.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlotbandComponent implements OnInit, AfterViewInit {
+export class PlotbandComponent implements OnInit {
   @Input() plotband: Plotband;
   @Input() axis: Axis;
   @Input() size: DOMRect;
+  orientation = AxisOrientation;
 
   private scale: any;
+  domain: number[];
 
   constructor(
     private scaleService: ScaleService,
@@ -36,33 +37,61 @@ export class PlotbandComponent implements OnInit, AfterViewInit {
     private element: ElementRef
   ) {
     this.zoomService.zoomed.subscribe(() => {
-      this.scale = this.scaleService.xScales.get(this.axis.index);
+      this.scale = this.scaleService[
+        this.axis.orientation === AxisOrientation.x ? 'xScales' : 'yScales'
+      ].get(this.axis.index);
       this.cdr.detectChanges();
     });
   }
 
   ngOnInit(): void {
-    this.scale = this.scaleService.xScales.get(this.axis.index);
+    this.scale = this.scaleService[
+      this.axis.orientation === AxisOrientation.x ? 'xScales' : 'yScales'
+    ].get(this.axis.index);
+
+    this.domain = this.scale.domain();
+
     const plotbandElement = d3
       .select(this.element.nativeElement)
       .select('.plotband');
+
     const grabElements = d3
       .select(this.element.nativeElement)
       .selectAll('.grabber');
 
     const drag = d3
       .drag()
-      .subject(function () {
-        return { x: plotbandElement.attr('x') };
+      .subject(() => {
+        if (this.axis.orientation === AxisOrientation.x) {
+          return { x: plotbandElement.attr('x') };
+        }
+
+        if (this.axis.orientation === AxisOrientation.y) {
+          return { y: plotbandElement.attr('y') };
+        }
       })
       .on(
         'start drag end',
         (event: d3.D3DragEvent<any, Plotband, any>, d: Plotband) => {
-          const width = parseFloat(plotbandElement.attr('width'));
-          d.to = this.scale.invert(event.x + width);
-          d.from = this.scale.invert(event.x);
+          requestAnimationFrame(() => {
+            let bandSize = parseFloat(
+              plotbandElement.attr(
+                this.axis.orientation === AxisOrientation.x ? 'width' : 'height'
+              )
+            );
 
-          this.cdr.detectChanges();
+            d.to = this.scale.invert(
+              event[AxisOrientation[this.axis.orientation]] +
+                (this.axis.orientation === AxisOrientation.x ? bandSize : 0)
+            );
+
+            d.from = this.scale.invert(
+              event[AxisOrientation[this.axis.orientation]] +
+                (this.axis.orientation === AxisOrientation.y ? bandSize : 0)
+            );
+
+            this.cdr.detectChanges();
+          });
         }
       );
 
@@ -73,14 +102,47 @@ export class PlotbandComponent implements OnInit, AfterViewInit {
       .on(
         'start drag end',
         (event: d3.D3DragEvent<any, Plotband, any>, d: Plotband) => {
-          if (event?.type === 'start') {
-            const { grabber } = event?.sourceEvent?.target?.dataset;
-            grabberKey = grabber;
-          }
+          requestAnimationFrame(() => {
+            if (event?.type === 'start') {
+              const { grabber } = event?.sourceEvent?.target?.dataset;
+              grabberKey = grabber;
+            }
 
-          d[grabberKey] = this.scale.invert(event.x);
+            const min = Math.min(...this.domain);
+            const max = Math.max(...this.domain);
 
-          this.cdr.detectChanges();
+            const minValue = d.min ?? min;
+            const maxValue = d.max ?? max;
+            d[grabberKey] = this.scale.invert(
+              event[AxisOrientation[this.axis.orientation]]
+            );
+
+            if (grabberKey === 'from') {
+              const borderMin = d.from <= minValue;
+
+              if (d.from >= d.to) {
+                d.from = d.to;
+              }
+
+              if (borderMin) {
+                d.from = minValue;
+              }
+            }
+
+            if (grabberKey === 'to') {
+              const borderMax = d.to >= maxValue;
+
+              if (borderMax) {
+                d.to = maxValue;
+              }
+
+              if (d.to <= d.from) {
+                d.to = d.from;
+              }
+            }
+
+            this.cdr.detectChanges();
+          });
         }
       );
 
@@ -96,7 +158,7 @@ export class PlotbandComponent implements OnInit, AfterViewInit {
     }
   }
 
-  get width(): number {
+  get bandSize(): number {
     return Math.abs(
       this.scale(this.plotband.to) - this.scale(this.plotband.from)
     );
@@ -104,6 +166,10 @@ export class PlotbandComponent implements OnInit, AfterViewInit {
 
   get height(): number {
     return this.size.height;
+  }
+
+  get width(): number {
+    return this.size.width;
   }
 
   get from(): number {

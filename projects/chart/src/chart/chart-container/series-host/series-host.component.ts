@@ -46,7 +46,7 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
       .pipe(
         throttleTime(100, null, { trailing: true }),
         tap(() => {
-          this._componentRef?.injector.get(ChangeDetectorRef).markForCheck();
+          this._componentRef?.injector.get(ChangeDetectorRef).detectChanges();
         })
       )
       .subscribe();
@@ -63,6 +63,7 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
       this.series.component
     );
     this._componentRef.instance.series = this.series;
+    this._componentRef.instance.size = this.size;
     this._init = true;
   }
 
@@ -71,6 +72,7 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (this._init && changes.hasOwnProperty('series')) {
       this._componentRef.instance.series = this.series;
+      this._componentRef.instance.size = this.size;
       this._componentRef.injector.get(ChangeDetectorRef).markForCheck();
       this._componentRef.injector.get(ChangeDetectorRef).detectChanges();
     }

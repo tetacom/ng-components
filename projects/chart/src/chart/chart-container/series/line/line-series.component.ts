@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -21,9 +22,9 @@ import { ZoomService } from '../../../service/zoom.service';
 })
 export class LineSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
-  implements OnInit
+  implements OnInit, AfterViewInit
 {
-  transform: Observable<string>;
+  transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
   display: Observable<number>;
 
   constructor(
@@ -51,19 +52,22 @@ export class LineSeriesComponent<T extends BasePoint>
     );
   }
 
+  ngAfterViewInit() {}
+
   getPath() {
     const x = this.scaleService.xScales.get(this.series.xAxisIndex);
     const y = this.scaleService.yScales.get(this.series.yAxisIndex);
 
     const line = d3
       .line<BasePoint>()
+
       .x((point) => x(point.x))
       .y((point) => y(point.y));
 
     return line(this.series.data);
   }
 
-  getTransform(event: any) {
+  getTransform(event: any): Pick<BasePoint, 'x' | 'y'> {
     const mouse = d3.pointer(event);
 
     const foundX = this.scaleService.xScales.get(this.series.xAxisIndex);
@@ -76,10 +80,15 @@ export class LineSeriesComponent<T extends BasePoint>
 
     const foundPoint = this.series.data[index] ? this.series.data[index] : null;
 
-    this.svc.setTooltip(foundPoint);
+    if (foundPoint) {
+      this.svc.setTooltip(foundPoint);
 
-    return `translate(${!isNaN(foundPoint?.x) ? foundX(foundPoint.x) : 0}, ${
-      !isNaN(foundPoint?.y) ? foundY(foundPoint.y) : 0
-    })`;
+      return {
+        x: foundX(foundPoint?.x),
+        y: foundY(foundPoint?.y),
+      };
+    }
+
+    return null;
   }
 }

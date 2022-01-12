@@ -1,7 +1,7 @@
 import { SvgAttributes } from './svg-attributes';
 
 export class Plotband {
-  id: any;
+  id: number | string;
   from: number;
   to: number;
   label?: string;

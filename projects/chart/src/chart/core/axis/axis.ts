@@ -18,9 +18,9 @@ export class Axis {
   private _ticksValues: number[];
 
   private defaultFormatters = new Map<AxisType, any>()
-    .set(AxisType.number, d3.format(',.2r'))
+    .set(AxisType.number, d3.format(',.2f'))
     .set(AxisType.time, d3.timeFormat('%B %d, %Y'))
-    .set(AxisType.log, d3.format(',.2r'));
+    .set(AxisType.log, d3.format(',.2f'));
 
   constructor(config: IChartConfig) {
     this.chartConfig = config;

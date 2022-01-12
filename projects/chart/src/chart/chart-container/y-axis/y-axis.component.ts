@@ -35,7 +35,7 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private zoomService: ZoomService
   ) {
-    this.zoomService.zoomed
+    merge(this.zoomService.zoomed, this.chartService.size)
       .pipe(
         takeWhile(() => this._alive),
         tap((_) => {

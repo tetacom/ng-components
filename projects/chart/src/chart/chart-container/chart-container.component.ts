@@ -34,6 +34,8 @@ export class ChartContainerComponent
 
   private _observer: ResizeObserver;
 
+  private uniqId: string;
+
   constructor(
     private _svc: ChartService,
     private _cdr: ChangeDetectorRef,
@@ -51,6 +53,8 @@ export class ChartContainerComponent
 
     this.yAxes = this._axesService.yAxis;
     this.xAxes = this._axesService.xAxis;
+
+    this.uniqId = (Date.now() + Math.random()).toString(36);
   }
 
   ngOnInit(): void {
@@ -146,6 +150,10 @@ export class ChartContainerComponent
 
   mouseLeave(event) {
     this._svc.setPointerMove(event);
+  }
+
+  id(): string {
+    return this.uniqId;
   }
 
   ngAfterContentChecked(): void {}
