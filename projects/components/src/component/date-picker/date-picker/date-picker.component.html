@@ -4,6 +4,8 @@
   [open]="open"
   [autoCloseIgnore]="['esc']"
   (openChange)="openPicker($event)"
+  [align]="align"
+  [verticalAlign]="verticalAlign"
   [appendToBody]="appendToBody">
   <div tetaDropdownHead
        class="datepicker-head font-body-3"
@@ -15,7 +17,7 @@
     </div>
     <teta-icon [name]="'closeBig'" (click)="clearPicker($event);" class="margin-left-1"></teta-icon>
   </div>
-  <div tetaDropdownContent class="datepicker-body">
+  <div tetaDropdownContent class="datepicker-body scrollable" (click)="$event.preventDefault()">
     <div class="padding-3">
       <div class="row align-center justify-content-between">
         <div>

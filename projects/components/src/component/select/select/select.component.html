@@ -19,7 +19,7 @@
     </div>
     <teta-icon [name]="'arrowDownSmall'"></teta-icon>
   </div>
-  <div *ngIf="options?.length" tetaDropdownContent class="select-list scrollable row_auto">
+  <div *ngIf="options?.length" tetaDropdownContent class="select-list scrollable row_auto" (click)="$event.preventDefault()">
     <ng-container *ngIf="searchRef">
       <div class="select-search">
         <teta-text-field [ngModel]="searchText"

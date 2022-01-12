@@ -4,7 +4,7 @@
 <teta-date-picker class="datepicker-table"
                   #input
                   *ngIf="edit"
-                  [appendToBody]="false"
+                  [appendToBody]="true"
                   [showTime]="false"
                   [ngModel]="row.data[column.name]"
                   (ngModelChange)="setValue($event)"
