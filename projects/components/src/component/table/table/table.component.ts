@@ -176,7 +176,7 @@ export class TableComponent<T>
         this.startEditRowOrCell(coordinates);
       }
     }
-    if (!this.eventIsOnRow(event)) {
+    if (!this.eventIsOnRow(event) && !event.defaultPrevented) {
       this._svc.startEditRow(null);
     }
   }

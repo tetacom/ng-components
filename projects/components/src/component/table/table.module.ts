@@ -36,6 +36,7 @@ import { UiScrollModule } from 'ngx-ui-scroll';
 import { ToolbarModule } from '../toolbar/toolbar.module';
 import { ClickOutsideModule } from '../../directive/click-outside/click-outside.module';
 import {ResizeDragModule} from '../../directive/resize-drag/resize-drag.module';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,7 @@ import {ResizeDragModule} from '../../directive/resize-drag/resize-drag.module';
     ToolbarModule,
     ClickOutsideModule,
     ResizeDragModule,
+    ScrollingModule,
   ],
 })
 export class TableModule {}

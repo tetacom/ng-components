@@ -162,7 +162,7 @@ export class ResizePanelComponent implements OnInit, OnDestroy {
 
   private restore() {
     if (this.name?.length > 0) {
-      return JSON.parse(localStorage.getItem(`resize-panel${this.name}`) || '');
+      return JSON.parse(localStorage.getItem(`resize-panel${this.name}`));
     }
   }
 

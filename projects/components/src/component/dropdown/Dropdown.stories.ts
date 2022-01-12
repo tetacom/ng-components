@@ -11,48 +11,93 @@ import {VerticalAlign} from '../../common/enum/vertical-align.enum';
 export default {
   title: 'Component/Dropdown',
   decorators: [withKnobs],
-  component: DropdownComponent,
+  // component: DropdownComponent,
   moduleMetadata: {
     imports: [DropdownModule]
+  },
+  argTypes: {
+    align: {
+      defaultValue: Align.right,
+      control: {
+        type: 'select',
+        options: [Align.left, Align.right, Align.center, Align.auto],
+        labels: ['left', 'right', 'center', 'auto'],
+      },
+    },
+    autoCloseIgnore: {
+      defaultValue: [2],
+      options: ['esc', 'enter', 'inside', 'outside'],
+      control: {
+        type: 'check'
+      },
+    },
+    transform: {
+      defaultValue: 0,
+      control: {
+        type: 'radio',
+        options: [0, 1],
+        labels: ['False', 'True']
+      }
+    },
+    autoClose: {
+      defaultValue: 1,
+      control: {
+        type: 'radio',
+        options: [0, 1],
+        labels: ['False', 'True']
+      }
+    },
+    appendToBody: {
+      defaultValue: 0,
+      control: {
+        type: 'radio',
+        options: [0, 1],
+        labels: ['False', 'True']
+      }
+    }
   }
 } as Meta;
 
-export const dropdownDirective = () => ({
+const alignMap = new Map<VerticalAlign, string>().set(
+  VerticalAlign.bottom, 'bottom'
+).set(
+  VerticalAlign.top, 'top'
+).set(
+  VerticalAlign.center, 'center'
+).set(
+  VerticalAlign.auto, 'auto'
+);
+
+export const dropdownDirective = (args) => ({
   moduleMetadata: {
     imports: [DropdownModule, ButtonModule, IconModule]
   },
   props: {
-    align: select('align', {
-      left: Align.left,
-      right: Align.right,
-      center: Align.center,
-      auto: Align.auto
-    }, Align.left),
+    ...args,
     verticalAlign: [
       VerticalAlign.bottom,
       VerticalAlign.top,
       VerticalAlign.center,
       VerticalAlign.auto],
-    autoClose: boolean('autoClose', true),
-    autoCloseIgnore: optionsKnob('autoCloseIgnore', {
-      esc: 'esc',
-      enter: 'enter',
-      inside: 'inside',
-      outside: 'outside'
-    }, ['inside'], {
-      display: 'check',
-    })
+    alignMap
   },
-  template: `<div class="padding-4 bg-panel-50 row" style="position: absolute; top: 50%;" [tetaIconSprite]="'assets/icons.svg'">
+  template: `<div class="padding-10 bg-panel-50 row"
+                  style="width: 500px;"
+                  [style.transform]="transform ? 'translate(100px, 100px)' : ''"
+                  [style.margin]="transform ? '' : '100px 100px'"
+                  [tetaIconSprite]="'assets/icons.svg'">
+                  <div style="position: fixed; top: 0; left: 0;">Fixed</div>
+                  <div style="position: fixed; top: 0; right: 0;transform: translateX(0px)">Fixed trans</div>
     <div tetaDropdown
           class="margin-right-4"
           *ngFor="let valign of verticalAlign"
           [align]="align"
           [verticalAlign]="valign"
+          [appendToBody]="appendToBody"
           [autoClose]="autoClose"
           [autoCloseIgnore]="autoCloseIgnore">
       <button teta-button tetaDropdownHead [palette]="'primary'">
-      Click to open
+        {{alignMap.get(valign)}}
       </button>
       <div tetaDropdownContent class="list scrollable" style="width: 200px">
         <ng-container *ngFor="let i of [1,2,3]">
@@ -76,37 +121,25 @@ export const dropdownDirective = () => ({
     </div>
   </div>`
 });
-
-export const dropdownComponent = () => ({
+export const dropdownComponent = (args) => ({
   moduleMetadata: {
     imports: [DropdownModule, ButtonModule, IconModule]
   },
   props: {
-    align: select('align', {
-      left: Align.left,
-      right: Align.right,
-      center: Align.center,
-      auto: Align.auto
-    }, Align.left),
+    ...args,
     verticalAlign: [
       VerticalAlign.bottom,
       VerticalAlign.top,
       VerticalAlign.center,
       VerticalAlign.auto],
-    autoClose: boolean('autoClose', true),
-    autoCloseIgnore: optionsKnob('autoCloseIgnore', {
-      esc: 'esc',
-      enter: 'enter',
-      inside: 'inside',
-      outside: 'outside'
-    }, ['inside'], {
-      display: 'check',
-    })
   },
-  template: `<div class="padding-4 bg-panel-50" [tetaIconSprite]="'assets/icons.svg'">
+  template: `<div class="padding-10 bg-panel-50"
+                  [style.transform]="transform ? 'translate(100px, 100px)' : ''"
+                  [tetaIconSprite]="'assets/icons.svg'">
     <teta-dropdown *ngFor="let valign of verticalAlign"
                     [align]="align"
                     [verticalAlign]="valign"
+                    [appendToBody]="appendToBody"
                     [autoClose]="autoClose"
                     [autoCloseIgnore]="autoCloseIgnore">
       <button teta-button tetaDropdownHead [palette]="'primary'">

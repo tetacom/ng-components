@@ -1,15 +1,24 @@
-<div #viewport class="table-body-container table-body-container-virtual"
-     *ngIf="virtual"
-     [style.grid-template-columns]="gridTemplateColumns"
-     style="height: 100%;">
-  <ng-container
-    *uiScroll="let row of dataSource; let rowIndex = index; let last = last;" style="display: flex;flex-grow: 1">
+<!--<div #viewport class="table-body-container table-body-container-virtual"-->
+<!--     *ngIf="virtual"-->
+<!--     [style.grid-template-columns]="getTemplateColumns()"-->
+<!--     style="height: 100%;">-->
+<!--  <ng-container-->
+<!--    *uiScroll="let row of dataSource; let rowIndex = index; let last = last;" style="display: flex;flex-grow: 1">-->
+<!--    <ng-container *ngTemplateOutlet="bodyTemplate; context: {row: row, rowIndex: rowIndex}"></ng-container>-->
+<!--  </ng-container>-->
+<!--  <ng-container *ngIf="aggregate">-->
+<!--    <ng-container *ngTemplateOutlet="aggTemplate;"></ng-container>-->
+<!--  </ng-container>-->
+<!--</div>-->
+
+<cdk-virtual-scroll-viewport *ngIf="virtual"
+                             class="table-body-container"
+                             [itemSize]="24">
+  <ng-container *cdkVirtualFor="let row of data;templateCacheSize: 0; let rowIndex = index; trackBy: trackRow;">
     <ng-container *ngTemplateOutlet="bodyTemplate; context: {row: row, rowIndex: rowIndex}"></ng-container>
   </ng-container>
-  <ng-container *ngIf="aggregate">
-    <ng-container *ngTemplateOutlet="aggTemplate;"></ng-container>
-  </ng-container>
-</div>
+</cdk-virtual-scroll-viewport>
+
 
 <div *ngIf="!virtual"
      class="table-body-container"
