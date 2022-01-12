@@ -1,6 +1,6 @@
-import { IRect } from '../contract/i-rect';
-import { Align } from '../enum/align.enum';
-import { VerticalAlign } from '../enum/vertical-align.enum';
+import {IRect} from '../contract/i-rect';
+import {Align} from '../enum/align.enum';
+import {VerticalAlign} from '../enum/vertical-align.enum';
 
 export class PositionUtil {
   public static getPosition(
@@ -9,7 +9,13 @@ export class PositionUtil {
     align: Align,
     verticalAlign: VerticalAlign,
     margin: number = 0,
-    verticalMargin: number = 0
+    verticalMargin: number = 0,
+    transformedParentRect: IRect = {
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0
+    }
   ): IRect {
     const rect: IRect = {};
     const elementWidth = elementPosition.right - elementPosition.left;
@@ -40,7 +46,7 @@ export class PositionUtil {
     if (verticalAlign === VerticalAlign.auto) {
       if (
         containerPosition.bottom +
-          (elementPosition.bottom - elementPosition.top) <=
+        (elementPosition.bottom - elementPosition.top) <=
         window.innerHeight
       ) {
         verticalAlign = VerticalAlign.bottom;
@@ -49,7 +55,7 @@ export class PositionUtil {
       }
     }
     if (verticalAlign === VerticalAlign.top) {
-      rect.bottom = window.innerHeight - containerPosition.top + verticalMargin;
+      rect.top = containerPosition.top - elementHeight - verticalMargin;
     }
     if (verticalAlign === VerticalAlign.bottom) {
       rect.top = containerPosition.bottom + verticalMargin;
@@ -69,12 +75,16 @@ export class PositionUtil {
     if (rect.top < 0) {
       rect.top = 0;
     }
-    if (verticalAlign === VerticalAlign.bottom) {
+    if (verticalAlign === VerticalAlign.bottom || verticalAlign === VerticalAlign.center) {
       rect.maxHeight = window.innerHeight - rect.top;
     }
     if (verticalAlign === VerticalAlign.top) {
       rect.maxHeight = containerPosition.top;
     }
+    rect.left = rect.left - transformedParentRect.left;
+    rect.right = rect.right - transformedParentRect.left;
+    rect.top = rect.top - transformedParentRect.top;
+    rect.bottom = rect.bottom ? rect.bottom - transformedParentRect.bottom : rect.bottom;
     return rect;
   }
 
