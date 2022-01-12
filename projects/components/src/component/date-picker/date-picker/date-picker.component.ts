@@ -10,14 +10,16 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { PickerLocaleService } from '../service/picker-locale.service';
-import { takeWhile } from 'rxjs/operators';
-import { DatePeriod } from '../model/date-period';
-import { PickerLocaleModel } from '../model/picker-locale-model';
-import { DatePickerMode } from '../model/date-picker-mode.enum';
-import { DateUtil } from '../../../util/date-util';
-import { DatePickerUtil } from '../util/date-picker-util';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {PickerLocaleService} from '../service/picker-locale.service';
+import {takeWhile} from 'rxjs/operators';
+import {DatePeriod} from '../model/date-period';
+import {PickerLocaleModel} from '../model/picker-locale-model';
+import {DatePickerMode} from '../model/date-picker-mode.enum';
+import {DateUtil} from '../../../util/date-util';
+import {DatePickerUtil} from '../util/date-picker-util';
+import {Align} from '../../../common/enum/align.enum';
+import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
 
 export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -33,8 +35,7 @@ export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DatePickerComponent
-  implements ControlValueAccessor, OnInit, OnDestroy
-{
+  implements ControlValueAccessor, OnInit, OnDestroy {
   @Input() disabled: boolean;
   @Input() invalid: boolean;
   @Input() firstDayOfWeek = 1;
@@ -45,6 +46,8 @@ export class DatePickerComponent
   @Input() maxDate: Date;
   @Input() minYearDate: Date;
   @Input() maxYearDate: Date;
+  @Input() align: Align = Align.left;
+  @Input() verticalAlign: VerticalAlign = VerticalAlign.auto;
   @Input() appendToBody: boolean;
 
   @HostBinding('class.datepicker-wide')
@@ -130,9 +133,11 @@ export class DatePickerComponent
     this._cdr.markForCheck();
   }
 
-  onChange = (_: any) => {};
+  onChange = (_: any) => {
+  };
 
-  onTouched = () => {};
+  onTouched = () => {
+  };
 
   registerOnChange(fn: (_: any) => void): void {
     this.onChange = fn;
@@ -142,7 +147,8 @@ export class DatePickerComponent
     this.onTouched = fn;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   ngOnDestroy() {
     this._alive = false;
