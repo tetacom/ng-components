@@ -10,15 +10,15 @@ import {
   Output,
   Renderer2,
 } from '@angular/core';
-import { DomUtil } from '../../common/util/dom-util';
-import { PositionUtil } from '../../common/util/position-util';
-import { Align } from '../../common/enum/align.enum';
-import { VerticalAlign } from '../../common/enum/vertical-align.enum';
-import { DropdownHeadDirective } from './dropdown-head.directive';
-import { DropdownContentDirective } from './dropdown-content.directive';
-import { AutoCloseIgnoreCase } from '../../common/contract/auto-close-ignore-case';
-import { IRect } from '../../common/contract/i-rect';
-import { takeWhile, throttleTime } from 'rxjs/operators';
+import {DomUtil} from '../../common/util/dom-util';
+import {PositionUtil} from '../../common/util/position-util';
+import {Align} from '../../common/enum/align.enum';
+import {VerticalAlign} from '../../common/enum/vertical-align.enum';
+import {DropdownHeadDirective} from './dropdown-head.directive';
+import {DropdownContentDirective} from './dropdown-content.directive';
+import {AutoCloseIgnoreCase} from '../../common/contract/auto-close-ignore-case';
+import {IRect} from '../../common/contract/i-rect';
+import {takeWhile, throttleTime} from 'rxjs/operators';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
@@ -61,7 +61,7 @@ export class DropdownBase {
   })
   protected _head: ElementRef;
 
-  @ContentChild(DropdownContentDirective, { static: false })
+  @ContentChild(DropdownContentDirective, {static: false})
   protected _content: DropdownContentDirective;
 
   protected _body: HTMLElement | null = null;
@@ -78,7 +78,7 @@ export class DropdownBase {
     this._zone.onStable
       .pipe(
         takeWhile((_) => this._alive),
-        throttleTime(10, undefined, { trailing: true })
+        throttleTime(10, undefined, {trailing: true})
       )
       .subscribe((_) => {
         if (this._head?.nativeElement && this._body) {
@@ -164,7 +164,6 @@ export class DropdownBase {
     const container = (this._body =
       this._body || renderer.createElement('div'));
     renderer.addClass(container, 'dropdown');
-
     if (this.className != null) {
       if (this.className instanceof Array && this.className.length > 0) {
         this.className.forEach((_) => {
@@ -183,28 +182,42 @@ export class DropdownBase {
   }
 
   private setPosition(container: HTMLElement, target: HTMLElement): void {
-    const containerRect = container.getBoundingClientRect();
+    const containerPosition = container.getBoundingClientRect();
+    const targetPosition = target.getBoundingClientRect();
+
     const rect: IRect = {
-      bottom: containerRect.bottom,
-      top: containerRect.top,
-      left: containerRect.left,
-      right: containerRect.right,
+      bottom: containerPosition.bottom,
+      top: containerPosition.top,
+      left: containerPosition.left,
+      right: containerPosition.right,
     };
-    // const transformedParent = DomUtil.findTransformedParent(container);
-    // console.log(transformedParent);
-    // if (transformedParent) {
-    //   const parentPosition = transformedParent.getBoundingClientRect();
-    //   rect.left = rect.left - parentPosition.left;
-    //   rect.top = rect.top - parentPosition.top;
-    //   rect.bottom = parentPosition.bottom - rect.top;
-    //   rect.right = parentPosition.right - rect.right;
-    // }
+
+    const targetRect: IRect = {
+      bottom: targetPosition.bottom,
+      top: targetPosition.top,
+      left: targetPosition.left,
+      right: targetPosition.right,
+    };
+
+    const targetTransformedParent = DomUtil.findTransformedParent(target);
+    let parentPosition = {
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0
+    };
+    if (targetTransformedParent) {
+      parentPosition = targetTransformedParent.getBoundingClientRect();
+    }
 
     const position = PositionUtil.getPosition(
       rect,
-      target.getBoundingClientRect(),
+      targetRect,
       this.align,
-      this.verticalAlign
+      this.verticalAlign,
+      0,
+      0,
+      parentPosition
     );
 
     PositionUtil.setElementPosition(target, position);
