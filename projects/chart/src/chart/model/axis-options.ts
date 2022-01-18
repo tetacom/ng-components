@@ -6,7 +6,7 @@ export interface AxisOptions {
   title?: string;
   min?: number;
   max?: number;
-  visible: boolean;
+  visible?: boolean;
   tickFormat?: (d: any) => string;
   type?: AxisType;
   zoom?: boolean;

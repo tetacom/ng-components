@@ -1,6 +1,13 @@
 <ng-container *ngIf="size | async as s">
   <teta-tooltip [size]="s"></teta-tooltip>
-  <svg [tetaZoomable] [size]="s" [config]="config" [attr.width]="s.width" [attr.height]="s.height" (mouseleave)="mouseLeave($event)"
+  <svg [tetaZoomable]
+       [tetaBrushable]
+       [size]="s"
+       [config]="config"
+       [attr.width]="s.width"
+       [attr.height]="s.height"
+       [attr.viewBox]="'0 0 '+s.width+' '+s.height"
+       (mouseleave)="mouseLeave($event)"
        (mousemove)="mouseMove($event)">
     <ng-container *ngIf="getVisibleRect(s) as rect">
       <defs>

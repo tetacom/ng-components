@@ -9,6 +9,8 @@ import { filter, map, merge, Observable, takeWhile, tap } from 'rxjs';
 import { ChartService } from '../../service/chart.service';
 import { ZoomService } from '../../service/zoom.service';
 import { IChartEvent } from '../../model/i-chart-event';
+import { IDisplayTooltip } from '../../model/i-display-tooltip';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'teta-tooltip',
@@ -25,6 +27,8 @@ export class TooltipComponent implements OnInit, OnDestroy {
     right: string;
   }>;
 
+  displayTooltips: Observable<string>;
+
   tooltips = [];
 
   private alive = true;
@@ -34,7 +38,8 @@ export class TooltipComponent implements OnInit, OnDestroy {
   constructor(
     private svc: ChartService,
     private cdr: ChangeDetectorRef,
-    private zoomService: ZoomService
+    private zoomService: ZoomService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -59,21 +64,46 @@ export class TooltipComponent implements OnInit, OnDestroy {
       tap((_) => this.cdr.detectChanges())
     );
 
-    merge(
+    const transformHtml = (html) => {
+      return this.sanitizer.bypassSecurityTrustHtml(html);
+    };
+
+    const defaultFormatter = (tooltips: IDisplayTooltip[]) => {
+      let html = '';
+
+      tooltips.forEach((_) => {
+        const indicatorStyle = `display:block; width: 10px; height: 2px; background-color: ${_?.series?.color}`;
+
+        html += `<div class="display-flex align-center"><span class="margin-right-1" style="${indicatorStyle}"></span>
+          <span class="font-title-3">${_.series.name}
+          <span class="font-body-3">x: ${_.point.x?.toFixed(
+            2
+          )} y: ${_.point.y?.toFixed(2)}</span></span></div>`;
+      });
+
+      return transformHtml(html);
+    };
+
+    const formatter = this.svc.config?.tooltip?.format;
+
+    this.displayTooltips = merge(
       this.svc.pointerMove.pipe(tap((_) => (this.tooltips = []))),
       this.svc.tooltips
-    )
-      .pipe(
-        takeWhile((_) => this.alive),
-        filter((_) => !_?.event),
-        map((tooltip: any) => {
-          if (tooltip) {
-            this.tooltips.push(tooltip);
-          }
-          return this.tooltips;
-        })
-      )
-      .subscribe();
+    ).pipe(
+      takeWhile((_) => this.alive),
+      filter((_) => !_['event']),
+      map((tooltip: any) => {
+        if (tooltip) {
+          this.tooltips.push(tooltip);
+        }
+
+        const formatted = formatter
+          ? formatter(this.tooltips)
+          : defaultFormatter(this.tooltips);
+
+        return formatted;
+      })
+    );
   }
 
   private getPoisition({ event }: IChartEvent<any>) {

@@ -5,8 +5,7 @@ import { map, Observable, Subject } from 'rxjs';
 import { ScaleService } from './scale.service';
 import { IChartEvent } from '../model/i-chart-event';
 import * as d3 from 'd3';
-import { BroadcastService } from './broadcast.service';
-import { ZoomService } from './zoom.service';
+import { IDisplayTooltip } from '../model/i-display-tooltip';
 
 @Injectable({
   providedIn: 'root',
@@ -14,13 +13,13 @@ import { ZoomService } from './zoom.service';
 export class ChartService {
   public size: Observable<DOMRect>;
   public pointerMove: Observable<IChartEvent<any>>;
-  public tooltips: Observable<any>;
+  public tooltips: Observable<IDisplayTooltip>;
   public sync: d3.Dispatch<any>;
 
   private _config: IChartConfig;
   private size$ = new Subject<DOMRect>();
   private pointerMove$ = new Subject<IChartEvent<any>>();
-  private tooltips$ = new Subject<any>();
+  private tooltips$ = new Subject<IDisplayTooltip>();
 
   constructor(
     private axesService: AxesService,
@@ -33,7 +32,7 @@ export class ChartService {
     this.size
       .pipe(
         map((size) => {
-          this.scaleService.createScales(size);
+          this.scaleService.createScales(size, this._config);
         })
       )
       .subscribe();
@@ -41,6 +40,22 @@ export class ChartService {
 
   public init(config: IChartConfig) {
     this._config = config;
+
+    if (config.inverted) {
+      this._config.series = this._config?.series?.map((serie) => {
+        return {
+          ...serie,
+          data: serie?.data?.map((point) => {
+            return {
+              ...point,
+              x: point?.y,
+              y: point?.x,
+            };
+          }),
+        };
+      });
+    }
+
     this.axesService.init(this._config);
   }
 
@@ -52,7 +67,7 @@ export class ChartService {
     this.pointerMove$.next({ event });
   }
 
-  public setTooltip(tooltip: any) {
+  public setTooltip(tooltip: IDisplayTooltip) {
     this.tooltips$.next(tooltip);
   }
 

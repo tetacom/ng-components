@@ -16,7 +16,7 @@ export class BroadcastService {
     this.emitter.next(value);
   }
 
-  subscribe(channel: string): Observable<IBroadcastMessage> {
+  subscribeToChannel(channel: string): Observable<IBroadcastMessage> {
     return this.emitter
       .asObservable()
       .pipe(filter((msg) => channel && msg.channel === channel));

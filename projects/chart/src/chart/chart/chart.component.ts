@@ -3,6 +3,7 @@ import {
   Component,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   SimpleChanges,
 } from '@angular/core';
@@ -22,7 +23,7 @@ import { AxesService } from '../service/axes.service';
   providers: [ChartService, ZoomService, ScaleService, AxesService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChartComponent implements OnInit, OnChanges {
+export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   legendSeries: Array<Series<BasePoint>>;
 
   @Input() set config(config: IChartConfig) {
@@ -35,9 +36,18 @@ export class ChartComponent implements OnInit, OnChanges {
 
   private _config;
 
-  constructor(private _service: ChartService) {}
+  constructor(
+    private _service: ChartService,
+    private zoomService: ZoomService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {}
 
   ngOnInit(): void {}
+
+  ngAfterViewInit() {}
+
+  ngOnDestroy() {
+    this.zoomService.broadcastSubscribtion?.unsubscribe();
+  }
 }

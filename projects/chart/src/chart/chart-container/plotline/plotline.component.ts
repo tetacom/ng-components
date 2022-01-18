@@ -60,6 +60,14 @@ export class PlotlineComponent implements OnInit {
 
     const drag = d3
       .drag()
+      .subject(() => {
+        if (this.axis.orientation === AxisOrientation.y) {
+          return { y: plotlineElement.attr('y1') };
+        }
+        if (this.axis.orientation === AxisOrientation.x) {
+          return { x: plotlineElement.attr('x1') };
+        }
+      })
       .on(
         'start drag end',
         (event: d3.D3DragEvent<any, PlotLine, any>, d: PlotLine) => {

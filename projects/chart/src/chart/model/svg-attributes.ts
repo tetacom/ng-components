@@ -10,4 +10,5 @@ export interface SvgAttributes {
   strokeOpacity?: number;
   strokeWidth?: number;
   patternImage?: string;
+  radius?: number;
 }

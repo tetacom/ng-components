@@ -4,7 +4,6 @@ import { BasePoint } from '../../../model/base-point';
 import { AxisOrientation } from '../../../model/enum/axis-orientation';
 
 import * as d3 from 'd3';
-import { AxisType } from '../../../model/enum/axis-type';
 
 export class ExtremesBuilder implements IBuilder<Axis, [number, number]> {
   private extentAccessorMap = new Map<
@@ -16,7 +15,7 @@ export class ExtremesBuilder implements IBuilder<Axis, [number, number]> {
 
   private extremes: [number, number] = [0, 0];
 
-  build(settings: Axis): [number, number] {
+  build(settings: Axis, inverted?: boolean): [number, number] {
     const options = settings.options;
 
     const hasMin = options?.min != null;
@@ -32,6 +31,7 @@ export class ExtremesBuilder implements IBuilder<Axis, [number, number]> {
       // add negative axis!
 
       this.extremes = d3.extent(data, accessor);
+      console.log(this.extremes);
     }
 
     if (hasMin) {

@@ -5,6 +5,8 @@ import * as d3 from 'd3';
 import { AxisType } from '../model/enum/axis-type';
 import { Axis } from '../core/axis/axis';
 import { AxisOrientation } from '../model/enum/axis-orientation';
+import { ChartService } from './chart.service';
+import { IChartConfig } from '../model/i-chart-config';
 
 @Injectable({
   providedIn: 'root',
@@ -21,9 +23,11 @@ export class ScaleService {
 
   constructor(private axesService: AxesService) {}
 
-  public createScales(size: DOMRect) {
+  public createScales(size: DOMRect, config?: IChartConfig) {
     this.yScales.clear();
     this.xScales.clear();
+
+    const inverted = config?.inverted;
 
     const topBound = [...this.axesService.xAxis.values()]
       .filter((_) => _.options?.visible && _.options?.opposite)
@@ -31,6 +35,14 @@ export class ScaleService {
 
     const bottomBound = [...this.axesService.xAxis.values()]
       .filter((_) => _.options?.visible && _.options?.opposite !== true)
+      .reduce((acc, cur) => acc + cur.selfSize, 0);
+
+    const leftBound = [...this.axesService.yAxis.values()]
+      .filter((_) => _.options?.visible && _.options.opposite !== true)
+      .reduce((acc, cur) => acc + cur.selfSize, 0);
+
+    const rightBound = [...this.axesService.yAxis.values()]
+      .filter((_) => _.options?.visible && _.options.opposite)
       .reduce((acc, cur) => acc + cur.selfSize, 0);
 
     this.axesService.yAxis.forEach((axis: Axis) => {
@@ -41,14 +53,6 @@ export class ScaleService {
 
       this.yScales.set(axis.index, scale);
     });
-
-    const leftBound = [...this.axesService.yAxis.values()]
-      .filter((_) => _.options?.visible && _.options.opposite !== true)
-      .reduce((acc, cur) => acc + cur.selfSize, 0);
-
-    const rightBound = [...this.axesService.yAxis.values()]
-      .filter((_) => _.options?.visible && _.options.opposite)
-      .reduce((acc, cur) => acc + cur.selfSize, 0);
 
     this.axesService.xAxis.forEach((axis: Axis) => {
       const scale = this.getScale(axis).range([

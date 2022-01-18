@@ -85,7 +85,7 @@ export class Axis {
 
   private setExtremes(): void {
     const builder = new ExtremesBuilder();
-    this._extremes = builder.build(this);
+    this._extremes = builder.build(this, this.chartConfig?.inverted);
 
     this._extremes = d3.nice(this._extremes[0], this._extremes[1], 10);
   }

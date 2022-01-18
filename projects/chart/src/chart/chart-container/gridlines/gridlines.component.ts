@@ -12,8 +12,6 @@ import { merge, tap } from 'rxjs';
 import { ChartService } from '../../service/chart.service';
 import { ZoomService } from '../../service/zoom.service';
 
-import { generateTicks } from '../../core/utils/public-api';
-
 @Component({
   selector: '[teta-gridlines]',
   templateUrl: './gridlines.component.html',

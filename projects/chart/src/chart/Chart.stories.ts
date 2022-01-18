@@ -13,6 +13,8 @@ import * as faker from 'faker';
 import { ZoomType } from './model/enum/zoom-type';
 import { Plotband } from './model/plotband';
 import { PlotLine } from './model/plotline';
+import { DragPointType } from './model/enum/drag-point-type';
+import { TooltipTracking } from './model/enum/tooltip-tracking';
 
 export default {
   title: 'Component/Chart',
@@ -188,13 +190,53 @@ const series: Series<BasePoint>[] = seriesType.map(
       name: faker.address.cityName(),
       yAxisIndex: 0,
       xAxisIndex: 0,
+
       color: cssColorNames[randomColor()].toLowerCase(),
-      data: Array.from(Array(3000).keys()).map((key, index) => {
+      data: Array.from(Array(100).keys()).map((key, index) => {
         const num = faker.datatype.number({ min: 0, max: 500 });
         return {
           x: key,
           y: num,
         };
+      }),
+    };
+  }
+);
+
+const series2: Series<BasePoint>[] = seriesType.map(
+  (type: SeriesType, index: number) => {
+    return {
+      id: index,
+      type,
+      name: faker.address.cityName(),
+      yAxisIndex: 0,
+      xAxisIndex: 0,
+
+      color: cssColorNames[randomColor()].toLowerCase(),
+      data: Array.from(Array(3000).keys()).map((key, index) => {
+        const num = faker.datatype.number({ min: 0, max: 500 });
+
+        const point = {
+          x: key,
+          y: num,
+        };
+
+        return Object.assign(
+          index % 20 === 0
+            ? {
+                marker: {
+                  draggable: true,
+                  dragType: DragPointType.x,
+                  style: {
+                    strokeWidth: 1,
+                    stroke: cssColorNames[randomColor()].toLowerCase(),
+                    radius: 8,
+                  },
+                },
+              }
+            : {},
+          point
+        );
       }),
     };
   }
@@ -236,61 +278,39 @@ const plotbands2 = [
 
 const config: IChartConfig = {
   name: '123',
+  inverted: false,
+  tooltip: {
+    tracking: TooltipTracking.x,
+  },
   xAxis: [
     {
       type: AxisType.number,
       visible: true,
     },
-    {
-      type: AxisType.number,
-      visible: true,
-      opposite: true,
-      min: 1000,
-      max: 2000,
-      plotlines: [
-        new PlotLine({
-          value: 1345,
-          draggable: true,
-          style: {
-            stroke: cssColorNames[randomColor()].toLowerCase(),
-          },
-        }),
-      ],
-    },
   ],
   yAxis: [
     {
       type: AxisType.number,
-      visible: true,
+      visible: false,
       title: 'атм',
-      plotlines: [
-        new PlotLine({
-          value: 360,
-          draggable: true,
-          style: {
-            stroke: cssColorNames[randomColor()].toLowerCase(),
-          },
-        }),
-      ],
-    },
-    {
-      type: AxisType.number,
-      visible: true,
-      title: 'атм',
-      opposite: true,
-      min: 0,
-      max: 2000,
     },
   ],
-  zoom: {
+  brush: {
     enable: true,
-    type: ZoomType.x,
   },
-  series,
+  zoom: {
+    enable: false,
+    type: ZoomType.x,
+    syncChannel: 'channelA',
+  },
+  series: series2,
 };
 
 const config2: IChartConfig = {
   name: '123',
+  legend: {
+    enable: false,
+  },
   xAxis: [
     {
       type: AxisType.number,
@@ -300,7 +320,7 @@ const config2: IChartConfig = {
   yAxis: [
     {
       type: AxisType.number,
-      visible: true,
+      visible: false,
       title: 'атм',
       plotlines: [
         new PlotLine({
@@ -314,7 +334,7 @@ const config2: IChartConfig = {
     },
     {
       type: AxisType.number,
-      visible: true,
+      visible: false,
       title: 'атм',
       min: 0,
       max: 2000,
@@ -323,8 +343,9 @@ const config2: IChartConfig = {
   zoom: {
     enable: true,
     type: ZoomType.x,
+    syncChannel: 'channelA',
   },
-  series,
+  series: series2,
 };
 
 export const basicChart = () => ({
@@ -336,7 +357,7 @@ export const basicChart = () => ({
     config2,
   },
   template: `
-    <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: auto; height: 40vh;">
+    <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 600px; height: 40vh;">
         <teta-chart [config]="config" class="bg-background-50 border border-text-50"></teta-chart>
     </div>
     <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 100%; height: 40vh;">
