@@ -1,4 +1,6 @@
 <teta-input [label]="caption"
+            [tetaHint]="column.hint"
+            [align]="align.left"
             [formGroup]="formGroup"
             [horizontal]="horizontal"
             *ngIf="column.editable || !hideNonEditable">

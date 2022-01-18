@@ -15,6 +15,7 @@ import { FormsUtil } from '../../../../util/forms-util';
 import { TranslocoService } from '@ngneat/transloco';
 import { filter, takeWhile } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import {Align} from '../../../../common/enum/align.enum';
 
 @Component({
   selector: 'teta-property-grid-item',
@@ -53,6 +54,7 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
 
   @Input() horizontal: boolean;
   @Output() controlValueChange = new EventEmitter<IIdName<any>>();
+  align = Align;
   filterTypeEnum = FilterType;
 
   private _formGroup: FormGroup;
