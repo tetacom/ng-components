@@ -15,6 +15,7 @@ import { Plotband } from './model/plotband';
 import { PlotLine } from './model/plotline';
 import { DragPointType } from './model/enum/drag-point-type';
 import { TooltipTracking } from './model/enum/tooltip-tracking';
+import { BrushType } from './model/enum/brush-type';
 
 export default {
   title: 'Component/Chart',
@@ -182,27 +183,6 @@ const seriesType = [SeriesType.line, SeriesType.line, SeriesType.line];
 
 faker.locale = 'ru';
 
-const series: Series<BasePoint>[] = seriesType.map(
-  (type: SeriesType, index: number) => {
-    return {
-      id: index,
-      type,
-      name: faker.address.cityName(),
-      yAxisIndex: 0,
-      xAxisIndex: 0,
-
-      color: cssColorNames[randomColor()].toLowerCase(),
-      data: Array.from(Array(100).keys()).map((key, index) => {
-        const num = faker.datatype.number({ min: 0, max: 500 });
-        return {
-          x: key,
-          y: num,
-        };
-      }),
-    };
-  }
-);
-
 const series2: Series<BasePoint>[] = seriesType.map(
   (type: SeriesType, index: number) => {
     return {
@@ -221,22 +201,35 @@ const series2: Series<BasePoint>[] = seriesType.map(
           y: num,
         };
 
-        return Object.assign(
-          index % 20 === 0
-            ? {
-                marker: {
-                  draggable: true,
-                  dragType: DragPointType.x,
-                  style: {
-                    strokeWidth: 1,
-                    stroke: cssColorNames[randomColor()].toLowerCase(),
-                    radius: 8,
-                  },
-                },
-              }
-            : {},
-          point
-        );
+        if (index % 10 === 0) {
+          point.x = null;
+          point.y = null;
+        }
+
+        return point;
+      }),
+    };
+  }
+);
+
+const series: Series<BasePoint>[] = seriesType.map(
+  (type: SeriesType, index: number) => {
+    return {
+      id: index,
+      type,
+      name: faker.address.cityName(),
+      yAxisIndex: 0,
+      xAxisIndex: 0,
+      color: cssColorNames[randomColor()].toLowerCase(),
+      data: Array.from(Array(3000).keys()).map((key, index) => {
+        const num = faker.datatype.number({ min: 0, max: 500 });
+
+        const point = {
+          x: num,
+          y: key,
+        };
+
+        return point;
       }),
     };
   }
@@ -277,10 +270,10 @@ const plotbands2 = [
 ];
 
 const config: IChartConfig = {
-  name: '123',
+  name: '123123123132',
   inverted: false,
   tooltip: {
-    tracking: TooltipTracking.x,
+    tracking: TooltipTracking.y,
   },
   xAxis: [
     {
@@ -291,36 +284,7 @@ const config: IChartConfig = {
   yAxis: [
     {
       type: AxisType.number,
-      visible: false,
-      title: 'атм',
-    },
-  ],
-  brush: {
-    enable: true,
-  },
-  zoom: {
-    enable: false,
-    type: ZoomType.x,
-    syncChannel: 'channelA',
-  },
-  series: series2,
-};
-
-const config2: IChartConfig = {
-  name: '123',
-  legend: {
-    enable: false,
-  },
-  xAxis: [
-    {
-      type: AxisType.number,
       visible: true,
-    },
-  ],
-  yAxis: [
-    {
-      type: AxisType.number,
-      visible: false,
       title: 'атм',
       plotlines: [
         new PlotLine({
@@ -332,12 +296,56 @@ const config2: IChartConfig = {
         }),
       ],
     },
+  ],
+  brush: {
+    enable: false,
+    type: BrushType.y,
+  },
+  zoom: {
+    enable: true,
+    type: ZoomType.y,
+    syncChannel: '',
+  },
+  series,
+};
+
+const config2: IChartConfig = {
+  name: '123',
+  tooltip: {
+    tracking: TooltipTracking.y,
+  },
+  legend: {
+    enable: false,
+  },
+  inverted: false,
+  xAxis: [
     {
       type: AxisType.number,
-      visible: false,
-      title: 'атм',
+      visible: true,
+    },
+    {
+      type: AxisType.number,
+      visible: true,
+      opposite: true,
       min: 0,
-      max: 2000,
+      max: 1000,
+    },
+  ],
+  yAxis: [
+    {
+      type: AxisType.number,
+      visible: true,
+      title: 'атм',
+      opposite: true,
+      plotlines: [
+        new PlotLine({
+          value: 360,
+          draggable: true,
+          style: {
+            stroke: cssColorNames[randomColor()].toLowerCase(),
+          },
+        }),
+      ],
     },
   ],
   zoom: {
@@ -357,11 +365,11 @@ export const basicChart = () => ({
     config2,
   },
   template: `
-    <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 600px; height: 40vh;">
-        <teta-chart [config]="config" class="bg-background-50 border border-text-50"></teta-chart>
-    </div>
-    <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 100%; height: 40vh;">
-        <teta-chart [config]="config2" class="bg-background-50 border border-text-50"></teta-chart>
+    <div>
+      <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 50%; height: 100vh;">
+          <teta-chart [config]="config" class="bg-background-50 border border-text-50"></teta-chart>
+      </div>
+
     </div>
 `,
 });

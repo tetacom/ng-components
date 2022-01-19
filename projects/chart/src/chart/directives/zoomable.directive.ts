@@ -1,10 +1,7 @@
 import { Directive, ElementRef, HostBinding, Input } from '@angular/core';
 import { ZoomService } from '../service/zoom.service';
 import { ChartService } from '../service/chart.service';
-import { withLatestFrom } from 'rxjs';
-import { IChartEvent } from '../model/i-chart-event';
 import { IChartConfig } from '../model/i-chart-config';
-import { D3ZoomEvent } from 'd3';
 
 @Directive({
   selector: 'svg:svg[tetaZoomable]',

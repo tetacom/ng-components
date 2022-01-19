@@ -1,22 +1,14 @@
 import { ElementRef, Injectable } from '@angular/core';
 import * as d3 from 'd3';
-import { D3ZoomEvent, zoomIdentity, ZoomTransform } from 'd3';
+import { D3ZoomEvent, zoomIdentity } from 'd3';
 import { ScaleService } from './scale.service';
-import {
-  map,
-  merge,
-  Observable,
-  of,
-  Subject,
-  Subscription,
-  withLatestFrom,
-} from 'rxjs';
+import { map, merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { IChartEvent } from '../model/i-chart-event';
 import { ZoomType } from '../model/enum/zoom-type';
 import { IChartConfig } from '../model/i-chart-config';
 import { BroadcastService } from './broadcast.service';
 import { ChartService } from './chart.service';
-import { throttleTime } from 'rxjs/operators';
+import { BrushType } from '../model/enum/brush-type';
 
 @Injectable({
   providedIn: 'root',
@@ -57,6 +49,8 @@ export class ZoomService {
   }
 
   applyZoom(svgElement: ElementRef, config: IChartConfig, size: DOMRect) {
+    this.broadcastSubscribtion?.unsubscribe();
+
     this.svg = d3.select(svgElement.nativeElement);
 
     const zoomType = config?.zoom?.type;
@@ -84,7 +78,11 @@ export class ZoomService {
           this.broadcastService.broadcast({
             channel: config?.zoom?.syncChannel,
             message: event,
-            domain: this.scaleService.xScales.get(0).domain(),
+            domain: this.scaleService[
+              config?.zoom?.type === ZoomType.x ? 'xScales' : 'yScales'
+            ]
+              .get(config.brush?.axisIndex ?? 0)
+              .domain(),
           });
         }
       }
@@ -103,7 +101,10 @@ export class ZoomService {
       this.svg.call(this.zoom);
       this.svg.call(this.zoom.transform, this.initialZoom);
 
-      const x = this.x.get(0);
+      const sc =
+        config?.zoom?.type === ZoomType.x
+          ? this.x.get(config.brush?.axisIndex ?? 0)
+          : this.y.get(config.brush?.axisIndex ?? 0);
 
       this.broadcastSubscribtion = this.broadcastService
         .subscribeToChannel(config?.zoom?.syncChannel)
@@ -116,13 +117,18 @@ export class ZoomService {
               if (message.selection) {
                 const s = message.selection;
 
-                const domain = x.domain();
+                const domain = sc.domain();
 
                 const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
 
-                const transform = zoomIdentity
-                  .translate(-x(s[0]) * scale, 0)
-                  .scale(scale);
+                let transform = zoomIdentity.scale(scale);
+
+                if (message?.brushType === BrushType.x) {
+                  transform = transform.translate(-sc(s[0]), 0);
+                }
+                if (message?.brushType === BrushType.y) {
+                  transform = transform.translate(0, -sc(s[0]));
+                }
 
                 this.setZoom(transform);
 

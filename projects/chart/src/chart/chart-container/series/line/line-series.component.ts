@@ -16,7 +16,6 @@ import { filter, map, Observable, tap } from 'rxjs';
 import { ZoomService } from '../../../service/zoom.service';
 import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
 import { DragPointType } from '../../../model/enum/drag-point-type';
-import { AxisOrientation } from '../../../model/enum/axis-orientation';
 
 @Component({
   selector: 'svg:svg[teta-line-series]',
@@ -36,6 +35,7 @@ export class LineSeriesComponent<T extends BasePoint>
 
   display: Observable<number>;
 
+  svgElement: SVGGeometryElement;
   x: any;
   y: any;
 
@@ -103,6 +103,11 @@ export class LineSeriesComponent<T extends BasePoint>
       .data(draggableMarkers);
 
     element.call(dragMarkers as any);
+
+    this.svgElement = d3
+      .select(this.element.nativeElement)
+      .select('.line')
+      .node() as SVGGeometryElement;
   }
 
   getPath() {
@@ -111,6 +116,7 @@ export class LineSeriesComponent<T extends BasePoint>
 
     const line = d3
       .line<BasePoint>()
+      .defined((point) => point.x !== null || point.y !== null)
       .x((point) => this.x(point.x))
       .y((point) => this.y(point.y));
 
@@ -124,32 +130,63 @@ export class LineSeriesComponent<T extends BasePoint>
   getTransform(event: any): Pick<BasePoint, 'x' | 'y'> {
     const mouse = d3.pointer(event);
 
-    const foundX = this.scaleService.xScales.get(this.series.xAxisIndex);
-    const foundY = this.scaleService.yScales.get(this.series.yAxisIndex);
-
     const tooltipTracking =
       this.svc.config?.tooltip?.tracking ?? TooltipTracking.x;
 
-    const bisect = d3.bisector(this.accessorMap.get(tooltipTracking)).left;
+    const foundX = this.scaleService.xScales.get(this.series.xAxisIndex);
+    const foundY = this.scaleService.yScales.get(this.series.yAxisIndex);
 
-    const scale = tooltipTracking === TooltipTracking.x ? foundX : foundY;
+    if (tooltipTracking === TooltipTracking.x) {
+      let beginning = 0;
+      let end = this.svgElement.getTotalLength();
+      let target = null;
+      let pos;
 
-    const coordinate = scale.invert(mouse[tooltipTracking]);
+      while (true) {
+        target = Math.floor((beginning + end) / 2);
 
-    const index = bisect(this.series.data, coordinate, 0);
+        pos = this.svgElement.getPointAtLength(target);
 
-    const foundPoint = this.series.data[index] ? this.series.data[index] : null;
-
-    if (foundPoint) {
-      this.svc.setTooltip({ point: foundPoint, series: this.series });
-
-      if (foundPoint.marker?.draggable) {
-        return null;
+        if ((target === end || target === beginning) && pos.x !== mouse[0]) {
+          break;
+        }
+        if (pos.x > mouse[0]) end = target;
+        else if (pos.x < mouse[0]) beginning = target;
+        else break; //position found
       }
-      return {
-        x: foundX(foundPoint?.x),
-        y: foundY(foundPoint?.y),
-      };
+
+      this.svc.setTooltip({
+        point: { x: foundX.invert(pos.x), y: foundY.invert(mouse[1]) },
+        series: this.series,
+      });
+    }
+
+    if (tooltipTracking === TooltipTracking.y) {
+      const curY = foundY.invert(mouse[1]);
+      const minY = Math.floor(curY);
+      const maxY = Math.ceil(curY);
+
+      const bisect = d3.bisector((point: BasePoint) => point.y).left;
+
+      const min = bisect(this.series.data, minY);
+      const max = bisect(this.series.data, maxY);
+
+      if (min && max) {
+        const yDelta = curY - minY;
+        const minP = this.series.data[min].x;
+        const maxP = this.series.data[max].x;
+        const curP = minP + (maxP - minP) * yDelta;
+
+        this.svc.setTooltip({
+          point: { x: curP, y: foundY.invert(mouse[1]) },
+          series: this.series,
+        });
+
+        return {
+          x: foundX(curP),
+          y: mouse[1],
+        };
+      }
     }
 
     return null;

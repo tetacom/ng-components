@@ -15,58 +15,61 @@
           <rect [attr.x]="rect.left" [attr.y]="rect.top" [attr.width]="rect.width" [attr.height]="rect.height"></rect>
         </clipPath>
       </defs>
+
+      <g class="y-axis-container">
+        <g *ngFor="let item of yAxes | keyvalue"
+           teta-y-axis
+           [axis]="item.value"
+           [size]="s"
+           [attr.transform]="getTranslate(item.value, s)"></g>
+      </g>
+      <g class="x-axis-container">
+        <g *ngFor="let item of xAxes | keyvalue"
+           teta-x-axis
+           [axis]="item.value"
+           [size]="s"
+           [attr.transform]="getTranslate(item.value, s)"></g>
+      </g>
+      <g [attr.clip-path]="'url(#visible-window-'+ id() +')'">
+        <g [attr.transform]="'translate('+ rect.left +', '+ rect.top +')'">
+          <g class="gridlines" teta-gridlines [size]="s"></g>
+          <g class="series-container">
+            <g teta-series-host
+               *ngFor="let series of config.series"
+               [series]="series"
+               [size]="s"></g>
+          </g>
+
+          <g class="x-axis-plotline-container">
+            <ng-container *ngFor="let axis of config.xAxis; let i = index">
+              <g teta-plot-line *ngFor="let plotline of axis.plotlines" [plotline]="plotline" [size]="s"
+                 [axis]="xAxes.get(i)"></g>
+            </ng-container>
+          </g>
+
+          <g class="y-axis-plotline-container">
+            <ng-container *ngFor="let axis of config.yAxis; let i = index">
+              <g teta-plot-line *ngFor="let plotline of axis.plotlines" [plotline]="plotline" [size]="s"
+                 [axis]="yAxes.get(i)"></g>
+            </ng-container>
+          </g>
+
+          <g class="x-axis-plotband-container">
+            <ng-container *ngFor="let axis of config.xAxis; let i = index">
+              <g teta-plot-band *ngFor="let plotband of axis.plotbands" [plotband]="plotband" [size]="s"
+                 [axis]="xAxes.get(i)"></g>
+            </ng-container>
+          </g>
+          <g class="y-axis-plotband-container">
+            <ng-container *ngFor="let axis of config.yAxis; let i = index">
+              <g teta-plot-band *ngFor="let plotband of axis.plotbands" [plotband]="plotband" [size]="s"
+                 [axis]="yAxes.get(i)"></g>
+            </ng-container>
+          </g>
+          <g class="series-tooltip-line-marker"></g>
+        </g>
+      </g>
     </ng-container>
-    <g class="y-axis-container">
-      <g *ngFor="let item of yAxes | keyvalue"
-         teta-y-axis
-         [axis]="item.value"
-         [size]="s"
-         [attr.transform]="getYAxisTranslate(item.value, s)"></g>
-    </g>
-    <g class="x-axis-container">
-      <g *ngFor="let item of xAxes | keyvalue"
-         teta-x-axis
-         [axis]="item.value"
-         [size]="s"
-         [attr.transform]="getXAxisTranslate(item.value, s)"></g>
-    </g>
-    <g [attr.clip-path]="'url(#visible-window-'+ id() +')'">
-      <g class="gridlines" teta-gridlines [size]="s"></g>
-      <g class="series-container">
-        <g teta-series-host
-           *ngFor="let series of config.series"
-           [series]="series"
-           [size]="s"></g>
-      </g>
-
-      <g class="x-axis-plotline-container">
-        <ng-container *ngFor="let axis of config.xAxis; let i = index">
-          <g teta-plot-line *ngFor="let plotline of axis.plotlines" [plotline]="plotline" [size]="s"
-             [axis]="xAxes.get(i)"></g>
-        </ng-container>
-      </g>
-
-      <g class="y-axis-plotline-container">
-        <ng-container *ngFor="let axis of config.yAxis; let i = index">
-          <g teta-plot-line *ngFor="let plotline of axis.plotlines" [plotline]="plotline" [size]="s"
-             [axis]="yAxes.get(i)"></g>
-        </ng-container>
-      </g>
-
-      <g class="x-axis-plotband-container">
-        <ng-container *ngFor="let axis of config.xAxis; let i = index">
-          <g teta-plot-band *ngFor="let plotband of axis.plotbands" [plotband]="plotband" [size]="s"
-             [axis]="xAxes.get(i)"></g>
-        </ng-container>
-      </g>
-      <g class="y-axis-plotband-container">
-        <ng-container *ngFor="let axis of config.yAxis; let i = index">
-          <g teta-plot-band *ngFor="let plotband of axis.plotbands" [plotband]="plotband" [size]="s"
-             [axis]="yAxes.get(i)"></g>
-        </ng-container>
-      </g>
-      <g class="series-tooltip-line-marker"></g>
-    </g>
   </svg>
 
 

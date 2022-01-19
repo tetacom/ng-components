@@ -27,8 +27,6 @@ export class ScaleService {
     this.yScales.clear();
     this.xScales.clear();
 
-    const inverted = config?.inverted;
-
     const topBound = [...this.axesService.xAxis.values()]
       .filter((_) => _.options?.visible && _.options?.opposite)
       .reduce((acc, cur) => acc + cur.selfSize, 0);
@@ -47,8 +45,8 @@ export class ScaleService {
 
     this.axesService.yAxis.forEach((axis: Axis) => {
       const scale = this.getScale(axis).range([
-        topBound,
-        size.height - bottomBound,
+        0,
+        size.height - topBound - bottomBound,
       ]);
 
       this.yScales.set(axis.index, scale);
@@ -56,8 +54,8 @@ export class ScaleService {
 
     this.axesService.xAxis.forEach((axis: Axis) => {
       const scale = this.getScale(axis).range([
-        leftBound,
-        size.width - rightBound,
+        0,
+        size.width - leftBound - rightBound,
       ]);
 
       this.xScales.set(axis.index, scale);
