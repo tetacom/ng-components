@@ -21,3 +21,8 @@
             (stateChange)="log('stateChange', $event)"
             (valueChange)="log('valueChange', $event)"
             (activeRowChange)="log('activeRowChange', $event)"></teta-table>
+<ng-template let-data>
+  <div class="padding-2">
+    Some additional stuff here
+  </div>
+</ng-template>

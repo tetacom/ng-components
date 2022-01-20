@@ -23,7 +23,7 @@ import {DateFilter} from '../../filter/contarct/date-filter';
 import {IDictionary} from '../../../common/contract/i-dictionary';
 import {IIdName} from '../../../common/contract/i-id-name';
 import {DateUtil} from '../../../util/date-util';
-import * as hash from 'object-hash';
+import objectHash from 'object-hash';
 import {TableColumnStore} from '../contract/table-column-store';
 import {ICellValue} from '../contract/i-cell-value';
 
@@ -38,6 +38,7 @@ export class TableService<T> {
   selectType: SelectType;
   editRowStart: Observable<ICellCoordinates<T>>;
   editRowStop: Observable<ICellCoordinates<T>>;
+
   editCellStart: Observable<ICellCoordinates<T>>;
   editCellStop: Observable<ICellCoordinates<T>>;
   valueChanged: Observable<ICellCoordinates<T>>;
@@ -121,7 +122,11 @@ export class TableService<T> {
 
   setColumns(columns: TableColumn[]): void {
     this.initialColumns = columns ? columns.map((_) => new TableColumn(_)) : [];
-    this.initialColumnsHash = hash.sha1(this.initialColumns);
+    this.initialColumnsHash = objectHash(this.initialColumns, {
+      algorithm: 'sha1',
+      ignoreUnknown: true,
+      excludeKeys: key => key === 'headDropdownTemplate',
+    });
     const restored = this.restoreColumns();
 
     if (restored) {
