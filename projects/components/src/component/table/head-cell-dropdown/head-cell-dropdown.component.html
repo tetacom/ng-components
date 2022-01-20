@@ -18,6 +18,15 @@
       </teta-toolbar>
     </ng-template>
   </teta-tab>
+  <teta-tab *ngIf="column.headDropdownTemplate">
+    <ng-template tetaTabTitle>
+      <teta-icon [name]="'measurement'"></teta-icon>
+    </ng-template>
+    <ng-template tetaTabContent>
+      <ng-container
+        *ngTemplateOutlet="column.headDropdownTemplate; context: {$implicit: column, column: column}"></ng-container>
+    </ng-template>
+  </teta-tab>
   <teta-tab>
     <ng-template tetaTabTitle>
       <teta-icon [name]="'menu'"></teta-icon>

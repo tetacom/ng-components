@@ -319,7 +319,9 @@ export class TableComponent<T>
       this._svc.setCookieName(this.cookieName);
     }
     if (changes.hasOwnProperty('columns')) {
-      this._svc.setColumns(this.columns);
+      if(this.columns !== null && this.columns !== undefined) {
+        this._svc.setColumns(this.columns);
+      }
     }
     if (changes.hasOwnProperty('data')) {
       this._svc.setData(this.data);
