@@ -1,15 +1,17 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { ChartService } from '../service/chart.service';
 import { IChartConfig } from '../model/i-chart-config';
-import { defaultChartConfig } from '../default/default-chart-config';
+
 import { BasePoint } from '../model/base-point';
 import { Series } from '../model/series';
 import { ZoomService } from '../service/zoom.service';
@@ -17,6 +19,11 @@ import { ScaleService } from '../service/scale.service';
 import { BrushService } from '../service/brush.service';
 import { AxesService } from '../service/axes.service';
 import { ChartBounds } from '../model/chart-bounds';
+
+import { IChartEvent } from '../model/i-chart-event';
+import { PlotLine } from '../model/plotline';
+import { Plotband } from '../model/plotband';
+import { IPointMove } from '../model/i-point-move';
 
 @Component({
   selector: 'teta-chart',
@@ -34,6 +41,21 @@ import { ChartBounds } from '../model/chart-bounds';
 export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   legendSeries: Array<Series<BasePoint>>;
 
+  @Output()
+  plotBandsMove: EventEmitter<IChartEvent<Plotband>> = new EventEmitter<
+    IChartEvent<Plotband>
+  >();
+
+  @Output()
+  plotLinesMove: EventEmitter<IChartEvent<PlotLine>> = new EventEmitter<
+    IChartEvent<PlotLine>
+  >();
+
+  @Output()
+  pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<
+    IChartEvent<IPointMove>
+  >();
+
   @Input() set config(config: IChartConfig) {
     this._config = Object.assign(
       {
@@ -41,8 +63,6 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
       },
       config
     );
-
-    console.log(this._config);
   }
 
   get config() {
@@ -51,14 +71,23 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
 
   private _config;
 
-  constructor(
-    private _service: ChartService,
-    private zoomService: ZoomService
-  ) {}
+  constructor(private svc: ChartService, private zoomService: ZoomService) {}
 
   ngOnChanges(changes: SimpleChanges) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.svc.plotbandMove.subscribe((_) => {
+      this.plotBandsMove.emit(_);
+    });
+
+    this.svc.plotlineMove.subscribe((_) => {
+      this.plotLinesMove.emit(_);
+    });
+
+    this.svc.pointMove.subscribe((_) => {
+      this.pointMove.emit(_);
+    });
+  }
 
   ngAfterViewInit() {}
 

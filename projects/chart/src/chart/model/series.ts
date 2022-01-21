@@ -1,6 +1,7 @@
 import { BasePoint } from './base-point';
 import { SeriesType } from './enum/series-type';
 import { SeriesBaseComponent } from '../base/series-base.component';
+import { SvgAttributes } from './svg-attributes';
 
 export interface Series<T extends BasePoint> {
   id?: number | string;
@@ -10,9 +11,8 @@ export interface Series<T extends BasePoint> {
   xAxisIndex?: number;
   yAxisIndex?: number;
   component?: typeof SeriesBaseComponent;
-  strokeWidth?: number;
-  strokeDasharray?: string;
   visible?: boolean;
   color?: string;
   showInLegend?: boolean;
+  style?: SvgAttributes;
 }

@@ -106,7 +106,7 @@ export class TooltipComponent implements OnInit, OnDestroy {
     );
   }
 
-  private getPoisition({ event }: IChartEvent<any>) {
+  private getPoisition({ event }: any) {
     const centerX = this.size.width / 2;
     const centerY = this.size.height / 2;
 

@@ -14,6 +14,8 @@ import { ScaleService } from '../../service/scale.service';
 import { Axis } from '../../core/axis/axis';
 import { ZoomService } from '../../service/zoom.service';
 import { AxisOrientation } from '../../model/enum/axis-orientation';
+import { IChartEvent } from '../../model/i-chart-event';
+import { ChartService } from '../../service/chart.service';
 
 @Component({
   selector: '[teta-plot-band]',
@@ -33,6 +35,7 @@ export class PlotbandComponent implements OnInit {
   constructor(
     private scaleService: ScaleService,
     private zoomService: ZoomService,
+    private chartService: ChartService,
     private cdr: ChangeDetectorRef,
     private element: ElementRef
   ) {
@@ -42,6 +45,10 @@ export class PlotbandComponent implements OnInit {
       ].get(this.axis.index);
       this.cdr.detectChanges();
     });
+  }
+
+  emit(event: IChartEvent<Plotband>) {
+    this.chartService.emitPlotband(event);
   }
 
   ngOnInit(): void {
@@ -89,6 +96,11 @@ export class PlotbandComponent implements OnInit {
               event[AxisOrientation[this.axis.orientation]] +
                 (this.axis.orientation === AxisOrientation.y ? bandSize : 0)
             );
+
+            this.emit({
+              event,
+              target: d,
+            });
 
             this.cdr.detectChanges();
           });
@@ -140,6 +152,11 @@ export class PlotbandComponent implements OnInit {
                 d.to = d.from;
               }
             }
+
+            this.emit({
+              event,
+              target: d,
+            });
 
             this.cdr.detectChanges();
           });

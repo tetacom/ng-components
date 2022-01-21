@@ -220,14 +220,27 @@ const series: Series<BasePoint>[] = seriesType.map(
       name: faker.address.cityName(),
       yAxisIndex: 0,
       xAxisIndex: 0,
+      style: {
+        strokeWidth: 0.5,
+      },
       color: cssColorNames[randomColor()].toLowerCase(),
       data: Array.from(Array(3000).keys()).map((key, index) => {
         const num = faker.datatype.number({ min: 0, max: 500 });
 
-        const point = {
-          x: num,
-          y: key,
+        const point: BasePoint = {
+          x: key,
+          y: num,
         };
+
+        if (index % 30 === 0) {
+          point.marker = {
+            draggable: true,
+            dragType: DragPointType.xy,
+            style: {
+              fill: 'green',
+            },
+          };
+        }
 
         return point;
       }),
@@ -263,7 +276,7 @@ const plotbands2 = [
     style: {
       plotband: {
         opacity: 0.6,
-        patternImage: 'patternicon2',
+        fill: 'green',
       },
     },
   }),
@@ -273,12 +286,13 @@ const config: IChartConfig = {
   name: '123123123132',
   inverted: false,
   tooltip: {
-    tracking: TooltipTracking.y,
+    tracking: TooltipTracking.x,
   },
   xAxis: [
     {
       type: AxisType.number,
       visible: true,
+      plotbands: plotbands2,
     },
   ],
   yAxis: [
@@ -303,8 +317,11 @@ const config: IChartConfig = {
   },
   zoom: {
     enable: true,
-    type: ZoomType.y,
-    syncChannel: '',
+    type: ZoomType.x,
+    syncChannel: 'channelA',
+  },
+  legend: {
+    enable: true,
   },
   series,
 };
@@ -312,7 +329,7 @@ const config: IChartConfig = {
 const config2: IChartConfig = {
   name: '123',
   tooltip: {
-    tracking: TooltipTracking.y,
+    tracking: TooltipTracking.x,
   },
   legend: {
     enable: false,
@@ -351,7 +368,7 @@ const config2: IChartConfig = {
   zoom: {
     enable: true,
     type: ZoomType.x,
-    syncChannel: 'channelA',
+    syncChannel: '',
   },
   series: series2,
 };
@@ -363,13 +380,18 @@ export const basicChart = () => ({
   props: {
     config,
     config2,
+    event: (_) => {
+      console.log(_);
+    },
   },
   template: `
     <div>
-      <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 50%; height: 100vh;">
-          <teta-chart [config]="config" class="bg-background-50 border border-text-50"></teta-chart>
+      <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 100%; height: 40vh;">
+          <teta-chart [config]="config" (pointMove)="event($event)" class="bg-background-50 border border-text-50"></teta-chart>
       </div>
-
+      <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 100%; height: 40vh;">
+          <teta-chart [config]="config2" (pointMove)="event($event)" class="bg-background-50 border border-text-50"></teta-chart>
+      </div>
     </div>
 `,
 });

@@ -12,7 +12,9 @@ import { AxisOrientation } from '../../model/enum/axis-orientation';
 import { ZoomService } from '../../service/zoom.service';
 import { ScaleService } from '../../service/scale.service';
 import * as d3 from 'd3';
+import { IChartEvent } from '../../model/i-chart-event';
 import { Plotband } from '../../model/plotband';
+import { ChartService } from '../../service/chart.service';
 
 @Component({
   selector: '[teta-plot-line]',
@@ -33,6 +35,7 @@ export class PlotlineComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private zoomService: ZoomService,
     private scaleService: ScaleService,
+    private chartService: ChartService,
     private element: ElementRef
   ) {
     this.zoomService.zoomed.subscribe(() => {
@@ -75,6 +78,11 @@ export class PlotlineComponent implements OnInit {
             event[AxisOrientation[this.axis.orientation]]
           );
 
+          this.emit({
+            event,
+            target: d,
+          });
+
           this.cdr.detectChanges();
         }
       );
@@ -85,6 +93,10 @@ export class PlotlineComponent implements OnInit {
     if (this.plotline.draggable) {
       grabElement.call(drag);
     }
+  }
+
+  emit(event: IChartEvent<PlotLine>) {
+    this.chartService.emitPlotline(event);
   }
 
   get value() {

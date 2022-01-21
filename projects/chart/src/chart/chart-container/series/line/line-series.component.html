@@ -2,7 +2,7 @@
   class="line"
   [attr.d]="getPath()"
   [attr.stroke]="series.color"
-  [attr.stroke-width]="series.strokeWidth"
+  [attr.stroke-width]="series.style?.strokeWidth"
   fill="none">
 </svg:path>
 
@@ -21,11 +21,11 @@
       class="marker"
       *ngFor="let point of markers"
       [class.draggable-marker]="point?.marker?.draggable"
-      [attr.r]="point.marker.style.radius"
-      [attr.fill]="point.marker.style.fill ?? 'transparent'"
-      [attr.stroke]="point.marker.style.stroke ?? 'none'"
-      [attr.stroke-width]="point.marker.style.strokeWidth"
-      [attr.stroke-dasharray]="point.marker.style.strokeDasharray"
+      [attr.r]="point.marker.style?.radius ?? 5"
+      [attr.fill]="point.marker.style?.fill ?? 'transparent'"
+      [attr.stroke]="point.marker.style?.stroke ?? 'none'"
+      [attr.stroke-width]="point.marker.style?.strokeWidth"
+      [attr.stroke-dasharray]="point.marker.style?.strokeDasharray"
       [attr.cx]="x(point.x)"
       [attr.cy]="y(point.y)"
     >

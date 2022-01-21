@@ -14,8 +14,8 @@ import { BrushType } from '../model/enum/brush-type';
   providedIn: 'root',
 })
 export class ZoomService {
-  zoomed: Observable<IChartEvent<D3ZoomEvent<any, any>>>;
-  private zoomed$ = new Subject<IChartEvent<D3ZoomEvent<any, any>>>();
+  zoomed: Observable<any>;
+  private zoomed$ = new Subject<any>();
 
   broadcastSubscribtion: Subscription;
 

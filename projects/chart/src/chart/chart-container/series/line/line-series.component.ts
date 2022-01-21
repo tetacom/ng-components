@@ -16,6 +16,7 @@ import { filter, map, Observable, tap } from 'rxjs';
 import { ZoomService } from '../../../service/zoom.service';
 import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
 import { DragPointType } from '../../../model/enum/drag-point-type';
+import pts from 'point-at-length';
 
 @Component({
   selector: 'svg:svg[teta-line-series]',
@@ -28,11 +29,6 @@ export class LineSeriesComponent<T extends BasePoint>
   implements OnInit, AfterViewInit
 {
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
-
-  private accessorMap = new Map<TooltipTracking, (point: BasePoint) => number>()
-    .set(TooltipTracking.x, (_) => _.x)
-    .set(TooltipTracking.y, (_) => _.y);
-
   display: Observable<number>;
 
   svgElement: SVGGeometryElement;
@@ -44,9 +40,9 @@ export class LineSeriesComponent<T extends BasePoint>
     protected override cdr: ChangeDetectorRef,
     protected override scaleService: ScaleService,
     protected override zoomService: ZoomService,
-    private element: ElementRef
+    protected override element: ElementRef
   ) {
-    super(svc, cdr, scaleService, zoomService);
+    super(svc, cdr, scaleService, zoomService, element);
   }
 
   override ngOnInit(): void {
@@ -67,13 +63,27 @@ export class LineSeriesComponent<T extends BasePoint>
 
   ngAfterViewInit() {
     const drag = (node, event: d3.D3DragEvent<any, any, any>, d: BasePoint) => {
-      if (d.marker?.dragType === DragPointType.x) {
+      if (
+        d.marker?.dragType === DragPointType.x ||
+        d.marker?.dragType === DragPointType.xy
+      ) {
         d.x = this.x.invert(event.x);
       }
 
-      if (d.marker?.dragType === DragPointType.y) {
+      if (
+        d.marker?.dragType === DragPointType.y ||
+        d.marker?.dragType === DragPointType.xy
+      ) {
         d.y = this.y.invert(event.y);
       }
+
+      this.svc.emitPoint({
+        target: {
+          series: this.series,
+          point: d,
+        },
+        event,
+      });
 
       this.cdr.detectChanges();
     };
@@ -120,7 +130,9 @@ export class LineSeriesComponent<T extends BasePoint>
       .x((point) => this.x(point.x))
       .y((point) => this.y(point.y));
 
-    return line(this.series.data);
+    const path = line(this.series.data);
+
+    return path;
   }
 
   getMarkers() {
@@ -130,65 +142,105 @@ export class LineSeriesComponent<T extends BasePoint>
   getTransform(event: any): Pick<BasePoint, 'x' | 'y'> {
     const mouse = d3.pointer(event);
 
-    const tooltipTracking =
-      this.svc.config?.tooltip?.tracking ?? TooltipTracking.x;
-
     const foundX = this.scaleService.xScales.get(this.series.xAxisIndex);
     const foundY = this.scaleService.yScales.get(this.series.yAxisIndex);
 
-    if (tooltipTracking === TooltipTracking.x) {
-      let beginning = 0;
-      let end = this.svgElement.getTotalLength();
-      let target = null;
-      let pos;
+    const tooltipTracking = this.svc.config?.tooltip?.tracking;
 
-      while (true) {
-        target = Math.floor((beginning + end) / 2);
+    const lineIntersection = (
+      p0_x,
+      p0_y,
+      p1_x,
+      p1_y,
+      p2_x,
+      p2_y,
+      p3_x,
+      p3_y
+    ) => {
+      const rV = {} as any;
+      let s1_x, s1_y, s2_x, s2_y;
+      s1_x = p1_x - p0_x;
+      s1_y = p1_y - p0_y;
+      s2_x = p3_x - p2_x;
+      s2_y = p3_y - p2_y;
 
-        pos = this.svgElement.getPointAtLength(target);
+      let s, t;
+      s =
+        (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) /
+        (-s2_x * s1_y + s1_x * s2_y);
+      t =
+        (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) /
+        (-s2_x * s1_y + s1_x * s2_y);
 
-        if ((target === end || target === beginning) && pos.x !== mouse[0]) {
-          break;
-        }
-        if (pos.x > mouse[0]) end = target;
-        else if (pos.x < mouse[0]) beginning = target;
-        else break; //position found
+      if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {
+        // Collision detected
+        rV.x = p0_x + t * s1_x;
+        rV.y = p0_y + t * s1_y;
       }
 
+      return rV;
+    };
+
+    if (tooltipTracking === TooltipTracking.x) {
+      const bisect = d3.bisector((_: BasePoint) => _.x).right;
+
+      const x0 = foundX.invert(mouse[0]);
+      const rightId = bisect(this.series.data, x0);
+
+      const range = foundY.range();
+
+      const intersect = lineIntersection(
+        mouse[0],
+        range[0],
+        mouse[0],
+        range[1],
+        foundX(this.series.data[rightId - 1]?.x),
+        foundY(this.series.data[rightId - 1]?.y),
+        foundX(this.series.data[rightId]?.x),
+        foundY(this.series.data[rightId]?.y)
+      );
+
+      console.log(intersect);
+
       this.svc.setTooltip({
-        point: { x: foundX.invert(pos.x), y: foundY.invert(mouse[1]) },
+        point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },
         series: this.series,
       });
+
+      return {
+        x: intersect.x,
+        y: intersect.y,
+      };
     }
 
     if (tooltipTracking === TooltipTracking.y) {
-      const curY = foundY.invert(mouse[1]);
-      const minY = Math.floor(curY);
-      const maxY = Math.ceil(curY);
+      const bisect = d3.bisector((_: BasePoint) => _.y).right;
 
-      const bisect = d3.bisector((point: BasePoint) => point.y).left;
+      const y0 = foundY.invert(mouse[1]);
 
-      const min = bisect(this.series.data, minY);
-      const max = bisect(this.series.data, maxY);
+      const rightId = bisect(this.series.data, y0);
+      const range = foundX.range();
 
-      if (min && max) {
-        const yDelta = curY - minY;
-        const minP = this.series.data[min].x;
-        const maxP = this.series.data[max].x;
-        const curP = minP + (maxP - minP) * yDelta;
+      const intersect = lineIntersection(
+        range[0],
+        mouse[1],
+        range[1],
+        mouse[1],
+        foundX(this.series.data[rightId - 1]?.x),
+        foundY(this.series.data[rightId - 1]?.y),
+        foundX(this.series.data[rightId]?.x),
+        foundY(this.series.data[rightId]?.y)
+      );
 
-        this.svc.setTooltip({
-          point: { x: curP, y: foundY.invert(mouse[1]) },
-          series: this.series,
-        });
+      this.svc.setTooltip({
+        point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },
+        series: this.series,
+      });
 
-        return {
-          x: foundX(curP),
-          y: mouse[1],
-        };
-      }
+      return {
+        x: intersect.x,
+        y: intersect.y,
+      };
     }
-
-    return null;
   }
 }

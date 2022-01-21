@@ -15,7 +15,7 @@ export class ExtremesBuilder implements IBuilder<Axis, [number, number]> {
 
   private extremes: [number, number] = [0, 0];
 
-  build(settings: Axis, inverted?: boolean): [number, number] {
+  build(settings: Axis): [number, number] {
     const options = settings.options;
 
     const hasMin = options?.min != null;
@@ -31,7 +31,6 @@ export class ExtremesBuilder implements IBuilder<Axis, [number, number]> {
       // add negative axis!
 
       this.extremes = d3.extent(data, accessor);
-      console.log(this.extremes);
     }
 
     if (hasMin) {

@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { ChartService } from '../service/chart.service';
 import { Series } from '../model/series';
 import { BasePoint } from '../model/base-point';
@@ -19,7 +25,8 @@ export class SeriesBaseComponent<T extends BasePoint> implements OnInit {
     protected svc: ChartService,
     protected cdr: ChangeDetectorRef,
     protected scaleService: ScaleService,
-    protected zoomService: ZoomService
+    protected zoomService: ZoomService,
+    protected element: ElementRef
   ) {
     this.zoomService.zoomed
       .pipe(

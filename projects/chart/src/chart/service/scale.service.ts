@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 import { AxisType } from '../model/enum/axis-type';
 import { Axis } from '../core/axis/axis';
 import { AxisOrientation } from '../model/enum/axis-orientation';
-import { ChartService } from './chart.service';
+
 import { IChartConfig } from '../model/i-chart-config';
 
 @Injectable({

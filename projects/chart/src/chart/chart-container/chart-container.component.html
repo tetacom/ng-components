@@ -1,6 +1,7 @@
 <ng-container *ngIf="size | async as s">
   <teta-tooltip [size]="s"></teta-tooltip>
-  <svg [tetaZoomable]
+  <svg
+       [tetaZoomable]
        [tetaBrushable]
        [size]="s"
        [config]="config"
@@ -26,6 +27,7 @@
       <g class="x-axis-container">
         <g *ngFor="let item of xAxes | keyvalue"
            teta-x-axis
+
            [axis]="item.value"
            [size]="s"
            [attr.transform]="getTranslate(item.value, s)"></g>
@@ -33,12 +35,6 @@
       <g [attr.clip-path]="'url(#visible-window-'+ id() +')'">
         <g [attr.transform]="'translate('+ rect.left +', '+ rect.top +')'">
           <g class="gridlines" teta-gridlines [size]="s"></g>
-          <g class="series-container">
-            <g teta-series-host
-               *ngFor="let series of config.series"
-               [series]="series"
-               [size]="s"></g>
-          </g>
 
           <g class="x-axis-plotline-container">
             <ng-container *ngFor="let axis of config.xAxis; let i = index">
@@ -67,6 +63,12 @@
             </ng-container>
           </g>
           <g class="series-tooltip-line-marker"></g>
+          <g class="series-container">
+            <g teta-series-host
+               *ngFor="let series of config.series"
+               [series]="series"
+               [size]="s"></g>
+          </g>
         </g>
       </g>
     </ng-container>

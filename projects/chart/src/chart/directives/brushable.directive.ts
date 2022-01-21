@@ -8,7 +8,6 @@ import {
 import { IChartConfig } from '../model/i-chart-config';
 import { BrushService } from '../service/brush.service';
 import { ChartService } from '../service/chart.service';
-import { map, tap } from 'rxjs';
 
 @Directive({
   selector: 'svg:svg[tetaBrushable]',

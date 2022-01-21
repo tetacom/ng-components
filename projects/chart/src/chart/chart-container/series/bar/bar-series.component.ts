@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   OnChanges,
   OnInit,
   SimpleChanges,
@@ -30,9 +31,10 @@ export class BarSeriesComponent<T extends BasePoint>
     protected override svc: ChartService,
     protected override cdr: ChangeDetectorRef,
     protected override scaleService: ScaleService,
-    protected override zoomService: ZoomService
+    protected override zoomService: ZoomService,
+    protected override element: ElementRef
   ) {
-    super(svc, cdr, scaleService, zoomService);
+    super(svc, cdr, scaleService, zoomService, element);
   }
 
   override ngOnInit(): void {

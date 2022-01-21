@@ -22,7 +22,7 @@ export interface IChartConfig {
   legend?: {
     enable?: boolean;
   };
-  bounds: ChartBounds;
+  bounds?: ChartBounds;
   inverted?: boolean;
   tooltip?: TooltipOptions;
   xAxis: AxisOptions[];
