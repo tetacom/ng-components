@@ -16,7 +16,6 @@ import { filter, map, Observable, tap } from 'rxjs';
 import { ZoomService } from '../../../service/zoom.service';
 import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
 import { DragPointType } from '../../../model/enum/drag-point-type';
-import pts from 'point-at-length';
 
 @Component({
   selector: 'svg:svg[teta-line-series]',
