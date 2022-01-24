@@ -1,4 +1,4 @@
-name: Release Components to NPM
+name: Release Charts to NPM
 on:
   workflow_dispatch:
 jobs:
@@ -13,9 +13,9 @@ jobs:
           cache: npm
           node-version: 16
       - name: Install & Build
-        run: yarn && yarn global add @angular/cli && ng build components
+        run: yarn && yarn global add @angular/cli && ng build chart
       - name: Publish
-        run: cd dist/components && npx semantic-release -e semantic-release-monorepo
+        run: cd dist/chart && npx semantic-release -e semantic-release-monorepo
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.TETACOM_NPM_TOKEN }}
