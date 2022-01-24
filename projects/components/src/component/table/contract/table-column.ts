@@ -4,6 +4,7 @@ import {StringFilterType} from '../../filter/enum/string-filter-type.enum';
 import {ListFilterType} from '../../filter/enum/list-filter-type.enum';
 import {TableRow} from './table-row';
 import {AggregationType} from '../enum/aggregation-type.enum';
+import {TemplateRef} from '@angular/core';
 
 export class TableColumn extends FilterItem {
   /**
@@ -58,6 +59,10 @@ export class TableColumn extends FilterItem {
    * Компонент для рендера заголовка столбца ячейки
    */
   headCellComponent: any;
+  /**
+   * Custom head dropdown for column
+   */
+  headDropdownTemplate: TemplateRef<any>;
   /**
    * Группировать по этому столбцу
    */
@@ -128,6 +133,7 @@ export class TableColumn extends FilterItem {
     objectType?: boolean;
     cellComponent?: any;
     headCellComponent?: any;
+    headDropdownTemplate?: TemplateRef<any>;
     filterComponent?: any;
     groupBy?: boolean;
     groupingOrder?: number;
@@ -153,6 +159,7 @@ export class TableColumn extends FilterItem {
     this.groupingOrder = options?.groupingOrder ?? 0;
     this.groupByFn = options?.groupByFn;
     this.headCellComponent = options?.headCellComponent;
+    this.headDropdownTemplate = options?.headDropdownTemplate;
     this.cellComponent = options?.cellComponent;
     this.aggregate = options?.aggregate;
     this.defaultValue = options?.defaultValue;

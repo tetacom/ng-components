@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, TemplateRef, ViewChild, ViewChildren} from '@angular/core';
 import * as faker from 'faker';
 import {TableColumn} from '../../contract/table-column';
 import {FilterType} from '../../../filter/enum/filter-type.enum';
@@ -20,7 +20,7 @@ export class TableDemoComponent implements OnInit {
   @Input() editType: EditType;
   @Input() selectType: SelectType;
   @Input() editEvent: EditEvent;
-
+  @ViewChild(TemplateRef, {read: TemplateRef, static: true}) dropdownTpl: TemplateRef<any>;
   tableService: TableService<any>;
 
   dict: IDictionary<IIdName<any>[]> = {
@@ -34,60 +34,7 @@ export class TableDemoComponent implements OnInit {
     long: []
   };
   data: any[] = [];
-  columns = [
-    new TableColumn({
-      name: 'name',
-      flex: 1,
-      locked: true,
-      filterType: FilterType.string,
-    }),
-    new TableColumn({
-      name: 'date',
-      locked: true,
-      filterType: FilterType.date,
-    }),
-    new TableColumn({
-      name: 'long',
-      locked: true,
-      filterType: FilterType.list,
-    }),
-    new TableColumn({
-      name: 'value',
-      locked: true,
-      filterType: FilterType.number,
-    }),
-    new TableColumn({
-      name: 'summary',
-      filterType: FilterType.number,
-    }),
-    new TableColumn({
-      name: 'ram',
-      caption: 'RAM',
-      filterType: FilterType.list,
-    }),
-    new TableColumn({
-      name: 'location',
-      columns: [
-        new TableColumn({
-          name: 'city',
-          filterType: FilterType.string,
-        }),
-        new TableColumn({
-          name: 'state',
-          filterType: FilterType.string,
-        }),
-        new TableColumn({
-          name: 'address',
-          flex: 2,
-          filterType: FilterType.string,
-        }),
-        new TableColumn({
-          name: 'zip',
-          filterType: FilterType.string,
-        }),
-      ],
-    }),
-  ];
+  columns = []
 
 
   constructor() {
@@ -100,6 +47,62 @@ export class TableDemoComponent implements OnInit {
 
   ngOnInit(): void {
     this.data = this.getData(this.size);
+    console.log(this.dropdownTpl)
+    this.columns = [
+      new TableColumn({
+        name: 'name',
+        flex: 1,
+        locked: true,
+        filterType: FilterType.string,
+        headDropdownTemplate: this.dropdownTpl
+      }),
+      new TableColumn({
+        name: 'date',
+        locked: true,
+        filterType: FilterType.date,
+      }),
+      new TableColumn({
+        name: 'long',
+        locked: true,
+        filterType: FilterType.list,
+      }),
+      new TableColumn({
+        name: 'value',
+        locked: true,
+        filterType: FilterType.number,
+      }),
+      new TableColumn({
+        name: 'summary',
+        filterType: FilterType.number,
+      }),
+      new TableColumn({
+        name: 'ram',
+        caption: 'RAM',
+        filterType: FilterType.list,
+      }),
+      new TableColumn({
+        name: 'location',
+        columns: [
+          new TableColumn({
+            name: 'city',
+            filterType: FilterType.string,
+          }),
+          new TableColumn({
+            name: 'state',
+            filterType: FilterType.string,
+          }),
+          new TableColumn({
+            name: 'address',
+            flex: 2,
+            filterType: FilterType.string,
+          }),
+          new TableColumn({
+            name: 'zip',
+            filterType: FilterType.string,
+          }),
+        ],
+      }),
+    ];
   }
 
   getData = (size) => {
