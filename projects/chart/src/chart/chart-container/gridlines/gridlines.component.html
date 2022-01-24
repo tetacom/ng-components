@@ -1,7 +1,7 @@
 <ng-container *ngFor="let tick of tickYValues">
-  <svg:line [attr.x1]="0" stroke="red" [attr.y1]="y(tick)" [attr.x2]="size.width" [attr.y2]="y(tick)"></svg:line>
+  <svg:line [attr.x1]="0" stroke="red" [attr.y1]="y(tick)" [attr.x2]="size?.width" [attr.y2]="y(tick)"></svg:line>
 </ng-container>
 
 <ng-container *ngFor="let tick of tickXValues">
-  <svg:line [attr.x1]="x(tick)" stroke="red" [attr.y1]="0" [attr.x2]="x(tick)" [attr.y2]="size.height"></svg:line>
+  <svg:line [attr.x1]="x(tick)" stroke="red" [attr.y1]="0" [attr.x2]="x(tick)" [attr.y2]="size?.height"></svg:line>
 </ng-container>

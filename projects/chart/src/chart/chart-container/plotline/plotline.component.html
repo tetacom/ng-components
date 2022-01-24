@@ -1,1 +1,22 @@
-<svg:line></svg:line>
+<svg:line class="plotline"
+          [attr.stroke]="plotline.style?.stroke || 'red'"
+          [attr.stroke-width]="plotline.style?.strokeWidth || 4"
+          [attr.stroke-dasharray]="plotline.style?.strokeDasharray"
+          [attr.x1]="axis.orientation === orientation.x ? value : 0"
+          [attr.x2]="axis.orientation === orientation.x ? value : width"
+          [attr.y1]="axis.orientation === orientation.x ? 0 : value"
+          [attr.y2]="axis.orientation === orientation.x ? height : value">
+</svg:line>
+
+<svg:line class="grabber"
+
+          [class.x-grabber]="axis.orientation === orientation.x"
+          [class.y-grabber]="axis.orientation === orientation.y"
+          [attr.stroke]="'red'"
+          [attr.stroke-width]="8"
+          opacity="0"
+          [attr.x1]="axis.orientation === orientation.x ? value : 0"
+          [attr.x2]="axis.orientation === orientation.x ? value : width"
+          [attr.y1]="axis.orientation === orientation.x ? 0 : value"
+          [attr.y2]="axis.orientation === orientation.x ? height : value">
+</svg:line>

@@ -1,4 +1,4 @@
-name: Release to NPM
+name: Release Components to NPM
 on:
   workflow_dispatch:
 jobs:
@@ -15,7 +15,7 @@ jobs:
       - name: Install & Build
         run: yarn && yarn global add @angular/cli && ng build components
       - name: Publish
-        run: cd dist/components && npx semantic-release
+        run: cd dist/components && npx semantic-release -e semantic-release-monorepo
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.TETACOM_NPM_TOKEN }}

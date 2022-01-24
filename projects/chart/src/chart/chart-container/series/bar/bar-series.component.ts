@@ -1,18 +1,28 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import * as d3 from 'd3';
 import { SeriesBaseComponent } from '../../../base/series-base.component';
 import { BasePoint } from '../../../model/base-point';
-import { ChartService } from '../../../chart.service';
-import { ScaleService } from '../../../scale.service';
+import { ChartService } from '../../../service/chart.service';
+import { ScaleService } from '../../../service/scale.service';
+import { ZoomService } from '../../../service/zoom.service';
 
 @Component({
   selector: 'svg:svg[teta-bar-series]',
   templateUrl: './bar-series.component.html',
   styleUrls: ['./bar-series.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BarSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
-  implements OnInit
+  implements OnInit, OnChanges
 {
   private scaleBand: d3.ScaleBand<any>;
   private y: any;
@@ -20,9 +30,11 @@ export class BarSeriesComponent<T extends BasePoint>
   constructor(
     protected override svc: ChartService,
     protected override cdr: ChangeDetectorRef,
-    protected override scaleService: ScaleService
+    protected override scaleService: ScaleService,
+    protected override zoomService: ZoomService,
+    protected override element: ElementRef
   ) {
-    super(svc, cdr, scaleService);
+    super(svc, cdr, scaleService, zoomService, element);
   }
 
   override ngOnInit(): void {
@@ -32,11 +44,8 @@ export class BarSeriesComponent<T extends BasePoint>
     const domain = this.series.data?.map((_: BasePoint) => _.x);
     const range = [x(domain[0]), x(domain[domain?.length - 1])];
 
-    this.scaleBand = d3
-      .scaleBand<number>()
-      .domain(domain)
-      .range(range)
-      .padding(0.1);
+    this.scaleBand = d3.scaleBand<number>().domain(domain).range(range);
+
     this.y = y;
   }
 
@@ -54,5 +63,9 @@ export class BarSeriesComponent<T extends BasePoint>
 
   getY(point: BasePoint) {
     return this.y(point.y);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
   }
 }

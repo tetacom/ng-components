@@ -11,12 +11,14 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { IChartConfig } from '../model/i-chart-config';
-import { ChartService } from '../chart.service';
+import { ChartService } from '../service/chart.service';
 import { Observable, tap } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
-import { AxesService } from '../axes.service';
+import { AxesService } from '../service/axes.service';
 import { Axis } from '../core/axis/axis';
-import { IPointer } from '../model/i-pointer';
+import { AxisOrientation } from '../model/enum/axis-orientation';
+
+type Opposite = boolean;
 
 @Component({
   selector: 'teta-chart-container',
@@ -34,6 +36,24 @@ export class ChartContainerComponent
   size: Observable<DOMRect>;
 
   private _observer: ResizeObserver;
+  private uniqId: string;
+
+  private filterPositionMap = new Map<
+    Opposite,
+    (axis: Axis) => (_: Axis) => boolean
+  >()
+    .set(
+      true,
+      (axis) => (_: Axis) =>
+        _.options.opposite && _.options.visible && axis.index <= _.index
+    )
+    .set(
+      false,
+      (axis) => (_: Axis) =>
+        _.options.opposite !== true &&
+        _.options.visible &&
+        _.index <= axis.index
+    );
 
   constructor(
     private _svc: ChartService,
@@ -52,6 +72,8 @@ export class ChartContainerComponent
 
     this.yAxes = this._axesService.yAxis;
     this.xAxes = this._axesService.xAxis;
+
+    this.uniqId = (Date.now() + Math.random()).toString(36);
   }
 
   ngOnInit(): void {
@@ -141,8 +163,75 @@ export class ChartContainerComponent
     })`;
   }
 
-  mouseMove(event: IPointer) {
+  getTranslate(axis?: Axis, size?: DOMRect): string {
+    const xAxesArray = [...this.xAxes.values()];
+    const yAxesArray = [...this.yAxes.values()];
+
+    const oppositeFilter = this.filterPositionMap.get(true);
+    const nonOppositeFilter = this.filterPositionMap.get(false);
+
+    const oppositeOffsetY = yAxesArray.filter(oppositeFilter(axis));
+    const nonOppositeOffsetY = yAxesArray.filter(nonOppositeFilter(axis));
+
+    const oppositeOffsetX = xAxesArray.filter(oppositeFilter(axis));
+    const nonOppositeOffsetX = xAxesArray.filter(nonOppositeFilter(axis));
+
+    const oppositeTranslateY = oppositeOffsetY.reduce(
+      (acc, curr) => acc + curr.selfSize,
+      0
+    );
+    const nonOppisteTranslateY = nonOppositeOffsetY.reduce(
+      (acc, curr) => acc + curr.selfSize,
+      0
+    );
+
+    const oppositeTranslateX = oppositeOffsetX.reduce(
+      (acc, curr) => acc + curr.selfSize,
+      0
+    );
+
+    const nonOppisteTranslateX = nonOppositeOffsetX.reduce(
+      (acc, curr) => acc + curr.selfSize,
+      0
+    );
+
+    const left = yAxesArray
+      .filter((_) => _.options.visible && _.options.opposite !== true)
+      .reduce((acc, curr) => acc + curr.selfSize, 0);
+
+    const top = xAxesArray
+      .filter((_) => _.options.visible && _.options.opposite === true)
+      .reduce((acc, curr) => acc + curr.selfSize, 0);
+
+    if (axis.orientation === AxisOrientation.x) {
+      return `translate(${left}, ${
+        axis.options.opposite
+          ? oppositeTranslateX
+          : size.height - nonOppisteTranslateX
+      })`;
+    }
+
+    if (axis.orientation === AxisOrientation.y) {
+      return `translate(${
+        axis.options.opposite
+          ? size.width - oppositeTranslateY
+          : nonOppisteTranslateY
+      }, ${top})`;
+    }
+
+    return 'translate(0, 0)';
+  }
+
+  mouseMove(event) {
     this._svc.setPointerMove(event);
+  }
+
+  mouseLeave(event) {
+    this._svc.setPointerMove(event);
+  }
+
+  id(): string {
+    return this.uniqId;
   }
 
   ngAfterContentChecked(): void {}

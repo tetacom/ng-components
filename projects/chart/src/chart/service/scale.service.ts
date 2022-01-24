@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 
 import { AxesService } from './axes.service';
 import * as d3 from 'd3';
-import { AxisType } from './model/axis-type';
-import { Axis } from './core/axis/axis';
-import { AxisOrientation } from './model/enum/axis-orientation';
+import { AxisType } from '../model/enum/axis-type';
+import { Axis } from '../core/axis/axis';
+import { AxisOrientation } from '../model/enum/axis-orientation';
+
+import { IChartConfig } from '../model/i-chart-config';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +23,7 @@ export class ScaleService {
 
   constructor(private axesService: AxesService) {}
 
-  public createScales(size: DOMRect) {
+  public createScales(size: DOMRect, config?: IChartConfig) {
     this.yScales.clear();
     this.xScales.clear();
 
@@ -33,15 +35,6 @@ export class ScaleService {
       .filter((_) => _.options?.visible && _.options?.opposite !== true)
       .reduce((acc, cur) => acc + cur.selfSize, 0);
 
-    this.axesService.yAxis.forEach((axis: Axis) => {
-      const scale = this.getScale(axis).range([
-        topBound,
-        size.height - bottomBound,
-      ]);
-
-      this.yScales.set(axis.index, scale);
-    });
-
     const leftBound = [...this.axesService.yAxis.values()]
       .filter((_) => _.options?.visible && _.options.opposite !== true)
       .reduce((acc, cur) => acc + cur.selfSize, 0);
@@ -50,11 +43,21 @@ export class ScaleService {
       .filter((_) => _.options?.visible && _.options.opposite)
       .reduce((acc, cur) => acc + cur.selfSize, 0);
 
+    this.axesService.yAxis.forEach((axis: Axis) => {
+      const scale = this.getScale(axis).range([
+        0,
+        size.height - topBound - bottomBound,
+      ]);
+
+      this.yScales.set(axis.index, scale);
+    });
+
     this.axesService.xAxis.forEach((axis: Axis) => {
       const scale = this.getScale(axis).range([
-        leftBound,
-        size.width - rightBound,
+        0,
+        size.width - leftBound - rightBound,
       ]);
+
       this.xScales.set(axis.index, scale);
     });
   }

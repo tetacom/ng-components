@@ -42,6 +42,7 @@ export class TetaChart {
   private seriesMove$: Subject<IDragEvent<Series<BasePoint>>> = new Subject<
     IDragEvent<Series<BasePoint>>
   >();
+
   private pointMove$: Subject<IDragEvent<Series<BasePoint>>> = new Subject<
     IDragEvent<Series<BasePoint>>
   >();

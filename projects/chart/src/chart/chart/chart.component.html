@@ -1,4 +1,5 @@
 <div class="column column_auto">
-  <teta-chart-container [config]="config"></teta-chart-container>
+  <teta-chart-container class="chart-container" [config]="config"></teta-chart-container>
 </div>
-<teta-legend [series]="config.series"></teta-legend>
+
+<teta-legend *ngIf="config.legend?.enable === true" [series]="config.series"></teta-legend>

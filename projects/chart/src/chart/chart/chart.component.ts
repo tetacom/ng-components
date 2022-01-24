@@ -1,27 +1,68 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
+  OnChanges,
+  OnDestroy,
   OnInit,
+  Output,
+  SimpleChanges,
 } from '@angular/core';
-import { ChartService } from '../chart.service';
+import { ChartService } from '../service/chart.service';
 import { IChartConfig } from '../model/i-chart-config';
-import { defaultChartConfig } from '../default/default-chart-config';
+
 import { BasePoint } from '../model/base-point';
 import { Series } from '../model/series';
+import { ZoomService } from '../service/zoom.service';
+import { ScaleService } from '../service/scale.service';
+import { BrushService } from '../service/brush.service';
+import { AxesService } from '../service/axes.service';
+import { ChartBounds } from '../model/chart-bounds';
+
+import { IChartEvent } from '../model/i-chart-event';
+import { PlotLine } from '../model/plotline';
+import { Plotband } from '../model/plotband';
+import { IPointMove } from '../model/i-point-move';
 
 @Component({
   selector: 'teta-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
-  providers: [ChartService],
+  providers: [
+    ChartService,
+    ZoomService,
+    ScaleService,
+    AxesService,
+    BrushService,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChartComponent implements OnInit {
+export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   legendSeries: Array<Series<BasePoint>>;
 
+  @Output()
+  plotBandsMove: EventEmitter<IChartEvent<Plotband>> = new EventEmitter<
+    IChartEvent<Plotband>
+  >();
+
+  @Output()
+  plotLinesMove: EventEmitter<IChartEvent<PlotLine>> = new EventEmitter<
+    IChartEvent<PlotLine>
+  >();
+
+  @Output()
+  pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<
+    IChartEvent<IPointMove>
+  >();
+
   @Input() set config(config: IChartConfig) {
-    this._config = Object.assign(defaultChartConfig, config);
+    this._config = Object.assign(
+      {
+        bounds: new ChartBounds(),
+      },
+      config
+    );
   }
 
   get config() {
@@ -30,7 +71,27 @@ export class ChartComponent implements OnInit {
 
   private _config;
 
-  constructor(private _service: ChartService) {}
+  constructor(private svc: ChartService, private zoomService: ZoomService) {}
 
-  ngOnInit(): void {}
+  ngOnChanges(changes: SimpleChanges) {}
+
+  ngOnInit(): void {
+    this.svc.plotbandMove.subscribe((_) => {
+      this.plotBandsMove.emit(_);
+    });
+
+    this.svc.plotlineMove.subscribe((_) => {
+      this.plotLinesMove.emit(_);
+    });
+
+    this.svc.pointMove.subscribe((_) => {
+      this.pointMove.emit(_);
+    });
+  }
+
+  ngAfterViewInit() {}
+
+  ngOnDestroy() {
+    this.zoomService.broadcastSubscribtion?.unsubscribe();
+  }
 }

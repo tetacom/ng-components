@@ -1,3 +1,7 @@
 :host {
   position: absolute;
 }
+
+.chart-tooltip {
+  transition: all 0.1s ease;
+}

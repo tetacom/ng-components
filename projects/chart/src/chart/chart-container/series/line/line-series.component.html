@@ -1,7 +1,37 @@
-<svg:path [attr.d]="getPath()" [attr.stroke]="series.color" [attr.stroke-width]="series.strokeWidth"
-          fill="none"></svg:path>
+<svg:path
+  class="line"
+  [attr.d]="getPath()"
+  [attr.stroke]="series.color"
+  [attr.stroke-width]="series.style?.strokeWidth"
+  fill="none">
+</svg:path>
+
 <ng-container *ngIf="transform | async as t">
-  <svg:circle r="3" [attr.fill]="series.color" [attr.transform]="t"></svg:circle>
+  <svg:circle
+    r="3"
+    [attr.fill]="series.color"
+    [attr.transform]="'translate('+ t.x +', '+ t.y +')'"
+    [attr.opacity]="display | async">
+  </svg:circle>
+</ng-container>
+
+<ng-container *ngIf="getMarkers() as markers">
+
+    <svg:circle
+      class="marker"
+      *ngFor="let point of markers"
+      [class.draggable-marker]="point?.marker?.draggable"
+      [attr.r]="point.marker.style?.radius ?? 5"
+      [attr.fill]="point.marker.style?.fill ?? 'transparent'"
+      [attr.stroke]="point.marker.style?.stroke ?? 'none'"
+      [attr.stroke-width]="point.marker.style?.strokeWidth"
+      [attr.stroke-dasharray]="point.marker.style?.strokeDasharray"
+      [attr.cx]="x(point.x)"
+      [attr.cy]="y(point.y)"
+    >
+    </svg:circle>
+
+
 </ng-container>
 
 

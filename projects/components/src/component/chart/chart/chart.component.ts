@@ -45,6 +45,7 @@ export class ChartComponent
   plotLinesMove: EventEmitter<IDragEvent<PlotLine>> = new EventEmitter<
     IDragEvent<PlotLine>
   >();
+
   @Output()
   plotBandsMove: EventEmitter<IDragEvent<PlotBand>> = new EventEmitter<
     IDragEvent<PlotBand>

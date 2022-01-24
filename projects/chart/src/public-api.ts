@@ -3,5 +3,5 @@
  */
 
 export * from './chart/chart.module';
-export * from './chart/chart.service';
+export * from './chart/service/chart.service';
 export * from './chart/chart/chart.component';
