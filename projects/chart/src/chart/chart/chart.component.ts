@@ -26,7 +26,7 @@ import { Plotband } from '../model/plotband';
 import { IPointMove } from '../model/i-point-move';
 
 @Component({
-  selector: 'teta-chart',
+  selector: 'teta-svg-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
   providers: [
