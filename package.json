@@ -9,7 +9,9 @@
     "test": "ng test",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d ./compodoc",
     "sb": "yarn docs:json && start-storybook -p 6006",
-    "build-storybook": "yarn docs:json && build-storybook -o dist/storybook"
+    "build-storybook": "yarn docs:json && build-storybook -o dist/storybook",
+    "semantic-release": "semantic-release",
+    "components:sr": "cd dist/components semantic-release -e semantic-release-monorepo"
   },
   "private": true,
   "dependencies": {
@@ -92,7 +94,12 @@
         ]
       }
     ],
-    "@semantic-release/npm",
+    [
+      "@semantic-release/npm",
+      {
+        "pkgRoot": "dist"
+      }
+    ],
     "@semantic-release/git"
   ],
   "preset": "angular",

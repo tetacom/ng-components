@@ -15,7 +15,7 @@ jobs:
       - name: Install & Build
         run: yarn && yarn global add @angular/cli && ng build chart
       - name: Publish
-        run: cd projects/chart/dist && npx semantic-release -e semantic-release-monorepo --debug
+        run: cd projects/chart && npx semantic-release -e semantic-release-monorepo --debug
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.TETACOM_NPM_TOKEN }}
