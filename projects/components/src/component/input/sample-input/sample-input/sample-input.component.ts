@@ -8,7 +8,8 @@ import {FormControl, FormGroup} from '@angular/forms';
 })
 export class SampleInputComponent implements OnInit {
   form: FormGroup;
-
+  show: number;
+  value = new Array(20).fill(1684);
   constructor() {
     this.form = new FormGroup({
       name: new FormControl('', {
