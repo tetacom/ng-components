@@ -1,0 +1,25 @@
+.number-text {
+  display: flex;
+  padding: 5px;
+  font-size: 16px;
+  height: 24px;
+  align-items: center;
+  width: auto;
+  flex-grow: 0;
+}
+
+.number-input {
+  height: 24px;
+  border: solid 1px;
+  display: flex;
+  padding: 4px;
+  font-size: 16px;
+  align-items: center;
+  flex-grow: 0;
+  position: absolute;
+  min-width: 0;
+  width: 100%;
+  left: 0;
+  right: 0;
+  background: grey;
+}
