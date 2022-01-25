@@ -387,10 +387,10 @@ export const basicChart = () => ({
   template: `
     <div>
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 100%; height: 40vh;">
-          <teta-chart [config]="config" (pointMove)="event($event)" class="bg-background-50 border border-text-50"></teta-chart>
+          <teta-svg-chart [config]="config" (pointMove)="event($event)" class="bg-background-50 border border-text-50"></teta-svg-chart>
       </div>
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 100%; height: 40vh;">
-          <teta-chart [config]="config2" (pointMove)="event($event)" class="bg-background-50 border border-text-50"></teta-chart>
+          <teta-svg-chart [config]="config2" (pointMove)="event($event)" class="bg-background-50 border border-text-50"></teta-svg-chart>
       </div>
     </div>
 `,
