@@ -11,11 +11,12 @@ import { SeriesBaseComponent } from '../../../base/series-base.component';
 import { ChartService } from '../../../service/chart.service';
 import { BasePoint } from '../../../model/base-point';
 import { ScaleService } from '../../../service/scale.service';
-import { filter, map, Observable, tap } from 'rxjs';
+import {debounceTime, filter, map, Observable, tap} from 'rxjs';
 
 import { ZoomService } from '../../../service/zoom.service';
 import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
 import { DragPointType } from '../../../model/enum/drag-point-type';
+import {throttleTime} from "rxjs/operators";
 
 @Component({
   selector: 'svg:svg[teta-line-series]',
@@ -47,17 +48,21 @@ export class LineSeriesComponent<T extends BasePoint>
   override ngOnInit(): void {
     this.display = this.zoomService.zoomed.pipe(
       map(({ event }) => {
-        return event?.type === 'end' ? 1 : 0;
+        return event?.type === 'end' ? 1 : 1;
       })
     );
 
     this.transform = this.svc.pointerMove.pipe(
+
       filter(({ event }) => event),
       map(({ event }) => {
-        return this.getTransform(event);
+        const transform = this.getTransform(event);
+
+        return transform;
       }),
-      tap((_) => this.cdr.detectChanges())
+      tap(() => this.cdr.detectChanges())
     );
+
   }
 
   ngAfterViewInit() {
@@ -139,7 +144,8 @@ export class LineSeriesComponent<T extends BasePoint>
   }
 
   getTransform(event: any): Pick<BasePoint, 'x' | 'y'> {
-    const mouse = d3.pointer(event);
+
+    const mouse = [event?.offsetX, event?.offsetY];
 
     const foundX = this.scaleService.xScales.get(this.series.xAxisIndex);
     const foundY = this.scaleService.yScales.get(this.series.yAxisIndex);
@@ -182,7 +188,7 @@ export class LineSeriesComponent<T extends BasePoint>
 
     if (tooltipTracking === TooltipTracking.x) {
       const bisect = d3.bisector((_: BasePoint) => _.x).right;
-      const pointer = mouse[0] - this.rect.left;
+      const pointer = mouse[0];
 
       const x0 = foundX.invert(pointer);
 

@@ -16,7 +16,7 @@ import { ScaleService } from '../../service/scale.service';
 import { ChartService } from '../../service/chart.service';
 import * as d3 from 'd3';
 import { ZoomService } from '../../service/zoom.service';
-import { concat, map, merge, takeWhile, tap } from 'rxjs';
+import { merge, takeWhile, tap } from 'rxjs';
 
 @Component({
   selector: '[teta-x-axis]',

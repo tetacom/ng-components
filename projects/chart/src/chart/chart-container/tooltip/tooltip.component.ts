@@ -44,15 +44,14 @@ export class TooltipComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.display = merge(this.svc.pointerMove, this.zoomService.zoomed).pipe(
+      filter(({ event }) => event),
       map(({ event }) => {
         const opacity = event?.type === 'mousemove' ? 1 : 0;
 
         return opacity;
       }),
       tap(() => {
-        requestAnimationFrame(() => {
-          this.cdr.detectChanges();
-        });
+        this.cdr.detectChanges();
       })
     );
 

@@ -42,6 +42,9 @@ export class ZoomService {
 
           if (this.svg) {
             const currentTransform = d3.zoomTransform(this.svg.node());
+
+            console.log(currentTransform);
+
             this.setZoom(currentTransform);
           }
         })
@@ -58,8 +61,7 @@ export class ZoomService {
     this.broadcastSubscribtion?.unsubscribe();
     this.svg = d3.select(svgElement.nativeElement);
 
-    const zoomType = config?.zoom?.type;
-    const enable = config?.zoom?.enable;
+    const enable = config?.zoom?.enable || axis?.options?.zoom;
 
     const zoomed = (event: D3ZoomEvent<any, any>) => {
       const { transform } = event;
@@ -91,7 +93,7 @@ export class ZoomService {
       }
     };
 
-    if (axis?.options?.zoom) {
+    if (enable) {
       this.zoom = d3
         .zoom()
         .scaleExtent([1, Infinity])

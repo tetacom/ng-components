@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IChartConfig } from '../model/i-chart-config';
 import { AxesService } from './axes.service';
-import { map, Observable, Subject } from 'rxjs';
+import {BehaviorSubject, map, Observable, Subject} from 'rxjs';
 import { ScaleService } from './scale.service';
 import { IChartEvent } from '../model/i-chart-event';
 import { IDisplayTooltip } from '../model/i-display-tooltip';
@@ -21,7 +21,7 @@ export class ChartService {
   public pointMove: Observable<IChartEvent<IPointMove>>;
 
   private size$ = new Subject<DOMRect>();
-  private pointerMove$ = new Subject<any>();
+  private pointerMove$ = new BehaviorSubject<any>({event: null});
   private tooltips$ = new Subject<IDisplayTooltip>();
   private plotbandMove$ = new Subject<IChartEvent<Plotband>>();
   private plotlineMove$ = new Subject<IChartEvent<PlotLine>>();

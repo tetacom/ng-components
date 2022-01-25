@@ -1,22 +1,22 @@
 import {
   AfterContentChecked,
-  AfterViewChecked,
+  AfterViewChecked, AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Input,
+  Input, NgZone,
   OnChanges,
-  OnInit,
-  SimpleChanges,
+  OnInit, Renderer2,
+  SimpleChanges, ViewChild,
 } from '@angular/core';
-import { IChartConfig } from '../model/i-chart-config';
-import { ChartService } from '../service/chart.service';
-import { Observable, tap } from 'rxjs';
-import { throttleTime } from 'rxjs/operators';
-import { AxesService } from '../service/axes.service';
-import { Axis } from '../core/axis/axis';
-import { AxisOrientation } from '../model/enum/axis-orientation';
+import {IChartConfig} from '../model/i-chart-config';
+import {ChartService} from '../service/chart.service';
+import {Observable, tap} from 'rxjs';
+import {throttleTime} from 'rxjs/operators';
+import {AxesService} from '../service/axes.service';
+import {Axis} from '../core/axis/axis';
+import {AxisOrientation} from '../model/enum/axis-orientation';
 
 type Opposite = boolean;
 
@@ -27,9 +27,20 @@ type Opposite = boolean;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartContainerComponent
-  implements OnInit, OnChanges, AfterViewChecked, AfterContentChecked
-{
+  implements OnInit, OnChanges, AfterViewInit {
   @Input() config: IChartConfig;
+
+  @ViewChild('chart') set chart(el: ElementRef) {
+    this.zone.runOutsideAngular(() => {
+
+      if(!el) {
+        return;
+      }
+
+      this.renderer.listen(el?.nativeElement, 'mousemove', (e) => this.mouseMove(e))
+
+    })
+  }
 
   yAxes: Map<number, Axis>;
   xAxes: Map<number, Axis>;
@@ -38,10 +49,8 @@ export class ChartContainerComponent
   private _observer: ResizeObserver;
   private uniqId: string;
 
-  private filterPositionMap = new Map<
-    Opposite,
-    (axis: Axis) => (_: Axis) => boolean
-  >()
+  private filterPositionMap = new Map<Opposite,
+    (axis: Axis) => (_: Axis) => boolean>()
     .set(
       true,
       (axis) => (_: Axis) =>
@@ -59,10 +68,13 @@ export class ChartContainerComponent
     private _svc: ChartService,
     private _cdr: ChangeDetectorRef,
     private _elementRef: ElementRef,
-    private _axesService: AxesService
+    private _axesService: AxesService,
+    private zone: NgZone,
+    private renderer: Renderer2
   ) {
+
     this.size = this._svc.size.pipe(
-      throttleTime(100, undefined, { trailing: true }),
+      throttleTime(100, undefined, {trailing: true}),
       tap(() => {
         setTimeout(() => {
           this._cdr.detectChanges();
@@ -83,6 +95,14 @@ export class ChartContainerComponent
     this._observer.observe(this._elementRef.nativeElement);
 
     this._svc.init(this.config);
+  }
+
+  ngAfterViewInit() {
+
+    // this.zone.runOutsideAngular(() => {
+    //
+    //   this.element.nativeElement.addEventListener("mousemove", e => this.mouseMove(e))
+    // })
   }
 
   private sumSize = (acc, curr) => acc + curr.selfSize;
@@ -234,9 +254,12 @@ export class ChartContainerComponent
     return this.uniqId;
   }
 
-  ngAfterContentChecked(): void {}
+  ngAfterContentChecked(): void {
+  }
 
-  ngAfterViewChecked(): void {}
+  ngAfterViewChecked(): void {
+  }
 
-  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnChanges(changes: SimpleChanges): void {
+  }
 }

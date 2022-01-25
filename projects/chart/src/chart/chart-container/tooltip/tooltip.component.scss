@@ -1,7 +1,8 @@
 :host {
   position: absolute;
+  z-index: 2;
 }
 
 .chart-tooltip {
-  transition: all 0.1s ease;
+  //transition: all 0.1s ease;
 }

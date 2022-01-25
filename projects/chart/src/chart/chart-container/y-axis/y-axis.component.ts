@@ -25,7 +25,7 @@ import { merge, takeWhile, tap } from 'rxjs';
 export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() axis: Axis;
   @Input() size: DOMRect;
-  @ViewChild('svg') node: ElementRef;
+  @ViewChild('svg', {static: false}) node: ElementRef;
 
   private _alive = true;
 
