@@ -1,16 +1,15 @@
 import {
   ChangeDetectorRef,
   Component,
-  Input,
+  Input, NgZone,
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { filter, map, merge, Observable, takeWhile, tap } from 'rxjs';
-import { ChartService } from '../../service/chart.service';
-import { ZoomService } from '../../service/zoom.service';
-import { IChartEvent } from '../../model/i-chart-event';
-import { IDisplayTooltip } from '../../model/i-display-tooltip';
-import { DomSanitizer } from '@angular/platform-browser';
+import {filter, map, merge, Observable, takeWhile, tap} from 'rxjs';
+import {ChartService} from '../../service/chart.service';
+import {ZoomService} from '../../service/zoom.service';
+import {IDisplayTooltip} from '../../model/i-display-tooltip';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'teta-tooltip',
@@ -39,25 +38,27 @@ export class TooltipComponent implements OnInit, OnDestroy {
     private svc: ChartService,
     private cdr: ChangeDetectorRef,
     private zoomService: ZoomService,
-    private sanitizer: DomSanitizer
-  ) {}
+    private sanitizer: DomSanitizer,
+    private _zone: NgZone
+  ) {
+  }
 
   ngOnInit(): void {
     this.display = merge(this.svc.pointerMove, this.zoomService.zoomed).pipe(
-      map(({ event }) => {
-        const opacity = event?.type === 'mousemove' ? 1 : 0;
-
-        return opacity;
+      map(({event}) => {
+        return event?.type === 'mousemove' ? 1 : 0;
       }),
       tap(() => {
-        requestAnimationFrame(() => {
-          this.cdr.detectChanges();
+        this._zone.runOutsideAngular(() => {
+          requestAnimationFrame(() => {
+            this.cdr.detectChanges();
+          });
         });
       })
     );
 
     this.position = this.svc.pointerMove.pipe(
-      filter(({ event }) => event),
+      filter(({event}) => event),
       map((_) => {
         return this.getPoisition(_);
       }),
@@ -77,8 +78,8 @@ export class TooltipComponent implements OnInit, OnDestroy {
         html += `<div class="display-flex align-center"><span class="margin-right-1" style="${indicatorStyle}"></span>
           <span class="font-title-3">${_.series.name}
           <span class="font-body-3">x: ${_.point.x?.toFixed(
-            2
-          )} y: ${_.point.y?.toFixed(2)}</span></span></div>`;
+          2
+        )} y: ${_.point.y?.toFixed(2)}</span></span></div>`;
       });
 
       return transformHtml(html);
@@ -106,11 +107,11 @@ export class TooltipComponent implements OnInit, OnDestroy {
     );
   }
 
-  private getPoisition({ event }: any) {
+  private getPoisition({event}: any) {
     const centerX = this.size.width / 2;
     const centerY = this.size.height / 2;
 
-    const padding = { x: 10, y: 10 };
+    const padding = {x: 10, y: 10};
 
     const scene = {
       left: event.pageX > centerX ? 'initial' : `${event.pageX + padding.x}px`,

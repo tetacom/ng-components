@@ -2506,7 +2506,7 @@
         },
         {
             "name": "ChartService",
-            "id": "injectable-ChartService-b07adebfbee9229e67785f06388139a6",
+            "id": "injectable-ChartService-c9fbba43cc5fc71a9b6187ffd3b465be",
             "file": "projects/chart/src/chart/service/chart.service.ts",
             "properties": [
                 {
@@ -2522,7 +2522,7 @@
                     ]
                 },
                 {
-                    "name": "plotbandMove",
+                    "name": "plotBandMove",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Observable<IChartEvent<PlotBand>>",
@@ -2534,7 +2534,7 @@
                     ]
                 },
                 {
-                    "name": "plotbandMove$",
+                    "name": "plotBandMove$",
                     "defaultValue": "new Subject<IChartEvent<PlotBand>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
@@ -2547,7 +2547,7 @@
                     ]
                 },
                 {
-                    "name": "plotlineMove",
+                    "name": "plotLineMove",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Observable<IChartEvent<PlotLine>>",
@@ -2559,7 +2559,7 @@
                     ]
                 },
                 {
-                    "name": "plotlineMove$",
+                    "name": "plotLineMove$",
                     "defaultValue": "new Subject<IChartEvent<PlotLine>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
@@ -2895,7 +2895,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from '@angular/core';\r\nimport { IChartConfig } from '../model/i-chart-config';\r\nimport { AxesService } from './axes.service';\r\nimport { map, Observable, Subject } from 'rxjs';\r\nimport { ScaleService } from './scale.service';\r\nimport { IChartEvent } from '../model/i-chart-event';\r\nimport { IDisplayTooltip } from '../model/i-display-tooltip';\r\nimport { PlotBand } from '../model/plot-band';\r\nimport { PlotLine } from '../model/plot-line';\r\nimport { IPointMove } from '../model/i-point-move';\r\n\r\n@Injectable({\r\n  providedIn: 'root',\r\n})\r\nexport class ChartService {\r\n  public size: Observable<DOMRect>;\r\n  public pointerMove: Observable<any>;\r\n  public tooltips: Observable<IDisplayTooltip>;\r\n  public plotbandMove: Observable<IChartEvent<PlotBand>>;\r\n  public plotlineMove: Observable<IChartEvent<PlotLine>>;\r\n  public pointMove: Observable<IChartEvent<IPointMove>>;\r\n\r\n  private size$ = new Subject<DOMRect>();\r\n  private pointerMove$ = new Subject<any>();\r\n  private tooltips$ = new Subject<IDisplayTooltip>();\r\n  private plotbandMove$ = new Subject<IChartEvent<PlotBand>>();\r\n  private plotlineMove$ = new Subject<IChartEvent<PlotLine>>();\r\n  private pointMove$ = new Subject<IChartEvent<IPointMove>>();\r\n\r\n  private _config: IChartConfig;\r\n\r\n  constructor(\r\n    private axesService: AxesService,\r\n    private scaleService: ScaleService\r\n  ) {\r\n    this.size = this.size$.asObservable();\r\n    this.pointerMove = this.pointerMove$.asObservable();\r\n    this.tooltips = this.tooltips$.asObservable();\r\n    this.plotbandMove = this.plotbandMove$.asObservable();\r\n    this.plotlineMove = this.plotlineMove$.asObservable();\r\n    this.pointMove = this.pointMove$.asObservable();\r\n\r\n    this.size\r\n      .pipe(\r\n        map((size) => {\r\n          this.scaleService.createScales(size, this._config);\r\n        })\r\n      )\r\n      .subscribe();\r\n  }\r\n\r\n  public init(config: IChartConfig) {\r\n    this._config = config;\r\n\r\n    if (config.inverted) {\r\n      this._config.series = this._config?.series?.map((serie) => {\r\n        return {\r\n          ...serie,\r\n          data: serie?.data?.map((point) => {\r\n            return {\r\n              ...point,\r\n              x: point?.y,\r\n              y: point?.x,\r\n            };\r\n          }),\r\n        };\r\n      });\r\n    }\r\n\r\n    this.axesService.init(this._config);\r\n  }\r\n\r\n  public setSize(size: DOMRect) {\r\n    this.size$.next(size);\r\n  }\r\n\r\n  public setPointerMove(event: any) {\r\n    this.pointerMove$.next({ event });\r\n  }\r\n\r\n  public setTooltip(tooltip: IDisplayTooltip) {\r\n    this.tooltips$.next(tooltip);\r\n  }\r\n\r\n  public emitPlotband(event: IChartEvent<PlotBand>) {\r\n    this.plotbandMove$.next(event);\r\n  }\r\n\r\n  public emitPlotline(event: IChartEvent<PlotLine>) {\r\n    this.plotlineMove$.next(event);\r\n  }\r\n\r\n  public emitPoint(event: IChartEvent<IPointMove>) {\r\n    this.pointMove$.next(event);\r\n  }\r\n\r\n  get config(): IChartConfig {\r\n    return this._config;\r\n  }\r\n}\r\n",
+            "sourceCode": "import {Injectable} from '@angular/core';\r\nimport {IChartConfig} from '../model/i-chart-config';\r\nimport {AxesService} from './axes.service';\r\nimport {map, Observable, Subject} from 'rxjs';\r\nimport {ScaleService} from './scale.service';\r\nimport {IChartEvent} from '../model/i-chart-event';\r\nimport {IDisplayTooltip} from '../model/i-display-tooltip';\r\nimport {PlotBand} from '../model/plot-band';\r\nimport {PlotLine} from '../model/plot-line';\r\nimport {IPointMove} from '../model/i-point-move';\r\n\r\n@Injectable({\r\n  providedIn: 'root',\r\n})\r\nexport class ChartService {\r\n  public size: Observable<DOMRect>;\r\n  public pointerMove: Observable<any>;\r\n  public tooltips: Observable<IDisplayTooltip>;\r\n  public plotBandMove: Observable<IChartEvent<PlotBand>>;\r\n  public plotLineMove: Observable<IChartEvent<PlotLine>>;\r\n  public pointMove: Observable<IChartEvent<IPointMove>>;\r\n\r\n  private size$ = new Subject<DOMRect>();\r\n  private pointerMove$ = new Subject<any>();\r\n  private tooltips$ = new Subject<IDisplayTooltip>();\r\n  private plotBandMove$ = new Subject<IChartEvent<PlotBand>>();\r\n  private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();\r\n  private pointMove$ = new Subject<IChartEvent<IPointMove>>();\r\n\r\n  private _config: IChartConfig;\r\n\r\n  constructor(\r\n    private axesService: AxesService,\r\n    private scaleService: ScaleService\r\n  ) {\r\n    this.size = this.size$.asObservable();\r\n    this.pointerMove = this.pointerMove$.asObservable();\r\n    this.tooltips = this.tooltips$.asObservable();\r\n    this.plotBandMove = this.plotBandMove$.asObservable();\r\n    this.plotLineMove = this.plotLineMove$.asObservable();\r\n    this.pointMove = this.pointMove$.asObservable();\r\n\r\n    this.size\r\n      .pipe(\r\n        map((size) => {\r\n          this.scaleService.createScales(size, this._config);\r\n        })\r\n      )\r\n      .subscribe();\r\n  }\r\n\r\n  public init(config: IChartConfig) {\r\n    this._config = config;\r\n\r\n    if (config.inverted) {\r\n      this._config.series = this._config?.series?.map((serie) => {\r\n        return {\r\n          ...serie,\r\n          data: serie?.data?.map((point) => {\r\n            return {\r\n              ...point,\r\n              x: point?.y,\r\n              y: point?.x,\r\n            };\r\n          }),\r\n        };\r\n      });\r\n    }\r\n\r\n    this.axesService.init(this._config);\r\n  }\r\n\r\n  public setSize(size: DOMRect) {\r\n    this.size$.next(size);\r\n  }\r\n\r\n  public setPointerMove(event: any) {\r\n    this.pointerMove$.next({event});\r\n  }\r\n\r\n  public setTooltip(tooltip: IDisplayTooltip) {\r\n    this.tooltips$.next(tooltip);\r\n  }\r\n\r\n  public emitPlotband(event: IChartEvent<PlotBand>) {\r\n    this.plotBandMove$.next(event);\r\n  }\r\n\r\n  public emitPlotline(event: IChartEvent<PlotLine>) {\r\n    this.plotLineMove$.next(event);\r\n  }\r\n\r\n  public emitPoint(event: IChartEvent<IPointMove>) {\r\n    this.pointMove$.next(event);\r\n  }\r\n\r\n  get config(): IChartConfig {\r\n    return this._config;\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -8173,619 +8173,7 @@
         },
         {
             "name": "Axis",
-            "id": "class-Axis-f6614496d979659138163d67cb27a70f",
-            "file": "projects/chart/src/chart/core/axis/axis.ts",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "type": "class",
-            "sourceCode": "import { IChartConfig } from '../../model/i-chart-config';\r\nimport { AxisOrientation } from '../../model/enum/axis-orientation';\r\nimport { Series } from '../../model/series';\r\nimport { BasePoint } from '../../model/base-point';\r\nimport * as d3 from 'd3';\r\nimport { AxisOptions } from '../../model/axis-options';\r\nimport { AxisSizeBuilder, ExtremesBuilder } from './builders/public-api';\r\nimport { AxisType } from '../../model/enum/axis-type';\r\n\r\nimport { generateTicks } from '../utils/public-api';\r\n\r\nexport class Axis {\r\n  private chartConfig: IChartConfig;\r\n  private _orientation: AxisOrientation;\r\n  private _index: number | string;\r\n  private _extremes: [number, number] = [0, 0];\r\n  private _selfSize: number;\r\n  private _ticksValues: number[];\r\n\r\n  private defaultFormatters = new Map<AxisType, any>()\r\n    .set(AxisType.number, d3.format(',.2f'))\r\n    .set(AxisType.time, d3.timeFormat('%B %d, %Y'))\r\n    .set(AxisType.log, d3.format(',.2f'));\r\n\r\n  constructor(config: IChartConfig) {\r\n    this.chartConfig = config;\r\n  }\r\n\r\n  /**\r\n   * Factory for creating x,y axes\r\n   * @param {AxisOrientation} orientation\r\n   * Axis type\r\n   * @param {IChartConfig} config\r\n   * Chart config\r\n   * @param {number} index\r\n   * Index axis\r\n   * @return {Axis}\r\n   * New generated axis\r\n   */\r\n  public static createAxis(\r\n    orientation: AxisOrientation,\r\n    config: IChartConfig,\r\n    index: number\r\n  ): Axis {\r\n    const axis = new Axis(config);\r\n    axis.setLocate(orientation);\r\n    axis.setIndex(index);\r\n    axis.setExtremes();\r\n    axis.setTicksValues();\r\n    axis.setSelfSize();\r\n\r\n    return axis;\r\n  }\r\n\r\n  /**\r\n   *\r\n   * @param {orientation} orientation\r\n   * Set locate axis x or y\r\n   */\r\n  private setLocate(orientation: AxisOrientation): void {\r\n    this._orientation = orientation;\r\n  }\r\n\r\n  /**\r\n   *\r\n   * @param {number | string} index\r\n   * Index axis\r\n   */\r\n  private setIndex(index: number | string): void {\r\n    this._index = index;\r\n  }\r\n\r\n  /**\r\n   * @return {Array<Series<BasePoint>>}\r\n   * Linked series\r\n   */\r\n  public linkedSeries(): Array<Series<BasePoint>> {\r\n    const linkedFilter = (serie: Series<BasePoint>) =>\r\n      serie[\r\n        this._orientation === AxisOrientation.y ? 'yAxisIndex' : 'xAxisIndex'\r\n      ] === this._index;\r\n\r\n    return this.chartConfig?.series.filter(linkedFilter);\r\n  }\r\n\r\n  private setExtremes(): void {\r\n    const builder = new ExtremesBuilder();\r\n    this._extremes = builder.build(this);\r\n\r\n    this._extremes = d3.nice(this._extremes[0], this._extremes[1], 10);\r\n  }\r\n\r\n  private setSelfSize(): void {\r\n    const builder = new AxisSizeBuilder();\r\n    this._selfSize = builder.build(this);\r\n  }\r\n\r\n  private setTicksValues(): void {\r\n    const ticks = generateTicks(this._extremes);\r\n    this._ticksValues = ticks;\r\n  }\r\n\r\n  get extremes(): Array<number> {\r\n    return this._extremes;\r\n  }\r\n\r\n  get orientation(): AxisOrientation {\r\n    return this._orientation;\r\n  }\r\n\r\n  get selfSize(): number {\r\n    return this._selfSize;\r\n  }\r\n\r\n  get tickValues(): number[] {\r\n    return this._ticksValues;\r\n  }\r\n\r\n  get index() {\r\n    return this._index;\r\n  }\r\n\r\n  get options(): AxisOptions {\r\n    return this.orientation === AxisOrientation.x\r\n      ? this.chartConfig.xAxis[this.index]\r\n      : this.chartConfig.yAxis[this.index];\r\n  }\r\n\r\n  public defaultFormatter() {\r\n    return this.defaultFormatters.get(this.options.type);\r\n  }\r\n}\r\n",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "args": [
-                    {
-                        "name": "config",
-                        "type": "IChartConfig",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    }
-                ],
-                "line": 23,
-                "jsdoctags": [
-                    {
-                        "name": "config",
-                        "type": "IChartConfig",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    }
-                ]
-            },
-            "properties": [
-                {
-                    "name": "_extremes",
-                    "defaultValue": "[0, 0]",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "[number, number]",
-                    "optional": false,
-                    "description": "",
-                    "line": 16,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_index",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number | string",
-                    "optional": false,
-                    "description": "",
-                    "line": 15,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_orientation",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "AxisOrientation",
-                    "optional": false,
-                    "description": "",
-                    "line": 14,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_selfSize",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 17,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_ticksValues",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number[]",
-                    "optional": false,
-                    "description": "",
-                    "line": 18,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "chartConfig",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "IChartConfig",
-                    "optional": false,
-                    "description": "",
-                    "line": 13,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "defaultFormatters",
-                    "defaultValue": "new Map<AxisType, any>()\r\n    .set(AxisType.number, d3.format(',.2f'))\r\n    .set(AxisType.time, d3.timeFormat('%B %d, %Y'))\r\n    .set(AxisType.log, d3.format(',.2f'))",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "optional": false,
-                    "description": "",
-                    "line": 20,
-                    "modifierKind": [
-                        121
-                    ]
-                }
-            ],
-            "methods": [
-                {
-                    "name": "createAxis",
-                    "args": [
-                        {
-                            "name": "orientation",
-                            "type": "AxisOrientation",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        },
-                        {
-                            "name": "config",
-                            "type": "IChartConfig",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        },
-                        {
-                            "name": "index",
-                            "type": "number",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "Axis",
-                    "typeParameters": [],
-                    "line": 40,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\n\nFactory for creating x,y axes\nAxis type\nChart config\nIndex axis\nNew generated axis\n",
-                    "description": "<p>Factory for creating x,y axes\nAxis type\nChart config\nIndex axis\nNew generated axis</p>\n",
-                    "modifierKind": [
-                        124
-                    ],
-                    "jsdoctags": [
-                        {
-                            "name": {
-                                "pos": 1107,
-                                "end": 1118,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "escapedText": "orientation"
-                            },
-                            "type": "AxisOrientation",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "pos": 1083,
-                                "end": 1088,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "escapedText": "param"
-                            },
-                            "comment": "<p>Axis type</p>\n",
-                            "typeExpression": {
-                                "pos": 1089,
-                                "end": 1106,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 304,
-                                "type": {
-                                    "pos": 1090,
-                                    "end": 1105,
-                                    "flags": 4194304,
-                                    "modifierFlagsCache": 0,
-                                    "transformFlags": 1,
-                                    "kind": 176,
-                                    "typeName": {
-                                        "pos": 1090,
-                                        "end": 1105,
-                                        "flags": 4194304,
-                                        "modifierFlagsCache": 0,
-                                        "transformFlags": 0,
-                                        "kind": 79,
-                                        "escapedText": "AxisOrientation"
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "name": {
-                                "pos": 1163,
-                                "end": 1169,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "escapedText": "config"
-                            },
-                            "type": "IChartConfig",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "pos": 1142,
-                                "end": 1147,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "escapedText": "param"
-                            },
-                            "comment": "<p>Chart config</p>\n",
-                            "typeExpression": {
-                                "pos": 1148,
-                                "end": 1162,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 304,
-                                "type": {
-                                    "pos": 1149,
-                                    "end": 1161,
-                                    "flags": 4194304,
-                                    "modifierFlagsCache": 0,
-                                    "transformFlags": 1,
-                                    "kind": 176,
-                                    "typeName": {
-                                        "pos": 1149,
-                                        "end": 1161,
-                                        "flags": 4194304,
-                                        "modifierFlagsCache": 0,
-                                        "transformFlags": 0,
-                                        "kind": 79,
-                                        "escapedText": "IChartConfig"
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "name": {
-                                "pos": 1211,
-                                "end": 1216,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "escapedText": "index"
-                            },
-                            "type": "number",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "pos": 1196,
-                                "end": 1201,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "escapedText": "param"
-                            },
-                            "comment": "<p>Index axis</p>\n",
-                            "typeExpression": {
-                                "pos": 1202,
-                                "end": 1210,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 304,
-                                "type": {
-                                    "pos": 1203,
-                                    "end": 1209,
-                                    "flags": 4194304,
-                                    "modifierFlagsCache": 0,
-                                    "transformFlags": 1,
-                                    "kind": 145
-                                }
-                            }
-                        },
-                        {
-                            "tagName": {
-                                "pos": 1241,
-                                "end": 1247,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "originalKeywordKind": 105,
-                                "escapedText": "return"
-                            },
-                            "comment": "<p>New generated axis</p>\n",
-                            "returnType": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "defaultFormatter",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "any",
-                    "typeParameters": [],
-                    "line": 129,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "modifierKind": [
-                        123
-                    ]
-                },
-                {
-                    "name": "linkedSeries",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "Array<Series<BasePoint>>",
-                    "typeParameters": [],
-                    "line": 77,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\n\nLinked series\n",
-                    "description": "<p>Linked series</p>\n",
-                    "modifierKind": [
-                        123
-                    ],
-                    "jsdoctags": [
-                        {
-                            "tagName": {
-                                "pos": 1977,
-                                "end": 1983,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "originalKeywordKind": 105,
-                                "escapedText": "return"
-                            },
-                            "comment": "<p>Linked series</p>\n",
-                            "returnType": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "setExtremes",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 86,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "setIndex",
-                    "args": [
-                        {
-                            "name": "index",
-                            "type": "number | string",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 69,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\n\n\nIndex axis\n",
-                    "description": "<p>Index axis</p>\n",
-                    "modifierKind": [
-                        121
-                    ],
-                    "jsdoctags": [
-                        {
-                            "name": {
-                                "pos": 1848,
-                                "end": 1853,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "escapedText": "index"
-                            },
-                            "type": "number | string",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "pos": 1824,
-                                "end": 1829,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "escapedText": "param"
-                            },
-                            "comment": "<p>Index axis</p>\n",
-                            "typeExpression": {
-                                "pos": 1830,
-                                "end": 1847,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 304,
-                                "type": {
-                                    "pos": 1831,
-                                    "end": 1846,
-                                    "flags": 4194304,
-                                    "modifierFlagsCache": 0,
-                                    "transformFlags": 1,
-                                    "kind": 185,
-                                    "types": [
-                                        {
-                                            "pos": 1831,
-                                            "end": 1837,
-                                            "flags": 4194304,
-                                            "modifierFlagsCache": 0,
-                                            "transformFlags": 1,
-                                            "kind": 145
-                                        },
-                                        {
-                                            "pos": 1839,
-                                            "end": 1846,
-                                            "flags": 4194304,
-                                            "modifierFlagsCache": 0,
-                                            "transformFlags": 1,
-                                            "kind": 148
-                                        }
-                                    ]
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "setLocate",
-                    "args": [
-                        {
-                            "name": "orientation",
-                            "type": "AxisOrientation",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 60,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\n\n\nSet locate axis x or y\n",
-                    "description": "<p>Set locate axis x or y</p>\n",
-                    "modifierKind": [
-                        121
-                    ],
-                    "jsdoctags": [
-                        {
-                            "name": {
-                                "pos": 1652,
-                                "end": 1663,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "escapedText": "orientation"
-                            },
-                            "type": "AxisOrientation",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "pos": 1632,
-                                "end": 1637,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "escapedText": "param"
-                            },
-                            "comment": "<p>Set locate axis x or y</p>\n",
-                            "typeExpression": {
-                                "pos": 1638,
-                                "end": 1651,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 304,
-                                "type": {
-                                    "pos": 1639,
-                                    "end": 1650,
-                                    "flags": 4194304,
-                                    "modifierFlagsCache": 0,
-                                    "transformFlags": 1,
-                                    "kind": 176,
-                                    "typeName": {
-                                        "pos": 1639,
-                                        "end": 1650,
-                                        "flags": 4194304,
-                                        "modifierFlagsCache": 0,
-                                        "transformFlags": 0,
-                                        "kind": 79,
-                                        "escapedText": "orientation"
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "setSelfSize",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 93,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "setTicksValues",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 98,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "modifierKind": [
-                        121
-                    ]
-                }
-            ],
-            "indexSignatures": [],
-            "accessors": {
-                "extremes": {
-                    "name": "extremes",
-                    "getSignature": {
-                        "name": "extremes",
-                        "type": "",
-                        "returnType": "Array<number>",
-                        "line": 103
-                    }
-                },
-                "orientation": {
-                    "name": "orientation",
-                    "getSignature": {
-                        "name": "orientation",
-                        "type": "",
-                        "returnType": "AxisOrientation",
-                        "line": 107
-                    }
-                },
-                "selfSize": {
-                    "name": "selfSize",
-                    "getSignature": {
-                        "name": "selfSize",
-                        "type": "number",
-                        "returnType": "number",
-                        "line": 111
-                    }
-                },
-                "tickValues": {
-                    "name": "tickValues",
-                    "getSignature": {
-                        "name": "tickValues",
-                        "type": "[]",
-                        "returnType": "number[]",
-                        "line": 115
-                    }
-                },
-                "index": {
-                    "name": "index",
-                    "getSignature": {
-                        "name": "index",
-                        "type": "",
-                        "returnType": "",
-                        "line": 119
-                    }
-                },
-                "options": {
-                    "name": "options",
-                    "getSignature": {
-                        "name": "options",
-                        "type": "",
-                        "returnType": "AxisOptions",
-                        "line": 123
-                    }
-                }
-            },
-            "inputsClass": [],
-            "outputsClass": [],
-            "hostBindings": [],
-            "hostListeners": []
-        },
-        {
-            "name": "Axis",
-            "id": "class-Axis-e29b3d537243d4607eed4ec785a185ff-1",
+            "id": "class-Axis-e29b3d537243d4607eed4ec785a185ff",
             "file": "projects/components/src/component/chart/core/axis-creator.ts",
             "deprecated": false,
             "deprecationMessage": "",
@@ -9040,6 +8428,656 @@
                         "type": "",
                         "returnType": "",
                         "line": 60
+                    }
+                }
+            },
+            "inputsClass": [],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": []
+        },
+        {
+            "name": "Axis",
+            "id": "class-Axis-da030440074dd94d377cfd0e4faa164d-1",
+            "file": "projects/chart/src/chart/core/axis/axis.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "import { IChartConfig } from '../../model/i-chart-config';\r\nimport { AxisOrientation } from '../../model/enum/axis-orientation';\r\nimport { Series } from '../../model/series';\r\nimport { BasePoint } from '../../model/base-point';\r\nimport * as d3 from 'd3';\r\nimport { AxisOptions } from '../../model/axis-options';\r\nimport { AxisSizeBuilder, ExtremesBuilder } from './builders/public-api';\r\nimport { AxisType } from '../../model/enum/axis-type';\r\n\r\nimport { generateTicks } from '../utils/public-api';\r\n\r\nexport class Axis {\r\n  private chartConfig: IChartConfig;\r\n  private _orientation: AxisOrientation;\r\n  private _index: number | string;\r\n  private _extremes: [number, number] = [0, 0];\r\n  private _selfSize: number;\r\n  private _ticksValues: number[];\r\n  private _options: AxisOptions;\r\n\r\n  private defaultFormatters = new Map<AxisType, any>()\r\n    .set(AxisType.number, d3.format(',.2f'))\r\n    .set(AxisType.time, d3.timeFormat('%B %d, %Y'))\r\n    .set(AxisType.log, d3.format(',.2f'));\r\n\r\n  private defaultConfig: AxisOptions = {\r\n    type: AxisType.number,\r\n    visible: true,\r\n  };\r\n\r\n  constructor(config: IChartConfig) {\r\n    this.chartConfig = config;\r\n  }\r\n\r\n  /**\r\n   * Factory for creating x,y axes\r\n   * @param {AxisOrientation} orientation\r\n   * Axis type\r\n   * @param {IChartConfig} config\r\n   * Chart config\r\n   * @param {number} index\r\n   * Index axis\r\n   * @return {Axis}\r\n   * New generated axis\r\n   */\r\n  public static createAxis(\r\n    orientation: AxisOrientation,\r\n    config: IChartConfig,\r\n    index: number\r\n  ): Axis {\r\n    const axis = new Axis(config);\r\n    axis.setLocate(orientation);\r\n    axis.setIndex(index);\r\n    axis.setOptions();\r\n    axis.setExtremes();\r\n    axis.setTicksValues();\r\n    axis.setSelfSize();\r\n\r\n    return axis;\r\n  }\r\n\r\n  /**\r\n   *\r\n   * @param {orientation} orientation\r\n   * Set locate axis x or y\r\n   */\r\n  private setLocate(orientation: AxisOrientation): void {\r\n    this._orientation = orientation;\r\n  }\r\n\r\n  /**\r\n   *\r\n   * @param {number | string} index\r\n   * Index axis\r\n   */\r\n  private setIndex(index: number | string): void {\r\n    this._index = index;\r\n  }\r\n\r\n  /**\r\n   * @return {Array<Series<BasePoint>>}\r\n   * Linked series\r\n   */\r\n  public linkedSeries(): Array<Series<BasePoint>> {\r\n    const linkedFilter = (serie: Series<BasePoint>) =>\r\n      serie[\r\n        this._orientation === AxisOrientation.y ? 'yAxisIndex' : 'xAxisIndex'\r\n      ] === this._index;\r\n\r\n    return this.chartConfig?.series.filter(linkedFilter);\r\n  }\r\n\r\n  private setExtremes(): void {\r\n    const builder = new ExtremesBuilder();\r\n    this._extremes = builder.build(this);\r\n\r\n    this._extremes = d3.nice(this._extremes[0], this._extremes[1], 10);\r\n  }\r\n\r\n  private setSelfSize(): void {\r\n    const builder = new AxisSizeBuilder();\r\n    this._selfSize = builder.build(this);\r\n  }\r\n\r\n  private setTicksValues(): void {\r\n    const ticks = generateTicks(this._extremes);\r\n    this._ticksValues = ticks;\r\n  }\r\n\r\n  private setOptions(): void {\r\n    const options =\r\n      this.orientation === AxisOrientation.x\r\n        ? this.chartConfig.xAxis[this.index]\r\n        : this.chartConfig.yAxis[this.index];\r\n\r\n    this._options = Object.assign(this.defaultConfig, options);\r\n  }\r\n\r\n  get extremes(): Array<number> {\r\n    return this._extremes;\r\n  }\r\n\r\n  get orientation(): AxisOrientation {\r\n    return this._orientation;\r\n  }\r\n\r\n  get selfSize(): number {\r\n    return this._selfSize;\r\n  }\r\n\r\n  get tickValues(): number[] {\r\n    return this._ticksValues;\r\n  }\r\n\r\n  get index() {\r\n    return this._index;\r\n  }\r\n\r\n  get options(): AxisOptions {\r\n    return this._options;\r\n  }\r\n\r\n  public defaultFormatter() {\r\n    return this.defaultFormatters.get(this.options.type);\r\n  }\r\n}\r\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "config",
+                        "type": "IChartConfig",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 29,
+                "jsdoctags": [
+                    {
+                        "name": "config",
+                        "type": "IChartConfig",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "properties": [
+                {
+                    "name": "_extremes",
+                    "defaultValue": "[0, 0]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[number, number]",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_index",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number | string",
+                    "optional": false,
+                    "description": "",
+                    "line": 15,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_options",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "AxisOptions",
+                    "optional": false,
+                    "description": "",
+                    "line": 19,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_orientation",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "AxisOrientation",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_selfSize",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_ticksValues",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 18,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "chartConfig",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "IChartConfig",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "defaultConfig",
+                    "defaultValue": "{\r\n    type: AxisType.number,\r\n    visible: true,\r\n  }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "AxisOptions",
+                    "optional": false,
+                    "description": "",
+                    "line": 26,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "defaultFormatters",
+                    "defaultValue": "new Map<AxisType, any>()\r\n    .set(AxisType.number, d3.format(',.2f'))\r\n    .set(AxisType.time, d3.timeFormat('%B %d, %Y'))\r\n    .set(AxisType.log, d3.format(',.2f'))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 21,
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "createAxis",
+                    "args": [
+                        {
+                            "name": "orientation",
+                            "type": "AxisOrientation",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "config",
+                            "type": "IChartConfig",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "index",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Axis",
+                    "typeParameters": [],
+                    "line": 46,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nFactory for creating x,y axes\nAxis type\nChart config\nIndex axis\nNew generated axis\n",
+                    "description": "<p>Factory for creating x,y axes\nAxis type\nChart config\nIndex axis\nNew generated axis</p>\n",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 1239,
+                                "end": 1250,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "orientation"
+                            },
+                            "type": "AxisOrientation",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 1215,
+                                "end": 1220,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>Axis type</p>\n",
+                            "typeExpression": {
+                                "pos": 1221,
+                                "end": 1238,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 304,
+                                "type": {
+                                    "pos": 1222,
+                                    "end": 1237,
+                                    "flags": 4194304,
+                                    "modifierFlagsCache": 0,
+                                    "transformFlags": 1,
+                                    "kind": 176,
+                                    "typeName": {
+                                        "pos": 1222,
+                                        "end": 1237,
+                                        "flags": 4194304,
+                                        "modifierFlagsCache": 0,
+                                        "transformFlags": 0,
+                                        "kind": 79,
+                                        "escapedText": "AxisOrientation"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": {
+                                "pos": 1295,
+                                "end": 1301,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "config"
+                            },
+                            "type": "IChartConfig",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 1274,
+                                "end": 1279,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>Chart config</p>\n",
+                            "typeExpression": {
+                                "pos": 1280,
+                                "end": 1294,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 304,
+                                "type": {
+                                    "pos": 1281,
+                                    "end": 1293,
+                                    "flags": 4194304,
+                                    "modifierFlagsCache": 0,
+                                    "transformFlags": 1,
+                                    "kind": 176,
+                                    "typeName": {
+                                        "pos": 1281,
+                                        "end": 1293,
+                                        "flags": 4194304,
+                                        "modifierFlagsCache": 0,
+                                        "transformFlags": 0,
+                                        "kind": 79,
+                                        "escapedText": "IChartConfig"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": {
+                                "pos": 1343,
+                                "end": 1348,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "index"
+                            },
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 1328,
+                                "end": 1333,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>Index axis</p>\n",
+                            "typeExpression": {
+                                "pos": 1334,
+                                "end": 1342,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 304,
+                                "type": {
+                                    "pos": 1335,
+                                    "end": 1341,
+                                    "flags": 4194304,
+                                    "modifierFlagsCache": 0,
+                                    "transformFlags": 1,
+                                    "kind": 145
+                                }
+                            }
+                        },
+                        {
+                            "tagName": {
+                                "pos": 1373,
+                                "end": 1379,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "originalKeywordKind": 105,
+                                "escapedText": "return"
+                            },
+                            "comment": "<p>New generated axis</p>\n",
+                            "returnType": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "defaultFormatter",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 143,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "linkedSeries",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "Array<Series<BasePoint>>",
+                    "typeParameters": [],
+                    "line": 84,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nLinked series\n",
+                    "description": "<p>Linked series</p>\n",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "tagName": {
+                                "pos": 2133,
+                                "end": 2139,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "originalKeywordKind": 105,
+                                "escapedText": "return"
+                            },
+                            "comment": "<p>Linked series</p>\n",
+                            "returnType": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "setExtremes",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 93,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "setIndex",
+                    "args": [
+                        {
+                            "name": "index",
+                            "type": "number | string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 76,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\n\nIndex axis\n",
+                    "description": "<p>Index axis</p>\n",
+                    "modifierKind": [
+                        121
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 2004,
+                                "end": 2009,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "index"
+                            },
+                            "type": "number | string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 1980,
+                                "end": 1985,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>Index axis</p>\n",
+                            "typeExpression": {
+                                "pos": 1986,
+                                "end": 2003,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 304,
+                                "type": {
+                                    "pos": 1987,
+                                    "end": 2002,
+                                    "flags": 4194304,
+                                    "modifierFlagsCache": 0,
+                                    "transformFlags": 1,
+                                    "kind": 185,
+                                    "types": [
+                                        {
+                                            "pos": 1987,
+                                            "end": 1993,
+                                            "flags": 4194304,
+                                            "modifierFlagsCache": 0,
+                                            "transformFlags": 1,
+                                            "kind": 145
+                                        },
+                                        {
+                                            "pos": 1995,
+                                            "end": 2002,
+                                            "flags": 4194304,
+                                            "modifierFlagsCache": 0,
+                                            "transformFlags": 1,
+                                            "kind": 148
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setLocate",
+                    "args": [
+                        {
+                            "name": "orientation",
+                            "type": "AxisOrientation",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 67,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\n\nSet locate axis x or y\n",
+                    "description": "<p>Set locate axis x or y</p>\n",
+                    "modifierKind": [
+                        121
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 1808,
+                                "end": 1819,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "orientation"
+                            },
+                            "type": "AxisOrientation",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 1788,
+                                "end": 1793,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>Set locate axis x or y</p>\n",
+                            "typeExpression": {
+                                "pos": 1794,
+                                "end": 1807,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 304,
+                                "type": {
+                                    "pos": 1795,
+                                    "end": 1806,
+                                    "flags": 4194304,
+                                    "modifierFlagsCache": 0,
+                                    "transformFlags": 1,
+                                    "kind": 176,
+                                    "typeName": {
+                                        "pos": 1795,
+                                        "end": 1806,
+                                        "flags": 4194304,
+                                        "modifierFlagsCache": 0,
+                                        "transformFlags": 0,
+                                        "kind": 79,
+                                        "escapedText": "orientation"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setOptions",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 110,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "setSelfSize",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 100,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "setTicksValues",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 105,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "accessors": {
+                "extremes": {
+                    "name": "extremes",
+                    "getSignature": {
+                        "name": "extremes",
+                        "type": "",
+                        "returnType": "Array<number>",
+                        "line": 119
+                    }
+                },
+                "orientation": {
+                    "name": "orientation",
+                    "getSignature": {
+                        "name": "orientation",
+                        "type": "",
+                        "returnType": "AxisOrientation",
+                        "line": 123
+                    }
+                },
+                "selfSize": {
+                    "name": "selfSize",
+                    "getSignature": {
+                        "name": "selfSize",
+                        "type": "number",
+                        "returnType": "number",
+                        "line": 127
+                    }
+                },
+                "tickValues": {
+                    "name": "tickValues",
+                    "getSignature": {
+                        "name": "tickValues",
+                        "type": "[]",
+                        "returnType": "number[]",
+                        "line": 131
+                    }
+                },
+                "index": {
+                    "name": "index",
+                    "getSignature": {
+                        "name": "index",
+                        "type": "",
+                        "returnType": "",
+                        "line": 135
+                    }
+                },
+                "options": {
+                    "name": "options",
+                    "getSignature": {
+                        "name": "options",
+                        "type": "",
+                        "returnType": "AxisOptions",
+                        "line": 139
                     }
                 }
             },
@@ -24294,7 +24332,7 @@
         },
         {
             "name": "BarSeriesComponent",
-            "id": "component-BarSeriesComponent-d09e5ec921a687d7eea65b91694d53e2",
+            "id": "component-BarSeriesComponent-80ae0021182aec80ed44ad6072199e39",
             "file": "projects/chart/src/chart/chart-container/series/bar/bar-series.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -24519,7 +24557,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  ElementRef,\r\n  OnChanges,\r\n  OnInit,\r\n  SimpleChanges,\r\n} from '@angular/core';\r\nimport * as d3 from 'd3';\r\nimport { SeriesBaseComponent } from '../../../base/series-base.component';\r\nimport { BasePoint } from '../../../model/base-point';\r\nimport { ChartService } from '../../../service/chart.service';\r\nimport { ScaleService } from '../../../service/scale.service';\r\nimport { ZoomService } from '../../../service/zoom.service';\r\n\r\n@Component({\r\n  selector: 'svg:svg[teta-bar-series]',\r\n  templateUrl: './bar-series.component.html',\r\n  styleUrls: ['./bar-series.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class BarSeriesComponent<T extends BasePoint>\r\n  extends SeriesBaseComponent<T>\r\n  implements OnInit, OnChanges\r\n{\r\n  private scaleBand: d3.ScaleBand<any>;\r\n  private y: any;\r\n\r\n  constructor(\r\n    protected override svc: ChartService,\r\n    protected override cdr: ChangeDetectorRef,\r\n    protected override scaleService: ScaleService,\r\n    protected override zoomService: ZoomService,\r\n    protected override element: ElementRef\r\n  ) {\r\n    super(svc, cdr, scaleService, zoomService, element);\r\n  }\r\n\r\n  override ngOnInit(): void {\r\n    const x = this.scaleService.xScales.get(this.series.xAxisIndex);\r\n    const y = this.scaleService.yScales.get(this.series.yAxisIndex);\r\n\r\n    const domain = this.series.data?.map((_: BasePoint) => _.x);\r\n    const range = [x(domain[0]), x(domain[domain?.length - 1])];\r\n\r\n    this.scaleBand = d3.scaleBand<number>().domain(domain).range(range);\r\n\r\n    this.y = y;\r\n  }\r\n\r\n  width() {\r\n    return this.scaleBand.bandwidth();\r\n  }\r\n\r\n  height(point: BasePoint) {\r\n    return Math.abs(this.y(0) - this.y(point.y));\r\n  }\r\n\r\n  getX(point: BasePoint) {\r\n    return this.scaleBand(point.x);\r\n  }\r\n\r\n  getY(point: BasePoint) {\r\n    return this.y(point.y);\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges) {\r\n    console.log(changes);\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  ElementRef,\r\n  OnChanges,\r\n  OnInit,\r\n  SimpleChanges,\r\n} from '@angular/core';\r\nimport * as d3 from 'd3';\r\nimport { SeriesBaseComponent } from '../../../base/series-base.component';\r\nimport { BasePoint } from '../../../model/base-point';\r\nimport { ChartService } from '../../../service/chart.service';\r\nimport { ScaleService } from '../../../service/scale.service';\r\nimport { ZoomService } from '../../../service/zoom.service';\r\n\r\n@Component({\r\n  selector: 'svg:svg[teta-bar-series]',\r\n  templateUrl: './bar-series.component.html',\r\n  styleUrls: ['./bar-series.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class BarSeriesComponent<T extends BasePoint>\r\n  extends SeriesBaseComponent<T>\r\n  implements OnInit, OnChanges\r\n{\r\n  private scaleBand: d3.ScaleBand<any>;\r\n  private y: any;\r\n\r\n  constructor(\r\n    protected override svc: ChartService,\r\n    protected override cdr: ChangeDetectorRef,\r\n    protected override scaleService: ScaleService,\r\n    protected override zoomService: ZoomService,\r\n    protected override element: ElementRef\r\n  ) {\r\n    super(svc, cdr, scaleService, zoomService, element);\r\n  }\r\n\r\n  override ngOnInit(): void {\r\n    const x = this.scaleService.xScales.get(this.series.xAxisIndex);\r\n    const y = this.scaleService.yScales.get(this.series.yAxisIndex);\r\n\r\n    const domain = this.series.data?.map((_: BasePoint) => _.x);\r\n    const range = [x(domain[0]), x(domain[domain?.length - 1])];\r\n\r\n    this.scaleBand = d3.scaleBand<number>().domain(domain).range(range);\r\n\r\n    this.y = y;\r\n  }\r\n\r\n  width() {\r\n    return this.scaleBand.bandwidth();\r\n  }\r\n\r\n  height(point: BasePoint) {\r\n    return Math.abs(this.y(0) - this.y(point.y));\r\n  }\r\n\r\n  getX(point: BasePoint) {\r\n    return this.scaleBand(point.x);\r\n  }\r\n\r\n  getY(point: BasePoint) {\r\n    return this.y(point.y);\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges) {}\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -26790,7 +26828,7 @@
         },
         {
             "name": "ChartComponent",
-            "id": "component-ChartComponent-d7b52d148102b72ab68fd30fcd5e55d9",
+            "id": "component-ChartComponent-03a38e65f593fb203c02a9fb79bdf6ae",
             "file": "projects/chart/src/chart/chart/chart.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -26828,14 +26866,14 @@
                     "name": "config",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 59,
+                    "line": 53,
                     "type": ""
                 }
             ],
             "outputsClass": [
                 {
                     "name": "plotBandsMove",
-                    "defaultValue": "new EventEmitter<\r\n    IChartEvent<PlotBand>\r\n  >()",
+                    "defaultValue": "new EventEmitter<IChartEvent<PlotBand>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "line": 45,
@@ -26843,18 +26881,18 @@
                 },
                 {
                     "name": "plotLinesMove",
-                    "defaultValue": "new EventEmitter<\r\n    IChartEvent<PlotLine>\r\n  >()",
+                    "defaultValue": "new EventEmitter<IChartEvent<PlotLine>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 50,
+                    "line": 48,
                     "type": "EventEmitter<IChartEvent<PlotLine>>"
                 },
                 {
                     "name": "pointMove",
-                    "defaultValue": "new EventEmitter<\r\n    IChartEvent<IPointMove>\r\n  >()",
+                    "defaultValue": "new EventEmitter<IChartEvent<IPointMove>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 55,
+                    "line": 51,
                     "type": "EventEmitter<IChartEvent<IPointMove>>"
                 }
             ],
@@ -26866,7 +26904,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 72,
+                    "line": 70,
                     "modifierKind": [
                         121
                     ]
@@ -26905,7 +26943,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 76,
+                    "line": 75,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -26926,7 +26964,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 94,
+                    "line": 95,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -26948,7 +26986,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  EventEmitter,\r\n  Input,\r\n  OnChanges,\r\n  OnDestroy,\r\n  OnInit,\r\n  Output,\r\n  SimpleChanges,\r\n} from '@angular/core';\r\nimport { ChartService } from '../service/chart.service';\r\nimport { IChartConfig } from '../model/i-chart-config';\r\n\r\nimport { BasePoint } from '../model/base-point';\r\nimport { Series } from '../model/series';\r\nimport { ZoomService } from '../service/zoom.service';\r\nimport { ScaleService } from '../service/scale.service';\r\nimport { BrushService } from '../service/brush.service';\r\nimport { AxesService } from '../service/axes.service';\r\nimport { ChartBounds } from '../model/chart-bounds';\r\n\r\nimport { IChartEvent } from '../model/i-chart-event';\r\nimport { PlotLine } from '../model/plot-line';\r\nimport { PlotBand } from '../model/plot-band';\r\nimport { IPointMove } from '../model/i-point-move';\r\n\r\n@Component({\r\n  selector: 'teta-svg-chart',\r\n  templateUrl: './chart.component.html',\r\n  styleUrls: ['./chart.component.scss'],\r\n  providers: [\r\n    ChartService,\r\n    ZoomService,\r\n    ScaleService,\r\n    AxesService,\r\n    BrushService,\r\n  ],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ChartComponent implements OnInit, OnChanges, OnDestroy {\r\n  legendSeries: Array<Series<BasePoint>>;\r\n\r\n  @Output()\r\n  plotBandsMove: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<\r\n    IChartEvent<PlotBand>\r\n  >();\r\n\r\n  @Output()\r\n  plotLinesMove: EventEmitter<IChartEvent<PlotLine>> = new EventEmitter<\r\n    IChartEvent<PlotLine>\r\n  >();\r\n\r\n  @Output()\r\n  pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<\r\n    IChartEvent<IPointMove>\r\n  >();\r\n\r\n  @Input() set config(config: IChartConfig) {\r\n    this._config = Object.assign(\r\n      {\r\n        bounds: new ChartBounds(),\r\n      },\r\n      config\r\n    );\r\n  }\r\n\r\n  get config() {\r\n    return this._config;\r\n  }\r\n\r\n  private _config;\r\n\r\n  constructor(private svc: ChartService, private zoomService: ZoomService) {}\r\n\r\n  ngOnChanges(changes: SimpleChanges) {}\r\n\r\n  ngOnInit(): void {\r\n    this.svc.plotbandMove.subscribe((_) => {\r\n      this.plotBandsMove.emit(_);\r\n    });\r\n\r\n    this.svc.plotlineMove.subscribe((_) => {\r\n      this.plotLinesMove.emit(_);\r\n    });\r\n\r\n    this.svc.pointMove.subscribe((_) => {\r\n      this.pointMove.emit(_);\r\n    });\r\n  }\r\n\r\n  ngAfterViewInit() {}\r\n\r\n  ngOnDestroy() {\r\n    this.zoomService.broadcastSubscribtion?.unsubscribe();\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  EventEmitter,\r\n  Input,\r\n  OnChanges,\r\n  OnDestroy,\r\n  OnInit,\r\n  Output,\r\n  SimpleChanges,\r\n} from '@angular/core';\r\nimport {ChartService} from '../service/chart.service';\r\nimport {IChartConfig} from '../model/i-chart-config';\r\n\r\nimport {BasePoint} from '../model/base-point';\r\nimport {Series} from '../model/series';\r\nimport {ZoomService} from '../service/zoom.service';\r\nimport {ScaleService} from '../service/scale.service';\r\nimport {BrushService} from '../service/brush.service';\r\nimport {AxesService} from '../service/axes.service';\r\nimport {ChartBounds} from '../model/chart-bounds';\r\n\r\nimport {IChartEvent} from '../model/i-chart-event';\r\nimport {PlotLine} from '../model/plot-line';\r\nimport {PlotBand} from '../model/plot-band';\r\nimport {IPointMove} from '../model/i-point-move';\r\n\r\n@Component({\r\n  selector: 'teta-svg-chart',\r\n  templateUrl: './chart.component.html',\r\n  styleUrls: ['./chart.component.scss'],\r\n  providers: [\r\n    ChartService,\r\n    ZoomService,\r\n    ScaleService,\r\n    AxesService,\r\n    BrushService,\r\n  ],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ChartComponent implements OnInit, OnChanges, OnDestroy {\r\n  legendSeries: Array<Series<BasePoint>>;\r\n\r\n  @Output()\r\n  plotBandsMove: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<IChartEvent<PlotBand>>();\r\n\r\n  @Output()\r\n  plotLinesMove: EventEmitter<IChartEvent<PlotLine>> = new EventEmitter<IChartEvent<PlotLine>>();\r\n\r\n  @Output()\r\n  pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<IChartEvent<IPointMove>>();\r\n\r\n  @Input() set config(config: IChartConfig) {\r\n    const defaultConfig: IChartConfig = {\r\n      bounds: new ChartBounds(),\r\n      legend: {\r\n        enable: true\r\n      },\r\n      xAxis: [],\r\n      yAxis: []\r\n    };\r\n\r\n    this._config = Object.assign(defaultConfig, config);\r\n  }\r\n\r\n  get config() {\r\n    return this._config;\r\n  }\r\n\r\n  private _config;\r\n\r\n  constructor(private svc: ChartService, private zoomService: ZoomService) {\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges) {\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.svc.plotBandMove.subscribe((_) => {\r\n      this.plotBandsMove.emit(_);\r\n    });\r\n\r\n    this.svc.plotLineMove.subscribe((_) => {\r\n      this.plotLinesMove.emit(_);\r\n    });\r\n\r\n    this.svc.pointMove.subscribe((_) => {\r\n      this.pointMove.emit(_);\r\n    });\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n  }\r\n\r\n  ngOnDestroy() {\r\n    this.zoomService.broadcastSubscribtion?.unsubscribe();\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -26976,7 +27014,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 72,
+                "line": 70,
                 "jsdoctags": [
                     {
                         "name": "svc",
@@ -27020,7 +27058,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 59,
+                        "line": 53,
                         "jsdoctags": [
                             {
                                 "name": "config",
@@ -27037,7 +27075,7 @@
                         "name": "config",
                         "type": "",
                         "returnType": "",
-                        "line": 68
+                        "line": 66
                     }
                 }
             },
@@ -28043,7 +28081,7 @@
                 "AfterViewChecked",
                 "AfterContentChecked"
             ],
-            "templateData": "<ng-container *ngIf=\"size | async as s\">\r\n  <teta-tooltip [size]=\"s\"></teta-tooltip>\r\n  <svg\r\n       [tetaZoomable]\r\n       [tetaBrushable]\r\n       [size]=\"s\"\r\n       [config]=\"config\"\r\n       [attr.width]=\"s.width\"\r\n       [attr.height]=\"s.height\"\r\n       [attr.viewBox]=\"'0 0 '+s.width+' '+s.height\"\r\n       (mouseleave)=\"mouseLeave($event)\"\r\n       (mousemove)=\"mouseMove($event)\">\r\n    <ng-container *ngIf=\"getVisibleRect(s) as rect\">\r\n      <defs>\r\n        <clipPath [attr.id]=\"'visible-window-' + id()\">\r\n          <rect [attr.x]=\"rect.left\" [attr.y]=\"rect.top\" [attr.width]=\"rect.width\" [attr.height]=\"rect.height\"></rect>\r\n        </clipPath>\r\n      </defs>\r\n\r\n      <g class=\"y-axis-container\">\r\n        <g *ngFor=\"let item of yAxes | keyvalue\"\r\n           teta-y-axis\r\n           [axis]=\"item.value\"\r\n           [size]=\"s\"\r\n           [attr.transform]=\"getTranslate(item.value, s)\"></g>\r\n      </g>\r\n      <g class=\"x-axis-container\">\r\n        <g *ngFor=\"let item of xAxes | keyvalue\"\r\n           teta-x-axis\r\n\r\n           [axis]=\"item.value\"\r\n           [size]=\"s\"\r\n           [attr.transform]=\"getTranslate(item.value, s)\"></g>\r\n      </g>\r\n      <g [attr.clip-path]=\"'url(#visible-window-'+ id() +')'\">\r\n        <g [attr.transform]=\"'translate('+ rect.left +', '+ rect.top +')'\">\r\n          <g class=\"gridlines\" teta-gridlines [size]=\"s\"></g>\r\n\r\n          <g class=\"x-axis-plotline-container\">\r\n            <ng-container *ngFor=\"let axis of config.xAxis; let i = index\">\r\n              <g teta-plot-line *ngFor=\"let plotLine of axis.plotLines\" [plotline]=\"plotLine\" [size]=\"s\"\r\n                 [axis]=\"xAxes.get(i)\"></g>\r\n            </ng-container>\r\n          </g>\r\n\r\n          <g class=\"y-axis-plotline-container\">\r\n            <ng-container *ngFor=\"let axis of config.yAxis; let i = index\">\r\n              <g teta-plot-line *ngFor=\"let plotLine of axis.plotLines\" [plotline]=\"plotLine\" [size]=\"s\"\r\n                 [axis]=\"yAxes.get(i)\"></g>\r\n            </ng-container>\r\n          </g>\r\n\r\n          <g class=\"x-axis-plotband-container\">\r\n            <ng-container *ngFor=\"let axis of config.xAxis; let i = index\">\r\n              <g teta-plot-band *ngFor=\"let plotBand of axis.plotBands\" [plotband]=\"plotBand\" [size]=\"s\"\r\n                 [axis]=\"xAxes.get(i)\"></g>\r\n            </ng-container>\r\n          </g>\r\n          <g class=\"y-axis-plotband-container\">\r\n            <ng-container *ngFor=\"let axis of config.yAxis; let i = index\">\r\n              <g teta-plot-band *ngFor=\"let plotBand of axis.plotBands\" [plotband]=\"plotBand\" [size]=\"s\"\r\n                 [axis]=\"yAxes.get(i)\"></g>\r\n            </ng-container>\r\n          </g>\r\n          <g class=\"series-tooltip-line-marker\"></g>\r\n          <g class=\"series-container\">\r\n            <g teta-series-host\r\n               *ngFor=\"let series of config.series\"\r\n               [series]=\"series\"\r\n               [size]=\"s\"></g>\r\n          </g>\r\n        </g>\r\n      </g>\r\n    </ng-container>\r\n  </svg>\r\n\r\n\r\n</ng-container>\r\n"
+            "templateData": "<ng-container *ngIf=\"size | async as s\">\r\n  <teta-tooltip [size]=\"s\"></teta-tooltip>\r\n  <svg\r\n       [tetaZoomable]\r\n       [tetaBrushable]\r\n       [size]=\"s\"\r\n       [config]=\"config\"\r\n       [attr.width]=\"s.width\"\r\n       [attr.height]=\"s.height\"\r\n       [attr.viewBox]=\"'0 0 '+s.width+' '+s.height\"\r\n       (mouseleave)=\"mouseLeave($event)\"\r\n       (mousemove)=\"mouseMove($event)\">\r\n    <ng-container *ngIf=\"getVisibleRect(s) as rect\">\r\n      <defs>\r\n        <clipPath [attr.id]=\"'visible-window-' + id()\">\r\n          <rect [attr.x]=\"rect.left\" [attr.y]=\"rect.top\" [attr.width]=\"rect.width\" [attr.height]=\"rect.height\"></rect>\r\n        </clipPath>\r\n      </defs>\r\n\r\n      <g class=\"y-axis-container\">\r\n        <g *ngFor=\"let item of yAxes | keyvalue\"\r\n           teta-y-axis\r\n           [axis]=\"item.value\"\r\n           [size]=\"s\"\r\n           [attr.transform]=\"getTranslate(item.value, s)\"></g>\r\n      </g>\r\n      <g class=\"x-axis-container\">\r\n        <g *ngFor=\"let item of xAxes | keyvalue\"\r\n           teta-x-axis\r\n\r\n           [axis]=\"item.value\"\r\n           [size]=\"s\"\r\n           [attr.transform]=\"getTranslate(item.value, s)\"></g>\r\n      </g>\r\n      <g [attr.clip-path]=\"'url(#visible-window-'+ id() +')'\">\r\n        <g [attr.transform]=\"'translate('+ rect.left +', '+ rect.top +')'\">\r\n          <g class=\"gridlines\" teta-gridlines [size]=\"s\"></g>\r\n\r\n          <g class=\"x-axis-plotline-container\">\r\n            <ng-container *ngFor=\"let axis of config.xAxis; let i = index\">\r\n              <g teta-plot-line *ngFor=\"let plotLine of axis.plotLines\" [plotLine]=\"plotLine\" [size]=\"s\"\r\n                 [axis]=\"xAxes.get(i)\"></g>\r\n            </ng-container>\r\n          </g>\r\n\r\n          <g class=\"y-axis-plotline-container\">\r\n            <ng-container *ngFor=\"let axis of config.yAxis; let i = index\">\r\n              <g teta-plot-line *ngFor=\"let plotLine of axis.plotLines\" [plotLine]=\"plotLine\" [size]=\"s\"\r\n                 [axis]=\"yAxes.get(i)\"></g>\r\n            </ng-container>\r\n          </g>\r\n\r\n          <g class=\"x-axis-plotband-container\">\r\n            <ng-container *ngFor=\"let axis of config.xAxis; let i = index\">\r\n              <g teta-plot-band *ngFor=\"let plotBand of axis.plotBands\" [plotband]=\"plotBand\" [size]=\"s\"\r\n                 [axis]=\"xAxes.get(i)\"></g>\r\n            </ng-container>\r\n          </g>\r\n          <g class=\"y-axis-plotband-container\">\r\n            <ng-container *ngFor=\"let axis of config.yAxis; let i = index\">\r\n              <g teta-plot-band *ngFor=\"let plotBand of axis.plotBands\" [plotband]=\"plotBand\" [size]=\"s\"\r\n                 [axis]=\"yAxes.get(i)\"></g>\r\n            </ng-container>\r\n          </g>\r\n          <g class=\"series-tooltip-line-marker\"></g>\r\n          <g class=\"series-container\">\r\n            <g teta-series-host\r\n               *ngFor=\"let series of config.series\"\r\n               [series]=\"series\"\r\n               [size]=\"s\"></g>\r\n          </g>\r\n        </g>\r\n      </g>\r\n    </ng-container>\r\n  </svg>\r\n\r\n\r\n</ng-container>\r\n"
         },
         {
             "name": "CheckboxComponent",
@@ -35989,7 +36027,7 @@
         },
         {
             "name": "LineSeriesComponent",
-            "id": "component-LineSeriesComponent-53ed145ea603ef34b46668b82424ca5a",
+            "id": "component-LineSeriesComponent-1c56b85d43c31f5a349d743c10e73a2b",
             "file": "projects/chart/src/chart/chart-container/series/line/line-series.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -36171,7 +36209,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  AfterViewInit,\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  ElementRef,\r\n  OnInit,\r\n} from '@angular/core';\r\nimport * as d3 from 'd3';\r\nimport { SeriesBaseComponent } from '../../../base/series-base.component';\r\nimport { ChartService } from '../../../service/chart.service';\r\nimport { BasePoint } from '../../../model/base-point';\r\nimport { ScaleService } from '../../../service/scale.service';\r\nimport { filter, map, Observable, tap } from 'rxjs';\r\n\r\nimport { ZoomService } from '../../../service/zoom.service';\r\nimport { TooltipTracking } from '../../../model/enum/tooltip-tracking';\r\nimport { DragPointType } from '../../../model/enum/drag-point-type';\r\n\r\n@Component({\r\n  selector: 'svg:svg[teta-line-series]',\r\n  templateUrl: './line-series.component.html',\r\n  styleUrls: ['./line-series.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class LineSeriesComponent<T extends BasePoint>\r\n  extends SeriesBaseComponent<T>\r\n  implements OnInit, AfterViewInit\r\n{\r\n  transform: Observable<Pick<BasePoint, 'x' | 'y'>>;\r\n  display: Observable<number>;\r\n\r\n  svgElement: SVGGeometryElement;\r\n  x: any;\r\n  y: any;\r\n\r\n  constructor(\r\n    protected override svc: ChartService,\r\n    protected override cdr: ChangeDetectorRef,\r\n    protected override scaleService: ScaleService,\r\n    protected override zoomService: ZoomService,\r\n    protected override element: ElementRef\r\n  ) {\r\n    super(svc, cdr, scaleService, zoomService, element);\r\n  }\r\n\r\n  override ngOnInit(): void {\r\n    this.display = this.zoomService.zoomed.pipe(\r\n      map(({ event }) => {\r\n        return event?.type === 'end' ? 1 : 0;\r\n      })\r\n    );\r\n\r\n    this.transform = this.svc.pointerMove.pipe(\r\n      filter(({ event }) => event),\r\n      map(({ event }) => {\r\n        return this.getTransform(event);\r\n      }),\r\n      tap((_) => this.cdr.detectChanges())\r\n    );\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n    const drag = (node, event: d3.D3DragEvent<any, any, any>, d: BasePoint) => {\r\n      if (\r\n        d.marker?.dragType === DragPointType.x ||\r\n        d.marker?.dragType === DragPointType.xy\r\n      ) {\r\n        d.x = this.x.invert(event.x);\r\n      }\r\n\r\n      if (\r\n        d.marker?.dragType === DragPointType.y ||\r\n        d.marker?.dragType === DragPointType.xy\r\n      ) {\r\n        d.y = this.y.invert(event.y);\r\n      }\r\n\r\n      this.svc.emitPoint({\r\n        target: {\r\n          series: this.series,\r\n          point: d,\r\n        },\r\n        event,\r\n      });\r\n\r\n      this.cdr.detectChanges();\r\n    };\r\n\r\n    const dragMarkers = d3\r\n      .drag()\r\n      .subject(function (event, d: BasePoint) {\r\n        const node = d3.select(this);\r\n        return { x: node.attr('cx'), y: node.attr('cy') };\r\n      })\r\n      .on(\r\n        'start drag end',\r\n        function (event: d3.D3DragEvent<any, any, any>, d: BasePoint) {\r\n          const node = d3.select(this);\r\n\r\n          drag(node, event, d);\r\n        }\r\n      );\r\n\r\n    const draggableMarkers = this.series.data?.filter(\r\n      (_) => _?.marker && _?.marker?.draggable\r\n    );\r\n\r\n    const element = d3\r\n      .select(this.element.nativeElement)\r\n      .selectAll('.draggable-marker')\r\n      .data(draggableMarkers);\r\n\r\n    element.call(dragMarkers as any);\r\n\r\n    this.svgElement = d3\r\n      .select(this.element.nativeElement)\r\n      .select('.line')\r\n      .node() as SVGGeometryElement;\r\n  }\r\n\r\n  getPath() {\r\n    this.x = this.scaleService.xScales.get(this.series.xAxisIndex);\r\n    this.y = this.scaleService.yScales.get(this.series.yAxisIndex);\r\n\r\n    const line = d3\r\n      .line<BasePoint>()\r\n      .defined((point) => point.x !== null || point.y !== null)\r\n      .x((point) => this.x(point.x))\r\n      .y((point) => this.y(point.y));\r\n\r\n    const path = line(this.series.data);\r\n\r\n    return path;\r\n  }\r\n\r\n  getMarkers() {\r\n    return this.series.data?.filter((_) => _?.marker);\r\n  }\r\n\r\n  getTransform(event: any): Pick<BasePoint, 'x' | 'y'> {\r\n    const mouse = d3.pointer(event);\r\n\r\n    const foundX = this.scaleService.xScales.get(this.series.xAxisIndex);\r\n    const foundY = this.scaleService.yScales.get(this.series.yAxisIndex);\r\n\r\n    const tooltipTracking = this.svc.config?.tooltip?.tracking;\r\n\r\n    const lineIntersection = (\r\n      p0_x,\r\n      p0_y,\r\n      p1_x,\r\n      p1_y,\r\n      p2_x,\r\n      p2_y,\r\n      p3_x,\r\n      p3_y\r\n    ) => {\r\n      const rV = {} as any;\r\n      let s1_x, s1_y, s2_x, s2_y;\r\n      s1_x = p1_x - p0_x;\r\n      s1_y = p1_y - p0_y;\r\n      s2_x = p3_x - p2_x;\r\n      s2_y = p3_y - p2_y;\r\n\r\n      let s, t;\r\n      s =\r\n        (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) /\r\n        (-s2_x * s1_y + s1_x * s2_y);\r\n      t =\r\n        (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) /\r\n        (-s2_x * s1_y + s1_x * s2_y);\r\n\r\n      if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {\r\n        // Collision detected\r\n        rV.x = p0_x + t * s1_x;\r\n        rV.y = p0_y + t * s1_y;\r\n      }\r\n\r\n      return rV;\r\n    };\r\n\r\n    if (tooltipTracking === TooltipTracking.x) {\r\n      const bisect = d3.bisector((_: BasePoint) => _.x).right;\r\n\r\n      const x0 = foundX.invert(mouse[0]);\r\n      const rightId = bisect(this.series.data, x0);\r\n\r\n      const range = foundY.range();\r\n\r\n      const intersect = lineIntersection(\r\n        mouse[0],\r\n        range[0],\r\n        mouse[0],\r\n        range[1],\r\n        foundX(this.series.data[rightId - 1]?.x),\r\n        foundY(this.series.data[rightId - 1]?.y),\r\n        foundX(this.series.data[rightId]?.x),\r\n        foundY(this.series.data[rightId]?.y)\r\n      );\r\n\r\n      console.log(intersect);\r\n\r\n      this.svc.setTooltip({\r\n        point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },\r\n        series: this.series,\r\n      });\r\n\r\n      return {\r\n        x: intersect.x,\r\n        y: intersect.y,\r\n      };\r\n    }\r\n\r\n    if (tooltipTracking === TooltipTracking.y) {\r\n      const bisect = d3.bisector((_: BasePoint) => _.y).right;\r\n\r\n      const y0 = foundY.invert(mouse[1]);\r\n\r\n      const rightId = bisect(this.series.data, y0);\r\n      const range = foundX.range();\r\n\r\n      const intersect = lineIntersection(\r\n        range[0],\r\n        mouse[1],\r\n        range[1],\r\n        mouse[1],\r\n        foundX(this.series.data[rightId - 1]?.x),\r\n        foundY(this.series.data[rightId - 1]?.y),\r\n        foundX(this.series.data[rightId]?.x),\r\n        foundY(this.series.data[rightId]?.y)\r\n      );\r\n\r\n      this.svc.setTooltip({\r\n        point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },\r\n        series: this.series,\r\n      });\r\n\r\n      return {\r\n        x: intersect.x,\r\n        y: intersect.y,\r\n      };\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  AfterViewInit,\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  ElementRef,\r\n  OnInit,\r\n} from '@angular/core';\r\nimport * as d3 from 'd3';\r\nimport { SeriesBaseComponent } from '../../../base/series-base.component';\r\nimport { ChartService } from '../../../service/chart.service';\r\nimport { BasePoint } from '../../../model/base-point';\r\nimport { ScaleService } from '../../../service/scale.service';\r\nimport { filter, map, Observable, tap } from 'rxjs';\r\n\r\nimport { ZoomService } from '../../../service/zoom.service';\r\nimport { TooltipTracking } from '../../../model/enum/tooltip-tracking';\r\nimport { DragPointType } from '../../../model/enum/drag-point-type';\r\n\r\n@Component({\r\n  selector: 'svg:svg[teta-line-series]',\r\n  templateUrl: './line-series.component.html',\r\n  styleUrls: ['./line-series.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class LineSeriesComponent<T extends BasePoint>\r\n  extends SeriesBaseComponent<T>\r\n  implements OnInit, AfterViewInit\r\n{\r\n  transform: Observable<Pick<BasePoint, 'x' | 'y'>>;\r\n  display: Observable<number>;\r\n\r\n  svgElement: SVGGeometryElement;\r\n  x: any;\r\n  y: any;\r\n\r\n  constructor(\r\n    protected override svc: ChartService,\r\n    protected override cdr: ChangeDetectorRef,\r\n    protected override scaleService: ScaleService,\r\n    protected override zoomService: ZoomService,\r\n    protected override element: ElementRef\r\n  ) {\r\n    super(svc, cdr, scaleService, zoomService, element);\r\n  }\r\n\r\n  override ngOnInit(): void {\r\n    this.display = this.zoomService.zoomed.pipe(\r\n      map(({ event }) => {\r\n        return event?.type === 'end' ? 1 : 0;\r\n      })\r\n    );\r\n\r\n    this.transform = this.svc.pointerMove.pipe(\r\n      filter(({ event }) => event),\r\n      map(({ event }) => {\r\n        return this.getTransform(event);\r\n      }),\r\n      tap((_) => this.cdr.detectChanges())\r\n    );\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n    const drag = (node, event: d3.D3DragEvent<any, any, any>, d: BasePoint) => {\r\n      if (\r\n        d.marker?.dragType === DragPointType.x ||\r\n        d.marker?.dragType === DragPointType.xy\r\n      ) {\r\n        d.x = this.x.invert(event.x);\r\n      }\r\n\r\n      if (\r\n        d.marker?.dragType === DragPointType.y ||\r\n        d.marker?.dragType === DragPointType.xy\r\n      ) {\r\n        d.y = this.y.invert(event.y);\r\n      }\r\n\r\n      this.svc.emitPoint({\r\n        target: {\r\n          series: this.series,\r\n          point: d,\r\n        },\r\n        event,\r\n      });\r\n\r\n      this.cdr.detectChanges();\r\n    };\r\n\r\n    const dragMarkers = d3\r\n      .drag()\r\n      .subject(function (event, d: BasePoint) {\r\n        const node = d3.select(this);\r\n        return { x: node.attr('cx'), y: node.attr('cy') };\r\n      })\r\n      .on(\r\n        'start drag end',\r\n        function (event: d3.D3DragEvent<any, any, any>, d: BasePoint) {\r\n          const node = d3.select(this);\r\n\r\n          drag(node, event, d);\r\n        }\r\n      );\r\n\r\n    const draggableMarkers = this.series.data?.filter(\r\n      (_) => _?.marker && _?.marker?.draggable\r\n    );\r\n\r\n    const element = d3\r\n      .select(this.element.nativeElement)\r\n      .selectAll('.draggable-marker')\r\n      .data(draggableMarkers);\r\n\r\n    element.call(dragMarkers as any);\r\n\r\n    this.svgElement = d3\r\n      .select(this.element.nativeElement)\r\n      .select('.line')\r\n      .node() as SVGGeometryElement;\r\n  }\r\n\r\n  getPath() {\r\n    this.x = this.scaleService.xScales.get(this.series.xAxisIndex);\r\n    this.y = this.scaleService.yScales.get(this.series.yAxisIndex);\r\n\r\n    const line = d3\r\n      .line<BasePoint>()\r\n      .defined((point) => point.x !== null || point.y !== null)\r\n      .x((point) => this.x(point.x))\r\n      .y((point) => this.y(point.y));\r\n\r\n    const path = line(this.series.data);\r\n\r\n    return path;\r\n  }\r\n\r\n  getMarkers() {\r\n    return this.series.data?.filter((_) => _?.marker);\r\n  }\r\n\r\n  getTransform(event: any): Pick<BasePoint, 'x' | 'y'> {\r\n    const mouse = d3.pointer(event);\r\n\r\n    const foundX = this.scaleService.xScales.get(this.series.xAxisIndex);\r\n    const foundY = this.scaleService.yScales.get(this.series.yAxisIndex);\r\n\r\n    const tooltipTracking = this.svc.config?.tooltip?.tracking;\r\n\r\n    const lineIntersection = (\r\n      p0_x,\r\n      p0_y,\r\n      p1_x,\r\n      p1_y,\r\n      p2_x,\r\n      p2_y,\r\n      p3_x,\r\n      p3_y\r\n    ) => {\r\n      const rV = {} as any;\r\n      let s1_x, s1_y, s2_x, s2_y;\r\n      s1_x = p1_x - p0_x;\r\n      s1_y = p1_y - p0_y;\r\n      s2_x = p3_x - p2_x;\r\n      s2_y = p3_y - p2_y;\r\n\r\n      let s, t;\r\n      s =\r\n        (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) /\r\n        (-s2_x * s1_y + s1_x * s2_y);\r\n      t =\r\n        (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) /\r\n        (-s2_x * s1_y + s1_x * s2_y);\r\n\r\n      if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {\r\n        // Collision detected\r\n        rV.x = p0_x + t * s1_x;\r\n        rV.y = p0_y + t * s1_y;\r\n      }\r\n\r\n      return rV;\r\n    };\r\n\r\n    if (tooltipTracking === TooltipTracking.x) {\r\n      const bisect = d3.bisector((_: BasePoint) => _.x).right;\r\n\r\n      const x0 = foundX.invert(mouse[0]);\r\n      const rightId = bisect(this.series.data, x0);\r\n\r\n      const range = foundY.range();\r\n\r\n      const intersect = lineIntersection(\r\n        mouse[0],\r\n        range[0],\r\n        mouse[0],\r\n        range[1],\r\n        foundX(this.series.data[rightId - 1]?.x),\r\n        foundY(this.series.data[rightId - 1]?.y),\r\n        foundX(this.series.data[rightId]?.x),\r\n        foundY(this.series.data[rightId]?.y)\r\n      );\r\n\r\n      this.svc.setTooltip({\r\n        point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },\r\n        series: this.series,\r\n      });\r\n\r\n      return {\r\n        x: intersect.x,\r\n        y: intersect.y,\r\n      };\r\n    }\r\n\r\n    if (tooltipTracking === TooltipTracking.y) {\r\n      const bisect = d3.bisector((_: BasePoint) => _.y).right;\r\n\r\n      const y0 = foundY.invert(mouse[1]);\r\n\r\n      const rightId = bisect(this.series.data, y0);\r\n      const range = foundX.range();\r\n\r\n      const intersect = lineIntersection(\r\n        range[0],\r\n        mouse[1],\r\n        range[1],\r\n        mouse[1],\r\n        foundX(this.series.data[rightId - 1]?.x),\r\n        foundY(this.series.data[rightId - 1]?.y),\r\n        foundX(this.series.data[rightId]?.x),\r\n        foundY(this.series.data[rightId]?.y)\r\n      );\r\n\r\n      this.svc.setTooltip({\r\n        point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },\r\n        series: this.series,\r\n      });\r\n\r\n      return {\r\n        x: intersect.x,\r\n        y: intersect.y,\r\n      };\r\n    }\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -40857,7 +40895,7 @@
         },
         {
             "name": "PlotlineComponent",
-            "id": "component-PlotlineComponent-3ba0b11b05c00e1e3070c2f587d71045",
+            "id": "component-PlotlineComponent-7e1b09793ceb80abd6624d8867ca4b54",
             "file": "projects/chart/src/chart/chart-container/plotline/plotline.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -40879,21 +40917,21 @@
                     "name": "axis",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 28,
+                    "line": 27,
                     "type": "Axis"
                 },
                 {
-                    "name": "plotline",
+                    "name": "plotLine",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 26,
+                    "line": 25,
                     "type": "PlotLine"
                 },
                 {
                     "name": "size",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 27,
+                    "line": 26,
                     "type": "DOMRect"
                 }
             ],
@@ -40906,7 +40944,7 @@
                     "type": "number[]",
                     "optional": false,
                     "description": "",
-                    "line": 32,
+                    "line": 31,
                     "modifierKind": [
                         121
                     ]
@@ -40919,7 +40957,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 29
+                    "line": 28
                 },
                 {
                     "name": "scale",
@@ -40928,7 +40966,7 @@
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 31,
+                    "line": 30,
                     "modifierKind": [
                         121
                     ]
@@ -40948,7 +40986,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 98,
+                    "line": 97,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -40969,7 +41007,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 49,
+                    "line": 48,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -40981,7 +41019,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  ElementRef,\r\n  Input,\r\n  OnInit,\r\n} from '@angular/core';\r\nimport { PlotLine } from '../../model/plot-line';\r\nimport { Axis } from '../../core/axis/axis';\r\nimport { AxisOrientation } from '../../model/enum/axis-orientation';\r\nimport { ZoomService } from '../../service/zoom.service';\r\nimport { ScaleService } from '../../service/scale.service';\r\nimport * as d3 from 'd3';\r\nimport { IChartEvent } from '../../model/i-chart-event';\r\nimport { PlotBand } from '../../model/plot-band';\r\nimport { ChartService } from '../../service/chart.service';\r\n\r\n@Component({\r\n  selector: '[teta-plot-line]',\r\n  templateUrl: './plotline.component.html',\r\n  styleUrls: ['./plotline.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class PlotlineComponent implements OnInit {\r\n  @Input() plotline: PlotLine;\r\n  @Input() size: DOMRect;\r\n  @Input() axis: Axis;\r\n  orientation = AxisOrientation;\r\n\r\n  private scale: any;\r\n  private domain: number[];\r\n\r\n  constructor(\r\n    private cdr: ChangeDetectorRef,\r\n    private zoomService: ZoomService,\r\n    private scaleService: ScaleService,\r\n    private chartService: ChartService,\r\n    private element: ElementRef\r\n  ) {\r\n    this.zoomService.zoomed.subscribe(() => {\r\n      this.scale = this.scaleService[\r\n        this.axis.orientation === AxisOrientation.x ? 'xScales' : 'yScales'\r\n      ].get(this.axis.index);\r\n      this.cdr.detectChanges();\r\n    });\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.scale = this.scaleService[\r\n      this.axis.orientation === AxisOrientation.x ? 'xScales' : 'yScales'\r\n    ].get(this.axis.index);\r\n\r\n    this.domain = this.scale.domain();\r\n\r\n    const plotlineElement = d3\r\n      .select(this.element.nativeElement)\r\n      .select('.plotline');\r\n\r\n    const grabElement = d3\r\n      .select(this.element.nativeElement)\r\n      .selectAll('.grabber');\r\n\r\n    const drag = d3\r\n      .drag()\r\n      .subject(() => {\r\n        if (this.axis.orientation === AxisOrientation.y) {\r\n          return { y: plotlineElement.attr('y1') };\r\n        }\r\n        if (this.axis.orientation === AxisOrientation.x) {\r\n          return { x: plotlineElement.attr('x1') };\r\n        }\r\n      })\r\n      .on(\r\n        'start drag end',\r\n        (event: d3.D3DragEvent<any, PlotLine, any>, d: PlotLine) => {\r\n          d.value = this.scale.invert(\r\n            event[AxisOrientation[this.axis.orientation]]\r\n          );\r\n\r\n          this.emit({\r\n            event,\r\n            target: d,\r\n          });\r\n\r\n          this.cdr.detectChanges();\r\n        }\r\n      );\r\n\r\n    plotlineElement.datum<PlotLine>(this.plotline);\r\n    grabElement.datum<PlotLine>(this.plotline);\r\n\r\n    if (this.plotline.draggable) {\r\n      grabElement.call(drag);\r\n    }\r\n  }\r\n\r\n  emit(event: IChartEvent<PlotLine>) {\r\n    this.chartService.emitPlotline(event);\r\n  }\r\n\r\n  get value() {\r\n    return this.scale(this.plotline.value);\r\n  }\r\n\r\n  get height(): number {\r\n    return this.size.height;\r\n  }\r\n\r\n  get width(): number {\r\n    return this.size.width;\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  ElementRef,\r\n  Input,\r\n  OnInit,\r\n} from '@angular/core';\r\nimport { PlotLine } from '../../model/plot-line';\r\nimport { Axis } from '../../core/axis/axis';\r\nimport { AxisOrientation } from '../../model/enum/axis-orientation';\r\nimport { ZoomService } from '../../service/zoom.service';\r\nimport { ScaleService } from '../../service/scale.service';\r\nimport * as d3 from 'd3';\r\nimport { IChartEvent } from '../../model/i-chart-event';\r\nimport { ChartService } from '../../service/chart.service';\r\n\r\n@Component({\r\n  selector: '[teta-plot-line]',\r\n  templateUrl: './plotline.component.html',\r\n  styleUrls: ['./plotline.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class PlotlineComponent implements OnInit {\r\n  @Input() plotLine: PlotLine;\r\n  @Input() size: DOMRect;\r\n  @Input() axis: Axis;\r\n  orientation = AxisOrientation;\r\n\r\n  private scale: any;\r\n  private domain: number[];\r\n\r\n  constructor(\r\n    private cdr: ChangeDetectorRef,\r\n    private zoomService: ZoomService,\r\n    private scaleService: ScaleService,\r\n    private chartService: ChartService,\r\n    private element: ElementRef\r\n  ) {\r\n    this.zoomService.zoomed.subscribe(() => {\r\n      this.scale = this.scaleService[\r\n        this.axis.orientation === AxisOrientation.x ? 'xScales' : 'yScales'\r\n      ].get(this.axis.index);\r\n      this.cdr.detectChanges();\r\n    });\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.scale = this.scaleService[\r\n      this.axis.orientation === AxisOrientation.x ? 'xScales' : 'yScales'\r\n    ].get(this.axis.index);\r\n\r\n    this.domain = this.scale.domain();\r\n\r\n    const plotlineElement = d3\r\n      .select(this.element.nativeElement)\r\n      .select('.plotline');\r\n\r\n    const grabElement = d3\r\n      .select(this.element.nativeElement)\r\n      .selectAll('.grabber');\r\n\r\n    const drag = d3\r\n      .drag()\r\n      .subject(() => {\r\n        if (this.axis.orientation === AxisOrientation.y) {\r\n          return { y: plotlineElement.attr('y1') };\r\n        }\r\n        if (this.axis.orientation === AxisOrientation.x) {\r\n          return { x: plotlineElement.attr('x1') };\r\n        }\r\n      })\r\n      .on(\r\n        'start drag end',\r\n        (event: d3.D3DragEvent<any, PlotLine, any>, d: PlotLine) => {\r\n          d.value = this.scale.invert(\r\n            event[AxisOrientation[this.axis.orientation]]\r\n          );\r\n\r\n          this.emit({\r\n            event,\r\n            target: d,\r\n          });\r\n\r\n          this.cdr.detectChanges();\r\n        }\r\n      );\r\n\r\n    plotlineElement.datum<PlotLine>(this.plotLine);\r\n    grabElement.datum<PlotLine>(this.plotLine);\r\n\r\n    if (this.plotLine.draggable) {\r\n      grabElement.call(drag);\r\n    }\r\n  }\r\n\r\n  emit(event: IChartEvent<PlotLine>) {\r\n    this.chartService.emitPlotline(event);\r\n  }\r\n\r\n  get value() {\r\n    return this.scale(this.plotLine.value);\r\n  }\r\n\r\n  get height(): number {\r\n    return this.size.height;\r\n  }\r\n\r\n  get width(): number {\r\n    return this.size.width;\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -41027,7 +41065,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 32,
+                "line": 31,
                 "jsdoctags": [
                     {
                         "name": "cdr",
@@ -41086,7 +41124,7 @@
                         "name": "value",
                         "type": "",
                         "returnType": "",
-                        "line": 102
+                        "line": 101
                     }
                 },
                 "height": {
@@ -41095,7 +41133,7 @@
                         "name": "height",
                         "type": "number",
                         "returnType": "number",
-                        "line": 106
+                        "line": 105
                     }
                 },
                 "width": {
@@ -41104,11 +41142,11 @@
                         "name": "width",
                         "type": "number",
                         "returnType": "number",
-                        "line": 110
+                        "line": 109
                     }
                 }
             },
-            "templateData": "<svg:line class=\"plotline\"\r\n          [attr.stroke]=\"plotline.style?.stroke || 'red'\"\r\n          [attr.stroke-width]=\"plotline.style?.strokeWidth || 4\"\r\n          [attr.stroke-dasharray]=\"plotline.style?.strokeDasharray\"\r\n          [attr.x1]=\"axis.orientation === orientation.x ? value : 0\"\r\n          [attr.x2]=\"axis.orientation === orientation.x ? value : width\"\r\n          [attr.y1]=\"axis.orientation === orientation.x ? 0 : value\"\r\n          [attr.y2]=\"axis.orientation === orientation.x ? height : value\">\r\n</svg:line>\r\n\r\n<svg:line class=\"grabber\"\r\n\r\n          [class.x-grabber]=\"axis.orientation === orientation.x\"\r\n          [class.y-grabber]=\"axis.orientation === orientation.y\"\r\n          [attr.stroke]=\"'red'\"\r\n          [attr.stroke-width]=\"8\"\r\n          opacity=\"0\"\r\n          [attr.x1]=\"axis.orientation === orientation.x ? value : 0\"\r\n          [attr.x2]=\"axis.orientation === orientation.x ? value : width\"\r\n          [attr.y1]=\"axis.orientation === orientation.x ? 0 : value\"\r\n          [attr.y2]=\"axis.orientation === orientation.x ? height : value\">\r\n</svg:line>\r\n"
+            "templateData": "<svg:line class=\"plotline\"\r\n          [attr.stroke]=\"plotLine.style?.stroke || 'red'\"\r\n          [attr.stroke-width]=\"plotLine.style?.strokeWidth || 4\"\r\n          [attr.stroke-dasharray]=\"plotLine.style?.strokeDasharray\"\r\n          [attr.x1]=\"axis.orientation === orientation.x ? value : 0\"\r\n          [attr.x2]=\"axis.orientation === orientation.x ? value : width\"\r\n          [attr.y1]=\"axis.orientation === orientation.x ? 0 : value\"\r\n          [attr.y2]=\"axis.orientation === orientation.x ? height : value\">\r\n</svg:line>\r\n\r\n<svg:line class=\"grabber\"\r\n\r\n          [class.x-grabber]=\"axis.orientation === orientation.x\"\r\n          [class.y-grabber]=\"axis.orientation === orientation.y\"\r\n          [attr.stroke]=\"'red'\"\r\n          [attr.stroke-width]=\"8\"\r\n          opacity=\"0\"\r\n          [attr.x1]=\"axis.orientation === orientation.x ? value : 0\"\r\n          [attr.x2]=\"axis.orientation === orientation.x ? value : width\"\r\n          [attr.y1]=\"axis.orientation === orientation.x ? 0 : value\"\r\n          [attr.y2]=\"axis.orientation === orientation.x ? height : value\">\r\n</svg:line>\r\n"
         },
         {
             "name": "PopupContentComponent",
@@ -54038,11 +54076,7 @@
                 },
                 {
                     "type": "declarations",
-                    "elements": [
-                        {
-                            "name": "ChartComponent"
-                        }
-                    ]
+                    "elements": []
                 },
                 {
                     "type": "imports",
@@ -56856,7 +56890,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "IChartConfig",
-                "defaultValue": "{\r\n  name: '123123123132',\r\n  inverted: false,\r\n  tooltip: {\r\n    tracking: TooltipTracking.x,\r\n  },\r\n  xAxis: [\r\n    {\r\n      type: AxisType.number,\r\n      visible: true,\r\n      plotBands: plotbands2,\r\n    },\r\n  ],\r\n  yAxis: [\r\n    {\r\n      type: AxisType.number,\r\n      visible: true,\r\n      title: 'атм',\r\n      plotLines: [\r\n        new PlotLine({\r\n          value: 360,\r\n          draggable: true,\r\n          style: {\r\n            stroke: cssColorNames[randomColor()].toLowerCase(),\r\n          },\r\n        }),\r\n      ],\r\n    },\r\n  ],\r\n  brush: {\r\n    enable: false,\r\n    type: BrushType.y,\r\n  },\r\n  zoom: {\r\n    enable: true,\r\n    type: ZoomType.x,\r\n    syncChannel: 'channelA',\r\n  },\r\n  legend: {\r\n    enable: true,\r\n  },\r\n  series,\r\n}"
+                "defaultValue": "{\r\n  name: '123123123132',\r\n  inverted: false,\r\n  tooltip: {\r\n    tracking: TooltipTracking.x,\r\n  },\r\n  xAxis: [\r\n    {\r\n      plotBands: plotbands2,\r\n    },\r\n  ],\r\n  yAxis: [\r\n    {\r\n      title: 'атм',\r\n      plotLines: [\r\n        new PlotLine({\r\n          value: 360,\r\n          draggable: true,\r\n          style: {\r\n            stroke: cssColorNames[randomColor()].toLowerCase(),\r\n          },\r\n        }),\r\n      ],\r\n    },\r\n  ],\r\n  brush: {\r\n    enable: false,\r\n    type: BrushType.y,\r\n  },\r\n  zoom: {\r\n    enable: true,\r\n    type: ZoomType.x,\r\n    syncChannel: 'channelA',\r\n  },\r\n  legend: {\r\n    enable: true,\r\n  },\r\n  series,\r\n}"
             },
             {
                 "name": "config",
@@ -56876,13 +56910,13 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "IChartConfig",
-                "defaultValue": "{\r\n  name: '123',\r\n  tooltip: {\r\n    tracking: TooltipTracking.x,\r\n  },\r\n  legend: {\r\n    enable: false,\r\n  },\r\n  inverted: false,\r\n  xAxis: [\r\n    {\r\n      type: AxisType.number,\r\n      visible: true,\r\n    },\r\n    {\r\n      type: AxisType.number,\r\n      visible: true,\r\n      opposite: true,\r\n      min: 0,\r\n      max: 1000,\r\n    },\r\n  ],\r\n  yAxis: [\r\n    {\r\n      type: AxisType.number,\r\n      visible: true,\r\n      title: 'атм',\r\n      opposite: true,\r\n      plotLines: [\r\n        new PlotLine({\r\n          value: 360,\r\n          draggable: true,\r\n          style: {\r\n            stroke: cssColorNames[randomColor()].toLowerCase(),\r\n          },\r\n        }),\r\n      ],\r\n    },\r\n  ],\r\n  zoom: {\r\n    enable: true,\r\n    type: ZoomType.x,\r\n    syncChannel: '',\r\n  },\r\n  series: series2,\r\n}"
+                "defaultValue": "{\r\n  name: '123',\r\n  tooltip: {\r\n    tracking: TooltipTracking.x,\r\n  },\r\n  legend: {\r\n    enable: false,\r\n  },\r\n  inverted: false,\r\n  xAxis: [\r\n    {\r\n      visible: true,\r\n    },\r\n    {\r\n      visible: true,\r\n      opposite: true,\r\n      min: 0,\r\n      max: 1000,\r\n    },\r\n  ],\r\n  yAxis: [\r\n    {\r\n      title: 'атм',\r\n      plotLines: [\r\n        new PlotLine({\r\n          value: 360,\r\n          draggable: true,\r\n          style: {\r\n            stroke: cssColorNames[randomColor()].toLowerCase(),\r\n          },\r\n        }),\r\n      ],\r\n    },\r\n  ],\r\n  zoom: {\r\n    enable: true,\r\n    type: ZoomType.x,\r\n    syncChannel: '',\r\n  },\r\n  series: series2,\r\n}"
             },
             {
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/chart/src/test.ts",
+                "file": "projects/components/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -56892,7 +56926,7 @@
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/test.ts",
+                "file": "projects/chart/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -56949,14 +56983,14 @@
                 "defaultValue": "{\r\n  provide: NG_VALUE_ACCESSOR,\r\n  useExisting: forwardRef(() => DaySelectComponent),\r\n  multi: true,\r\n}"
             },
             {
-                "name": "defaultChartConfig",
+                "name": "defaultConfigs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/chart/src/chart/default/default-chart-config.ts",
+                "file": "projects/chart/src/chart/default/default-configs.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "IChartConfig",
-                "defaultValue": "{\r\n  series: [],\r\n  xAxis: [{\r\n    visible: true\r\n  }],\r\n  yAxis: [{\r\n    visible: true\r\n  }],\r\n  gridLines: true\r\n}"
+                "defaultValue": "{\r\n  series: [],\r\n  xAxis: [\r\n    {\r\n      visible: true,\r\n    },\r\n  ],\r\n  yAxis: [\r\n    {\r\n      visible: true,\r\n    },\r\n  ],\r\n  gridLines: true,\r\n}"
             },
             {
                 "name": "defaultDrawerMapping",
@@ -57472,7 +57506,7 @@
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/chart/src/test.ts",
+                "file": "projects/components/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "literal type"
@@ -57481,7 +57515,7 @@
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/test.ts",
+                "file": "projects/chart/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "literal type"
@@ -57690,21 +57724,21 @@
                 "name": "treeData",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/component/tree/Tree.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "[]",
-                "defaultValue": "[{\r\n  name: 'Тетакомовское м-р (4)',\r\n  icon: 'layers',\r\n  children: [\r\n    {\r\n      name: 'Скважины для тестирования',\r\n      icon: 'folder',\r\n      children: [\r\n        {\r\n          name: 'Тестовая скважина №1',\r\n          icon: 'well',\r\n          children: []\r\n        }, {\r\n          name: 'Стресс-тест',\r\n          icon: 'well',\r\n          children: []\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}, {\r\n  name: 'Test only (1)',\r\n  icon: 'layers',\r\n  children: [\r\n    {\r\n      name: 'Group (1)',\r\n      icon: 'folder',\r\n      children: [\r\n        {\r\n          name: 'well',\r\n          icon: 'well',\r\n          children: [{\r\n            name: 'ГИС',\r\n            icon: 'map',\r\n            children: []\r\n          }, {\r\n            name: 'Конструкция',\r\n            icon: 'tubes',\r\n            children: []\r\n          }, {\r\n            name: 'D1',\r\n            icon: 'angle',\r\n            children: []\r\n          }, {\r\n            name: 'Дизайн №1 copy',\r\n            icon: 'angle',\r\n            children: [{\r\n              name: 'Зоны продуктивности',\r\n              children: []\r\n            }, {\r\n              name: 'План закачки',\r\n              children: []\r\n            }, {\r\n              name: 'Опции',\r\n              children: []\r\n            }, {\r\n              name: 'Результаты',\r\n              children: []\r\n            }]\r\n          }]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}]"
-            },
-            {
-                "name": "treeData",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/component/toolbar/Toolbar.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "[]",
                 "defaultValue": "[\r\n  {\r\n    name: 'Тетакомовское м-р (4)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Скважины для тестирования',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'Тестовая скважина №1',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n          {\r\n            name: 'Стресс-тест',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n  {\r\n    name: 'Test only (1)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Group (1)',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'well',\r\n            icon: 'well',\r\n            children: [\r\n              {\r\n                name: 'ГИС',\r\n                icon: 'map',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Конструкция',\r\n                icon: 'tubes',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'D1',\r\n                icon: 'angle',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Дизайн №1 copy',\r\n                icon: 'angle',\r\n                children: [\r\n                  {\r\n                    name: 'Зоны продуктивности',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'План закачки',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Опции',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Результаты',\r\n                    children: [],\r\n                  },\r\n                ],\r\n              },\r\n            ],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n]"
+            },
+            {
+                "name": "treeData",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/component/tree/Tree.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "[]",
+                "defaultValue": "[{\r\n  name: 'Тетакомовское м-р (4)',\r\n  icon: 'layers',\r\n  children: [\r\n    {\r\n      name: 'Скважины для тестирования',\r\n      icon: 'folder',\r\n      children: [\r\n        {\r\n          name: 'Тестовая скважина №1',\r\n          icon: 'well',\r\n          children: []\r\n        }, {\r\n          name: 'Стресс-тест',\r\n          icon: 'well',\r\n          children: []\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}, {\r\n  name: 'Test only (1)',\r\n  icon: 'layers',\r\n  children: [\r\n    {\r\n      name: 'Group (1)',\r\n      icon: 'folder',\r\n      children: [\r\n        {\r\n          name: 'well',\r\n          icon: 'well',\r\n          children: [{\r\n            name: 'ГИС',\r\n            icon: 'map',\r\n            children: []\r\n          }, {\r\n            name: 'Конструкция',\r\n            icon: 'tubes',\r\n            children: []\r\n          }, {\r\n            name: 'D1',\r\n            icon: 'angle',\r\n            children: []\r\n          }, {\r\n            name: 'Дизайн №1 copy',\r\n            icon: 'angle',\r\n            children: [{\r\n              name: 'Зоны продуктивности',\r\n              children: []\r\n            }, {\r\n              name: 'План закачки',\r\n              children: []\r\n            }, {\r\n              name: 'Опции',\r\n              children: []\r\n            }, {\r\n              name: 'Результаты',\r\n              children: []\r\n            }]\r\n          }]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}]"
             },
             {
                 "name": "vertical",
@@ -58785,7 +58819,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "IChartConfig",
-                    "defaultValue": "{\r\n  name: '123123123132',\r\n  inverted: false,\r\n  tooltip: {\r\n    tracking: TooltipTracking.x,\r\n  },\r\n  xAxis: [\r\n    {\r\n      type: AxisType.number,\r\n      visible: true,\r\n      plotBands: plotbands2,\r\n    },\r\n  ],\r\n  yAxis: [\r\n    {\r\n      type: AxisType.number,\r\n      visible: true,\r\n      title: 'атм',\r\n      plotLines: [\r\n        new PlotLine({\r\n          value: 360,\r\n          draggable: true,\r\n          style: {\r\n            stroke: cssColorNames[randomColor()].toLowerCase(),\r\n          },\r\n        }),\r\n      ],\r\n    },\r\n  ],\r\n  brush: {\r\n    enable: false,\r\n    type: BrushType.y,\r\n  },\r\n  zoom: {\r\n    enable: true,\r\n    type: ZoomType.x,\r\n    syncChannel: 'channelA',\r\n  },\r\n  legend: {\r\n    enable: true,\r\n  },\r\n  series,\r\n}"
+                    "defaultValue": "{\r\n  name: '123123123132',\r\n  inverted: false,\r\n  tooltip: {\r\n    tracking: TooltipTracking.x,\r\n  },\r\n  xAxis: [\r\n    {\r\n      plotBands: plotbands2,\r\n    },\r\n  ],\r\n  yAxis: [\r\n    {\r\n      title: 'атм',\r\n      plotLines: [\r\n        new PlotLine({\r\n          value: 360,\r\n          draggable: true,\r\n          style: {\r\n            stroke: cssColorNames[randomColor()].toLowerCase(),\r\n          },\r\n        }),\r\n      ],\r\n    },\r\n  ],\r\n  brush: {\r\n    enable: false,\r\n    type: BrushType.y,\r\n  },\r\n  zoom: {\r\n    enable: true,\r\n    type: ZoomType.x,\r\n    syncChannel: 'channelA',\r\n  },\r\n  legend: {\r\n    enable: true,\r\n  },\r\n  series,\r\n}"
                 },
                 {
                     "name": "config2",
@@ -58795,7 +58829,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "IChartConfig",
-                    "defaultValue": "{\r\n  name: '123',\r\n  tooltip: {\r\n    tracking: TooltipTracking.x,\r\n  },\r\n  legend: {\r\n    enable: false,\r\n  },\r\n  inverted: false,\r\n  xAxis: [\r\n    {\r\n      type: AxisType.number,\r\n      visible: true,\r\n    },\r\n    {\r\n      type: AxisType.number,\r\n      visible: true,\r\n      opposite: true,\r\n      min: 0,\r\n      max: 1000,\r\n    },\r\n  ],\r\n  yAxis: [\r\n    {\r\n      type: AxisType.number,\r\n      visible: true,\r\n      title: 'атм',\r\n      opposite: true,\r\n      plotLines: [\r\n        new PlotLine({\r\n          value: 360,\r\n          draggable: true,\r\n          style: {\r\n            stroke: cssColorNames[randomColor()].toLowerCase(),\r\n          },\r\n        }),\r\n      ],\r\n    },\r\n  ],\r\n  zoom: {\r\n    enable: true,\r\n    type: ZoomType.x,\r\n    syncChannel: '',\r\n  },\r\n  series: series2,\r\n}"
+                    "defaultValue": "{\r\n  name: '123',\r\n  tooltip: {\r\n    tracking: TooltipTracking.x,\r\n  },\r\n  legend: {\r\n    enable: false,\r\n  },\r\n  inverted: false,\r\n  xAxis: [\r\n    {\r\n      visible: true,\r\n    },\r\n    {\r\n      visible: true,\r\n      opposite: true,\r\n      min: 0,\r\n      max: 1000,\r\n    },\r\n  ],\r\n  yAxis: [\r\n    {\r\n      title: 'атм',\r\n      plotLines: [\r\n        new PlotLine({\r\n          value: 360,\r\n          draggable: true,\r\n          style: {\r\n            stroke: cssColorNames[randomColor()].toLowerCase(),\r\n          },\r\n        }),\r\n      ],\r\n    },\r\n  ],\r\n  zoom: {\r\n    enable: true,\r\n    type: ZoomType.x,\r\n    syncChannel: '',\r\n  },\r\n  series: series2,\r\n}"
                 },
                 {
                     "name": "cssColorNames",
@@ -59232,27 +59266,6 @@
                     "defaultValue": "[SeriesType.line, SeriesType.line]"
                 }
             ],
-            "projects/chart/src/test.ts": [
-                {
-                    "name": "context",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/chart/src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
-                },
-                {
-                    "name": "require",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/chart/src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "literal type"
-                }
-            ],
             "projects/components/src/test.ts": [
                 {
                     "name": "context",
@@ -59269,6 +59282,27 @@
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "projects/components/src/test.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type"
+                }
+            ],
+            "projects/chart/src/test.ts": [
+                {
+                    "name": "context",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/chart/src/test.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
+                },
+                {
+                    "name": "require",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/chart/src/test.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "literal type"
@@ -59320,16 +59354,16 @@
                     "defaultValue": "{\r\n  provide: NG_VALUE_ACCESSOR,\r\n  useExisting: forwardRef(() => DaySelectComponent),\r\n  multi: true,\r\n}"
                 }
             ],
-            "projects/chart/src/chart/default/default-chart-config.ts": [
+            "projects/chart/src/chart/default/default-configs.ts": [
                 {
-                    "name": "defaultChartConfig",
+                    "name": "defaultConfigs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/chart/src/chart/default/default-chart-config.ts",
+                    "file": "projects/chart/src/chart/default/default-configs.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "IChartConfig",
-                    "defaultValue": "{\r\n  series: [],\r\n  xAxis: [{\r\n    visible: true\r\n  }],\r\n  yAxis: [{\r\n    visible: true\r\n  }],\r\n  gridLines: true\r\n}"
+                    "defaultValue": "{\r\n  series: [],\r\n  xAxis: [\r\n    {\r\n      visible: true,\r\n    },\r\n  ],\r\n  yAxis: [\r\n    {\r\n      visible: true,\r\n    },\r\n  ],\r\n  gridLines: true,\r\n}"
                 }
             ],
             "projects/components/src/component/chart/drawer/default-drawer-mapping.ts": [
@@ -61102,8 +61136,8 @@
                 "type": "class",
                 "linktype": "classe",
                 "name": "Axis",
-                "coveragePercent": 23,
-                "coverageCount": "4/17",
+                "coveragePercent": 20,
+                "coverageCount": "4/20",
                 "status": "low"
             },
             {
@@ -61145,11 +61179,11 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/chart/src/chart/default/default-chart-config.ts",
+                "filePath": "projects/chart/src/chart/default/default-configs.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "defaultChartConfig",
+                "name": "defaultConfigs",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

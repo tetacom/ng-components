@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { IChartConfig } from '../model/i-chart-config';
-import { AxesService } from './axes.service';
-import { map, Observable, Subject } from 'rxjs';
-import { ScaleService } from './scale.service';
-import { IChartEvent } from '../model/i-chart-event';
-import { IDisplayTooltip } from '../model/i-display-tooltip';
-import { PlotBand } from '../model/plot-band';
-import { PlotLine } from '../model/plot-line';
-import { IPointMove } from '../model/i-point-move';
+import {Injectable} from '@angular/core';
+import {IChartConfig} from '../model/i-chart-config';
+import {AxesService} from './axes.service';
+import {map, Observable, Subject} from 'rxjs';
+import {ScaleService} from './scale.service';
+import {IChartEvent} from '../model/i-chart-event';
+import {IDisplayTooltip} from '../model/i-display-tooltip';
+import {PlotBand} from '../model/plot-band';
+import {PlotLine} from '../model/plot-line';
+import {IPointMove} from '../model/i-point-move';
 
 @Injectable({
   providedIn: 'root',
@@ -16,15 +16,15 @@ export class ChartService {
   public size: Observable<DOMRect>;
   public pointerMove: Observable<any>;
   public tooltips: Observable<IDisplayTooltip>;
-  public plotbandMove: Observable<IChartEvent<PlotBand>>;
-  public plotlineMove: Observable<IChartEvent<PlotLine>>;
+  public plotBandMove: Observable<IChartEvent<PlotBand>>;
+  public plotLineMove: Observable<IChartEvent<PlotLine>>;
   public pointMove: Observable<IChartEvent<IPointMove>>;
 
   private size$ = new Subject<DOMRect>();
   private pointerMove$ = new Subject<any>();
   private tooltips$ = new Subject<IDisplayTooltip>();
-  private plotbandMove$ = new Subject<IChartEvent<PlotBand>>();
-  private plotlineMove$ = new Subject<IChartEvent<PlotLine>>();
+  private plotBandMove$ = new Subject<IChartEvent<PlotBand>>();
+  private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();
   private pointMove$ = new Subject<IChartEvent<IPointMove>>();
 
   private _config: IChartConfig;
@@ -36,8 +36,8 @@ export class ChartService {
     this.size = this.size$.asObservable();
     this.pointerMove = this.pointerMove$.asObservable();
     this.tooltips = this.tooltips$.asObservable();
-    this.plotbandMove = this.plotbandMove$.asObservable();
-    this.plotlineMove = this.plotlineMove$.asObservable();
+    this.plotBandMove = this.plotBandMove$.asObservable();
+    this.plotLineMove = this.plotLineMove$.asObservable();
     this.pointMove = this.pointMove$.asObservable();
 
     this.size
@@ -75,7 +75,7 @@ export class ChartService {
   }
 
   public setPointerMove(event: any) {
-    this.pointerMove$.next({ event });
+    this.pointerMove$.next({event});
   }
 
   public setTooltip(tooltip: IDisplayTooltip) {
@@ -83,11 +83,11 @@ export class ChartService {
   }
 
   public emitPlotband(event: IChartEvent<PlotBand>) {
-    this.plotbandMove$.next(event);
+    this.plotBandMove$.next(event);
   }
 
   public emitPlotline(event: IChartEvent<PlotLine>) {
-    this.plotlineMove$.next(event);
+    this.plotLineMove$.next(event);
   }
 
   public emitPoint(event: IChartEvent<IPointMove>) {

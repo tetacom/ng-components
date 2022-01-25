@@ -1,13 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostBinding,
-  Input,
-  OnInit,
-} from '@angular/core';
-import { Series } from '../model/series';
-import { BasePoint } from '../model/base-point';
-import { SeriesType } from '../model/enum/series-type';
+import {ChangeDetectionStrategy, Component, HostBinding, Input, OnInit,} from '@angular/core';
+import {Series} from '../model/series';
+import {BasePoint} from '../model/base-point';
+import {SeriesType} from '../model/enum/series-type';
 
 @Component({
   selector: 'teta-legend',
@@ -23,13 +17,15 @@ export class LegendComponent implements OnInit {
   @Input() series: Array<Series<BasePoint>>;
   @HostBinding('class.padding-bottom-4') classLegend = true;
 
-  constructor() {}
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.series = this.series?.filter((_) => _.showInLegend !== false);
   }
 
   getHeight(serie: Series<BasePoint>) {
-    return this.sizeMapping.get(serie.type);
+    console.log(serie.type, this.sizeMapping.get(serie.type));
+    return this.sizeMapping.get(serie.type ?? SeriesType.line);
   }
 }
