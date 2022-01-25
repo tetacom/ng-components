@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {SampleInputComponent} from './sample-input/sample-input.component';
 import {InputModule} from '../input.module';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,7 +14,8 @@ import {ReactiveFormsModule} from '@angular/forms';
   imports: [
     CommonModule,
     InputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class SampleInputModule {

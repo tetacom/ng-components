@@ -9,3 +9,20 @@
     <teta-text-field [formControlName]="'surname'"></teta-text-field>
   </teta-input>
 </form>
+<div style="margin-top: 50px;">
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap;grid-gap: 8px;align-items: center;"
+       class="bg-text-20 padding-3">
+    <div style="display: flex;grid-gap: 8px;align-items: center;"
+         *ngFor="let i of [].constructor(20); let ind = index;">
+      <div>
+        MD
+      </div>
+      <div class="number-text position-relative">
+        <div (click)="show=ind">
+          {{value[ind]}}
+        </div>
+        <input  *ngIf="show===ind" (blur)="show=null" [(ngModel)]="value[ind]" class="number-input"/>
+      </div>
+    </div>
+  </div>
+</div>
