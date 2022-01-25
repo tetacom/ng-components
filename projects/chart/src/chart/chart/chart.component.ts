@@ -21,8 +21,8 @@ import { AxesService } from '../service/axes.service';
 import { ChartBounds } from '../model/chart-bounds';
 
 import { IChartEvent } from '../model/i-chart-event';
-import { PlotLine } from '../model/plotline';
-import { Plotband } from '../model/plotband';
+import { PlotLine } from '../model/plot-line';
+import { PlotBand } from '../model/plot-band';
 import { IPointMove } from '../model/i-point-move';
 
 @Component({
@@ -42,8 +42,8 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   legendSeries: Array<Series<BasePoint>>;
 
   @Output()
-  plotBandsMove: EventEmitter<IChartEvent<Plotband>> = new EventEmitter<
-    IChartEvent<Plotband>
+  plotBandsMove: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<
+    IChartEvent<PlotBand>
   >();
 
   @Output()

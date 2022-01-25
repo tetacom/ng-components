@@ -38,27 +38,27 @@
 
           <g class="x-axis-plotline-container">
             <ng-container *ngFor="let axis of config.xAxis; let i = index">
-              <g teta-plot-line *ngFor="let plotline of axis.plotlines" [plotline]="plotline" [size]="s"
+              <g teta-plot-line *ngFor="let plotLine of axis.plotLines" [plotLine]="plotLine" [size]="s"
                  [axis]="xAxes.get(i)"></g>
             </ng-container>
           </g>
 
           <g class="y-axis-plotline-container">
             <ng-container *ngFor="let axis of config.yAxis; let i = index">
-              <g teta-plot-line *ngFor="let plotline of axis.plotlines" [plotline]="plotline" [size]="s"
+              <g teta-plot-line *ngFor="let plotLine of axis.plotLines" [plotLine]="plotLine" [size]="s"
                  [axis]="yAxes.get(i)"></g>
             </ng-container>
           </g>
 
           <g class="x-axis-plotband-container">
             <ng-container *ngFor="let axis of config.xAxis; let i = index">
-              <g teta-plot-band *ngFor="let plotband of axis.plotbands" [plotband]="plotband" [size]="s"
+              <g teta-plot-band *ngFor="let plotBand of axis.plotBands" [plotband]="plotBand" [size]="s"
                  [axis]="xAxes.get(i)"></g>
             </ng-container>
           </g>
           <g class="y-axis-plotband-container">
             <ng-container *ngFor="let axis of config.yAxis; let i = index">
-              <g teta-plot-band *ngFor="let plotband of axis.plotbands" [plotband]="plotband" [size]="s"
+              <g teta-plot-band *ngFor="let plotBand of axis.plotBands" [plotband]="plotBand" [size]="s"
                  [axis]="yAxes.get(i)"></g>
             </ng-container>
           </g>

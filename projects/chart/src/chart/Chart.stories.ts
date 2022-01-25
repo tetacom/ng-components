@@ -11,8 +11,8 @@ import { Series } from './model/series';
 import { BasePoint } from './model/base-point';
 import * as faker from 'faker';
 import { ZoomType } from './model/enum/zoom-type';
-import { Plotband } from './model/plotband';
-import { PlotLine } from './model/plotline';
+import { PlotBand } from './model/plot-band';
+import { PlotLine } from './model/plot-line';
 import { DragPointType } from './model/enum/drag-point-type';
 import { TooltipTracking } from './model/enum/tooltip-tracking';
 import { BrushType } from './model/enum/brush-type';
@@ -249,13 +249,13 @@ const series: Series<BasePoint>[] = seriesType.map(
 );
 
 const plotbands1 = [
-  new Plotband({
+  new PlotBand({
     id: 0,
     from: 10,
     to: 12,
     max: 20,
     style: {
-      plotband: {
+      plotBand: {
         opacity: 0.2,
         patternImage: 'patternintersect',
       },
@@ -268,13 +268,13 @@ const plotbands1 = [
 ];
 
 const plotbands2 = [
-  new Plotband({
+  new PlotBand({
     id: 0,
     from: 1100,
     to: 1200,
     draggable: true,
     style: {
-      plotband: {
+      plotBand: {
         opacity: 0.6,
         fill: 'green',
       },
@@ -292,7 +292,7 @@ const config: IChartConfig = {
     {
       type: AxisType.number,
       visible: true,
-      plotbands: plotbands2,
+      plotBands: plotbands2,
     },
   ],
   yAxis: [
@@ -300,7 +300,7 @@ const config: IChartConfig = {
       type: AxisType.number,
       visible: true,
       title: 'атм',
-      plotlines: [
+      plotLines: [
         new PlotLine({
           value: 360,
           draggable: true,
@@ -354,7 +354,7 @@ const config2: IChartConfig = {
       visible: true,
       title: 'атм',
       opposite: true,
-      plotlines: [
+      plotLines: [
         new PlotLine({
           value: 360,
           draggable: true,
