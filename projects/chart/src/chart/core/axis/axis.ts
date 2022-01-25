@@ -16,11 +16,17 @@ export class Axis {
   private _extremes: [number, number] = [0, 0];
   private _selfSize: number;
   private _ticksValues: number[];
+  private _options: AxisOptions;
 
   private defaultFormatters = new Map<AxisType, any>()
     .set(AxisType.number, d3.format(',.2f'))
     .set(AxisType.time, d3.timeFormat('%B %d, %Y'))
     .set(AxisType.log, d3.format(',.2f'));
+
+  private defaultConfig: AxisOptions = {
+    type: AxisType.number,
+    visible: true,
+  };
 
   constructor(config: IChartConfig) {
     this.chartConfig = config;
@@ -45,6 +51,7 @@ export class Axis {
     const axis = new Axis(config);
     axis.setLocate(orientation);
     axis.setIndex(index);
+    axis.setOptions();
     axis.setExtremes();
     axis.setTicksValues();
     axis.setSelfSize();
@@ -100,6 +107,15 @@ export class Axis {
     this._ticksValues = ticks;
   }
 
+  private setOptions(): void {
+    const options =
+      this.orientation === AxisOrientation.x
+        ? this.chartConfig.xAxis[this.index]
+        : this.chartConfig.yAxis[this.index];
+
+    this._options = Object.assign(this.defaultConfig, options);
+  }
+
   get extremes(): Array<number> {
     return this._extremes;
   }
@@ -121,9 +137,7 @@ export class Axis {
   }
 
   get options(): AxisOptions {
-    return this.orientation === AxisOrientation.x
-      ? this.chartConfig.xAxis[this.index]
-      : this.chartConfig.yAxis[this.index];
+    return this._options;
   }
 
   public defaultFormatter() {

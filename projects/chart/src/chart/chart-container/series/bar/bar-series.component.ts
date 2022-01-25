@@ -65,7 +65,5 @@ export class BarSeriesComponent<T extends BasePoint>
     return this.y(point.y);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-  }
+  ngOnChanges(changes: SimpleChanges) {}
 }
