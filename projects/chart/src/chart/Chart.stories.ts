@@ -290,15 +290,11 @@ const config: IChartConfig = {
   },
   xAxis: [
     {
-      type: AxisType.number,
-      visible: true,
       plotbands: plotbands2,
     },
   ],
   yAxis: [
     {
-      type: AxisType.number,
-      visible: true,
       title: 'атм',
       plotlines: [
         new PlotLine({
@@ -337,11 +333,9 @@ const config2: IChartConfig = {
   inverted: false,
   xAxis: [
     {
-      type: AxisType.number,
       visible: true,
     },
     {
-      type: AxisType.number,
       visible: true,
       opposite: true,
       min: 0,
@@ -350,10 +344,7 @@ const config2: IChartConfig = {
   ],
   yAxis: [
     {
-      type: AxisType.number,
-      visible: true,
       title: 'атм',
-      opposite: true,
       plotlines: [
         new PlotLine({
           value: 360,

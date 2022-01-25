@@ -199,8 +199,6 @@ export class LineSeriesComponent<T extends BasePoint>
         foundY(this.series.data[rightId]?.y)
       );
 
-      console.log(intersect);
-
       this.svc.setTooltip({
         point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },
         series: this.series,
