@@ -26,6 +26,7 @@ export class Axis {
   private defaultConfig: AxisOptions = {
     type: AxisType.number,
     visible: true,
+    zoom: true,
   };
 
   constructor(config: IChartConfig) {

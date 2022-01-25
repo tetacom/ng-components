@@ -67,6 +67,10 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private draw() {
+    if (!this.node || !this.axis) {
+      return;
+    }
+
     const scale = this.scaleService.yScales.get(this.axis.index);
 
     const axis = this.axis.options.opposite

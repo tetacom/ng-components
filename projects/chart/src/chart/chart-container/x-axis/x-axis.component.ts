@@ -59,6 +59,10 @@ export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private draw() {
+    if (!this.node || !this.axis) {
+      return;
+    }
+
     const scale = this.scaleService.xScales.get(this.axis.index);
 
     const axis = this.axis.options.opposite

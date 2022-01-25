@@ -3,12 +3,13 @@ import * as d3 from 'd3';
 import { D3ZoomEvent, zoomIdentity } from 'd3';
 import { ScaleService } from './scale.service';
 import { map, merge, Observable, of, Subject, Subscription } from 'rxjs';
-import { IChartEvent } from '../model/i-chart-event';
 import { ZoomType } from '../model/enum/zoom-type';
 import { IChartConfig } from '../model/i-chart-config';
 import { BroadcastService } from './broadcast.service';
 import { ChartService } from './chart.service';
 import { BrushType } from '../model/enum/brush-type';
+import { Axis } from '../core/axis/axis';
+import { AxisOrientation } from '../model/enum/axis-orientation';
 
 @Injectable({
   providedIn: 'root',
@@ -48,9 +49,13 @@ export class ZoomService {
       .subscribe();
   }
 
-  applyZoom(svgElement: ElementRef, config: IChartConfig, size: DOMRect) {
+  applyZoom(
+    svgElement: ElementRef,
+    config: IChartConfig,
+    size: DOMRect,
+    axis?: Axis
+  ) {
     this.broadcastSubscribtion?.unsubscribe();
-
     this.svg = d3.select(svgElement.nativeElement);
 
     const zoomType = config?.zoom?.type;
@@ -59,16 +64,14 @@ export class ZoomService {
     const zoomed = (event: D3ZoomEvent<any, any>) => {
       const { transform } = event;
 
-      if (zoomType === ZoomType.x || zoomType === ZoomType.xy) {
-        for (let [index, scale] of this.x.entries()) {
-          this.scaleService.xScales.set(index, transform.rescaleX(scale));
-        }
+      if (axis?.orientation === AxisOrientation.x) {
+        const scale = this.x.get(axis.index);
+        this.scaleService.xScales.set(axis.index, transform.rescaleX(scale));
       }
 
-      if (zoomType === ZoomType.y || zoomType === ZoomType.xy) {
-        for (let [index, scale] of this.y.entries()) {
-          this.scaleService.yScales.set(index, transform.rescaleY(scale));
-        }
+      if (axis?.orientation === AxisOrientation.y) {
+        const scale = this.y.get(axis.index);
+        this.scaleService.yScales.set(axis.index, transform.rescaleY(scale));
       }
 
       if (enable) {
@@ -88,7 +91,7 @@ export class ZoomService {
       }
     };
 
-    if (enable) {
+    if (axis?.options?.zoom) {
       this.zoom = d3
         .zoom()
         .scaleExtent([1, Infinity])

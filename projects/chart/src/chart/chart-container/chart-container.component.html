@@ -1,7 +1,6 @@
 <ng-container *ngIf="size | async as s">
   <teta-tooltip [size]="s"></teta-tooltip>
   <svg
-       [tetaZoomable]
        [tetaBrushable]
        [size]="s"
        [config]="config"
@@ -9,17 +8,18 @@
        [attr.height]="s.height"
        [attr.viewBox]="'0 0 '+s.width+' '+s.height"
        (mouseleave)="mouseLeave($event)"
-       (mousemove)="mouseMove($event)">
+       (mousemove)="mouseMove($event)"
+       >
     <ng-container *ngIf="getVisibleRect(s) as rect">
       <defs>
         <clipPath [attr.id]="'visible-window-' + id()">
           <rect [attr.x]="rect.left" [attr.y]="rect.top" [attr.width]="rect.width" [attr.height]="rect.height"></rect>
         </clipPath>
       </defs>
-
       <g class="y-axis-container">
         <g *ngFor="let item of yAxes | keyvalue"
            teta-y-axis
+           [tetaZoomable]
            [axis]="item.value"
            [size]="s"
            [attr.transform]="getTranslate(item.value, s)"></g>
@@ -27,7 +27,7 @@
       <g class="x-axis-container">
         <g *ngFor="let item of xAxes | keyvalue"
            teta-x-axis
-
+           [tetaZoomable]
            [axis]="item.value"
            [size]="s"
            [attr.transform]="getTranslate(item.value, s)"></g>
@@ -62,11 +62,11 @@
                  [axis]="yAxes.get(i)"></g>
             </ng-container>
           </g>
-          <g class="series-tooltip-line-marker"></g>
           <g class="series-container">
             <g teta-series-host
                *ngFor="let series of config.series"
                [series]="series"
+               [rect]="rect"
                [size]="s"></g>
           </g>
         </g>

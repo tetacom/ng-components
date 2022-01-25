@@ -8,6 +8,7 @@
 
 <ng-container *ngIf="transform | async as t">
   <svg:circle
+    *ngIf="t.x && t.y"
     r="3"
     [attr.fill]="series.color"
     [attr.transform]="'translate('+ t.x +', '+ t.y +')'"
@@ -16,7 +17,6 @@
 </ng-container>
 
 <ng-container *ngIf="getMarkers() as markers">
-
     <svg:circle
       class="marker"
       *ngFor="let point of markers"
@@ -30,8 +30,6 @@
       [attr.cy]="y(point.y)"
     >
     </svg:circle>
-
-
 </ng-container>
 
 

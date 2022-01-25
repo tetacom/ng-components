@@ -24,7 +24,7 @@ import { IChartEvent } from '../model/i-chart-event';
 import { PlotLine } from '../model/plotline';
 import { Plotband } from '../model/plotband';
 import { IPointMove } from '../model/i-point-move';
-import { defaultAxisConfig } from '../default/default-configs';
+import { TooltipTracking } from '../model/enum/tooltip-tracking';
 
 @Component({
   selector: 'teta-svg-chart',
@@ -58,8 +58,17 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   >();
 
   @Input() set config(config: IChartConfig) {
-    const defaultConfig = {
+    const defaultConfig: IChartConfig = {
       bounds: new ChartBounds(),
+      xAxis: [],
+      yAxis: [],
+      legend: {
+        enable: true,
+      },
+      tooltip: {
+        enable: true,
+        tracking: TooltipTracking.x,
+      },
     };
 
     this._config = Object.assign(defaultConfig, config);

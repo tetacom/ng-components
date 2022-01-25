@@ -18,6 +18,7 @@ import { Observable, tap } from 'rxjs';
 export class SeriesBaseComponent<T extends BasePoint> implements OnInit {
   @Input() series: Series<T>;
   @Input() size: DOMRect;
+  @Input() rect: any;
 
   zoom: Observable<any>;
 

@@ -27,6 +27,7 @@ import { SeriesType } from '../../model/enum/series-type';
 export class SeriesHostComponent<T extends BasePoint> implements OnInit {
   @Input() series: Series<T>;
   @Input() size: DOMRect;
+  @Input() rect: any;
 
   private defaultSeriesTypeMapping = new Map<
     SeriesType,
@@ -64,6 +65,7 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
     );
     this._componentRef.instance.series = this.series;
     this._componentRef.instance.size = this.size;
+    this._componentRef.instance.rect = this.rect;
     this._init = true;
   }
 
@@ -73,6 +75,8 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
     if (this._init && changes.hasOwnProperty('series')) {
       this._componentRef.instance.series = this.series;
       this._componentRef.instance.size = this.size;
+      this._componentRef.instance.rect = this.rect;
+
       this._componentRef.injector.get(ChangeDetectorRef).markForCheck();
       this._componentRef.injector.get(ChangeDetectorRef).detectChanges();
     }

@@ -182,16 +182,18 @@ export class LineSeriesComponent<T extends BasePoint>
 
     if (tooltipTracking === TooltipTracking.x) {
       const bisect = d3.bisector((_: BasePoint) => _.x).right;
+      const pointer = mouse[0] - this.rect.left;
 
-      const x0 = foundX.invert(mouse[0]);
+      const x0 = foundX.invert(pointer);
+
       const rightId = bisect(this.series.data, x0);
 
       const range = foundY.range();
 
       const intersect = lineIntersection(
-        mouse[0],
+        pointer,
         range[0],
-        mouse[0],
+        pointer,
         range[1],
         foundX(this.series.data[rightId - 1]?.x),
         foundY(this.series.data[rightId - 1]?.y),
@@ -230,7 +232,10 @@ export class LineSeriesComponent<T extends BasePoint>
       );
 
       this.svc.setTooltip({
-        point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },
+        point: {
+          x: foundX.invert(intersect.x),
+          y: foundY.invert(intersect.y),
+        },
         series: this.series,
       });
 

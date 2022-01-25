@@ -21,7 +21,6 @@ export class LegendComponent implements OnInit {
     .set(SeriesType.bar, 12);
 
   @Input() series: Array<Series<BasePoint>>;
-  @HostBinding('class.padding-bottom-4') classLegend = true;
 
   constructor() {}
 
@@ -30,6 +29,6 @@ export class LegendComponent implements OnInit {
   }
 
   getHeight(serie: Series<BasePoint>) {
-    return this.sizeMapping.get(serie.type);
+    return this.sizeMapping.get(serie.type ?? SeriesType.line);
   }
 }
