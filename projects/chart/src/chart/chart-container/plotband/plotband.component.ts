@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 
 import * as d3 from 'd3';
-import { Plotband } from '../../model/plotband';
+import { PlotBand } from '../../model/plot-band';
 import { ScaleService } from '../../service/scale.service';
 
 import { Axis } from '../../core/axis/axis';
@@ -24,7 +24,7 @@ import { ChartService } from '../../service/chart.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlotbandComponent implements OnInit {
-  @Input() plotband: Plotband;
+  @Input() plotband: PlotBand;
   @Input() axis: Axis;
   @Input() size: DOMRect;
   orientation = AxisOrientation;
@@ -47,7 +47,7 @@ export class PlotbandComponent implements OnInit {
     });
   }
 
-  emit(event: IChartEvent<Plotband>) {
+  emit(event: IChartEvent<PlotBand>) {
     this.chartService.emitPlotband(event);
   }
 
@@ -79,7 +79,7 @@ export class PlotbandComponent implements OnInit {
       })
       .on(
         'start drag end',
-        (event: d3.D3DragEvent<any, Plotband, any>, d: Plotband) => {
+        (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
           requestAnimationFrame(() => {
             let bandSize = parseFloat(
               plotbandElement.attr(
@@ -113,7 +113,7 @@ export class PlotbandComponent implements OnInit {
       .drag()
       .on(
         'start drag end',
-        (event: d3.D3DragEvent<any, Plotband, any>, d: Plotband) => {
+        (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
           requestAnimationFrame(() => {
             if (event?.type === 'start') {
               const { grabber } = event?.sourceEvent?.target?.dataset;
@@ -163,8 +163,8 @@ export class PlotbandComponent implements OnInit {
         }
       );
 
-    plotbandElement.datum<Plotband>(this.plotband);
-    grabElements.datum<Plotband>(this.plotband);
+    plotbandElement.datum<PlotBand>(this.plotband);
+    grabElements.datum<PlotBand>(this.plotband);
 
     if (this.plotband.draggable) {
       plotbandElement.call(drag);
@@ -197,10 +197,10 @@ export class PlotbandComponent implements OnInit {
     return this.scale(this.plotband.to);
   }
 
-  getFill(d: Plotband): string {
-    if (d.style?.plotband?.patternImage) {
-      return `url(#${d.style.plotband?.patternImage})`;
+  getFill(d: PlotBand): string {
+    if (d.style?.plotBand?.patternImage) {
+      return `url(#${d.style.plotBand?.patternImage})`;
     }
-    return d.style.plotband?.fill;
+    return d.style.plotBand?.fill;
   }
 }

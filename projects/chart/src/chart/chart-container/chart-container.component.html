@@ -1,72 +1,78 @@
 <ng-container *ngIf="size | async as s">
   <teta-tooltip [size]="s"></teta-tooltip>
-  <svg height="100%" width="100%" class="position-absolute">
-    <g class="y-axis-container">
-      <g *ngFor="let item of yAxes | keyvalue"
-         teta-y-axis
-         [tetaZoomable]
-         [axis]="item.value"
-         [size]="s"
-         [attr.transform]="getTranslate(item.value, s)"></g>
-
-    </g>
-    <g class="x-axis-container">
-      <g *ngFor="let item of xAxes | keyvalue"
-         teta-x-axis
-         [tetaZoomable]
-         [axis]="item.value"
-         [size]="s"
-         [attr.transform]="getTranslate(item.value, s)"></g>
-    </g>
-  </svg>
-
-  <ng-container *ngIf="getVisibleRect(s) as rect">
   <svg
-       #chart
-       [tetaBrushable]
+       tetaZoomable
+       tetaBrushable
        [size]="s"
        [config]="config"
-       [attr.width]="rect.width"
-       [attr.height]="rect.height"
-       [attr.transform]="'translate('+ rect.left +', '+ rect.top +')'"
-       [attr.viewBox]="'0 0 ' + rect.width + ' ' + rect.height">
-      <g>
+       [attr.width]="s.width"
+       [attr.height]="s.height"
+       [attr.viewBox]="'0 0 '+s.width+' '+s.height"
+       (mouseleave)="mouseLeave($event)"
+       (mousemove)="mouseMove($event)">
+    <ng-container *ngIf="getVisibleRect(s) as rect">
+      <defs>
+        <clipPath [attr.id]="'visible-window-' + id()">
+          <rect [attr.x]="rect.left" [attr.y]="rect.top" [attr.width]="rect.width" [attr.height]="rect.height"></rect>
+        </clipPath>
+      </defs>
+
+      <g class="y-axis-container">
+        <g *ngFor="let item of yAxes | keyvalue"
+           teta-y-axis
+           [axis]="item.value"
+           [size]="s"
+           [attr.transform]="getTranslate(item.value, s)"></g>
+      </g>
+      <g class="x-axis-container">
+        <g *ngFor="let item of xAxes | keyvalue"
+           teta-x-axis
+
+           [axis]="item.value"
+           [size]="s"
+           [attr.transform]="getTranslate(item.value, s)"></g>
+      </g>
+      <g [attr.clip-path]="'url(#visible-window-'+ id() +')'">
+        <g [attr.transform]="'translate('+ rect.left +', '+ rect.top +')'">
           <g class="gridlines" teta-gridlines [size]="s"></g>
+
           <g class="x-axis-plotline-container">
             <ng-container *ngFor="let axis of config.xAxis; let i = index">
-              <g teta-plot-line *ngFor="let plotline of axis.plotlines" [plotline]="plotline" [size]="s"
+              <g teta-plot-line *ngFor="let plotLine of axis.plotLines" [plotLine]="plotLine" [size]="s"
                  [axis]="xAxes.get(i)"></g>
             </ng-container>
           </g>
 
           <g class="y-axis-plotline-container">
             <ng-container *ngFor="let axis of config.yAxis; let i = index">
-              <g teta-plot-line *ngFor="let plotline of axis.plotlines" [plotline]="plotline" [size]="s"
+              <g teta-plot-line *ngFor="let plotLine of axis.plotLines" [plotLine]="plotLine" [size]="s"
                  [axis]="yAxes.get(i)"></g>
             </ng-container>
           </g>
 
           <g class="x-axis-plotband-container">
             <ng-container *ngFor="let axis of config.xAxis; let i = index">
-              <g teta-plot-band *ngFor="let plotband of axis.plotbands" [plotband]="plotband" [size]="s"
+              <g teta-plot-band *ngFor="let plotBand of axis.plotBands" [plotband]="plotBand" [size]="s"
                  [axis]="xAxes.get(i)"></g>
             </ng-container>
           </g>
           <g class="y-axis-plotband-container">
             <ng-container *ngFor="let axis of config.yAxis; let i = index">
-              <g teta-plot-band *ngFor="let plotband of axis.plotbands" [plotband]="plotband" [size]="s"
+              <g teta-plot-band *ngFor="let plotBand of axis.plotBands" [plotband]="plotBand" [size]="s"
                  [axis]="yAxes.get(i)"></g>
             </ng-container>
           </g>
+          <g class="series-tooltip-line-marker"></g>
           <g class="series-container">
             <g teta-series-host
                *ngFor="let series of config.series"
                [series]="series"
-               [rect]="rect"
                [size]="s"></g>
           </g>
         </g>
+      </g>
+    </ng-container>
   </svg>
-  </ng-container>
+
 
 </ng-container>

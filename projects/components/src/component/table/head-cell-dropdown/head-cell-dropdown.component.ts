@@ -19,6 +19,7 @@ import { IIdName } from '../../../common/contract/i-id-name';
 import { Observable } from 'rxjs';
 import { map, takeWhile } from 'rxjs/operators';
 import { ArrayUtil } from '../../../common/util/array-util';
+import {SortParam} from '../../filter/contarct/sort-param';
 
 @Component({
   selector: 'teta-head-cell-dropdown',
@@ -43,7 +44,7 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
   dict: Observable<IDictionary<IIdName<any>[]>>;
   hiddenColumns: string[];
 
-  get sortParam() {
+  get sortParam(): SortParam {
     return StateUtil.getSortState(this.state, this.column);
   }
 
