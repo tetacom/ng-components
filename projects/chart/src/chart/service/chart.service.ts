@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
-import {IChartConfig} from '../model/i-chart-config';
-import {AxesService} from './axes.service';
-import {map, Observable, Subject} from 'rxjs';
-import {ScaleService} from './scale.service';
-import {IChartEvent} from '../model/i-chart-event';
-import {IDisplayTooltip} from '../model/i-display-tooltip';
-import {PlotBand} from '../model/plot-band';
-import {PlotLine} from '../model/plot-line';
-import {IPointMove} from '../model/i-point-move';
+import { Injectable } from '@angular/core';
+import { IChartConfig } from '../model/i-chart-config';
+import { AxesService } from './axes.service';
+import { map, Observable, Subject } from 'rxjs';
+import { ScaleService } from './scale.service';
+import { IChartEvent } from '../model/i-chart-event';
+import { IDisplayTooltip } from '../model/i-display-tooltip';
+import { PlotBand } from '../model/plot-band';
+import { PlotLine } from '../model/plot-line';
+import { IPointMove } from '../model/i-point-move';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class ChartService {
   public pointMove: Observable<IChartEvent<IPointMove>>;
 
   private size$ = new Subject<DOMRect>();
-  private pointerMove$ = new BehaviorSubject<any>({event: null});
+  private pointerMove$ = new Subject<any>();
   private tooltips$ = new Subject<IDisplayTooltip>();
   private plotBandMove$ = new Subject<IChartEvent<PlotBand>>();
   private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();
@@ -43,7 +43,7 @@ export class ChartService {
     this.size
       .pipe(
         map((size) => {
-          this.scaleService.createScales(size, this._config);
+          this.scaleService.createScales(size);
         })
       )
       .subscribe();
@@ -67,7 +67,7 @@ export class ChartService {
       });
     }
 
-    this.axesService.init(this._config);
+    this.axesService.createAxes(this._config);
   }
 
   public setSize(size: DOMRect) {
@@ -75,7 +75,7 @@ export class ChartService {
   }
 
   public setPointerMove(event: any) {
-    this.pointerMove$.next({event});
+    this.pointerMove$.next({ event });
   }
 
   public setTooltip(tooltip: IDisplayTooltip) {

@@ -8,7 +8,7 @@
   </svg:path>
   <ng-container *ngIf="transform | async as t">
     <svg:circle
-      *ngIf="t.x && t.y"
+      *ngIf="t.x !== undefined && t.y!== undefined"
       r="3"
       [attr.fill]="series.color"
       [attr.transform]="'translate('+ t.x +', '+ t.y +')'"

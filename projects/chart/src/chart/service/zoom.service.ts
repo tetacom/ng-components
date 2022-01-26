@@ -42,9 +42,6 @@ export class ZoomService {
 
           if (this.svg) {
             const currentTransform = d3.zoomTransform(this.svg.node());
-
-            console.log(currentTransform);
-
             this.setZoom(currentTransform);
           }
         })
@@ -52,28 +49,26 @@ export class ZoomService {
       .subscribe();
   }
 
-  applyZoom(
-    svgElement: ElementRef,
-    config: IChartConfig,
-    size: DOMRect,
-    axis?: Axis
-  ) {
+  applyZoom(svgElement: ElementRef, config: IChartConfig, size: DOMRect) {
     this.broadcastSubscribtion?.unsubscribe();
     this.svg = d3.select(svgElement.nativeElement);
 
-    const enable = config?.zoom?.enable || axis?.options?.zoom;
+    const zoomType = config?.zoom?.type;
+    const enable = config?.zoom?.enable;
 
     const zoomed = (event: D3ZoomEvent<any, any>) => {
       const { transform } = event;
 
-      if (axis?.orientation === AxisOrientation.x) {
-        const scale = this.x.get(axis.index);
-        this.scaleService.xScales.set(axis.index, transform.rescaleX(scale));
+      if (zoomType === ZoomType.x || zoomType === ZoomType.xy) {
+        for (let [index, scale] of this.x.entries()) {
+          this.scaleService.xScales.set(index, transform.rescaleX(scale));
+        }
       }
 
-      if (axis?.orientation === AxisOrientation.y) {
-        const scale = this.y.get(axis.index);
-        this.scaleService.yScales.set(axis.index, transform.rescaleY(scale));
+      if (zoomType === ZoomType.y || zoomType === ZoomType.xy) {
+        for (let [index, scale] of this.y.entries()) {
+          this.scaleService.yScales.set(index, transform.rescaleY(scale));
+        }
       }
 
       if (enable) {

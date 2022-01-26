@@ -21,15 +21,10 @@ export class ZoomableDirective {
   ) {}
 
   ngOnInit() {
-    if (this.config?.zoom?.enable || this.axis?.options?.zoom) {
+    if (this.config?.zoom?.enable) {
       this.zoomable = true;
 
-      this.svc.applyZoom(
-        this.element,
-        this.chartService.config,
-        this.size,
-        this.axis
-      );
+      this.svc.applyZoom(this.element, this.chartService.config, this.size);
     }
   }
   ngAfterViewInit() {}

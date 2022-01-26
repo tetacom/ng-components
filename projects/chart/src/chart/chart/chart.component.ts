@@ -9,23 +9,23 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import {ChartService} from '../service/chart.service';
-import {IChartConfig} from '../model/i-chart-config';
+import { ChartService } from '../service/chart.service';
+import { IChartConfig } from '../model/i-chart-config';
 
-import {BasePoint} from '../model/base-point';
-import {Series} from '../model/series';
-import {ZoomService} from '../service/zoom.service';
-import {ScaleService} from '../service/scale.service';
-import {BrushService} from '../service/brush.service';
-import {AxesService} from '../service/axes.service';
-import {ChartBounds} from '../model/chart-bounds';
+import { BasePoint } from '../model/base-point';
+import { Series } from '../model/series';
+import { ZoomService } from '../service/zoom.service';
+import { ScaleService } from '../service/scale.service';
+import { BrushService } from '../service/brush.service';
+import { AxesService } from '../service/axes.service';
+import { ChartBounds } from '../model/chart-bounds';
 
-import {IChartEvent} from '../model/i-chart-event';
-import {PlotLine} from '../model/plot-line';
-import {PlotBand} from '../model/plot-band';
-import {IPointMove} from '../model/i-point-move';
-import {TooltipTracking} from '../model/enum/tooltip-tracking';
-import {ZoomType} from '../model/enum/zoom-type';
+import { IChartEvent } from '../model/i-chart-event';
+import { PlotLine } from '../model/plot-line';
+import { PlotBand } from '../model/plot-band';
+import { IPointMove } from '../model/i-point-move';
+import { TooltipTracking } from '../model/enum/tooltip-tracking';
+import { ZoomType } from '../model/enum/zoom-type';
 
 @Component({
   selector: 'teta-svg-chart',
@@ -42,35 +42,43 @@ import {ZoomType} from '../model/enum/zoom-type';
 })
 export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   legendSeries: Array<Series<BasePoint>>;
+  hasSeriesData: boolean;
 
   @Output()
-  plotBandsMove: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<IChartEvent<PlotBand>>();
+  plotBandsMove: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<
+    IChartEvent<PlotBand>
+  >();
 
   @Output()
-  plotLinesMove: EventEmitter<IChartEvent<PlotLine>> = new EventEmitter<IChartEvent<PlotLine>>();
+  plotLinesMove: EventEmitter<IChartEvent<PlotLine>> = new EventEmitter<
+    IChartEvent<PlotLine>
+  >();
 
   @Output()
-  pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<IChartEvent<IPointMove>>();
+  pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<
+    IChartEvent<IPointMove>
+  >();
 
   @Input() set config(config: IChartConfig) {
     const defaultConfig: IChartConfig = {
       zoom: {
         enable: true,
-        type: ZoomType.x
+        type: ZoomType.x,
       },
       bounds: new ChartBounds(),
       legend: {
-        enable: true
+        enable: true,
       },
       tooltip: {
         enable: true,
         showMarkers: true,
-        tracking: TooltipTracking.x
+        tracking: TooltipTracking.x,
       },
       xAxis: [],
-      yAxis: []
+      yAxis: [],
     };
-    config?.series?.forEach(_ => {
+
+    config?.series?.forEach((_) => {
       if (_.xAxisIndex === null || _.xAxisIndex === undefined) {
         _.xAxisIndex = 0;
       }
@@ -78,7 +86,12 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
         _.yAxisIndex = 0;
       }
     });
+
     this._config = Object.assign(defaultConfig, config);
+
+    this.svc.init(this._config);
+
+    this.hasSeriesData = !!this._config?.series?.some((_) => _.data.length);
   }
 
   get config() {
@@ -87,11 +100,13 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
 
   private _config;
 
-  constructor(private svc: ChartService, private zoomService: ZoomService) {
-  }
+  constructor(
+    private svc: ChartService,
+    private zoomService: ZoomService,
+    private axesService: AxesService
+  ) {}
 
-  ngOnChanges(changes: SimpleChanges) {
-  }
+  ngOnChanges(changes: SimpleChanges) {}
 
   ngOnInit(): void {
     this.svc.plotBandMove.subscribe((_) => {
@@ -107,8 +122,7 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   ngOnDestroy() {
     this.zoomService.broadcastSubscribtion?.unsubscribe();

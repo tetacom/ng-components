@@ -17,6 +17,7 @@ import { ChartService } from '../../service/chart.service';
 import * as d3 from 'd3';
 import { ZoomService } from '../../service/zoom.service';
 import { merge, takeWhile, tap } from 'rxjs';
+import { AxesService } from '../../service/axes.service';
 
 @Component({
   selector: '[teta-x-axis]',
@@ -34,6 +35,7 @@ export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private scaleService: ScaleService,
     private chartService: ChartService,
+    private axesService: AxesService,
     private cdr: ChangeDetectorRef,
     private zoomService: ZoomService
   ) {

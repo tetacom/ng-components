@@ -6,8 +6,6 @@ import { AxisType } from '../model/enum/axis-type';
 import { Axis } from '../core/axis/axis';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 
-import { IChartConfig } from '../model/i-chart-config';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -23,7 +21,7 @@ export class ScaleService {
 
   constructor(private axesService: AxesService) {}
 
-  public createScales(size: DOMRect, config?: IChartConfig) {
+  public createScales(size: DOMRect) {
     this.yScales.clear();
     this.xScales.clear();
 

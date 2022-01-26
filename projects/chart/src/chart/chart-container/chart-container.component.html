@@ -1,39 +1,37 @@
 <ng-container *ngIf="size | async as s">
   <teta-tooltip [size]="s"></teta-tooltip>
-  <svg
-       tetaZoomable
-       tetaBrushable
-       [size]="s"
-       [config]="config"
-       [attr.width]="s.width"
-       [attr.height]="s.height"
-       [attr.viewBox]="'0 0 '+s.width+' '+s.height"
-       (mouseleave)="mouseLeave($event)"
-       (mousemove)="mouseMove($event)">
-    <ng-container *ngIf="getVisibleRect(s) as rect">
-      <defs>
-        <clipPath [attr.id]="'visible-window-' + id()">
-          <rect [attr.x]="rect.left" [attr.y]="rect.top" [attr.width]="rect.width" [attr.height]="rect.height"></rect>
-        </clipPath>
-      </defs>
+  <svg height="100%" width="100%" class="position-absolute">
+    <g class="y-axis-container">
+      <g *ngFor="let item of yAxes | keyvalue"
+         teta-y-axis
+         [axis]="item.value"
+         [size]="s"
+         [attr.transform]="getTranslate(item.value, s)"></g>
 
-      <g class="y-axis-container">
-        <g *ngFor="let item of yAxes | keyvalue"
-           teta-y-axis
-           [axis]="item.value"
-           [size]="s"
-           [attr.transform]="getTranslate(item.value, s)"></g>
-      </g>
-      <g class="x-axis-container">
-        <g *ngFor="let item of xAxes | keyvalue"
-           teta-x-axis
+    </g>
+    <g class="x-axis-container">
+      <g *ngFor="let item of xAxes | keyvalue"
+         teta-x-axis
+         [axis]="item.value"
+         [size]="s"
+         [attr.transform]="getTranslate(item.value, s)"></g>
+    </g>
+  </svg>
 
-           [axis]="item.value"
-           [size]="s"
-           [attr.transform]="getTranslate(item.value, s)"></g>
-      </g>
-      <g [attr.clip-path]="'url(#visible-window-'+ id() +')'">
-        <g [attr.transform]="'translate('+ rect.left +', '+ rect.top +')'">
+  <ng-container *ngIf="getVisibleRect(s) as rect">
+    <svg
+      tetaZoomable
+      tetaBrushable
+      [size]="s"
+      [config]="config"
+      [attr.width]="rect.width"
+      [attr.height]="rect.height"
+      [attr.transform]="'translate('+ rect.left +', '+ rect.top +')'"
+      [attr.viewBox]="'0 0 ' + rect.width + ' ' + rect.height"
+      (mouseleave)="mouseLeave($event)"
+      (mousemove)="mouseMove($event)">
+      <g>
+        <g>
           <g class="gridlines" teta-gridlines [size]="s"></g>
 
           <g class="x-axis-plotline-container">
@@ -62,7 +60,6 @@
                  [axis]="yAxes.get(i)"></g>
             </ng-container>
           </g>
-          <g class="series-tooltip-line-marker"></g>
           <g class="series-container">
             <g teta-series-host
                *ngFor="let series of config.series"
@@ -71,8 +68,8 @@
           </g>
         </g>
       </g>
-    </ng-container>
-  </svg>
 
+    </svg>
+  </ng-container>
 
 </ng-container>
