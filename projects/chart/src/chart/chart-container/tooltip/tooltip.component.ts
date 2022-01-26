@@ -1,10 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Input, NgZone,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnDestroy, OnInit,} from '@angular/core';
 import {filter, map, merge, Observable, takeWhile, tap} from 'rxjs';
 import {ChartService} from '../../service/chart.service';
 import {ZoomService} from '../../service/zoom.service';
@@ -15,6 +9,7 @@ import {DomSanitizer} from '@angular/platform-browser';
   selector: 'teta-tooltip',
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TooltipComponent implements OnInit, OnDestroy {
   @Input() size: DOMRect;

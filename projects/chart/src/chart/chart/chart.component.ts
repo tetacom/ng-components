@@ -25,6 +25,7 @@ import {PlotLine} from '../model/plot-line';
 import {PlotBand} from '../model/plot-band';
 import {IPointMove} from '../model/i-point-move';
 import {TooltipTracking} from '../model/enum/tooltip-tracking';
+import {ZoomType} from '../model/enum/zoom-type';
 
 @Component({
   selector: 'teta-svg-chart',
@@ -53,6 +54,10 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() set config(config: IChartConfig) {
     const defaultConfig: IChartConfig = {
+      zoom: {
+        enable: true,
+        type: ZoomType.x
+      },
       bounds: new ChartBounds(),
       legend: {
         enable: true
@@ -65,7 +70,14 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
       xAxis: [],
       yAxis: []
     };
-
+    config?.series?.forEach(_ => {
+      if (_.xAxisIndex === null || _.xAxisIndex === undefined) {
+        _.xAxisIndex = 0;
+      }
+      if (_.yAxisIndex === null || _.yAxisIndex === undefined) {
+        _.yAxisIndex = 0;
+      }
+    });
     this._config = Object.assign(defaultConfig, config);
   }
 

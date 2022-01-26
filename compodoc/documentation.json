@@ -8173,272 +8173,7 @@
         },
         {
             "name": "Axis",
-            "id": "class-Axis-e29b3d537243d4607eed4ec785a185ff",
-            "file": "projects/components/src/component/chart/core/axis-creator.ts",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "type": "class",
-            "sourceCode": "import * as d3 from 'd3';\r\nimport { AxisType } from '../model/enum/axis-type';\r\nimport { Series } from '../model/series';\r\nimport { BasePoint } from '../model/point/base-point';\r\nimport { ChartOptions } from '../model/chart-options';\r\n\r\nexport class Axis {\r\n  public static offsetFactor = 22;\r\n  public readonly width: number;\r\n\r\n  private _type: AxisType;\r\n  private _chartOptions: ChartOptions;\r\n  private _extents: [number, number] = [0, 0];\r\n  private _index: number;\r\n  private _height: number;\r\n  private _offset: number;\r\n  private _ticks: any;\r\n\r\n  constructor(options: {\r\n    type: AxisType;\r\n    index: number;\r\n    chartOptions: ChartOptions;\r\n    height?: number;\r\n  }) {\r\n    this._type = options?.type;\r\n    this._index = options?.index || 0;\r\n    this._chartOptions = options?.chartOptions;\r\n    this._height = options?.height;\r\n\r\n    if (this._chartOptions == null) {\r\n      throw new Error(`No chartOptions for axis ${AxisType[this._type]}`);\r\n    }\r\n\r\n    this.createExtents();\r\n    this.width = this.calculateAxisWidth();\r\n  }\r\n\r\n  get index() {\r\n    return this._index;\r\n  }\r\n\r\n  get options() {\r\n    return this._type === AxisType.abscissa\r\n      ? this._chartOptions.xAxis[this.index]\r\n      : this._chartOptions.yAxis[this.index];\r\n  }\r\n\r\n  get extent(): [number, number] {\r\n    return this._extents;\r\n  }\r\n\r\n  get type(): AxisType {\r\n    return this._type;\r\n  }\r\n\r\n  get offset(): number {\r\n    return this._offset;\r\n  }\r\n\r\n  get ticks() {\r\n    return this._ticks;\r\n  }\r\n\r\n  setOffset(offset: number) {\r\n    this._offset = offset;\r\n  }\r\n\r\n  private calculateAxisWidth(): number {\r\n    if (this.type === AxisType.abscissa) {\r\n      return 0;\r\n    }\r\n\r\n    const y = d3\r\n      .scaleLinear()\r\n      .domain([this.extent[0], this.extent[1]])\r\n      .range([0, this._height])\r\n      .nice();\r\n\r\n    const body = d3\r\n      .select('body')\r\n      .append('svg')\r\n      .attr('class', 'calculate-offset')\r\n      .style('position', 'absolute')\r\n      .style('left', '-9999px');\r\n    const axis = d3.axisRight(y).tickValues(this.ticks);\r\n    const element = body.append('g').attr('class', 'font-caption').call(axis);\r\n\r\n    const bBox = element.node().getBBox();\r\n\r\n    d3.selectAll('.calculate-offset').remove();\r\n\r\n    return bBox.width;\r\n  }\r\n\r\n  private createExtents() {\r\n    const hasMin = this.options?.min != null;\r\n    const hasMax = this.options?.max != null;\r\n\r\n    if (!hasMin || !hasMax) {\r\n      const filtered = this._chartOptions?.series?.filter(\r\n        (serie: Series<BasePoint>) =>\r\n          this._index ===\r\n          serie[this._type === AxisType.abscissa ? 'xAxisIndex' : 'yAxisIndex']\r\n      );\r\n\r\n      const raw = filtered.map((series: Series<BasePoint>) =>\r\n        d3.extent(series?.data, (point: BasePoint) =>\r\n          this._type === AxisType.abscissa ? point.x : point.y\r\n        )\r\n      );\r\n\r\n      const merged = [].concat(...(raw ?? []));\r\n\r\n      const abs = (num) => Math.abs(num);\r\n\r\n      this._extents = this.options.negative\r\n        ? [-Math.abs(d3.max(merged.map(abs))), d3.max(merged.map(abs))]\r\n        : [d3.min(merged), d3.max(merged)];\r\n    }\r\n\r\n    if (hasMin) {\r\n      this._extents[0] = this.options?.min;\r\n    }\r\n\r\n    if (hasMax) {\r\n      this._extents[1] = this.options?.max;\r\n    }\r\n  }\r\n}\r\n",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "args": [
-                    {
-                        "name": "options",
-                        "type": "literal type",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    }
-                ],
-                "line": 17,
-                "jsdoctags": [
-                    {
-                        "name": "options",
-                        "type": "literal type",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    }
-                ]
-            },
-            "properties": [
-                {
-                    "name": "_chartOptions",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "ChartOptions",
-                    "optional": false,
-                    "description": "",
-                    "line": 12,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_extents",
-                    "defaultValue": "[0, 0]",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "[number, number]",
-                    "optional": false,
-                    "description": "",
-                    "line": 13,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_height",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 15,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_index",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 14,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_offset",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 16,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_ticks",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "any",
-                    "optional": false,
-                    "description": "",
-                    "line": 17,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_type",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "AxisType",
-                    "optional": false,
-                    "description": "",
-                    "line": 11,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "offsetFactor",
-                    "defaultValue": "22",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 8,
-                    "modifierKind": [
-                        124
-                    ]
-                },
-                {
-                    "name": "width",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 9,
-                    "modifierKind": [
-                        123,
-                        143
-                    ]
-                }
-            ],
-            "methods": [
-                {
-                    "name": "calculateAxisWidth",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "number",
-                    "typeParameters": [],
-                    "line": 68,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "createExtents",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 95,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "setOffset",
-                    "args": [
-                        {
-                            "name": "offset",
-                            "type": "number",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 64,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "name": "offset",
-                            "type": "number",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                }
-            ],
-            "indexSignatures": [],
-            "accessors": {
-                "index": {
-                    "name": "index",
-                    "getSignature": {
-                        "name": "index",
-                        "type": "",
-                        "returnType": "",
-                        "line": 38
-                    }
-                },
-                "options": {
-                    "name": "options",
-                    "getSignature": {
-                        "name": "options",
-                        "type": "",
-                        "returnType": "",
-                        "line": 42
-                    }
-                },
-                "extent": {
-                    "name": "extent",
-                    "getSignature": {
-                        "name": "extent",
-                        "type": "",
-                        "returnType": "",
-                        "line": 48
-                    }
-                },
-                "type": {
-                    "name": "type",
-                    "getSignature": {
-                        "name": "type",
-                        "type": "",
-                        "returnType": "AxisType",
-                        "line": 52
-                    }
-                },
-                "offset": {
-                    "name": "offset",
-                    "getSignature": {
-                        "name": "offset",
-                        "type": "number",
-                        "returnType": "number",
-                        "line": 56
-                    }
-                },
-                "ticks": {
-                    "name": "ticks",
-                    "getSignature": {
-                        "name": "ticks",
-                        "type": "",
-                        "returnType": "",
-                        "line": 60
-                    }
-                }
-            },
-            "inputsClass": [],
-            "outputsClass": [],
-            "hostBindings": [],
-            "hostListeners": []
-        },
-        {
-            "name": "Axis",
-            "id": "class-Axis-da030440074dd94d377cfd0e4faa164d-1",
+            "id": "class-Axis-da030440074dd94d377cfd0e4faa164d",
             "file": "projects/chart/src/chart/core/axis/axis.ts",
             "deprecated": false,
             "deprecationMessage": "",
@@ -9078,6 +8813,271 @@
                         "type": "",
                         "returnType": "AxisOptions",
                         "line": 139
+                    }
+                }
+            },
+            "inputsClass": [],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": []
+        },
+        {
+            "name": "Axis",
+            "id": "class-Axis-4a27bc6a3f9fbd0a9c162579fea2433a-1",
+            "file": "projects/components/src/component/chart/core/axis-creator.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "import * as d3 from 'd3';\r\nimport {AxisType} from '../model/enum/axis-type';\r\nimport {Series} from '../model/series';\r\nimport {BasePoint} from '../model/point/base-point';\r\nimport {ChartOptions} from '../model/chart-options';\r\nimport {AxisOptions} from '../model/axis-options';\r\n\r\nexport class Axis {\r\n  public static offsetFactor = 22;\r\n  public readonly width: number;\r\n\r\n  private _type: AxisType;\r\n  private _chartOptions: ChartOptions;\r\n  private _extents: [number, number] = [0, 0];\r\n  private _index: number;\r\n  private _height: number;\r\n  private _offset: number;\r\n  private _ticks: any;\r\n\r\n  constructor(options: {\r\n    type: AxisType;\r\n    index: number;\r\n    chartOptions: ChartOptions;\r\n    height?: number;\r\n  }) {\r\n    this._type = options?.type;\r\n    this._index = options?.index || 0;\r\n    this._chartOptions = options?.chartOptions;\r\n    this._height = options?.height;\r\n\r\n    if (this._chartOptions == null) {\r\n      throw new Error(`No chartOptions for axis ${AxisType[this._type]}`);\r\n    }\r\n\r\n    this.createExtents();\r\n    this.width = this.calculateAxisWidth();\r\n  }\r\n\r\n  get index() {\r\n    return this._index;\r\n  }\r\n\r\n  get options(): AxisOptions {\r\n    return this._type === AxisType.abscissa\r\n      ? this._chartOptions.xAxis[this.index]\r\n      : this._chartOptions.yAxis[this.index];\r\n  }\r\n\r\n  get extent(): [number, number] {\r\n    return this._extents;\r\n  }\r\n\r\n  get type(): AxisType {\r\n    return this._type;\r\n  }\r\n\r\n  get offset(): number {\r\n    return this._offset;\r\n  }\r\n\r\n  get ticks() {\r\n    return this._ticks;\r\n  }\r\n\r\n  setOffset(offset: number) {\r\n    this._offset = offset;\r\n  }\r\n\r\n  private calculateAxisWidth(): number {\r\n    if (this.type === AxisType.abscissa) {\r\n      return 0;\r\n    }\r\n\r\n    const y = d3\r\n      .scaleLinear()\r\n      .domain([this.extent[0], this.extent[1]])\r\n      .range([0, this._height])\r\n      .nice();\r\n\r\n    const body = d3\r\n      .select('body')\r\n      .append('svg')\r\n      .attr('class', 'calculate-offset')\r\n      .style('position', 'absolute')\r\n      .style('left', '-9999px');\r\n    const axis = d3.axisRight(y).tickValues(this.ticks);\r\n    const element = body.append('g').attr('class', 'font-caption').call(axis);\r\n\r\n    const bBox = element.node().getBBox();\r\n\r\n    d3.selectAll('.calculate-offset').remove();\r\n\r\n    return bBox.width;\r\n  }\r\n\r\n  private createExtents() {\r\n    const hasMin = this.options?.min != null;\r\n    const hasMax = this.options?.max != null;\r\n\r\n    if (!hasMin || !hasMax) {\r\n      const filtered = this._chartOptions?.series?.filter(\r\n        (serie: Series<BasePoint>) =>\r\n          this._index ===\r\n          serie[this._type === AxisType.abscissa ? 'xAxisIndex' : 'yAxisIndex']\r\n      );\r\n\r\n      const raw = filtered.map((series: Series<BasePoint>) =>\r\n        d3.extent(series?.data, (point: BasePoint) =>\r\n          this._type === AxisType.abscissa ? point.x : point.y\r\n        )\r\n      );\r\n\r\n      const merged = [].concat(...(raw ?? []));\r\n\r\n      const abs = (num) => Math.abs(num);\r\n\r\n      this._extents = this.options.negative\r\n        ? [-Math.abs(d3.max(merged.map(abs))), d3.max(merged.map(abs))]\r\n        : [d3.min(merged), d3.max(merged)];\r\n    }\r\n\r\n    if (hasMin) {\r\n      this._extents[0] = this.options?.min;\r\n    }\r\n\r\n    if (hasMax) {\r\n      this._extents[1] = this.options?.max;\r\n    }\r\n  }\r\n}\r\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "options",
+                        "type": "literal type",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 18,
+                "jsdoctags": [
+                    {
+                        "name": "options",
+                        "type": "literal type",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "properties": [
+                {
+                    "name": "_chartOptions",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ChartOptions",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_extents",
+                    "defaultValue": "[0, 0]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[number, number]",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_height",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_index",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 15,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_offset",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_ticks",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 18,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_type",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "AxisType",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "offsetFactor",
+                    "defaultValue": "22",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 9,
+                    "modifierKind": [
+                        124
+                    ]
+                },
+                {
+                    "name": "width",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 10,
+                    "modifierKind": [
+                        123,
+                        143
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "calculateAxisWidth",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "number",
+                    "typeParameters": [],
+                    "line": 69,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "createExtents",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 96,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "setOffset",
+                    "args": [
+                        {
+                            "name": "offset",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 65,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "offset",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "accessors": {
+                "index": {
+                    "name": "index",
+                    "getSignature": {
+                        "name": "index",
+                        "type": "",
+                        "returnType": "",
+                        "line": 39
+                    }
+                },
+                "options": {
+                    "name": "options",
+                    "getSignature": {
+                        "name": "options",
+                        "type": "",
+                        "returnType": "AxisOptions",
+                        "line": 43
+                    }
+                },
+                "extent": {
+                    "name": "extent",
+                    "getSignature": {
+                        "name": "extent",
+                        "type": "",
+                        "returnType": "",
+                        "line": 49
+                    }
+                },
+                "type": {
+                    "name": "type",
+                    "getSignature": {
+                        "name": "type",
+                        "type": "",
+                        "returnType": "AxisType",
+                        "line": 53
+                    }
+                },
+                "offset": {
+                    "name": "offset",
+                    "getSignature": {
+                        "name": "offset",
+                        "type": "number",
+                        "returnType": "number",
+                        "line": 57
+                    }
+                },
+                "ticks": {
+                    "name": "ticks",
+                    "getSignature": {
+                        "name": "ticks",
+                        "type": "",
+                        "returnType": "",
+                        "line": 61
                     }
                 }
             },
@@ -24332,7 +24332,7 @@
         },
         {
             "name": "BarSeriesComponent",
-            "id": "component-BarSeriesComponent-80ae0021182aec80ed44ad6072199e39",
+            "id": "component-BarSeriesComponent-51c9672538824edc516b93d32b3e308c",
             "file": "projects/chart/src/chart/chart-container/series/bar/bar-series.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -24380,7 +24380,7 @@
                     "type": "d3.ScaleBand<any>",
                     "optional": false,
                     "description": "",
-                    "line": 27,
+                    "line": 26,
                     "modifierKind": [
                         121
                     ]
@@ -24392,7 +24392,7 @@
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 28,
+                    "line": 27,
                     "modifierKind": [
                         121
                     ]
@@ -24424,7 +24424,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 60,
+                    "line": 59,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -24452,7 +24452,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 64,
+                    "line": 63,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -24480,7 +24480,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 56,
+                    "line": 55,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -24508,7 +24508,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 68,
+                    "line": 67,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -24529,7 +24529,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 40,
+                    "line": 39,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -24545,7 +24545,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 52,
+                    "line": 51,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -24557,7 +24557,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  ElementRef,\r\n  OnChanges,\r\n  OnInit,\r\n  SimpleChanges,\r\n} from '@angular/core';\r\nimport * as d3 from 'd3';\r\nimport { SeriesBaseComponent } from '../../../base/series-base.component';\r\nimport { BasePoint } from '../../../model/base-point';\r\nimport { ChartService } from '../../../service/chart.service';\r\nimport { ScaleService } from '../../../service/scale.service';\r\nimport { ZoomService } from '../../../service/zoom.service';\r\n\r\n@Component({\r\n  selector: 'svg:svg[teta-bar-series]',\r\n  templateUrl: './bar-series.component.html',\r\n  styleUrls: ['./bar-series.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class BarSeriesComponent<T extends BasePoint>\r\n  extends SeriesBaseComponent<T>\r\n  implements OnInit, OnChanges\r\n{\r\n  private scaleBand: d3.ScaleBand<any>;\r\n  private y: any;\r\n\r\n  constructor(\r\n    protected override svc: ChartService,\r\n    protected override cdr: ChangeDetectorRef,\r\n    protected override scaleService: ScaleService,\r\n    protected override zoomService: ZoomService,\r\n    protected override element: ElementRef\r\n  ) {\r\n    super(svc, cdr, scaleService, zoomService, element);\r\n  }\r\n\r\n  override ngOnInit(): void {\r\n    const x = this.scaleService.xScales.get(this.series.xAxisIndex);\r\n    const y = this.scaleService.yScales.get(this.series.yAxisIndex);\r\n\r\n    const domain = this.series.data?.map((_: BasePoint) => _.x);\r\n    const range = [x(domain[0]), x(domain[domain?.length - 1])];\r\n\r\n    this.scaleBand = d3.scaleBand<number>().domain(domain).range(range);\r\n\r\n    this.y = y;\r\n  }\r\n\r\n  width() {\r\n    return this.scaleBand.bandwidth();\r\n  }\r\n\r\n  height(point: BasePoint) {\r\n    return Math.abs(this.y(0) - this.y(point.y));\r\n  }\r\n\r\n  getX(point: BasePoint) {\r\n    return this.scaleBand(point.x);\r\n  }\r\n\r\n  getY(point: BasePoint) {\r\n    return this.y(point.y);\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges) {}\r\n}\r\n",
+            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  ElementRef,\r\n  OnChanges,\r\n  OnInit,\r\n  SimpleChanges,\r\n} from '@angular/core';\r\nimport * as d3 from 'd3';\r\nimport {SeriesBaseComponent} from '../../../base/series-base.component';\r\nimport {BasePoint} from '../../../model/base-point';\r\nimport {ChartService} from '../../../service/chart.service';\r\nimport {ScaleService} from '../../../service/scale.service';\r\nimport {ZoomService} from '../../../service/zoom.service';\r\n\r\n@Component({\r\n  selector: 'svg:svg[teta-bar-series]',\r\n  templateUrl: './bar-series.component.html',\r\n  styleUrls: ['./bar-series.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class BarSeriesComponent<T extends BasePoint>\r\n  extends SeriesBaseComponent<T>\r\n  implements OnInit, OnChanges {\r\n  private scaleBand: d3.ScaleBand<any>;\r\n  private y: any;\r\n\r\n  constructor(\r\n    protected override svc: ChartService,\r\n    protected override cdr: ChangeDetectorRef,\r\n    protected override scaleService: ScaleService,\r\n    protected override zoomService: ZoomService,\r\n    protected override element: ElementRef\r\n  ) {\r\n    super(svc, cdr, scaleService, zoomService, element);\r\n  }\r\n\r\n  override ngOnInit(): void {\r\n    const x = this.scaleService.xScales.get(this.series.xAxisIndex ?? 0);\r\n    const y = this.scaleService.yScales.get(this.series.yAxisIndex ?? 0);\r\n\r\n    const domain = this.series.data?.map((_: BasePoint) => _.x);\r\n    const range = [x(domain[0]), x(domain[domain?.length - 1])];\r\n\r\n    this.scaleBand = d3.scaleBand<number>().domain(domain).range(range);\r\n\r\n    this.y = y;\r\n  }\r\n\r\n  width() {\r\n    return this.scaleBand.bandwidth();\r\n  }\r\n\r\n  height(point: BasePoint) {\r\n    return Math.abs(this.y(0) - this.y(point.y));\r\n  }\r\n\r\n  getX(point: BasePoint) {\r\n    return this.scaleBand(point.x);\r\n  }\r\n\r\n  getY(point: BasePoint) {\r\n    return this.y(point.y);\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges) {\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -24603,7 +24603,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 28,
+                "line": 27,
                 "jsdoctags": [
                     {
                         "name": "svc",
@@ -26828,7 +26828,7 @@
         },
         {
             "name": "ChartComponent",
-            "id": "component-ChartComponent-03a38e65f593fb203c02a9fb79bdf6ae",
+            "id": "component-ChartComponent-7acf181e4e954166b860e63b620978c0",
             "file": "projects/chart/src/chart/chart/chart.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -26866,7 +26866,7 @@
                     "name": "config",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 53,
+                    "line": 55,
                     "type": ""
                 }
             ],
@@ -26876,7 +26876,7 @@
                     "defaultValue": "new EventEmitter<IChartEvent<PlotBand>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 45,
+                    "line": 47,
                     "type": "EventEmitter<IChartEvent<PlotBand>>"
                 },
                 {
@@ -26884,7 +26884,7 @@
                     "defaultValue": "new EventEmitter<IChartEvent<PlotLine>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 48,
+                    "line": 50,
                     "type": "EventEmitter<IChartEvent<PlotLine>>"
                 },
                 {
@@ -26892,7 +26892,7 @@
                     "defaultValue": "new EventEmitter<IChartEvent<IPointMove>>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 51,
+                    "line": 53,
                     "type": "EventEmitter<IChartEvent<IPointMove>>"
                 }
             ],
@@ -26904,7 +26904,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 70,
+                    "line": 81,
                     "modifierKind": [
                         121
                     ]
@@ -26916,7 +26916,7 @@
                     "type": "Array<Series<BasePoint>>",
                     "optional": false,
                     "description": "",
-                    "line": 42
+                    "line": 44
                 }
             ],
             "methodsClass": [
@@ -26926,7 +26926,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 92,
+                    "line": 103,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -26943,7 +26943,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 75,
+                    "line": 86,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -26964,7 +26964,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 95,
+                    "line": 106,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -26974,7 +26974,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 78,
+                    "line": 89,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -26986,7 +26986,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  EventEmitter,\r\n  Input,\r\n  OnChanges,\r\n  OnDestroy,\r\n  OnInit,\r\n  Output,\r\n  SimpleChanges,\r\n} from '@angular/core';\r\nimport {ChartService} from '../service/chart.service';\r\nimport {IChartConfig} from '../model/i-chart-config';\r\n\r\nimport {BasePoint} from '../model/base-point';\r\nimport {Series} from '../model/series';\r\nimport {ZoomService} from '../service/zoom.service';\r\nimport {ScaleService} from '../service/scale.service';\r\nimport {BrushService} from '../service/brush.service';\r\nimport {AxesService} from '../service/axes.service';\r\nimport {ChartBounds} from '../model/chart-bounds';\r\n\r\nimport {IChartEvent} from '../model/i-chart-event';\r\nimport {PlotLine} from '../model/plot-line';\r\nimport {PlotBand} from '../model/plot-band';\r\nimport {IPointMove} from '../model/i-point-move';\r\n\r\n@Component({\r\n  selector: 'teta-svg-chart',\r\n  templateUrl: './chart.component.html',\r\n  styleUrls: ['./chart.component.scss'],\r\n  providers: [\r\n    ChartService,\r\n    ZoomService,\r\n    ScaleService,\r\n    AxesService,\r\n    BrushService,\r\n  ],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ChartComponent implements OnInit, OnChanges, OnDestroy {\r\n  legendSeries: Array<Series<BasePoint>>;\r\n\r\n  @Output()\r\n  plotBandsMove: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<IChartEvent<PlotBand>>();\r\n\r\n  @Output()\r\n  plotLinesMove: EventEmitter<IChartEvent<PlotLine>> = new EventEmitter<IChartEvent<PlotLine>>();\r\n\r\n  @Output()\r\n  pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<IChartEvent<IPointMove>>();\r\n\r\n  @Input() set config(config: IChartConfig) {\r\n    const defaultConfig: IChartConfig = {\r\n      bounds: new ChartBounds(),\r\n      legend: {\r\n        enable: true\r\n      },\r\n      xAxis: [],\r\n      yAxis: []\r\n    };\r\n\r\n    this._config = Object.assign(defaultConfig, config);\r\n  }\r\n\r\n  get config() {\r\n    return this._config;\r\n  }\r\n\r\n  private _config;\r\n\r\n  constructor(private svc: ChartService, private zoomService: ZoomService) {\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges) {\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.svc.plotBandMove.subscribe((_) => {\r\n      this.plotBandsMove.emit(_);\r\n    });\r\n\r\n    this.svc.plotLineMove.subscribe((_) => {\r\n      this.plotLinesMove.emit(_);\r\n    });\r\n\r\n    this.svc.pointMove.subscribe((_) => {\r\n      this.pointMove.emit(_);\r\n    });\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n  }\r\n\r\n  ngOnDestroy() {\r\n    this.zoomService.broadcastSubscribtion?.unsubscribe();\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  EventEmitter,\r\n  Input,\r\n  OnChanges,\r\n  OnDestroy,\r\n  OnInit,\r\n  Output,\r\n  SimpleChanges,\r\n} from '@angular/core';\r\nimport {ChartService} from '../service/chart.service';\r\nimport {IChartConfig} from '../model/i-chart-config';\r\n\r\nimport {BasePoint} from '../model/base-point';\r\nimport {Series} from '../model/series';\r\nimport {ZoomService} from '../service/zoom.service';\r\nimport {ScaleService} from '../service/scale.service';\r\nimport {BrushService} from '../service/brush.service';\r\nimport {AxesService} from '../service/axes.service';\r\nimport {ChartBounds} from '../model/chart-bounds';\r\n\r\nimport {IChartEvent} from '../model/i-chart-event';\r\nimport {PlotLine} from '../model/plot-line';\r\nimport {PlotBand} from '../model/plot-band';\r\nimport {IPointMove} from '../model/i-point-move';\r\nimport {TooltipTracking} from '../model/enum/tooltip-tracking';\r\nimport {ZoomType} from '../model/enum/zoom-type';\r\n\r\n@Component({\r\n  selector: 'teta-svg-chart',\r\n  templateUrl: './chart.component.html',\r\n  styleUrls: ['./chart.component.scss'],\r\n  providers: [\r\n    ChartService,\r\n    ZoomService,\r\n    ScaleService,\r\n    AxesService,\r\n    BrushService,\r\n  ],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ChartComponent implements OnInit, OnChanges, OnDestroy {\r\n  legendSeries: Array<Series<BasePoint>>;\r\n\r\n  @Output()\r\n  plotBandsMove: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<IChartEvent<PlotBand>>();\r\n\r\n  @Output()\r\n  plotLinesMove: EventEmitter<IChartEvent<PlotLine>> = new EventEmitter<IChartEvent<PlotLine>>();\r\n\r\n  @Output()\r\n  pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<IChartEvent<IPointMove>>();\r\n\r\n  @Input() set config(config: IChartConfig) {\r\n    const defaultConfig: IChartConfig = {\r\n      zoom: {\r\n        enable: true,\r\n        type: ZoomType.x\r\n      },\r\n      bounds: new ChartBounds(),\r\n      legend: {\r\n        enable: true\r\n      },\r\n      tooltip: {\r\n        enable: true,\r\n        showMarkers: true,\r\n        tracking: TooltipTracking.x\r\n      },\r\n      xAxis: [],\r\n      yAxis: []\r\n    };\r\n\r\n    this._config = Object.assign(defaultConfig, config);\r\n  }\r\n\r\n  get config() {\r\n    return this._config;\r\n  }\r\n\r\n  private _config;\r\n\r\n  constructor(private svc: ChartService, private zoomService: ZoomService) {\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges) {\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.svc.plotBandMove.subscribe((_) => {\r\n      this.plotBandsMove.emit(_);\r\n    });\r\n\r\n    this.svc.plotLineMove.subscribe((_) => {\r\n      this.plotLinesMove.emit(_);\r\n    });\r\n\r\n    this.svc.pointMove.subscribe((_) => {\r\n      this.pointMove.emit(_);\r\n    });\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n  }\r\n\r\n  ngOnDestroy() {\r\n    this.zoomService.broadcastSubscribtion?.unsubscribe();\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -27014,7 +27014,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 70,
+                "line": 81,
                 "jsdoctags": [
                     {
                         "name": "svc",
@@ -27058,7 +27058,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 53,
+                        "line": 55,
                         "jsdoctags": [
                             {
                                 "name": "config",
@@ -27075,7 +27075,7 @@
                         "name": "config",
                         "type": "",
                         "returnType": "",
-                        "line": 66
+                        "line": 77
                     }
                 }
             },
@@ -33585,8 +33585,9 @@
         },
         {
             "name": "GridlinesComponent",
-            "id": "component-GridlinesComponent-c93f86f0f927688dc645047eb2fcf819",
+            "id": "component-GridlinesComponent-13f92073f1f530f070ceb22316fc42a4",
             "file": "projects/chart/src/chart/chart-container/gridlines/gridlines.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -33606,7 +33607,7 @@
                     "name": "size",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 21,
+                    "line": 16,
                     "type": "DOMRect"
                 }
             ],
@@ -33619,7 +33620,7 @@
                     "type": "number[]",
                     "optional": false,
                     "description": "",
-                    "line": 23
+                    "line": 18
                 },
                 {
                     "name": "tickYValues",
@@ -33628,7 +33629,7 @@
                     "type": "number[]",
                     "optional": false,
                     "description": "",
-                    "line": 22
+                    "line": 17
                 },
                 {
                     "name": "x",
@@ -33637,7 +33638,7 @@
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 25
+                    "line": 20
                 },
                 {
                     "name": "y",
@@ -33646,7 +33647,7 @@
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 24
+                    "line": 19
                 }
             ],
             "methodsClass": [
@@ -33656,7 +33657,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 44,
+                    "line": 39,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -33666,7 +33667,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 52,
+                    "line": 47,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -33678,7 +33679,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  AfterViewInit,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  Input,\r\n  OnInit,\r\n} from '@angular/core';\r\nimport { ScaleService } from '../../service/scale.service';\r\nimport { AxesService } from '../../service/axes.service';\r\n\r\nimport { merge, tap } from 'rxjs';\r\nimport { ChartService } from '../../service/chart.service';\r\nimport { ZoomService } from '../../service/zoom.service';\r\n\r\n@Component({\r\n  selector: '[teta-gridlines]',\r\n  templateUrl: './gridlines.component.html',\r\n  styleUrls: ['./gridlines.component.scss'],\r\n})\r\nexport class GridlinesComponent implements OnInit {\r\n  @Input() size: DOMRect;\r\n  tickYValues: number[];\r\n  tickXValues: number[];\r\n  y: any;\r\n  x: any;\r\n\r\n  constructor(\r\n    private scaleService: ScaleService,\r\n    private axesService: AxesService,\r\n    private chartService: ChartService,\r\n    private zoomService: ZoomService,\r\n    private cdr: ChangeDetectorRef\r\n  ) {\r\n    merge(this.chartService.size, this.zoomService.zoomed)\r\n      .pipe(\r\n        tap(() => {\r\n          this.draw();\r\n          this.cdr.detectChanges();\r\n        })\r\n      )\r\n      .subscribe();\r\n  }\r\n\r\n  draw() {\r\n    this.y = this.scaleService.yScales.get(0);\r\n    this.x = this.scaleService.xScales.get(0);\r\n\r\n    this.tickYValues = this.y.ticks();\r\n    this.tickXValues = this.x.ticks();\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.draw();\r\n  }\r\n}\r\n",
+            "sourceCode": "import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit,} from '@angular/core';\r\nimport {ScaleService} from '../../service/scale.service';\r\nimport {AxesService} from '../../service/axes.service';\r\n\r\nimport {merge, tap} from 'rxjs';\r\nimport {ChartService} from '../../service/chart.service';\r\nimport {ZoomService} from '../../service/zoom.service';\r\n\r\n@Component({\r\n  selector: '[teta-gridlines]',\r\n  templateUrl: './gridlines.component.html',\r\n  styleUrls: ['./gridlines.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush\r\n})\r\nexport class GridlinesComponent implements OnInit {\r\n  @Input() size: DOMRect;\r\n  tickYValues: number[];\r\n  tickXValues: number[];\r\n  y: any;\r\n  x: any;\r\n\r\n  constructor(\r\n    private scaleService: ScaleService,\r\n    private axesService: AxesService,\r\n    private chartService: ChartService,\r\n    private zoomService: ZoomService,\r\n    private cdr: ChangeDetectorRef\r\n  ) {\r\n    merge(this.chartService.size, this.zoomService.zoomed)\r\n      .pipe(\r\n        tap(() => {\r\n          this.draw();\r\n          this.cdr.detectChanges();\r\n        })\r\n      )\r\n      .subscribe();\r\n  }\r\n\r\n  draw() {\r\n    this.y = this.scaleService.yScales.get(0);\r\n    this.x = this.scaleService.xScales.get(0);\r\n\r\n    this.tickYValues = this.y.ticks();\r\n    this.tickXValues = this.x.ticks();\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.draw();\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -33724,7 +33725,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 25,
+                "line": 20,
                 "jsdoctags": [
                     {
                         "name": "scaleService",
@@ -34644,7 +34645,7 @@
         },
         {
             "name": "HeadCellDropdownComponent",
-            "id": "component-HeadCellDropdownComponent-9963890923163e3e20e29bf6db8cd675",
+            "id": "component-HeadCellDropdownComponent-3c5efc9e7fc546aa95f7cbc564bea8f8",
             "file": "projects/components/src/component/table/head-cell-dropdown/head-cell-dropdown.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -34666,28 +34667,28 @@
                     "name": "column",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 31,
+                    "line": 32,
                     "type": "TableColumn"
                 },
                 {
                     "name": "columns",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 30,
+                    "line": 31,
                     "type": "ITreeData[]"
                 },
                 {
                     "name": "dropDownOpen",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 33,
+                    "line": 34,
                     "type": "boolean"
                 },
                 {
                     "name": "state",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 32,
+                    "line": 33,
                     "type": "FilterState"
                 }
             ],
@@ -34697,7 +34698,7 @@
                     "defaultValue": "new EventEmitter<void>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 37,
+                    "line": 38,
                     "type": "EventEmitter<void>"
                 },
                 {
@@ -34705,7 +34706,7 @@
                     "defaultValue": "new EventEmitter<void>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 38,
+                    "line": 39,
                     "type": "EventEmitter<void>"
                 },
                 {
@@ -34713,7 +34714,7 @@
                     "defaultValue": "new EventEmitter<boolean>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 34,
+                    "line": 35,
                     "type": "EventEmitter<boolean>"
                 }
             ],
@@ -34726,7 +34727,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 70,
+                    "line": 71,
                     "modifierKind": [
                         121
                     ]
@@ -34738,7 +34739,7 @@
                     "type": "ITreeData[]",
                     "optional": false,
                     "description": "",
-                    "line": 69,
+                    "line": 70,
                     "modifierKind": [
                         121
                     ]
@@ -34751,7 +34752,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 41,
+                    "line": 42,
                     "decorators": [
                         {
                             "name": "HostBinding",
@@ -34771,7 +34772,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 158
+                    "line": 159
                 },
                 {
                     "name": "dict",
@@ -34780,7 +34781,7 @@
                     "type": "Observable<IDictionary<IIdName[]>>",
                     "optional": false,
                     "description": "",
-                    "line": 43
+                    "line": 44
                 },
                 {
                     "name": "hiddenColumns",
@@ -34789,7 +34790,7 @@
                     "type": "string[]",
                     "optional": false,
                     "description": "",
-                    "line": 44
+                    "line": 45
                 },
                 {
                     "name": "setChildrenVisibility",
@@ -34799,7 +34800,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 171
+                    "line": 172
                 },
                 {
                     "name": "setParentsVisibility",
@@ -34809,7 +34810,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 188
+                    "line": 189
                 },
                 {
                     "name": "shadow",
@@ -34819,7 +34820,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 40,
+                    "line": 41,
                     "decorators": [
                         {
                             "name": "HostBinding",
@@ -34839,7 +34840,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 130,
+                    "line": 131,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -34849,7 +34850,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 90,
+                    "line": 91,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -34859,7 +34860,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 120,
+                    "line": 121,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -34869,7 +34870,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 104,
+                    "line": 105,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -34879,7 +34880,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 84,
+                    "line": 85,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -34889,7 +34890,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 100,
+                    "line": 101,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -34906,7 +34907,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 126,
+                    "line": 127,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -34940,7 +34941,7 @@
                     "optional": false,
                     "returnType": "TableColumn | null",
                     "typeParameters": [],
-                    "line": 229,
+                    "line": 230,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -34973,7 +34974,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 108,
+                    "line": 109,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -34983,7 +34984,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 112,
+                    "line": 113,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -35006,7 +35007,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 221,
+                    "line": 222,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -35049,7 +35050,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 208,
+                    "line": 209,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -35079,7 +35080,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 162,
+                    "line": 163,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -35089,7 +35090,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 160,
+                    "line": 161,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -35099,7 +35100,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 96,
+                    "line": 97,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -35109,7 +35110,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 116,
+                    "line": 117,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -35126,7 +35127,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 144,
+                    "line": 145,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -35147,7 +35148,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 154,
+                    "line": 155,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -35170,7 +35171,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 166,
+                    "line": 167,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -35213,7 +35214,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 225,
+                    "line": 226,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -35256,7 +35257,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 200,
+                    "line": 201,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -35289,7 +35290,7 @@
                     "defaultValue": "true",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 41,
+                    "line": 42,
                     "type": "true"
                 },
                 {
@@ -35297,7 +35298,7 @@
                     "defaultValue": "true",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 40,
+                    "line": 41,
                     "type": "true"
                 }
             ],
@@ -35305,7 +35306,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  EventEmitter,\r\n  HostBinding,\r\n  Input,\r\n  OnDestroy,\r\n  OnInit,\r\n  Output,\r\n} from '@angular/core';\r\nimport { TableService } from '../service/table.service';\r\nimport { TableColumn } from '../contract/table-column';\r\nimport { FilterState } from '../../filter/contarct/filter-state';\r\nimport { StateUtil } from '../util/state-util';\r\nimport { ITreeData } from '../../../common/contract/i-tree-data';\r\nimport { IDictionary } from '../../../common/contract/i-dictionary';\r\nimport { IIdName } from '../../../common/contract/i-id-name';\r\nimport { Observable } from 'rxjs';\r\nimport { map, takeWhile } from 'rxjs/operators';\r\nimport { ArrayUtil } from '../../../common/util/array-util';\r\n\r\n@Component({\r\n  selector: 'teta-head-cell-dropdown',\r\n  templateUrl: './head-cell-dropdown.component.html',\r\n  styleUrls: ['./head-cell-dropdown.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {\r\n  @Input() columns: ITreeData[];\r\n  @Input() column: TableColumn;\r\n  @Input() state: FilterState;\r\n  @Input() dropDownOpen: boolean;\r\n  @Output() dropDownOpenChange: EventEmitter<boolean> =\r\n    new EventEmitter<boolean>();\r\n\r\n  @Output() autosize: EventEmitter<void> = new EventEmitter<void>();\r\n  @Output() autosizeAll: EventEmitter<void> = new EventEmitter<void>();\r\n\r\n  @HostBinding('class.shadow-2') private readonly shadow = true;\r\n  @HostBinding('class.bg-background-50') private readonly bg = true;\r\n\r\n  dict: Observable<IDictionary<IIdName<any>[]>>;\r\n  hiddenColumns: string[];\r\n\r\n  get sortParam() {\r\n    return StateUtil.getSortState(this.state, this.column);\r\n  }\r\n\r\n  get filtered() {\r\n    return StateUtil.isColumnFiltered(this.state, this.column);\r\n  }\r\n\r\n  get openItems() {\r\n    if (this._openItems == null) {\r\n      this._openItems = this.columns.map((_) => _);\r\n    }\r\n    return this._openItems;\r\n  }\r\n\r\n  set openItems(openItems: ITreeData[]) {\r\n    this._openItems = openItems;\r\n  }\r\n\r\n  get childMode() {\r\n    return this.columns.find((_: any) => _.columns?.length > 0);\r\n  }\r\n\r\n  private _openItems: ITreeData[];\r\n  private _alive = true;\r\n\r\n  constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {\r\n    this.dict = this._svc.dict;\r\n    this._svc.hiddenColumns\r\n      .pipe(\r\n        takeWhile((_) => this._alive),\r\n        map((_) => [..._])\r\n      )\r\n      .subscribe((_) => {\r\n        this.hiddenColumns = _;\r\n      });\r\n  }\r\n\r\n  clearFilter() {\r\n    this._svc.clearFilter(this.column);\r\n    this.dropDownOpenChange.emit(false);\r\n    this._cdr.markForCheck();\r\n  }\r\n\r\n  applyFilter() {\r\n    this._svc.setState(new FilterState(this.state));\r\n    this.dropDownOpenChange.emit(false);\r\n    this._cdr.markForCheck();\r\n  }\r\n\r\n  pinColumn() {\r\n    this._svc.pinColumn(this.column);\r\n  }\r\n\r\n  clearSort(): void {\r\n    this._svc.clearSort(this.column);\r\n  }\r\n\r\n  clearAllSort(): void {\r\n    this._svc.clearAllSort();\r\n  }\r\n\r\n  hasFilteredColumns() {\r\n    return StateUtil.hasFilteredColumns(this.state);\r\n  }\r\n\r\n  hasSortedColumns() {\r\n    return StateUtil.hasSortedColumns(this.state);\r\n  }\r\n\r\n  restoreDefaultColumns() {\r\n    this._svc.restoreDefaultColumns();\r\n  }\r\n\r\n  clearAllFilters() {\r\n    this._svc.clearAllFilters();\r\n    this.dropDownOpen = false;\r\n    this._cdr.markForCheck();\r\n  }\r\n\r\n  columnIsHidden(column: TableColumn) {\r\n    return this.hiddenColumns.indexOf(column.name) >= 0;\r\n  }\r\n\r\n  allColumnsVisible() {\r\n    if (this.hiddenColumns?.length <= 0) {\r\n      return true;\r\n    }\r\n    const columns = ArrayUtil.flatten(this.columns, 'columns');\r\n    const notHidden = columns.find(\r\n      (_) => this.hiddenColumns.indexOf(_.name) < 0\r\n    );\r\n    if (!notHidden) {\r\n      return false;\r\n    }\r\n    return null;\r\n  }\r\n\r\n  setAllColumns(value: boolean) {\r\n    if (value) {\r\n      this.hiddenColumns = [];\r\n    } else {\r\n      this.hiddenColumns = ArrayUtil.flatten(this.columns, 'columns').map(\r\n        (_) => _.name\r\n      );\r\n    }\r\n  }\r\n\r\n  setColumnsVisibility() {\r\n    this._svc.setHiddenColumns(this.hiddenColumns);\r\n  }\r\n\r\n  compareItems = (item: TableColumn) => item.name;\r\n\r\n  ngOnInit(): void {}\r\n\r\n  ngOnDestroy(): void {\r\n    this._alive = false;\r\n  }\r\n\r\n  setColumnVisibility(item: TableColumn, visible: boolean) {\r\n    this.setChildrenVisibility(item, visible, this.hiddenColumns);\r\n    this.setParentsVisibility(item, visible, this.hiddenColumns);\r\n  }\r\n\r\n  setChildrenVisibility = (\r\n    column: TableColumn,\r\n    visible: boolean,\r\n    hiddenColumns: string[]\r\n  ) => {\r\n    if (visible) {\r\n      this.showColumn(column, hiddenColumns);\r\n    } else {\r\n      this.hideColumn(column, hiddenColumns);\r\n    }\r\n    if (column.columns) {\r\n      column.columns.forEach((x) => {\r\n        this.setChildrenVisibility(x, visible, hiddenColumns);\r\n      });\r\n    }\r\n  };\r\n\r\n  setParentsVisibility = (\r\n    column: TableColumn,\r\n    visible: boolean,\r\n    hiddenColumns: string[]\r\n  ) => {\r\n    if (!visible) {\r\n      this.hideParents(column, hiddenColumns);\r\n    } else {\r\n      this.showParents(column, hiddenColumns);\r\n    }\r\n  };\r\n\r\n  showParents(column: TableColumn, hiddenColumns: string[]) {\r\n    const parent = this.findParentColumn(column, this.columns as TableColumn[]);\r\n    if (parent && this.columnIsHidden(parent)) {\r\n      this.showColumn(parent, hiddenColumns);\r\n      this.showParents(parent, hiddenColumns);\r\n    }\r\n  }\r\n\r\n  hideParents(column: TableColumn, hiddenColumns: string[]) {\r\n    const parent = this.findParentColumn(column, this.columns as TableColumn[]);\r\n    if (\r\n      parent &&\r\n      !this.columnIsHidden(parent) &&\r\n      parent.columns &&\r\n      parent.columns.every((_) => this.columnIsHidden(_))\r\n    ) {\r\n      this.hideColumn(parent, hiddenColumns);\r\n      this.hideParents(parent, hiddenColumns);\r\n    }\r\n  }\r\n\r\n  hideColumn(column: TableColumn, hiddenColumns: string[]) {\r\n    hiddenColumns.push(column.name);\r\n  }\r\n\r\n  showColumn(column: TableColumn, hiddenColumns: string[]) {\r\n    hiddenColumns.splice(hiddenColumns.indexOf(column.name), 1);\r\n  }\r\n\r\n  private findParentColumn(\r\n    column: TableColumn,\r\n    columns: TableColumn[]\r\n  ): TableColumn | null {\r\n    return ArrayUtil.findRecursive(\r\n      columns,\r\n      (iterableNode) => iterableNode.columns?.indexOf(column) >= 0,\r\n      'columns'\r\n    );\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  EventEmitter,\r\n  HostBinding,\r\n  Input,\r\n  OnDestroy,\r\n  OnInit,\r\n  Output,\r\n} from '@angular/core';\r\nimport { TableService } from '../service/table.service';\r\nimport { TableColumn } from '../contract/table-column';\r\nimport { FilterState } from '../../filter/contarct/filter-state';\r\nimport { StateUtil } from '../util/state-util';\r\nimport { ITreeData } from '../../../common/contract/i-tree-data';\r\nimport { IDictionary } from '../../../common/contract/i-dictionary';\r\nimport { IIdName } from '../../../common/contract/i-id-name';\r\nimport { Observable } from 'rxjs';\r\nimport { map, takeWhile } from 'rxjs/operators';\r\nimport { ArrayUtil } from '../../../common/util/array-util';\r\nimport {SortParam} from '../../filter/contarct/sort-param';\r\n\r\n@Component({\r\n  selector: 'teta-head-cell-dropdown',\r\n  templateUrl: './head-cell-dropdown.component.html',\r\n  styleUrls: ['./head-cell-dropdown.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {\r\n  @Input() columns: ITreeData[];\r\n  @Input() column: TableColumn;\r\n  @Input() state: FilterState;\r\n  @Input() dropDownOpen: boolean;\r\n  @Output() dropDownOpenChange: EventEmitter<boolean> =\r\n    new EventEmitter<boolean>();\r\n\r\n  @Output() autosize: EventEmitter<void> = new EventEmitter<void>();\r\n  @Output() autosizeAll: EventEmitter<void> = new EventEmitter<void>();\r\n\r\n  @HostBinding('class.shadow-2') private readonly shadow = true;\r\n  @HostBinding('class.bg-background-50') private readonly bg = true;\r\n\r\n  dict: Observable<IDictionary<IIdName<any>[]>>;\r\n  hiddenColumns: string[];\r\n\r\n  get sortParam(): SortParam {\r\n    return StateUtil.getSortState(this.state, this.column);\r\n  }\r\n\r\n  get filtered() {\r\n    return StateUtil.isColumnFiltered(this.state, this.column);\r\n  }\r\n\r\n  get openItems() {\r\n    if (this._openItems == null) {\r\n      this._openItems = this.columns.map((_) => _);\r\n    }\r\n    return this._openItems;\r\n  }\r\n\r\n  set openItems(openItems: ITreeData[]) {\r\n    this._openItems = openItems;\r\n  }\r\n\r\n  get childMode() {\r\n    return this.columns.find((_: any) => _.columns?.length > 0);\r\n  }\r\n\r\n  private _openItems: ITreeData[];\r\n  private _alive = true;\r\n\r\n  constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {\r\n    this.dict = this._svc.dict;\r\n    this._svc.hiddenColumns\r\n      .pipe(\r\n        takeWhile((_) => this._alive),\r\n        map((_) => [..._])\r\n      )\r\n      .subscribe((_) => {\r\n        this.hiddenColumns = _;\r\n      });\r\n  }\r\n\r\n  clearFilter() {\r\n    this._svc.clearFilter(this.column);\r\n    this.dropDownOpenChange.emit(false);\r\n    this._cdr.markForCheck();\r\n  }\r\n\r\n  applyFilter() {\r\n    this._svc.setState(new FilterState(this.state));\r\n    this.dropDownOpenChange.emit(false);\r\n    this._cdr.markForCheck();\r\n  }\r\n\r\n  pinColumn() {\r\n    this._svc.pinColumn(this.column);\r\n  }\r\n\r\n  clearSort(): void {\r\n    this._svc.clearSort(this.column);\r\n  }\r\n\r\n  clearAllSort(): void {\r\n    this._svc.clearAllSort();\r\n  }\r\n\r\n  hasFilteredColumns() {\r\n    return StateUtil.hasFilteredColumns(this.state);\r\n  }\r\n\r\n  hasSortedColumns() {\r\n    return StateUtil.hasSortedColumns(this.state);\r\n  }\r\n\r\n  restoreDefaultColumns() {\r\n    this._svc.restoreDefaultColumns();\r\n  }\r\n\r\n  clearAllFilters() {\r\n    this._svc.clearAllFilters();\r\n    this.dropDownOpen = false;\r\n    this._cdr.markForCheck();\r\n  }\r\n\r\n  columnIsHidden(column: TableColumn) {\r\n    return this.hiddenColumns.indexOf(column.name) >= 0;\r\n  }\r\n\r\n  allColumnsVisible() {\r\n    if (this.hiddenColumns?.length <= 0) {\r\n      return true;\r\n    }\r\n    const columns = ArrayUtil.flatten(this.columns, 'columns');\r\n    const notHidden = columns.find(\r\n      (_) => this.hiddenColumns.indexOf(_.name) < 0\r\n    );\r\n    if (!notHidden) {\r\n      return false;\r\n    }\r\n    return null;\r\n  }\r\n\r\n  setAllColumns(value: boolean) {\r\n    if (value) {\r\n      this.hiddenColumns = [];\r\n    } else {\r\n      this.hiddenColumns = ArrayUtil.flatten(this.columns, 'columns').map(\r\n        (_) => _.name\r\n      );\r\n    }\r\n  }\r\n\r\n  setColumnsVisibility() {\r\n    this._svc.setHiddenColumns(this.hiddenColumns);\r\n  }\r\n\r\n  compareItems = (item: TableColumn) => item.name;\r\n\r\n  ngOnInit(): void {}\r\n\r\n  ngOnDestroy(): void {\r\n    this._alive = false;\r\n  }\r\n\r\n  setColumnVisibility(item: TableColumn, visible: boolean) {\r\n    this.setChildrenVisibility(item, visible, this.hiddenColumns);\r\n    this.setParentsVisibility(item, visible, this.hiddenColumns);\r\n  }\r\n\r\n  setChildrenVisibility = (\r\n    column: TableColumn,\r\n    visible: boolean,\r\n    hiddenColumns: string[]\r\n  ) => {\r\n    if (visible) {\r\n      this.showColumn(column, hiddenColumns);\r\n    } else {\r\n      this.hideColumn(column, hiddenColumns);\r\n    }\r\n    if (column.columns) {\r\n      column.columns.forEach((x) => {\r\n        this.setChildrenVisibility(x, visible, hiddenColumns);\r\n      });\r\n    }\r\n  };\r\n\r\n  setParentsVisibility = (\r\n    column: TableColumn,\r\n    visible: boolean,\r\n    hiddenColumns: string[]\r\n  ) => {\r\n    if (!visible) {\r\n      this.hideParents(column, hiddenColumns);\r\n    } else {\r\n      this.showParents(column, hiddenColumns);\r\n    }\r\n  };\r\n\r\n  showParents(column: TableColumn, hiddenColumns: string[]) {\r\n    const parent = this.findParentColumn(column, this.columns as TableColumn[]);\r\n    if (parent && this.columnIsHidden(parent)) {\r\n      this.showColumn(parent, hiddenColumns);\r\n      this.showParents(parent, hiddenColumns);\r\n    }\r\n  }\r\n\r\n  hideParents(column: TableColumn, hiddenColumns: string[]) {\r\n    const parent = this.findParentColumn(column, this.columns as TableColumn[]);\r\n    if (\r\n      parent &&\r\n      !this.columnIsHidden(parent) &&\r\n      parent.columns &&\r\n      parent.columns.every((_) => this.columnIsHidden(_))\r\n    ) {\r\n      this.hideColumn(parent, hiddenColumns);\r\n      this.hideParents(parent, hiddenColumns);\r\n    }\r\n  }\r\n\r\n  hideColumn(column: TableColumn, hiddenColumns: string[]) {\r\n    hiddenColumns.push(column.name);\r\n  }\r\n\r\n  showColumn(column: TableColumn, hiddenColumns: string[]) {\r\n    hiddenColumns.splice(hiddenColumns.indexOf(column.name), 1);\r\n  }\r\n\r\n  private findParentColumn(\r\n    column: TableColumn,\r\n    columns: TableColumn[]\r\n  ): TableColumn | null {\r\n    return ArrayUtil.findRecursive(\r\n      columns,\r\n      (iterableNode) => iterableNode.columns?.indexOf(column) >= 0,\r\n      'columns'\r\n    );\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -35333,7 +35334,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 70,
+                "line": 71,
                 "jsdoctags": [
                     {
                         "name": "_svc",
@@ -35365,8 +35366,8 @@
                     "getSignature": {
                         "name": "sortParam",
                         "type": "",
-                        "returnType": "",
-                        "line": 46
+                        "returnType": "SortParam",
+                        "line": 47
                     }
                 },
                 "filtered": {
@@ -35375,7 +35376,7 @@
                         "name": "filtered",
                         "type": "",
                         "returnType": "",
-                        "line": 50
+                        "line": 51
                     }
                 },
                 "openItems": {
@@ -35394,7 +35395,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 61,
+                        "line": 62,
                         "jsdoctags": [
                             {
                                 "name": "openItems",
@@ -35411,7 +35412,7 @@
                         "name": "openItems",
                         "type": "",
                         "returnType": "",
-                        "line": 54
+                        "line": 55
                     }
                 },
                 "childMode": {
@@ -35420,7 +35421,7 @@
                         "name": "childMode",
                         "type": "",
                         "returnType": "",
-                        "line": 65
+                        "line": 66
                     }
                 }
             },
@@ -35889,7 +35890,7 @@
         },
         {
             "name": "LegendComponent",
-            "id": "component-LegendComponent-ac116f2dee54b04b560418dc0b61ae06",
+            "id": "component-LegendComponent-194d0fc2325d2baa68f92ed99312f3ef",
             "file": "projects/chart/src/chart/legend/legend.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -35911,7 +35912,7 @@
                     "name": "series",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 23,
+                    "line": 17,
                     "type": "Array<Series<BasePoint>>"
                 }
             ],
@@ -35925,7 +35926,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 24,
+                    "line": 18,
                     "decorators": [
                         {
                             "name": "HostBinding",
@@ -35941,7 +35942,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 19,
+                    "line": 13,
                     "modifierKind": [
                         121
                     ]
@@ -35961,7 +35962,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 32,
+                    "line": 27,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -35982,7 +35983,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 28,
+                    "line": 23,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -35995,7 +35996,7 @@
                     "defaultValue": "true",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 24,
+                    "line": 18,
                     "type": "boolean"
                 }
             ],
@@ -36003,7 +36004,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  HostBinding,\r\n  Input,\r\n  OnInit,\r\n} from '@angular/core';\r\nimport { Series } from '../model/series';\r\nimport { BasePoint } from '../model/base-point';\r\nimport { SeriesType } from '../model/enum/series-type';\r\n\r\n@Component({\r\n  selector: 'teta-legend',\r\n  templateUrl: './legend.component.html',\r\n  styleUrls: ['./legend.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class LegendComponent implements OnInit {\r\n  private sizeMapping = new Map<SeriesType, number>()\r\n    .set(SeriesType.line, 2)\r\n    .set(SeriesType.bar, 12);\r\n\r\n  @Input() series: Array<Series<BasePoint>>;\r\n  @HostBinding('class.padding-bottom-4') classLegend = true;\r\n\r\n  constructor() {}\r\n\r\n  ngOnInit(): void {\r\n    this.series = this.series?.filter((_) => _.showInLegend !== false);\r\n  }\r\n\r\n  getHeight(serie: Series<BasePoint>) {\r\n    return this.sizeMapping.get(serie.type);\r\n  }\r\n}\r\n",
+            "sourceCode": "import {ChangeDetectionStrategy, Component, HostBinding, Input, OnInit,} from '@angular/core';\r\nimport {Series} from '../model/series';\r\nimport {BasePoint} from '../model/base-point';\r\nimport {SeriesType} from '../model/enum/series-type';\r\n\r\n@Component({\r\n  selector: 'teta-legend',\r\n  templateUrl: './legend.component.html',\r\n  styleUrls: ['./legend.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class LegendComponent implements OnInit {\r\n  private sizeMapping = new Map<SeriesType, number>()\r\n    .set(SeriesType.line, 2)\r\n    .set(SeriesType.bar, 12);\r\n\r\n  @Input() series: Array<Series<BasePoint>>;\r\n  @HostBinding('class.padding-bottom-4') classLegend = true;\r\n\r\n  constructor() {\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.series = this.series?.filter((_) => _.showInLegend !== false);\r\n  }\r\n\r\n  getHeight(serie: Series<BasePoint>) {\r\n    return this.sizeMapping.get(serie.type ?? SeriesType.line);\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -36018,7 +36019,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 24
+                "line": 18
             },
             "implements": [
                 "OnInit"
@@ -36027,7 +36028,7 @@
         },
         {
             "name": "LineSeriesComponent",
-            "id": "component-LineSeriesComponent-1c56b85d43c31f5a349d743c10e73a2b",
+            "id": "component-LineSeriesComponent-1914732c7e9af5468f3b31d816646fc9",
             "file": "projects/chart/src/chart/chart-container/series/line/line-series.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -36075,7 +36076,7 @@
                     "type": "Observable<number>",
                     "optional": false,
                     "description": "",
-                    "line": 31
+                    "line": 30
                 },
                 {
                     "name": "svgElement",
@@ -36084,7 +36085,7 @@
                     "type": "SVGGeometryElement",
                     "optional": false,
                     "description": "",
-                    "line": 33
+                    "line": 32
                 },
                 {
                     "name": "transform",
@@ -36093,7 +36094,7 @@
                     "type": "Observable<Pick<BasePoint, \"x\" | \"y\">>",
                     "optional": false,
                     "description": "",
-                    "line": 30
+                    "line": 29
                 },
                 {
                     "name": "x",
@@ -36102,7 +36103,7 @@
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 34
+                    "line": 33
                 },
                 {
                     "name": "y",
@@ -36111,7 +36112,7 @@
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 35
+                    "line": 34
                 },
                 {
                     "name": "zoom",
@@ -36133,7 +36134,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 137,
+                    "line": 136,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -36143,7 +36144,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 122,
+                    "line": 121,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -36160,7 +36161,7 @@
                     "optional": false,
                     "returnType": "Pick<BasePoint, \"x\" | \"y\">",
                     "typeParameters": [],
-                    "line": 141,
+                    "line": 140,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -36181,7 +36182,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 63,
+                    "line": 62,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -36191,7 +36192,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 47,
+                    "line": 46,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -36209,7 +36210,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  AfterViewInit,\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  ElementRef,\r\n  OnInit,\r\n} from '@angular/core';\r\nimport * as d3 from 'd3';\r\nimport { SeriesBaseComponent } from '../../../base/series-base.component';\r\nimport { ChartService } from '../../../service/chart.service';\r\nimport { BasePoint } from '../../../model/base-point';\r\nimport { ScaleService } from '../../../service/scale.service';\r\nimport { filter, map, Observable, tap } from 'rxjs';\r\n\r\nimport { ZoomService } from '../../../service/zoom.service';\r\nimport { TooltipTracking } from '../../../model/enum/tooltip-tracking';\r\nimport { DragPointType } from '../../../model/enum/drag-point-type';\r\n\r\n@Component({\r\n  selector: 'svg:svg[teta-line-series]',\r\n  templateUrl: './line-series.component.html',\r\n  styleUrls: ['./line-series.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class LineSeriesComponent<T extends BasePoint>\r\n  extends SeriesBaseComponent<T>\r\n  implements OnInit, AfterViewInit\r\n{\r\n  transform: Observable<Pick<BasePoint, 'x' | 'y'>>;\r\n  display: Observable<number>;\r\n\r\n  svgElement: SVGGeometryElement;\r\n  x: any;\r\n  y: any;\r\n\r\n  constructor(\r\n    protected override svc: ChartService,\r\n    protected override cdr: ChangeDetectorRef,\r\n    protected override scaleService: ScaleService,\r\n    protected override zoomService: ZoomService,\r\n    protected override element: ElementRef\r\n  ) {\r\n    super(svc, cdr, scaleService, zoomService, element);\r\n  }\r\n\r\n  override ngOnInit(): void {\r\n    this.display = this.zoomService.zoomed.pipe(\r\n      map(({ event }) => {\r\n        return event?.type === 'end' ? 1 : 0;\r\n      })\r\n    );\r\n\r\n    this.transform = this.svc.pointerMove.pipe(\r\n      filter(({ event }) => event),\r\n      map(({ event }) => {\r\n        return this.getTransform(event);\r\n      }),\r\n      tap((_) => this.cdr.detectChanges())\r\n    );\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n    const drag = (node, event: d3.D3DragEvent<any, any, any>, d: BasePoint) => {\r\n      if (\r\n        d.marker?.dragType === DragPointType.x ||\r\n        d.marker?.dragType === DragPointType.xy\r\n      ) {\r\n        d.x = this.x.invert(event.x);\r\n      }\r\n\r\n      if (\r\n        d.marker?.dragType === DragPointType.y ||\r\n        d.marker?.dragType === DragPointType.xy\r\n      ) {\r\n        d.y = this.y.invert(event.y);\r\n      }\r\n\r\n      this.svc.emitPoint({\r\n        target: {\r\n          series: this.series,\r\n          point: d,\r\n        },\r\n        event,\r\n      });\r\n\r\n      this.cdr.detectChanges();\r\n    };\r\n\r\n    const dragMarkers = d3\r\n      .drag()\r\n      .subject(function (event, d: BasePoint) {\r\n        const node = d3.select(this);\r\n        return { x: node.attr('cx'), y: node.attr('cy') };\r\n      })\r\n      .on(\r\n        'start drag end',\r\n        function (event: d3.D3DragEvent<any, any, any>, d: BasePoint) {\r\n          const node = d3.select(this);\r\n\r\n          drag(node, event, d);\r\n        }\r\n      );\r\n\r\n    const draggableMarkers = this.series.data?.filter(\r\n      (_) => _?.marker && _?.marker?.draggable\r\n    );\r\n\r\n    const element = d3\r\n      .select(this.element.nativeElement)\r\n      .selectAll('.draggable-marker')\r\n      .data(draggableMarkers);\r\n\r\n    element.call(dragMarkers as any);\r\n\r\n    this.svgElement = d3\r\n      .select(this.element.nativeElement)\r\n      .select('.line')\r\n      .node() as SVGGeometryElement;\r\n  }\r\n\r\n  getPath() {\r\n    this.x = this.scaleService.xScales.get(this.series.xAxisIndex);\r\n    this.y = this.scaleService.yScales.get(this.series.yAxisIndex);\r\n\r\n    const line = d3\r\n      .line<BasePoint>()\r\n      .defined((point) => point.x !== null || point.y !== null)\r\n      .x((point) => this.x(point.x))\r\n      .y((point) => this.y(point.y));\r\n\r\n    const path = line(this.series.data);\r\n\r\n    return path;\r\n  }\r\n\r\n  getMarkers() {\r\n    return this.series.data?.filter((_) => _?.marker);\r\n  }\r\n\r\n  getTransform(event: any): Pick<BasePoint, 'x' | 'y'> {\r\n    const mouse = d3.pointer(event);\r\n\r\n    const foundX = this.scaleService.xScales.get(this.series.xAxisIndex);\r\n    const foundY = this.scaleService.yScales.get(this.series.yAxisIndex);\r\n\r\n    const tooltipTracking = this.svc.config?.tooltip?.tracking;\r\n\r\n    const lineIntersection = (\r\n      p0_x,\r\n      p0_y,\r\n      p1_x,\r\n      p1_y,\r\n      p2_x,\r\n      p2_y,\r\n      p3_x,\r\n      p3_y\r\n    ) => {\r\n      const rV = {} as any;\r\n      let s1_x, s1_y, s2_x, s2_y;\r\n      s1_x = p1_x - p0_x;\r\n      s1_y = p1_y - p0_y;\r\n      s2_x = p3_x - p2_x;\r\n      s2_y = p3_y - p2_y;\r\n\r\n      let s, t;\r\n      s =\r\n        (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) /\r\n        (-s2_x * s1_y + s1_x * s2_y);\r\n      t =\r\n        (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) /\r\n        (-s2_x * s1_y + s1_x * s2_y);\r\n\r\n      if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {\r\n        // Collision detected\r\n        rV.x = p0_x + t * s1_x;\r\n        rV.y = p0_y + t * s1_y;\r\n      }\r\n\r\n      return rV;\r\n    };\r\n\r\n    if (tooltipTracking === TooltipTracking.x) {\r\n      const bisect = d3.bisector((_: BasePoint) => _.x).right;\r\n\r\n      const x0 = foundX.invert(mouse[0]);\r\n      const rightId = bisect(this.series.data, x0);\r\n\r\n      const range = foundY.range();\r\n\r\n      const intersect = lineIntersection(\r\n        mouse[0],\r\n        range[0],\r\n        mouse[0],\r\n        range[1],\r\n        foundX(this.series.data[rightId - 1]?.x),\r\n        foundY(this.series.data[rightId - 1]?.y),\r\n        foundX(this.series.data[rightId]?.x),\r\n        foundY(this.series.data[rightId]?.y)\r\n      );\r\n\r\n      this.svc.setTooltip({\r\n        point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },\r\n        series: this.series,\r\n      });\r\n\r\n      return {\r\n        x: intersect.x,\r\n        y: intersect.y,\r\n      };\r\n    }\r\n\r\n    if (tooltipTracking === TooltipTracking.y) {\r\n      const bisect = d3.bisector((_: BasePoint) => _.y).right;\r\n\r\n      const y0 = foundY.invert(mouse[1]);\r\n\r\n      const rightId = bisect(this.series.data, y0);\r\n      const range = foundX.range();\r\n\r\n      const intersect = lineIntersection(\r\n        range[0],\r\n        mouse[1],\r\n        range[1],\r\n        mouse[1],\r\n        foundX(this.series.data[rightId - 1]?.x),\r\n        foundY(this.series.data[rightId - 1]?.y),\r\n        foundX(this.series.data[rightId]?.x),\r\n        foundY(this.series.data[rightId]?.y)\r\n      );\r\n\r\n      this.svc.setTooltip({\r\n        point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },\r\n        series: this.series,\r\n      });\r\n\r\n      return {\r\n        x: intersect.x,\r\n        y: intersect.y,\r\n      };\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  AfterViewInit,\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  ElementRef,\r\n  OnInit,\r\n} from '@angular/core';\r\nimport * as d3 from 'd3';\r\nimport {SeriesBaseComponent} from '../../../base/series-base.component';\r\nimport {ChartService} from '../../../service/chart.service';\r\nimport {BasePoint} from '../../../model/base-point';\r\nimport {ScaleService} from '../../../service/scale.service';\r\nimport {filter, map, Observable, tap} from 'rxjs';\r\n\r\nimport {ZoomService} from '../../../service/zoom.service';\r\nimport {TooltipTracking} from '../../../model/enum/tooltip-tracking';\r\nimport {DragPointType} from '../../../model/enum/drag-point-type';\r\n\r\n@Component({\r\n  selector: 'svg:svg[teta-line-series]',\r\n  templateUrl: './line-series.component.html',\r\n  styleUrls: ['./line-series.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class LineSeriesComponent<T extends BasePoint>\r\n  extends SeriesBaseComponent<T>\r\n  implements OnInit, AfterViewInit {\r\n  transform: Observable<Pick<BasePoint, 'x' | 'y'>>;\r\n  display: Observable<number>;\r\n\r\n  svgElement: SVGGeometryElement;\r\n  x: any;\r\n  y: any;\r\n\r\n  constructor(\r\n    protected override svc: ChartService,\r\n    protected override cdr: ChangeDetectorRef,\r\n    protected override scaleService: ScaleService,\r\n    protected override zoomService: ZoomService,\r\n    protected override element: ElementRef\r\n  ) {\r\n    super(svc, cdr, scaleService, zoomService, element);\r\n  }\r\n\r\n  override ngOnInit(): void {\r\n    this.display = this.zoomService.zoomed.pipe(\r\n      map(({event}) => {\r\n        return event?.type === 'end' ? 1 : 0;\r\n      })\r\n    );\r\n\r\n    this.transform = this.svc.pointerMove.pipe(\r\n      filter(({event}) => event),\r\n      map(({event}) => {\r\n        return this.getTransform(event);\r\n      }),\r\n      tap((_) => this.cdr.detectChanges())\r\n    );\r\n  }\r\n\r\n  ngAfterViewInit() {\r\n    const drag = (node, event: d3.D3DragEvent<any, any, any>, d: BasePoint) => {\r\n      if (\r\n        d.marker?.dragType === DragPointType.x ||\r\n        d.marker?.dragType === DragPointType.xy\r\n      ) {\r\n        d.x = this.x.invert(event.x);\r\n      }\r\n\r\n      if (\r\n        d.marker?.dragType === DragPointType.y ||\r\n        d.marker?.dragType === DragPointType.xy\r\n      ) {\r\n        d.y = this.y.invert(event.y);\r\n      }\r\n\r\n      this.svc.emitPoint({\r\n        target: {\r\n          series: this.series,\r\n          point: d,\r\n        },\r\n        event,\r\n      });\r\n\r\n      this.cdr.detectChanges();\r\n    };\r\n\r\n    const dragMarkers = d3\r\n      .drag()\r\n      .subject(function (event, d: BasePoint) {\r\n        const node = d3.select(this);\r\n        return {x: node.attr('cx'), y: node.attr('cy')};\r\n      })\r\n      .on(\r\n        'start drag end',\r\n        function (event: d3.D3DragEvent<any, any, any>, d: BasePoint) {\r\n          const node = d3.select(this);\r\n\r\n          drag(node, event, d);\r\n        }\r\n      );\r\n\r\n    const draggableMarkers = this.series.data?.filter(\r\n      (_) => _?.marker && _?.marker?.draggable\r\n    );\r\n\r\n    const element = d3\r\n      .select(this.element.nativeElement)\r\n      .selectAll('.draggable-marker')\r\n      .data(draggableMarkers);\r\n\r\n    element.call(dragMarkers as any);\r\n\r\n    this.svgElement = d3\r\n      .select(this.element.nativeElement)\r\n      .select('.line')\r\n      .node() as SVGGeometryElement;\r\n  }\r\n\r\n  getPath() {\r\n    this.x = this.scaleService.xScales.get(this.series.xAxisIndex ?? 0);\r\n    this.y = this.scaleService.yScales.get(this.series.yAxisIndex ?? 0);\r\n\r\n    const line = d3\r\n      .line<BasePoint>()\r\n      .defined((point) => point.x !== null || point.y !== null)\r\n      .x((point) => this.x(point.x))\r\n      .y((point) => this.y(point.y));\r\n\r\n    const path = line(this.series.data);\r\n\r\n    return path;\r\n  }\r\n\r\n  getMarkers() {\r\n    return this.series.data?.filter((_) => _?.marker);\r\n  }\r\n\r\n  getTransform(event: any): Pick<BasePoint, 'x' | 'y'> {\r\n    const mouse = d3.pointer(event);\r\n\r\n    const foundX = this.scaleService.xScales.get(this.series.xAxisIndex ?? 0);\r\n    const foundY = this.scaleService.yScales.get(this.series.yAxisIndex ?? 0);\r\n\r\n    const tooltipTracking = this.svc.config?.tooltip?.tracking;\r\n\r\n    const lineIntersection = (\r\n      p0_x,\r\n      p0_y,\r\n      p1_x,\r\n      p1_y,\r\n      p2_x,\r\n      p2_y,\r\n      p3_x,\r\n      p3_y\r\n    ) => {\r\n      const rV = {} as any;\r\n      let s1_x, s1_y, s2_x, s2_y;\r\n      s1_x = p1_x - p0_x;\r\n      s1_y = p1_y - p0_y;\r\n      s2_x = p3_x - p2_x;\r\n      s2_y = p3_y - p2_y;\r\n\r\n      let s, t;\r\n      s =\r\n        (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) /\r\n        (-s2_x * s1_y + s1_x * s2_y);\r\n      t =\r\n        (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) /\r\n        (-s2_x * s1_y + s1_x * s2_y);\r\n\r\n      if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {\r\n        // Collision detected\r\n        rV.x = p0_x + t * s1_x;\r\n        rV.y = p0_y + t * s1_y;\r\n      }\r\n\r\n      return rV;\r\n    };\r\n\r\n    if (tooltipTracking === TooltipTracking.x) {\r\n      const bisect = d3.bisector((_: BasePoint) => _.x).right;\r\n\r\n      const x0 = foundX.invert(mouse[0]);\r\n      const rightId = bisect(this.series.data, x0);\r\n\r\n      const range = foundY.range();\r\n\r\n      const intersect = lineIntersection(\r\n        mouse[0],\r\n        range[0],\r\n        mouse[0],\r\n        range[1],\r\n        foundX(this.series.data[rightId - 1]?.x),\r\n        foundY(this.series.data[rightId - 1]?.y),\r\n        foundX(this.series.data[rightId]?.x),\r\n        foundY(this.series.data[rightId]?.y)\r\n      );\r\n\r\n      this.svc.setTooltip({\r\n        point: {x: foundX.invert(intersect.x), y: foundY.invert(intersect.y)},\r\n        series: this.series,\r\n      });\r\n\r\n      return {\r\n        x: intersect.x,\r\n        y: intersect.y,\r\n      };\r\n    }\r\n\r\n    if (tooltipTracking === TooltipTracking.y) {\r\n      const bisect = d3.bisector((_: BasePoint) => _.y).right;\r\n\r\n      const y0 = foundY.invert(mouse[1]);\r\n\r\n      const rightId = bisect(this.series.data, y0);\r\n      const range = foundX.range();\r\n\r\n      const intersect = lineIntersection(\r\n        range[0],\r\n        mouse[1],\r\n        range[1],\r\n        mouse[1],\r\n        foundX(this.series.data[rightId - 1]?.x),\r\n        foundY(this.series.data[rightId - 1]?.y),\r\n        foundX(this.series.data[rightId]?.x),\r\n        foundY(this.series.data[rightId]?.y)\r\n      );\r\n\r\n      this.svc.setTooltip({\r\n        point: {x: foundX.invert(intersect.x), y: foundY.invert(intersect.y)},\r\n        series: this.series,\r\n      });\r\n\r\n      return {\r\n        x: intersect.x,\r\n        y: intersect.y,\r\n      };\r\n    }\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -36255,7 +36256,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 35,
+                "line": 34,
                 "jsdoctags": [
                     {
                         "name": "svc",
@@ -36309,7 +36310,7 @@
                 "OnInit",
                 "AfterViewInit"
             ],
-            "templateData": "<svg:path\r\n  class=\"line\"\r\n  [attr.d]=\"getPath()\"\r\n  [attr.stroke]=\"series.color\"\r\n  [attr.stroke-width]=\"series.style?.strokeWidth\"\r\n  fill=\"none\">\r\n</svg:path>\r\n\r\n<ng-container *ngIf=\"transform | async as t\">\r\n  <svg:circle\r\n    r=\"3\"\r\n    [attr.fill]=\"series.color\"\r\n    [attr.transform]=\"'translate('+ t.x +', '+ t.y +')'\"\r\n    [attr.opacity]=\"display | async\">\r\n  </svg:circle>\r\n</ng-container>\r\n\r\n<ng-container *ngIf=\"getMarkers() as markers\">\r\n\r\n    <svg:circle\r\n      class=\"marker\"\r\n      *ngFor=\"let point of markers\"\r\n      [class.draggable-marker]=\"point?.marker?.draggable\"\r\n      [attr.r]=\"point.marker.style?.radius ?? 5\"\r\n      [attr.fill]=\"point.marker.style?.fill ?? 'transparent'\"\r\n      [attr.stroke]=\"point.marker.style?.stroke ?? 'none'\"\r\n      [attr.stroke-width]=\"point.marker.style?.strokeWidth\"\r\n      [attr.stroke-dasharray]=\"point.marker.style?.strokeDasharray\"\r\n      [attr.cx]=\"x(point.x)\"\r\n      [attr.cy]=\"y(point.y)\"\r\n    >\r\n    </svg:circle>\r\n\r\n\r\n</ng-container>\r\n\r\n\r\n\r\n"
+            "templateData": "<svg:path\r\n  class=\"line\"\r\n  [attr.d]=\"getPath()\"\r\n  [attr.stroke]=\"series.color\"\r\n  [attr.stroke-width]=\"series.style?.strokeWidth\"\r\n  fill=\"none\">\r\n</svg:path>\r\n<ng-container *ngIf=\"transform | async as t\">\r\n  <svg:circle\r\n    r=\"3\"\r\n    [attr.fill]=\"series.color\"\r\n    [attr.transform]=\"'translate('+ t.x +', '+ t.y +')'\"\r\n    [attr.opacity]=\"display | async\">\r\n  </svg:circle>\r\n</ng-container>\r\n<ng-container *ngIf=\"getMarkers() as markers\">\r\n  <svg:circle\r\n    class=\"marker\"\r\n    *ngFor=\"let point of markers\"\r\n    [class.draggable-marker]=\"point?.marker?.draggable\"\r\n    [attr.r]=\"point.marker.style?.radius ?? 5\"\r\n    [attr.fill]=\"point.marker.style?.fill ?? 'transparent'\"\r\n    [attr.stroke]=\"point.marker.style?.stroke ?? 'none'\"\r\n    [attr.stroke-width]=\"point.marker.style?.strokeWidth\"\r\n    [attr.stroke-dasharray]=\"point.marker.style?.strokeDasharray\"\r\n    [attr.cx]=\"x(point.x)\"\r\n    [attr.cy]=\"y(point.y)\"\r\n  >\r\n  </svg:circle>\r\n</ng-container>\r\n"
         },
         {
             "name": "ListCellComponent",
@@ -52006,8 +52007,9 @@
         },
         {
             "name": "TooltipComponent",
-            "id": "component-TooltipComponent-ca4377facc165c32b48f5f14e17f05b2",
+            "id": "component-TooltipComponent-d720cdeca010edbdf0ffbfbda6cca7a7",
             "file": "projects/chart/src/chart/chart-container/tooltip/tooltip.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -52027,7 +52029,7 @@
                     "name": "size",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 21,
+                    "line": 15,
                     "type": "DOMRect"
                 }
             ],
@@ -52041,7 +52043,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 34,
+                    "line": 28,
                     "modifierKind": [
                         121
                     ]
@@ -52053,7 +52055,7 @@
                     "type": "Observable<number>",
                     "optional": false,
                     "description": "",
-                    "line": 36
+                    "line": 30
                 },
                 {
                     "name": "displayTooltips",
@@ -52062,7 +52064,7 @@
                     "type": "Observable<string>",
                     "optional": false,
                     "description": "",
-                    "line": 30
+                    "line": 24
                 },
                 {
                     "name": "position",
@@ -52071,7 +52073,7 @@
                     "type": "Observable<literal type>",
                     "optional": false,
                     "description": "",
-                    "line": 23
+                    "line": 17
                 },
                 {
                     "name": "tooltips",
@@ -52081,7 +52083,7 @@
                     "type": "[]",
                     "optional": false,
                     "description": "",
-                    "line": 32
+                    "line": 26
                 }
             ],
             "methodsClass": [
@@ -52097,7 +52099,7 @@
                     "optional": false,
                     "returnType": "{ left: string; top: string; bottom: string; right: string; }",
                     "typeParameters": [],
-                    "line": 109,
+                    "line": 105,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -52120,7 +52122,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 131,
+                    "line": 127,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -52130,7 +52132,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 45,
+                    "line": 41,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -52142,7 +52144,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectorRef,\r\n  Component,\r\n  Input,\r\n  OnDestroy,\r\n  OnInit,\r\n} from '@angular/core';\r\nimport { filter, map, merge, Observable, takeWhile, tap } from 'rxjs';\r\nimport { ChartService } from '../../service/chart.service';\r\nimport { ZoomService } from '../../service/zoom.service';\r\nimport { IChartEvent } from '../../model/i-chart-event';\r\nimport { IDisplayTooltip } from '../../model/i-display-tooltip';\r\nimport { DomSanitizer } from '@angular/platform-browser';\r\n\r\n@Component({\r\n  selector: 'teta-tooltip',\r\n  templateUrl: './tooltip.component.html',\r\n  styleUrls: ['./tooltip.component.scss'],\r\n})\r\nexport class TooltipComponent implements OnInit, OnDestroy {\r\n  @Input() size: DOMRect;\r\n\r\n  position: Observable<{\r\n    left: string;\r\n    top: string;\r\n    bottom: string;\r\n    right: string;\r\n  }>;\r\n\r\n  displayTooltips: Observable<string>;\r\n\r\n  tooltips = [];\r\n\r\n  private alive = true;\r\n\r\n  display: Observable<number>;\r\n\r\n  constructor(\r\n    private svc: ChartService,\r\n    private cdr: ChangeDetectorRef,\r\n    private zoomService: ZoomService,\r\n    private sanitizer: DomSanitizer\r\n  ) {}\r\n\r\n  ngOnInit(): void {\r\n    this.display = merge(this.svc.pointerMove, this.zoomService.zoomed).pipe(\r\n      map(({ event }) => {\r\n        const opacity = event?.type === 'mousemove' ? 1 : 0;\r\n\r\n        return opacity;\r\n      }),\r\n      tap(() => {\r\n        requestAnimationFrame(() => {\r\n          this.cdr.detectChanges();\r\n        });\r\n      })\r\n    );\r\n\r\n    this.position = this.svc.pointerMove.pipe(\r\n      filter(({ event }) => event),\r\n      map((_) => {\r\n        return this.getPoisition(_);\r\n      }),\r\n      tap((_) => this.cdr.detectChanges())\r\n    );\r\n\r\n    const transformHtml = (html) => {\r\n      return this.sanitizer.bypassSecurityTrustHtml(html);\r\n    };\r\n\r\n    const defaultFormatter = (tooltips: IDisplayTooltip[]) => {\r\n      let html = '';\r\n\r\n      tooltips.forEach((_) => {\r\n        const indicatorStyle = `display:block; width: 10px; height: 2px; background-color: ${_?.series?.color}`;\r\n\r\n        html += `<div class=\"display-flex align-center\"><span class=\"margin-right-1\" style=\"${indicatorStyle}\"></span>\r\n          <span class=\"font-title-3\">${_.series.name}\r\n          <span class=\"font-body-3\">x: ${_.point.x?.toFixed(\r\n            2\r\n          )} y: ${_.point.y?.toFixed(2)}</span></span></div>`;\r\n      });\r\n\r\n      return transformHtml(html);\r\n    };\r\n\r\n    const formatter = this.svc.config?.tooltip?.format;\r\n\r\n    this.displayTooltips = merge(\r\n      this.svc.pointerMove.pipe(tap((_) => (this.tooltips = []))),\r\n      this.svc.tooltips\r\n    ).pipe(\r\n      takeWhile((_) => this.alive),\r\n      filter((_) => !_['event']),\r\n      map((tooltip: any) => {\r\n        if (tooltip) {\r\n          this.tooltips.push(tooltip);\r\n        }\r\n\r\n        const formatted = formatter\r\n          ? formatter(this.tooltips)\r\n          : defaultFormatter(this.tooltips);\r\n\r\n        return formatted;\r\n      })\r\n    );\r\n  }\r\n\r\n  private getPoisition({ event }: any) {\r\n    const centerX = this.size.width / 2;\r\n    const centerY = this.size.height / 2;\r\n\r\n    const padding = { x: 10, y: 10 };\r\n\r\n    const scene = {\r\n      left: event.pageX > centerX ? 'initial' : `${event.pageX + padding.x}px`,\r\n      top: event.pageY > centerY ? 'initial' : `${event.pageY + padding.y}px`,\r\n      bottom:\r\n        event.pageY > centerY\r\n          ? `${window.innerHeight - event.pageY}px`\r\n          : 'initial',\r\n      right:\r\n        event.pageX > centerX\r\n          ? `${window.innerWidth - event.pageX + padding.x}px`\r\n          : 'initial',\r\n    };\r\n\r\n    return scene;\r\n  }\r\n\r\n  ngOnDestroy() {\r\n    this.alive = false;\r\n  }\r\n}\r\n",
+            "sourceCode": "import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnDestroy, OnInit,} from '@angular/core';\r\nimport {filter, map, merge, Observable, takeWhile, tap} from 'rxjs';\r\nimport {ChartService} from '../../service/chart.service';\r\nimport {ZoomService} from '../../service/zoom.service';\r\nimport {IDisplayTooltip} from '../../model/i-display-tooltip';\r\nimport {DomSanitizer} from '@angular/platform-browser';\r\n\r\n@Component({\r\n  selector: 'teta-tooltip',\r\n  templateUrl: './tooltip.component.html',\r\n  styleUrls: ['./tooltip.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush\r\n})\r\nexport class TooltipComponent implements OnInit, OnDestroy {\r\n  @Input() size: DOMRect;\r\n\r\n  position: Observable<{\r\n    left: string;\r\n    top: string;\r\n    bottom: string;\r\n    right: string;\r\n  }>;\r\n\r\n  displayTooltips: Observable<string>;\r\n\r\n  tooltips = [];\r\n\r\n  private alive = true;\r\n\r\n  display: Observable<number>;\r\n\r\n  constructor(\r\n    private svc: ChartService,\r\n    private cdr: ChangeDetectorRef,\r\n    private zoomService: ZoomService,\r\n    private sanitizer: DomSanitizer,\r\n    private _zone: NgZone\r\n  ) {\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.display = merge(this.svc.pointerMove, this.zoomService.zoomed).pipe(\r\n      map(({event}) => {\r\n        return event?.type === 'mousemove' ? 1 : 0;\r\n      }),\r\n      tap(() => {\r\n        this._zone.runOutsideAngular(() => {\r\n          requestAnimationFrame(() => {\r\n            this.cdr.detectChanges();\r\n          });\r\n        });\r\n      })\r\n    );\r\n\r\n    this.position = this.svc.pointerMove.pipe(\r\n      filter(({event}) => event),\r\n      map((_) => {\r\n        return this.getPoisition(_);\r\n      }),\r\n      tap((_) => this.cdr.detectChanges())\r\n    );\r\n\r\n    const transformHtml = (html) => {\r\n      return this.sanitizer.bypassSecurityTrustHtml(html);\r\n    };\r\n\r\n    const defaultFormatter = (tooltips: IDisplayTooltip[]) => {\r\n      let html = '';\r\n\r\n      tooltips.forEach((_) => {\r\n        const indicatorStyle = `display:block; width: 10px; height: 2px; background-color: ${_?.series?.color}`;\r\n\r\n        html += `<div class=\"display-flex align-center\"><span class=\"margin-right-1\" style=\"${indicatorStyle}\"></span>\r\n          <span class=\"font-title-3\">${_.series.name}\r\n          <span class=\"font-body-3\">x: ${_.point.x?.toFixed(\r\n          2\r\n        )} y: ${_.point.y?.toFixed(2)}</span></span></div>`;\r\n      });\r\n\r\n      return transformHtml(html);\r\n    };\r\n\r\n    const formatter = this.svc.config?.tooltip?.format;\r\n\r\n    this.displayTooltips = merge(\r\n      this.svc.pointerMove.pipe(tap((_) => (this.tooltips = []))),\r\n      this.svc.tooltips\r\n    ).pipe(\r\n      takeWhile((_) => this.alive),\r\n      filter((_) => !_['event']),\r\n      map((tooltip: any) => {\r\n        if (tooltip) {\r\n          this.tooltips.push(tooltip);\r\n        }\r\n\r\n        const formatted = formatter\r\n          ? formatter(this.tooltips)\r\n          : defaultFormatter(this.tooltips);\r\n\r\n        return formatted;\r\n      })\r\n    );\r\n  }\r\n\r\n  private getPoisition({event}: any) {\r\n    const centerX = this.size.width / 2;\r\n    const centerY = this.size.height / 2;\r\n\r\n    const padding = {x: 10, y: 10};\r\n\r\n    const scene = {\r\n      left: event.pageX > centerX ? 'initial' : `${event.pageX + padding.x}px`,\r\n      top: event.pageY > centerY ? 'initial' : `${event.pageY + padding.y}px`,\r\n      bottom:\r\n        event.pageY > centerY\r\n          ? `${window.innerHeight - event.pageY}px`\r\n          : 'initial',\r\n      right:\r\n        event.pageX > centerX\r\n          ? `${window.innerWidth - event.pageX + padding.x}px`\r\n          : 'initial',\r\n    };\r\n\r\n    return scene;\r\n  }\r\n\r\n  ngOnDestroy() {\r\n    this.alive = false;\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -52180,9 +52182,15 @@
                         "type": "DomSanitizer",
                         "deprecated": false,
                         "deprecationMessage": ""
+                    },
+                    {
+                        "name": "_zone",
+                        "type": "NgZone",
+                        "deprecated": false,
+                        "deprecationMessage": ""
                     }
                 ],
-                "line": 36,
+                "line": 30,
                 "jsdoctags": [
                     {
                         "name": "svc",
@@ -52214,6 +52222,15 @@
                     {
                         "name": "sanitizer",
                         "type": "DomSanitizer",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "_zone",
+                        "type": "NgZone",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -54076,7 +54093,11 @@
                 },
                 {
                     "type": "declarations",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "ChartComponent"
+                        }
+                    ]
                 },
                 {
                     "type": "imports",
@@ -56916,7 +56937,7 @@
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/test.ts",
+                "file": "projects/chart/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -56926,7 +56947,7 @@
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/chart/src/test.ts",
+                "file": "projects/components/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -57106,16 +57127,6 @@
                 "name": "fromTemplate",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/component/modal/Modal.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [ModalSamplesModule],\r\n  },\r\n  component: ModalFromTemplateComponent,\r\n  props: {\r\n    name: text('name', 'Название'),\r\n    description: text('description', 'Описание объекта'),\r\n  },\r\n})"
-            },
-            {
-                "name": "fromTemplate",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/directive/hint/Hint.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -57131,6 +57142,16 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [TooltipModule, ButtonModule, IconModule],\r\n    entryComponents: [PopupContentComponent],\r\n  },\r\n  props: {\r\n    align: select(\r\n      'align',\r\n      {\r\n        left: Align.left,\r\n        right: Align.right,\r\n        center: Align.center,\r\n        auto: Align.auto,\r\n      },\r\n      Align.center\r\n    ),\r\n    verticalAlign: select(\r\n      'verticalAlign',\r\n      {\r\n        bottom: VerticalAlign.bottom,\r\n        top: VerticalAlign.top,\r\n        center: VerticalAlign.center,\r\n        auto: VerticalAlign.auto,\r\n      },\r\n      VerticalAlign.top\r\n    ),\r\n  },\r\n  template: `<div [tetaIconSprite]=\"'assets/icons.svg'\" class=\"bg-panel-50 padding-10 margin-10\">\r\n                <ng-template #hint>\r\n                  From template\r\n                </ng-template>\r\n                <button teta-button\r\n                         [palette]=\"'primary'\"\r\n                         [tetaTooltip]=\"hint\"\r\n                         [align]=\"align\"\r\n                         [verticalAlign]=\"verticalAlign\"\r\n                         [className]=\"'one'\">\r\n                  <teta-icon [palette]=\"'background'\" [name]=\"'settings'\" class=\"margin-right-2\"></teta-icon>\r\n                  Click me\r\n                </button>\r\n              </div>`,\r\n})"
+            },
+            {
+                "name": "fromTemplate",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/component/modal/Modal.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [ModalSamplesModule],\r\n  },\r\n  component: ModalFromTemplateComponent,\r\n  props: {\r\n    name: text('name', 'Название'),\r\n    description: text('description', 'Описание объекта'),\r\n  },\r\n})"
             },
             {
                 "name": "getCellComponent",
@@ -57506,7 +57527,7 @@
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/test.ts",
+                "file": "projects/chart/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "literal type"
@@ -57515,10 +57536,20 @@
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/chart/src/test.ts",
+                "file": "projects/components/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "literal type"
+            },
+            {
+                "name": "sample",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/directive/loader/Loader.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [LoaderModule]\r\n  },\r\n  props: {\r\n    show: boolean('show', true)\r\n  },\r\n  template: `<div class=\"bg-panel-50 padding-10 margin-10\" [tetaLoader]=\"show\">\r\n                \r\n              </div>`,\r\n})"
             },
             {
                 "name": "sample",
@@ -57539,16 +57570,6 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [ToggleModule, IconModule, FormsModule],\r\n  },\r\n  props: {\r\n    text: text('text', 'Remember me'),\r\n    value: false,\r\n    setValue: (value) => {\r\n      action('log')(value);\r\n    },\r\n  },\r\n  template: `<teta-toggle [tetaIconSprite]=\"'assets/icons.svg'\"\r\n              [ngModel]=\"value\"\r\n              (ngModelChange)=\"setValue($event)\">\r\n              {{text}}\r\n            </teta-toggle>`,\r\n})"
-            },
-            {
-                "name": "sample",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/directive/loader/Loader.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [LoaderModule]\r\n  },\r\n  props: {\r\n    show: boolean('show', true)\r\n  },\r\n  template: `<div class=\"bg-panel-50 padding-10 margin-10\" [tetaLoader]=\"show\">\r\n                \r\n              </div>`,\r\n})"
             },
             {
                 "name": "Secondary",
@@ -57724,21 +57745,21 @@
                 "name": "treeData",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/component/toolbar/Toolbar.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "[]",
-                "defaultValue": "[\r\n  {\r\n    name: 'Тетакомовское м-р (4)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Скважины для тестирования',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'Тестовая скважина №1',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n          {\r\n            name: 'Стресс-тест',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n  {\r\n    name: 'Test only (1)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Group (1)',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'well',\r\n            icon: 'well',\r\n            children: [\r\n              {\r\n                name: 'ГИС',\r\n                icon: 'map',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Конструкция',\r\n                icon: 'tubes',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'D1',\r\n                icon: 'angle',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Дизайн №1 copy',\r\n                icon: 'angle',\r\n                children: [\r\n                  {\r\n                    name: 'Зоны продуктивности',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'План закачки',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Опции',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Результаты',\r\n                    children: [],\r\n                  },\r\n                ],\r\n              },\r\n            ],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n]"
-            },
-            {
-                "name": "treeData",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/component/tree/Tree.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "[]",
                 "defaultValue": "[{\r\n  name: 'Тетакомовское м-р (4)',\r\n  icon: 'layers',\r\n  children: [\r\n    {\r\n      name: 'Скважины для тестирования',\r\n      icon: 'folder',\r\n      children: [\r\n        {\r\n          name: 'Тестовая скважина №1',\r\n          icon: 'well',\r\n          children: []\r\n        }, {\r\n          name: 'Стресс-тест',\r\n          icon: 'well',\r\n          children: []\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}, {\r\n  name: 'Test only (1)',\r\n  icon: 'layers',\r\n  children: [\r\n    {\r\n      name: 'Group (1)',\r\n      icon: 'folder',\r\n      children: [\r\n        {\r\n          name: 'well',\r\n          icon: 'well',\r\n          children: [{\r\n            name: 'ГИС',\r\n            icon: 'map',\r\n            children: []\r\n          }, {\r\n            name: 'Конструкция',\r\n            icon: 'tubes',\r\n            children: []\r\n          }, {\r\n            name: 'D1',\r\n            icon: 'angle',\r\n            children: []\r\n          }, {\r\n            name: 'Дизайн №1 copy',\r\n            icon: 'angle',\r\n            children: [{\r\n              name: 'Зоны продуктивности',\r\n              children: []\r\n            }, {\r\n              name: 'План закачки',\r\n              children: []\r\n            }, {\r\n              name: 'Опции',\r\n              children: []\r\n            }, {\r\n              name: 'Результаты',\r\n              children: []\r\n            }]\r\n          }]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}]"
+            },
+            {
+                "name": "treeData",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/component/toolbar/Toolbar.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "[]",
+                "defaultValue": "[\r\n  {\r\n    name: 'Тетакомовское м-р (4)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Скважины для тестирования',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'Тестовая скважина №1',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n          {\r\n            name: 'Стресс-тест',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n  {\r\n    name: 'Test only (1)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Group (1)',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'well',\r\n            icon: 'well',\r\n            children: [\r\n              {\r\n                name: 'ГИС',\r\n                icon: 'map',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Конструкция',\r\n                icon: 'tubes',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'D1',\r\n                icon: 'angle',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Дизайн №1 copy',\r\n                icon: 'angle',\r\n                children: [\r\n                  {\r\n                    name: 'Зоны продуктивности',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'План закачки',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Опции',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Результаты',\r\n                    children: [],\r\n                  },\r\n                ],\r\n              },\r\n            ],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n]"
             },
             {
                 "name": "vertical",
@@ -59266,27 +59287,6 @@
                     "defaultValue": "[SeriesType.line, SeriesType.line]"
                 }
             ],
-            "projects/components/src/test.ts": [
-                {
-                    "name": "context",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
-                },
-                {
-                    "name": "require",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "literal type"
-                }
-            ],
             "projects/chart/src/test.ts": [
                 {
                     "name": "context",
@@ -59303,6 +59303,27 @@
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "projects/chart/src/test.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type"
+                }
+            ],
+            "projects/components/src/test.ts": [
+                {
+                    "name": "context",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/test.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
+                },
+                {
+                    "name": "require",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/test.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "literal type"
@@ -59832,6 +59853,18 @@
                     "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [RadioModule, FormsModule, IconModule],\r\n  },\r\n  template: `<div class=\"padding-4 bg-panel-50\" [tetaIconSprite]=\"'assets/icons.svg'\">\r\n    <teta-radio [(ngModel)]=\"aaa\">\r\n      <teta-radio-button [value]=\"1\">1</teta-radio-button>\r\n      <teta-radio-button [value]=\"2\">2</teta-radio-button>\r\n      <teta-radio-button [value]=\"3\" [disabled]=\"true\">4</teta-radio-button>\r\n    </teta-radio>\r\n  </div>`,\r\n})"
                 }
             ],
+            "projects/components/src/directive/loader/Loader.stories.ts": [
+                {
+                    "name": "sample",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/directive/loader/Loader.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [LoaderModule]\r\n  },\r\n  props: {\r\n    show: boolean('show', true)\r\n  },\r\n  template: `<div class=\"bg-panel-50 padding-10 margin-10\" [tetaLoader]=\"show\">\r\n                \r\n              </div>`,\r\n})"
+                }
+            ],
             "projects/components/src/component/progress-bar/ProgressBar.stories.ts": [
                 {
                     "name": "sample",
@@ -59854,18 +59887,6 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [ToggleModule, IconModule, FormsModule],\r\n  },\r\n  props: {\r\n    text: text('text', 'Remember me'),\r\n    value: false,\r\n    setValue: (value) => {\r\n      action('log')(value);\r\n    },\r\n  },\r\n  template: `<teta-toggle [tetaIconSprite]=\"'assets/icons.svg'\"\r\n              [ngModel]=\"value\"\r\n              (ngModelChange)=\"setValue($event)\">\r\n              {{text}}\r\n            </teta-toggle>`,\r\n})"
-                }
-            ],
-            "projects/components/src/directive/loader/Loader.stories.ts": [
-                {
-                    "name": "sample",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/directive/loader/Loader.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "() => ({\r\n  moduleMetadata: {\r\n    imports: [LoaderModule]\r\n  },\r\n  props: {\r\n    show: boolean('show', true)\r\n  },\r\n  template: `<div class=\"bg-panel-50 padding-10 margin-10\" [tetaLoader]=\"show\">\r\n                \r\n              </div>`,\r\n})"
                 }
             ],
             "projects/components/src/component/progress-bar/progress-bar/progress-bar.component.ts": [

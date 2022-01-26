@@ -1,8 +1,8 @@
 <ng-container *ngIf="size | async as s">
   <teta-tooltip [size]="s"></teta-tooltip>
   <svg
-       [tetaZoomable]
-       [tetaBrushable]
+       tetaZoomable
+       tetaBrushable
        [size]="s"
        [config]="config"
        [attr.width]="s.width"
