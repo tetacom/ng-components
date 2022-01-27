@@ -4,6 +4,7 @@ import {ChartService} from '../../service/chart.service';
 import {ZoomService} from '../../service/zoom.service';
 import {IDisplayTooltip} from '../../model/i-display-tooltip';
 import {DomSanitizer} from '@angular/platform-browser';
+import {IChartConfig} from '../../model/i-chart-config';
 
 @Component({
   selector: 'teta-tooltip',
@@ -13,6 +14,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 })
 export class TooltipComponent implements OnInit, OnDestroy {
   @Input() size: DOMRect;
+  @Input() config: IChartConfig;
 
   position: Observable<{
     left: string;
@@ -80,7 +82,7 @@ export class TooltipComponent implements OnInit, OnDestroy {
       return transformHtml(html);
     };
 
-    const formatter = this.svc.config?.tooltip?.format;
+    const formatter = this.config?.tooltip?.format;
 
     this.displayTooltips = merge(
       this.svc.pointerMove.pipe(tap((_) => (this.tooltips = []))),

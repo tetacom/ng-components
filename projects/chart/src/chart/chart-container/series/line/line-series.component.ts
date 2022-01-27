@@ -11,7 +11,7 @@ import { SeriesBaseComponent } from '../../../base/series-base.component';
 import { ChartService } from '../../../service/chart.service';
 import { BasePoint } from '../../../model/base-point';
 import { ScaleService } from '../../../service/scale.service';
-import { debounceTime, filter, map, Observable, tap } from 'rxjs';
+import {debounceTime, filter, map, Observable, tap } from 'rxjs';
 
 import { ZoomService } from '../../../service/zoom.service';
 import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
@@ -151,7 +151,7 @@ export class LineSeriesComponent<T extends BasePoint>
     const foundX = this.scaleService.xScales.get(this.series.xAxisIndex);
     const foundY = this.scaleService.yScales.get(this.series.yAxisIndex);
 
-    const tooltipTracking = this.svc.config?.tooltip?.tracking;
+    const tooltipTracking = this.config?.tooltip?.tracking;
 
     const lineIntersection = (
       p0_x,

@@ -1,5 +1,9 @@
 <div class="column column_auto">
-  <teta-chart-container *ngIf="hasSeriesData" class="chart-container" [config]="config"></teta-chart-container>
+  <teta-chart-container *ngIf="hasSeriesData else noData" class="chart-container"></teta-chart-container>
 </div>
-
-<teta-legend *ngIf="config.legend?.enable === true" [series]="config.series"></teta-legend>
+<teta-legend *ngIf="hasSeriesData && config.legend?.enable === true" [series]="config.series"></teta-legend>
+<ng-template #noData>
+  <div class="column column_auto align-center justify-content-center">
+    <span class="font-body-3 color-text-40">Данные отсутствуют</span>
+  </div>
+</ng-template>

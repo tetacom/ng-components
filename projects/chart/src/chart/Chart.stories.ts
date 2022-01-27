@@ -3,17 +3,15 @@ import {withKnobs} from '@storybook/addon-knobs';
 import {ChartComponent} from './chart/chart.component';
 import {ChartModule} from './chart.module';
 import {IconModule} from '../../../components/src/component/icon/icon.module';
+import {ButtonModule} from '../../../components/src/component/button/button.module';
 import {IChartConfig} from './model/i-chart-config';
 import {AxisType} from './model/enum/axis-type';
 import {SeriesType} from './model/enum/series-type';
 import {randomInt} from 'd3-random';
-import {Series} from './model/series';
-import {BasePoint} from './model/base-point';
 import * as faker from 'faker';
 import {ZoomType} from './model/enum/zoom-type';
-import {Plotband} from './model/plotband';
-import {PlotLine} from './model/plotline';
-import {DragPointType} from './model/enum/drag-point-type';
+import {PlotBand} from './model/plot-band';
+import {PlotLine} from './model/plot-line';
 import {TooltipTracking} from './model/enum/tooltip-tracking';
 import {BrushType} from './model/enum/brush-type';
 
@@ -22,7 +20,7 @@ export default {
   decorators: [withKnobs],
   component: ChartComponent,
   moduleMetadata: {
-    imports: [ChartModule, IconModule],
+    imports: [ChartModule, IconModule, ButtonModule],
   },
 } as Meta;
 
@@ -183,97 +181,48 @@ const seriesType = [SeriesType.line, SeriesType.line, SeriesType.line];
 
 faker.locale = 'ru';
 
-const series2: Series<BasePoint>[] = seriesType.map(
-  (type: SeriesType, index: number) => {
-    return {
-      id: index,
-      type,
-      name: faker.address.cityName(),
-      yAxisIndex: 0,
-      xAxisIndex: 0,
-      color: cssColorNames[randomColor()].toLowerCase(),
-      data: Array.from(Array(3000).keys()).map((key, index) => {
-        const num = faker.datatype.number({ min: 0, max: 500 });
+const createSeries = (size: number) => {
+  return seriesType.map(
+    (type: SeriesType, index: number) => {
+      return {
+        id: index,
+        type,
+        name: faker.address.cityName(),
+        yAxisIndex: 0,
+        xAxisIndex: 0,
+        color: cssColorNames[randomColor()].toLowerCase(),
+        data: Array.from(Array(size).keys()).map((key, index) => {
+          const num = faker.datatype.number({
+            min: faker.datatype.number({min: 0, max: 100}),
+            max: faker.datatype.number({min: 200, max: 500})
+          });
 
-        const point = {
-          x: key,
-          y: num,
-        };
-
-        if (index % 10 === 0) {
-          point.x = null;
-          point.y = null;
-        }
-
-        return point;
-      }),
-    };
-  }
-);
-
-const series: Series<BasePoint>[] = seriesType.map(
-  (type: SeriesType, index: number) => {
-    return {
-      id: index,
-      type,
-      name: faker.address.cityName(),
-      yAxisIndex: 0,
-      xAxisIndex: 0,
-      style: {
-        strokeWidth: 0.5,
-      },
-      color: cssColorNames[randomColor()].toLowerCase(),
-      data: Array.from(Array(100).keys()).map((key, index) => {
-        const num = faker.datatype.number({ min: 0, max: 500 });
-
-        const point: BasePoint = {
-          x: key,
-          y: num,
-        };
-
-        if (index % 30 === 0) {
-          point.marker = {
-            draggable: true,
-            dragType: DragPointType.xy,
-            style: {
-              fill: 'green',
-            },
+          const point = {
+            x: key,
+            y: num,
           };
-        }
 
-        return point;
-      }),
-    };
-  }
-);
+          // if (index % 10 === 0) {
+          //   point.x = null;
+          //   point.y = null;
+          // }
 
-const plotbands1 = [
-  new Plotband({
-    id: 0,
-    from: 10,
-    to: 12,
-    max: 20,
-    style: {
-      plotband: {
-        opacity: 0.2,
-        patternImage: 'patternintersect',
-      },
-      grabbers: {
-        strokeDasharray: '4, 4',
-        strokeWidth: 2,
-      },
-    },
-  }),
-];
+          return point;
+        }),
+      };
+    }
+  );
+};
+
 
 const plotbands2 = [
-  new Plotband({
+  new PlotBand({
     id: 0,
     from: 1100,
     to: 1200,
     draggable: true,
     style: {
-      plotband: {
+      plotBand: {
         opacity: 0.6,
         fill: 'green',
       },
@@ -281,105 +230,78 @@ const plotbands2 = [
   }),
 ];
 
-const config: IChartConfig = {
-  name: '123123123132',
-  inverted: false,
-  tooltip: {
-    tracking: TooltipTracking.x,
-  },
-  xAxis: [
-    {
-      plotbands: plotbands2,
+const createChart = (size: number): IChartConfig => {
+  return {
+    name: '123123123132',
+    inverted: false,
+    tooltip: {
+      tracking: TooltipTracking.x,
     },
-  ],
-  yAxis: [
-    {
-      title: 'атм',
-      plotlines: [
-        new PlotLine({
-          value: 360,
-          draggable: true,
-          style: {
-            stroke: cssColorNames[randomColor()].toLowerCase(),
-          },
-        }),
-      ],
+    xAxis: [
+      {
+        plotBands: plotbands2,
+      },
+    ],
+    yAxis: [
+      {
+        min: faker.datatype.number({min: -100, max: 100}),
+        max: faker.datatype.number({min: 400, max: 600}),
+        title: 'атм',
+        plotLines: [
+          new PlotLine({
+            value: 360,
+            draggable: true,
+            style: {
+              stroke: cssColorNames[randomColor()].toLowerCase(),
+            },
+          }),
+        ],
+      },
+      {
+        type: AxisType.number,
+        min: 1000,
+        opposite: true,
+        max: 2000
+      }
+    ],
+    brush: {
+      enable: false,
+      type: BrushType.y,
     },
-    {
-      type: AxisType.number,
-      min: 1000,
-      opposite: true,
-      max: 2000
-    }
-  ],
-  brush: {
-    enable: false,
-    type: BrushType.y,
-  },
-  zoom: {
-    enable: true,
-    type: ZoomType.x,
-    syncChannel: 'channelA'
-  },
-  legend: {
-    enable: true,
-  },
-  series,
-};
-
-const config2: IChartConfig = {
-  name: '123',
-  tooltip: {
-    tracking: TooltipTracking.x,
-  },
-  legend: {
-    enable: false,
-  },
-  inverted: false,
-  xAxis: [
-    {
-      visible: true,
+    zoom: {
+      enable: true,
+      type: ZoomType.x,
+      syncChannel: 'channelA'
     },
-    {
-      visible: true,
-      opposite: true,
-      min: 0,
-      max: 1000,
+    legend: {
+      enable: true,
     },
-  ],
-  yAxis: [
-    {
-      title: 'атм',
-      plotlines: [
-        new PlotLine({
-          value: 360,
-          draggable: true,
-          style: {
-            stroke: cssColorNames[randomColor()].toLowerCase(),
-          },
-        }),
-      ],
-    },
-  ],
-  zoom: {
-    enable: true,
-    type: ZoomType.x,
-  },
-  series: series2,
+    series: createSeries(size),
+  };
 };
 
 export const basicChart = () => ({
   moduleMetadata: {
-    imports: [ChartModule, IconModule],
+    imports: [ChartModule, IconModule, ButtonModule],
   },
   props: {
-    config,
-    config2
+    config: createChart(100),
+    createChart: createChart
   },
   template: `
     <div>
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 100%; height: 100vh;">
-          <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
+        <button teta-button
+          [palette]="'primary'"
+          (click)="config=createChart(100)">
+          Create new Data
+        </button>
+        <button teta-button
+          [palette]="'primary'"
+          (click)="config=createChart(0)">
+          Create empty data
+        </button>
+        <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
       </div>
     </div>
 `,

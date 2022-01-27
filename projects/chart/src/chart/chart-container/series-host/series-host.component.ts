@@ -18,6 +18,7 @@ import { ChartService } from '../../service/chart.service';
 import { tap } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
 import { SeriesType } from '../../model/enum/series-type';
+import {IChartConfig} from '../../model/i-chart-config';
 
 @Component({
   selector: '[teta-series-host]',
@@ -25,6 +26,7 @@ import { SeriesType } from '../../model/enum/series-type';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeriesHostComponent<T extends BasePoint> implements OnInit {
+  @Input() config: IChartConfig;
   @Input() series: Series<T>;
   @Input() size: DOMRect;
   @Input() rect: any;
@@ -63,6 +65,7 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
     this._componentRef = this.viewContainerRef.createComponent(
       this.series.component
     );
+    this._componentRef.instance.config = this.config;
     this._componentRef.instance.series = this.series;
     this._componentRef.instance.size = this.size;
     this._componentRef.instance.rect = this.rect;
@@ -73,6 +76,7 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this._init && changes.hasOwnProperty('series')) {
+      this._componentRef.instance.config = this.config;
       this._componentRef.instance.series = this.series;
       this._componentRef.instance.size = this.size;
       this._componentRef.instance.rect = this.rect;

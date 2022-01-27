@@ -9,23 +9,18 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { ChartService } from '../service/chart.service';
-import { IChartConfig } from '../model/i-chart-config';
-
-import { BasePoint } from '../model/base-point';
-import { Series } from '../model/series';
-import { ZoomService } from '../service/zoom.service';
-import { ScaleService } from '../service/scale.service';
-import { BrushService } from '../service/brush.service';
-import { AxesService } from '../service/axes.service';
-import { ChartBounds } from '../model/chart-bounds';
-
-import { IChartEvent } from '../model/i-chart-event';
-import { PlotLine } from '../model/plot-line';
-import { PlotBand } from '../model/plot-band';
-import { IPointMove } from '../model/i-point-move';
-import { TooltipTracking } from '../model/enum/tooltip-tracking';
-import { ZoomType } from '../model/enum/zoom-type';
+import {ChartService} from '../service/chart.service';
+import {IChartConfig} from '../model/i-chart-config';
+import {BasePoint} from '../model/base-point';
+import {Series} from '../model/series';
+import {ZoomService} from '../service/zoom.service';
+import {ScaleService} from '../service/scale.service';
+import {BrushService} from '../service/brush.service';
+import {IChartEvent} from '../model/i-chart-event';
+import {PlotLine} from '../model/plot-line';
+import {PlotBand} from '../model/plot-band';
+import {IPointMove} from '../model/i-point-move';
+import {takeWhile} from 'rxjs';
 
 @Component({
   selector: 'teta-svg-chart',
@@ -35,7 +30,6 @@ import { ZoomType } from '../model/enum/zoom-type';
     ChartService,
     ZoomService,
     ScaleService,
-    AxesService,
     BrushService,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,86 +39,55 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   hasSeriesData: boolean;
 
   @Output()
-  plotBandsMove: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<
-    IChartEvent<PlotBand>
-  >();
+  plotBandsMove: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<IChartEvent<PlotBand>>();
 
   @Output()
-  plotLinesMove: EventEmitter<IChartEvent<PlotLine>> = new EventEmitter<
-    IChartEvent<PlotLine>
-  >();
+  plotLinesMove: EventEmitter<IChartEvent<PlotLine>> = new EventEmitter<IChartEvent<PlotLine>>();
 
   @Output()
-  pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<
-    IChartEvent<IPointMove>
-  >();
+  pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<IChartEvent<IPointMove>>();
 
   @Input() set config(config: IChartConfig) {
-    const defaultConfig: IChartConfig = {
-      zoom: {
-        enable: true,
-        type: ZoomType.x,
-      },
-      bounds: new ChartBounds(),
-      legend: {
-        enable: true,
-      },
-      tooltip: {
-        enable: true,
-        showMarkers: true,
-        tracking: TooltipTracking.x,
-      },
-      xAxis: [],
-      yAxis: [],
-    };
-
-    config?.series?.forEach((_) => {
-      if (_.xAxisIndex === null || _.xAxisIndex === undefined) {
-        _.xAxisIndex = 0;
-      }
-      if (_.yAxisIndex === null || _.yAxisIndex === undefined) {
-        _.yAxisIndex = 0;
-      }
-    });
-
-    this._config = Object.assign(defaultConfig, config);
-
-    this.svc.init(this._config);
-
-    this.hasSeriesData = !!this._config?.series?.some((_) => _.data.length);
+    this._svc.setConfig(config);
+    this._config = config;
+    this.hasSeriesData = !!config?.series?.every((_) => _.data.length);
   }
 
   get config() {
     return this._config;
   }
 
-  private _config;
+  private _config: IChartConfig;
+  private _alive = true;
 
   constructor(
-    private svc: ChartService,
-    private zoomService: ZoomService,
-    private axesService: AxesService
-  ) {}
+    private _svc: ChartService,
+    private _zoomService: ZoomService
+  ) {
+  }
 
-  ngOnChanges(changes: SimpleChanges) {}
+  ngOnChanges(changes: SimpleChanges) {
+  }
 
   ngOnInit(): void {
-    this.svc.plotBandMove.subscribe((_) => {
+    this._svc.plotBandMove.pipe(takeWhile(() => this._alive)).subscribe((_) => {
       this.plotBandsMove.emit(_);
     });
 
-    this.svc.plotLineMove.subscribe((_) => {
+    this._svc.plotLineMove.pipe(takeWhile(() => this._alive)).subscribe((_) => {
       this.plotLinesMove.emit(_);
     });
 
-    this.svc.pointMove.subscribe((_) => {
+    this._svc.pointMove.pipe(takeWhile(() => this._alive)).subscribe((_) => {
       this.pointMove.emit(_);
     });
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+  }
 
   ngOnDestroy() {
-    this.zoomService.broadcastSubscribtion?.unsubscribe();
+    this._alive = false;
+    this._zoomService.broadcastSubscription?.unsubscribe();
   }
 }

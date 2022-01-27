@@ -1,21 +1,15 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
-import { ScaleService } from '../../service/scale.service';
-import { AxesService } from '../../service/axes.service';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit,} from '@angular/core';
+import {ScaleService} from '../../service/scale.service';
 
-import { merge, tap } from 'rxjs';
-import { ChartService } from '../../service/chart.service';
-import { ZoomService } from '../../service/zoom.service';
+import {merge, tap} from 'rxjs';
+import {ChartService} from '../../service/chart.service';
+import {ZoomService} from '../../service/zoom.service';
 
 @Component({
   selector: '[teta-gridlines]',
   templateUrl: './gridlines.component.html',
   styleUrls: ['./gridlines.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridlinesComponent implements OnInit {
   @Input() size: DOMRect;
@@ -26,19 +20,11 @@ export class GridlinesComponent implements OnInit {
 
   constructor(
     private scaleService: ScaleService,
-    private axesService: AxesService,
     private chartService: ChartService,
     private zoomService: ZoomService,
     private cdr: ChangeDetectorRef
   ) {
-    merge(this.chartService.size, this.zoomService.zoomed)
-      .pipe(
-        tap(() => {
-          this.draw();
-          this.cdr.detectChanges();
-        })
-      )
-      .subscribe();
+
   }
 
   draw() {
@@ -50,6 +36,14 @@ export class GridlinesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    merge(this.chartService.size, this.zoomService.zoomed)
+      .pipe(
+        tap(() => {
+          this.draw();
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe();
     this.draw();
   }
 }

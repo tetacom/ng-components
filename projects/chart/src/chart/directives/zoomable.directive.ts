@@ -1,6 +1,5 @@
 import { Directive, ElementRef, HostBinding, Input } from '@angular/core';
 import { ZoomService } from '../service/zoom.service';
-import { ChartService } from '../service/chart.service';
 import { IChartConfig } from '../model/i-chart-config';
 import { Axis } from '../core/axis/axis';
 
@@ -16,15 +15,13 @@ export class ZoomableDirective {
 
   constructor(
     private element: ElementRef,
-    private svc: ZoomService,
-    private chartService: ChartService
+    private svc: ZoomService
   ) {}
 
   ngOnInit() {
     if (this.config?.zoom?.enable) {
       this.zoomable = true;
-
-      this.svc.applyZoom(this.element, this.chartService.config, this.size);
+      this.svc.applyZoom(this.element, this.config, this.size);
     }
   }
   ngAfterViewInit() {}

@@ -1,15 +1,13 @@
-import { ElementRef, Injectable } from '@angular/core';
+import {ElementRef, Injectable} from '@angular/core';
 import * as d3 from 'd3';
-import { D3ZoomEvent, zoomIdentity } from 'd3';
-import { ScaleService } from './scale.service';
-import { map, merge, Observable, of, Subject, Subscription } from 'rxjs';
-import { ZoomType } from '../model/enum/zoom-type';
-import { IChartConfig } from '../model/i-chart-config';
-import { BroadcastService } from './broadcast.service';
-import { ChartService } from './chart.service';
-import { BrushType } from '../model/enum/brush-type';
-import { Axis } from '../core/axis/axis';
-import { AxisOrientation } from '../model/enum/axis-orientation';
+import {D3ZoomEvent, zoomIdentity} from 'd3';
+import {ScaleService} from './scale.service';
+import {map, merge, Observable, of, Subject, Subscription} from 'rxjs';
+import {ZoomType} from '../model/enum/zoom-type';
+import {IChartConfig} from '../model/i-chart-config';
+import {BroadcastService} from './broadcast.service';
+import {ChartService} from './chart.service';
+import {BrushType} from '../model/enum/brush-type';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +16,7 @@ export class ZoomService {
   zoomed: Observable<any>;
   private zoomed$ = new Subject<any>();
 
-  broadcastSubscribtion: Subscription;
+  broadcastSubscription: Subscription;
 
   private x = new Map<number | string, any>();
   private y = new Map<number | string, any>();
@@ -50,14 +48,14 @@ export class ZoomService {
   }
 
   applyZoom(svgElement: ElementRef, config: IChartConfig, size: DOMRect) {
-    this.broadcastSubscribtion?.unsubscribe();
+    this.broadcastSubscription?.unsubscribe();
     this.svg = d3.select(svgElement.nativeElement);
 
     const zoomType = config?.zoom?.type;
     const enable = config?.zoom?.enable;
 
     const zoomed = (event: D3ZoomEvent<any, any>) => {
-      const { transform } = event;
+      const {transform} = event;
 
       if (zoomType === ZoomType.x || zoomType === ZoomType.xy) {
         for (let [index, scale] of this.x.entries()) {
@@ -72,7 +70,7 @@ export class ZoomService {
       }
 
       if (enable) {
-        this.zoomed$.next({ event });
+        this.zoomed$.next({event});
 
         if (event.sourceEvent) {
           this.broadcastService.broadcast({
@@ -80,7 +78,7 @@ export class ZoomService {
             message: event,
             domain: this.scaleService[
               config?.zoom?.type === ZoomType.x ? 'xScales' : 'yScales'
-            ]
+              ]
               .get(config.brush?.axisIndex ?? 0)
               .domain(),
           });
@@ -106,13 +104,13 @@ export class ZoomService {
           ? this.x.get(config.brush?.axisIndex ?? 0)
           : this.y.get(config.brush?.axisIndex ?? 0);
 
-      this.broadcastSubscribtion = this.broadcastService
+      this.broadcastSubscription = this.broadcastService
         .subscribeToChannel(config?.zoom?.syncChannel)
         .pipe(
           map((_) => {
             const currentTransform = d3.zoomTransform(this.svg.node());
 
-            const { message } = _;
+            const {message} = _;
             if (currentTransform !== message?.transform) {
               if (message.selection) {
                 const s = message.selection;

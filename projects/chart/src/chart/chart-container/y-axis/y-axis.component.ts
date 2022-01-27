@@ -15,7 +15,6 @@ import { ScaleService } from '../../service/scale.service';
 import { ChartService } from '../../service/chart.service';
 import { ZoomService } from '../../service/zoom.service';
 import { merge, takeWhile, tap } from 'rxjs';
-import { AxesService } from '../../service/axes.service';
 
 @Component({
   selector: '[teta-y-axis]',
@@ -33,7 +32,6 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private scaleService: ScaleService,
     private chartService: ChartService,
-    private axesService: AxesService,
     private cdr: ChangeDetectorRef,
     private zoomService: ZoomService
   ) {
