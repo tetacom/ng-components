@@ -1,7 +1,7 @@
 
   <svg:path
     class="line"
-    [attr.d]="getPath()"
+    [attr.d]="path | async"
     [attr.stroke]="series.color"
     [attr.stroke-width]="series.style?.strokeWidth"
     fill="none">

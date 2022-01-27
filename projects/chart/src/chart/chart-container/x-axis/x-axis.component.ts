@@ -5,10 +5,8 @@ import {
   Component,
   ElementRef,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { Axis } from '../../core/axis/axis';
@@ -26,6 +24,7 @@ import { merge, takeWhile, tap } from 'rxjs';
 })
 export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() axis: Axis;
+  @Input() scale: any;
   @Input() size: DOMRect;
   @ViewChild('svg') node: ElementRef;
 
@@ -65,7 +64,7 @@ export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    const scale = this.scaleService.xScales.get(this.axis.index);
+    const scale = this.scale;
 
     const axis = this.axis.options.opposite
       ? d3

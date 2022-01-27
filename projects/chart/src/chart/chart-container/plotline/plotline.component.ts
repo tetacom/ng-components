@@ -25,10 +25,10 @@ export class PlotlineComponent implements OnInit {
   @Input() plotLine: PlotLine;
   @Input() size: DOMRect;
   @Input() axis: Axis;
+  @Input() scale: any;
   orientation = AxisOrientation;
 
-  private scale: any;
-  private domain: number[];
+  private _domain: number[];
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -37,20 +37,20 @@ export class PlotlineComponent implements OnInit {
     private chartService: ChartService,
     private element: ElementRef
   ) {
-    this.zoomService.zoomed.subscribe(() => {
-      this.scale = this.scaleService[
-        this.axis.orientation === AxisOrientation.x ? 'xScales' : 'yScales'
-      ].get(this.axis.index);
-      this.cdr.detectChanges();
-    });
+    // this.zoomService.zoomed.subscribe(() => {
+    //   this.scale = this.scaleService[
+    //     this.axis.orientation === AxisOrientation.x ? 'xScaleMap' : 'yScaleMap'
+    //   ].get(this.axis.index);
+    //   this.cdr.detectChanges();
+    // });
   }
 
   ngOnInit(): void {
-    this.scale = this.scaleService[
-      this.axis.orientation === AxisOrientation.x ? 'xScales' : 'yScales'
-    ].get(this.axis.index);
+    // this.scale = this.scaleService[
+    //   this.axis.orientation === AxisOrientation.x ? 'xScaleMap' : 'yScaleMap'
+    // ].get(this.axis.index);
 
-    this.domain = this.scale.domain();
+    this._domain = this.scale.domain();
 
     const plotlineElement = d3
       .select(this.element.nativeElement)

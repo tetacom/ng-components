@@ -19,17 +19,17 @@ import { ChartService } from '../../service/chart.service';
 
 @Component({
   selector: '[teta-plot-band]',
-  templateUrl: './plotband.component.html',
-  styleUrls: ['./plotband.component.scss'],
+  templateUrl: './plot-band.component.html',
+  styleUrls: ['./plot-band.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlotbandComponent implements OnInit {
-  @Input() plotband: PlotBand;
+export class PlotBandComponent implements OnInit {
+  @Input() plotBand: PlotBand;
   @Input() axis: Axis;
+  @Input() scale: any;
   @Input() size: DOMRect;
   orientation = AxisOrientation;
 
-  private scale: any;
   domain: number[];
 
   constructor(
@@ -40,9 +40,9 @@ export class PlotbandComponent implements OnInit {
     private element: ElementRef
   ) {
     this.zoomService.zoomed.subscribe(() => {
-      this.scale = this.scaleService[
-        this.axis.orientation === AxisOrientation.x ? 'xScales' : 'yScales'
-      ].get(this.axis.index);
+      // this.scale = this.scaleService[
+      //   this.axis.orientation === AxisOrientation.x ? 'xScaleMap' : 'yScaleMap'
+      // ].get(this.axis.index);
       this.cdr.detectChanges();
     });
   }
@@ -52,9 +52,9 @@ export class PlotbandComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.scale = this.scaleService[
-      this.axis.orientation === AxisOrientation.x ? 'xScales' : 'yScales'
-    ].get(this.axis.index);
+    // this.scale = this.scaleService[
+    //   this.axis.orientation === AxisOrientation.x ? 'xScaleMap' : 'yScaleMap'
+    // ].get(this.axis.index);
 
     this.domain = this.scale.domain();
 
@@ -163,21 +163,21 @@ export class PlotbandComponent implements OnInit {
         }
       );
 
-    plotbandElement.datum<PlotBand>(this.plotband);
-    grabElements.datum<PlotBand>(this.plotband);
+    plotbandElement.datum<PlotBand>(this.plotBand);
+    grabElements.datum<PlotBand>(this.plotBand);
 
-    if (this.plotband.draggable) {
+    if (this.plotBand.draggable) {
       plotbandElement.call(drag);
     }
 
-    if (this.plotband.resizable) {
+    if (this.plotBand.resizable) {
       grabElements.call(resize);
     }
   }
 
   get bandSize(): number {
     return Math.abs(
-      this.scale(this.plotband.to) - this.scale(this.plotband.from)
+      this.scale(this.plotBand.to) - this.scale(this.plotBand.from)
     );
   }
 
@@ -190,11 +190,11 @@ export class PlotbandComponent implements OnInit {
   }
 
   get from(): number {
-    return this.scale(this.plotband.from);
+    return this.scale(this.plotBand.from);
   }
 
   get to(): number {
-    return this.scale(this.plotband.to);
+    return this.scale(this.plotBand.to);
   }
 
   getFill(d: PlotBand): string {

@@ -13,10 +13,11 @@ import {ZoomService} from '../../service/zoom.service';
 })
 export class GridlinesComponent implements OnInit {
   @Input() size: DOMRect;
+  @Input() xScaleMap: Map<number|string, any>;
+  @Input() yScaleMap: Map<number|string, any>;
+
   tickYValues: number[];
   tickXValues: number[];
-  y: any;
-  x: any;
 
   constructor(
     private scaleService: ScaleService,
@@ -28,11 +29,8 @@ export class GridlinesComponent implements OnInit {
   }
 
   draw() {
-    this.y = this.scaleService.yScales.get(0);
-    this.x = this.scaleService.xScales.get(0);
-
-    this.tickYValues = this.y.ticks();
-    this.tickXValues = this.x.ticks();
+    this.tickYValues = this.yScaleMap.get(0).ticks();
+    this.tickXValues = this.xScaleMap.get(0).ticks();
   }
 
   ngOnInit(): void {

@@ -38,15 +38,15 @@ export class BarSeriesComponent<T extends BasePoint>
   }
 
   override ngOnInit(): void {
-    const x = this.scaleService.xScales.get(this.series.xAxisIndex);
-    const y = this.scaleService.yScales.get(this.series.yAxisIndex);
-
-    const domain = this.series.data?.map((_: BasePoint) => _.x);
-    const range = [x(domain[0]), x(domain[domain?.length - 1])];
-
-    this.scaleBand = d3.scaleBand<number>().domain(domain).range(range);
-
-    this.y = y;
+    // const x = this.scaleService.xScaleMap.get(this.series.xAxisIndex);
+    // const y = this.scaleService.yScaleMap.get(this.series.yAxisIndex);
+    //
+    // const domain = this.series.data?.map((_: BasePoint) => _.x);
+    // const range = [x(domain[0]), x(domain[domain?.length - 1])];
+    //
+    // this.scaleBand = d3.scaleBand<number>().domain(domain).range(range);
+    //
+    // this.y = y;
   }
 
   width() {

@@ -4,17 +4,17 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Input,
+  Input, OnChanges,
   OnDestroy,
-  OnInit,
+  OnInit, SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { Axis } from '../../core/axis/axis';
+import {Axis} from '../../core/axis/axis';
 import * as d3 from 'd3';
-import { ScaleService } from '../../service/scale.service';
-import { ChartService } from '../../service/chart.service';
-import { ZoomService } from '../../service/zoom.service';
-import { merge, takeWhile, tap } from 'rxjs';
+import {ScaleService} from '../../service/scale.service';
+import {ChartService} from '../../service/chart.service';
+import {ZoomService} from '../../service/zoom.service';
+import {merge, takeWhile, tap} from 'rxjs';
 
 @Component({
   selector: '[teta-y-axis]',
@@ -22,10 +22,11 @@ import { merge, takeWhile, tap } from 'rxjs';
   styleUrls: ['./y-axis.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
+export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
   @Input() axis: Axis;
+  @Input() scale: any;
   @Input() size: DOMRect;
-  @ViewChild('svg', { static: false }) node: ElementRef;
+  @ViewChild('svg', {static: false}) node: ElementRef;
 
   private _alive = true;
 
@@ -46,7 +47,8 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngOnDestroy(): void {
     this._alive = false;
@@ -54,6 +56,10 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     this.draw();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('yAxis', changes);
   }
 
   getLabelTransform() {
@@ -71,21 +77,21 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    const scale = this.scaleService.yScales.get(this.axis.index);
+    const scale = this.scale;
 
     const axis = this.axis.options.opposite
       ? d3
-          .axisRight(scale)
-          // .tickValues(this.axis.tickValues)
-          .tickFormat(
-            this.axis.options.tickFormat ?? this.axis.defaultFormatter()
-          )
+        .axisRight(scale)
+        // .tickValues(this.axis.tickValues)
+        .tickFormat(
+          this.axis.options.tickFormat ?? this.axis.defaultFormatter()
+        )
       : d3
-          .axisLeft(scale)
-          // .tickValues(this.axis.tickValues)
-          .tickFormat(
-            this.axis.options.tickFormat ?? this.axis.defaultFormatter()
-          );
+        .axisLeft(scale)
+        // .tickValues(this.axis.tickValues)
+        .tickFormat(
+          this.axis.options.tickFormat ?? this.axis.defaultFormatter()
+        );
 
     d3.select(this.node.nativeElement)
       .call(axis)

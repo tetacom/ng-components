@@ -7,16 +7,16 @@ import {
   OnInit,
 } from '@angular/core';
 import * as d3 from 'd3';
-import { SeriesBaseComponent } from '../../../base/series-base.component';
-import { ChartService } from '../../../service/chart.service';
-import { BasePoint } from '../../../model/base-point';
-import { ScaleService } from '../../../service/scale.service';
-import {debounceTime, filter, map, Observable, tap } from 'rxjs';
+import {SeriesBaseComponent} from '../../../base/series-base.component';
+import {ChartService} from '../../../service/chart.service';
+import {BasePoint} from '../../../model/base-point';
+import {ScaleService} from '../../../service/scale.service';
+import {combineLatest, filter, map, Observable, tap, withLatestFrom} from 'rxjs';
 
-import { ZoomService } from '../../../service/zoom.service';
-import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
-import { DragPointType } from '../../../model/enum/drag-point-type';
-import { throttleTime } from 'rxjs/operators';
+import {ZoomService} from '../../../service/zoom.service';
+import {TooltipTracking} from '../../../model/enum/tooltip-tracking';
+import {DragPointType} from '../../../model/enum/drag-point-type';
+import {throttleTime} from 'rxjs/operators';
 
 @Component({
   selector: 'svg:svg[teta-line-series]',
@@ -26,11 +26,10 @@ import { throttleTime } from 'rxjs/operators';
 })
 export class LineSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
-  implements OnInit, AfterViewInit
-{
+  implements OnInit, AfterViewInit {
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
   display: Observable<number>;
-
+  path: Observable<string>;
   svgElement: SVGGeometryElement;
   x: any;
   y: any;
@@ -47,15 +46,17 @@ export class LineSeriesComponent<T extends BasePoint>
 
   override ngOnInit(): void {
     this.display = this.zoomService.zoomed.pipe(
-      map(({ event }) => {
+      map(({event}) => {
         return event?.type === 'end' ? 1 : 0;
       })
     );
 
     this.transform = this.svc.pointerMove.pipe(
-      filter(({ event }) => event),
-      map(({ event }) => {
-        const transform = this.getTransform(event);
+      filter((event: PointerEvent) => event != null),
+      withLatestFrom(this.scaleService.xScaleMap, this.scaleService.yScaleMap),
+      map((data: [PointerEvent, Map<number | string, any>, Map<number | string, any>]) => {
+        const [event, x, y] = data;
+        const transform = this.getTransform(event, x, y);
 
         return transform;
       }),
@@ -65,6 +66,21 @@ export class LineSeriesComponent<T extends BasePoint>
         });
       })
     );
+
+    this.path = combineLatest([this.scaleService.xScaleMap, this.scaleService.yScaleMap]).pipe(
+      map((data: [Map<number | string, any>, Map<number | string, any>]) => {
+        const [x, y] = data;
+        this.x = x.get(this.series.xAxisIndex);
+        this.y = y.get(this.series.yAxisIndex);
+
+        const line = d3
+          .line<BasePoint>()
+          .defined((point) => point.x !== null || point.y !== null)
+          .x((point) => this.x(point.x))
+          .y((point) => this.y(point.y));
+
+        return line(this.series.data);
+      }));
   }
 
   ngAfterViewInit() {
@@ -98,7 +114,7 @@ export class LineSeriesComponent<T extends BasePoint>
       .drag()
       .subject(function (event, d: BasePoint) {
         const node = d3.select(this);
-        return { x: node.attr('cx'), y: node.attr('cy') };
+        return {x: node.attr('cx'), y: node.attr('cy')};
       })
       .on(
         'start drag end',
@@ -126,30 +142,16 @@ export class LineSeriesComponent<T extends BasePoint>
       .node() as SVGGeometryElement;
   }
 
-  getPath() {
-    this.x = this.scaleService.xScales.get(this.series.xAxisIndex);
-    this.y = this.scaleService.yScales.get(this.series.yAxisIndex);
-
-    const line = d3
-      .line<BasePoint>()
-      .defined((point) => point.x !== null || point.y !== null)
-      .x((point) => this.x(point.x))
-      .y((point) => this.y(point.y));
-
-    const path = line(this.series.data);
-
-    return path;
-  }
 
   getMarkers() {
     return this.series.data?.filter((_) => _?.marker);
   }
 
-  getTransform(event: any): Pick<BasePoint, 'x' | 'y'> {
+  getTransform(event: any, x: Map<number | string, any>, y: Map<number | string, any>): Pick<BasePoint, 'x' | 'y'> {
     const mouse = [event?.offsetX, event?.offsetY];
 
-    const foundX = this.scaleService.xScales.get(this.series.xAxisIndex);
-    const foundY = this.scaleService.yScales.get(this.series.yAxisIndex);
+    const foundX = x.get(this.series.xAxisIndex);
+    const foundY = y.get(this.series.yAxisIndex);
 
     const tooltipTracking = this.config?.tooltip?.tracking;
 
@@ -209,7 +211,7 @@ export class LineSeriesComponent<T extends BasePoint>
       );
 
       this.svc.setTooltip({
-        point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },
+        point: {x: foundX.invert(intersect.x), y: foundY.invert(intersect.y)},
         series: this.series,
       });
 

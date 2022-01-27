@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 import {IChartConfig} from '../model/i-chart-config';
-import {combineLatest, map, Observable, ReplaySubject, Subject} from 'rxjs';
-import {ScaleService} from './scale.service';
+import {BehaviorSubject, map, Observable, Subject} from 'rxjs';
 import {IChartEvent} from '../model/i-chart-event';
 import {IDisplayTooltip} from '../model/i-display-tooltip';
 import {PlotBand} from '../model/plot-band';
 import {PlotLine} from '../model/plot-line';
 import {IPointMove} from '../model/i-point-move';
-import {defaultConfig} from '@ngneat/transloco';
+import {defaultChartConfig} from '../default/default-chart-config';
+
 
 @Injectable({
   providedIn: 'root',
@@ -15,15 +15,15 @@ import {defaultConfig} from '@ngneat/transloco';
 export class ChartService {
   public config: Observable<IChartConfig>;
   public size: Observable<DOMRect>;
-  public pointerMove: Observable<any>;
+  public pointerMove: Observable<PointerEvent>;
   public tooltips: Observable<IDisplayTooltip>;
   public plotBandMove: Observable<IChartEvent<PlotBand>>;
   public plotLineMove: Observable<IChartEvent<PlotLine>>;
   public pointMove: Observable<IChartEvent<IPointMove>>;
 
-  private config$ = new ReplaySubject<IChartConfig>(1);
-  private size$ = new ReplaySubject<DOMRect>(1);
-  private pointerMove$ = new Subject<any>();
+  private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig);
+  private size$ = new BehaviorSubject<DOMRect>(new DOMRectReadOnly());
+  private pointerMove$ = new Subject<PointerEvent>();
   private tooltips$ = new Subject<IDisplayTooltip>();
   private plotBandMove$ = new Subject<IChartEvent<PlotBand>>();
   private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();
@@ -31,9 +31,7 @@ export class ChartService {
 
   private _config: IChartConfig;
 
-  constructor(
-    private scaleService: ScaleService
-  ) {
+  constructor() {
     this.config = this.config$.asObservable().pipe(map(this.setDefaults));
     this.size = this.size$.asObservable();
     this.pointerMove = this.pointerMove$.asObservable();
@@ -41,16 +39,6 @@ export class ChartService {
     this.plotBandMove = this.plotBandMove$.asObservable();
     this.plotLineMove = this.plotLineMove$.asObservable();
     this.pointMove = this.pointMove$.asObservable();
-
-    combineLatest([this.size, this.config])
-      .pipe(
-        map((data: [DOMRect, IChartConfig]) => {
-          const [size, config] = data;
-          this.scaleService.createScales(size);
-          this.scaleService.createAxes(config);
-        })
-      )
-      .subscribe();
   }
 
   public init(config: IChartConfig) {
@@ -71,7 +59,7 @@ export class ChartService {
       });
     }
 
-    this.scaleService.createAxes(this._config);
+    // this.scaleService.createAxes(this._config);
   }
 
   public setConfig(config: IChartConfig) {
@@ -87,8 +75,8 @@ export class ChartService {
     } as any);
   }
 
-  public setPointerMove(event: any) {
-    this.pointerMove$.next({event});
+  public setPointerMove(event: PointerEvent) {
+    this.pointerMove$.next(event);
   }
 
   public setTooltip(tooltip: IDisplayTooltip) {
@@ -121,6 +109,6 @@ export class ChartService {
       }
     });
 
-    return  Object.assign(defaultConfig, config);
+    return Object.assign(defaultChartConfig, config);
   }
 }

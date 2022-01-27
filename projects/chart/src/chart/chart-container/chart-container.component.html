@@ -1,27 +1,32 @@
 <ng-container *ngIf="{
   size: size | async,
-  config: config | async
+  config: config | async,
+  xAxisMap: xAxisMap | async,
+  yAxisMap: yAxisMap | async,
+  xScaleMap: xScaleMap | async,
+  yScaleMap: yScaleMap | async
 } as data">
   <teta-tooltip [size]="data.size" [config]="data.config"></teta-tooltip>
   <svg height="100%" width="100%" class="position-absolute">
     <g class="y-axis-container">
-      <g *ngFor="let item of yAxes | keyvalue"
+      <g *ngFor="let item of data.yAxisMap | keyvalue"
          teta-y-axis
          [axis]="item.value"
+         [scale]="data.yScaleMap.get(item.key)"
          [size]="data.size"
-         [attr.transform]="getTranslate(item.value, data.size)"></g>
+         [attr.transform]="getTranslate(item.value, data.size) | async"></g>
 
     </g>
     <g class="x-axis-container">
-      <g *ngFor="let item of xAxes | keyvalue"
+      <g *ngFor="let item of data.xAxisMap | keyvalue"
          teta-x-axis
          [axis]="item.value"
+         [scale]="data.xScaleMap.get(item.key)"
          [size]="data.size"
-         [attr.transform]="getTranslate(item.value, data.size)"></g>
+         [attr.transform]="getTranslate(item.value, data.size) | async"></g>
     </g>
   </svg>
-
-  <ng-container *ngIf="data.size && getVisibleRect(data.size) as rect">
+  <ng-container *ngIf="visibleRect | async as rect">
     <svg
       tetaZoomable
       tetaBrushable
@@ -29,46 +34,52 @@
       [config]="config | async"
       [attr.width]="rect.width"
       [attr.height]="rect.height"
-      [attr.transform]="'translate('+ rect.left +', '+ rect.top +')'"
+      [attr.transform]="'translate('+ rect.x +', '+ rect.y +')'"
       [attr.viewBox]="'0 0 ' + rect.width + ' ' + rect.height"
       (mouseleave)="mouseLeave($event)"
       (mousemove)="mouseMove($event)">
       <g>
         <g>
-          <g class="gridlines" teta-gridlines [size]="data.size"></g>
-
+          <g class="gridlines"
+             teta-gridlines
+             [size]="data.size"
+             [xScaleMap]="data.xScaleMap"
+             [yScaleMap]="data.yScaleMap"></g>
           <g class="x-axis-plotline-container">
             <ng-container *ngFor="let axis of data.config.xAxis; let i = index">
               <g teta-plot-line *ngFor="let plotLine of axis.plotLines"
                  [plotLine]="plotLine"
+                 [scale]="data.xScaleMap.get(i)"
                  [size]="data.size"
-                 [axis]="xAxes.get(i)"></g>
+                 [axis]="data.xAxisMap.get(i)"></g>
             </ng-container>
           </g>
-
           <g class="y-axis-plotline-container">
             <ng-container *ngFor="let axis of data.config.yAxis; let i = index">
               <g teta-plot-line *ngFor="let plotLine of axis.plotLines"
                  [plotLine]="plotLine"
+                 [scale]="data.yScaleMap.get(i)"
                  [size]="data.size"
-                 [axis]="yAxes.get(i)"></g>
+                 [axis]="data.yAxisMap.get(i)"></g>
             </ng-container>
           </g>
 
           <g class="x-axis-plotband-container">
             <ng-container *ngFor="let axis of data.config.xAxis; let i = index">
               <g teta-plot-band *ngFor="let plotBand of axis.plotBands"
-                 [plotband]="plotBand"
+                 [plotBand]="plotBand"
+                 [scale]="data.xScaleMap.get(i)"
                  [size]="data.size"
-                 [axis]="xAxes.get(i)"></g>
+                 [axis]="data.xAxisMap.get(i)"></g>
             </ng-container>
           </g>
           <g class="y-axis-plotband-container">
             <ng-container *ngFor="let axis of data.config.yAxis; let i = index">
               <g teta-plot-band *ngFor="let plotBand of axis.plotBands"
-                 [plotband]="plotBand"
+                 [plotBand]="plotBand"
+                 [scale]="data.yScaleMap.get(i)"
                  [size]="data.size"
-                 [axis]="yAxes.get(i)"></g>
+                 [axis]="data.yAxisMap.get(i)"></g>
             </ng-container>
           </g>
           <g class="series-container">

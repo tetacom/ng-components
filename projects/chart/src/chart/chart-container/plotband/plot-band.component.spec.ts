@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlotbandComponent } from './plotband.component';
+import { PlotBandComponent } from './plot-band.component';
 
 describe('PlotbandComponent', () => {
-  let component: PlotbandComponent;
-  let fixture: ComponentFixture<PlotbandComponent>;
+  let component: PlotBandComponent;
+  let fixture: ComponentFixture<PlotBandComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlotbandComponent ]
+      declarations: [ PlotBandComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PlotbandComponent);
+    fixture = TestBed.createComponent(PlotBandComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

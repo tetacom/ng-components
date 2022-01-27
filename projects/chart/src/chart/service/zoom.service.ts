@@ -2,7 +2,7 @@ import {ElementRef, Injectable} from '@angular/core';
 import * as d3 from 'd3';
 import {D3ZoomEvent, zoomIdentity} from 'd3';
 import {ScaleService} from './scale.service';
-import {map, merge, Observable, of, Subject, Subscription} from 'rxjs';
+import {map, merge, Observable, of, Subject, Subscription, withLatestFrom} from 'rxjs';
 import {ZoomType} from '../model/enum/zoom-type';
 import {IChartConfig} from '../model/i-chart-config';
 import {BroadcastService} from './broadcast.service';
@@ -32,12 +32,13 @@ export class ZoomService {
   ) {
     this.zoomed = this.zoomed$.asObservable();
 
-    merge(of(1), this.chartService.size)
+    this.chartService.size
       .pipe(
-        map((_) => {
-          this.x = new Map(this.scaleService.xScales);
-          this.y = new Map(this.scaleService.yScales);
-
+        withLatestFrom(this.scaleService.xScaleMap, this.scaleService.yScaleMap),
+        map((data: [DOMRect, Map<string | number, any>, Map<string | number, any>]) => {
+          [, this.x, this.y] = data;
+          // = new Map(this.scaleService.xScaleMap);
+          // = new Map(this.scaleService.yScaleMap);
           if (this.svg) {
             const currentTransform = d3.zoomTransform(this.svg.node());
             this.setZoom(currentTransform);
@@ -56,34 +57,34 @@ export class ZoomService {
 
     const zoomed = (event: D3ZoomEvent<any, any>) => {
       const {transform} = event;
+      /* TODO: calc zoom*/
+      // if (zoomType === ZoomType.x || zoomType === ZoomType.xy) {
+      //   for (let [index, scale] of this.x.entries()) {
+      //     this.scaleService.xScaleMap.set(index, transform.rescaleX(scale));
+      //   }
+      // }
+      //
+      // if (zoomType === ZoomType.y || zoomType === ZoomType.xy) {
+      //   for (let [index, scale] of this.y.entries()) {
+      //     this.scaleService.yScaleMap.set(index, transform.rescaleY(scale));
+      //   }
+      // }
 
-      if (zoomType === ZoomType.x || zoomType === ZoomType.xy) {
-        for (let [index, scale] of this.x.entries()) {
-          this.scaleService.xScales.set(index, transform.rescaleX(scale));
-        }
-      }
-
-      if (zoomType === ZoomType.y || zoomType === ZoomType.xy) {
-        for (let [index, scale] of this.y.entries()) {
-          this.scaleService.yScales.set(index, transform.rescaleY(scale));
-        }
-      }
-
-      if (enable) {
-        this.zoomed$.next({event});
-
-        if (event.sourceEvent) {
-          this.broadcastService.broadcast({
-            channel: config?.zoom?.syncChannel,
-            message: event,
-            domain: this.scaleService[
-              config?.zoom?.type === ZoomType.x ? 'xScales' : 'yScales'
-              ]
-              .get(config.brush?.axisIndex ?? 0)
-              .domain(),
-          });
-        }
-      }
+      // if (enable) {
+      //   this.zoomed$.next({event});
+      //
+      //   if (event.sourceEvent) {
+      //     this.broadcastService.broadcast({
+      //       channel: config?.zoom?.syncChannel,
+      //       message: event,
+      //       domain: this.scaleService[
+      //         config?.zoom?.type === ZoomType.x ? 'xScaleMap' : 'yScaleMap'
+      //         ]
+      //         .get(config.brush?.axisIndex ?? 0)
+      //         .domain(),
+      //     });
+      //   }
+      // }
     };
 
     if (enable) {

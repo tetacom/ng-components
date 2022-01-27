@@ -55,7 +55,7 @@ export class TooltipComponent implements OnInit, OnDestroy {
     );
 
     this.position = this.svc.pointerMove.pipe(
-      filter(({event}) => event),
+      filter((event) => !!event),
       map((_) => {
         return this.getPoisition(_);
       }),
