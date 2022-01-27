@@ -1,12 +1,9 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, DoCheck,
+  Component,
   ElementRef,
-  OnChanges,
   OnInit,
-  SimpleChanges,
 } from '@angular/core';
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from '../service/chart.service';
@@ -24,7 +21,7 @@ type Opposite = boolean;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartContainerComponent
-  implements OnInit, OnChanges, AfterViewInit, DoCheck {
+  implements OnInit {
   config: Observable<IChartConfig>;
 
   yAxisMap: Observable<Map<number, Axis>>;
@@ -184,21 +181,5 @@ export class ChartContainerComponent
 
   id(): string {
     return this.uniqId;
-  }
-
-  ngAfterContentChecked(): void {
-    console.log('ngAfterContentChecked');
-  }
-
-  ngAfterViewChecked(): void {
-    console.log('ngAfterViewChecked');
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes', changes);
-  }
-
-  ngDoCheck() {
-    console.log('ngDoCheck');
   }
 }
