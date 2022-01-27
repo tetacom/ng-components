@@ -1,20 +1,16 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
-  Input, OnChanges,
+  Input,
+  OnChanges,
   OnDestroy,
-  OnInit, SimpleChanges,
+  OnInit,
   ViewChild,
 } from '@angular/core';
-import {Axis} from '../../core/axis/axis';
+import { Axis } from '../../core/axis/axis';
 import * as d3 from 'd3';
-import {ScaleService} from '../../service/scale.service';
-import {ChartService} from '../../service/chart.service';
-import {ZoomService} from '../../service/zoom.service';
-import {merge, takeWhile, tap} from 'rxjs';
 
 @Component({
   selector: '[teta-y-axis]',
@@ -22,33 +18,25 @@ import {merge, takeWhile, tap} from 'rxjs';
   styleUrls: ['./y-axis.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
+export class YAxisComponent implements OnInit, AfterViewInit {
   @Input() axis: Axis;
-  @Input() scale: any;
+  @Input() set scale(scale: any) {
+    this._scale = scale;
+    this.draw();
+  }
+
+  get scale() {
+    return this._scale;
+  }
   @Input() size: DOMRect;
-  @ViewChild('svg', {static: false}) node: ElementRef;
+  @ViewChild('svg', { static: false }) node: ElementRef;
 
   private _alive = true;
+  private _scale: any;
 
-  constructor(
-    private scaleService: ScaleService,
-    private chartService: ChartService,
-    private cdr: ChangeDetectorRef,
-    private zoomService: ZoomService
-  ) {
-    merge(this.zoomService.zoomed, this.chartService.size)
-      .pipe(
-        takeWhile(() => this._alive),
-        tap((_) => {
-          this.draw();
-          this.cdr.markForCheck();
-        })
-      )
-      .subscribe();
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this._alive = false;
@@ -56,10 +44,6 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit, OnChang
 
   ngAfterViewInit() {
     this.draw();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log('yAxis', changes);
   }
 
   getLabelTransform() {
@@ -77,21 +61,17 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit, OnChang
       return;
     }
 
-    const scale = this.scale;
-
     const axis = this.axis.options.opposite
       ? d3
-        .axisRight(scale)
-        // .tickValues(this.axis.tickValues)
-        .tickFormat(
-          this.axis.options.tickFormat ?? this.axis.defaultFormatter()
-        )
+          .axisRight(this.scale)
+          .tickFormat(
+            this.axis.options.tickFormat ?? this.axis.defaultFormatter()
+          )
       : d3
-        .axisLeft(scale)
-        // .tickValues(this.axis.tickValues)
-        .tickFormat(
-          this.axis.options.tickFormat ?? this.axis.defaultFormatter()
-        );
+          .axisLeft(this.scale)
+          .tickFormat(
+            this.axis.options.tickFormat ?? this.axis.defaultFormatter()
+          );
 
     d3.select(this.node.nativeElement)
       .call(axis)

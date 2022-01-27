@@ -5,12 +5,13 @@ import {
   ElementRef,
   OnInit,
 } from '@angular/core';
-import {IChartConfig} from '../model/i-chart-config';
-import {ChartService} from '../service/chart.service';
-import {combineLatest, map, Observable, tap} from 'rxjs';
-import {Axis} from '../core/axis/axis';
-import {AxisOrientation} from '../model/enum/axis-orientation';
-import {ScaleService} from '../service/scale.service';
+import { IChartConfig } from '../model/i-chart-config';
+import { ChartService } from '../service/chart.service';
+import { combineLatest, map, Observable, tap } from 'rxjs';
+import { Axis } from '../core/axis/axis';
+import { AxisOrientation } from '../model/enum/axis-orientation';
+import { ScaleService } from '../service/scale.service';
+import { IChartEvent } from '../model/i-chart-event';
 
 type Opposite = boolean;
 
@@ -20,8 +21,7 @@ type Opposite = boolean;
   styleUrls: ['./chart-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChartContainerComponent
-  implements OnInit {
+export class ChartContainerComponent implements OnInit {
   config: Observable<IChartConfig>;
 
   yAxisMap: Observable<Map<number, Axis>>;
@@ -34,8 +34,10 @@ export class ChartContainerComponent
   private _observer: ResizeObserver;
   private uniqId: string;
 
-  private filterPositionMap = new Map<Opposite,
-    (axis: Axis) => (_: Axis) => boolean>()
+  private filterPositionMap = new Map<
+    Opposite,
+    (axis: Axis) => (_: Axis) => boolean
+  >()
     .set(
       true,
       (axis) => (_: Axis) =>
@@ -53,56 +55,74 @@ export class ChartContainerComponent
     private _svc: ChartService,
     private _cdr: ChangeDetectorRef,
     private _scaleService: ScaleService,
-    private _elementRef: ElementRef,
+    private _elementRef: ElementRef
   ) {
-    this.config = this._svc.config.pipe(tap(console.log));
-    this.size = this._svc.size.pipe(tap(console.log));
+    this.config = this._svc.config;
+    this.size = this._svc.size;
     this.yAxisMap = this._scaleService.yAxisMap;
     this.xAxisMap = this._scaleService.xAxisMap;
     this.yScaleMap = this._scaleService.yScaleMap;
     this.xScaleMap = this._scaleService.xScaleMap;
-    this.visibleRect = combineLatest([this.size, this.xAxisMap, this.yAxisMap]).pipe(
-      map((data: [DOMRect, Map<number | string, any>, Map<number | string, any>]) => {
-        const [size, x, y] = data;
-        const yAxesArray = [...y.values()];
-        const xAxesArray = [...x.values()];
-        const left = yAxesArray
-          .filter((_) => _.options.opposite !== true && _.options.visible)
-          .reduce(this.sumSize, 0);
+    this.visibleRect = combineLatest([
+      this.size,
+      this.xAxisMap,
+      this.yAxisMap,
+      this._scaleService.zoomed,
+    ]).pipe(
+      map(
+        (
+          data: [
+            DOMRect,
+            Map<number | string, any>,
+            Map<number | string, any>,
+            IChartEvent<Axis>
+          ]
+        ) => {
+          const [size, x, y] = data;
+          const yAxesArray = [...y.values()];
+          const xAxesArray = [...x.values()];
+          const left = yAxesArray
+            .filter((_) => _.options.opposite !== true && _.options.visible)
+            .reduce(this.sumSize, 0);
 
-        const right = yAxesArray
-          .filter((_) => _.options.opposite && _.options.visible)
-          .reduce(this.sumSize, 0);
+          const right = yAxesArray
+            .filter((_) => _.options.opposite && _.options.visible)
+            .reduce(this.sumSize, 0);
 
-        const bottom = xAxesArray
-          .filter((_) => _.options.opposite !== true && _.options.visible)
-          .reduce(this.sumSize, 0);
+          const bottom = xAxesArray
+            .filter((_) => _.options.opposite !== true && _.options.visible)
+            .reduce(this.sumSize, 0);
 
-        const top = xAxesArray
-          .filter((_) => _.options.opposite && _.options.visible)
-          .reduce(this.sumSize, 0);
+          const top = xAxesArray
+            .filter((_) => _.options.opposite && _.options.visible)
+            .reduce(this.sumSize, 0);
 
-        return {
-          x: left,
-          y: top,
-          width: size.width - left - right + 1,
-          height: size.height - top - bottom + 1,
-        };
-      }),
-      tap(_ => this._cdr.detectChanges())
+          return {
+            x: left,
+            y: top,
+            width: size.width - left - right + 1,
+            height: size.height - top - bottom + 1,
+          };
+        }
+      ),
+      tap((_) => this._cdr.detectChanges())
     );
   }
 
   ngOnInit(): void {
     this.uniqId = (Date.now() + Math.random()).toString(36);
     this._observer = new ResizeObserver((entries: ResizeObserverEntry[]) => {
-      this._svc.setSize(entries[0].contentRect);
+      requestAnimationFrame(() => {
+        if (!Array.isArray(entries) || !entries.length) {
+          return;
+        }
+        this._svc.setSize(entries[0].contentRect);
+      });
     });
     this._observer.observe(this._elementRef.nativeElement);
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   private sumSize = (acc, curr) => acc + curr.selfSize;
 
@@ -166,9 +186,8 @@ export class ChartContainerComponent
         }
 
         return 'translate(0, 0)';
-      }));
-
-
+      })
+    );
   }
 
   mouseMove(event) {

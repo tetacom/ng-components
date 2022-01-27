@@ -36,20 +36,9 @@ export class PlotlineComponent implements OnInit {
     private scaleService: ScaleService,
     private chartService: ChartService,
     private element: ElementRef
-  ) {
-    // this.zoomService.zoomed.subscribe(() => {
-    //   this.scale = this.scaleService[
-    //     this.axis.orientation === AxisOrientation.x ? 'xScaleMap' : 'yScaleMap'
-    //   ].get(this.axis.index);
-    //   this.cdr.detectChanges();
-    // });
-  }
+  ) {}
 
   ngOnInit(): void {
-    // this.scale = this.scaleService[
-    //   this.axis.orientation === AxisOrientation.x ? 'xScaleMap' : 'yScaleMap'
-    // ].get(this.axis.index);
-
     this._domain = this.scale.domain();
 
     const plotlineElement = d3

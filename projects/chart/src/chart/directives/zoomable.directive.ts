@@ -13,15 +13,12 @@ export class ZoomableDirective {
 
   @HostBinding('class.zoomable') private zoomable = false;
 
-  constructor(
-    private element: ElementRef,
-    private svc: ZoomService
-  ) {}
+  constructor(private element: ElementRef, private svc: ZoomService) {}
 
   ngOnInit() {
-    if (this.config?.zoom?.enable) {
+    if (this.axis?.options.zoom) {
       this.zoomable = true;
-      this.svc.applyZoom(this.element, this.config, this.size);
+      this.svc.applyZoom(this.element, this.config, this.size, this.axis);
     }
   }
   ngAfterViewInit() {}

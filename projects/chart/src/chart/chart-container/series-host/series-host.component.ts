@@ -18,7 +18,7 @@ import { ChartService } from '../../service/chart.service';
 import { tap } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
 import { SeriesType } from '../../model/enum/series-type';
-import {IChartConfig} from '../../model/i-chart-config';
+import { IChartConfig } from '../../model/i-chart-config';
 
 @Component({
   selector: '[teta-series-host]',

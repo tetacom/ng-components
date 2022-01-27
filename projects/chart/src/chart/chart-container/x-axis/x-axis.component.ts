@@ -5,8 +5,10 @@ import {
   Component,
   ElementRef,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { Axis } from '../../core/axis/axis';
@@ -24,32 +26,25 @@ import { merge, takeWhile, tap } from 'rxjs';
 })
 export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() axis: Axis;
-  @Input() scale: any;
+  @Input() set scale(scale: any) {
+    this._scale = scale;
+
+    this.draw();
+  }
+
+  get scale() {
+    return this._scale;
+  }
+
   @Input() size: DOMRect;
   @ViewChild('svg') node: ElementRef;
 
+  private _scale: any;
   private _alive = true;
 
-  constructor(
-    private scaleService: ScaleService,
-    private chartService: ChartService,
-    private cdr: ChangeDetectorRef,
-    private zoomService: ZoomService
-  ) {
+  constructor() {}
 
-  }
-
-  ngOnInit(): void {
-    merge(this.zoomService.zoomed, this.chartService.size)
-      .pipe(
-        takeWhile(() => this._alive),
-        tap((_) => {
-          this.draw();
-          this.cdr.detectChanges();
-        })
-      )
-      .subscribe();
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this._alive = false;
@@ -64,16 +59,14 @@ export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    const scale = this.scale;
-
     const axis = this.axis.options.opposite
       ? d3
-          .axisTop(scale)
+          .axisTop(this.scale)
           .tickFormat(
             this.axis.options.tickFormat ?? this.axis.defaultFormatter()
           )
       : d3
-          .axisBottom(scale)
+          .axisBottom(this.scale)
           .tickFormat(
             this.axis.options.tickFormat ?? this.axis.defaultFormatter()
           );

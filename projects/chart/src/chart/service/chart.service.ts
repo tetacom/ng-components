@@ -1,13 +1,12 @@
-import {Injectable} from '@angular/core';
-import {IChartConfig} from '../model/i-chart-config';
-import {BehaviorSubject, map, Observable, Subject} from 'rxjs';
-import {IChartEvent} from '../model/i-chart-event';
-import {IDisplayTooltip} from '../model/i-display-tooltip';
-import {PlotBand} from '../model/plot-band';
-import {PlotLine} from '../model/plot-line';
-import {IPointMove} from '../model/i-point-move';
-import {defaultChartConfig} from '../default/default-chart-config';
-
+import { Injectable } from '@angular/core';
+import { IChartConfig } from '../model/i-chart-config';
+import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
+import { IChartEvent } from '../model/i-chart-event';
+import { IDisplayTooltip } from '../model/i-display-tooltip';
+import { PlotBand } from '../model/plot-band';
+import { PlotLine } from '../model/plot-line';
+import { IPointMove } from '../model/i-point-move';
+import { defaultChartConfig } from '../default/default-chart-config';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +22,7 @@ export class ChartService {
 
   private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig);
   private size$ = new BehaviorSubject<DOMRect>(new DOMRectReadOnly());
-  private pointerMove$ = new Subject<PointerEvent>();
+  private pointerMove$ = new BehaviorSubject<PointerEvent>(null);
   private tooltips$ = new Subject<IDisplayTooltip>();
   private plotBandMove$ = new Subject<IChartEvent<PlotBand>>();
   private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();
@@ -58,8 +57,6 @@ export class ChartService {
         };
       });
     }
-
-    // this.scaleService.createAxes(this._config);
   }
 
   public setConfig(config: IChartConfig) {
@@ -67,12 +64,7 @@ export class ChartService {
   }
 
   public setSize(size: DOMRect) {
-    this.size$.next({
-      x: size.x,
-      top: size.top,
-      width: size.width,
-      height: size.height
-    } as any);
+    this.size$.next(size);
   }
 
   public setPointerMove(event: PointerEvent) {
@@ -94,10 +86,6 @@ export class ChartService {
   public emitPoint(event: IChartEvent<IPointMove>) {
     this.pointMove$.next(event);
   }
-
-  // get config(): IChartConfig {
-  //   return this._config;
-  // }
 
   private setDefaults(config: IChartConfig): IChartConfig {
     config?.series?.forEach((_) => {

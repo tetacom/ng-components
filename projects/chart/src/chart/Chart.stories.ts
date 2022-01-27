@@ -1,19 +1,19 @@
-import {Meta} from '@storybook/angular/types-6-0';
-import {withKnobs} from '@storybook/addon-knobs';
-import {ChartComponent} from './chart/chart.component';
-import {ChartModule} from './chart.module';
-import {IconModule} from '../../../components/src/component/icon/icon.module';
-import {ButtonModule} from '../../../components/src/component/button/button.module';
-import {IChartConfig} from './model/i-chart-config';
-import {AxisType} from './model/enum/axis-type';
-import {SeriesType} from './model/enum/series-type';
-import {randomInt} from 'd3-random';
+import { Meta } from '@storybook/angular/types-6-0';
+import { withKnobs } from '@storybook/addon-knobs';
+import { ChartComponent } from './chart/chart.component';
+import { ChartModule } from './chart.module';
+import { IconModule } from '../../../components/src/component/icon/icon.module';
+import { ButtonModule } from '../../../components/src/component/button/button.module';
+import { IChartConfig } from './model/i-chart-config';
+import { AxisType } from './model/enum/axis-type';
+import { SeriesType } from './model/enum/series-type';
+import { randomInt } from 'd3-random';
 import * as faker from 'faker';
-import {ZoomType} from './model/enum/zoom-type';
-import {PlotBand} from './model/plot-band';
-import {PlotLine} from './model/plot-line';
-import {TooltipTracking} from './model/enum/tooltip-tracking';
-import {BrushType} from './model/enum/brush-type';
+import { ZoomType } from './model/enum/zoom-type';
+import { PlotBand } from './model/plot-band';
+import { PlotLine } from './model/plot-line';
+import { TooltipTracking } from './model/enum/tooltip-tracking';
+import { BrushType } from './model/enum/brush-type';
 
 export default {
   title: 'Component/Chart',
@@ -182,38 +182,35 @@ const seriesType = [SeriesType.line, SeriesType.line, SeriesType.line];
 faker.locale = 'ru';
 
 const createSeries = (size: number) => {
-  return seriesType.map(
-    (type: SeriesType, index: number) => {
-      return {
-        id: index,
-        type,
-        name: faker.address.cityName(),
-        yAxisIndex: 0,
-        xAxisIndex: 0,
-        color: cssColorNames[randomColor()].toLowerCase(),
-        data: Array.from(Array(size).keys()).map((key, index) => {
-          const num = faker.datatype.number({
-            min: faker.datatype.number({min: 0, max: 100}),
-            max: faker.datatype.number({min: 200, max: 500})
-          });
+  return seriesType.map((type: SeriesType, index: number) => {
+    return {
+      id: index,
+      type,
+      name: faker.address.cityName(),
+      yAxisIndex: 0,
+      xAxisIndex: 0,
+      color: cssColorNames[randomColor()].toLowerCase(),
+      data: Array.from(Array(size).keys()).map((key, index) => {
+        const num = faker.datatype.number({
+          min: faker.datatype.number({ min: 0, max: 100 }),
+          max: faker.datatype.number({ min: 200, max: 500 }),
+        });
 
-          const point = {
-            x: key,
-            y: num,
-          };
+        const point = {
+          x: key,
+          y: num,
+        };
 
-          // if (index % 10 === 0) {
-          //   point.x = null;
-          //   point.y = null;
-          // }
+        // if (index % 10 === 0) {
+        //   point.x = null;
+        //   point.y = null;
+        // }
 
-          return point;
-        }),
-      };
-    }
-  );
+        return point;
+      }),
+    };
+  });
 };
-
 
 const plotbands2 = [
   new PlotBand({
@@ -244,8 +241,8 @@ const createChart = (size: number): IChartConfig => {
     ],
     yAxis: [
       {
-        min: faker.datatype.number({min: -100, max: 100}),
-        max: faker.datatype.number({min: 400, max: 600}),
+        min: faker.datatype.number({ min: -100, max: 100 }),
+        max: faker.datatype.number({ min: 400, max: 600 }),
         title: 'атм',
         plotLines: [
           new PlotLine({
@@ -261,8 +258,8 @@ const createChart = (size: number): IChartConfig => {
         type: AxisType.number,
         min: 1000,
         opposite: true,
-        max: 2000
-      }
+        max: 2000,
+      },
     ],
     brush: {
       enable: false,
@@ -271,7 +268,7 @@ const createChart = (size: number): IChartConfig => {
     zoom: {
       enable: true,
       type: ZoomType.x,
-      syncChannel: 'channelA'
+      syncChannel: 'channelA',
     },
     legend: {
       enable: true,
@@ -285,15 +282,15 @@ export const basicChart = () => ({
     imports: [ChartModule, IconModule, ButtonModule],
   },
   props: {
-    config: createChart(100),
-    createChart: createChart
+    config: createChart(1500),
+    createChart: createChart,
   },
   template: `
     <div>
-      <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 100%; height: 100vh;">
+      <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 100%; height: 80vh;">
         <button teta-button
           [palette]="'primary'"
-          (click)="config=createChart(100)">
+          (click)="config=createChart(1500)">
           Create new Data
         </button>
         <button teta-button

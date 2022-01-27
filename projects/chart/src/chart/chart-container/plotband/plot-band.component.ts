@@ -38,24 +38,13 @@ export class PlotBandComponent implements OnInit {
     private chartService: ChartService,
     private cdr: ChangeDetectorRef,
     private element: ElementRef
-  ) {
-    this.zoomService.zoomed.subscribe(() => {
-      // this.scale = this.scaleService[
-      //   this.axis.orientation === AxisOrientation.x ? 'xScaleMap' : 'yScaleMap'
-      // ].get(this.axis.index);
-      this.cdr.detectChanges();
-    });
-  }
+  ) {}
 
   emit(event: IChartEvent<PlotBand>) {
     this.chartService.emitPlotband(event);
   }
 
   ngOnInit(): void {
-    // this.scale = this.scaleService[
-    //   this.axis.orientation === AxisOrientation.x ? 'xScaleMap' : 'yScaleMap'
-    // ].get(this.axis.index);
-
     this.domain = this.scale.domain();
 
     const plotbandElement = d3
