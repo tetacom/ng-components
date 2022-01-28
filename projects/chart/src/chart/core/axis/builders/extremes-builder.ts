@@ -25,9 +25,7 @@ export class ExtremesBuilder implements IBuilder<Axis, [number, number]> {
         return acc.concat(current.data);
       }, []);
       const accessor = this.extentAccessorMap.get(settings.orientation);
-      // add negative axis!
-
-      this.extremes = d3.extent(data, accessor);
+      this.extremes = data.length > 1 ? d3.extent(data, accessor) : [0, 0];
     }
 
     if (hasMin) {

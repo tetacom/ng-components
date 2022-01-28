@@ -1,13 +1,18 @@
 import { ElementRef, Injectable } from '@angular/core';
 import * as d3 from 'd3';
-import { D3ZoomEvent } from 'd3';
-import { BehaviorSubject, map, Observable, Subscription } from 'rxjs';
+import { D3ZoomEvent, zoomIdentity, ZoomTransform, zoomTransform } from 'd3';
+import {
+  BehaviorSubject,
+  map,
+  Observable,
+  shareReplay,
+  Subscription,
+} from 'rxjs';
 import { IChartConfig } from '../model/i-chart-config';
 import { BroadcastService } from './broadcast.service';
 import { BrushType } from '../model/enum/brush-type';
 import { Axis } from '../core/axis/axis';
 import { IChartEvent } from '../model/i-chart-event';
-import { AxisOrientation } from '../model/enum/axis-orientation';
 
 @Injectable({
   providedIn: 'root',
@@ -39,20 +44,34 @@ export class ZoomService {
 
     const enable = axis?.options?.zoom || config?.zoom?.enable;
 
-    // const zoomCountX = Array.from(config?.xAxis).reduce(
-    //   (acc, cur) => (cur.zoom ? acc++ : acc),
-    //   0
-    // );
-    //
-    // const zoomCountY = Array.from(config?.yAxis).reduce(
-    //   (acc, cur) => (cur.zoom ? acc++ : acc),
-    //   0
-    // );
+    this.zoomed
+      .pipe(
+        map((_) => {
+          const transform = _?.event?.transform;
 
-    // console.log(zoomCountX, zoomCountY);
+          if (transform === undefined) {
+            return;
+          }
+
+          const currentTransform = this.svg
+            ? d3.zoomTransform(svgElement.nativeElement)
+            : zoomIdentity;
+
+          if (currentTransform !== transform && _?.event?.type === 'end') {
+            this.setZoom(_?.event?.transform, { type: 'syncNodes' });
+          }
+
+          console.log(currentTransform, svgElement);
+        })
+      )
+      .subscribe();
 
     const zoomed = (event: D3ZoomEvent<any, any>) => {
       if (enable) {
+        if (event.sourceEvent?.type === 'syncNodes') {
+          return;
+        }
+
         this.zoomed$.next({
           event,
           target: axis,
@@ -126,11 +145,15 @@ export class ZoomService {
     }
   }
 
-  setZoom(transform: any) {
+  setZoom(transform: ZoomTransform, args?: any) {
     // requestAnimationFrame(() => {
     //
     // });
 
-    this.svg?.call(this.zoom.transform, transform);
+    if (args) {
+      this.svg?.call(this.zoom.transform, transform, null, args);
+    } else {
+      this.svg?.call(this.zoom.transform, transform);
+    }
   }
 }

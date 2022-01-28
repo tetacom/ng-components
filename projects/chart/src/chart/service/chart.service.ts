@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { IChartConfig } from '../model/i-chart-config';
-import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, map, Observable, shareReplay, Subject } from 'rxjs';
 import { IChartEvent } from '../model/i-chart-event';
 import { IDisplayTooltip } from '../model/i-display-tooltip';
 import { PlotBand } from '../model/plot-band';
 import { PlotLine } from '../model/plot-line';
 import { IPointMove } from '../model/i-point-move';
 import { defaultChartConfig } from '../default/default-chart-config';
+import { defaultAxisConfig } from '../default/default-axis-config';
+import { defaultSeriesConfig } from '../default/default-series-config';
 
 @Injectable({
   providedIn: 'root',
@@ -88,14 +90,16 @@ export class ChartService {
   }
 
   private setDefaults(config: IChartConfig): IChartConfig {
-    config?.series?.forEach((_) => {
-      if (_.xAxisIndex === null || _.xAxisIndex === undefined) {
-        _.xAxisIndex = 0;
-      }
-      if (_.yAxisIndex === null || _.yAxisIndex === undefined) {
-        _.yAxisIndex = 0;
-      }
-    });
-    return Object.assign(defaultChartConfig, config);
+    const defaultConfig = (defaultConfig) => {
+      return (source) => {
+        return Object.assign({}, defaultConfig, source);
+      };
+    };
+
+    config.xAxis = config.xAxis.map(defaultConfig(defaultAxisConfig));
+    config.yAxis = config.yAxis.map(defaultConfig(defaultAxisConfig));
+    config.series = config.series.map(defaultConfig(defaultSeriesConfig));
+
+    return Object.assign({}, defaultChartConfig, config);
   }
 }

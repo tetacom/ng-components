@@ -64,6 +64,7 @@ export class ScaleService {
         config.yAxis.map((_, index) => {
           map.set(index, Axis.createAxis(AxisOrientation.y, config, index));
         });
+
         return map;
       })
     );

@@ -12,7 +12,7 @@ import { generateTicks } from '../utils/public-api';
 export class Axis {
   private chartConfig: IChartConfig;
   private _orientation: AxisOrientation;
-  private _index: number;
+  private _index: number | string;
   private _extremes: [number, number] = [0, 0];
   private _selfSize: number;
   private _ticksValues: number[];
@@ -22,12 +22,6 @@ export class Axis {
     .set(AxisType.number, d3.format(',.2f'))
     .set(AxisType.time, d3.timeFormat('%B %d, %Y'))
     .set(AxisType.log, d3.format(',.2f'));
-
-  private defaultConfig: AxisOptions = {
-    type: AxisType.number,
-    visible: true,
-    zoom: true,
-  };
 
   constructor(config: IChartConfig) {
     this.chartConfig = config;
@@ -92,8 +86,8 @@ export class Axis {
   }
 
   private setExtremes(): void {
-    this._extremes = new ExtremesBuilder().build(this);
-    this._extremes = d3.nice(this._extremes[0], this._extremes[1], 10);
+    const builder = new ExtremesBuilder();
+    this._extremes = builder.build(this);
   }
 
   private setSelfSize(): void {
@@ -110,7 +104,7 @@ export class Axis {
         ? this.chartConfig.xAxis[this.index]
         : this.chartConfig.yAxis[this.index];
 
-    this._options = Object.assign(this.defaultConfig, options);
+    this._options = options;
   }
 
   get extremes(): Array<number> {
