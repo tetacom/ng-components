@@ -96,7 +96,6 @@ export class ChartService {
         _.yAxisIndex = 0;
       }
     });
-
     return Object.assign(defaultChartConfig, config);
   }
 }

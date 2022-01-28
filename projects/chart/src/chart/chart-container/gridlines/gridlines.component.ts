@@ -13,8 +13,8 @@ import {
 })
 export class GridlinesComponent {
   @Input() size: DOMRect;
-  @Input() xScaleMap: Map<number | string, any>;
-  @Input() yScaleMap: Map<number | string, any>;
+  @Input() xScaleMap: Map<number, any>;
+  @Input() yScaleMap: Map<number, any>;
 
   tickYValues: number[];
   tickXValues: number[];

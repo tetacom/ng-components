@@ -24,11 +24,11 @@ export class ScaleService {
   public yAxisMap: Observable<Map<number, Axis>>;
   public xAxisMap: Observable<Map<number, Axis>>;
 
-  public yScaleMap: Observable<Map<number | string, any>>;
-  public xScaleMap: Observable<Map<number | string, any>>;
+  public yScaleMap: Observable<Map<number, any>>;
+  public xScaleMap: Observable<Map<number, any>>;
 
-  private transformCacheXMap = new Map<number | string, ZoomTransform>();
-  private transformCacheYMap = new Map<number | string, ZoomTransform>();
+  private transformCacheXMap = new Map<number, ZoomTransform>();
+  private transformCacheYMap = new Map<number, ZoomTransform>();
 
   private scaleMapping = new Map<AxisType, any>()
     .set(AxisType.number, d3.scaleLinear)
@@ -80,7 +80,7 @@ export class ScaleService {
         ) => {
           const [[size, config, zoom], yAxes, xAxes] = data;
 
-          const map = new Map<number | string, any>();
+          const map = new Map<number, any>();
 
           const left = [...yAxes.values()]
             .filter((_) => _.options?.visible && _.options?.opposite)
@@ -157,7 +157,7 @@ export class ScaleService {
         ) => {
           const [[size, config, zoom], yAxes, xAxes] = data;
 
-          const map = new Map<number | string, any>();
+          const map = new Map<number, any>();
 
           const top = [...xAxes.values()]
             .filter((_) => _.options?.visible && _.options?.opposite)

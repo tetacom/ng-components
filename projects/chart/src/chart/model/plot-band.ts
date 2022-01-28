@@ -1,7 +1,8 @@
 import { SvgAttributes } from './svg-attributes';
 
 export class PlotBand {
-  id: number | string;
+  id?: number | string;
+  name?: string;
   from: number;
   to: number;
   label?: string;
@@ -16,7 +17,8 @@ export class PlotBand {
   };
 
   constructor(options?: {
-    id: any;
+    id?: number | string;
+    name?: string;
     from: number;
     to: number;
     label?: string;
@@ -31,6 +33,7 @@ export class PlotBand {
     };
   }) {
     this.id = options?.id;
+    this.name = options?.name;
     this.from = options?.from;
     this.to = options?.to;
     this.label = options?.label;

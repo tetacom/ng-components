@@ -15,6 +15,7 @@ import { BarSeriesComponent } from './chart-container/series/bar/bar-series.comp
 import { TooltipComponent } from './chart-container/tooltip/tooltip.component';
 import { ZoomableDirective } from './directives/zoomable.directive';
 import { BrushableDirective } from './directives/brushable.directive';
+import { ScatterSeriesComponent } from './chart-container/series/scatter-series/scatter-series.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { BrushableDirective } from './directives/brushable.directive';
     TooltipComponent,
     ZoomableDirective,
     BrushableDirective,
+    ScatterSeriesComponent,
   ],
   exports: [ChartComponent],
   imports: [CommonModule],

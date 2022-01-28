@@ -18,8 +18,8 @@ export class ZoomService {
   zoomed: Observable<IChartEvent<Axis>>;
   private zoomed$ = new BehaviorSubject<IChartEvent<Axis>>(null);
 
-  private x = new Map<number | string, any>();
-  private y = new Map<number | string, any>();
+  private x = new Map<number, any>();
+  private y = new Map<number, any>();
 
   private zoom: d3.ZoomBehavior<Element, unknown>;
   private svg;

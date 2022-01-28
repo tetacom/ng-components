@@ -20,7 +20,7 @@ import {IChartEvent} from '../model/i-chart-event';
 import {PlotLine} from '../model/plot-line';
 import {PlotBand} from '../model/plot-band';
 import {IPointMove} from '../model/i-point-move';
-import {takeWhile} from 'rxjs';
+import {map, Observable, takeWhile} from 'rxjs';
 
 @Component({
   selector: 'teta-svg-chart',
@@ -36,8 +36,8 @@ import {takeWhile} from 'rxjs';
 })
 export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   legendSeries: Array<Series<BasePoint>>;
-  hasSeriesData: boolean;
-
+  hasSeriesData: Observable<boolean>;
+  svcConfig: Observable<IChartConfig>;
   @Output()
   plotBandsMove: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<IChartEvent<PlotBand>>();
 
@@ -49,21 +49,16 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() set config(config: IChartConfig) {
     this._svc.setConfig(config);
-    this._config = config;
-    this.hasSeriesData = !!config?.series?.every((_) => _.data.length);
   }
 
-  get config() {
-    return this._config;
-  }
-
-  private _config: IChartConfig;
   private _alive = true;
 
   constructor(
     private _svc: ChartService,
     private _zoomService: ZoomService
   ) {
+    this.svcConfig = this._svc.config;
+    this.hasSeriesData = this.svcConfig?.pipe(map(_ => _.series?.every((_) => _.data.length)));
   }
 
   ngOnChanges(changes: SimpleChanges) {

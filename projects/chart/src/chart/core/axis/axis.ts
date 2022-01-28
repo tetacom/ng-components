@@ -12,7 +12,7 @@ import { generateTicks } from '../utils/public-api';
 export class Axis {
   private chartConfig: IChartConfig;
   private _orientation: AxisOrientation;
-  private _index: number | string;
+  private _index: number;
   private _extremes: [number, number] = [0, 0];
   private _selfSize: number;
   private _ticksValues: number[];
@@ -71,10 +71,10 @@ export class Axis {
 
   /**
    *
-   * @param {number | string} index
+   * @param {number} index
    * Index axis
    */
-  private setIndex(index: number | string): void {
+  private setIndex(index: number): void {
     this._index = index;
   }
 
@@ -92,20 +92,16 @@ export class Axis {
   }
 
   private setExtremes(): void {
-    const builder = new ExtremesBuilder();
-    this._extremes = builder.build(this);
-
+    this._extremes = new ExtremesBuilder().build(this);
     this._extremes = d3.nice(this._extremes[0], this._extremes[1], 10);
   }
 
   private setSelfSize(): void {
-    const builder = new AxisSizeBuilder();
-    this._selfSize = builder.build(this);
+    this._selfSize = new AxisSizeBuilder().build(this);
   }
 
   private setTicksValues(): void {
-    const ticks = generateTicks(this._extremes);
-    this._ticksValues = ticks;
+    this._ticksValues = generateTicks(this._extremes);;
   }
 
   private setOptions(): void {

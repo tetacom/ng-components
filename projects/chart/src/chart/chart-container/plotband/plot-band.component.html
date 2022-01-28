@@ -8,6 +8,7 @@
 </svg:rect>
 
 <svg:line class="display-grabber"
+          *ngIf="plotBand.showGrabbers"
           [attr.stroke]="plotBand.style?.grabbers?.stroke || 'red'"
           [attr.stroke-width]="plotBand.style?.grabbers?.strokeWidth || 4"
           [attr.stroke-dasharray]="plotBand.style?.grabbers?.strokeDasharray"
@@ -19,6 +20,7 @@
 </svg:line>
 
 <svg:line class="display-grabber"
+          *ngIf="plotBand.showGrabbers"
           [attr.stroke]="plotBand.style?.grabbers?.stroke || 'red'"
           [attr.stroke-width]="plotBand.style?.grabbers?.strokeWidth || 4"
           [attr.stroke-dasharray]="plotBand.style?.grabbers?.strokeDasharray"

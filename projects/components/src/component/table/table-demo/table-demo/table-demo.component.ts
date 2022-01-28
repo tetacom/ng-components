@@ -47,7 +47,6 @@ export class TableDemoComponent implements OnInit {
 
   ngOnInit(): void {
     this.data = this.getData(this.size);
-    console.log(this.dropdownTpl)
     this.columns = [
       new TableColumn({
         name: 'name',

@@ -5,6 +5,6 @@ export interface BasePoint {
   x1?: number;
   y: number;
   y1?: number;
-  color?: string | number;
+  color?: number;
   marker?: MarkerOptions;
 }

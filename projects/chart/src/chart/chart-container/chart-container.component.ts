@@ -5,14 +5,14 @@ import {
   ElementRef,
   OnInit,
 } from '@angular/core';
-import { IChartConfig } from '../model/i-chart-config';
-import { ChartService } from '../service/chart.service';
-import { combineLatest, map, Observable, tap } from 'rxjs';
-import { Axis } from '../core/axis/axis';
-import { AxisOrientation } from '../model/enum/axis-orientation';
-import { ScaleService } from '../service/scale.service';
-import { IChartEvent } from '../model/i-chart-event';
-import { ZoomService } from '../service/zoom.service';
+import {IChartConfig} from '../model/i-chart-config';
+import {ChartService} from '../service/chart.service';
+import {combineLatest, map, Observable, tap} from 'rxjs';
+import {Axis} from '../core/axis/axis';
+import {AxisOrientation} from '../model/enum/axis-orientation';
+import {ScaleService} from '../service/scale.service';
+import {IChartEvent} from '../model/i-chart-event';
+import {ZoomService} from '../service/zoom.service';
 
 type Opposite = boolean;
 
@@ -27,18 +27,16 @@ export class ChartContainerComponent implements OnInit {
 
   yAxisMap: Observable<Map<number, Axis>>;
   xAxisMap: Observable<Map<number, Axis>>;
-  yScaleMap: Observable<Map<number | string, any>>;
-  xScaleMap: Observable<Map<number | string, any>>;
+  yScaleMap: Observable<Map<number, any>>;
+  xScaleMap: Observable<Map<number, any>>;
   size: Observable<DOMRect>;
   visibleRect: Observable<any>;
 
   private _observer: ResizeObserver;
   private uniqId: string;
 
-  private filterPositionMap = new Map<
-    Opposite,
-    (axis: Axis) => (_: Axis) => boolean
-  >()
+  private filterPositionMap = new Map<Opposite,
+    (axis: Axis) => (_: Axis) => boolean>()
     .set(
       true,
       (axis) => (_: Axis) =>
@@ -75,8 +73,8 @@ export class ChartContainerComponent implements OnInit {
         (
           data: [
             DOMRect,
-            Map<number | string, any>,
-            Map<number | string, any>,
+            Map<number, any>,
+            Map<number, any>,
             IChartEvent<Axis>
           ]
         ) => {
@@ -124,13 +122,14 @@ export class ChartContainerComponent implements OnInit {
     this._observer.observe(this._elementRef.nativeElement);
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+  }
 
   private sumSize = (acc, curr) => acc + curr.selfSize;
 
   getTranslate(axis?: Axis, size?: DOMRect): Observable<string> {
     return combineLatest([this.xAxisMap, this.yAxisMap]).pipe(
-      map((data: [Map<number | string, Axis>, Map<number | string, Axis>]) => {
+      map((data: [Map<number, Axis>, Map<number, Axis>]) => {
         const [x, y] = data;
         const xAxesArray = [...x.values()];
         const yAxesArray = [...y.values()];
