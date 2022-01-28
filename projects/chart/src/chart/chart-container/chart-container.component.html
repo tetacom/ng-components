@@ -9,7 +9,7 @@
   <teta-tooltip [size]="data.size" [config]="data.config"></teta-tooltip>
   <svg height="100%" width="100%" class="position-absolute">
     <g class="y-axis-container">
-      <ng-container *ngFor="let item of data.yAxisMap | keyvalue">
+      <ng-container *ngFor="let item of data.yAxisMap | keyvalue; trackBy: identify">
         <g
           teta-y-axis
           [axis]="item.value"
@@ -30,7 +30,7 @@
 
     </g>
     <g class="x-axis-container">
-      <ng-container *ngFor="let item of data.xAxisMap | keyvalue">
+      <ng-container *ngFor="let item of data.xAxisMap | keyvalue; trackBy: identify">
         <g
           teta-x-axis
           [axis]="item.value"

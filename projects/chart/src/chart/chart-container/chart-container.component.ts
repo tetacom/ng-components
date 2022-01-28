@@ -12,6 +12,7 @@ import { Axis } from '../core/axis/axis';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 import { ScaleService } from '../service/scale.service';
 import { IChartEvent } from '../model/i-chart-event';
+import { ZoomService } from '../service/zoom.service';
 
 type Opposite = boolean;
 
@@ -55,6 +56,7 @@ export class ChartContainerComponent implements OnInit {
     private _svc: ChartService,
     private _cdr: ChangeDetectorRef,
     private _scaleService: ScaleService,
+    private _zoomService: ZoomService,
     private _elementRef: ElementRef
   ) {
     this.config = this._svc.config;
@@ -67,7 +69,7 @@ export class ChartContainerComponent implements OnInit {
       this.size,
       this.xAxisMap,
       this.yAxisMap,
-      this._scaleService.zoomed,
+      this._zoomService.zoomed,
     ]).pipe(
       map(
         (
@@ -188,6 +190,10 @@ export class ChartContainerComponent implements OnInit {
         return 'translate(0, 0)';
       })
     );
+  }
+
+  identify(index, item) {
+    return item.value.index;
   }
 
   mouseMove(event) {

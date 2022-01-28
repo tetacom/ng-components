@@ -1,12 +1,12 @@
 import { ElementRef, Injectable } from '@angular/core';
 import * as d3 from 'd3';
-import { D3ZoomEvent, zoomIdentity, ZoomTransform } from 'd3';
-import { ScaleService } from './scale.service';
-import { map, Subscription } from 'rxjs';
+import { D3ZoomEvent } from 'd3';
+import { BehaviorSubject, map, Observable, Subscription } from 'rxjs';
 import { IChartConfig } from '../model/i-chart-config';
 import { BroadcastService } from './broadcast.service';
 import { BrushType } from '../model/enum/brush-type';
 import { Axis } from '../core/axis/axis';
+import { IChartEvent } from '../model/i-chart-event';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 
 @Injectable({
@@ -15,33 +15,45 @@ import { AxisOrientation } from '../model/enum/axis-orientation';
 export class ZoomService {
   broadcastSubscription: Subscription;
 
+  zoomed: Observable<IChartEvent<Axis>>;
+  private zoomed$ = new BehaviorSubject<IChartEvent<Axis>>(null);
+
   private x = new Map<number | string, any>();
   private y = new Map<number | string, any>();
-
-  private xTransformCacheMap = new Map<number | string, ZoomTransform>();
-  private yTransformCacheMap = new Map<number | string, ZoomTransform>();
 
   private zoom: d3.ZoomBehavior<Element, unknown>;
   private svg;
 
-  constructor(
-    private scaleService: ScaleService,
-    private broadcastService: BroadcastService
-  ) {}
+  constructor(private broadcastService: BroadcastService) {
+    this.zoomed = this.zoomed$.asObservable();
+  }
 
   applyZoom(
     svgElement: ElementRef,
     config: IChartConfig,
     size: DOMRect,
-    axis: Axis
+    axis?: Axis
   ) {
     this.broadcastSubscription?.unsubscribe();
     this.svg = d3.select(svgElement.nativeElement);
-    const enable = axis.options.zoom;
+
+    const enable = axis?.options?.zoom || config?.zoom?.enable;
+
+    // const zoomCountX = Array.from(config?.xAxis).reduce(
+    //   (acc, cur) => (cur.zoom ? acc++ : acc),
+    //   0
+    // );
+    //
+    // const zoomCountY = Array.from(config?.yAxis).reduce(
+    //   (acc, cur) => (cur.zoom ? acc++ : acc),
+    //   0
+    // );
+
+    // console.log(zoomCountX, zoomCountY);
 
     const zoomed = (event: D3ZoomEvent<any, any>) => {
       if (enable) {
-        this.scaleService.setZoomed({
+        this.zoomed$.next({
           event,
           target: axis,
         });

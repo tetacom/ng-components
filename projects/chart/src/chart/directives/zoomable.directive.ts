@@ -16,7 +16,9 @@ export class ZoomableDirective {
   constructor(private element: ElementRef, private svc: ZoomService) {}
 
   ngOnInit() {
-    if (this.axis?.options.zoom) {
+    const enable = this.axis?.options?.zoom || this.config?.zoom?.enable;
+
+    if (enable) {
       this.zoomable = true;
       this.svc.applyZoom(this.element, this.config, this.size, this.axis);
     }

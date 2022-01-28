@@ -7,28 +7,28 @@ import { AxisOrientation } from '../model/enum/axis-orientation';
 import { IChartConfig } from '../model/i-chart-config';
 import { ChartService } from './chart.service';
 import {
-  BehaviorSubject,
   combineLatest,
-  filter,
   map,
   Observable,
+  shareReplay,
   withLatestFrom,
 } from 'rxjs';
 import { IChartEvent } from '../model/i-chart-event';
+import { ZoomService } from './zoom.service';
+import { ZoomType } from '../model/enum/zoom-type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ScaleService {
-  private zoomed$ = new BehaviorSubject<IChartEvent<Axis>>(null);
-
-  public zoomed: Observable<IChartEvent<Axis>>;
-
   public yAxisMap: Observable<Map<number, Axis>>;
   public xAxisMap: Observable<Map<number, Axis>>;
 
   public yScaleMap: Observable<Map<number | string, any>>;
   public xScaleMap: Observable<Map<number | string, any>>;
+
+  private transformCacheXMap = new Map<number | string, ZoomTransform>();
+  private transformCacheYMap = new Map<number | string, ZoomTransform>();
 
   private scaleMapping = new Map<AxisType, any>()
     .set(AxisType.number, d3.scaleLinear)
@@ -36,9 +36,10 @@ export class ScaleService {
     .set(AxisType.category, d3.scaleOrdinal)
     .set(AxisType.log, d3.scaleLog);
 
-  constructor(private readonly chartService: ChartService) {
-    this.zoomed = this.zoomed$.asObservable();
-
+  constructor(
+    private chartService: ChartService,
+    private zoomService: ZoomService
+  ) {
     this.xAxisMap = combineLatest([
       this.chartService.size,
       this.chartService.config,
@@ -70,14 +71,14 @@ export class ScaleService {
     this.xScaleMap = combineLatest([
       this.chartService.size,
       this.chartService.config,
-      this.zoomed$,
+      this.zoomService.zoomed,
     ]).pipe(
       withLatestFrom(this.yAxisMap, this.xAxisMap),
       map(
         (
           data: [[DOMRectReadOnly, IChartConfig, IChartEvent<Axis>], any, any]
         ) => {
-          const [[size, _, zoomEvent], yAxes, xAxes] = data;
+          const [[size, config, zoom], yAxes, xAxes] = data;
 
           const map = new Map<number | string, any>();
 
@@ -102,33 +103,59 @@ export class ScaleService {
               .range([0, finalWidth]);
 
             map.set(axis.index, scale);
+
+            const hasCached =
+              (this.transformCacheXMap.has(axis.index) &&
+                zoom?.target?.orientation !== AxisOrientation.x) ||
+              (this.transformCacheXMap.has(axis.index) &&
+                zoom?.target?.orientation === AxisOrientation.x &&
+                axis.index !== zoom?.target?.index);
+
+            if (hasCached) {
+              const currentScale = map.get(axis.index);
+              const restoredTransform = this.transformCacheXMap.get(axis.index);
+              const rescaled = restoredTransform.rescaleX(currentScale);
+
+              map.set(axis.index, rescaled);
+            }
           });
 
-          if (zoomEvent) {
-            if (zoomEvent.target.orientation === AxisOrientation.x) {
-              const currentScale = map.get(zoomEvent.target.index);
-              const event = zoomEvent.event as D3ZoomEvent<any, any>;
+          if (zoom) {
+            const event = zoom.event as D3ZoomEvent<any, any>;
+
+            if (zoom.target?.orientation === AxisOrientation.x) {
+              const currentScale = map.get(zoom.target.index);
               const rescaled = event.transform.rescaleX(currentScale);
-              map.set(zoomEvent.target.index, rescaled);
+              map.set(zoom.target.index, rescaled);
+              this.transformCacheXMap.set(zoom.target.index, event.transform);
+            }
+
+            if (zoom.target === undefined) {
+              if (config.zoom?.type === ZoomType.x) {
+                map.forEach((scale, index) => {
+                  map.set(index, event.transform.rescaleX(scale));
+                });
+              }
             }
           }
 
           return map;
         }
-      )
+      ),
+      shareReplay(1)
     );
 
     this.yScaleMap = combineLatest([
       this.chartService.size,
       this.chartService.config,
-      this.zoomed$,
+      this.zoomService.zoomed,
     ]).pipe(
       withLatestFrom(this.yAxisMap, this.xAxisMap),
       map(
         (
           data: [[DOMRectReadOnly, IChartConfig, IChartEvent<Axis>], any, any]
         ) => {
-          const [[size, _, zoomEvent], yAxes, xAxes] = data;
+          const [[size, config, zoom], yAxes, xAxes] = data;
 
           const map = new Map<number | string, any>();
 
@@ -153,26 +180,48 @@ export class ScaleService {
               .range([0, finalHeight]);
 
             map.set(axis.index, scale);
+
+            const hasCached =
+              (this.transformCacheYMap.has(axis.index) &&
+                zoom?.target?.orientation !== AxisOrientation.y) ||
+              (this.transformCacheYMap.has(axis.index) &&
+                zoom?.target?.orientation === AxisOrientation.y &&
+                axis.index !== zoom?.target?.index);
+
+            if (hasCached) {
+              const currentScale = map.get(axis.index);
+              const restoredTransform = this.transformCacheYMap.get(axis.index);
+
+              const rescaled = restoredTransform.rescaleY(currentScale);
+              map.set(axis.index, rescaled);
+            }
           });
 
-          console.log(zoomEvent);
+          if (zoom) {
+            const event = zoom.event as D3ZoomEvent<any, any>;
 
-          if (zoomEvent) {
-            if (zoomEvent.target.orientation === AxisOrientation.y) {
-              const currentScale = map.get(zoomEvent.target.index);
-              const event = zoomEvent.event as D3ZoomEvent<any, any>;
+            if (zoom.target?.orientation === AxisOrientation.y) {
+              const currentScale = map.get(zoom.target.index);
+
               const rescaled = event.transform.rescaleY(currentScale);
-              map.set(zoomEvent.target.index, rescaled);
+              map.set(zoom.target.index, rescaled);
+
+              this.transformCacheYMap.set(zoom.target.index, event.transform);
+            }
+
+            if (zoom.target === undefined) {
+              if (config.zoom?.type === ZoomType.y) {
+                map.forEach((scale, index) => {
+                  map.set(index, event.transform.rescaleY(scale));
+                });
+              }
             }
           }
 
           return map;
         }
-      )
+      ),
+      shareReplay(1)
     );
-  }
-
-  setZoomed(zoom: IChartEvent<Axis>) {
-    this.zoomed$.next(zoom);
   }
 }
