@@ -1,18 +1,12 @@
-import { ElementRef, Injectable } from '@angular/core';
+import {ElementRef, Injectable} from '@angular/core';
 import * as d3 from 'd3';
-import { D3ZoomEvent, zoomIdentity, ZoomTransform, zoomTransform } from 'd3';
-import {
-  BehaviorSubject,
-  map,
-  Observable,
-  shareReplay,
-  Subscription,
-} from 'rxjs';
-import { IChartConfig } from '../model/i-chart-config';
-import { BroadcastService } from './broadcast.service';
-import { BrushType } from '../model/enum/brush-type';
-import { Axis } from '../core/axis/axis';
-import { IChartEvent } from '../model/i-chart-event';
+import {D3ZoomEvent, zoomIdentity, ZoomTransform} from 'd3';
+import {BehaviorSubject, filter, map, Observable, Subscription,} from 'rxjs';
+import {IChartConfig} from '../model/i-chart-config';
+import {BroadcastService} from './broadcast.service';
+import {BrushType} from '../model/enum/brush-type';
+import {Axis} from '../core/axis/axis';
+import {IChartEvent} from '../model/i-chart-event';
 
 @Injectable({
   providedIn: 'root',
@@ -22,12 +16,7 @@ export class ZoomService {
 
   zoomed: Observable<IChartEvent<Axis>>;
   private zoomed$ = new BehaviorSubject<IChartEvent<Axis>>(null);
-
-  private x = new Map<number, any>();
-  private y = new Map<number, any>();
-
   private zoom: d3.ZoomBehavior<Element, unknown>;
-  private svg;
 
   constructor(private broadcastService: BroadcastService) {
     this.zoomed = this.zoomed$.asObservable();
@@ -40,37 +29,10 @@ export class ZoomService {
     axis?: Axis
   ) {
     this.broadcastSubscription?.unsubscribe();
-    this.svg = d3.select(svgElement.nativeElement);
-
     const enable = axis?.options?.zoom || config?.zoom?.enable;
-
-    this.zoomed
-      .pipe(
-        map((_) => {
-          const transform = _?.event?.transform;
-
-          if (transform === undefined) {
-            return;
-          }
-
-          const currentTransform = this.svg
-            ? d3.zoomTransform(svgElement.nativeElement)
-            : zoomIdentity;
-
-          if (currentTransform !== transform && _?.event?.type === 'end') {
-            this.setZoom(_?.event?.transform, { type: 'syncNodes' });
-          }
-
-          console.log(currentTransform, svgElement);
-        })
-      )
-      .subscribe();
 
     const zoomed = (event: D3ZoomEvent<any, any>) => {
       if (enable) {
-        if (event.sourceEvent?.type === 'syncNodes') {
-          return;
-        }
 
         this.zoomed$.next({
           event,
@@ -92,6 +54,8 @@ export class ZoomService {
     };
 
     if (enable) {
+
+      const element = d3.select(svgElement.nativeElement);
       this.zoom = d3
         .zoom()
         .scaleExtent([1, 50])
@@ -101,7 +65,7 @@ export class ZoomService {
         ]);
 
       this.zoom.on('start zoom end', zoomed);
-      this.svg.call(this.zoom);
+      element.call(this.zoom);
 
       // const sc =
       //   config?.zoom?.type === ZoomType.x
@@ -147,6 +111,7 @@ export class ZoomService {
 
   setZoom(transform: ZoomTransform, args?: any) {
     // requestAnimationFrame(() => {
+    //
     //
     // });
 

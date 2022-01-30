@@ -8,15 +8,17 @@ import { AxisSizeBuilder, ExtremesBuilder } from './builders/public-api';
 import { AxisType } from '../../model/enum/axis-type';
 
 import { generateTicks } from '../utils/public-api';
+import {zoomIdentity, ZoomTransform} from "d3";
 
 export class Axis {
   private chartConfig: IChartConfig;
   private _orientation: AxisOrientation;
-  private _index: number | string;
+  private _index: number;
   private _extremes: [number, number] = [0, 0];
   private _selfSize: number;
   private _ticksValues: number[];
   private _options: AxisOptions;
+  private _zoom: ZoomTransform;
 
   private defaultFormatters = new Map<AxisType, any>()
     .set(AxisType.number, d3.format(',.2f'))
@@ -123,7 +125,7 @@ export class Axis {
     return this._ticksValues;
   }
 
-  get index() {
+  get index(): number {
     return this._index;
   }
 
@@ -133,5 +135,13 @@ export class Axis {
 
   public defaultFormatter() {
     return this.defaultFormatters.get(this.options.type);
+  }
+
+  public saveZoom(zoom: ZoomTransform) {
+    this._zoom = zoom;
+  }
+
+  get zoom(): ZoomTransform {
+    return this._zoom
   }
 }

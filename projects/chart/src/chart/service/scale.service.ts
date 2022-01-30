@@ -15,7 +15,6 @@ import {
 } from 'rxjs';
 import { IChartEvent } from '../model/i-chart-event';
 import { ZoomService } from './zoom.service';
-import { ZoomType } from '../model/enum/zoom-type';
 
 @Injectable({
   providedIn: 'root',
@@ -26,9 +25,6 @@ export class ScaleService {
 
   public yScaleMap: Observable<Map<number, any>>;
   public xScaleMap: Observable<Map<number, any>>;
-
-  private transformCacheXMap = new Map<number, ZoomTransform>();
-  private transformCacheYMap = new Map<number, ZoomTransform>();
 
   private scaleMapping = new Map<AxisType, any>()
     .set(AxisType.number, d3.scaleLinear)
@@ -77,7 +73,7 @@ export class ScaleService {
       withLatestFrom(this.yAxisMap, this.xAxisMap),
       map(
         (
-          data: [[DOMRectReadOnly, IChartConfig, IChartEvent<Axis>], any, any]
+          data: [[DOMRectReadOnly, IChartConfig, IChartEvent<Axis>], Map<number, Axis>, Map<number, Axis>]
         ) => {
           const [[size, config, zoom], yAxes, xAxes] = data;
 
@@ -103,21 +99,14 @@ export class ScaleService {
               )
               .range([0, finalWidth]);
 
+
+
             map.set(axis.index, scale);
 
-            const hasCached =
-              (this.transformCacheXMap.has(axis.index) &&
-                zoom?.target?.orientation !== AxisOrientation.x) ||
-              (this.transformCacheXMap.has(axis.index) &&
-                zoom?.target?.orientation === AxisOrientation.x &&
-                axis.index !== zoom?.target?.index);
+            const hasCache = axis.zoom && zoom?.target?.orientation !== AxisOrientation.x || axis.zoom && axis.index !== zoom?.target?.index;
 
-            if (hasCached) {
-              const currentScale = map.get(axis.index);
-              const restoredTransform = this.transformCacheXMap.get(axis.index);
-              const rescaled = restoredTransform.rescaleX(currentScale);
-
-              map.set(axis.index, rescaled);
+            if(hasCache) {
+              map.set(axis.index, axis.zoom.rescaleX(scale))
             }
           });
 
@@ -128,17 +117,12 @@ export class ScaleService {
               const currentScale = map.get(zoom.target.index);
               const rescaled = event.transform.rescaleX(currentScale);
               map.set(zoom.target.index, rescaled);
-              this.transformCacheXMap.set(zoom.target.index, event.transform);
-            }
 
-            if (zoom.target === undefined) {
-              if (config.zoom?.type === ZoomType.x) {
-                map.forEach((scale, index) => {
-                  map.set(index, event.transform.rescaleX(scale));
-                });
-              }
+              const axis = xAxes.get(zoom.target.index);
+              axis.saveZoom(event.transform)
             }
           }
+
 
           return map;
         }
@@ -154,7 +138,7 @@ export class ScaleService {
       withLatestFrom(this.yAxisMap, this.xAxisMap),
       map(
         (
-          data: [[DOMRectReadOnly, IChartConfig, IChartEvent<Axis>], any, any]
+          data: [[DOMRectReadOnly, IChartConfig, IChartEvent<Axis>], Map<number, Axis>, Map<number, Axis>]
         ) => {
           const [[size, config, zoom], yAxes, xAxes] = data;
 
@@ -182,20 +166,12 @@ export class ScaleService {
 
             map.set(axis.index, scale);
 
-            const hasCached =
-              (this.transformCacheYMap.has(axis.index) &&
-                zoom?.target?.orientation !== AxisOrientation.y) ||
-              (this.transformCacheYMap.has(axis.index) &&
-                zoom?.target?.orientation === AxisOrientation.y &&
-                axis.index !== zoom?.target?.index);
+            const hasCache = axis.zoom && zoom?.target?.orientation !== AxisOrientation.y || axis.zoom && axis.index !== zoom?.target?.index;
 
-            if (hasCached) {
-              const currentScale = map.get(axis.index);
-              const restoredTransform = this.transformCacheYMap.get(axis.index);
-
-              const rescaled = restoredTransform.rescaleY(currentScale);
-              map.set(axis.index, rescaled);
+            if(hasCache) {
+              map.set(axis.index, axis.zoom.rescaleY(scale))
             }
+
           });
 
           if (zoom) {
@@ -203,19 +179,12 @@ export class ScaleService {
 
             if (zoom.target?.orientation === AxisOrientation.y) {
               const currentScale = map.get(zoom.target.index);
-
               const rescaled = event.transform.rescaleY(currentScale);
               map.set(zoom.target.index, rescaled);
 
-              this.transformCacheYMap.set(zoom.target.index, event.transform);
-            }
 
-            if (zoom.target === undefined) {
-              if (config.zoom?.type === ZoomType.y) {
-                map.forEach((scale, index) => {
-                  map.set(index, event.transform.rescaleY(scale));
-                });
-              }
+              const axis = yAxes.get(zoom.target.index);
+              axis.saveZoom(event.transform)
             }
           }
 
