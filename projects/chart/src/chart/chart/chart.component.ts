@@ -59,9 +59,7 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   ) {
     this.svcConfig = this._svc.config;
     this.hasSeriesData = this.svcConfig.pipe(
-      tap(console.log),
-      map(_ => _.series?.length > 0 && _.series?.some((_) => _.data?.length > 0)),
-      tap(console.log)
+      map(_ => _.series?.length > 0 && _.series?.some((_) => _.data?.length > 0))
     );
   }
 
