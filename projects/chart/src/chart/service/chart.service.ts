@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
-import { IChartConfig } from '../model/i-chart-config';
-import { BehaviorSubject, map, Observable, shareReplay, Subject } from 'rxjs';
-import { IChartEvent } from '../model/i-chart-event';
-import { IDisplayTooltip } from '../model/i-display-tooltip';
-import { PlotBand } from '../model/plot-band';
-import { PlotLine } from '../model/plot-line';
-import { IPointMove } from '../model/i-point-move';
-import { defaultChartConfig } from '../default/default-chart-config';
-import { defaultAxisConfig } from '../default/default-axis-config';
-import { defaultSeriesConfig } from '../default/default-series-config';
+import {Injectable} from '@angular/core';
+import {IChartConfig} from '../model/i-chart-config';
+import {BehaviorSubject, map, Observable, shareReplay, Subject} from 'rxjs';
+import {IChartEvent} from '../model/i-chart-event';
+import {IDisplayTooltip} from '../model/i-display-tooltip';
+import {PlotBand} from '../model/plot-band';
+import {PlotLine} from '../model/plot-line';
+import {IPointMove} from '../model/i-point-move';
+import {defaultChartConfig} from '../default/default-chart-config';
+import {defaultAxisConfig} from '../default/default-axis-config';
+import {defaultSeriesConfig} from '../default/default-series-config';
 
 @Injectable({
   providedIn: 'root',
@@ -78,12 +78,11 @@ export class ChartService {
         return Object.assign({}, defaultConfig, source);
       };
     };
-
+    config = Object.assign({}, defaultChartConfig, config);
     config.xAxis = config.xAxis.map(defaultConfig(defaultAxisConfig));
     config.yAxis = config.yAxis.map(defaultConfig(defaultAxisConfig));
     config.series = config.series.map(defaultConfig(defaultSeriesConfig));
-
-    return Object.assign({}, defaultChartConfig, config);
+    return config;
   }
 
   private setpreparationData(config: IChartConfig): IChartConfig {

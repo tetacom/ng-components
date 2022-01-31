@@ -1,6 +1,8 @@
-<div *ngFor="let serie of series" class="padding-bottom-4">
-  <div class="legend-item">
-    <div class="legend-icon-form" [style.height.px]="getHeight(serie)" [style.background-color]="serie.color"></div>
-    <div class="legend-label">{{ serie.name }}</div>
+<ng-container *ngFor="let serie of series" class="padding-bottom-4">
+  <div *ngIf="serie?.showInLegend !== false">
+    <div class="legend-item">
+      <div class="legend-icon-form" [style.height.px]="getHeight(serie)" [style.background-color]="serie.color"></div>
+      <div class="legend-label">{{ serie.name }}</div>
+    </div>
   </div>
-</div>
+</ng-container>

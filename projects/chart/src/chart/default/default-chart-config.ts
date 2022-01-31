@@ -19,5 +19,6 @@ export const defaultChartConfig: IChartConfig = {
   },
   xAxis: [],
   yAxis: [],
+  series: [],
   gridLines: true,
 };

@@ -15,7 +15,7 @@ import { SeriesType } from '../model/enum/series-type';
   styleUrls: ['./legend.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LegendComponent implements OnInit {
+export class LegendComponent {
   private sizeMapping = new Map<SeriesType, number>()
     .set(SeriesType.line, 2)
     .set(SeriesType.bar, 12);
@@ -24,10 +24,6 @@ export class LegendComponent implements OnInit {
   @HostBinding('class.padding-bottom-4') classLegend = true;
 
   constructor() {}
-
-  ngOnInit(): void {
-    this.series = this.series?.filter((_) => _.showInLegend !== false);
-  }
 
   getHeight(serie: Series<BasePoint>) {
     return this.sizeMapping.get(serie.type ?? SeriesType.line);

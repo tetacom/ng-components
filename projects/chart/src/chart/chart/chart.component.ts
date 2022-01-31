@@ -20,7 +20,7 @@ import {IChartEvent} from '../model/i-chart-event';
 import {PlotLine} from '../model/plot-line';
 import {PlotBand} from '../model/plot-band';
 import {IPointMove} from '../model/i-point-move';
-import {map, Observable, takeWhile} from 'rxjs';
+import {map, Observable, takeWhile, tap} from 'rxjs';
 
 @Component({
   selector: 'teta-svg-chart',
@@ -58,7 +58,11 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
     private _zoomService: ZoomService
   ) {
     this.svcConfig = this._svc.config;
-    this.hasSeriesData = this.svcConfig?.pipe(map(_ => _.series?.every((_) => _.data.length)));
+    this.hasSeriesData = this.svcConfig.pipe(
+      tap(console.log),
+      map(_ => _.series?.length > 0 && _.series?.some((_) => _.data?.length > 0)),
+      tap(console.log)
+    );
   }
 
   ngOnChanges(changes: SimpleChanges) {

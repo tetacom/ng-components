@@ -115,40 +115,40 @@ export class ZoomService {
       //     ? this.x.get(config.brush?.axisIndex ?? 0)
       //     : this.y.get(config.brush?.axisIndex ?? 0);
 
-      this.broadcastSubscription = this.broadcastService
-        .subscribeToChannel(config?.zoom?.syncChannel)
-        .pipe(
-          map((_) => {
-            const currentTransform = d3.zoomTransform(this.svg.node());
-
-            const { message } = _;
-            if (currentTransform !== message?.transform) {
-              if (message.selection) {
-                const s = message.selection;
-
-                // const domain = sc.domain();
-
-                // const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
-
-                // let transform = zoomIdentity.scale(scale);
-
-                if (message?.brushType === BrushType.x) {
-                  // transform = transform.translate(-sc(s[0]), 0);
-                }
-                if (message?.brushType === BrushType.y) {
-                  // transform = transform.translate(0, -sc(s[0]));
-                }
-
-                // this.setZoom(transform);
-
-                return;
-              }
-
-              // this.setZoom(message?.transform);
-            }
-          })
-        )
-        .subscribe();
+      // this.broadcastSubscription = this.broadcastService
+      //   .subscribeToChannel(config?.zoom?.syncChannel)
+      //   .pipe(
+      //     map((_) => {
+      //       const currentTransform = d3.zoomTransform(this.svg.node());
+      //
+      //       const { message } = _;
+      //       if (currentTransform !== message?.transform) {
+      //         if (message.selection) {
+      //           const s = message.selection;
+      //
+      //           // const domain = sc.domain();
+      //
+      //           // const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
+      //
+      //           // let transform = zoomIdentity.scale(scale);
+      //
+      //           if (message?.brushType === BrushType.x) {
+      //             // transform = transform.translate(-sc(s[0]), 0);
+      //           }
+      //           if (message?.brushType === BrushType.y) {
+      //             // transform = transform.translate(0, -sc(s[0]));
+      //           }
+      //
+      //           // this.setZoom(transform);
+      //
+      //           return;
+      //         }
+      //
+      //         // this.setZoom(message?.transform);
+      //       }
+      //     })
+      //   )
+      //   .subscribe();
     }
   }
 
@@ -158,10 +158,10 @@ export class ZoomService {
     //
     // });
 
-    if (args) {
-      this.svg?.call(this.zoom.transform, transform, null, args);
-    } else {
-      this.svg?.call(this.zoom.transform, transform);
-    }
+    // if (args) {
+    //   this.svg?.call(this.zoom.transform, transform, null, args);
+    // } else {
+    //   this.svg?.call(this.zoom.transform, transform);
+    // }
   }
 }

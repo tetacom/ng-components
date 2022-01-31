@@ -2,7 +2,7 @@
   hasSeriesData: hasSeriesData | async,
   svcConfig: svcConfig | async
 } as data">
-  <ng-container *ngIf="data.hasSeriesData else noData">
+  <ng-container *ngIf="data.hasSeriesData === true else noData">
     <div class="column column_auto">
       <teta-chart-container class="chart-container"></teta-chart-container>
     </div>
