@@ -3,7 +3,6 @@ import { ZoomService } from '../service/zoom.service';
 import { IChartConfig } from '../model/i-chart-config';
 import { Axis } from '../core/axis/axis';
 import { ZoomType } from '../model/enum/zoom-type';
-import { AxisOrientation } from '../model/enum/axis-orientation';
 
 @Directive({
   selector: '[tetaZoomable]',
@@ -18,9 +17,7 @@ export class ZoomableDirective {
   constructor(private element: ElementRef, private svc: ZoomService) {}
 
   ngOnInit() {
-
     let enable = this.axis?.options?.zoom || this.config?.zoom?.enable;
-
 
     if (enable) {
       this.zoomable = true;

@@ -5,7 +5,6 @@ import { ChartModule } from './chart.module';
 import { IconModule } from '../../../components/src/component/icon/icon.module';
 import { ButtonModule } from '../../../components/src/component/button/button.module';
 import { IChartConfig } from './model/i-chart-config';
-import { AxisType } from './model/enum/axis-type';
 import { SeriesType } from './model/enum/series-type';
 import { randomInt } from 'd3-random';
 import * as faker from 'faker';
@@ -255,15 +254,15 @@ const createChart = (size: number): IChartConfig => {
         ],
       },
       {
-        type: AxisType.number,
         min: 1000,
         opposite: true,
+        inverted: true,
         max: 2000,
       },
     ],
     brush: {
       enable: false,
-      type: BrushType.y,
+      type: BrushType.x,
     },
     zoom: {
       enable: true,
@@ -283,6 +282,7 @@ export const basicChart = () => ({
   },
   props: {
     config: createChart(100),
+    config2: createChart(100),
     createChart: createChart,
   },
   template: `
@@ -298,6 +298,7 @@ export const basicChart = () => ({
           (click)="config=createChart(0)">
           Create empty data
         </button>
+        <div class="row row_auto"></div>
         <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
       </div>
     </div>

@@ -33,32 +33,15 @@ export class ChartService {
   private _config: IChartConfig;
 
   constructor() {
-    this.config = this.config$.asObservable().pipe(map(this.setDefaults));
+    this.config = this.config$
+      .asObservable()
+      .pipe(map(this.setDefaults), map(this.setpreparationData));
     this.size = this.size$.asObservable();
     this.pointerMove = this.pointerMove$.asObservable();
     this.tooltips = this.tooltips$.asObservable();
     this.plotBandMove = this.plotBandMove$.asObservable();
     this.plotLineMove = this.plotLineMove$.asObservable();
     this.pointMove = this.pointMove$.asObservable();
-  }
-
-  public init(config: IChartConfig) {
-    this._config = config;
-
-    if (config.inverted) {
-      this._config.series = this._config?.series?.map((serie) => {
-        return {
-          ...serie,
-          data: serie?.data?.map((point) => {
-            return {
-              ...point,
-              x: point?.y,
-              y: point?.x,
-            };
-          }),
-        };
-      });
-    }
   }
 
   public setConfig(config: IChartConfig) {
@@ -101,5 +84,24 @@ export class ChartService {
     config.series = config.series.map(defaultConfig(defaultSeriesConfig));
 
     return Object.assign({}, defaultChartConfig, config);
+  }
+
+  private setpreparationData(config: IChartConfig): IChartConfig {
+    if (config.inverted) {
+      config.series = config.series?.map((serie) => {
+        return {
+          ...serie,
+          data: serie?.data?.map((point) => {
+            return {
+              ...point,
+              x: point?.y,
+              y: point?.x,
+            };
+          }),
+        };
+      });
+    }
+
+    return config;
   }
 }

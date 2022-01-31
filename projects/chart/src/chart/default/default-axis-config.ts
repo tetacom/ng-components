@@ -1,8 +1,10 @@
-import { AxisType } from '../model/enum/axis-type';
 import { AxisOptions } from '../model/axis-options';
+import { ScaleType } from '../model/enum/scale-type';
 
 export const defaultAxisConfig: AxisOptions = {
-  type: AxisType.number,
   visible: true,
   zoom: true,
+  scaleType: {
+    type: ScaleType.linear,
+  },
 };

@@ -5,3 +5,4 @@ export * from './drag-point-type';
 export * from './series-type';
 export * from './tooltip-tracking';
 export * from './zoom-type';
+export * from './scale-type';

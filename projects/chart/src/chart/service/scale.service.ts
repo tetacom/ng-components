@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as d3 from 'd3';
 import { D3ZoomEvent, ZoomTransform } from 'd3';
-import { AxisType } from '../model/enum/axis-type';
 import { Axis } from '../core/axis/axis';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 import { IChartConfig } from '../model/i-chart-config';
@@ -15,6 +14,8 @@ import {
 } from 'rxjs';
 import { IChartEvent } from '../model/i-chart-event';
 import { ZoomService } from './zoom.service';
+import { ZoomType } from '../model/enum/zoom-type';
+import { ScaleType } from '../model/enum/scale-type';
 
 @Injectable({
   providedIn: 'root',
@@ -26,11 +27,16 @@ export class ScaleService {
   public yScaleMap: Observable<Map<number, any>>;
   public xScaleMap: Observable<Map<number, any>>;
 
-  private scaleMapping = new Map<AxisType, any>()
-    .set(AxisType.number, d3.scaleLinear)
-    .set(AxisType.time, d3.scaleTime)
-    .set(AxisType.category, d3.scaleOrdinal)
-    .set(AxisType.log, d3.scaleLog);
+  private transformCacheX = new Map<number, ZoomTransform>();
+  private transformCacheY = new Map<number, ZoomTransform>();
+
+  private scaleMapping = new Map<ScaleType, any>()
+    .set(ScaleType.linear, d3.scaleLinear)
+    .set(ScaleType.time, d3.scaleTime)
+    .set(ScaleType.category, d3.scaleOrdinal)
+    .set(ScaleType.log, d3.scaleLog)
+    .set(ScaleType.pow, d3.scalePow)
+    .set(ScaleType.sqrt, d3.scaleSqrt);
 
   constructor(
     private chartService: ChartService,
@@ -73,7 +79,11 @@ export class ScaleService {
       withLatestFrom(this.yAxisMap, this.xAxisMap),
       map(
         (
-          data: [[DOMRectReadOnly, IChartConfig, IChartEvent<Axis>], Map<number, Axis>, Map<number, Axis>]
+          data: [
+            [DOMRectReadOnly, IChartConfig, IChartEvent<Axis>],
+            Map<number, Axis>,
+            Map<number, Axis>
+          ]
         ) => {
           const [[size, config, zoom], yAxes, xAxes] = data;
 
@@ -90,23 +100,32 @@ export class ScaleService {
           const finalWidth = (size.width || 0) - left - right;
 
           xAxes.forEach((axis) => {
+            let domain = axis.extremes;
+
+            if (axis?.options.inverted) {
+              domain = [...axis.extremes].reverse();
+            }
+
             const scale = this.scaleMapping
-              .get(axis.options.type)()
-              .domain(
-                axis.orientation === AxisOrientation.y
-                  ? [...axis.extremes].reverse()
-                  : axis.extremes
-              )
+              .get(axis.options.scaleType.type)()
+              .domain(domain)
               .range([0, finalWidth]);
 
-
+            if (axis.options.scaleType.type === ScaleType.log) {
+              scale.base(axis.options.scaleType.base);
+            }
 
             map.set(axis.index, scale);
 
-            const hasCache = axis.zoom && zoom?.target?.orientation !== AxisOrientation.x || axis.zoom && axis.index !== zoom?.target?.index;
+            const hasCache =
+              (this.transformCacheX.has(axis.index) &&
+                zoom?.target?.orientation !== AxisOrientation.x) ||
+              (this.transformCacheX.has(axis.index) &&
+                zoom?.target?.index !== axis.index);
 
-            if(hasCache) {
-              map.set(axis.index, axis.zoom.rescaleX(scale))
+            if (hasCache) {
+              const restoredTransform = this.transformCacheX.get(axis.index);
+              map.set(axis.index, restoredTransform.rescaleX(scale));
             }
           });
 
@@ -119,10 +138,13 @@ export class ScaleService {
               map.set(zoom.target.index, rescaled);
 
               const axis = xAxes.get(zoom.target.index);
-              axis.saveZoom(event.transform)
+              this.transformCacheX.set(axis.index, event.transform);
+            }
+
+            if (config.zoom.type === ZoomType.x && zoom.target === undefined) {
+              this.transformCacheX.set(0, event.transform);
             }
           }
-
 
           return map;
         }
@@ -138,7 +160,11 @@ export class ScaleService {
       withLatestFrom(this.yAxisMap, this.xAxisMap),
       map(
         (
-          data: [[DOMRectReadOnly, IChartConfig, IChartEvent<Axis>], Map<number, Axis>, Map<number, Axis>]
+          data: [
+            [DOMRectReadOnly, IChartConfig, IChartEvent<Axis>],
+            Map<number, Axis>,
+            Map<number, Axis>
+          ]
         ) => {
           const [[size, config, zoom], yAxes, xAxes] = data;
 
@@ -155,23 +181,37 @@ export class ScaleService {
           const finalHeight = (size.height || 0) - top - bottom;
 
           yAxes.forEach((axis) => {
+            let domain = axis.extremes;
+
+            if (axis.orientation === AxisOrientation.y) {
+              domain = [...axis.extremes].reverse();
+            }
+
+            if (axis?.options.inverted) {
+              domain = domain.reverse();
+            }
+
             const scale = this.scaleMapping
-              .get(axis.options.type)()
-              .domain(
-                axis.orientation === AxisOrientation.y
-                  ? [...axis.extremes].reverse()
-                  : axis.extremes
-              )
+              .get(axis.options.scaleType.type)()
+              .domain(domain)
               .range([0, finalHeight]);
+
+            if (axis.options.scaleType.type === ScaleType.log) {
+              scale.base(axis.options.scaleType.base);
+            }
 
             map.set(axis.index, scale);
 
-            const hasCache = axis.zoom && zoom?.target?.orientation !== AxisOrientation.y || axis.zoom && axis.index !== zoom?.target?.index;
+            const hasCache =
+              (this.transformCacheY.has(axis.index) &&
+                zoom?.target?.orientation !== AxisOrientation.y) ||
+              (this.transformCacheY.has(axis.index) &&
+                zoom?.target?.index !== axis.index);
 
-            if(hasCache) {
-              map.set(axis.index, axis.zoom.rescaleY(scale))
+            if (hasCache) {
+              const restoredTransform = this.transformCacheY.get(axis.index);
+              map.set(axis.index, restoredTransform.rescaleY(scale));
             }
-
           });
 
           if (zoom) {
@@ -182,9 +222,12 @@ export class ScaleService {
               const rescaled = event.transform.rescaleY(currentScale);
               map.set(zoom.target.index, rescaled);
 
-
               const axis = yAxes.get(zoom.target.index);
-              axis.saveZoom(event.transform)
+              this.transformCacheY.set(axis.index, event.transform);
+            }
+
+            if (config.zoom.type === ZoomType.y && zoom?.target === undefined) {
+              this.transformCacheY.set(0, event.transform);
             }
           }
 

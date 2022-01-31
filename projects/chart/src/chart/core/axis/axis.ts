@@ -5,10 +5,8 @@ import { BasePoint } from '../../model/base-point';
 import * as d3 from 'd3';
 import { AxisOptions } from '../../model/axis-options';
 import { AxisSizeBuilder, ExtremesBuilder } from './builders/public-api';
-import { AxisType } from '../../model/enum/axis-type';
-
 import { generateTicks } from '../utils/public-api';
-import {zoomIdentity, ZoomTransform} from "d3";
+import { ScaleType } from '../../model/enum/scale-type';
 
 export class Axis {
   private chartConfig: IChartConfig;
@@ -18,12 +16,13 @@ export class Axis {
   private _selfSize: number;
   private _ticksValues: number[];
   private _options: AxisOptions;
-  private _zoom: ZoomTransform;
 
-  private defaultFormatters = new Map<AxisType, any>()
-    .set(AxisType.number, d3.format(',.2f'))
-    .set(AxisType.time, d3.timeFormat('%B %d, %Y'))
-    .set(AxisType.log, d3.format(',.2f'));
+  private defaultFormatters = new Map<ScaleType, any>()
+    .set(ScaleType.linear, d3.format(',.2f'))
+    .set(ScaleType.time, d3.timeFormat('%B %d, %Y'))
+    .set(ScaleType.log, d3.format(',.2f'))
+    .set(ScaleType.pow, d3.format(',.2f'))
+    .set(ScaleType.sqrt, d3.format(',.2f'));
 
   constructor(config: IChartConfig) {
     this.chartConfig = config;
@@ -97,7 +96,7 @@ export class Axis {
   }
 
   private setTicksValues(): void {
-    this._ticksValues = generateTicks(this._extremes);;
+    this._ticksValues = generateTicks(this._extremes);
   }
 
   private setOptions(): void {
@@ -134,14 +133,6 @@ export class Axis {
   }
 
   public defaultFormatter() {
-    return this.defaultFormatters.get(this.options.type);
-  }
-
-  public saveZoom(zoom: ZoomTransform) {
-    this._zoom = zoom;
-  }
-
-  get zoom(): ZoomTransform {
-    return this._zoom
+    return this.defaultFormatters.get(this.options.scaleType.type);
   }
 }
