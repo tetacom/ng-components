@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -23,7 +24,7 @@ import { ChartService } from '../../service/chart.service';
   styleUrls: ['./plot-band.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlotBandComponent implements OnInit {
+export class PlotBandComponent implements AfterViewInit {
   @Input() plotBand: PlotBand;
   @Input() axis: Axis;
   @Input() scale: any;
@@ -44,12 +45,18 @@ export class PlotBandComponent implements OnInit {
     this.chartService.emitPlotband(event);
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.domain = this.scale.domain();
 
     const plotbandElement = d3
       .select(this.element.nativeElement)
-      .select('.plotband');
+      .select('.plotband')
+      .on('click', (event, d: PlotBand) => {
+        this.emit({
+          event,
+          target: d,
+        });
+      });
 
     const grabElements = d3
       .select(this.element.nativeElement)
@@ -69,30 +76,28 @@ export class PlotBandComponent implements OnInit {
       .on(
         'start drag end',
         (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
-          requestAnimationFrame(() => {
-            let bandSize = parseFloat(
-              plotbandElement.attr(
-                this.axis.orientation === AxisOrientation.x ? 'width' : 'height'
-              )
-            );
+          let bandSize = parseFloat(
+            plotbandElement.attr(
+              this.axis.orientation === AxisOrientation.x ? 'width' : 'height'
+            )
+          );
 
-            d.to = this.scale.invert(
-              event[AxisOrientation[this.axis.orientation]] +
-                (this.axis.orientation === AxisOrientation.x ? bandSize : 0)
-            );
+          d.to = this.scale.invert(
+            event[AxisOrientation[this.axis.orientation]] +
+              (this.axis.orientation === AxisOrientation.x ? bandSize : 0)
+          );
 
-            d.from = this.scale.invert(
-              event[AxisOrientation[this.axis.orientation]] +
-                (this.axis.orientation === AxisOrientation.y ? bandSize : 0)
-            );
+          d.from = this.scale.invert(
+            event[AxisOrientation[this.axis.orientation]] +
+              (this.axis.orientation === AxisOrientation.y ? bandSize : 0)
+          );
 
-            this.emit({
-              event,
-              target: d,
-            });
-
-            this.cdr.detectChanges();
+          this.emit({
+            event,
+            target: d,
           });
+
+          this.cdr.detectChanges();
         }
       );
 

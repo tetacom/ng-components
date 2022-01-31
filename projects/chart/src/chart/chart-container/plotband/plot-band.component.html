@@ -1,4 +1,6 @@
-<svg:rect class="plotband"
+<svg:rect
+          class="plotband"
+          [class.draggable]="plotBand?.draggable === true"
           [attr.fill]="getFill(plotBand)"
           [attr.opacity]="plotBand.style?.plotBand?.opacity"
           [attr.height]="axis.orientation === orientation.x ? height : bandSize"
@@ -34,6 +36,7 @@
 <svg:line class="grabber"
           [class.x-grabber]="axis.orientation === orientation.x"
           [class.y-grabber]="axis.orientation === orientation.y"
+          [class.resizeable]="plotBand?.resizable"
           [attr.stroke]="'red'"
           [attr.stroke-width]="8"
           opacity="0"
@@ -47,6 +50,7 @@
 <svg:line class="grabber"
           [class.x-grabber]="axis.orientation === orientation.x"
           [class.y-grabber]="axis.orientation === orientation.y"
+          [class.resizeable]="plotBand?.resizable"
           [attr.stroke]="'red'"
           [attr.stroke-width]="8"
           opacity="0"

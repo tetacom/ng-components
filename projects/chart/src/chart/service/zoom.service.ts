@@ -16,6 +16,7 @@ import { Axis } from '../core/axis/axis';
 import { IChartEvent } from '../model/i-chart-event';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 import { ZoomType } from '../model/enum/zoom-type';
+import { ZoomMessage } from '../model/i-broadcast-message';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,6 @@ export class ZoomService {
 
   zoomed: Observable<IChartEvent<Axis>>;
   private zoomed$ = new BehaviorSubject<IChartEvent<Axis>>(null);
-  private zoom: d3.ZoomBehavior<Element, unknown>;
 
   constructor(private broadcastService: BroadcastService) {
     this.zoomed = this.zoomed$.asObservable().pipe(shareReplay(1));
@@ -37,7 +37,7 @@ export class ZoomService {
     size: DOMRect,
     axis?: Axis
   ) {
-    this.broadcastSubscription?.unsubscribe();
+    // this.broadcastSubscription?.unsubscribe();
     const enable = axis?.options?.zoom || config?.zoom?.enable;
 
     if (config?.zoom?.enable || axis === undefined) {
@@ -84,22 +84,26 @@ export class ZoomService {
         });
 
         if (event.sourceEvent) {
-          // this.broadcastService.broadcast({
-          //   channel: config?.zoom?.syncChannel,
-          //   message: event,
-          //   domain: this.scaleService[
-          //     config?.zoom?.type === ZoomType.x ? 'xScaleMap' : 'yScaleMap'
-          //     ]
-          //     .get(config.brush?.axisIndex ?? 0)
-          //     .domain(),
-          // });
+          const message: ZoomMessage = {
+            event: event,
+          };
+
+          this.broadcastService.broadcast({
+            channel: config?.zoom?.syncChannel,
+            message,
+            // domain: this.scaleService[
+            //   config?.zoom?.type === ZoomType.x ? 'xScaleMap' : 'yScaleMap'
+            //   ]
+            //   .get(config.brush?.axisIndex ?? 0)
+            //   .domain(),
+          });
         }
       }
     };
 
     if (enable) {
       const element = d3.select(svgElement.nativeElement);
-      this.zoom = d3
+      const zoom = d3
         .zoom()
         .scaleExtent([1, 50])
         .extent([
@@ -107,48 +111,48 @@ export class ZoomService {
           [size.width, size.height],
         ]);
 
-      this.zoom.on('start zoom end', zoomed);
-      element.call(this.zoom);
+      zoom.on('start zoom end', zoomed);
+      element.call(zoom);
 
       // const sc =
       //   config?.zoom?.type === ZoomType.x
       //     ? this.x.get(config.brush?.axisIndex ?? 0)
       //     : this.y.get(config.brush?.axisIndex ?? 0);
 
-      // this.broadcastSubscription = this.broadcastService
-      //   .subscribeToChannel(config?.zoom?.syncChannel)
-      //   .pipe(
-      //     map((_) => {
-      //       const currentTransform = d3.zoomTransform(this.svg.node());
-      //
-      //       const { message } = _;
-      //       if (currentTransform !== message?.transform) {
-      //         if (message.selection) {
-      //           const s = message.selection;
-      //
-      //           // const domain = sc.domain();
-      //
-      //           // const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
-      //
-      //           // let transform = zoomIdentity.scale(scale);
-      //
-      //           if (message?.brushType === BrushType.x) {
-      //             // transform = transform.translate(-sc(s[0]), 0);
-      //           }
-      //           if (message?.brushType === BrushType.y) {
-      //             // transform = transform.translate(0, -sc(s[0]));
-      //           }
-      //
-      //           // this.setZoom(transform);
-      //
-      //           return;
-      //         }
-      //
-      //         // this.setZoom(message?.transform);
-      //       }
-      //     })
-      //   )
-      //   .subscribe();
+      this.broadcastSubscription = this.broadcastService
+        .subscribeToChannel(config?.zoom?.syncChannel)
+        .pipe(
+          map((broadcaseMessage) => {
+            const currentTransform = d3.zoomTransform(svgElement.nativeElement);
+
+            // if (currentTransform !== message?.transform) {
+            //   if (message.selection) {
+            //     const s = message.selection;
+            //
+            //     // const domain = sc.domain();
+            //
+            //     // const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
+            //
+            //     // let transform = zoomIdentity.scale(scale);
+            //
+            //     if (message?.brushType === BrushType.x) {
+            //       // transform = transform.translate(-sc(s[0]), 0);
+            //     }
+            //     if (message?.brushType === BrushType.y) {
+            //       // transform = transform.translate(0, -sc(s[0]));
+            //     }
+            //
+            //     return;
+            //   }
+            //   d3.select(svgElement.nativeElement).call(
+            //     zoom?.transform,
+            //     message?.transform
+            //   );
+            //   // this.setZoom(message?.transform);
+            // }
+          })
+        )
+        .subscribe();
     }
   }
 
@@ -157,7 +161,6 @@ export class ZoomService {
     //
     //
     // });
-
     // if (args) {
     //   this.svg?.call(this.zoom.transform, transform, null, args);
     // } else {

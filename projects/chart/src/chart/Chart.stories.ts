@@ -214,9 +214,10 @@ const createSeries = (size: number) => {
 const plotbands2 = [
   new PlotBand({
     id: 0,
-    from: 1100,
-    to: 1200,
-    draggable: true,
+    from: 50,
+    to: 80,
+    draggable: false,
+    resizable: true,
     style: {
       plotBand: {
         opacity: 0.6,
@@ -255,8 +256,8 @@ const createChart = (size: number): IChartConfig => {
       },
       {
         min: 1000,
-        opposite: true,
-        inverted: true,
+        opposite: false,
+        inverted: false,
         max: 2000,
       },
     ],
@@ -284,6 +285,9 @@ export const basicChart = () => ({
     config: createChart(100),
     config2: createChart(100),
     createChart: createChart,
+    click: (e) => {
+      console.log(e);
+    },
   },
   template: `
     <div>
@@ -298,8 +302,11 @@ export const basicChart = () => ({
           (click)="config=createChart(0)">
           Create empty data
         </button>
-        <div class="row row_auto"></div>
-        <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
+        <div class="row row_auto" style="height: 100%">
+            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
+            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
+        </div>
+
       </div>
     </div>
 `,

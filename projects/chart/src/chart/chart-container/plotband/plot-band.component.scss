@@ -1,13 +1,13 @@
-:host rect:hover {
+:host .draggable rect:hover {
   cursor: grab;
 }
-:host rect:active {
+:host .draggable rect:active {
   cursor: grabbing;
 }
 
-:host .x-grabber {
+:host .x-grabber.resizeable {
   cursor: col-resize;
 }
-:host .y-grabber {
+:host .y-grabber.resizeable {
   cursor: row-resize;
 }

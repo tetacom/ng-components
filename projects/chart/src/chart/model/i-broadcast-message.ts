@@ -1,5 +1,20 @@
+import { D3BrushEvent, D3ZoomEvent } from 'd3';
+import { Axis } from '../core/axis/axis';
+import { BrushType } from './enum/brush-type';
+
+export interface ZoomMessage {
+  event: D3ZoomEvent<any, any>;
+  axis?: Axis;
+  domain?: number[];
+}
+
+export interface BrushMessage {
+  event: D3BrushEvent<any>;
+  brushType?: BrushType;
+  selection: number[];
+}
+
 export interface IBroadcastMessage {
   channel: string;
-  message: any;
-  domain?: number[];
+  message: ZoomMessage | BrushMessage;
 }

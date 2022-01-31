@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IBroadcastMessage } from '../model/i-broadcast-message';
-import { filter, Observable, Subject } from 'rxjs';
+import { filter, Observable, shareReplay, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +17,9 @@ export class BroadcastService {
   }
 
   subscribeToChannel(channel: string): Observable<IBroadcastMessage> {
-    return this.emitter
-      .asObservable()
-      .pipe(filter((msg) => channel && msg.channel === channel));
+    return this.emitter.asObservable().pipe(
+      filter((msg) => channel && msg.channel === channel),
+      shareReplay(1)
+    );
   }
 }
