@@ -1,6 +1,6 @@
 import { ElementRef, Injectable } from '@angular/core';
 import * as d3 from 'd3';
-import { D3ZoomEvent, zoomTransform, ZoomTransform } from 'd3';
+import { D3ZoomEvent, zoomTransform } from 'd3';
 import {
   BehaviorSubject,
   filter,
@@ -11,12 +11,10 @@ import {
 } from 'rxjs';
 import { IChartConfig } from '../model/i-chart-config';
 import { BroadcastService } from './broadcast.service';
-import { BrushType } from '../model/enum/brush-type';
 import { Axis } from '../core/axis/axis';
 import { IChartEvent } from '../model/i-chart-event';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 import { ZoomType } from '../model/enum/zoom-type';
-import { ZoomMessage } from '../model/i-broadcast-message';
 
 @Injectable({
   providedIn: 'root',
@@ -40,34 +38,49 @@ export class ZoomService {
     // this.broadcastSubscription?.unsubscribe();
     const enable = axis?.options?.zoom || config?.zoom?.enable;
 
+    const fakeAxis = Axis.createAxis(
+      config?.zoom.type === ZoomType.x ? AxisOrientation.x : AxisOrientation.y,
+      config,
+      0,
+      true
+    );
+
+    const _axis = axis ? axis : fakeAxis;
+
+    const zoom = d3
+      .zoom()
+      .scaleExtent([1, 50])
+      .extent([
+        [0, 0],
+        [size.width, size.height],
+      ]);
+
     if (config?.zoom?.enable || axis === undefined) {
       this.zoomed
         .pipe(
           filter(
             (_) =>
               (_?.target?.orientation === AxisOrientation.x &&
-                axis === undefined &&
-                config?.zoom.type === ZoomType.x) ||
-              (_?.target === undefined &&
-                axis?.orientation === AxisOrientation.x &&
-                axis?.index === 0 &&
-                config?.zoom.type === ZoomType.x) ||
+                _?.target.index === 0 &&
+                config?.zoom.type === ZoomType.x &&
+                _axis.orientation === AxisOrientation.x) ||
               (_?.target?.orientation === AxisOrientation.y &&
+                _?.target.index === 0 &&
                 config?.zoom.type === ZoomType.y &&
-                axis === undefined) ||
-              (_?.target === undefined &&
-                axis?.orientation === AxisOrientation.y &&
-                axis?.index === 0 &&
-                config?.zoom.type === ZoomType.y)
+                _axis.orientation === AxisOrientation.y)
           ),
           filter((_) => _?.event?.type === 'end'),
           map((_) => {
+            console.log(svgElement);
+
             const eventTransform = _?.event.transform;
             const currentTransform = zoomTransform(svgElement.nativeElement);
 
+            console.log(currentTransform, eventTransform);
+
             if (currentTransform !== eventTransform) {
               d3.select(svgElement.nativeElement).call(
-                d3.zoom().transform,
+                zoom.transform,
                 eventTransform
               );
             }
@@ -78,39 +91,31 @@ export class ZoomService {
 
     const zoomed = (event: D3ZoomEvent<any, any>) => {
       if (enable) {
-        this.zoomed$.next({
-          event,
-          target: axis,
-        });
-
         if (event.sourceEvent) {
-          const message: ZoomMessage = {
-            event: event,
-          };
-
-          this.broadcastService.broadcast({
-            channel: config?.zoom?.syncChannel,
-            message,
-            // domain: this.scaleService[
-            //   config?.zoom?.type === ZoomType.x ? 'xScaleMap' : 'yScaleMap'
-            //   ]
-            //   .get(config.brush?.axisIndex ?? 0)
-            //   .domain(),
+          this.zoomed$.next({
+            event,
+            target: _axis,
           });
+
+          // const message: ZoomMessage = {
+          //   event: event,
+          // };
+          //
+          // this.broadcastService.broadcast({
+          //   channel: config?.zoom?.syncChannel,
+          //   message,
+          //   // domain: this.scaleService[
+          //   //   config?.zoom?.type === ZoomType.x ? 'xScaleMap' : 'yScaleMap'
+          //   //   ]
+          //   //   .get(config.brush?.axisIndex ?? 0)
+          //   //   .domain(),
+          // });
         }
       }
     };
 
     if (enable) {
       const element = d3.select(svgElement.nativeElement);
-      const zoom = d3
-        .zoom()
-        .scaleExtent([1, 50])
-        .extent([
-          [0, 0],
-          [size.width, size.height],
-        ]);
-
       zoom.on('start zoom end', zoomed);
       element.call(zoom);
 

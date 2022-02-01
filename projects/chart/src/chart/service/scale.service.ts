@@ -117,13 +117,12 @@ export class ScaleService {
 
             map.set(axis.index, scale);
 
-            const hasCache =
-              (this.transformCacheX.has(axis.index) &&
-                zoom?.target?.orientation !== AxisOrientation.x) ||
-              (this.transformCacheX.has(axis.index) &&
-                zoom?.target?.index !== axis.index);
+            const hasCache = this.transformCacheX.has(axis.index);
+            const shouldRestore =
+              zoom?.target?.orientation !== AxisOrientation.x ||
+              zoom.target?.index !== axis.index;
 
-            if (hasCache) {
+            if (hasCache && shouldRestore) {
               const restoredTransform = this.transformCacheX.get(axis.index);
               map.set(axis.index, restoredTransform.rescaleX(scale));
             }
@@ -139,10 +138,6 @@ export class ScaleService {
 
               const axis = xAxes.get(zoom.target.index);
               this.transformCacheX.set(axis.index, event.transform);
-            }
-
-            if (config.zoom.type === ZoomType.x && zoom.target === undefined) {
-              this.transformCacheX.set(0, event.transform);
             }
           }
 
@@ -202,13 +197,13 @@ export class ScaleService {
 
             map.set(axis.index, scale);
 
-            const hasCache =
-              (this.transformCacheY.has(axis.index) &&
-                zoom?.target?.orientation !== AxisOrientation.y) ||
-              (this.transformCacheY.has(axis.index) &&
-                zoom?.target?.index !== axis.index);
+            const hasCache = this.transformCacheY.has(axis.index);
 
-            if (hasCache) {
+            const shouldRestore =
+              zoom?.target?.orientation !== AxisOrientation.y ||
+              zoom.target?.index !== axis.index;
+
+            if (hasCache && shouldRestore) {
               const restoredTransform = this.transformCacheY.get(axis.index);
               map.set(axis.index, restoredTransform.rescaleY(scale));
             }
@@ -224,10 +219,6 @@ export class ScaleService {
 
               const axis = yAxes.get(zoom.target.index);
               this.transformCacheY.set(axis.index, event.transform);
-            }
-
-            if (config.zoom.type === ZoomType.y && zoom?.target === undefined) {
-              this.transformCacheY.set(0, event.transform);
             }
           }
 
