@@ -57,6 +57,7 @@
       tetaBrushable
       tetaZoomable
       [size]="data.size"
+      [brushScale]="brushScale | async"
       [config]="config | async"
       [attr.width]="rect.width"
       [attr.height]="rect.height"

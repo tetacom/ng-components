@@ -282,8 +282,7 @@ export const basicChart = () => ({
     imports: [ChartModule, IconModule, ButtonModule],
   },
   props: {
-    config: createChart(100),
-    config2: createChart(100),
+    config: createChart(200),
     createChart: createChart,
     click: (e) => {
       console.log(e);
@@ -294,15 +293,15 @@ export const basicChart = () => ({
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 100%; height: 80vh;">
         <button teta-button
           [palette]="'primary'"
-          (click)="config=createChart(100)">
+          (click)="config=createChart(200);">
           Create new Data
         </button>
         <button teta-button
           [palette]="'primary'"
-          (click)="config=createChart(0)">
+          (click)="config=createChart(0); config2=createChart(0)">
           Create empty data
         </button>
-        <div class="row row_auto" style="height: 100%">
+        <div class="column column_auto" style="height: 100%">
             <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
             <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
         </div>
