@@ -155,16 +155,4 @@ export class ZoomService {
         .subscribe();
     }
   }
-
-  setZoom(transform: ZoomTransform, args?: any) {
-    // requestAnimationFrame(() => {
-    //
-    //
-    // });
-    // if (args) {
-    //   this.svg?.call(this.zoom.transform, transform, null, args);
-    // } else {
-    //   this.svg?.call(this.zoom.transform, transform);
-    // }
-  }
 }
