@@ -15,6 +15,7 @@ import { ChartService } from '../service/chart.service';
 export class BrushableDirective implements OnInit, AfterViewInit {
   @Input() config?: IChartConfig;
   @Input() size?: DOMRect;
+  @Input() brushScale: any;
 
   constructor(
     private brushService: BrushService,
@@ -25,6 +26,6 @@ export class BrushableDirective implements OnInit, AfterViewInit {
   ngOnInit() {}
 
   ngAfterViewInit() {
-    this.brushService.applyBrush(this.element, this.config, this.size);
+    this.brushService.applyBrush(this.element, this.config, this.brushScale);
   }
 }

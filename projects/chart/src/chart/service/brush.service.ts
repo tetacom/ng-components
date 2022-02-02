@@ -1,9 +1,15 @@
 import { ElementRef, Injectable } from '@angular/core';
 import { BrushType } from '../model/enum/brush-type';
 import * as d3 from 'd3';
-import { map, Subscription } from 'rxjs';
+import { map, shareReplay, Subscription, withLatestFrom } from 'rxjs';
 import { BroadcastService } from './broadcast.service';
 import { IChartConfig } from '../model/i-chart-config';
+import {
+  BrushMessage,
+  IBroadcastMessage,
+  ZoomMessage,
+} from '../model/i-broadcast-message';
+import { AxisOrientation } from '../model/enum/axis-orientation';
 import { ScaleService } from './scale.service';
 
 @Injectable({
@@ -16,23 +22,12 @@ export class BrushService {
     .set(BrushType.x, d3.brushX())
     .set(BrushType.y, d3.brushY());
 
-  private scaleMap = new Map<BrushType, string>()
-    .set(BrushType.x, 'xScales')
-    .set(BrushType.y, 'yScales');
+  constructor(private broadcastService: BroadcastService) {}
 
-  constructor(
-    private broadcastService: BroadcastService,
-    private scaleService: ScaleService
-  ) {}
-
-  applyBrush(svgElement: ElementRef, config: IChartConfig, size: DOMRect) {
+  applyBrush(svgElement: ElementRef, config: IChartConfig, brushScale: any) {
     this.broadcastSubscribtion?.unsubscribe();
 
     if (config.brush?.enable) {
-      const s = this.scaleService[
-        this.scaleMap.get(config?.brush?.type ?? BrushType.x)
-      ].get(config?.brush?.axisIndex ?? 0);
-
       const brush = this.brushMap.get(config?.brush?.type ?? BrushType.x);
 
       const container = d3.select(svgElement.nativeElement);
@@ -48,36 +43,44 @@ export class BrushService {
               return;
             }
 
+            const brushMessage: BrushMessage = {
+              event: _,
+              selection: [brushScale.invert(from), brushScale.invert(to)],
+              brushType: config?.brush?.type ?? BrushType.x,
+              brushScale,
+            };
+
             this.broadcastService.broadcast({
               channel: config?.zoom?.syncChannel,
-              message: {
-                ..._,
-                selection: [s.invert(from), s.invert(to)],
-                brushType: config?.brush?.type ?? BrushType.x,
-              },
+              message: brushMessage,
             });
           }
         }
       );
 
-      container.call(brushBehavior);
-
       setTimeout(() => {
-        container.call(brush.move, s.domain().map(s), {});
-      });
+        container.call(brushBehavior);
+        container.call(brush.move, brushScale.domain().map(brushScale), {});
+      }, 0);
 
       this.broadcastSubscribtion = this.broadcastService
         .subscribeToChannel(config?.zoom?.syncChannel)
         .pipe(
           map((_) => {
-            if (_.message?.transform) {
-              const s = this.scaleService[
-                this.scaleMap.get(config?.brush?.type ?? BrushType.x)
-              ].get(config?.brush?.axisIndex ?? 0);
+            if ('axis' in _.message) {
+              if (
+                _.message.axis.orientation === AxisOrientation.x &&
+                _.message.axis.index === 0
+              ) {
+                const rescaled = _.message.event.transform.rescaleX(brushScale);
 
-              const domain = _.domain;
+                const domain = rescaled.domain();
 
-              container.call(brush.move, [s(domain[0]), s(domain[1])]);
+                container.call(brush.move, [
+                  brushScale(domain[0]),
+                  brushScale(domain[1]),
+                ]);
+              }
             }
           })
         )

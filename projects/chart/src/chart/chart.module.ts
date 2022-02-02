@@ -10,11 +10,12 @@ import { GridlinesComponent } from './chart-container/gridlines/gridlines.compon
 import { XAxisComponent } from './chart-container/x-axis/x-axis.component';
 import { YAxisComponent } from './chart-container/y-axis/y-axis.component';
 import { PlotlineComponent } from './chart-container/plotline/plotline.component';
-import { PlotbandComponent } from './chart-container/plotband/plotband.component';
+import { PlotBandComponent } from './chart-container/plotband/plot-band.component';
 import { BarSeriesComponent } from './chart-container/series/bar/bar-series.component';
 import { TooltipComponent } from './chart-container/tooltip/tooltip.component';
 import { ZoomableDirective } from './directives/zoomable.directive';
 import { BrushableDirective } from './directives/brushable.directive';
+import { ScatterSeriesComponent } from './chart-container/series/scatter-series/scatter-series.component';
 
 @NgModule({
   declarations: [
@@ -28,11 +29,12 @@ import { BrushableDirective } from './directives/brushable.directive';
     XAxisComponent,
     YAxisComponent,
     PlotlineComponent,
-    PlotbandComponent,
+    PlotBandComponent,
     BarSeriesComponent,
     TooltipComponent,
     ZoomableDirective,
     BrushableDirective,
+    ScatterSeriesComponent,
   ],
   exports: [ChartComponent],
   imports: [CommonModule],

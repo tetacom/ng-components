@@ -1,7 +1,8 @@
 import { SvgAttributes } from './svg-attributes';
 
-export class Plotband {
-  id: number | string;
+export class PlotBand {
+  id?: number | string;
+  name?: string;
   from: number;
   to: number;
   label?: string;
@@ -11,12 +12,13 @@ export class Plotband {
   min?: number;
   max?: number;
   style?: {
-    plotband?: SvgAttributes;
+    plotBand?: SvgAttributes;
     grabbers?: SvgAttributes;
   };
 
   constructor(options?: {
-    id: any;
+    id?: number | string;
+    name?: string;
     from: number;
     to: number;
     label?: string;
@@ -26,11 +28,12 @@ export class Plotband {
     min?: number;
     max?: number;
     style?: {
-      plotband?: SvgAttributes;
+      plotBand?: SvgAttributes;
       grabbers?: SvgAttributes;
     };
   }) {
     this.id = options?.id;
+    this.name = options?.name;
     this.from = options?.from;
     this.to = options?.to;
     this.label = options?.label;

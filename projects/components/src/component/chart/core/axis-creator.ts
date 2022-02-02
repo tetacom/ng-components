@@ -1,8 +1,9 @@
 import * as d3 from 'd3';
-import { AxisType } from '../model/enum/axis-type';
-import { Series } from '../model/series';
-import { BasePoint } from '../model/point/base-point';
-import { ChartOptions } from '../model/chart-options';
+import {AxisType} from '../model/enum/axis-type';
+import {Series} from '../model/series';
+import {BasePoint} from '../model/point/base-point';
+import {ChartOptions} from '../model/chart-options';
+import {AxisOptions} from '../model/axis-options';
 
 export class Axis {
   public static offsetFactor = 22;
@@ -39,7 +40,7 @@ export class Axis {
     return this._index;
   }
 
-  get options() {
+  get options(): AxisOptions {
     return this._type === AxisType.abscissa
       ? this._chartOptions.xAxis[this.index]
       : this._chartOptions.yAxis[this.index];

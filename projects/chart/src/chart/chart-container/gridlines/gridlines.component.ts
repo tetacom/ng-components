@@ -1,55 +1,37 @@
 import {
-  AfterViewInit,
-  ChangeDetectorRef,
+  ChangeDetectionStrategy,
   Component,
   Input,
-  OnInit,
+  SimpleChanges,
 } from '@angular/core';
-import { ScaleService } from '../../service/scale.service';
-import { AxesService } from '../../service/axes.service';
-
-import { merge, tap } from 'rxjs';
-import { ChartService } from '../../service/chart.service';
-import { ZoomService } from '../../service/zoom.service';
 
 @Component({
   selector: '[teta-gridlines]',
   templateUrl: './gridlines.component.html',
   styleUrls: ['./gridlines.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GridlinesComponent implements OnInit {
+export class GridlinesComponent {
   @Input() size: DOMRect;
+  @Input() xScaleMap: Map<number, any>;
+  @Input() yScaleMap: Map<number, any>;
+
   tickYValues: number[];
   tickXValues: number[];
-  y: any;
-  x: any;
 
-  constructor(
-    private scaleService: ScaleService,
-    private axesService: AxesService,
-    private chartService: ChartService,
-    private zoomService: ZoomService,
-    private cdr: ChangeDetectorRef
-  ) {
-    merge(this.chartService.size, this.zoomService.zoomed)
-      .pipe(
-        tap(() => {
-          this.draw();
-          this.cdr.detectChanges();
-        })
-      )
-      .subscribe();
-  }
+  constructor() {}
 
   draw() {
-    this.y = this.scaleService.yScales.get(0);
-    this.x = this.scaleService.xScales.get(0);
-
-    this.tickYValues = this.y.ticks();
-    this.tickXValues = this.x.ticks();
+    this.tickYValues = this.yScaleMap.get(0).ticks();
+    this.tickXValues = this.xScaleMap.get(0).ticks();
   }
 
-  ngOnInit(): void {
-    this.draw();
+  ngOnChanges(changes: SimpleChanges) {
+    if (
+      changes.hasOwnProperty('xScaleMap') &&
+      changes.hasOwnProperty('yScaleMap')
+    ) {
+      this.draw();
+    }
   }
 }

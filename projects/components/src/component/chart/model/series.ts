@@ -1,10 +1,10 @@
-import { BasePoint } from './point/base-point';
-import { SeriesType } from './enum/series-type';
-import { IDrawer } from './i-drawer';
+import {BasePoint} from './point/base-point';
+import {SeriesType} from './enum/series-type';
+import {IDrawer} from './i-drawer';
 import * as d3 from 'd3';
 
 export class Series<T extends BasePoint> {
-  id?: number | string;
+  id?: number;
   renderTo?: 'canvas' | 'svg';
   type: SeriesType;
   curveType?: d3.CurveFactoryLineOnly | d3.CurveFactory;
@@ -33,7 +33,7 @@ export class Series<T extends BasePoint> {
   showInLegend?: boolean;
 
   constructor(options?: {
-    id?: number | string;
+    id?: number;
     renderTo?: 'canvas' | 'svg';
     type?: SeriesType;
     curveType?: d3.CurveFactoryLineOnly | d3.CurveFactory;
@@ -77,7 +77,7 @@ export class Series<T extends BasePoint> {
     this.visible = options?.visible || true;
     this.color = options?.color ?? 'cyan';
     this.colorScale = options?.colorScale;
-    this.drag = { enable: false, extendLine: false, ...options?.drag };
+    this.drag = {enable: false, extendLine: false, ...options?.drag};
     this.showInLegend =
       options?.showInLegend != null ? options?.showInLegend : true;
     this.extend = options?.extend != null ? options?.extend : false;

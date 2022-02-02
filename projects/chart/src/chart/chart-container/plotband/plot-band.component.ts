@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -8,7 +9,7 @@ import {
 } from '@angular/core';
 
 import * as d3 from 'd3';
-import { Plotband } from '../../model/plotband';
+import { PlotBand } from '../../model/plot-band';
 import { ScaleService } from '../../service/scale.service';
 
 import { Axis } from '../../core/axis/axis';
@@ -19,17 +20,17 @@ import { ChartService } from '../../service/chart.service';
 
 @Component({
   selector: '[teta-plot-band]',
-  templateUrl: './plotband.component.html',
-  styleUrls: ['./plotband.component.scss'],
+  templateUrl: './plot-band.component.html',
+  styleUrls: ['./plot-band.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlotbandComponent implements OnInit {
-  @Input() plotband: Plotband;
+export class PlotBandComponent implements AfterViewInit {
+  @Input() plotBand: PlotBand;
   @Input() axis: Axis;
+  @Input() scale: any;
   @Input() size: DOMRect;
   orientation = AxisOrientation;
 
-  private scale: any;
   domain: number[];
 
   constructor(
@@ -38,29 +39,24 @@ export class PlotbandComponent implements OnInit {
     private chartService: ChartService,
     private cdr: ChangeDetectorRef,
     private element: ElementRef
-  ) {
-    this.zoomService.zoomed.subscribe(() => {
-      this.scale = this.scaleService[
-        this.axis.orientation === AxisOrientation.x ? 'xScales' : 'yScales'
-      ].get(this.axis.index);
-      this.cdr.detectChanges();
-    });
-  }
+  ) {}
 
-  emit(event: IChartEvent<Plotband>) {
+  emit(event: IChartEvent<PlotBand>) {
     this.chartService.emitPlotband(event);
   }
 
-  ngOnInit(): void {
-    this.scale = this.scaleService[
-      this.axis.orientation === AxisOrientation.x ? 'xScales' : 'yScales'
-    ].get(this.axis.index);
-
+  ngAfterViewInit(): void {
     this.domain = this.scale.domain();
 
     const plotbandElement = d3
       .select(this.element.nativeElement)
-      .select('.plotband');
+      .select('.plotband')
+      .on('click', (event, d: PlotBand) => {
+        this.emit({
+          event,
+          target: d,
+        });
+      });
 
     const grabElements = d3
       .select(this.element.nativeElement)
@@ -79,31 +75,29 @@ export class PlotbandComponent implements OnInit {
       })
       .on(
         'start drag end',
-        (event: d3.D3DragEvent<any, Plotband, any>, d: Plotband) => {
-          requestAnimationFrame(() => {
-            let bandSize = parseFloat(
-              plotbandElement.attr(
-                this.axis.orientation === AxisOrientation.x ? 'width' : 'height'
-              )
-            );
+        (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
+          let bandSize = parseFloat(
+            plotbandElement.attr(
+              this.axis.orientation === AxisOrientation.x ? 'width' : 'height'
+            )
+          );
 
-            d.to = this.scale.invert(
-              event[AxisOrientation[this.axis.orientation]] +
-                (this.axis.orientation === AxisOrientation.x ? bandSize : 0)
-            );
+          d.to = this.scale.invert(
+            event[AxisOrientation[this.axis.orientation]] +
+              (this.axis.orientation === AxisOrientation.x ? bandSize : 0)
+          );
 
-            d.from = this.scale.invert(
-              event[AxisOrientation[this.axis.orientation]] +
-                (this.axis.orientation === AxisOrientation.y ? bandSize : 0)
-            );
+          d.from = this.scale.invert(
+            event[AxisOrientation[this.axis.orientation]] +
+              (this.axis.orientation === AxisOrientation.y ? bandSize : 0)
+          );
 
-            this.emit({
-              event,
-              target: d,
-            });
-
-            this.cdr.detectChanges();
+          this.emit({
+            event,
+            target: d,
           });
+
+          this.cdr.detectChanges();
         }
       );
 
@@ -113,7 +107,7 @@ export class PlotbandComponent implements OnInit {
       .drag()
       .on(
         'start drag end',
-        (event: d3.D3DragEvent<any, Plotband, any>, d: Plotband) => {
+        (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
           requestAnimationFrame(() => {
             if (event?.type === 'start') {
               const { grabber } = event?.sourceEvent?.target?.dataset;
@@ -163,21 +157,21 @@ export class PlotbandComponent implements OnInit {
         }
       );
 
-    plotbandElement.datum<Plotband>(this.plotband);
-    grabElements.datum<Plotband>(this.plotband);
+    plotbandElement.datum<PlotBand>(this.plotBand);
+    grabElements.datum<PlotBand>(this.plotBand);
 
-    if (this.plotband.draggable) {
+    if (this.plotBand.draggable) {
       plotbandElement.call(drag);
     }
 
-    if (this.plotband.resizable) {
+    if (this.plotBand.resizable) {
       grabElements.call(resize);
     }
   }
 
   get bandSize(): number {
     return Math.abs(
-      this.scale(this.plotband.to) - this.scale(this.plotband.from)
+      this.scale(this.plotBand.to) - this.scale(this.plotBand.from)
     );
   }
 
@@ -190,17 +184,17 @@ export class PlotbandComponent implements OnInit {
   }
 
   get from(): number {
-    return this.scale(this.plotband.from);
+    return this.scale(this.plotBand.from);
   }
 
   get to(): number {
-    return this.scale(this.plotband.to);
+    return this.scale(this.plotBand.to);
   }
 
-  getFill(d: Plotband): string {
-    if (d.style?.plotband?.patternImage) {
-      return `url(#${d.style.plotband?.patternImage})`;
+  getFill(d: PlotBand): string {
+    if (d.style?.plotBand?.patternImage) {
+      return `url(#${d.style.plotBand?.patternImage})`;
     }
-    return d.style.plotband?.fill;
+    return d.style.plotBand?.fill;
   }
 }

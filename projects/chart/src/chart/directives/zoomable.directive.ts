@@ -1,8 +1,8 @@
 import { Directive, ElementRef, HostBinding, Input } from '@angular/core';
 import { ZoomService } from '../service/zoom.service';
-import { ChartService } from '../service/chart.service';
 import { IChartConfig } from '../model/i-chart-config';
 import { Axis } from '../core/axis/axis';
+import { ZoomType } from '../model/enum/zoom-type';
 
 @Directive({
   selector: '[tetaZoomable]',
@@ -14,17 +14,14 @@ export class ZoomableDirective {
 
   @HostBinding('class.zoomable') private zoomable = false;
 
-  constructor(
-    private element: ElementRef,
-    private svc: ZoomService,
-    private chartService: ChartService
-  ) {}
+  constructor(private element: ElementRef, private svc: ZoomService) {}
 
   ngOnInit() {
-    if (this.config?.zoom?.enable || this.axis?.options?.zoom) {
-      this.zoomable = true;
+    let enable = this.axis?.options?.zoom || this.config?.zoom?.enable;
 
-      this.svc.applyZoom(this.element, this.chartService.config, this.size);
+    if (enable) {
+      this.zoomable = true;
+      this.svc.applyZoom(this.element, this.config, this.size, this.axis);
     }
   }
   ngAfterViewInit() {}

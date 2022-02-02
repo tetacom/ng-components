@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlotbandComponent } from './plotband.component';
+import { ScatterSeriesComponent } from './scatter-series.component';
 
-describe('PlotbandComponent', () => {
-  let component: PlotbandComponent;
-  let fixture: ComponentFixture<PlotbandComponent>;
+describe('ScatterSeriesComponent', () => {
+  let component: ScatterSeriesComponent;
+  let fixture: ComponentFixture<ScatterSeriesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlotbandComponent ]
+      declarations: [ ScatterSeriesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PlotbandComponent);
+    fixture = TestBed.createComponent(ScatterSeriesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

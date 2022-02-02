@@ -1,22 +1,18 @@
 import {
-  AfterContentChecked,
-  AfterViewChecked,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Input,
-  OnChanges,
   OnInit,
-  SimpleChanges,
 } from '@angular/core';
 import { IChartConfig } from '../model/i-chart-config';
 import { ChartService } from '../service/chart.service';
-import { Observable, tap } from 'rxjs';
-import { throttleTime } from 'rxjs/operators';
-import { AxesService } from '../service/axes.service';
+import { combineLatest, filter, map, Observable, tap } from 'rxjs';
 import { Axis } from '../core/axis/axis';
 import { AxisOrientation } from '../model/enum/axis-orientation';
+import { ScaleService } from '../service/scale.service';
+import { IChartEvent } from '../model/i-chart-event';
+import { ZoomService } from '../service/zoom.service';
 
 type Opposite = boolean;
 
@@ -26,14 +22,17 @@ type Opposite = boolean;
   styleUrls: ['./chart-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChartContainerComponent
-  implements OnInit, OnChanges, AfterViewChecked, AfterContentChecked
-{
-  @Input() config: IChartConfig;
+export class ChartContainerComponent implements OnInit {
+  config: Observable<IChartConfig>;
 
-  yAxes: Map<number, Axis>;
-  xAxes: Map<number, Axis>;
+  yAxisMap: Observable<Map<number, Axis>>;
+  xAxisMap: Observable<Map<number, Axis>>;
+  yScaleMap: Observable<Map<number, any>>;
+  xScaleMap: Observable<Map<number, any>>;
   size: Observable<DOMRect>;
+  visibleRect: Observable<any>;
+
+  brushScale: Observable<any>;
 
   private _observer: ResizeObserver;
   private uniqId: string;
@@ -58,168 +57,146 @@ export class ChartContainerComponent
   constructor(
     private _svc: ChartService,
     private _cdr: ChangeDetectorRef,
-    private _elementRef: ElementRef,
-    private _axesService: AxesService
+    private _scaleService: ScaleService,
+    private _zoomService: ZoomService,
+    private _elementRef: ElementRef
   ) {
-    this.size = this._svc.size.pipe(
-      throttleTime(100, undefined, { trailing: true }),
-      tap(() => {
-        setTimeout(() => {
-          this._cdr.detectChanges();
-        });
+    this.config = this._svc.config;
+    this.size = this._svc.size;
+    this.yAxisMap = this._scaleService.yAxisMap;
+    this.xAxisMap = this._scaleService.xAxisMap;
+    this.yScaleMap = this._scaleService.yScaleMap;
+    this.xScaleMap = this._scaleService.xScaleMap;
+
+    this.brushScale = this._scaleService.xScaleMap.pipe(
+      map((map) => {
+        return map.get(0);
       })
     );
 
-    this.yAxes = this._axesService.yAxis;
-    this.xAxes = this._axesService.xAxis;
+    this.visibleRect = combineLatest([
+      this.size,
+      this.xAxisMap,
+      this.yAxisMap,
+      this._zoomService.zoomed,
+    ]).pipe(
+      map(
+        (
+          data: [DOMRect, Map<number, any>, Map<number, any>, IChartEvent<Axis>]
+        ) => {
+          const [size, x, y] = data;
+          const yAxesArray = [...y.values()];
+          const xAxesArray = [...x.values()];
+          const left = yAxesArray
+            .filter((_) => _.options.opposite !== true && _.options.visible)
+            .reduce(this.sumSize, 0);
 
-    this.uniqId = (Date.now() + Math.random()).toString(36);
+          const right = yAxesArray
+            .filter((_) => _.options.opposite && _.options.visible)
+            .reduce(this.sumSize, 0);
+
+          const bottom = xAxesArray
+            .filter((_) => _.options.opposite !== true && _.options.visible)
+            .reduce(this.sumSize, 0);
+
+          const top = xAxesArray
+            .filter((_) => _.options.opposite && _.options.visible)
+            .reduce(this.sumSize, 0);
+
+          return {
+            x: left,
+            y: top,
+            width: size.width - left - right + 1,
+            height: size.height - top - bottom + 1,
+          };
+        }
+      ),
+      tap((_) => this._cdr.detectChanges())
+    );
   }
 
   ngOnInit(): void {
+    this.uniqId = (Date.now() + Math.random()).toString(36);
     this._observer = new ResizeObserver((entries: ResizeObserverEntry[]) => {
+      if (!Array.isArray(entries) || !entries.length) {
+        return;
+      }
+
       this._svc.setSize(entries[0].contentRect);
     });
     this._observer.observe(this._elementRef.nativeElement);
-
-    this._svc.init(this.config);
   }
+
+  ngAfterViewInit() {}
 
   private sumSize = (acc, curr) => acc + curr.selfSize;
 
-  private oppositeFilter(axis?: Axis) {
-    return (_) =>
-      _.options.opposite && _.options.visible && axis.index <= _.index;
-  }
+  getTranslate(axis?: Axis, size?: DOMRect): Observable<string> {
+    return combineLatest([this.xAxisMap, this.yAxisMap]).pipe(
+      map((data: [Map<number, Axis>, Map<number, Axis>]) => {
+        const [x, y] = data;
+        const xAxesArray = [...x.values()];
+        const yAxesArray = [...y.values()];
 
-  private nonOppositeFilter(axis?: Axis) {
-    return (_) =>
-      _.options.opposite !== true && _.options.visible && _.index <= axis.index;
-  }
+        const oppositeFilter = this.filterPositionMap.get(true);
+        const nonOppositeFilter = this.filterPositionMap.get(false);
 
-  getVisibleRect(size: DOMRect) {
-    const yAxesArray = [...this.yAxes.values()];
-    const xAxesArray = [...this.xAxes.values()];
+        const oppositeOffsetY = yAxesArray.filter(oppositeFilter(axis));
+        const nonOppositeOffsetY = yAxesArray.filter(nonOppositeFilter(axis));
 
-    const left = yAxesArray
-      .filter((_) => _.options.opposite !== true && _.options.visible)
-      .reduce(this.sumSize, 0);
+        const oppositeOffsetX = xAxesArray.filter(oppositeFilter(axis));
+        const nonOppositeOffsetX = xAxesArray.filter(nonOppositeFilter(axis));
 
-    const right = yAxesArray
-      .filter((_) => _.options.opposite && _.options.visible)
-      .reduce(this.sumSize, 0);
+        const oppositeTranslateY = oppositeOffsetY.reduce(
+          (acc, curr) => acc + curr.selfSize,
+          0
+        );
+        const nonOppisteTranslateY = nonOppositeOffsetY.reduce(
+          (acc, curr) => acc + curr.selfSize,
+          0
+        );
 
-    const bottom = xAxesArray
-      .filter((_) => _.options.opposite !== true && _.options.visible)
-      .reduce(this.sumSize, 0);
+        const oppositeTranslateX = oppositeOffsetX.reduce(
+          (acc, curr) => acc + curr.selfSize,
+          0
+        );
 
-    const top = xAxesArray
-      .filter((_) => _.options.opposite && _.options.visible)
-      .reduce(this.sumSize, 0);
+        const nonOppisteTranslateX = nonOppositeOffsetX.reduce(
+          (acc, curr) => acc + curr.selfSize,
+          0
+        );
 
-    const rect = {
-      left,
-      top,
-      width: size.width - left - right + 1,
-      height: size.height - top - bottom + 1,
-    };
+        const left = yAxesArray
+          .filter((_) => _.options.visible && _.options.opposite !== true)
+          .reduce((acc, curr) => acc + curr.selfSize, 0);
 
-    return rect;
-  }
+        const top = xAxesArray
+          .filter((_) => _.options.visible && _.options.opposite === true)
+          .reduce((acc, curr) => acc + curr.selfSize, 0);
 
-  getYAxisTranslate(axis: Axis, size: DOMRect): string {
-    const yAxesArray = [...this.yAxes.values()];
+        if (axis.orientation === AxisOrientation.x) {
+          return `translate(${left}, ${
+            axis.options.opposite
+              ? oppositeTranslateX
+              : size.height - nonOppisteTranslateX
+          })`;
+        }
 
-    const translateOpposite = yAxesArray
-      .filter(this.nonOppositeFilter(axis))
-      .reduce(this.sumSize, 0);
+        if (axis.orientation === AxisOrientation.y) {
+          return `translate(${
+            axis.options.opposite
+              ? size.width - oppositeTranslateY
+              : nonOppisteTranslateY
+          }, ${top})`;
+        }
 
-    const translateNonOpposite = yAxesArray
-      .filter(this.oppositeFilter(axis))
-      .reduce(this.sumSize, 0);
-
-    return `translate(${
-      axis.options.opposite
-        ? size.width - translateNonOpposite
-        : translateOpposite
-    }, 0)`;
-  }
-
-  getXAxisTranslate(axis: Axis, size: DOMRect): string {
-    const xAxesArray = [...this.xAxes.values()];
-
-    const translateNonOpposite = xAxesArray
-      .filter(this.nonOppositeFilter(axis))
-      .reduce(this.sumSize, 0);
-
-    const translateOpposite = xAxesArray
-      .filter(this.oppositeFilter(axis))
-      .reduce(this.sumSize, 0);
-
-    return `translate(0, ${
-      axis.options.opposite
-        ? translateOpposite
-        : size.height - translateNonOpposite
-    })`;
-  }
-
-  getTranslate(axis?: Axis, size?: DOMRect): string {
-    const xAxesArray = [...this.xAxes.values()];
-    const yAxesArray = [...this.yAxes.values()];
-
-    const oppositeFilter = this.filterPositionMap.get(true);
-    const nonOppositeFilter = this.filterPositionMap.get(false);
-
-    const oppositeOffsetY = yAxesArray.filter(oppositeFilter(axis));
-    const nonOppositeOffsetY = yAxesArray.filter(nonOppositeFilter(axis));
-
-    const oppositeOffsetX = xAxesArray.filter(oppositeFilter(axis));
-    const nonOppositeOffsetX = xAxesArray.filter(nonOppositeFilter(axis));
-
-    const oppositeTranslateY = oppositeOffsetY.reduce(
-      (acc, curr) => acc + curr.selfSize,
-      0
+        return 'translate(0, 0)';
+      })
     );
-    const nonOppisteTranslateY = nonOppositeOffsetY.reduce(
-      (acc, curr) => acc + curr.selfSize,
-      0
-    );
+  }
 
-    const oppositeTranslateX = oppositeOffsetX.reduce(
-      (acc, curr) => acc + curr.selfSize,
-      0
-    );
-
-    const nonOppisteTranslateX = nonOppositeOffsetX.reduce(
-      (acc, curr) => acc + curr.selfSize,
-      0
-    );
-
-    const left = yAxesArray
-      .filter((_) => _.options.visible && _.options.opposite !== true)
-      .reduce((acc, curr) => acc + curr.selfSize, 0);
-
-    const top = xAxesArray
-      .filter((_) => _.options.visible && _.options.opposite === true)
-      .reduce((acc, curr) => acc + curr.selfSize, 0);
-
-    if (axis.orientation === AxisOrientation.x) {
-      return `translate(${left}, ${
-        axis.options.opposite
-          ? oppositeTranslateX
-          : size.height - nonOppisteTranslateX
-      })`;
-    }
-
-    if (axis.orientation === AxisOrientation.y) {
-      return `translate(${
-        axis.options.opposite
-          ? size.width - oppositeTranslateY
-          : nonOppisteTranslateY
-      }, ${top})`;
-    }
-
-    return 'translate(0, 0)';
+  identify(index, item) {
+    return item.value.index;
   }
 
   mouseMove(event) {
@@ -233,10 +210,4 @@ export class ChartContainerComponent
   id(): string {
     return this.uniqId;
   }
-
-  ngAfterContentChecked(): void {}
-
-  ngAfterViewChecked(): void {}
-
-  ngOnChanges(changes: SimpleChanges): void {}
 }

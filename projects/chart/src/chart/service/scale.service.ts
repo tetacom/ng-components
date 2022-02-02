@@ -1,74 +1,231 @@
 import { Injectable } from '@angular/core';
-
-import { AxesService } from './axes.service';
 import * as d3 from 'd3';
-import { AxisType } from '../model/enum/axis-type';
+import { D3ZoomEvent, ZoomTransform } from 'd3';
 import { Axis } from '../core/axis/axis';
 import { AxisOrientation } from '../model/enum/axis-orientation';
-
 import { IChartConfig } from '../model/i-chart-config';
+import { ChartService } from './chart.service';
+import {
+  combineLatest,
+  map,
+  Observable,
+  shareReplay,
+  withLatestFrom,
+} from 'rxjs';
+import { IChartEvent } from '../model/i-chart-event';
+import { ZoomService } from './zoom.service';
+import { ZoomType } from '../model/enum/zoom-type';
+import { ScaleType } from '../model/enum/scale-type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ScaleService {
-  public yScales: Map<number | string, any> = new Map<number | string, any>();
-  public xScales: Map<number | string, any> = new Map<number | string, any>();
+  public yAxisMap: Observable<Map<number, Axis>>;
+  public xAxisMap: Observable<Map<number, Axis>>;
 
-  private scaleMapping = new Map<AxisType, any>()
-    .set(AxisType.number, d3.scaleLinear)
-    .set(AxisType.time, d3.scaleTime)
-    .set(AxisType.category, d3.scaleOrdinal)
-    .set(AxisType.log, d3.scaleLog);
+  public yScaleMap: Observable<Map<number, any>>;
+  public xScaleMap: Observable<Map<number, any>>;
 
-  constructor(private axesService: AxesService) {}
+  private transformCacheX = new Map<number, ZoomTransform>();
+  private transformCacheY = new Map<number, ZoomTransform>();
 
-  public createScales(size: DOMRect, config?: IChartConfig) {
-    this.yScales.clear();
-    this.xScales.clear();
+  private scaleMapping = new Map<ScaleType, any>()
+    .set(ScaleType.linear, d3.scaleLinear)
+    .set(ScaleType.time, d3.scaleTime)
+    .set(ScaleType.category, d3.scaleOrdinal)
+    .set(ScaleType.log, d3.scaleLog)
+    .set(ScaleType.pow, d3.scalePow)
+    .set(ScaleType.sqrt, d3.scaleSqrt);
 
-    const topBound = [...this.axesService.xAxis.values()]
-      .filter((_) => _.options?.visible && _.options?.opposite)
-      .reduce((acc, cur) => acc + cur.selfSize, 0);
+  constructor(
+    private chartService: ChartService,
+    private zoomService: ZoomService
+  ) {
+    this.xAxisMap = combineLatest([
+      this.chartService.size,
+      this.chartService.config,
+    ]).pipe(
+      map((data: [DOMRectReadOnly, IChartConfig]) => {
+        const [, config] = data;
+        const map = new Map<number, Axis>();
+        config.xAxis.map((_, index) => {
+          map.set(index, Axis.createAxis(AxisOrientation.x, config, index));
+        });
+        return map;
+      })
+    );
 
-    const bottomBound = [...this.axesService.xAxis.values()]
-      .filter((_) => _.options?.visible && _.options?.opposite !== true)
-      .reduce((acc, cur) => acc + cur.selfSize, 0);
+    this.yAxisMap = combineLatest([
+      this.chartService.size,
+      this.chartService.config,
+    ]).pipe(
+      map((data: [DOMRectReadOnly, IChartConfig]) => {
+        const [, config] = data;
+        const map = new Map<number, Axis>();
+        config.yAxis.map((_, index) => {
+          map.set(index, Axis.createAxis(AxisOrientation.y, config, index));
+        });
 
-    const leftBound = [...this.axesService.yAxis.values()]
-      .filter((_) => _.options?.visible && _.options.opposite !== true)
-      .reduce((acc, cur) => acc + cur.selfSize, 0);
+        return map;
+      })
+    );
 
-    const rightBound = [...this.axesService.yAxis.values()]
-      .filter((_) => _.options?.visible && _.options.opposite)
-      .reduce((acc, cur) => acc + cur.selfSize, 0);
+    this.xScaleMap = combineLatest([
+      this.chartService.size,
+      this.chartService.config,
+      this.zoomService.zoomed,
+    ]).pipe(
+      withLatestFrom(this.yAxisMap, this.xAxisMap),
+      map(
+        (
+          data: [
+            [DOMRectReadOnly, IChartConfig, IChartEvent<Axis>],
+            Map<number, Axis>,
+            Map<number, Axis>
+          ]
+        ) => {
+          const [[size, config, zoom], yAxes, xAxes] = data;
 
-    this.axesService.yAxis.forEach((axis: Axis) => {
-      const scale = this.getScale(axis).range([
-        0,
-        size.height - topBound - bottomBound,
-      ]);
+          const map = new Map<number, any>();
 
-      this.yScales.set(axis.index, scale);
-    });
+          const left = [...yAxes.values()]
+            .filter((_) => _.options?.visible && _.options?.opposite)
+            .reduce((acc, cur) => acc + cur.selfSize, 0);
 
-    this.axesService.xAxis.forEach((axis: Axis) => {
-      const scale = this.getScale(axis).range([
-        0,
-        size.width - leftBound - rightBound,
-      ]);
+          const right = [...yAxes.values()]
+            .filter((_) => _.options?.visible && _.options?.opposite !== true)
+            .reduce((acc, cur) => acc + cur.selfSize, 0);
 
-      this.xScales.set(axis.index, scale);
-    });
-  }
+          const finalWidth = (size.width || 0) - left - right;
 
-  private getScale(axis: Axis) {
-    return this.scaleMapping
-      .get(axis.options?.type)()
-      .domain(
-        axis.orientation === AxisOrientation.y
-          ? [...axis.extremes].reverse()
-          : axis.extremes
-      );
+          xAxes.forEach((axis) => {
+            let domain = axis.extremes;
+
+            if (axis?.options.inverted) {
+              domain = [...axis.extremes].reverse();
+            }
+
+            const scale = this.scaleMapping
+              .get(axis.options.scaleType.type)()
+              .domain(domain)
+              .range([0, finalWidth]);
+
+            if (axis.options.scaleType.type === ScaleType.log) {
+              scale.base(axis.options.scaleType.base);
+            }
+
+            map.set(axis.index, scale);
+
+            const hasCache = this.transformCacheX.has(axis.index);
+            const shouldRestore =
+              zoom?.target?.orientation !== AxisOrientation.x ||
+              zoom.target?.index !== axis.index;
+
+            if (hasCache && shouldRestore) {
+              const restoredTransform = this.transformCacheX.get(axis.index);
+              map.set(axis.index, restoredTransform.rescaleX(scale));
+            }
+          });
+
+          if (zoom) {
+            const event = zoom.event as D3ZoomEvent<any, any>;
+
+            if (zoom.target?.orientation === AxisOrientation.x) {
+              const currentScale = map.get(zoom.target.index);
+              const rescaled = event.transform.rescaleX(currentScale);
+              map.set(zoom.target.index, rescaled);
+
+              const axis = xAxes.get(zoom.target.index);
+              this.transformCacheX.set(axis.index, event.transform);
+            }
+          }
+
+          return map;
+        }
+      ),
+      shareReplay(1)
+    );
+
+    this.yScaleMap = combineLatest([
+      this.chartService.size,
+      this.chartService.config,
+      this.zoomService.zoomed,
+    ]).pipe(
+      withLatestFrom(this.yAxisMap, this.xAxisMap),
+      map(
+        (
+          data: [
+            [DOMRectReadOnly, IChartConfig, IChartEvent<Axis>],
+            Map<number, Axis>,
+            Map<number, Axis>
+          ]
+        ) => {
+          const [[size, config, zoom], yAxes, xAxes] = data;
+
+          const map = new Map<number, any>();
+
+          const top = [...xAxes.values()]
+            .filter((_) => _.options?.visible && _.options?.opposite)
+            .reduce((acc, cur) => acc + cur.selfSize, 0);
+
+          const bottom = [...xAxes.values()]
+            .filter((_) => _.options?.visible && _.options?.opposite !== true)
+            .reduce((acc, cur) => acc + cur.selfSize, 0);
+
+          const finalHeight = (size.height || 0) - top - bottom;
+
+          yAxes.forEach((axis) => {
+            let domain = axis.extremes;
+
+            if (axis.orientation === AxisOrientation.y) {
+              domain = [...axis.extremes].reverse();
+            }
+
+            if (axis?.options.inverted) {
+              domain = domain.reverse();
+            }
+
+            const scale = this.scaleMapping
+              .get(axis.options.scaleType.type)()
+              .domain(domain)
+              .range([0, finalHeight]);
+
+            if (axis.options.scaleType.type === ScaleType.log) {
+              scale.base(axis.options.scaleType.base);
+            }
+
+            map.set(axis.index, scale);
+
+            const hasCache = this.transformCacheY.has(axis.index);
+
+            const shouldRestore =
+              zoom?.target?.orientation !== AxisOrientation.y ||
+              zoom.target?.index !== axis.index;
+
+            if (hasCache && shouldRestore) {
+              const restoredTransform = this.transformCacheY.get(axis.index);
+              map.set(axis.index, restoredTransform.rescaleY(scale));
+            }
+          });
+
+          if (zoom) {
+            const event = zoom.event as D3ZoomEvent<any, any>;
+
+            if (zoom.target?.orientation === AxisOrientation.y) {
+              const currentScale = map.get(zoom.target.index);
+              const rescaled = event.transform.rescaleY(currentScale);
+              map.set(zoom.target.index, rescaled);
+
+              const axis = yAxes.get(zoom.target.index);
+              this.transformCacheY.set(axis.index, event.transform);
+            }
+          }
+
+          return map;
+        }
+      ),
+      shareReplay(1)
+    );
   }
 }

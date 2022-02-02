@@ -1,18 +1,20 @@
-import { AxisType } from './enum/axis-type';
-import { Plotband } from './plotband';
-import { PlotLine } from './plotline';
+import { PlotBand } from './plot-band';
+import { PlotLine } from './plot-line';
+import { ScaleType } from './enum/scale-type';
 
 export interface AxisOptions {
   title?: string;
   min?: number;
   max?: number;
+  scaleType?: {
+    type?: ScaleType;
+    base?: number;
+  };
   visible?: boolean;
   tickFormat?: (d: any) => string;
-  type?: AxisType;
   zoom?: boolean;
   inverted?: boolean;
-  negative?: boolean;
   opposite?: boolean;
-  plotbands?: Plotband[];
-  plotlines?: PlotLine[];
+  plotBands?: PlotBand[];
+  plotLines?: PlotLine[];
 }

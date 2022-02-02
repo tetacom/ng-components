@@ -1,15 +1,13 @@
-import { IBuilder } from '../../../model/i-builder';
-import { Axis } from '../axis';
-import { BasePoint } from '../../../model/base-point';
-import { AxisOrientation } from '../../../model/enum/axis-orientation';
+import {IBuilder} from '../../../model/i-builder';
+import {Axis} from '../axis';
+import {BasePoint} from '../../../model/base-point';
+import {AxisOrientation} from '../../../model/enum/axis-orientation';
 
 import * as d3 from 'd3';
 
 export class ExtremesBuilder implements IBuilder<Axis, [number, number]> {
-  private extentAccessorMap = new Map<
-    AxisOrientation,
-    (point: BasePoint) => number
-  >()
+  private extentAccessorMap = new Map<AxisOrientation,
+    (point: BasePoint) => number>()
     .set(AxisOrientation.x, (_) => _.x)
     .set(AxisOrientation.y, (_) => _.y);
 
@@ -26,11 +24,8 @@ export class ExtremesBuilder implements IBuilder<Axis, [number, number]> {
       const data = linkedSeries.reduce((acc: BasePoint[], current) => {
         return acc.concat(current.data);
       }, []);
-
       const accessor = this.extentAccessorMap.get(settings.orientation);
-      // add negative axis!
-
-      this.extremes = d3.extent(data, accessor);
+      this.extremes = data.length > 1 ? d3.extent(data, accessor) : [0, 0];
     }
 
     if (hasMin) {

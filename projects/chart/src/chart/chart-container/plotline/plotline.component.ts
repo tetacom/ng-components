@@ -6,14 +6,13 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { PlotLine } from '../../model/plotline';
+import { PlotLine } from '../../model/plot-line';
 import { Axis } from '../../core/axis/axis';
 import { AxisOrientation } from '../../model/enum/axis-orientation';
 import { ZoomService } from '../../service/zoom.service';
 import { ScaleService } from '../../service/scale.service';
 import * as d3 from 'd3';
 import { IChartEvent } from '../../model/i-chart-event';
-import { Plotband } from '../../model/plotband';
 import { ChartService } from '../../service/chart.service';
 
 @Component({
@@ -23,13 +22,13 @@ import { ChartService } from '../../service/chart.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlotlineComponent implements OnInit {
-  @Input() plotline: PlotLine;
+  @Input() plotLine: PlotLine;
   @Input() size: DOMRect;
   @Input() axis: Axis;
+  @Input() scale: any;
   orientation = AxisOrientation;
 
-  private scale: any;
-  private domain: number[];
+  private _domain: number[];
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -37,21 +36,10 @@ export class PlotlineComponent implements OnInit {
     private scaleService: ScaleService,
     private chartService: ChartService,
     private element: ElementRef
-  ) {
-    this.zoomService.zoomed.subscribe(() => {
-      this.scale = this.scaleService[
-        this.axis.orientation === AxisOrientation.x ? 'xScales' : 'yScales'
-      ].get(this.axis.index);
-      this.cdr.detectChanges();
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.scale = this.scaleService[
-      this.axis.orientation === AxisOrientation.x ? 'xScales' : 'yScales'
-    ].get(this.axis.index);
-
-    this.domain = this.scale.domain();
+    this._domain = this.scale.domain();
 
     const plotlineElement = d3
       .select(this.element.nativeElement)
@@ -87,10 +75,10 @@ export class PlotlineComponent implements OnInit {
         }
       );
 
-    plotlineElement.datum<PlotLine>(this.plotline);
-    grabElement.datum<PlotLine>(this.plotline);
+    plotlineElement.datum<PlotLine>(this.plotLine);
+    grabElement.datum<PlotLine>(this.plotLine);
 
-    if (this.plotline.draggable) {
+    if (this.plotLine.draggable) {
       grabElement.call(drag);
     }
   }
@@ -100,7 +88,7 @@ export class PlotlineComponent implements OnInit {
   }
 
   get value() {
-    return this.scale(this.plotline.value);
+    return this.scale(this.plotLine.value);
   }
 
   get height(): number {

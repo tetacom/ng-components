@@ -5,28 +5,25 @@ import { BasePoint } from '../../model/base-point';
 import * as d3 from 'd3';
 import { AxisOptions } from '../../model/axis-options';
 import { AxisSizeBuilder, ExtremesBuilder } from './builders/public-api';
-import { AxisType } from '../../model/enum/axis-type';
-
 import { generateTicks } from '../utils/public-api';
+import { ScaleType } from '../../model/enum/scale-type';
 
 export class Axis {
   private chartConfig: IChartConfig;
   private _orientation: AxisOrientation;
-  private _index: number | string;
+  private _index: number;
   private _extremes: [number, number] = [0, 0];
   private _selfSize: number;
   private _ticksValues: number[];
   private _options: AxisOptions;
+  private _isFake: boolean;
 
-  private defaultFormatters = new Map<AxisType, any>()
-    .set(AxisType.number, d3.format(',.2f'))
-    .set(AxisType.time, d3.timeFormat('%B %d, %Y'))
-    .set(AxisType.log, d3.format(',.2f'));
-
-  private defaultConfig: AxisOptions = {
-    type: AxisType.number,
-    visible: true,
-  };
+  private defaultFormatters = new Map<ScaleType, any>()
+    .set(ScaleType.linear, d3.format(',.2f'))
+    .set(ScaleType.time, d3.timeFormat('%B %d, %Y'))
+    .set(ScaleType.log, d3.format(',.2f'))
+    .set(ScaleType.pow, d3.format(',.2f'))
+    .set(ScaleType.sqrt, d3.format(',.2f'));
 
   constructor(config: IChartConfig) {
     this.chartConfig = config;
@@ -40,21 +37,26 @@ export class Axis {
    * Chart config
    * @param {number} index
    * Index axis
+   * @param {boolean} isFake
    * @return {Axis}
    * New generated axis
    */
   public static createAxis(
     orientation: AxisOrientation,
     config: IChartConfig,
-    index: number
+    index: number,
+    isFake = false
   ): Axis {
     const axis = new Axis(config);
     axis.setLocate(orientation);
     axis.setIndex(index);
+
     axis.setOptions();
     axis.setExtremes();
     axis.setTicksValues();
     axis.setSelfSize();
+
+    axis._isFake = isFake;
 
     return axis;
   }
@@ -70,10 +72,10 @@ export class Axis {
 
   /**
    *
-   * @param {number | string} index
+   * @param {number} index
    * Index axis
    */
-  private setIndex(index: number | string): void {
+  private setIndex(index: number): void {
     this._index = index;
   }
 
@@ -93,18 +95,14 @@ export class Axis {
   private setExtremes(): void {
     const builder = new ExtremesBuilder();
     this._extremes = builder.build(this);
-
-    this._extremes = d3.nice(this._extremes[0], this._extremes[1], 10);
   }
 
   private setSelfSize(): void {
-    const builder = new AxisSizeBuilder();
-    this._selfSize = builder.build(this);
+    this._selfSize = new AxisSizeBuilder().build(this);
   }
 
   private setTicksValues(): void {
-    const ticks = generateTicks(this._extremes);
-    this._ticksValues = ticks;
+    this._ticksValues = generateTicks(this._extremes);
   }
 
   private setOptions(): void {
@@ -113,7 +111,7 @@ export class Axis {
         ? this.chartConfig.xAxis[this.index]
         : this.chartConfig.yAxis[this.index];
 
-    this._options = Object.assign(this.defaultConfig, options);
+    this._options = options;
   }
 
   get extremes(): Array<number> {
@@ -132,7 +130,7 @@ export class Axis {
     return this._ticksValues;
   }
 
-  get index() {
+  get index(): number {
     return this._index;
   }
 
@@ -140,7 +138,11 @@ export class Axis {
     return this._options;
   }
 
+  get isFake(): boolean {
+    return this._isFake;
+  }
+
   public defaultFormatter() {
-    return this.defaultFormatters.get(this.options.type);
+    return this.defaultFormatters.get(this.options.scaleType.type);
   }
 }

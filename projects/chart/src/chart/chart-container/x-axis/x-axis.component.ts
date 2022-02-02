@@ -16,7 +16,7 @@ import { ScaleService } from '../../service/scale.service';
 import { ChartService } from '../../service/chart.service';
 import * as d3 from 'd3';
 import { ZoomService } from '../../service/zoom.service';
-import { concat, map, merge, takeWhile, tap } from 'rxjs';
+import { merge, takeWhile, tap } from 'rxjs';
 
 @Component({
   selector: '[teta-x-axis]',
@@ -26,27 +26,23 @@ import { concat, map, merge, takeWhile, tap } from 'rxjs';
 })
 export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() axis: Axis;
+  @Input() set scale(scale: any) {
+    this._scale = scale;
+
+    this.draw();
+  }
+
+  get scale() {
+    return this._scale;
+  }
+
   @Input() size: DOMRect;
   @ViewChild('svg') node: ElementRef;
 
+  private _scale: any;
   private _alive = true;
 
-  constructor(
-    private scaleService: ScaleService,
-    private chartService: ChartService,
-    private cdr: ChangeDetectorRef,
-    private zoomService: ZoomService
-  ) {
-    merge(this.zoomService.zoomed, this.chartService.size)
-      .pipe(
-        takeWhile(() => this._alive),
-        tap((_) => {
-          this.draw();
-          this.cdr.detectChanges();
-        })
-      )
-      .subscribe();
-  }
+  constructor() {}
 
   ngOnInit(): void {}
 
@@ -59,16 +55,18 @@ export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private draw() {
-    const scale = this.scaleService.xScales.get(this.axis.index);
+    if (!this.node || !this.axis) {
+      return;
+    }
 
     const axis = this.axis.options.opposite
       ? d3
-          .axisTop(scale)
+          .axisTop(this.scale)
           .tickFormat(
             this.axis.options.tickFormat ?? this.axis.defaultFormatter()
           )
       : d3
-          .axisBottom(scale)
+          .axisBottom(this.scale)
           .tickFormat(
             this.axis.options.tickFormat ?? this.axis.defaultFormatter()
           );

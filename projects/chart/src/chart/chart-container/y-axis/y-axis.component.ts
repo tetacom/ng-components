@@ -1,20 +1,16 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { Axis } from '../../core/axis/axis';
 import * as d3 from 'd3';
-import { ScaleService } from '../../service/scale.service';
-import { ChartService } from '../../service/chart.service';
-import { ZoomService } from '../../service/zoom.service';
-import { merge, takeWhile, tap } from 'rxjs';
 
 @Component({
   selector: '[teta-y-axis]',
@@ -22,29 +18,23 @@ import { merge, takeWhile, tap } from 'rxjs';
   styleUrls: ['./y-axis.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
+export class YAxisComponent implements OnInit, AfterViewInit {
   @Input() axis: Axis;
+  @Input() set scale(scale: any) {
+    this._scale = scale;
+    this.draw();
+  }
+
+  get scale() {
+    return this._scale;
+  }
   @Input() size: DOMRect;
-  @ViewChild('svg') node: ElementRef;
+  @ViewChild('svg', { static: false }) node: ElementRef;
 
   private _alive = true;
+  private _scale: any;
 
-  constructor(
-    private scaleService: ScaleService,
-    private chartService: ChartService,
-    private cdr: ChangeDetectorRef,
-    private zoomService: ZoomService
-  ) {
-    merge(this.zoomService.zoomed, this.chartService.size)
-      .pipe(
-        takeWhile(() => this._alive),
-        tap((_) => {
-          this.draw();
-          this.cdr.markForCheck();
-        })
-      )
-      .subscribe();
-  }
+  constructor() {}
 
   ngOnInit(): void {}
 
@@ -67,18 +57,18 @@ export class YAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private draw() {
-    const scale = this.scaleService.yScales.get(this.axis.index);
+    if (!this.node || !this.axis) {
+      return;
+    }
 
     const axis = this.axis.options.opposite
       ? d3
-          .axisRight(scale)
-          // .tickValues(this.axis.tickValues)
+          .axisRight(this.scale)
           .tickFormat(
             this.axis.options.tickFormat ?? this.axis.defaultFormatter()
           )
       : d3
-          .axisLeft(scale)
-          // .tickValues(this.axis.tickValues)
+          .axisLeft(this.scale)
           .tickFormat(
             this.axis.options.tickFormat ?? this.axis.defaultFormatter()
           );
