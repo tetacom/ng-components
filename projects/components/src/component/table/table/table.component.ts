@@ -337,6 +337,7 @@ export class TableComponent<T>
     }
   }
 
+  
   private getEventCell(event: Event): HTMLElement | null {
     return event.composedPath().find((target: HTMLElement) => {
       return target.tagName?.toLowerCase() === 'teta-cell';
