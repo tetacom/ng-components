@@ -54,7 +54,7 @@ export class TableService<T> {
   editType: EditType;
   editEvent: EditEvent;
   rowEditable: boolean | ((row: TableRow<T>) => boolean);
-  cellEditable: boolean | ((row: ICellCoordinates<T>) => boolean);
+  // cellEditable: boolean | ((row: ICellCoordinates<T>) => boolean);
 
   get dragSource() {
     return this._dragSource;
@@ -409,7 +409,7 @@ export class TableService<T> {
         this._editCellStop.next(this._currentEditCell);
       }
       if (
-        this.boolOrFuncCallback<ICellCoordinates<T>>(this.cellEditable)(
+        this.boolOrFuncCallback<ICellCoordinates<T>>(cellCoordinates.column.editable)(
           cellCoordinates
         )
       ) {
