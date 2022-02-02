@@ -21,6 +21,7 @@
           <rect
             tetaZoomable
             fill-opacity="0"
+            [brushScale]="brushScale | async"
             [axis]="item.value"
             [config]="config | async"
             [size]="data.size"
@@ -46,6 +47,7 @@
           <rect
             tetaZoomable
             fill-opacity="0"
+            [brushScale]="brushScale | async"
             [axis]="item.value"
             [config]="config | async"
             [size]="data.size"

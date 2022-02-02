@@ -77,19 +77,14 @@ export class BrushService {
           map((_) => {
             if ('axis' in _.message) {
               if (
-                (_.message.axis.index === 0 &&
+                (_.message.axis.index === 0 && _.message.axis.isFake &&
                   _.message.axis.orientation === AxisOrientation.x &&
                   config.brush.type === BrushType.x) ||
-                (_.message.axis.index === 0 &&
+                (_.message.axis.index === 0 &&  _.message.axis.isFake &&
                   _.message.axis.orientation === AxisOrientation.y &&
                   config.brush.type === BrushType.y)
               ) {
-                const rescaled =
-                  config?.brush?.type === BrushType.x
-                    ? _.message.event.transform.rescaleX(brushScale)
-                    : _.message.event.transform.rescaleY(brushScale);
-
-                const domain = rescaled.domain();
+                const domain = _.message.brushDomain;
 
                 container.call(brush.move, [
                   brushScale(domain[0]),

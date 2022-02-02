@@ -7,7 +7,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { filter, map, merge, Observable, takeWhile, tap } from 'rxjs';
+import {filter, map, merge, Observable, takeWhile, tap, timer} from 'rxjs';
 import { ChartService } from '../../service/chart.service';
 import { ZoomService } from '../../service/zoom.service';
 import { IDisplayTooltip } from '../../model/i-display-tooltip';

@@ -11,6 +11,7 @@ export class ZoomableDirective {
   @Input() config?: IChartConfig;
   @Input() axis?: Axis;
   @Input() size?: DOMRect;
+  @Input() brushScale?: any;
 
   @HostBinding('class.zoomable') private zoomable = false;
 
@@ -21,7 +22,7 @@ export class ZoomableDirective {
 
     if (enable) {
       this.zoomable = true;
-      this.svc.applyZoom(this.element, this.config, this.size, this.axis);
+      this.svc.applyZoom(this.element, this.config, this.size, this.axis, this.brushScale);
     }
   }
   ngAfterViewInit() {}

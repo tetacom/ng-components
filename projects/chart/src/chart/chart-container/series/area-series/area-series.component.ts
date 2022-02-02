@@ -14,7 +14,7 @@ import * as d3 from 'd3';
 import { DragPointType } from '../../../model/enum/drag-point-type';
 import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
 import { FillType } from '../../../model/enum/fill-type';
-import { curveStep } from 'd3';
+import {curveCatmullRom, curveStep} from 'd3';
 import { Axis } from '../../../core/axis/axis';
 
 @Component({
@@ -72,10 +72,11 @@ export class AreaSeriesComponent<T extends BasePoint>
 
         const axis = yAxis.get(this.series.yAxisIndex);
 
-        const domain = this.y.domain();
+        const domain = this.x.domain();
 
-        const line = d3
+        const area = d3
           .area<BasePoint>()
+          .curve(curveCatmullRom)
           .defined(
             (point) =>
               point.x !== null &&
@@ -83,11 +84,11 @@ export class AreaSeriesComponent<T extends BasePoint>
               !isNaN(point.x) &&
               !isNaN(point.y)
           )
-          .x((point) => this.x(point.x))
-          .y0((point) => this.y(axis?.options.inverted ? domain[1] : domain[0]))
-          .y1((point) => this.y(point.y));
+          .y((point) => this.y(point.y))
+          .x0((point) => this.x(domain[0]))
+          .x1((point) => this.x(point.x));
 
-        return line(this.series.data);
+        return area(this.series.data);
       })
     );
   }

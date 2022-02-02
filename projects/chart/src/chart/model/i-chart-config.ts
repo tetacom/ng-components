@@ -16,7 +16,7 @@ export interface IChartConfig {
     syncChannel?: string;
   };
   brush?: {
-    enable: boolean;
+    enable?: boolean;
     type: BrushType;
     from?: number;
     to?: number;

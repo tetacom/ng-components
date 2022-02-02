@@ -1,23 +1,16 @@
-import { ElementRef, Injectable } from '@angular/core';
+import {ElementRef, Injectable} from '@angular/core';
 import * as d3 from 'd3';
-import { D3ZoomEvent, zoomIdentity, zoomTransform } from 'd3';
-import {
-  BehaviorSubject,
-  filter,
-  map,
-  Observable,
-  shareReplay,
-  Subscription,
-} from 'rxjs';
-import { IChartConfig } from '../model/i-chart-config';
-import { BroadcastService } from './broadcast.service';
-import { Axis } from '../core/axis/axis';
-import { IChartEvent } from '../model/i-chart-event';
-import { AxisOrientation } from '../model/enum/axis-orientation';
-import { ZoomType } from '../model/enum/zoom-type';
-import { IBroadcastMessage, ZoomMessage } from '../model/i-broadcast-message';
-import { BrushType } from '../model/enum/brush-type';
-import { throttleTime } from 'rxjs/operators';
+import {D3ZoomEvent, zoomIdentity} from 'd3';
+import {BehaviorSubject, filter, map, Observable, shareReplay, Subscription,} from 'rxjs';
+import {IChartConfig} from '../model/i-chart-config';
+import {BroadcastService} from './broadcast.service';
+import {Axis} from '../core/axis/axis';
+import {IChartEvent} from '../model/i-chart-event';
+import {AxisOrientation} from '../model/enum/axis-orientation';
+import {ZoomType} from '../model/enum/zoom-type';
+import {IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';
+import {BrushType} from '../model/enum/brush-type';
+import {throttleTime} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +29,8 @@ export class ZoomService {
     svgElement: ElementRef,
     config: IChartConfig,
     size: DOMRect,
-    axis?: Axis
+    axis?: Axis,
+    brushScale?: any
   ) {
     const enable = axis?.options?.zoom || config?.zoom?.enable;
 
@@ -58,33 +52,36 @@ export class ZoomService {
       ]);
 
     if (config?.zoom?.enable) {
-      this.zoomed
-        .pipe(
-          filter(
-            (_) =>
-              (_?.target?.orientation === AxisOrientation.x &&
-                _?.target.index === 0 &&
-                config?.zoom.type === ZoomType.x &&
-                _axis.orientation === AxisOrientation.x) ||
-              (_?.target?.orientation === AxisOrientation.y &&
-                _?.target.index === 0 &&
-                config?.zoom.type === ZoomType.y &&
-                _axis.orientation === AxisOrientation.y)
-          ),
-          filter((_) => _?.event?.type === 'end'),
-          map((_) => {
-            const eventTransform = _?.event.transform;
-            const currentTransform = zoomTransform(svgElement.nativeElement);
 
-            if (currentTransform !== eventTransform) {
-              d3.select(svgElement.nativeElement).call(
-                zoom.transform,
-                eventTransform
-              );
-            }
-          })
-        )
-        .subscribe();
+      // unused? check
+
+      // this.zoomed
+      //   .pipe(
+      //     filter(
+      //       (_) =>
+      //         (_?.target?.orientation === AxisOrientation.x &&
+      //           _?.target.index === 0 &&
+      //           config?.zoom.type === ZoomType.x &&
+      //           _axis.orientation === AxisOrientation.x) ||
+      //         (_?.target?.orientation === AxisOrientation.y &&
+      //           _?.target.index === 0 &&
+      //           config?.zoom.type === ZoomType.y &&
+      //           _axis.orientation === AxisOrientation.y)
+      //     ),
+      //     filter((_) => _?.event?.type === 'end'),
+      //     map((_) => {
+      //       const eventTransform = _?.event.transform;
+      //       const currentTransform = zoomTransform(svgElement.nativeElement);
+      //
+      //       if (currentTransform !== eventTransform) {
+      //         d3.select(svgElement.nativeElement).call(
+      //           zoom.transform,
+      //           eventTransform
+      //         );
+      //       }
+      //     })
+      //   )
+      //   .subscribe();
     }
 
     const zoomed = (event: D3ZoomEvent<any, any>) => {
@@ -98,6 +95,7 @@ export class ZoomService {
           const message: ZoomMessage = {
             event: event,
             axis: _axis,
+            brushDomain: config.brush?.type === BrushType.x ? event.transform.rescaleX(brushScale).domain() : event.transform.rescaleY(brushScale).domain()
           };
 
           this.broadcastService.broadcast({
@@ -125,6 +123,7 @@ export class ZoomService {
               );
             }
             if ('selection' in _.message) {
+
               return (
                 (_axis.index === 0 &&
                   _axis.orientation === AxisOrientation.x &&
@@ -155,6 +154,9 @@ export class ZoomService {
             }
 
             if ('selection' in broadcaseMessage.message) {
+
+              if(!_axis.isFake) return;
+
               const s = broadcaseMessage.message.selection;
               const domain = broadcaseMessage.message.brushScale.domain();
 
@@ -163,14 +165,14 @@ export class ZoomService {
 
               if (broadcaseMessage.message?.brushType === BrushType.x) {
                 transform = transform.translate(
-                  -broadcaseMessage.message.brushScale(s[0]),
+                  -brushScale(s[0]),
                   0
                 );
               }
               if (broadcaseMessage.message?.brushType === BrushType.y) {
                 transform = transform.translate(
                   0,
-                  -broadcaseMessage.message.brushScale(s[0])
+                  -brushScale(s[0])
                 );
               }
 

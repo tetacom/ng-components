@@ -1,21 +1,21 @@
-import { Meta } from '@storybook/angular/types-6-0';
-import { withKnobs } from '@storybook/addon-knobs';
-import { ChartComponent } from './chart/chart.component';
-import { ChartModule } from './chart.module';
-import { IconModule } from '../../../components/src/component/icon/icon.module';
-import { ButtonModule } from '../../../components/src/component/button/button.module';
-import { IChartConfig } from './model/i-chart-config';
-import { SeriesType } from './model/enum/series-type';
-import { randomInt } from 'd3-random';
+import {Meta} from '@storybook/angular/types-6-0';
+import {withKnobs} from '@storybook/addon-knobs';
+import {ChartComponent} from './chart/chart.component';
+import {ChartModule} from './chart.module';
+import {IconModule} from '../../../components/src/component/icon/icon.module';
+import {ButtonModule} from '../../../components/src/component/button/button.module';
+import {IChartConfig} from './model/i-chart-config';
+import {SeriesType} from './model/enum/series-type';
+import {randomInt} from 'd3-random';
 import * as faker from 'faker';
-import { ZoomType } from './model/enum/zoom-type';
-import { PlotBand } from './model/plot-band';
-import { PlotLine } from './model/plot-line';
-import { TooltipTracking } from './model/enum/tooltip-tracking';
-import { BrushType } from './model/enum/brush-type';
-import { Series } from './model/series';
-import { BasePoint } from './model/base-point';
-import { FillType } from './model/enum/fill-type';
+import {ZoomType} from './model/enum/zoom-type';
+import {PlotBand} from './model/plot-band';
+import {PlotLine} from './model/plot-line';
+import {TooltipTracking} from './model/enum/tooltip-tracking';
+import {BrushType} from './model/enum/brush-type';
+import {Series} from './model/series';
+import {BasePoint} from './model/base-point';
+import {FillType} from './model/enum/fill-type';
 
 export default {
   title: 'Component/Chart',
@@ -179,7 +179,7 @@ const cssColorNames = [
 
 const randomColor = randomInt(0, cssColorNames.length - 1);
 
-const seriesType = [SeriesType.area, SeriesType.area, SeriesType.area];
+const seriesType = [SeriesType.line, SeriesType.area, SeriesType.area];
 
 faker.locale = 'ru';
 
@@ -195,7 +195,7 @@ const createSeries = (size: number) => {
         color: cssColorNames[randomColor()].toLowerCase(),
         fillType: FillType.gradient,
         data: Array.from(Array(size).keys()).map((key, index) => {
-          const num = faker.datatype.number({ min: 0, max: 100 });
+          const num = faker.datatype.number({min: 0, max: 100});
 
           const point = {
             x: key,
@@ -230,13 +230,12 @@ const createChart = (size: number): IChartConfig => {
     name: '123123123132',
     inverted: true,
     tooltip: {
-      tracking: TooltipTracking.y,
+      tracking: TooltipTracking.x,
     },
     xAxis: [{}],
     yAxis: [
       {
         title: 'атм',
-        inverted: true,
         plotLines: [
           new PlotLine({
             value: 360,
@@ -250,13 +249,15 @@ const createChart = (size: number): IChartConfig => {
       {
         min: 1000,
         opposite: false,
-        inverted: false,
         max: 2000,
       },
     ],
+    brush: {
+      type: BrushType.y
+    },
     zoom: {
       enable: true,
-      type: ZoomType.x,
+      type: ZoomType.y,
       syncChannel: 'channelA',
     },
     legend: {
@@ -269,13 +270,13 @@ const createChart = (size: number): IChartConfig => {
 const createChart2 = (size: number): IChartConfig => {
   return {
     name: 'sdfgsfgd',
-    inverted: false,
+    inverted: true,
     tooltip: {
       tracking: TooltipTracking.x,
     },
     xAxis: [
       {
-        visible: false,
+        visible: true
       },
     ],
     yAxis: [
@@ -294,12 +295,12 @@ const createChart2 = (size: number): IChartConfig => {
     brush: {
       enable: true,
       type: BrushType.y,
-      from: 200,
-      to: 150,
+      from: 100,
+      to: 20,
     },
     zoom: {
       enable: false,
-      type: ZoomType.x,
+      type: ZoomType.y,
       syncChannel: 'channelA',
     },
     legend: {
@@ -324,8 +325,8 @@ export const basicChart = () => ({
     },
   },
   template: `
-    <div>
-      <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 100%; height: 80vh;">
+
+      <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 100%; height: 100vh">
         <button teta-button
           [palette]="'primary'"
           (click)="config=createChart(200); config2=createChart2(200)">
@@ -338,11 +339,10 @@ export const basicChart = () => ({
        config </button>
         <div class="row row_auto gap" style="height: 100%; width: 100%">
             <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-
+            <teta-svg-chart style="height: 70%" [config]="config2" class="bg-background-50 border border-text-50"></teta-svg-chart>
         </div>
 
       </div>
-    </div>
+
 `,
 });
