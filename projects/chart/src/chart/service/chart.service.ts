@@ -1,13 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IChartConfig } from '../model/i-chart-config';
-import {
-  BehaviorSubject,
-  debounceTime,
-  filter,
-  map,
-  Observable,
-  Subject,
-} from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, Subject } from 'rxjs';
 import { IChartEvent } from '../model/i-chart-event';
 import { IDisplayTooltip } from '../model/i-display-tooltip';
 import { PlotBand } from '../model/plot-band';
@@ -16,7 +9,6 @@ import { IPointMove } from '../model/i-point-move';
 import { defaultChartConfig } from '../default/default-chart-config';
 import { defaultAxisConfig } from '../default/default-axis-config';
 import { defaultSeriesConfig } from '../default/default-series-config';
-import { throttleTime } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
