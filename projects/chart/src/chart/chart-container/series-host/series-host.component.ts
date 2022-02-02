@@ -16,10 +16,10 @@ import { Series } from '../../model/series';
 import { BasePoint } from '../../model/base-point';
 import { ChartService } from '../../service/chart.service';
 import { tap } from 'rxjs';
-import { throttleTime } from 'rxjs/operators';
 import { SeriesType } from '../../model/enum/series-type';
 import { IChartConfig } from '../../model/i-chart-config';
 import { ScatterSeriesComponent } from '../series/scatter-series/scatter-series.component';
+import { AreaSeriesComponent } from '../series/area-series/area-series.component';
 
 @Component({
   selector: '[teta-series-host]',
@@ -38,7 +38,8 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
   >()
     .set(SeriesType.line, LineSeriesComponent)
     .set(SeriesType.bar, BarSeriesComponent)
-    .set(SeriesType.scatter, ScatterSeriesComponent);
+    .set(SeriesType.scatter, ScatterSeriesComponent)
+    .set(SeriesType.area, AreaSeriesComponent);
 
   private _init = false;
   private _componentRef: ComponentRef<any>;

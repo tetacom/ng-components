@@ -3,6 +3,9 @@
     class="line"
     [attr.d]="path | async"
     [attr.stroke]="series.color"
+    [attr.stroke-dasharray]="series.style?.strokeDasharray"
+    [attr.stroke-width]="series.style?.strokeWidth"
+
     [attr.stroke-width]="series.style?.strokeWidth"
     fill="none">
   </svg:path>

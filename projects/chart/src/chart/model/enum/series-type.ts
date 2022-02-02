@@ -1,5 +1,6 @@
 export enum SeriesType {
   line,
   bar,
-  scatter
+  area,
+  scatter,
 }

@@ -18,7 +18,8 @@ export interface IChartConfig {
   brush?: {
     enable: boolean;
     type: BrushType;
-    axisIndex?: number;
+    from?: number;
+    to?: number;
   };
   legend?: {
     enable?: boolean;

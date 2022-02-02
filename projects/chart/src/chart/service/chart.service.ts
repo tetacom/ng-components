@@ -116,7 +116,7 @@ export class ChartService {
       });
     }
 
-    if (config.brush.enable) {
+    if (config?.brush?.enable) {
       config.yAxis = config.yAxis.map((_) => ({ ..._, zoom: false }));
       config.xAxis = config.xAxis.map((_) => ({ ..._, zoom: false }));
     }

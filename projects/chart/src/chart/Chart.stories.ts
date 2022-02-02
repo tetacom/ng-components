@@ -13,6 +13,8 @@ import { PlotBand } from './model/plot-band';
 import { PlotLine } from './model/plot-line';
 import { TooltipTracking } from './model/enum/tooltip-tracking';
 import { BrushType } from './model/enum/brush-type';
+import { Series } from './model/series';
+import { BasePoint } from './model/base-point';
 
 export default {
   title: 'Component/Chart',
@@ -176,39 +178,42 @@ const cssColorNames = [
 
 const randomColor = randomInt(0, cssColorNames.length - 1);
 
-const seriesType = [SeriesType.line, SeriesType.line, SeriesType.line];
+const seriesType = [SeriesType.line, SeriesType.line, SeriesType.area];
 
 faker.locale = 'ru';
 
 const createSeries = (size: number) => {
-  return seriesType.map((type: SeriesType, index: number) => {
-    return {
-      id: index,
-      type,
-      name: faker.address.cityName(),
-      yAxisIndex: 0,
-      xAxisIndex: 0,
-      color: cssColorNames[randomColor()].toLowerCase(),
-      data: Array.from(Array(size).keys()).map((key, index) => {
-        const num = faker.datatype.number({
-          min: faker.datatype.number({ min: 0, max: 100 }),
-          max: faker.datatype.number({ min: 200, max: 500 }),
-        });
+  return seriesType.map(
+    (type: SeriesType, index: number): Series<BasePoint> => {
+      return {
+        id: index,
+        type,
+        name: faker.address.cityName(),
+        yAxisIndex: 0,
+        xAxisIndex: 0,
+        color: cssColorNames[randomColor()].toLowerCase(),
 
-        const point = {
-          x: key,
-          y: num,
-        };
+        data: Array.from(Array(size).keys()).map((key, index) => {
+          const num = faker.datatype.number({
+            min: faker.datatype.number({ min: 0, max: 100 }),
+            max: faker.datatype.number({ min: 200, max: 500 }),
+          });
 
-        // if (index % 10 === 0) {
-        //   point.x = null;
-        //   point.y = null;
-        // }
+          const point = {
+            x: key,
+            y: num,
+          };
 
-        return point;
-      }),
-    };
-  });
+          // if (index % 10 === 0) {
+          //   point.x = null;
+          //   point.y = null;
+          // }
+
+          return point;
+        }),
+      };
+    }
+  );
 };
 
 const plotbands2 = [
@@ -230,15 +235,11 @@ const plotbands2 = [
 const createChart = (size: number): IChartConfig => {
   return {
     name: '123123123132',
-    inverted: false,
+    inverted: true,
     tooltip: {
-      tracking: TooltipTracking.x,
+      tracking: TooltipTracking.y,
     },
-    xAxis: [
-      {
-        plotBands: plotbands2,
-      },
-    ],
+    xAxis: [{}],
     yAxis: [
       {
         min: faker.datatype.number({ min: -100, max: 100 }),
@@ -261,12 +262,53 @@ const createChart = (size: number): IChartConfig => {
         max: 2000,
       },
     ],
-    brush: {
-      enable: false,
-      type: BrushType.x,
-    },
     zoom: {
       enable: true,
+      type: ZoomType.y,
+      syncChannel: 'channelA',
+    },
+    legend: {
+      enable: true,
+    },
+    series: createSeries(size),
+  };
+};
+
+const createChart2 = (size: number): IChartConfig => {
+  return {
+    name: 'sdfgsfgd',
+    inverted: true,
+    tooltip: {
+      tracking: TooltipTracking.x,
+    },
+    xAxis: [
+      {
+        visible: false,
+      },
+    ],
+    yAxis: [
+      {
+        min: faker.datatype.number({ min: -100, max: -200 }),
+        max: faker.datatype.number({ min: 400, max: 600 }),
+        title: 'атм',
+        // inverted: true,
+      },
+      {
+        min: 1000,
+        opposite: false,
+        inverted: false,
+        max: 2000,
+        visible: false,
+      },
+    ],
+    brush: {
+      enable: true,
+      type: BrushType.y,
+      from: 200,
+      to: 150,
+    },
+    zoom: {
+      enable: false,
       type: ZoomType.x,
       syncChannel: 'channelA',
     },
@@ -281,9 +323,12 @@ export const basicChart = () => ({
   moduleMetadata: {
     imports: [ChartModule, IconModule, ButtonModule],
   },
+
   props: {
     config: createChart(200),
+    config2: createChart2(200),
     createChart: createChart,
+    createChart2: createChart2,
     click: (e) => {
       console.log(e);
     },
@@ -293,17 +338,22 @@ export const basicChart = () => ({
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 100%; height: 80vh;">
         <button teta-button
           [palette]="'primary'"
-          (click)="config=createChart(200);">
+          (click)="config=createChart(200); config2=createChart2(200)">
           Create new Data
         </button>
         <button teta-button
           [palette]="'primary'"
           (click)="config=createChart(0); config2=createChart(0)">
           Create empty data
-        </button>
-        <div class="column column_auto" style="height: 100%">
+       config </button>
+        <div class="row row_auto gap" style="height: 100%; width: 100%">
             <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
             <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
+            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
+            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
+            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
+
+            <teta-svg-chart [config]="config2" class="bg-background-50 border border-text-50"></teta-svg-chart>
         </div>
 
       </div>

@@ -11,45 +11,51 @@
   <svg height="100%" width="100%" class="position-absolute">
     <g class="y-axis-container">
       <ng-container *ngFor="let item of data.yAxisMap | keyvalue; trackBy: identify">
-        <g
-          teta-y-axis
-          [axis]="item.value"
-          [scale]="data.yScaleMap.get(item.key)"
-          [size]="data.size"
-          [attr.transform]="getTranslate(item.value, data.size) | async"></g>
-        <rect
-          tetaZoomable
-          fill-opacity="0"
-          [axis]="item.value"
-          [config]="config | async"
-          [size]="data.size"
-          [attr.x]="item.value.options.opposite ? 0 : -item.value.selfSize"
-          [attr.y]="0"
-          [attr.height]="data.size.width"
-          [attr.width]="item.value.selfSize"
-          [attr.transform]="getTranslate(item.value, data.size) | async"></rect>
+        <ng-container *ngIf="item.value.options.visible">
+          <g
+            teta-y-axis
+            [axis]="item.value"
+            [scale]="data.yScaleMap.get(item.key)"
+            [size]="data.size"
+            [attr.transform]="getTranslate(item.value, data.size) | async"></g>
+          <rect
+            tetaZoomable
+            fill-opacity="0"
+            [axis]="item.value"
+            [config]="config | async"
+            [size]="data.size"
+            [attr.x]="item.value.options.opposite ? 0 : -item.value.selfSize"
+            [attr.y]="0"
+            [attr.height]="data.size.width"
+            [attr.width]="item.value.selfSize"
+            [attr.transform]="getTranslate(item.value, data.size) | async"></rect>
+        </ng-container>
+
       </ng-container>
     </g>
     <g class="x-axis-container">
       <ng-container *ngFor="let item of data.xAxisMap | keyvalue; trackBy: identify">
-        <g
-          teta-x-axis
-          [axis]="item.value"
-          [scale]="data.xScaleMap.get(item.key)"
-          [size]="data.size"
-          [attr.transform]="getTranslate(item.value, data.size) | async"></g>
+        <ng-container *ngIf="item.value.options.visible">
+          <g
+            teta-x-axis
+            [axis]="item.value"
+            [scale]="data.xScaleMap.get(item.key)"
+            [size]="data.size"
+            [attr.transform]="getTranslate(item.value, data.size) | async"></g>
 
-        <rect
-          tetaZoomable
-          fill-opacity="0"
-          [axis]="item.value"
-          [config]="config | async"
-          [size]="data.size"
-          [attr.x]="0"
-          [attr.y]="0"
-          [attr.width]="data.size.width"
-          [attr.height]="item.value.selfSize"
-          [attr.transform]="getTranslate(item.value, data.size) | async"></rect>
+          <rect
+            tetaZoomable
+            fill-opacity="0"
+            [axis]="item.value"
+            [config]="config | async"
+            [size]="data.size"
+            [attr.x]="0"
+            [attr.y]="0"
+            [attr.width]="data.size.width"
+            [attr.height]="item.value.selfSize"
+            [attr.transform]="getTranslate(item.value, data.size) | async"></rect>
+        </ng-container>
+
       </ng-container>
     </g>
   </svg>

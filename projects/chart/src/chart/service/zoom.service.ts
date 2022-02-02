@@ -17,6 +17,7 @@ import { AxisOrientation } from '../model/enum/axis-orientation';
 import { ZoomType } from '../model/enum/zoom-type';
 import { IBroadcastMessage, ZoomMessage } from '../model/i-broadcast-message';
 import { BrushType } from '../model/enum/brush-type';
+import { throttleTime } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -115,6 +116,7 @@ export class ZoomService {
       const subscription = this.broadcastService
         .subscribeToChannel(config?.zoom?.syncChannel)
         .pipe(
+          throttleTime(50, undefined, { trailing: true }),
           filter((_) => {
             if ('axis' in _.message) {
               return (
@@ -124,7 +126,12 @@ export class ZoomService {
             }
             if ('selection' in _.message) {
               return (
-                _axis.index === 0 && _axis.orientation === AxisOrientation.x
+                (_axis.index === 0 &&
+                  _axis.orientation === AxisOrientation.x &&
+                  _.message.brushType === BrushType.x) ||
+                (_axis.index === 0 &&
+                  _axis.orientation === AxisOrientation.y &&
+                  _.message.brushType === BrushType.y)
               );
             }
             return false;

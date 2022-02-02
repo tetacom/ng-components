@@ -1,31 +1,27 @@
 import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   OnInit,
 } from '@angular/core';
-import * as d3 from 'd3';
 import { SeriesBaseComponent } from '../../../base/series-base.component';
-import { ChartService } from '../../../service/chart.service';
 import { BasePoint } from '../../../model/base-point';
+import { ChartService } from '../../../service/chart.service';
 import { ScaleService } from '../../../service/scale.service';
-import { combineLatest, map, Observable, tap, withLatestFrom } from 'rxjs';
-
 import { ZoomService } from '../../../service/zoom.service';
-import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
+import { combineLatest, map, Observable, tap, withLatestFrom } from 'rxjs';
+import * as d3 from 'd3';
 import { DragPointType } from '../../../model/enum/drag-point-type';
+import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
 
 @Component({
-  selector: 'svg:svg[teta-line-series]',
-  templateUrl: './line-series.component.html',
-  styleUrls: ['./line-series.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'svg:svg[teta-area-series]',
+  templateUrl: './area-series.component.html',
+  styleUrls: ['./area-series.component.scss'],
 })
-export class LineSeriesComponent<T extends BasePoint>
+export class AreaSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
-  implements OnInit, AfterViewInit
+  implements OnInit
 {
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
   display: Observable<number>;
@@ -64,9 +60,10 @@ export class LineSeriesComponent<T extends BasePoint>
         this.x = x.get(this.series.xAxisIndex);
         this.y = y.get(this.series.yAxisIndex);
 
-        const line = d3
-          .line<BasePoint>()
+        const domain = this.y.domain();
 
+        const line = d3
+          .area<BasePoint>()
           .defined(
             (point) =>
               point.x !== null &&
@@ -75,7 +72,8 @@ export class LineSeriesComponent<T extends BasePoint>
               !isNaN(point.y)
           )
           .x((point) => this.x(point.x))
-          .y((point) => this.y(point.y));
+          .y0((point) => this.y(domain[0]))
+          .y1((point) => this.y(point.y));
 
         return line(this.series.data);
       })
