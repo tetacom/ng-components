@@ -14,7 +14,6 @@ import {
 } from 'rxjs';
 import { IChartEvent } from '../model/i-chart-event';
 import { ZoomService } from './zoom.service';
-import { ZoomType } from '../model/enum/zoom-type';
 import { ScaleType } from '../model/enum/scale-type';
 
 @Injectable({
