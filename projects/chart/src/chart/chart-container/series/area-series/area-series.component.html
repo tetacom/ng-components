@@ -1,13 +1,26 @@
+<svg:defs *ngIf="series?.fillType === fillType.gradient">
+  <svg:linearGradient [id]="'gradient-fill-' + id" gradientUnits="userSpaceOnUse"
+                      x1="0%"
+                      y1="0%"
+                      [attr.x2]="config?.inverted ? '100%' : '0%'"
+                      [attr.y2]="config?.inverted ? '0%' : '100%'">
+    <svg:stop offset="0%" [attr.stop-color]="series.color" stop-opacity="0"></svg:stop>
+    <svg:stop offset="5%" [attr.stop-color]="series.color" stop-opacity="0.1"></svg:stop>
+    <svg:stop offset="20%" [attr.stop-color]="series.color" stop-opacity="0.2"></svg:stop>
+    <svg:stop offset="100%" [attr.stop-color]="series.color" stop-opacity="0.5"></svg:stop>
+  </svg:linearGradient>
+</svg:defs>
 
 <svg:path
-  class="line"
+  class="area"
   [attr.d]="path | async"
   [attr.stroke]="series.color"
   [attr.stroke-dasharray]="series.style?.strokeDasharray"
   [attr.stroke-width]="series.style?.strokeWidth"
   [attr.stroke-width]="series.style?.strokeWidth"
-  fill="red">
+  [attr.fill]="series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : 'none'">
 </svg:path>
+
 <ng-container *ngIf="transform | async as t">
   <svg:circle
     *ngIf="t.x !== undefined && t.y!== undefined"

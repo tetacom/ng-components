@@ -80,7 +80,8 @@ export class BrushService {
                 (_.message.axis.index === 0 &&
                   _.message.axis.orientation === AxisOrientation.x &&
                   config.brush.type === BrushType.x) ||
-                (_.message.axis.orientation === AxisOrientation.y &&
+                (_.message.axis.index === 0 &&
+                  _.message.axis.orientation === AxisOrientation.y &&
                   config.brush.type === BrushType.y)
               ) {
                 const rescaled =

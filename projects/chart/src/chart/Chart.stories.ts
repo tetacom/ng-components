@@ -15,6 +15,7 @@ import { TooltipTracking } from './model/enum/tooltip-tracking';
 import { BrushType } from './model/enum/brush-type';
 import { Series } from './model/series';
 import { BasePoint } from './model/base-point';
+import { FillType } from './model/enum/fill-type';
 
 export default {
   title: 'Component/Chart',
@@ -178,7 +179,7 @@ const cssColorNames = [
 
 const randomColor = randomInt(0, cssColorNames.length - 1);
 
-const seriesType = [SeriesType.line, SeriesType.line, SeriesType.area];
+const seriesType = [SeriesType.area, SeriesType.area, SeriesType.area];
 
 faker.locale = 'ru';
 
@@ -192,22 +193,14 @@ const createSeries = (size: number) => {
         yAxisIndex: 0,
         xAxisIndex: 0,
         color: cssColorNames[randomColor()].toLowerCase(),
-
+        fillType: FillType.gradient,
         data: Array.from(Array(size).keys()).map((key, index) => {
-          const num = faker.datatype.number({
-            min: faker.datatype.number({ min: 0, max: 100 }),
-            max: faker.datatype.number({ min: 200, max: 500 }),
-          });
+          const num = faker.datatype.number({ min: 0, max: 100 });
 
           const point = {
             x: key,
             y: num,
           };
-
-          // if (index % 10 === 0) {
-          //   point.x = null;
-          //   point.y = null;
-          // }
 
           return point;
         }),
@@ -242,9 +235,8 @@ const createChart = (size: number): IChartConfig => {
     xAxis: [{}],
     yAxis: [
       {
-        min: faker.datatype.number({ min: -100, max: 100 }),
-        max: faker.datatype.number({ min: 400, max: 600 }),
         title: 'атм',
+        inverted: true,
         plotLines: [
           new PlotLine({
             value: 360,
@@ -264,7 +256,7 @@ const createChart = (size: number): IChartConfig => {
     ],
     zoom: {
       enable: true,
-      type: ZoomType.y,
+      type: ZoomType.x,
       syncChannel: 'channelA',
     },
     legend: {
@@ -277,7 +269,7 @@ const createChart = (size: number): IChartConfig => {
 const createChart2 = (size: number): IChartConfig => {
   return {
     name: 'sdfgsfgd',
-    inverted: true,
+    inverted: false,
     tooltip: {
       tracking: TooltipTracking.x,
     },
@@ -288,8 +280,6 @@ const createChart2 = (size: number): IChartConfig => {
     ],
     yAxis: [
       {
-        min: faker.datatype.number({ min: -100, max: -200 }),
-        max: faker.datatype.number({ min: 400, max: 600 }),
         title: 'атм',
         // inverted: true,
       },
@@ -349,11 +339,7 @@ export const basicChart = () => ({
         <div class="row row_auto gap" style="height: 100%; width: 100%">
             <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
             <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
 
-            <teta-svg-chart [config]="config2" class="bg-background-50 border border-text-50"></teta-svg-chart>
         </div>
 
       </div>

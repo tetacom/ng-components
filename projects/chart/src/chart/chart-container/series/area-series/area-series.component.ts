@@ -13,6 +13,9 @@ import { combineLatest, map, Observable, tap, withLatestFrom } from 'rxjs';
 import * as d3 from 'd3';
 import { DragPointType } from '../../../model/enum/drag-point-type';
 import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
+import { FillType } from '../../../model/enum/fill-type';
+import { curveStep } from 'd3';
+import { Axis } from '../../../core/axis/axis';
 
 @Component({
   selector: 'svg:svg[teta-area-series]',
@@ -29,6 +32,9 @@ export class AreaSeriesComponent<T extends BasePoint>
   svgElement: SVGGeometryElement;
   x: any;
   y: any;
+  id: string;
+
+  fillType = FillType;
 
   constructor(
     protected override svc: ChartService,
@@ -38,6 +44,8 @@ export class AreaSeriesComponent<T extends BasePoint>
     protected override element: ElementRef
   ) {
     super(svc, cdr, scaleService, zoomService, element);
+
+    this.id = (Date.now() + Math.random()).toString(36);
   }
 
   override ngOnInit(): void {
@@ -55,10 +63,14 @@ export class AreaSeriesComponent<T extends BasePoint>
       this.scaleService.xScaleMap,
       this.scaleService.yScaleMap,
     ]).pipe(
-      map((data: [Map<number, any>, Map<number, any>]) => {
-        const [x, y] = data;
+      withLatestFrom(this.scaleService.yAxisMap),
+      map((data: [[Map<number, any>, Map<number, any>], Map<number, Axis>]) => {
+        const [[x, y], yAxis] = data;
+
         this.x = x.get(this.series.xAxisIndex);
         this.y = y.get(this.series.yAxisIndex);
+
+        const axis = yAxis.get(this.series.yAxisIndex);
 
         const domain = this.y.domain();
 
@@ -72,7 +84,7 @@ export class AreaSeriesComponent<T extends BasePoint>
               !isNaN(point.y)
           )
           .x((point) => this.x(point.x))
-          .y0((point) => this.y(domain[0]))
+          .y0((point) => this.y(axis?.options.inverted ? domain[1] : domain[0]))
           .y1((point) => this.y(point.y));
 
         return line(this.series.data);

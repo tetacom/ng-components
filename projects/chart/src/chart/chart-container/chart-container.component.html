@@ -26,7 +26,7 @@
             [size]="data.size"
             [attr.x]="item.value.options.opposite ? 0 : -item.value.selfSize"
             [attr.y]="0"
-            [attr.height]="data.size.width"
+            [attr.height]="data.size.height"
             [attr.width]="item.value.selfSize"
             [attr.transform]="getTranslate(item.value, data.size) | async"></rect>
         </ng-container>
