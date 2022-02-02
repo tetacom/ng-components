@@ -73,7 +73,6 @@ export class TableComponent<T>
   @Input() editType: EditType;
   @Input() editEvent: EditEvent;
   @Input() rowEditable: boolean | ((row: TableRow<T>) => boolean);
-  @Input() cellEditable: boolean | ((row: ICellCoordinates<T>) => boolean);
   @Input() rowClass: (row: TableRow<T>, index?: number) => string;
 
   @Input() set scrollToIndex(index: number) {
@@ -312,14 +311,11 @@ export class TableComponent<T>
     if (changes.hasOwnProperty('rowEditable')) {
       this._svc.rowEditable = this.rowEditable;
     }
-    if (changes.hasOwnProperty('cellEditable')) {
-      this._svc.cellEditable = this.cellEditable;
-    }
     if (changes.hasOwnProperty('cookieName')) {
       this._svc.setCookieName(this.cookieName);
     }
     if (changes.hasOwnProperty('columns')) {
-      if(this.columns !== null && this.columns !== undefined) {
+      if (this.columns !== null && this.columns !== undefined) {
         this._svc.setColumns(this.columns);
       }
     }

@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
+  ElementRef, HostListener,
   Input,
   OnInit,
 } from '@angular/core';
@@ -41,6 +41,13 @@ export class PlotBandComponent implements AfterViewInit {
     private element: ElementRef
   ) {}
 
+  @HostListener('click', ['$event']) click(event: MouseEvent) {
+    this.emit({
+      target: this.plotBand,
+      event
+    })
+  }
+
   emit(event: IChartEvent<PlotBand>) {
     this.chartService.emitPlotband(event);
   }
@@ -50,13 +57,13 @@ export class PlotBandComponent implements AfterViewInit {
 
     const plotbandElement = d3
       .select(this.element.nativeElement)
-      .select('.plotband')
-      .on('click', (event, d: PlotBand) => {
-        this.emit({
-          event,
-          target: d,
-        });
-      });
+      .select('.plotband');
+      // .on('click', (event, d: PlotBand) => {
+      //   this.emit({
+      //     event,
+      //     target: d,
+      //   });
+      // });
 
     const grabElements = d3
       .select(this.element.nativeElement)
