@@ -96,6 +96,8 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this._alive = false;
-    this._zoomService.broadcastSubscription?.unsubscribe();
+    this._zoomService.broadcastSubscription?.forEach((sub) => {
+      sub.unsubscribe();
+    });
   }
 }

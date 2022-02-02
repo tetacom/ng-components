@@ -35,7 +35,12 @@ export class ChartService {
     this.config = this.config$
       .asObservable()
       .pipe(map(this.setDefaults), map(this.setpreparationData));
-    this.size = this.size$.asObservable();
+    this.size = this.size$.asObservable().pipe(
+      filter((_) => {
+        return _.height > 0 && _.width > 0;
+      })
+    );
+
     this.pointerMove = this.pointerMove$.asObservable();
     this.tooltips = this.tooltips$.asObservable();
     this.plotBandEvent = this.plotBandEvent$.asObservable();
@@ -81,9 +86,17 @@ export class ChartService {
       };
     };
     config = Object.assign({}, defaultChartConfig, config);
+
     config.xAxis = config.xAxis.map(defaultConfig(defaultAxisConfig));
     config.yAxis = config.yAxis.map(defaultConfig(defaultAxisConfig));
     config.series = config.series.map(defaultConfig(defaultSeriesConfig));
+
+    config.tooltip = Object.assign(
+      {},
+      defaultChartConfig.tooltip,
+      config.tooltip
+    );
+
     return config;
   }
 
@@ -101,6 +114,11 @@ export class ChartService {
           }),
         };
       });
+    }
+
+    if (config.brush.enable) {
+      config.yAxis = config.yAxis.map((_) => ({ ..._, zoom: false }));
+      config.xAxis = config.xAxis.map((_) => ({ ..._, zoom: false }));
     }
 
     return config;

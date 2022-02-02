@@ -1,6 +1,6 @@
 import { ElementRef, Injectable } from '@angular/core';
 import * as d3 from 'd3';
-import { D3ZoomEvent, zoomTransform, ZoomTransform } from 'd3';
+import { D3ZoomEvent, zoomIdentity, zoomTransform } from 'd3';
 import {
   BehaviorSubject,
   filter,
@@ -11,18 +11,18 @@ import {
 } from 'rxjs';
 import { IChartConfig } from '../model/i-chart-config';
 import { BroadcastService } from './broadcast.service';
-import { BrushType } from '../model/enum/brush-type';
 import { Axis } from '../core/axis/axis';
 import { IChartEvent } from '../model/i-chart-event';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 import { ZoomType } from '../model/enum/zoom-type';
-import { ZoomMessage } from '../model/i-broadcast-message';
+import { IBroadcastMessage, ZoomMessage } from '../model/i-broadcast-message';
+import { BrushType } from '../model/enum/brush-type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ZoomService {
-  broadcastSubscription: Subscription;
+  broadcastSubscription: Subscription[] = [];
 
   zoomed: Observable<IChartEvent<Axis>>;
   private zoomed$ = new BehaviorSubject<IChartEvent<Axis>>(null);
@@ -37,28 +37,38 @@ export class ZoomService {
     size: DOMRect,
     axis?: Axis
   ) {
-    // this.broadcastSubscription?.unsubscribe();
     const enable = axis?.options?.zoom || config?.zoom?.enable;
 
-    if (config?.zoom?.enable || axis === undefined) {
+    const fakeAxis = Axis.createAxis(
+      config?.zoom.type === ZoomType.x ? AxisOrientation.x : AxisOrientation.y,
+      config,
+      0,
+      true
+    );
+
+    const _axis = axis ? axis : fakeAxis;
+
+    const zoom = d3
+      .zoom()
+      .scaleExtent([1, 50])
+      .extent([
+        [0, 0],
+        [size.width, size.height],
+      ]);
+
+    if (config?.zoom?.enable) {
       this.zoomed
         .pipe(
           filter(
             (_) =>
               (_?.target?.orientation === AxisOrientation.x &&
-                axis === undefined &&
-                config?.zoom.type === ZoomType.x) ||
-              (_?.target === undefined &&
-                axis?.orientation === AxisOrientation.x &&
-                axis?.index === 0 &&
-                config?.zoom.type === ZoomType.x) ||
+                _?.target.index === 0 &&
+                config?.zoom.type === ZoomType.x &&
+                _axis.orientation === AxisOrientation.x) ||
               (_?.target?.orientation === AxisOrientation.y &&
+                _?.target.index === 0 &&
                 config?.zoom.type === ZoomType.y &&
-                axis === undefined) ||
-              (_?.target === undefined &&
-                axis?.orientation === AxisOrientation.y &&
-                axis?.index === 0 &&
-                config?.zoom.type === ZoomType.y)
+                _axis.orientation === AxisOrientation.y)
           ),
           filter((_) => _?.event?.type === 'end'),
           map((_) => {
@@ -67,7 +77,7 @@ export class ZoomService {
 
             if (currentTransform !== eventTransform) {
               d3.select(svgElement.nativeElement).call(
-                d3.zoom().transform,
+                zoom.transform,
                 eventTransform
               );
             }
@@ -78,24 +88,20 @@ export class ZoomService {
 
     const zoomed = (event: D3ZoomEvent<any, any>) => {
       if (enable) {
-        this.zoomed$.next({
-          event,
-          target: axis,
-        });
-
         if (event.sourceEvent) {
+          this.zoomed$.next({
+            event,
+            target: _axis,
+          });
+
           const message: ZoomMessage = {
             event: event,
+            axis: _axis,
           };
 
           this.broadcastService.broadcast({
             channel: config?.zoom?.syncChannel,
             message,
-            // domain: this.scaleService[
-            //   config?.zoom?.type === ZoomType.x ? 'xScaleMap' : 'yScaleMap'
-            //   ]
-            //   .get(config.brush?.axisIndex ?? 0)
-            //   .domain(),
           });
         }
       }
@@ -103,53 +109,73 @@ export class ZoomService {
 
     if (enable) {
       const element = d3.select(svgElement.nativeElement);
-      const zoom = d3
-        .zoom()
-        .scaleExtent([1, 50])
-        .extent([
-          [0, 0],
-          [size.width, size.height],
-        ]);
-
       zoom.on('start zoom end', zoomed);
       element.call(zoom);
 
-      // const sc =
-      //   config?.zoom?.type === ZoomType.x
-      //     ? this.x.get(config.brush?.axisIndex ?? 0)
-      //     : this.y.get(config.brush?.axisIndex ?? 0);
-
-      this.broadcastSubscription = this.broadcastService
+      const subscription = this.broadcastService
         .subscribeToChannel(config?.zoom?.syncChannel)
         .pipe(
-          map((broadcaseMessage) => {
-            const currentTransform = d3.zoomTransform(svgElement.nativeElement);
+          filter((_) => {
+            if ('axis' in _.message) {
+              return (
+                _axis.index === _.message?.axis?.index &&
+                _axis.orientation === _.message?.axis?.orientation
+              );
+            }
+            if ('selection' in _.message) {
+              return (
+                _axis.index === 0 && _axis.orientation === AxisOrientation.x
+              );
+            }
+            return false;
+          }),
+          map((broadcaseMessage: IBroadcastMessage) => {
+            if ('axis' in broadcaseMessage.message) {
+              const currentTransform = d3.zoomTransform(
+                svgElement.nativeElement
+              );
 
-            // if (currentTransform !== message?.transform) {
-            //   if (message.selection) {
-            //     const s = message.selection;
-            //
-            //     // const domain = sc.domain();
-            //
-            //     // const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
-            //
-            //     // let transform = zoomIdentity.scale(scale);
-            //
-            //     if (message?.brushType === BrushType.x) {
-            //       // transform = transform.translate(-sc(s[0]), 0);
-            //     }
-            //     if (message?.brushType === BrushType.y) {
-            //       // transform = transform.translate(0, -sc(s[0]));
-            //     }
-            //
-            //     return;
-            //   }
-            //   d3.select(svgElement.nativeElement).call(
-            //     zoom?.transform,
-            //     message?.transform
-            //   );
-            //   // this.setZoom(message?.transform);
-            // }
+              if (
+                currentTransform !== broadcaseMessage.message.event?.transform
+              ) {
+                d3.select(svgElement.nativeElement).call(
+                  zoom.transform,
+                  broadcaseMessage.message.event?.transform,
+                  null,
+                  {}
+                );
+              }
+            }
+
+            if ('selection' in broadcaseMessage.message) {
+              const s = broadcaseMessage.message.selection;
+              const domain = broadcaseMessage.message.brushScale.domain();
+
+              const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
+              let transform = zoomIdentity.scale(scale);
+
+              if (broadcaseMessage.message?.brushType === BrushType.x) {
+                transform = transform.translate(
+                  -broadcaseMessage.message.brushScale(s[0]),
+                  0
+                );
+              }
+              if (broadcaseMessage.message?.brushType === BrushType.y) {
+                transform = transform.translate(
+                  0,
+                  -broadcaseMessage.message.brushScale(s[0])
+                );
+              }
+
+              d3.select(svgElement.nativeElement).call(
+                zoom.transform,
+                transform,
+                null,
+                {}
+              );
+            }
+
+            this.broadcastSubscription.push(subscription);
           })
         )
         .subscribe();

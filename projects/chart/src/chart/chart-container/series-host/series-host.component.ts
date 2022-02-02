@@ -8,18 +8,18 @@ import {
   SimpleChanges,
   ViewContainerRef,
 } from '@angular/core';
-import {SeriesBaseComponent} from '../../base/series-base.component';
-import {LineSeriesComponent} from '../series/line/line-series.component';
-import {BarSeriesComponent} from '../series/bar/bar-series.component';
+import { SeriesBaseComponent } from '../../base/series-base.component';
+import { LineSeriesComponent } from '../series/line/line-series.component';
+import { BarSeriesComponent } from '../series/bar/bar-series.component';
 
-import {Series} from '../../model/series';
-import {BasePoint} from '../../model/base-point';
-import {ChartService} from '../../service/chart.service';
-import {tap} from 'rxjs';
-import {throttleTime} from 'rxjs/operators';
-import {SeriesType} from '../../model/enum/series-type';
-import {IChartConfig} from '../../model/i-chart-config';
-import {ScatterSeriesComponent} from '../series/scatter-series/scatter-series.component';
+import { Series } from '../../model/series';
+import { BasePoint } from '../../model/base-point';
+import { ChartService } from '../../service/chart.service';
+import { tap } from 'rxjs';
+import { throttleTime } from 'rxjs/operators';
+import { SeriesType } from '../../model/enum/series-type';
+import { IChartConfig } from '../../model/i-chart-config';
+import { ScatterSeriesComponent } from '../series/scatter-series/scatter-series.component';
 
 @Component({
   selector: '[teta-series-host]',
@@ -32,8 +32,10 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
   @Input() size: DOMRect;
   @Input() rect: any;
 
-  private defaultSeriesTypeMapping = new Map<SeriesType,
-    typeof SeriesBaseComponent>()
+  private defaultSeriesTypeMapping = new Map<
+    SeriesType,
+    typeof SeriesBaseComponent
+  >()
     .set(SeriesType.line, LineSeriesComponent)
     .set(SeriesType.bar, BarSeriesComponent)
     .set(SeriesType.scatter, ScatterSeriesComponent);
@@ -47,7 +49,6 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
   ) {
     this.chartService.size
       .pipe(
-        throttleTime(100, null, {trailing: true}),
         tap(() => {
           this._componentRef?.injector.get(ChangeDetectorRef).detectChanges();
         })
@@ -72,8 +73,7 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
     this._init = true;
   }
 
-  ngOnDestroy(): void {
-  }
+  ngOnDestroy(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this._init && changes.hasOwnProperty('series')) {

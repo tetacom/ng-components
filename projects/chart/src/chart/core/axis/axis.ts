@@ -16,6 +16,7 @@ export class Axis {
   private _selfSize: number;
   private _ticksValues: number[];
   private _options: AxisOptions;
+  private _isFake: boolean;
 
   private defaultFormatters = new Map<ScaleType, any>()
     .set(ScaleType.linear, d3.format(',.2f'))
@@ -36,21 +37,26 @@ export class Axis {
    * Chart config
    * @param {number} index
    * Index axis
+   * @param {boolean} isFake
    * @return {Axis}
    * New generated axis
    */
   public static createAxis(
     orientation: AxisOrientation,
     config: IChartConfig,
-    index: number
+    index: number,
+    isFake = false
   ): Axis {
     const axis = new Axis(config);
     axis.setLocate(orientation);
     axis.setIndex(index);
+
     axis.setOptions();
     axis.setExtremes();
     axis.setTicksValues();
     axis.setSelfSize();
+
+    axis._isFake = isFake;
 
     return axis;
   }
@@ -130,6 +136,10 @@ export class Axis {
 
   get options(): AxisOptions {
     return this._options;
+  }
+
+  get isFake(): boolean {
+    return this._isFake;
   }
 
   public defaultFormatter() {

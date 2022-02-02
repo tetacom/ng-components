@@ -6,6 +6,7 @@
   xScaleMap: xScaleMap | async,
   yScaleMap: yScaleMap | async
 } as data">
+
   <teta-tooltip *ngIf="data.config?.tooltip?.enable" [size]="data.size" [config]="data.config"></teta-tooltip>
   <svg height="100%" width="100%" class="position-absolute">
     <g class="y-axis-container">
@@ -57,6 +58,7 @@
       tetaBrushable
       tetaZoomable
       [size]="data.size"
+      [brushScale]="brushScale | async"
       [config]="config | async"
       [attr.width]="rect.width"
       [attr.height]="rect.height"
