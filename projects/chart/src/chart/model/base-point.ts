@@ -5,6 +5,8 @@ export interface BasePoint {
   x1?: number;
   y: number;
   y1?: number;
-  color?: number;
+  iconId?: string;
+  color?: string;
+  text?: string;
   marker?: MarkerOptions;
 }

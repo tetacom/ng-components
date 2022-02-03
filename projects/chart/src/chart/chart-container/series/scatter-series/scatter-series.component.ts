@@ -1,12 +1,11 @@
 import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit} from '@angular/core';
 import {BasePoint} from '../../../model/base-point';
 import {SeriesBaseComponent} from '../../../base/series-base.component';
-import {combineLatest, map, Observable, tap, withLatestFrom} from 'rxjs';
+import {map, Observable, tap, withLatestFrom} from 'rxjs';
 import {ChartService} from '../../../service/chart.service';
 import {ScaleService} from '../../../service/scale.service';
 import {ZoomService} from '../../../service/zoom.service';
 import * as d3 from 'd3';
-import {DragPointType} from '../../../model/enum/drag-point-type';
 import {TooltipTracking} from '../../../model/enum/tooltip-tracking';
 
 @Component({
@@ -17,8 +16,7 @@ import {TooltipTracking} from '../../../model/enum/tooltip-tracking';
 })
 export class ScatterSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
-  implements OnInit, AfterViewInit
-{
+  implements OnInit, AfterViewInit {
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
   display: Observable<number>;
   path: Observable<string>;
@@ -57,84 +55,9 @@ export class ScatterSeriesComponent<T extends BasePoint>
 
     this.x = this.scaleService.xScaleMap.pipe(map(_ => _.get(this.series.xAxisIndex)));
     this.y = this.scaleService.yScaleMap.pipe(map(_ => _.get(this.series.yAxisIndex)));
-
-    // this.path = combineLatest([
-    //   ,
-    //   this.scaleService.yScaleMap,
-    // ]).pipe(
-    //   map((data: [Map<number, any>, Map<number, any>]) => {
-    //     const [x, y] = data;
-    //     this.x = x.get(this.series.xAxisIndex);
-    //     this.y = y.get(this.series.yAxisIndex);
-    //
-    //     const line = d3
-    //       .line<BasePoint>()
-    //       .defined((point) => point.x !== null || point.y !== null)
-    //       .x((point) => this.x(point.x))
-    //       .y((point) => this.y(point.y));
-    //
-    //     return line(this.series.data);
-    //   })
-    // );
   }
 
   ngAfterViewInit() {
-    // const drag = (node, event: d3.D3DragEvent<any, any, any>, d: BasePoint) => {
-    //   if (
-    //     d.marker?.dragType === DragPointType.x ||
-    //     d.marker?.dragType === DragPointType.xy
-    //   ) {
-    //     d.x = this.x.invert(event.x);
-    //   }
-    //
-    //   if (
-    //     d.marker?.dragType === DragPointType.y ||
-    //     d.marker?.dragType === DragPointType.xy
-    //   ) {
-    //     d.y = this.y.invert(event.y);
-    //   }
-    //
-    //   this.svc.emitPoint({
-    //     target: {
-    //       series: this.series,
-    //       point: d,
-    //     },
-    //     event,
-    //   });
-    //
-    //   this.cdr.detectChanges();
-    // };
-
-    // // const dragMarkers = d3
-    // //   .drag()
-    // //   .subject(function (event, d: BasePoint) {
-    // //     const node = d3.select(this);
-    // //     return { x: node.attr('cx'), y: node.attr('cy') };
-    // //   })
-    // //   .on(
-    // //     'start drag end',
-    // //     function (event: d3.D3DragEvent<any, any, any>, d: BasePoint) {
-    // //       const node = d3.select(this);
-    // //
-    // //       drag(node, event, d);
-    // //     }
-    // //   );
-    //
-    // const draggableMarkers = this.series.data?.filter(
-    //   (_) => _?.marker && _?.marker?.draggable
-    // );
-    //
-    // const element = d3
-    //   .select(this.element.nativeElement)
-    //   .selectAll('.draggable-marker')
-    //   .data(draggableMarkers);
-    //
-    // element.call(dragMarkers as any);
-    //
-    // this.svgElement = d3
-    //   .select(this.element.nativeElement)
-    //   .select('.line')
-    //   .node() as SVGGeometryElement;
   }
 
   getMarkers() {
@@ -208,7 +131,7 @@ export class ScatterSeriesComponent<T extends BasePoint>
         foundY(this.series.data[rightId]?.y)
       );
       this.svc.setTooltip({
-        point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },
+        point: {x: foundX.invert(intersect.x), y: foundY.invert(intersect.y)},
         series: this.series,
       });
 

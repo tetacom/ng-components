@@ -16,6 +16,9 @@ import { TooltipComponent } from './chart-container/tooltip/tooltip.component';
 import { ZoomableDirective } from './directives/zoomable.directive';
 import { BrushableDirective } from './directives/brushable.directive';
 import { ScatterSeriesComponent } from './chart-container/series/scatter-series/scatter-series.component';
+import { BlockSeriesComponent } from './chart-container/series/block-series/block-series.component';
+import { BlockAreaSeriesComponent } from './chart-container/series/block-area-series/block-area-series.component';
+import { AreaSeriesComponent } from './chart-container/series/area-series/area-series.component';
 
 @NgModule({
   declarations: [
@@ -34,9 +37,20 @@ import { ScatterSeriesComponent } from './chart-container/series/scatter-series/
     TooltipComponent,
     ZoomableDirective,
     BrushableDirective,
+    AreaSeriesComponent,
     ScatterSeriesComponent,
+    BlockSeriesComponent,
+    BlockAreaSeriesComponent,
   ],
-  exports: [ChartComponent],
+  exports: [
+    ChartComponent,
+    LineSeriesComponent,
+    BarSeriesComponent,
+    ScatterSeriesComponent,
+    AreaSeriesComponent,
+    BlockSeriesComponent,
+    BlockAreaSeriesComponent,
+  ],
   imports: [CommonModule],
 })
 export class ChartModule {}

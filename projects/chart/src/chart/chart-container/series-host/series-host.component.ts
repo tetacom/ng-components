@@ -16,10 +16,12 @@ import { Series } from '../../model/series';
 import { BasePoint } from '../../model/base-point';
 import { ChartService } from '../../service/chart.service';
 import { tap } from 'rxjs';
-import { throttleTime } from 'rxjs/operators';
 import { SeriesType } from '../../model/enum/series-type';
 import { IChartConfig } from '../../model/i-chart-config';
 import { ScatterSeriesComponent } from '../series/scatter-series/scatter-series.component';
+import { AreaSeriesComponent } from '../series/area-series/area-series.component';
+import { BlockSeriesComponent } from '../series/block-series/block-series.component';
+import { defaultSeriesTypeMapping } from '../../default/defaultSeriesTypeMapping';
 
 @Component({
   selector: '[teta-series-host]',
@@ -31,14 +33,6 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
   @Input() series: Series<T>;
   @Input() size: DOMRect;
   @Input() rect: any;
-
-  private defaultSeriesTypeMapping = new Map<
-    SeriesType,
-    typeof SeriesBaseComponent
-  >()
-    .set(SeriesType.line, LineSeriesComponent)
-    .set(SeriesType.bar, BarSeriesComponent)
-    .set(SeriesType.scatter, ScatterSeriesComponent);
 
   private _init = false;
   private _componentRef: ComponentRef<any>;
@@ -59,8 +53,7 @@ export class SeriesHostComponent<T extends BasePoint> implements OnInit {
   ngOnInit(): void {
     if (!SeriesBaseComponent.isPrototypeOf(this.series.component)) {
       this.series.component =
-        this.defaultSeriesTypeMapping.get(this.series.type) ||
-        LineSeriesComponent;
+        defaultSeriesTypeMapping.get(this.series.type) || LineSeriesComponent;
     }
 
     this._componentRef = this.viewContainerRef.createComponent(

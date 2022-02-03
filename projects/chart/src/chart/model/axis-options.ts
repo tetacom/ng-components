@@ -15,6 +15,7 @@ export interface AxisOptions {
   zoom?: boolean;
   inverted?: boolean;
   opposite?: boolean;
+  niceTicks?: boolean;
   plotBands?: PlotBand[];
   plotLines?: PlotLine[];
 }

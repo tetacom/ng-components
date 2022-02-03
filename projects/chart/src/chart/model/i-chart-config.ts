@@ -16,9 +16,10 @@ export interface IChartConfig {
     syncChannel?: string;
   };
   brush?: {
-    enable: boolean;
+    enable?: boolean;
     type: BrushType;
-    axisIndex?: number;
+    from?: number;
+    to?: number;
   };
   legend?: {
     enable?: boolean;

@@ -7,11 +7,11 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { filter, map, merge, Observable, takeWhile, tap } from 'rxjs';
+import { filter, map, merge, Observable, takeWhile, tap, timer } from 'rxjs';
 import { ChartService } from '../../service/chart.service';
 import { ZoomService } from '../../service/zoom.service';
 import { IDisplayTooltip } from '../../model/i-display-tooltip';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { IChartConfig } from '../../model/i-chart-config';
 
 @Component({
@@ -31,9 +31,9 @@ export class TooltipComponent implements OnInit, OnDestroy {
     right: string;
   }>;
 
-  displayTooltips: Observable<string>;
+  displayTooltips: Observable<SafeHtml>;
 
-  tooltips = [];
+  tooltips: IDisplayTooltip[] = [];
 
   private alive = true;
 
@@ -67,11 +67,11 @@ export class TooltipComponent implements OnInit, OnDestroy {
       tap(() => this.cdr.detectChanges())
     );
 
-    const transformHtml = (html) => {
+    const transformHtml = (html): SafeHtml => {
       return this.sanitizer.bypassSecurityTrustHtml(html);
     };
 
-    const defaultFormatter = (tooltips: IDisplayTooltip[]) => {
+    const defaultFormatter = (tooltips: IDisplayTooltip[]): SafeHtml => {
       let html = '';
 
       tooltips.forEach((_) => {
@@ -95,13 +95,13 @@ export class TooltipComponent implements OnInit, OnDestroy {
     ).pipe(
       takeWhile((_) => this.alive),
       filter((data) => !(data instanceof MouseEvent)),
-      map((tooltip: any) => {
+      map((tooltip: IDisplayTooltip) => {
         if (tooltip) {
           this.tooltips.push(tooltip);
         }
 
         const formatted = formatter
-          ? formatter(this.tooltips)
+          ? transformHtml(formatter(this.tooltips))
           : defaultFormatter(this.tooltips);
 
         return formatted;
