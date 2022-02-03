@@ -3,7 +3,6 @@ import {
   Component,
   HostBinding,
   Input,
-  OnInit,
 } from '@angular/core';
 import { Series } from '../model/series';
 import { BasePoint } from '../model/base-point';
@@ -18,7 +17,10 @@ import { SeriesType } from '../model/enum/series-type';
 export class LegendComponent {
   private sizeMapping = new Map<SeriesType, number>()
     .set(SeriesType.line, 2)
-    .set(SeriesType.bar, 12);
+    .set(SeriesType.bar, 12)
+    .set(SeriesType.area, 2)
+    .set(SeriesType.block, 12)
+    .set(SeriesType.blockArea, 2);
 
   @Input() series: Array<Series<BasePoint>>;
   @HostBinding('class.padding-bottom-4') classLegend = true;

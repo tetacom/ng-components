@@ -1,16 +1,12 @@
 import { ElementRef, Injectable } from '@angular/core';
 import { BrushType } from '../model/enum/brush-type';
 import * as d3 from 'd3';
-import { map, shareReplay, Subscription, withLatestFrom } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 import { BroadcastService } from './broadcast.service';
 import { IChartConfig } from '../model/i-chart-config';
-import {
-  BrushMessage,
-  IBroadcastMessage,
-  ZoomMessage,
-} from '../model/i-broadcast-message';
+import { BrushMessage } from '../model/i-broadcast-message';
 import { AxisOrientation } from '../model/enum/axis-orientation';
-import { ScaleService } from './scale.service';
+import { throttleTime } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -60,21 +56,35 @@ export class BrushService {
 
       setTimeout(() => {
         container.call(brushBehavior);
-        container.call(brush.move, brushScale.domain().map(brushScale), {});
+
+        let domain = brushScale.domain();
+
+        if (config?.brush?.from) {
+          domain[0] = config.brush.from;
+        }
+
+        if (config?.brush?.to) {
+          domain[1] = config.brush.to;
+        }
+
+        container.call(brush.move, domain.map(brushScale), {});
       }, 0);
 
       this.broadcastSubscribtion = this.broadcastService
         .subscribeToChannel(config?.zoom?.syncChannel)
         .pipe(
+          throttleTime(50, undefined, { trailing: true }),
           map((_) => {
             if ('axis' in _.message) {
               if (
-                _.message.axis.orientation === AxisOrientation.x &&
-                _.message.axis.index === 0
+                (_.message.axis.index === 0 && _.message.axis.isFake &&
+                  _.message.axis.orientation === AxisOrientation.x &&
+                  config.brush.type === BrushType.x) ||
+                (_.message.axis.index === 0 &&  _.message.axis.isFake &&
+                  _.message.axis.orientation === AxisOrientation.y &&
+                  config.brush.type === BrushType.y)
               ) {
-                const rescaled = _.message.event.transform.rescaleX(brushScale);
-
-                const domain = rescaled.domain();
+                const domain = _.message.brushDomain;
 
                 container.call(brush.move, [
                   brushScale(domain[0]),

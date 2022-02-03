@@ -7,6 +7,7 @@ export * from './i-broadcast-message';
 export * from './i-chart-config';
 export * from './i-chart-event';
 export * from './i-point-move';
+export * from './i-display-tooltip';
 export * from './marker-options';
 export * from './plot-band';
 export * from './plot-line';

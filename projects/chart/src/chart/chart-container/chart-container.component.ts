@@ -7,12 +7,13 @@ import {
 } from '@angular/core';
 import { IChartConfig } from '../model/i-chart-config';
 import { ChartService } from '../service/chart.service';
-import { combineLatest, filter, map, Observable, tap } from 'rxjs';
+import { combineLatest, map, Observable, tap, withLatestFrom } from 'rxjs';
 import { Axis } from '../core/axis/axis';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 import { ScaleService } from '../service/scale.service';
 import { IChartEvent } from '../model/i-chart-event';
 import { ZoomService } from '../service/zoom.service';
+import { BrushType } from '../model/enum/brush-type';
 
 type Opposite = boolean;
 
@@ -68,9 +69,15 @@ export class ChartContainerComponent implements OnInit {
     this.yScaleMap = this._scaleService.yScaleMap;
     this.xScaleMap = this._scaleService.xScaleMap;
 
-    this.brushScale = this._scaleService.xScaleMap.pipe(
-      map((map) => {
-        return map.get(0);
+    this.brushScale = combineLatest([
+      this._scaleService.xScaleMap,
+      this._scaleService.yScaleMap,
+    ]).pipe(
+      withLatestFrom(this.config),
+      map((data: [[Map<number, any>, Map<number, any>], IChartConfig]) => {
+        const [[x, y], config] = data;
+
+        return config.brush?.type === BrushType.x ? x.get(0) : y.get(0);
       })
     );
 
@@ -106,8 +113,8 @@ export class ChartContainerComponent implements OnInit {
           return {
             x: left,
             y: top,
-            width: size.width - left - right + 1,
-            height: size.height - top - bottom + 1,
+            width: size.width - left - right,
+            height: size.height - top - bottom,
           };
         }
       ),

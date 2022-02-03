@@ -5,6 +5,7 @@ import { BrushType } from './enum/brush-type';
 export interface ZoomMessage {
   event: D3ZoomEvent<any, any>;
   axis?: Axis;
+  brushDomain?: number[]
 }
 
 export interface BrushMessage {
