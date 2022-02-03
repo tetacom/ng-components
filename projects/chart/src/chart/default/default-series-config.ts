@@ -9,4 +9,5 @@ export const defaultSeriesConfig: Series<BasePoint> = {
   xAxisIndex: 0,
   yAxisIndex: 0,
   fillType: FillType.default,
+  color: 'coral',
 };

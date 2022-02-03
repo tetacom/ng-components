@@ -14,7 +14,7 @@ import * as d3 from 'd3';
 import { DragPointType } from '../../../model/enum/drag-point-type';
 import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
 import { FillType } from '../../../model/enum/fill-type';
-import {curveCatmullRom, curveStep} from 'd3';
+import { curveCatmullRom, curveStep } from 'd3';
 import { Axis } from '../../../core/axis/axis';
 
 @Component({
@@ -63,33 +63,56 @@ export class AreaSeriesComponent<T extends BasePoint>
       this.scaleService.xScaleMap,
       this.scaleService.yScaleMap,
     ]).pipe(
-      withLatestFrom(this.scaleService.yAxisMap),
-      map((data: [[Map<number, any>, Map<number, any>], Map<number, Axis>]) => {
-        const [[x, y], yAxis] = data;
+      withLatestFrom(this.scaleService.xAxisMap, this.scaleService.yAxisMap),
+      map(
+        (
+          data: [
+            [Map<number, any>, Map<number, any>],
+            Map<number, Axis>,
+            Map<number, Axis>
+          ]
+        ) => {
+          const [[x, y], xAxisMap, yAxisMap] = data;
 
-        this.x = x.get(this.series.xAxisIndex);
-        this.y = y.get(this.series.yAxisIndex);
+          this.x = x.get(this.series.xAxisIndex);
+          this.y = y.get(this.series.yAxisIndex);
 
-        const axis = yAxis.get(this.series.yAxisIndex);
+          const yAxis = yAxisMap.get(this.series.yAxisIndex);
+          const xAxis = xAxisMap.get(this.series.xAxisIndex);
 
-        const domain = this.x.domain();
+          const domain = this.config.inverted
+            ? this.x.domain()
+            : this.y.domain();
 
-        const area = d3
-          .area<BasePoint>()
-          .curve(curveCatmullRom)
-          .defined(
-            (point) =>
-              point.x !== null &&
-              point.y !== null &&
-              !isNaN(point.x) &&
-              !isNaN(point.y)
-          )
-          .y((point) => this.y(point.y))
-          .x0((point) => this.x(domain[0]))
-          .x1((point) => this.x(point.x));
+          const area = d3
+            .area<BasePoint>()
+            .defined(
+              (point) =>
+                point.x !== null &&
+                point.y !== null &&
+                !isNaN(point.x) &&
+                !isNaN(point.y)
+            );
 
-        return area(this.series.data);
-      })
+          if (this.config.inverted) {
+            area
+              .y((point) => this.y(point.y))
+              .x0((_) =>
+                this.x(xAxis.options?.inverted ? domain[1] : domain[0])
+              )
+              .x1((point) => this.x(point.x));
+          } else {
+            area
+              .x((point) => this.x(point.x))
+              .y0((_) =>
+                this.y(yAxis.options?.inverted ? domain[0] : domain[1])
+              )
+              .y1((point) => this.y(point.y));
+          }
+
+          return area(this.series.data);
+        }
+      )
     );
   }
 
@@ -208,7 +231,11 @@ export class AreaSeriesComponent<T extends BasePoint>
 
       const x0 = foundX.invert(pointer);
 
-      const rightId = bisect(this.series.data, x0);
+      const filtered = this.series.data.filter(
+        (_) => _.y !== null && _.x !== null
+      );
+
+      const rightId = bisect(filtered, x0);
 
       const range = foundY.range();
 
@@ -217,11 +244,12 @@ export class AreaSeriesComponent<T extends BasePoint>
         range[0],
         pointer,
         range[1],
-        foundX(this.series.data[rightId - 1]?.x),
-        foundY(this.series.data[rightId - 1]?.y),
-        foundX(this.series.data[rightId]?.x),
-        foundY(this.series.data[rightId]?.y)
+        foundX(filtered[rightId - 1]?.x),
+        foundY(filtered[rightId - 1]?.y),
+        foundX(filtered[rightId]?.x),
+        foundY(filtered[rightId]?.y)
       );
+
       this.svc.setTooltip({
         point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },
         series: this.series,

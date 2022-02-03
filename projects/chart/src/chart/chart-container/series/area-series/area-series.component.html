@@ -1,9 +1,9 @@
 <svg:defs *ngIf="series?.fillType === fillType.gradient">
   <svg:linearGradient [id]="'gradient-fill-' + id" gradientUnits="userSpaceOnUse"
                       x1="0%"
-                      y1="0%"
+                      [attr.y1]="config?.inverted ? '0%' : '100%'"
                       [attr.x2]="config?.inverted ? '100%' : '0%'"
-                      [attr.y2]="config?.inverted ? '0%' : '100%'">
+                      y2="0%">
     <svg:stop offset="0%" [attr.stop-color]="series.color" stop-opacity="0"></svg:stop>
     <svg:stop offset="5%" [attr.stop-color]="series.color" stop-opacity="0.1"></svg:stop>
     <svg:stop offset="20%" [attr.stop-color]="series.color" stop-opacity="0.2"></svg:stop>
@@ -18,7 +18,7 @@
   [attr.stroke-dasharray]="series.style?.strokeDasharray"
   [attr.stroke-width]="series.style?.strokeWidth"
   [attr.stroke-width]="series.style?.strokeWidth"
-  [attr.fill]="series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : 'none'">
+  [attr.fill]="series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : series.color">
 </svg:path>
 
 <ng-container *ngIf="transform | async as t">
