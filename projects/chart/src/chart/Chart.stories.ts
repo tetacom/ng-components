@@ -204,7 +204,7 @@ const createSeries = (size: number) => {
                 type === SeriesType.block
                   ? 0
                   : faker.datatype.number({ min: 0, max: 200 }),
-              color: cssColorNames[randomColor()],
+              iconId: `icon${iconId}`,
               text: faker.commerce.productMaterial(),
             };
 
@@ -230,14 +230,19 @@ const createChart = (size: number): IChartConfig => {
     tooltip: {
       tracking: TooltipTracking.y,
     },
-    xAxis: [{ visible: false }],
-    yAxis: [
-      {
-        min: 0,
-        max: 5000,
-        inverted: true,
-      },
-    ],
+    xAxis: [{
+      min: 500,
+      max: 600,
+      visible: true,
+      inverted: true,
+      plotLines: [{
+        value: 1000,
+        draggable: true
+      }]
+    }],
+    yAxis: [{
+      visible: false
+    }],
     brush: {
       type: BrushType.y,
     },
@@ -263,19 +268,17 @@ const createChart2 = (size: number): IChartConfig => {
     xAxis: [
       {
         visible: true,
-      },
-    ],
-    yAxis: [
-      {
+        inverted: true,
         min: 0,
         max: 5000,
       },
     ],
+    yAxis: [{}],
     brush: {
       enable: true,
       type: BrushType.y,
-      from: 100,
-      to: 20,
+      from: 500,
+      to: 600,
     },
     zoom: {
       enable: false,
@@ -318,9 +321,7 @@ export const basicChart = () => ({
        config </button>
         <div class="row row_auto gap" style="height: 100%; width: 100%">
             <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
+            <teta-svg-chart [config]="config2" class="bg-background-50 border border-text-50"></teta-svg-chart>
 
         </div>
 

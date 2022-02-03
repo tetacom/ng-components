@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 import { map, Subscription } from 'rxjs';
 import { BroadcastService } from './broadcast.service';
 import { IChartConfig } from '../model/i-chart-config';
-import { BrushMessage } from '../model/i-broadcast-message';
+import {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 import { throttleTime } from 'rxjs/operators';
 
@@ -74,7 +74,8 @@ export class BrushService {
         .subscribeToChannel(config?.zoom?.syncChannel)
         .pipe(
           throttleTime(50, undefined, { trailing: true }),
-          map((_) => {
+          map((_: IBroadcastMessage) => {
+
             if ('axis' in _.message) {
               if (
                 (_.message.axis.index === 0 && _.message.axis.isFake &&
@@ -84,6 +85,10 @@ export class BrushService {
                   _.message.axis.orientation === AxisOrientation.y &&
                   config.brush.type === BrushType.y)
               ) {
+
+
+                if(_.message.event.sourceEvent.type === 'brushed') return;
+
                 const domain = _.message.brushDomain;
 
                 container.call(brush.move, [

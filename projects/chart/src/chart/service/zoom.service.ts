@@ -52,7 +52,7 @@ export class ZoomService {
 
     const zoom = d3
       .zoom()
-      .scaleExtent([1, 500])
+      .scaleExtent([0, 500])
       .extent([
         [0, 0],
         [size.width, size.height],
@@ -164,7 +164,7 @@ export class ZoomService {
               if (!_axis.isFake) return;
 
               const s = broadcaseMessage.message.selection;
-              const domain = broadcaseMessage.message.brushScale.domain();
+              const domain = brushScale.domain();
 
               const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
               let transform = zoomIdentity.scale(scale);
@@ -180,7 +180,7 @@ export class ZoomService {
                 zoom.transform,
                 transform,
                 null,
-                {}
+                {type: 'brushed'}
               );
             }
 

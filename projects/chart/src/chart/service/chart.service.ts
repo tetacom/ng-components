@@ -102,6 +102,13 @@ export class ChartService {
 
   private setpreparationData(config: IChartConfig): IChartConfig {
     if (config.inverted) {
+      const xAxes = [...config.xAxis];
+      const yAxes = [...config.yAxis];
+
+      config.xAxis = yAxes;
+      config.yAxis = xAxes;
+
+
       config.series = config.series?.map((serie) => {
         return {
           ...serie,
