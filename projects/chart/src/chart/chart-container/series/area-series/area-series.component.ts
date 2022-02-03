@@ -14,7 +14,6 @@ import * as d3 from 'd3';
 import { DragPointType } from '../../../model/enum/drag-point-type';
 import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
 import { FillType } from '../../../model/enum/fill-type';
-import { curveCatmullRom, curveStep } from 'd3';
 import { Axis } from '../../../core/axis/axis';
 
 @Component({
