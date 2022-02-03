@@ -5,16 +5,16 @@ import {map, Observable, tap, withLatestFrom} from 'rxjs';
 import {ChartService} from '../../../service/chart.service';
 import {ScaleService} from '../../../service/scale.service';
 import {ZoomService} from '../../../service/zoom.service';
-import * as d3 from 'd3';
 import {TooltipTracking} from '../../../model/enum/tooltip-tracking';
+import * as d3 from 'd3';
 
 @Component({
-  selector: 'svg:svg[teta-scatter-series]',
-  templateUrl: './scatter-series.component.html',
-  styleUrls: ['./scatter-series.component.scss'],
+  selector: 'svg:svg[teta-block-series]',
+  templateUrl: './block-series.component.html',
+  styleUrls: ['./block-series.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ScatterSeriesComponent<T extends BasePoint>
+export class BlockSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
   implements OnInit, AfterViewInit {
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
