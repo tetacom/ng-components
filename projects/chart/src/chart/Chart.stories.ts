@@ -244,6 +244,7 @@ const createChart = (size: number): IChartConfig => {
         min: faker.datatype.number({ min: -100, max: 100 }),
         max: faker.datatype.number({ min: 400, max: 600 }),
         title: 'атм',
+        visible: false,
         plotLines: [
           new PlotLine({
             value: 360,

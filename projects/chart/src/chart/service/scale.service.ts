@@ -105,10 +105,14 @@ export class ScaleService {
               domain = [...axis.extremes].reverse();
             }
 
-            const scale = this.scaleMapping
+            let scale = this.scaleMapping
               .get(axis.options.scaleType.type)()
               .domain(domain)
               .range([0, finalWidth]);
+
+            if (axis.options.niceTicks) {
+              scale.nice();
+            }
 
             if (axis.options.scaleType.type === ScaleType.log) {
               scale.base(axis.options.scaleType.base);
@@ -189,6 +193,10 @@ export class ScaleService {
               .get(axis.options.scaleType.type)()
               .domain(domain)
               .range([0, finalHeight]);
+
+            if (axis.options.niceTicks) {
+              scale.nice();
+            }
 
             if (axis.options.scaleType.type === ScaleType.log) {
               scale.base(axis.options.scaleType.base);

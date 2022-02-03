@@ -110,6 +110,8 @@ export class ChartService {
               ...point,
               x: point?.y,
               y: point?.x,
+              x1: point?.y1,
+              y1: point?.x1,
             };
           }),
         };
