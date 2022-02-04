@@ -7,6 +7,7 @@ import { IChartConfig } from '../model/i-chart-config';
 import { BrushMessage, IBroadcastMessage } from '../model/i-broadcast-message';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 import { throttleTime } from 'rxjs/operators';
+import { ChartService } from './chart.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,21 +15,33 @@ import { throttleTime } from 'rxjs/operators';
 export class BrushService {
   broadcastSubscribtion: Subscription;
 
+  private brush: d3.BrushBehavior<any>;
+
   private brushMap = new Map<BrushType, d3.BrushBehavior<any>>()
     .set(BrushType.x, d3.brushX())
     .set(BrushType.y, d3.brushY());
 
-  constructor(private broadcastService: BroadcastService) {}
+  constructor(
+    private broadcastService: BroadcastService,
+    private chartService: ChartService
+  ) {
+    this.chartService.size.subscribe((size) => {
+      this.brush?.extent([
+        [0, 0],
+        [size.width, size.height],
+      ]);
+    });
+  }
 
   applyBrush(svgElement: ElementRef, config: IChartConfig, brushScale: any) {
     this.broadcastSubscribtion?.unsubscribe();
 
     if (config.brush?.enable) {
-      const brush = this.brushMap.get(config?.brush?.type ?? BrushType.x);
+      this.brush = this.brushMap.get(config?.brush?.type ?? BrushType.x);
 
       const container = d3.select(svgElement.nativeElement);
 
-      const brushBehavior = brush.on(
+      const brushBehavior = this.brush.on(
         'start brush end',
         (_: d3.D3BrushEvent<any>) => {
           if (_.sourceEvent) {
@@ -37,7 +50,7 @@ export class BrushService {
             const [from, to] = _.selection as number[];
 
             if (to - from < 5) {
-              container.call(brush.move, [from, to]);
+              container.call(this.brush.move, [from, to]);
               return;
             }
 
@@ -69,7 +82,7 @@ export class BrushService {
           domain[1] = config.brush.to;
         }
 
-        container.call(brush.move, domain.map(brushScale), {});
+        container.call(this.brush.move, domain.map(brushScale), {});
       }, 0);
 
       this.broadcastSubscribtion = this.broadcastService
@@ -96,7 +109,7 @@ export class BrushService {
 
                 const domain = _.message.brushDomain;
 
-                container.call(brush.move, [
+                container.call(this.brush.move, [
                   brushScale(domain[0]),
                   brushScale(domain[1]),
                 ]);
