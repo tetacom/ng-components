@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { IBroadcastMessage } from '../model/i-broadcast-message';
-import { filter, Observable, shareReplay, Subject } from 'rxjs';
+import { filter, Observable, ReplaySubject, shareReplay } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BroadcastService {
-  private emitter: Subject<IBroadcastMessage>;
+  private emitter: ReplaySubject<IBroadcastMessage>;
 
   constructor() {
-    this.emitter = new Subject<IBroadcastMessage>();
+    this.emitter = new ReplaySubject<IBroadcastMessage>(1);
   }
 
   broadcast(value: IBroadcastMessage) {

@@ -94,8 +94,6 @@ export class BrushService {
                 )
                   return;
 
-                console.log(_.message);
-
                 const domain = _.message.brushDomain;
 
                 container.call(brush.move, [
