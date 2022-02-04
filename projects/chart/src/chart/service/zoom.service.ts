@@ -155,13 +155,14 @@ export class ZoomService {
                   zoom.transform,
                   broadcaseMessage.message.event?.transform,
                   null,
-                  {}
+                  { type: 'sync_transform' }
                 );
               }
             }
 
             if ('selection' in broadcaseMessage.message) {
               if (!_axis.isFake) return;
+              if (!broadcaseMessage.message.selection) return;
 
               const s = broadcaseMessage.message.selection;
               const domain = brushScale.domain();
@@ -180,7 +181,7 @@ export class ZoomService {
                 zoom.transform,
                 transform,
                 null,
-                {type: 'brushed'}
+                { type: 'brushed' }
               );
             }
 
