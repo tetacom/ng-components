@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 import { map, Subscription } from 'rxjs';
 import { BroadcastService } from './broadcast.service';
 import { IChartConfig } from '../model/i-chart-config';
-import {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';
+import { BrushMessage, IBroadcastMessage } from '../model/i-broadcast-message';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 import { throttleTime } from 'rxjs/operators';
 
@@ -32,6 +32,8 @@ export class BrushService {
         'start brush end',
         (_: d3.D3BrushEvent<any>) => {
           if (_.sourceEvent) {
+            if (!_.selection) return;
+
             const [from, to] = _.selection as number[];
 
             if (to - from < 5) {
@@ -75,19 +77,24 @@ export class BrushService {
         .pipe(
           throttleTime(50, undefined, { trailing: true }),
           map((_: IBroadcastMessage) => {
-
             if ('axis' in _.message) {
               if (
-                (_.message.axis.index === 0 && _.message.axis.isFake &&
+                (_.message.axis.index === 0 &&
+                  _.message.axis.isFake &&
                   _.message.axis.orientation === AxisOrientation.x &&
                   config.brush.type === BrushType.x) ||
-                (_.message.axis.index === 0 &&  _.message.axis.isFake &&
+                (_.message.axis.index === 0 &&
+                  _.message.axis.isFake &&
                   _.message.axis.orientation === AxisOrientation.y &&
                   config.brush.type === BrushType.y)
               ) {
+                if (
+                  _.message.event.sourceEvent.type === 'brushed' ||
+                  _.message.event.sourceEvent.type === 'sync_transform'
+                )
+                  return;
 
-
-                if(_.message.event.sourceEvent.type === 'brushed') return;
+                console.log(_.message);
 
                 const domain = _.message.brushDomain;
 
