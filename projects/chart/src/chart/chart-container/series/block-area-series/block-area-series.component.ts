@@ -4,18 +4,18 @@ import {
   ElementRef,
   OnInit,
 } from '@angular/core';
-import { SeriesBaseComponent } from '../../../base/series-base.component';
-import { BasePoint } from '../../../model/base-point';
-import { ChartService } from '../../../service/chart.service';
-import { ScaleService } from '../../../service/scale.service';
-import { ZoomService } from '../../../service/zoom.service';
-import { combineLatest, map, Observable, tap, withLatestFrom } from 'rxjs';
+import {SeriesBaseComponent} from '../../../base/series-base.component';
+import {BasePoint} from '../../../model/base-point';
+import {ChartService} from '../../../service/chart.service';
+import {ScaleService} from '../../../service/scale.service';
+import {ZoomService} from '../../../service/zoom.service';
+import {combineLatest, map, Observable, tap, withLatestFrom} from 'rxjs';
 import * as d3 from 'd3';
-import { DragPointType } from '../../../model/enum/drag-point-type';
-import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
-import { FillType } from '../../../model/enum/fill-type';
-import { Axis } from '../../../core/axis/axis';
-import { curveStepBefore } from 'd3';
+import {DragPointType} from '../../../model/enum/drag-point-type';
+import {TooltipTracking} from '../../../model/enum/tooltip-tracking';
+import {FillType} from '../../../model/enum/fill-type';
+import {Axis} from '../../../core/axis/axis';
+import {curveStepBefore} from 'd3';
 
 @Component({
   selector: 'svg:svg[teta-block-area-series]',
@@ -24,8 +24,7 @@ import { curveStepBefore } from 'd3';
 })
 export class BlockAreaSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
-  implements OnInit
-{
+  implements OnInit {
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
   display: Observable<number>;
   path: Observable<string>;
@@ -78,12 +77,11 @@ export class BlockAreaSeriesComponent<T extends BasePoint>
           this.x = x.get(this.series.xAxisIndex);
           this.y = y.get(this.series.yAxisIndex);
 
-          const yAxis = yAxisMap.get(this.series.yAxisIndex);
           const xAxis = xAxisMap.get(this.series.xAxisIndex);
+          const yAxis = yAxisMap.get(this.series.yAxisIndex);
 
-          const domain = this.config.inverted
-            ? this.x.domain()
-            : this.y.domain();
+          const xDomain = this.x.domain();
+          const yDomain = this.y.domain();
 
           const area = d3
             .area<BasePoint>()
@@ -98,66 +96,63 @@ export class BlockAreaSeriesComponent<T extends BasePoint>
 
           const displayPoints: BasePoint[] = [];
 
+          const xMin = xAxis.options?.inverted ? xDomain[1] : xDomain[0];
+          const yMin = yAxis.options?.inverted ? yDomain[1] : yDomain[0];
           if (this.config.inverted) {
-            const min = xAxis.options?.inverted ? domain[1] : domain[0];
 
             area
+              .x0((point) => this.x(xMin))
+              .x1((point) => this.x(point.x))
               .y((point) => this.y(point.y))
-              .x0((_) => this.x(min))
-              .x1((point) => this.x(point.x));
-
-            this.series.data.forEach((point: BasePoint) => {
-              displayPoints.push({
-                x: point.x,
-                y: point.y,
-                x1: point.x1,
-                y1: point.y1,
-                color: point.color,
-                text: point.text,
-                iconId: point.iconId,
-              });
-
-              displayPoints.push({
-                x: point.x,
-                y: min,
-                x1: point.x1,
-                y1: point.y1,
-                color: point.color,
-                text: point.text,
-                iconId: point.iconId,
-              });
-            });
           } else {
-            const min = yAxis.options?.inverted ? domain[0] : domain[1];
             area
-              .x((point) => this.x(point.x))
-              .y0((_) => this.y(min))
-              .y1((point) => this.y(point.y));
-
-            this.series.data.forEach((point: BasePoint) => {
-              displayPoints.push({
-                x: point.x,
-                y: point.y,
-                x1: point.x1,
-                y1: point.y1,
-                color: point.color,
-                text: point.text,
-                iconId: point.iconId,
-              });
-
-              displayPoints.push({
-                x: point.x,
-                y: min,
-                x1: point.x1,
-                y1: point.y1,
-                color: point.color,
-                text: point.text,
-                iconId: point.iconId,
-              });
-            });
+              .x0((point) => this.x(xMin))
+              .x1((point) => this.x(point.x))
+              .y((point) => this.y(point.y));
           }
 
-          return area(this.series.data);
+
+          this.series.data.forEach((point: BasePoint, index: number, arr: BasePoint[]) => {
+            displayPoints.push({
+              x: point.x,
+              y: point.y,
+              y1: point.y1,
+              color: point.color,
+              text: point.text,
+              iconId: point.iconId,
+            });
+
+            displayPoints.push({
+              x: xMin,
+              y: point.y1,
+              y1: point.y1,
+              color: point.color,
+              text: point.text,
+              iconId: point.iconId
+            });
+          });
+
+          // points.forEach(point => {
+          //   displayPoints.push({
+          //     x: point.x,
+          //     y: point.y,
+          //     y1: point.y1,
+          //     color: point.color,
+          //     text: point.text,
+          //     iconId: point.iconId
+          //   });
+          //   displayPoints.push({
+          //     x: min,
+          //     y: point.y1,
+          //     y1: point.y1,
+          //     color: point.color,
+          //     text: point.text,
+          //     iconId: point.iconId
+          //   });
+          // });
+          //
+
+          return area(displayPoints);
         }
       )
     );
@@ -194,7 +189,7 @@ export class BlockAreaSeriesComponent<T extends BasePoint>
       .drag()
       .subject(function (event, d: BasePoint) {
         const node = d3.select(this);
-        return { x: node.attr('cx'), y: node.attr('cy') };
+        return {x: node.attr('cx'), y: node.attr('cy')};
       })
       .on(
         'start drag end',
@@ -251,7 +246,7 @@ export class BlockAreaSeriesComponent<T extends BasePoint>
       const rightId = bisect(filtered, x0);
 
       this.svc.setTooltip({
-        point: { x: filtered[rightId]?.x, y: filtered[rightId]?.y },
+        point: {x: filtered[rightId]?.x, y: filtered[rightId]?.y},
         series: this.series,
       });
 

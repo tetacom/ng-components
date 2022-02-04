@@ -33,6 +33,7 @@ export class AreaSeriesComponent<T extends BasePoint>
   y: any;
   id: string;
 
+
   fillType = FillType;
 
   constructor(
@@ -79,9 +80,7 @@ export class AreaSeriesComponent<T extends BasePoint>
           const yAxis = yAxisMap.get(this.series.yAxisIndex);
           const xAxis = xAxisMap.get(this.series.xAxisIndex);
 
-          const domain = this.config.inverted
-            ? this.x.domain()
-            : this.y.domain();
+          const domain = this.y.domain();
 
           const area = d3
             .area<BasePoint>()
@@ -93,22 +92,22 @@ export class AreaSeriesComponent<T extends BasePoint>
                 !isNaN(point.y)
             );
 
-          if (this.config.inverted) {
-            area
-              .y((point) => this.y(point.y))
-              .x0((_) =>
-                this.x(xAxis.options?.inverted ? domain[1] : domain[0])
-              )
-              .x1((point) => this.x(point.x));
-          } else {
-            area
-              .x((point) => this.x(point.x))
-              .y0((_) =>
-                this.y(yAxis.options?.inverted ? domain[0] : domain[1])
-              )
-              .y1((point) => this.y(point.y));
-          }
-
+          // if (this.config.inverted) {
+          //   area
+          //     .y((point) => this.y(point.y))
+          //     .x0((_) =>
+          //       this.x(xAxis.options?.inverted ? domain[1] : domain[0])
+          //     )
+          //     .x1((point) => this.x(point.x));
+          // } else {
+          //
+          // }
+          area
+            .x((point) => this.x(point.x))
+            .y0((_) =>
+              this.y(yAxis.options?.inverted ? domain[0] : domain[1])
+            )
+            .y1((point) => this.y(point.y));
           return area(this.series.data);
         }
       )

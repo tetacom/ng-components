@@ -110,6 +110,10 @@ export class ChartService {
 
 
       config.series = config.series?.map((serie) => {
+        const x = serie.xAxisIndex;
+        const y = serie.yAxisIndex;
+        serie.xAxisIndex = y;
+        serie.yAxisIndex = x;
         return {
           ...serie,
           data: serie?.data?.map((point) => {
