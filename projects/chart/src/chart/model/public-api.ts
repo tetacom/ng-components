@@ -2,6 +2,7 @@ export * from './enum/public-api';
 
 export * from './axis-options';
 export * from './base-point';
+export * from './construction-point';
 export * from './chart-bounds';
 export * from './i-broadcast-message';
 export * from './i-chart-config';

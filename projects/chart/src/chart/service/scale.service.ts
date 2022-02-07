@@ -166,6 +166,8 @@ export class ScaleService {
         ) => {
           const [[size, config, zoom], yAxes, xAxes] = data;
 
+          console.log('createScales');
+
           const map = new Map<number, any>();
 
           const top = [...xAxes.values()]

@@ -15,6 +15,9 @@ import { Series } from './model/series';
 import { BasePoint } from './model/base-point';
 import { FillType } from './model/enum/fill-type';
 
+import constructionJson from './construction';
+import { ConstructionPoint } from './model/construction-point';
+
 export default {
   title: 'Component/Chart',
   decorators: [withKnobs],
@@ -195,7 +198,7 @@ const createSeries = (size: number) => {
         fillType: FillType.gradient,
         data: Array.from(Array(size).keys())
           .map((key, index, arr) => {
-            const num = faker.datatype.number({ min: 0, max: 5000 });
+            const num = faker.datatype.number({ min: 0, max: 1049 });
             const iconId = faker.datatype.number({ min: 1, max: 14 });
 
             const point: BasePoint = {
@@ -233,7 +236,7 @@ const createChart = (size: number): IChartConfig => {
     xAxis: [
       {
         min: 0,
-        max: 5000,
+        max: 1050,
         visible: true,
         inverted: true,
         plotLines: [
@@ -246,7 +249,7 @@ const createChart = (size: number): IChartConfig => {
     ],
     yAxis: [
       {
-        visible: false,
+        visible: true,
       },
     ],
     brush: {
@@ -264,37 +267,70 @@ const createChart = (size: number): IChartConfig => {
   };
 };
 
+const casing: ConstructionPoint[] = constructionJson.casing.map((_) => {
+  return {
+    x: _.columnOuterDiameter,
+    y: _.intervalTopTvd,
+    y1: _.intervalBottomTvd,
+    meta: _,
+  };
+});
+
+const nkt: ConstructionPoint[] = constructionJson.nkt.map((_) => {
+  return {
+    x: _.outsideDiameter,
+    y: _.trueVerticalDepth,
+    y1: _.trueVerticalDepth + _.measuredDepth,
+    meta: _,
+  };
+});
+
+const pakers: ConstructionPoint[] = constructionJson.packer.map((_) => {
+  return {
+    x: null,
+    y: _.trueVerticalDepth,
+    y1: _.trueVerticalDepth + _.packerLength,
+    meta: _,
+  };
+});
+
+const perforation: ConstructionPoint[] = constructionJson.perforation.map(
+  (_) => {
+    return {
+      x: null,
+      y: _.intervalTopTvd,
+      y1: _.intervalBottomTvd,
+      meta: _,
+    };
+  }
+);
+
+const constructionSeries: Series<ConstructionPoint> = {
+  data: [].concat(...nkt, ...casing, ...pakers, ...perforation),
+  type: SeriesType.construction,
+};
+
 const createChart2 = (size: number): IChartConfig => {
   return {
     name: 'sdfgsfgd',
-    inverted: true,
+    inverted: false,
     tooltip: {
       tracking: TooltipTracking.x,
     },
-    xAxis: [
-      {
-        visible: true,
-        inverted: true,
-        min: 0,
-        max: 5000,
-      },
-    ],
-    yAxis: [{}],
+    xAxis: [{}],
+    yAxis: [{ min: 0, max: 1050, visible: true, inverted: true }],
     brush: {
-      enable: true,
       type: BrushType.y,
-      from: 500,
-      to: 600,
     },
     zoom: {
-      enable: false,
+      enable: true,
       type: ZoomType.y,
       syncChannel: 'channelA',
     },
     legend: {
-      enable: true,
+      enable: false,
     },
-    series: createSeries(size),
+    series: [constructionSeries],
   };
 };
 
@@ -323,17 +359,10 @@ export const basicChart = () => ({
         <button teta-button
           [palette]="'primary'"
           (click)="config=createChart(0); config2=createChart(0)">
-          Create empty data
-       config </button>
+          Create empty data config </button>
         <div class="row row_auto gap" style="height: 100%; width: 100%">
             <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-
             <teta-svg-chart [config]="config2" class="bg-background-50 border border-text-50"></teta-svg-chart>
-
         </div>
 
       </div>

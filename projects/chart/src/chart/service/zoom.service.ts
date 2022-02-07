@@ -52,42 +52,11 @@ export class ZoomService {
 
     const zoom = d3
       .zoom()
-      .scaleExtent([0, 500])
+      .scaleExtent([1, 500])
       .extent([
         [0, 0],
         [size.width, size.height],
       ]);
-
-    if (config?.zoom?.enable) {
-      // unused?
-      // this.zoomed
-      //   .pipe(
-      //     filter(
-      //       (_) =>
-      //         (_?.target?.orientation === AxisOrientation.x &&
-      //           _?.target.index === 0 &&
-      //           config?.zoom.type === ZoomType.x &&
-      //           _axis.orientation === AxisOrientation.x) ||
-      //         (_?.target?.orientation === AxisOrientation.y &&
-      //           _?.target.index === 0 &&
-      //           config?.zoom.type === ZoomType.y &&
-      //           _axis.orientation === AxisOrientation.y)
-      //     ),
-      //     filter((_) => _?.event?.type === 'end'),
-      //     map((_) => {
-      //       const eventTransform = _?.event.transform;
-      //       const currentTransform = zoomTransform(svgElement.nativeElement);
-      //
-      //       if (currentTransform !== eventTransform) {
-      //         d3.select(svgElement.nativeElement).call(
-      //           zoom.transform,
-      //           eventTransform
-      //         );
-      //       }
-      //     })
-      //   )
-      //   .subscribe();
-    }
 
     const zoomed = (event: D3ZoomEvent<any, any>) => {
       if (enable) {
