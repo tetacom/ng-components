@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -21,6 +22,7 @@ import {curveStepBefore} from 'd3';
   selector: 'svg:svg[teta-block-area-series]',
   templateUrl: './block-area-series.component.html',
   styleUrls: ['./block-area-series.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlockAreaSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
