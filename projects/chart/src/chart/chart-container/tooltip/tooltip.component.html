@@ -1,6 +1,7 @@
 <ng-container *ngIf="position | async as p">
 
   <div class="chart-tooltip color-text-90 bg-background-50 shadow-2 padding-2 border-radius-1"
+       *ngIf="displayTooltips | async as tool"
        [style.position]="'fixed'"
        [style.opacity]="display | async"
        style="pointer-events: none; min-width: 200px;"
@@ -8,7 +9,7 @@
        [style.top]="p.top"
        [style.bottom]="p.bottom"
        [style.right]="p.right"
-       [innerHTML]="displayTooltips | async">
+       [innerHTML]="tool">
   </div>
 </ng-container>
 

@@ -90,7 +90,7 @@ export class AreaSeriesComponent<T extends BasePoint>
 
           area
             .x1((_) =>
-              _.x1 !== null ? this.x(_.x1) : this.x(0)
+              _.x1 !== null && _.x1 !== undefined ? this.x(_.x1) : this.x(0)
             )
             .x0((_) => this.x(_.x))
 

@@ -1,52 +1,60 @@
-<svg:defs *ngIf="series?.fillType === fillType.gradient">
-  <svg:linearGradient [id]="'gradient-fill-' + id" gradientUnits="userSpaceOnUse"
-                      x1="0%"
-                      [attr.y1]="config?.inverted ? '0%' : '100%'"
-                      [attr.x2]="config?.inverted ? '100%' : '0%'"
-                      y2="0%">
-    <svg:stop offset="0%" [attr.stop-color]="series.color" stop-opacity="0"></svg:stop>
-    <svg:stop offset="5%" [attr.stop-color]="series.color" stop-opacity="0.1"></svg:stop>
-    <svg:stop offset="20%" [attr.stop-color]="series.color" stop-opacity="0.2"></svg:stop>
-    <svg:stop offset="100%" [attr.stop-color]="series.color" stop-opacity="0.5"></svg:stop>
-  </svg:linearGradient>
-</svg:defs>
+<ng-container *ngIf="{
+  y: y | async,
+  x: x | async,
+  points: displayPoints | async
+} as data">
+  <svg:defs *ngIf="series?.fillType === fillType.gradient">
+    <svg:linearGradient [id]="'gradient-fill-' + id"
+                        gradientUnits="userSpaceOnUse"
+                        x1="0%"
+                        [attr.y1]="config?.inverted ? '0%' : '100%'"
+                        [attr.x2]="config?.inverted ? '100%' : '0%'"
+                        y2="0%">
+      <svg:stop offset="0%" [attr.stop-color]="series.color" stop-opacity="0"></svg:stop>
+      <svg:stop offset="5%" [attr.stop-color]="series.color" stop-opacity="0.1"></svg:stop>
+      <svg:stop offset="20%" [attr.stop-color]="series.color" stop-opacity="0.2"></svg:stop>
+      <svg:stop offset="60%" [attr.stop-color]="series.color" stop-opacity="0.5"></svg:stop>
+      <svg:stop offset="100%" [attr.stop-color]="series.color" stop-opacity="0.9"></svg:stop>
+    </svg:linearGradient>
+  </svg:defs>
+  <ng-container *ngFor="let point of data.points">
+    <svg:g (mouseenter)="mouseEnter(point)"
+           (mouseleave)="mouseleave(point)">
+    <svg:rect
+        *ngIf="!!config.inverted"
+        [attr.x]="data.x(0)"
+        [attr.y]="data.y(point.y)"
+        [attr.height]="data.y(point.y1) - data.y(point.y)"
+        [attr.width]="data.x(point.x) - data.x(0)"
+        [attr.stroke]="point.iconId ? '' : point.color ?? series.color"
+        [attr.stroke-dasharray]="series.style?.strokeDasharray"
+        [attr.stroke-width]="series.style?.strokeWidth"
+        [attr.fill]="series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : point.iconId ? 'url(#pattern'+point.iconId+')' : point.color ?? series.color"
+        [attr.fill-opacity]="series.style?.fillOpacity">
+      </svg:rect>
+      <svg:rect
+        *ngIf="!config.inverted"
+        [attr.x]="data.x(point.x)"
+        [attr.y]="data.y(0)"
+        [attr.height]="data.y(0) - data.y(point.y)"
+        [attr.width]="data.x(point.x1) - data.x(point.x)"
+        [attr.stroke]="point.iconId ? '' : point.color ?? series.color"
+        [attr.stroke-dasharray]="series.style?.strokeDasharray"
+        [attr.stroke-width]="series.style?.strokeWidth"
+        [attr.fill]="series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : point.iconId ? 'url(#pattern'+point.iconId+')' : point.color ?? series.color"
+        [attr.fill-opacity]="series.style?.fillOpacity">
+      </svg:rect>
+      <svg:text *ngIf="point.text" x="50%"
+                [attr.y]="(data.y(point.y1) + data.y(point.y)) / 2"
+                alignment-baseline="middle"
+                text-anchor="middle">{{ point.text }}
+      </svg:text>
 
-<svg:path
-  class="area"
-  [attr.d]="path | async"
-  [attr.stroke]="series.color"
-  [attr.stroke-dasharray]="series.style?.strokeDasharray"
-  [attr.stroke-width]="series.style?.strokeWidth"
-  [attr.stroke-width]="series.style?.strokeWidth"
-  [attr.fill-opacity]="series.style?.fillOpacity"
-  [attr.fill]="series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : series.color">
-</svg:path>
+<!--      <svg:line x1="0" x2="100%" [attr.y1]="data.y(point.y)" [attr.y2]="data.y(point.y)" [attr.stroke]="point.iconId ? 'var(&#45;&#45;color-text-10)' : point.color ?? series.color"></svg:line>-->
+<!--      <svg:line x1="0" x2="100%" [attr.y1]="data.y(point.y1)" [attr.y2]="data.y(point.y1)" [attr.stroke]="point.iconId ? 'var(&#45;&#45;color-text-10)' : point.color ?? series.color"></svg:line>-->
 
-<ng-container *ngIf="transform | async as t">
-  <svg:circle
-    *ngIf="t.x !== undefined && t.y!== undefined"
-    r="3"
-    [attr.fill]="series.color"
-    [attr.transform]="'translate('+ t.x +', '+ t.y +')'"
-  >
-  </svg:circle>
+    </svg:g>
+  </ng-container>
+
+
 </ng-container>
-
-<ng-container *ngIf="getMarkers() as markers">
-  <svg:circle
-    class="marker"
-    *ngFor="let point of markers"
-    [class.draggable-marker]="point?.marker?.draggable"
-    [attr.r]="point.marker.style?.radius ?? 5"
-    [attr.fill]="point.marker.style?.fill ?? 'transparent'"
-    [attr.stroke]="point.marker.style?.stroke ?? 'none'"
-    [attr.stroke-width]="point.marker.style?.strokeWidth"
-    [attr.stroke-dasharray]="point.marker.style?.strokeDasharray"
-    [attr.cx]="x(point.x)"
-    [attr.cy]="y(point.y)"
-  >
-  </svg:circle>
-</ng-container>
-
-
-
