@@ -43,7 +43,8 @@ export class StringCellComponent<T>
     if (initiator?.column.name === this.column.name) {
       this.cdr.markForCheck();
       setTimeout(() => {
-        this.input.nativeElement.focus();
+        this.input.nativeElement?.focus();
+        this.input.nativeElement?.select();
       }, 0);
     }
   }
