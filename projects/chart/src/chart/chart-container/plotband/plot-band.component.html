@@ -5,7 +5,7 @@
           [attr.opacity]="plotBand.style?.plotBand?.opacity"
           [attr.height]="axis.orientation === orientation.x ? height : bandSize"
           [attr.width]="axis.orientation === orientation.x ? bandSize : width"
-          [attr.y]="axis.orientation === orientation.y ? to : null"
+          [attr.y]="axis.orientation === orientation.y ? from : null"
           [attr.x]="axis.orientation === orientation.x ? from : null">
 </svg:rect>
 
