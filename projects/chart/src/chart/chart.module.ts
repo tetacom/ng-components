@@ -44,6 +44,7 @@ import { AreaSeriesComponent } from './chart-container/series/area-series/area-s
   ],
   exports: [
     ChartComponent,
+    SeriesBaseComponent,
     LineSeriesComponent,
     BarSeriesComponent,
     ScatterSeriesComponent,

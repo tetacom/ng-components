@@ -6,12 +6,13 @@ import {
   ElementRef,
   OnInit,
 } from '@angular/core';
-import { BasePoint } from '../../../model/base-point';
-import { SeriesBaseComponent } from '../../../base/series-base.component';
-import { map, Observable } from 'rxjs';
-import { ChartService } from '../../../service/chart.service';
-import { ScaleService } from '../../../service/scale.service';
-import { ZoomService } from '../../../service/zoom.service';
+import {BasePoint} from '../../../model/base-point';
+import {SeriesBaseComponent} from '../../../base/series-base.component';
+import {map, Observable} from 'rxjs';
+import {ChartService} from '../../../service/chart.service';
+import {ScaleService} from '../../../service/scale.service';
+import {ZoomService} from '../../../service/zoom.service';
+import {FillType} from '../../../model/enum/fill-type';
 
 @Component({
   selector: 'svg:svg[teta-block-series]',
@@ -21,11 +22,12 @@ import { ZoomService } from '../../../service/zoom.service';
 })
 export class BlockSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
-  implements OnInit, AfterViewInit
-{
+  implements OnInit, AfterViewInit {
   x: Observable<any>;
   y: Observable<any>;
   displayPoints: Observable<BasePoint[]>;
+  fillType = FillType;
+  id: string;
 
   constructor(
     protected override svc: ChartService,
@@ -35,6 +37,8 @@ export class BlockSeriesComponent<T extends BasePoint>
     protected override element: ElementRef
   ) {
     super(svc, cdr, scaleService, zoomService, element);
+    this.id = (Date.now() + Math.random()).toString(36);
+
   }
 
   override ngOnInit(): void {
@@ -70,5 +74,17 @@ export class BlockSeriesComponent<T extends BasePoint>
     );
   }
 
-  ngAfterViewInit() {}
+  mouseEnter(point) {
+    this.svc.setTooltip({
+      point: {x: point.x, y: point.y},
+      series: this.series,
+    });
+  }
+
+  mouseleave(point) {
+    this.svc.setTooltip(null);
+  }
+
+  ngAfterViewInit() {
+  }
 }

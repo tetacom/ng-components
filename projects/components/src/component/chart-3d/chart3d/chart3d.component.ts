@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterViewInit, ChangeDetectionStrategy,
   Component,
   ElementRef,
   Input,
@@ -20,6 +20,7 @@ import { takeWhile, tap } from 'rxjs/operators';
   selector: 'teta-chart3d',
   templateUrl: './chart3d.component.html',
   styleUrls: ['./chart3d.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('canvas') canvasRef: ElementRef;

@@ -9,6 +9,7 @@ import { IPointMove } from '../model/i-point-move';
 import { defaultChartConfig } from '../default/default-chart-config';
 import { defaultAxisConfig } from '../default/default-axis-config';
 import { defaultSeriesConfig } from '../default/default-series-config';
+import {ScaleService} from "./scale.service";
 
 @Injectable({
   providedIn: 'root',
@@ -102,7 +103,18 @@ export class ChartService {
 
   private setpreparationData(config: IChartConfig): IChartConfig {
     if (config.inverted) {
+      const xAxes = [...config.xAxis];
+      const yAxes = [...config.yAxis];
+
+      config.xAxis = yAxes;
+      config.yAxis = xAxes;
+
+
       config.series = config.series?.map((serie) => {
+        const x = serie.xAxisIndex;
+        const y = serie.yAxisIndex;
+        serie.xAxisIndex = y;
+        serie.yAxisIndex = x;
         return {
           ...serie,
           data: serie?.data?.map((point) => {

@@ -1,30 +1,31 @@
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   OnInit,
 } from '@angular/core';
-import { SeriesBaseComponent } from '../../../base/series-base.component';
-import { BasePoint } from '../../../model/base-point';
-import { ChartService } from '../../../service/chart.service';
-import { ScaleService } from '../../../service/scale.service';
-import { ZoomService } from '../../../service/zoom.service';
-import { combineLatest, map, Observable, tap, withLatestFrom } from 'rxjs';
+import {SeriesBaseComponent} from '../../../base/series-base.component';
+import {BasePoint} from '../../../model/base-point';
+import {ChartService} from '../../../service/chart.service';
+import {ScaleService} from '../../../service/scale.service';
+import {ZoomService} from '../../../service/zoom.service';
+import {combineLatest, map, Observable, tap, withLatestFrom} from 'rxjs';
 import * as d3 from 'd3';
-import { DragPointType } from '../../../model/enum/drag-point-type';
-import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
-import { FillType } from '../../../model/enum/fill-type';
-import { Axis } from '../../../core/axis/axis';
+import {DragPointType} from '../../../model/enum/drag-point-type';
+import {TooltipTracking} from '../../../model/enum/tooltip-tracking';
+import {FillType} from '../../../model/enum/fill-type';
+import {Axis} from '../../../core/axis/axis';
 
 @Component({
   selector: 'svg:svg[teta-area-series]',
   templateUrl: './area-series.component.html',
   styleUrls: ['./area-series.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AreaSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
-  implements OnInit
-{
+  implements OnInit {
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
   display: Observable<number>;
   path: Observable<string>;
@@ -32,6 +33,7 @@ export class AreaSeriesComponent<T extends BasePoint>
   x: any;
   y: any;
   id: string;
+
 
   fillType = FillType;
 
@@ -76,13 +78,6 @@ export class AreaSeriesComponent<T extends BasePoint>
           this.x = x.get(this.series.xAxisIndex);
           this.y = y.get(this.series.yAxisIndex);
 
-          const yAxis = yAxisMap.get(this.series.yAxisIndex);
-          const xAxis = xAxisMap.get(this.series.xAxisIndex);
-
-          const domain = this.config.inverted
-            ? this.x.domain()
-            : this.y.domain();
-
           const area = d3
             .area<BasePoint>()
             .defined(
@@ -93,22 +88,15 @@ export class AreaSeriesComponent<T extends BasePoint>
                 !isNaN(point.y)
             );
 
-          if (this.config.inverted) {
-            area
-              .y((point) => this.y(point.y))
-              .x0((_) =>
-                this.x(xAxis.options?.inverted ? domain[1] : domain[0])
-              )
-              .x1((point) => this.x(point.x));
-          } else {
-            area
-              .x((point) => this.x(point.x))
-              .y0((_) =>
-                this.y(yAxis.options?.inverted ? domain[0] : domain[1])
-              )
-              .y1((point) => this.y(point.y));
-          }
+          area
+            .x1((_) =>
+              _.x1 !== null && _.x1 !== undefined ? this.x(_.x1) : this.x(0)
+            )
+            .x0((_) => this.x(_.x))
 
+            .y((_) =>
+              this.y(_.y)
+            );
           return area(this.series.data);
         }
       )
@@ -146,7 +134,7 @@ export class AreaSeriesComponent<T extends BasePoint>
       .drag()
       .subject(function (event, d: BasePoint) {
         const node = d3.select(this);
-        return { x: node.attr('cx'), y: node.attr('cy') };
+        return {x: node.attr('cx'), y: node.attr('cy')};
       })
       .on(
         'start drag end',
@@ -250,7 +238,7 @@ export class AreaSeriesComponent<T extends BasePoint>
       );
 
       this.svc.setTooltip({
-        point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },
+        point: {x: foundX.invert(intersect.x), y: foundY.invert(intersect.y)},
         series: this.series,
       });
 

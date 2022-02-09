@@ -5,6 +5,7 @@ import {BarSeriesComponent} from '../chart-container/series/bar/bar-series.compo
 import {ScatterSeriesComponent} from '../chart-container/series/scatter-series/scatter-series.component';
 import {BlockSeriesComponent} from '../chart-container/series/block-series/block-series.component';
 import {BlockAreaSeriesComponent} from '../chart-container/series/block-area-series/block-area-series.component';
+import {AreaSeriesComponent} from '../chart-container/series/area-series/area-series.component';
 
 export const defaultSeriesTypeMapping = new Map<SeriesType,
   typeof SeriesBaseComponent>()
@@ -12,4 +13,5 @@ export const defaultSeriesTypeMapping = new Map<SeriesType,
   .set(SeriesType.bar, BarSeriesComponent)
   .set(SeriesType.scatter, ScatterSeriesComponent)
   .set(SeriesType.block, BlockSeriesComponent)
+  .set(SeriesType.area, AreaSeriesComponent)
   .set(SeriesType.blockArea, BlockAreaSeriesComponent);

@@ -46,6 +46,7 @@ export class NumericCellComponent<T>
     if (initiator?.column.name === this.column.name) {
       setTimeout(() => {
         this.input?.nativeElement.focus();
+        this.input?.nativeElement.select();
         this.cdr.markForCheck();
       }, 0);
     }

@@ -7,15 +7,15 @@ import {
   OnInit,
 } from '@angular/core';
 import * as d3 from 'd3';
-import { SeriesBaseComponent } from '../../../base/series-base.component';
-import { ChartService } from '../../../service/chart.service';
-import { BasePoint } from '../../../model/base-point';
-import { ScaleService } from '../../../service/scale.service';
-import { combineLatest, map, Observable, tap, withLatestFrom } from 'rxjs';
+import {SeriesBaseComponent} from '../../../base/series-base.component';
+import {ChartService} from '../../../service/chart.service';
+import {BasePoint} from '../../../model/base-point';
+import {ScaleService} from '../../../service/scale.service';
+import {combineLatest, map, Observable, tap, withLatestFrom} from 'rxjs';
 
-import { ZoomService } from '../../../service/zoom.service';
-import { TooltipTracking } from '../../../model/enum/tooltip-tracking';
-import { DragPointType } from '../../../model/enum/drag-point-type';
+import {ZoomService} from '../../../service/zoom.service';
+import {TooltipTracking} from '../../../model/enum/tooltip-tracking';
+import {DragPointType} from '../../../model/enum/drag-point-type';
 
 @Component({
   selector: 'svg:svg[teta-line-series]',
@@ -25,8 +25,7 @@ import { DragPointType } from '../../../model/enum/drag-point-type';
 })
 export class LineSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
-  implements OnInit, AfterViewInit
-{
+  implements OnInit, AfterViewInit {
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
   display: Observable<number>;
   path: Observable<string>;
@@ -113,7 +112,7 @@ export class LineSeriesComponent<T extends BasePoint>
       .drag()
       .subject(function (event, d: BasePoint) {
         const node = d3.select(this);
-        return { x: node.attr('cx'), y: node.attr('cy') };
+        return {x: node.attr('cx'), y: node.attr('cy')};
       })
       .on(
         'start drag end',
@@ -212,7 +211,7 @@ export class LineSeriesComponent<T extends BasePoint>
         foundY(this.series.data[rightId]?.y)
       );
       this.svc.setTooltip({
-        point: { x: foundX.invert(intersect.x), y: foundY.invert(intersect.y) },
+        point: {x: foundX.invert(intersect.x), y: foundY.invert(intersect.y)},
         series: this.series,
       });
 
