@@ -4,7 +4,8 @@
   xAxisMap: xAxisMap | async,
   yAxisMap: yAxisMap | async,
   xScaleMap: xScaleMap | async,
-  yScaleMap: yScaleMap | async
+  yScaleMap: yScaleMap | async,
+  visibleRect: visibleRect | async
 } as data">
   <teta-tooltip *ngIf="data.config?.tooltip?.enable"
                 [size]="data.size"
@@ -58,21 +59,20 @@
             [attr.height]="item.value.selfSize"
             [attr.transform]="getTranslate(item.value, data.size) | async"></rect>
         </ng-container>
-
       </ng-container>
     </g>
   </svg>
-  <ng-container *ngIf="visibleRect | async as rect">
+  <ng-container *ngIf="data.visibleRect != null && data.visibleRect.width > 0 && data.visibleRect.height > 0">
     <svg
       tetaBrushable
       tetaZoomable
       [size]="data.size"
       [brushScale]="brushScale | async"
       [config]="config | async"
-      [attr.width]="rect.width"
-      [attr.height]="rect.height"
-      [attr.transform]="'translate('+ rect.x +', '+ rect.y +')'"
-      [attr.viewBox]="'0 0 ' + rect.width + ' ' + rect.height"
+      [attr.width]="data.visibleRect.width"
+      [attr.height]="data.visibleRect.height"
+      [attr.transform]="'translate('+ data.visibleRect.x +', '+ data.visibleRect.y +')'"
+      [attr.viewBox]="'0 0 ' + data.visibleRect.width + ' ' + data.visibleRect.height"
       (mouseleave)="mouseLeave($event)"
       (mousemove)="mouseMove($event)">
       <g class="gridlines"

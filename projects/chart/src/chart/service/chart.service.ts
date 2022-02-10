@@ -37,9 +37,9 @@ export class ChartService {
       .asObservable()
       .pipe(map(this.setDefaults), map(this.setpreparationData));
     this.size = this.size$.asObservable().pipe(
-      filter((_) => {
-        return _.height > 0 && _.width > 0;
-      })
+      // filter((_) => {
+      //   return _.height > 0 && _.width > 0;
+      // })
     );
 
     this.pointerMove = this.pointerMove$.asObservable();
