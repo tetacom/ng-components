@@ -42,7 +42,7 @@ export class BlockSeriesComponent<T extends BasePoint>
   }
 
   override ngOnInit(): void {
-    const defaultVisiblePixels = 3;
+    const defaultVisiblePixels = 1;
 
     this.x = this.scaleService.xScaleMap.pipe(
       map((_) => _.get(this.series.xAxisIndex))
