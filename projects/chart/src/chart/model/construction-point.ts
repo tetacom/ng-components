@@ -1,5 +1,5 @@
-import { BasePoint } from './base-point';
+import {BasePoint} from "./base-point";
 
-export interface ConstructionPoint extends BasePoint {
-  meta: { [key: string]: any };
+export interface ConstructionPoint<T> extends BasePoint {
+  meta: T
 }

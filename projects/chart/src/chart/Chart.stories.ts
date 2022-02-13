@@ -15,8 +15,11 @@ import { Series } from './model/series';
 import { BasePoint } from './model/base-point';
 import { FillType } from './model/enum/fill-type';
 
-import constructionJson from './construction';
+import {construction} from './construction';
 import { ConstructionPoint } from './model/construction-point';
+import { WellCasingDto, WellNktDto, WellTrajectoryDto, WellPackerDto, WellPerforationDto, WellDesignConstructionDto, WellColumnType } from '@teta/core';
+import {ConstructionSeriesComponent} from "./chart-container/series/construction-series/construction-series.component";
+
 
 export default {
   title: 'Component/Chart',
@@ -267,7 +270,7 @@ const createChart = (size: number): IChartConfig => {
   };
 };
 
-const casing: ConstructionPoint[] = constructionJson.casing.map((_) => {
+const casing: ConstructionPoint<WellCasingDto>[] = construction.casing.filter((_) => _.type === WellColumnType.casing).map((_) => {
   return {
     x: _.columnOuterDiameter,
     y: _.intervalTopTvd,
@@ -276,16 +279,17 @@ const casing: ConstructionPoint[] = constructionJson.casing.map((_) => {
   };
 });
 
-const nkt: ConstructionPoint[] = constructionJson.nkt.map((_) => {
+const nkt: ConstructionPoint<WellNktDto>[] = construction.nkt.sort((a,b) => a.trueVerticalDepth - b.trueVerticalDepth).map((_, index, arr) => {
+
   return {
     x: _.outsideDiameter,
-    y: _.trueVerticalDepth,
-    y1: _.trueVerticalDepth + _.measuredDepth,
+    y: index === 0 ? 0 : arr[index - 1]?.trueVerticalDepth,
+    y1: _.trueVerticalDepth,
     meta: _,
   };
 });
 
-const pakers: ConstructionPoint[] = constructionJson.packer.map((_) => {
+const pakers: ConstructionPoint<WellPackerDto>[] = construction.packer.map((_) => {
   return {
     x: null,
     y: _.trueVerticalDepth,
@@ -294,7 +298,7 @@ const pakers: ConstructionPoint[] = constructionJson.packer.map((_) => {
   };
 });
 
-const perforation: ConstructionPoint[] = constructionJson.perforation.map(
+const perforation: ConstructionPoint<WellPerforationDto>[] = construction.perforation.map(
   (_) => {
     return {
       x: null,
@@ -305,9 +309,22 @@ const perforation: ConstructionPoint[] = constructionJson.perforation.map(
   }
 );
 
-const constructionSeries: Series<ConstructionPoint> = {
-  data: [].concat(...nkt, ...casing, ...pakers, ...perforation),
+const bottom: ConstructionPoint<WellCasingDto>[] = construction.casing.filter((_) => _.type === WellColumnType.bottom).map(
+  (_) => {
+    return {
+      x: null,
+      y: _.intervalTopTvd,
+      y1: _.intervalBottomTvd,
+      meta: _,
+    };
+  }
+);
+
+const constructionSeries: Series<ConstructionPoint<WellPerforationDto | WellNktDto | WellCasingDto | WellPackerDto>> = {
+  data: [].concat(...nkt, ...casing, ...pakers, ...perforation, ...bottom),
   type: SeriesType.construction,
+  // @ts-ignore
+  component: ConstructionSeriesComponent
 };
 
 const createChart2 = (size: number): IChartConfig => {
@@ -317,8 +334,8 @@ const createChart2 = (size: number): IChartConfig => {
     tooltip: {
       tracking: TooltipTracking.x,
     },
-    xAxis: [{}],
-    yAxis: [{ min: 0, max: 1050, visible: true, inverted: true }],
+    xAxis: [{ min: -205, max: 205, niceTicks: false }],
+    yAxis: [{ min:0, max: 1200 , visible: true, inverted: true }],
     brush: {
       type: BrushType.y,
     },
@@ -360,8 +377,7 @@ export const basicChart = () => ({
           [palette]="'primary'"
           (click)="config=createChart(0); config2=createChart(0)">
           Create empty data config </button>
-        <div class="row row_auto gap" style="height: 100%; width: 100%">
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
+        <div class="row row_auto gap" style="height: 100%; width: 50%">
             <teta-svg-chart [config]="config2" class="bg-background-50 border border-text-50"></teta-svg-chart>
         </div>
 
