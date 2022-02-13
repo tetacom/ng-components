@@ -177,6 +177,7 @@ export class ScaleService {
             .filter((_) => _.options?.visible && _.options?.opposite !== true)
             .reduce((acc, cur) => acc + cur.selfSize, 0);
 
+
           const finalHeight = (size.height || 0) - top - bottom;
 
           yAxes.forEach((axis) => {

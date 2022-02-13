@@ -53,17 +53,14 @@ export class PlotBandComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+
+
+
     this.domain = this.scale.domain();
 
     const plotbandElement = d3
       .select(this.element.nativeElement)
       .select('.plotband');
-      // .on('click', (event, d: PlotBand) => {
-      //   this.emit({
-      //     event,
-      //     target: d,
-      //   });
-      // });
 
     const grabElements = d3
       .select(this.element.nativeElement)
@@ -89,14 +86,14 @@ export class PlotBandComponent implements AfterViewInit {
             )
           );
 
-          d.to = this.scale.invert(
-            event[AxisOrientation[this.axis.orientation]] +
-              (this.axis.orientation === AxisOrientation.x ? bandSize : 0)
-          );
 
           d.from = this.scale.invert(
-            event[AxisOrientation[this.axis.orientation]] +
-              (this.axis.orientation === AxisOrientation.y ? bandSize : 0)
+            event[AxisOrientation[this.axis.orientation]]
+          );
+
+
+          d.to = this.scale.invert(
+            event[AxisOrientation[this.axis.orientation]]  + bandSize
           );
 
           this.emit({
@@ -126,6 +123,7 @@ export class PlotBandComponent implements AfterViewInit {
 
             const minValue = d.min ?? min;
             const maxValue = d.max ?? max;
+
             d[grabberKey] = this.scale.invert(
               event[AxisOrientation[this.axis.orientation]]
             );
@@ -140,6 +138,7 @@ export class PlotBandComponent implements AfterViewInit {
               if (borderMin) {
                 d.from = minValue;
               }
+
             }
 
             if (grabberKey === 'to') {

@@ -9,6 +9,7 @@ import { IPointMove } from '../model/i-point-move';
 import { defaultChartConfig } from '../default/default-chart-config';
 import { defaultAxisConfig } from '../default/default-axis-config';
 import { defaultSeriesConfig } from '../default/default-series-config';
+import {ScaleService} from "./scale.service";
 
 @Injectable({
   providedIn: 'root',

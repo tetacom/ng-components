@@ -12,7 +12,6 @@ export interface BrushMessage {
   event: D3BrushEvent<any>;
   brushType: BrushType;
   selection: number[];
-  brushScale: any;
 }
 
 export interface IBroadcastMessage {
