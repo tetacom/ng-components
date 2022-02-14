@@ -81,24 +81,7 @@
          [size]="data.size"
          [xScaleMap]="data.xScaleMap"
          [yScaleMap]="data.yScaleMap"></g>
-      <g class="x-axis-plotline-container">
-        <ng-container *ngFor="let axis of data.config.xAxis; let i = index">
-          <g teta-plot-line *ngFor="let plotLine of axis.plotLines"
-             [plotLine]="plotLine"
-             [scale]="data.xScaleMap.get(i)"
-             [size]="data.size"
-             [axis]="data.xAxisMap.get(i)"></g>
-        </ng-container>
-      </g>
-      <g class="y-axis-plotline-container">
-        <ng-container *ngFor="let axis of data.config.yAxis; let i = index">
-          <g teta-plot-line *ngFor="let plotLine of axis.plotLines"
-             [plotLine]="plotLine"
-             [scale]="data.yScaleMap.get(i)"
-             [size]="data.size"
-             [axis]="data.yAxisMap.get(i)"></g>
-        </ng-container>
-      </g>
+
 
       <g class="x-axis-plotband-container">
         <ng-container *ngFor="let axis of data.config.xAxis; let i = index">
@@ -113,6 +96,24 @@
         <ng-container *ngFor="let axis of data.config.yAxis; let i = index">
           <g teta-plot-band *ngFor="let plotBand of axis.plotBands"
              [plotBand]="plotBand"
+             [scale]="data.yScaleMap.get(i)"
+             [size]="data.size"
+             [axis]="data.yAxisMap.get(i)"></g>
+        </ng-container>
+      </g>
+      <g class="x-axis-plotline-container">
+        <ng-container *ngFor="let axis of data.config.xAxis; let i = index">
+          <g teta-plot-line *ngFor="let plotLine of axis.plotLines"
+             [plotLine]="plotLine"
+             [scale]="data.xScaleMap.get(i)"
+             [size]="data.size"
+             [axis]="data.xAxisMap.get(i)"></g>
+        </ng-container>
+      </g>
+      <g class="y-axis-plotline-container">
+        <ng-container *ngFor="let axis of data.config.yAxis; let i = index">
+          <g teta-plot-line *ngFor="let plotLine of axis.plotLines"
+             [plotLine]="plotLine"
              [scale]="data.yScaleMap.get(i)"
              [size]="data.size"
              [axis]="data.yAxisMap.get(i)"></g>
