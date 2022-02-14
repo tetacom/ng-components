@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { IChartConfig } from '../model/i-chart-config';
-import { BehaviorSubject, filter, map, Observable, Subject } from 'rxjs';
+import {
+  BehaviorSubject,
+  filter,
+  map,
+  Observable,
+  shareReplay,
+  Subject,
+} from 'rxjs';
 import { IChartEvent } from '../model/i-chart-event';
 import { IDisplayTooltip } from '../model/i-display-tooltip';
 import { PlotBand } from '../model/plot-band';
@@ -9,7 +16,7 @@ import { IPointMove } from '../model/i-point-move';
 import { defaultChartConfig } from '../default/default-chart-config';
 import { defaultAxisConfig } from '../default/default-axis-config';
 import { defaultSeriesConfig } from '../default/default-series-config';
-import {ScaleService} from "./scale.service";
+import { ScaleService } from './scale.service';
 
 @Injectable({
   providedIn: 'root',
@@ -35,11 +42,16 @@ export class ChartService {
   constructor() {
     this.config = this.config$
       .asObservable()
-      .pipe(map(this.setDefaults), map(this.setpreparationData));
+      .pipe(
+        map(this.setDefaults),
+        map(this.setpreparationData),
+        shareReplay(1)
+      );
+
     this.size = this.size$.asObservable().pipe(
-      // filter((_) => {
-      //   return _.height > 0 && _.width > 0;
-      // })
+      filter((_) => {
+        return _.height > 0 && _.width > 0;
+      })
     );
 
     this.pointerMove = this.pointerMove$.asObservable();
@@ -98,6 +110,10 @@ export class ChartService {
       config.tooltip
     );
 
+    const id = (Date.now() + Math.random()).toString(36);
+
+    config.zoom.syncChannel = config.zoom?.syncChannel ?? id;
+
     return config;
   }
 
@@ -108,7 +124,6 @@ export class ChartService {
 
       config.xAxis = yAxes;
       config.yAxis = xAxes;
-
 
       config.series = config.series?.map((serie) => {
         const x = serie.xAxisIndex;
