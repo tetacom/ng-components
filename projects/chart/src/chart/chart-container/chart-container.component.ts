@@ -5,15 +5,24 @@ import {
   ElementRef,
   OnInit,
 } from '@angular/core';
-import {IChartConfig} from '../model/i-chart-config';
-import {ChartService} from '../service/chart.service';
-import {combineLatest, map, Observable, startWith, tap, withLatestFrom} from 'rxjs';
-import {Axis} from '../core/axis/axis';
-import {AxisOrientation} from '../model/enum/axis-orientation';
-import {ScaleService} from '../service/scale.service';
-import {IChartEvent} from '../model/i-chart-event';
-import {ZoomService} from '../service/zoom.service';
-import {BrushType} from '../model/enum/brush-type';
+import { IChartConfig } from '../model/i-chart-config';
+import { ChartService } from '../service/chart.service';
+import {
+  combineLatest,
+  map,
+  Observable,
+  share,
+  shareReplay,
+  startWith,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
+import { Axis } from '../core/axis/axis';
+import { AxisOrientation } from '../model/enum/axis-orientation';
+import { ScaleService } from '../service/scale.service';
+import { IChartEvent } from '../model/i-chart-event';
+import { ZoomService } from '../service/zoom.service';
+import { BrushType } from '../model/enum/brush-type';
 
 type Opposite = boolean;
 
@@ -38,8 +47,10 @@ export class ChartContainerComponent implements OnInit {
   private _observer: ResizeObserver;
   private uniqId: string;
 
-  private filterPositionMap = new Map<Opposite,
-    (axis: Axis) => (_: Axis) => boolean>()
+  private filterPositionMap = new Map<
+    Opposite,
+    (axis: Axis) => (_: Axis) => boolean
+  >()
     .set(
       true,
       (axis) => (_: Axis) =>
@@ -75,8 +86,11 @@ export class ChartContainerComponent implements OnInit {
       map((data: [[Map<number, any>, Map<number, any>], IChartConfig]) => {
         const [[x, y], config] = data;
 
-        return config.brush?.type === BrushType.x ? x.get(0) : y.get(0);
-      })
+        return config.brush?.type === BrushType.x
+          ? x.get(0).copy()
+          : y.get(0).copy();
+      }),
+      shareReplay(1)
     );
 
     this.visibleRect = combineLatest([
@@ -117,7 +131,6 @@ export class ChartContainerComponent implements OnInit {
       ),
       tap((_) => {
         this._cdr.detectChanges();
-
       })
     );
   }
@@ -125,7 +138,12 @@ export class ChartContainerComponent implements OnInit {
   ngOnInit(): void {
     this.uniqId = (Date.now() + Math.random()).toString(36);
     this._observer = new ResizeObserver((entries: ResizeObserverEntry[]) => {
-      if (!Array.isArray(entries) || !entries.length || entries[0].contentRect.width <= 0 || entries[0].contentRect.height <= 0) {
+      if (
+        !Array.isArray(entries) ||
+        !entries.length ||
+        entries[0].contentRect.width <= 0 ||
+        entries[0].contentRect.height <= 0
+      ) {
         return;
       }
       this._svc.setSize(entries[0].contentRect);
@@ -133,8 +151,7 @@ export class ChartContainerComponent implements OnInit {
     this._observer.observe(this._elementRef.nativeElement);
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   private sumSize = (acc, curr) => acc + curr.selfSize;
 

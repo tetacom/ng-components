@@ -31,10 +31,7 @@ export class ZoomService {
   zoomed: Observable<IChartEvent<Axis>>;
   private zoomed$ = new BehaviorSubject<IChartEvent<Axis>>(null);
 
-  constructor(
-    private broadcastService: BroadcastService,
-    private chartService: ChartService
-  ) {
+  constructor(private broadcastService: BroadcastService) {
     this.zoomed = this.zoomed$.asObservable().pipe(shareReplay(1));
   }
 
@@ -45,6 +42,8 @@ export class ZoomService {
     axis?: Axis,
     brushScale?: any
   ) {
+    this.broadcastSubscription.forEach((_) => _?.unsubscribe());
+
     const enable = axis?.options?.zoom || config?.zoom?.enable;
 
     const fakeAxis = Axis.createAxis(
@@ -64,8 +63,6 @@ export class ZoomService {
         [size.width, size.height],
       ]);
 
-    let brushDomain;
-
     const zoomed = (event: D3ZoomEvent<any, any>) => {
       if (enable) {
         if (event.sourceEvent) {
@@ -73,11 +70,6 @@ export class ZoomService {
             event,
             target: _axis,
           });
-
-          brushDomain =
-            config.brush?.type === BrushType.x
-              ? event.transform.rescaleX(brushScale).domain()
-              : event.transform.rescaleY(brushScale).domain();
 
           const message: ZoomMessage = {
             event: event,
@@ -100,30 +92,6 @@ export class ZoomService {
       const element = d3.select(svgElement.nativeElement);
       zoom.on('start zoom end', zoomed);
       element.call(zoom);
-
-      const range = brushScale.range();
-      const domain = brushScale.domain();
-
-      const verticalBound = size.height - range[1];
-      const horizontalBound = size.width - range[1];
-
-      this.chartService.size
-        .pipe(
-          throttleTime(50, undefined, { trailing: true }),
-          map((_: DOMRect) => {
-            if (_axis.isFake) {
-              if (config.brush?.type === BrushType.x) {
-                brushScale.range([range[0], _.width - horizontalBound]);
-              }
-              if (config.brush?.type === BrushType.y) {
-                brushScale.range([range[0], _.height - verticalBound]);
-              }
-            }
-          })
-        )
-        .subscribe();
-
-      console.log(config?.zoom);
 
       const subscription = this.broadcastService
         .subscribeToChannel(config?.zoom?.syncChannel)
@@ -171,6 +139,9 @@ export class ZoomService {
               if (!broadcaseMessage.message.selection) return;
 
               const s = broadcaseMessage.message.selection;
+
+              brushScale.domain(broadcaseMessage.message.brushScale.domain());
+
               const domain = brushScale.domain();
 
               const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
