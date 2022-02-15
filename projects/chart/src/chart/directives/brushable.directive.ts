@@ -4,6 +4,7 @@ import {
   ElementRef,
   Input,
   OnInit,
+  SimpleChanges,
 } from '@angular/core';
 import { IChartConfig } from '../model/i-chart-config';
 import { BrushService } from '../service/brush.service';
@@ -25,7 +26,14 @@ export class BrushableDirective implements OnInit, AfterViewInit {
 
   ngOnInit() {}
 
-  ngAfterViewInit() {
-    this.brushService.applyBrush(this.element, this.config, this.brushScale, this.size);
+  ngAfterViewInit() {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.brushService.applyBrush(
+      this.element,
+      this.config,
+      this.brushScale,
+      this.size
+    );
   }
 }

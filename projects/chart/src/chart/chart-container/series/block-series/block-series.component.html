@@ -27,17 +27,16 @@
         [attr.fill-opacity]="series.style?.fillOpacity"
         width="100%">
       </svg:rect>
-      <svg:text *ngIf="point.text" x="50%"
+      <svg:text *ngIf="point.text && data.y(point.y1) - data.y(point.y) > 8"
+                x="50%"
                 [attr.y]="(data.y(point.y1) + data.y(point.y)) / 2"
                 alignment-baseline="middle"
                 text-anchor="middle">{{ point.text }}
       </svg:text>
-
       <svg:line x1="0" x2="100%" [attr.y1]="data.y(point.y)" [attr.y2]="data.y(point.y)"
                 [attr.stroke]="point.iconId ? 'var(--color-text-10)' : point.color ?? series.color"></svg:line>
       <svg:line x1="0" x2="100%" [attr.y1]="data.y(point.y1)" [attr.y2]="data.y(point.y1)"
                 [attr.stroke]="point.iconId ? 'var(--color-text-10)' : point.color ?? series.color"></svg:line>
-
     </svg:g>
   </ng-container>
 

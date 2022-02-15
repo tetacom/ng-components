@@ -65,16 +65,21 @@ export class LineSeriesComponent<T extends BasePoint>
 
         const line = d3
           .line<BasePoint>()
-
           .defined(
             (point) =>
               point.x !== null &&
               point.y !== null &&
+              point.x !== undefined &&
+              point.y !== undefined &&
               !isNaN(point.x) &&
               !isNaN(point.y)
           )
           .x((point) => this.x(point.x))
           .y((point) => this.y(point.y));
+        const l = line(this.series.data);
+        if (l?.indexOf('NaN') >= 0) {
+          console.log(this.series.name, this.series.data, l);
+        }
 
         return line(this.series.data);
       })
