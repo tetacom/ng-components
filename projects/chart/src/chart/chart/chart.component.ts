@@ -53,6 +53,16 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
     IChartEvent<IPointMove>
   >();
 
+  @Output()
+  chartClick: EventEmitter<IChartEvent<BasePoint>> = new EventEmitter<
+    IChartEvent<BasePoint>
+    >();
+
+  @Output()
+  chartContextMenu: EventEmitter<IChartEvent<BasePoint>> = new EventEmitter<
+    IChartEvent<BasePoint>
+    >();
+
   @Input() set config(config: IChartConfig) {
     this._svc.setConfig(config);
   }
@@ -83,6 +93,14 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
 
     this._svc.pointMove.pipe(takeWhile(() => this._alive)).subscribe((_) => {
       this.pointMove.emit(_);
+    });
+
+    this._svc.chartClick.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.chartClick.emit(_);
+    });
+
+    this._svc.chartContextMenu.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.chartContextMenu.emit(_);
     });
 
     this._svc.plotBandClick

@@ -47,7 +47,6 @@
             [scale]="data.xScaleMap.get(item.key)"
             [size]="data.size"
             [attr.transform]="getTranslate(item.value, data.size) | async"></g>
-
           <rect
             tetaZoomable
             fill-opacity="0"
@@ -75,6 +74,8 @@
       [attr.height]="data.visibleRect.height"
       [attr.transform]="'translate('+ data.visibleRect.x +', '+ data.visibleRect.y +')'"
       [attr.viewBox]="'0 0 ' + data.visibleRect.width + ' ' + data.visibleRect.height"
+      (contextmenu)="contextMenu($event, data.xScaleMap, data.yScaleMap)"
+      (click)="click($event, data.xScaleMap, data.yScaleMap)"
       (mouseleave)="mouseLeave($event)"
       (mousemove)="mouseMove($event)">
       <g class="gridlines"

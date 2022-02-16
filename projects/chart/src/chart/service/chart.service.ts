@@ -17,6 +17,7 @@ import {defaultChartConfig} from '../default/default-chart-config';
 import {defaultAxisConfig} from '../default/default-axis-config';
 import {defaultSeriesConfig} from '../default/default-series-config';
 import {ScaleService} from './scale.service';
+import {BasePoint} from '../model/base-point';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +31,8 @@ export class ChartService {
   public plotLineMove: Observable<IChartEvent<PlotLine>>;
   public plotBandClick: Observable<IChartEvent<PlotBand>>;
   public pointMove: Observable<IChartEvent<IPointMove>>;
+  public chartClick: Observable<IChartEvent<BasePoint>>;
+  public chartContextMenu: Observable<IChartEvent<BasePoint>>;
 
   private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig());
   private size$ = new BehaviorSubject<DOMRect>(new DOMRectReadOnly());
@@ -38,6 +41,8 @@ export class ChartService {
   private plotBandEvent$ = new Subject<IChartEvent<PlotBand>>();
   private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();
   private pointMove$ = new Subject<IChartEvent<IPointMove>>();
+  private chartClick$ = new Subject<IChartEvent<BasePoint>>();
+  private chartContextMenu$ = new Subject<IChartEvent<BasePoint>>();
 
   constructor() {
     this.config = this.config$
@@ -59,6 +64,8 @@ export class ChartService {
     this.plotBandEvent = this.plotBandEvent$.asObservable();
     this.plotLineMove = this.plotLineMove$.asObservable();
     this.pointMove = this.pointMove$.asObservable();
+    this.chartClick = this.chartClick$.asObservable();
+    this.chartContextMenu = this.chartContextMenu$.asObservable();
     this.plotBandClick = this.plotBandEvent$
       .asObservable()
       .pipe(filter((_) => _?.event?.type === 'click'));
@@ -90,6 +97,14 @@ export class ChartService {
 
   public emitPoint(event: IChartEvent<IPointMove>) {
     this.pointMove$.next(event);
+  }
+
+  public emitChartClick(event: IChartEvent<BasePoint>) {
+    this.chartClick$.next(event);
+  }
+
+  public emitChartContextMenu(event: IChartEvent<BasePoint>) {
+    this.chartContextMenu$.next(event);
   }
 
   private setDefaults(config: IChartConfig): IChartConfig {
