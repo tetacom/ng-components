@@ -30,6 +30,7 @@ export class ChartService {
   public plotBandEvent: Observable<IChartEvent<PlotBand>>;
   public plotLineMove: Observable<IChartEvent<PlotLine>>;
   public plotBandClick: Observable<IChartEvent<PlotBand>>;
+  public plotBandContextMenu: Observable<IChartEvent<PlotBand>>;
   public pointMove: Observable<IChartEvent<IPointMove>>;
   public chartClick: Observable<IChartEvent<BasePoint>>;
   public chartContextMenu: Observable<IChartEvent<BasePoint>>;
@@ -71,6 +72,9 @@ export class ChartService {
     this.plotBandClick = this.plotBandEvent$
       .asObservable()
       .pipe(filter((_) => _?.event?.type === 'click'));
+    this.plotBandContextMenu = this.plotBandEvent$
+      .asObservable()
+      .pipe(filter((_) => _?.event?.type === 'contextmenu'));
   }
 
   public setConfig(config: IChartConfig) {

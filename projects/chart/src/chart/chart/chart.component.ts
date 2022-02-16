@@ -9,18 +9,18 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { ChartService } from '../service/chart.service';
-import { IChartConfig } from '../model/i-chart-config';
-import { BasePoint } from '../model/base-point';
-import { Series } from '../model/series';
-import { ZoomService } from '../service/zoom.service';
-import { ScaleService } from '../service/scale.service';
-import { BrushService } from '../service/brush.service';
-import { IChartEvent } from '../model/i-chart-event';
-import { PlotLine } from '../model/plot-line';
-import { PlotBand } from '../model/plot-band';
-import { IPointMove } from '../model/i-point-move';
-import { map, Observable, takeWhile, tap } from 'rxjs';
+import {ChartService} from '../service/chart.service';
+import {IChartConfig} from '../model/i-chart-config';
+import {BasePoint} from '../model/base-point';
+import {Series} from '../model/series';
+import {ZoomService} from '../service/zoom.service';
+import {ScaleService} from '../service/scale.service';
+import {BrushService} from '../service/brush.service';
+import {IChartEvent} from '../model/i-chart-event';
+import {PlotLine} from '../model/plot-line';
+import {PlotBand} from '../model/plot-band';
+import {IPointMove} from '../model/i-point-move';
+import {map, Observable, takeWhile, tap} from 'rxjs';
 
 @Component({
   selector: 'teta-svg-chart',
@@ -34,34 +34,26 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   hasSeriesData: Observable<boolean>;
   svcConfig: Observable<IChartConfig>;
   @Output()
-  plotBandsMove: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<
-    IChartEvent<PlotBand>
-  >();
+  plotBandsMove: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<IChartEvent<PlotBand>>();
 
   @Output()
-  plotBandsClick: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<
-    IChartEvent<PlotBand>
-  >();
+  plotBandClick: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<IChartEvent<PlotBand>>();
 
   @Output()
-  plotLinesMove: EventEmitter<IChartEvent<PlotLine>> = new EventEmitter<
-    IChartEvent<PlotLine>
-  >();
+  plotBandContextMenu: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<IChartEvent<PlotBand>>();
+
 
   @Output()
-  pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<
-    IChartEvent<IPointMove>
-  >();
+  plotLinesMove: EventEmitter<IChartEvent<PlotLine>> = new EventEmitter<IChartEvent<PlotLine>>();
 
   @Output()
-  chartClick: EventEmitter<IChartEvent<BasePoint>> = new EventEmitter<
-    IChartEvent<BasePoint>
-    >();
+  pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<IChartEvent<IPointMove>>();
 
   @Output()
-  chartContextMenu: EventEmitter<IChartEvent<BasePoint>> = new EventEmitter<
-    IChartEvent<BasePoint>
-    >();
+  chartClick: EventEmitter<IChartEvent<BasePoint>> = new EventEmitter<IChartEvent<BasePoint>>();
+
+  @Output()
+  chartContextMenu: EventEmitter<IChartEvent<BasePoint>> = new EventEmitter<IChartEvent<BasePoint>>();
 
   @Input() set config(config: IChartConfig) {
     this._svc.setConfig(config);
@@ -78,7 +70,8 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  ngOnChanges(changes: SimpleChanges) {}
+  ngOnChanges(changes: SimpleChanges) {
+  }
 
   ngOnInit(): void {
     this._svc.plotBandEvent
@@ -95,22 +88,37 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
       this.pointMove.emit(_);
     });
 
-    this._svc.chartClick.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+    this._svc.chartClick
+      .pipe(
+        takeWhile(() => this._alive)
+      ).subscribe((_) => {
       this.chartClick.emit(_);
     });
 
-    this._svc.chartContextMenu.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+    this._svc.chartContextMenu
+      .pipe(
+        takeWhile(() => this._alive)
+      ).subscribe((_) => {
       this.chartContextMenu.emit(_);
     });
 
     this._svc.plotBandClick
-      .pipe(takeWhile(() => this._alive))
+      .pipe(
+        takeWhile(() => this._alive))
       .subscribe((_) => {
-        this.plotBandsClick.emit(_);
+        this.plotBandClick.emit(_);
+      });
+
+    this._svc.plotBandContextMenu
+      .pipe(
+        takeWhile(() => this._alive))
+      .subscribe((_) => {
+        this.plotBandContextMenu.emit(_);
       });
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+  }
 
   ngOnDestroy() {
     this._alive = false;
