@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { IChartConfig } from '../model/i-chart-config';
-import { BehaviorSubject, filter, map, Observable, Subject } from 'rxjs';
+import {
+  BehaviorSubject,
+  filter,
+  map,
+  Observable,
+  shareReplay,
+  Subject,
+} from 'rxjs';
 import { IChartEvent } from '../model/i-chart-event';
 import { IDisplayTooltip } from '../model/i-display-tooltip';
 import { PlotBand } from '../model/plot-band';
@@ -9,7 +16,8 @@ import { IPointMove } from '../model/i-point-move';
 import { defaultChartConfig } from '../default/default-chart-config';
 import { defaultAxisConfig } from '../default/default-axis-config';
 import { defaultSeriesConfig } from '../default/default-series-config';
-import {ScaleService} from "./scale.service";
+import { ScaleService } from './scale.service';
+import { BasePoint } from '../model/base-point';
 
 @Injectable({
   providedIn: 'root',
@@ -22,34 +30,51 @@ export class ChartService {
   public plotBandEvent: Observable<IChartEvent<PlotBand>>;
   public plotLineMove: Observable<IChartEvent<PlotLine>>;
   public plotBandClick: Observable<IChartEvent<PlotBand>>;
+  public plotBandContextMenu: Observable<IChartEvent<PlotBand>>;
   public pointMove: Observable<IChartEvent<IPointMove>>;
+  public chartClick: Observable<IChartEvent<BasePoint>>;
+  public chartContextMenu: Observable<IChartEvent<BasePoint>>;
 
-  private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig);
+  private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig());
   private size$ = new BehaviorSubject<DOMRect>(new DOMRectReadOnly());
   private pointerMove$ = new BehaviorSubject<PointerEvent>(null);
   private tooltips$ = new Subject<IDisplayTooltip>();
   private plotBandEvent$ = new Subject<IChartEvent<PlotBand>>();
   private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();
   private pointMove$ = new Subject<IChartEvent<IPointMove>>();
+  private chartClick$ = new Subject<IChartEvent<BasePoint>>();
+  private chartContextMenu$ = new Subject<IChartEvent<BasePoint>>();
 
   constructor() {
     this.config = this.config$
       .asObservable()
-      .pipe(map(this.setDefaults), map(this.setpreparationData));
-    this.size = this.size$.asObservable().pipe(
-      filter((_) => {
-        return _.height > 0 && _.width > 0;
-      })
-    );
+      .pipe(
+        map(this.setDefaults),
+        map(this.setpreparationData),
+        shareReplay(1)
+      );
+
+    this.size = this.size$
+      .asObservable()
+      .pipe
+      // filter((_) => {
+      //   return _.height > 0 && _.width > 0;
+      // })
+      ();
 
     this.pointerMove = this.pointerMove$.asObservable();
     this.tooltips = this.tooltips$.asObservable();
     this.plotBandEvent = this.plotBandEvent$.asObservable();
     this.plotLineMove = this.plotLineMove$.asObservable();
     this.pointMove = this.pointMove$.asObservable();
+    this.chartClick = this.chartClick$.asObservable();
+    this.chartContextMenu = this.chartContextMenu$.asObservable();
     this.plotBandClick = this.plotBandEvent$
       .asObservable()
       .pipe(filter((_) => _?.event?.type === 'click'));
+    this.plotBandContextMenu = this.plotBandEvent$
+      .asObservable()
+      .pipe(filter((_) => _?.event?.type === 'contextmenu'));
   }
 
   public setConfig(config: IChartConfig) {
@@ -80,24 +105,41 @@ export class ChartService {
     this.pointMove$.next(event);
   }
 
+  public emitChartClick(event: IChartEvent<BasePoint>) {
+    this.chartClick$.next(event);
+  }
+
+  public emitChartContextMenu(event: IChartEvent<BasePoint>) {
+    this.chartContextMenu$.next(event);
+  }
+
   private setDefaults(config: IChartConfig): IChartConfig {
     const defaultConfig = (defaultConfig) => {
       return (source) => {
         return Object.assign({}, defaultConfig, source);
       };
     };
-    config = Object.assign({}, defaultChartConfig, config);
+    config = Object.assign({}, defaultChartConfig(), config);
 
     config.xAxis = config.xAxis.map(defaultConfig(defaultAxisConfig));
     config.yAxis = config.yAxis.map(defaultConfig(defaultAxisConfig));
-    config.series = config.series.map(defaultConfig(defaultSeriesConfig));
+    config.series = config.series.map(defaultConfig(defaultSeriesConfig()));
+
+    config.series = config.series.map((_, index) => {
+      return {
+        ..._,
+        id: _.id ?? index,
+      };
+    });
 
     config.tooltip = Object.assign(
       {},
-      defaultChartConfig.tooltip,
+      defaultChartConfig().tooltip,
       config.tooltip
     );
 
+    const id = (Date.now() + Math.random()).toString(36);
+    config.zoom.syncChannel = config.zoom?.syncChannel ?? id;
     return config;
   }
 
@@ -108,7 +150,6 @@ export class ChartService {
 
       config.xAxis = yAxes;
       config.yAxis = xAxes;
-
 
       config.series = config.series?.map((serie) => {
         const x = serie.xAxisIndex;

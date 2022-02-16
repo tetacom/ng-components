@@ -9,14 +9,14 @@ import {
 } from '@angular/core';
 
 import * as d3 from 'd3';
-import { PlotBand } from '../../model/plot-band';
-import { ScaleService } from '../../service/scale.service';
+import {PlotBand} from '../../model/plot-band';
+import {ScaleService} from '../../service/scale.service';
 
-import { Axis } from '../../core/axis/axis';
-import { ZoomService } from '../../service/zoom.service';
-import { AxisOrientation } from '../../model/enum/axis-orientation';
-import { IChartEvent } from '../../model/i-chart-event';
-import { ChartService } from '../../service/chart.service';
+import {Axis} from '../../core/axis/axis';
+import {ZoomService} from '../../service/zoom.service';
+import {AxisOrientation} from '../../model/enum/axis-orientation';
+import {IChartEvent} from '../../model/i-chart-event';
+import {ChartService} from '../../service/chart.service';
 
 @Component({
   selector: '[teta-plot-band]',
@@ -39,13 +39,21 @@ export class PlotBandComponent implements AfterViewInit {
     private chartService: ChartService,
     private cdr: ChangeDetectorRef,
     private element: ElementRef
-  ) {}
+  ) {
+  }
 
   @HostListener('click', ['$event']) click(event: MouseEvent) {
     this.emit({
       target: this.plotBand,
       event
-    })
+    });
+  }
+
+  @HostListener('contextmenu', ['$event']) contextMenu(event: MouseEvent) {
+    this.emit({
+      target: this.plotBand,
+      event
+    });
   }
 
   emit(event: IChartEvent<PlotBand>) {
@@ -53,7 +61,6 @@ export class PlotBandComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
 
 
     this.domain = this.scale.domain();
@@ -70,11 +77,11 @@ export class PlotBandComponent implements AfterViewInit {
       .drag()
       .subject(() => {
         if (this.axis.orientation === AxisOrientation.x) {
-          return { x: plotbandElement.attr('x') };
+          return {x: plotbandElement.attr('x')};
         }
 
         if (this.axis.orientation === AxisOrientation.y) {
-          return { y: plotbandElement.attr('y') };
+          return {y: plotbandElement.attr('y')};
         }
       })
       .on(
@@ -93,7 +100,7 @@ export class PlotBandComponent implements AfterViewInit {
 
 
           d.to = this.scale.invert(
-            event[AxisOrientation[this.axis.orientation]]  + bandSize
+            event[AxisOrientation[this.axis.orientation]] + bandSize
           );
 
           this.emit({
@@ -114,7 +121,7 @@ export class PlotBandComponent implements AfterViewInit {
         (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
           requestAnimationFrame(() => {
             if (event?.type === 'start') {
-              const { grabber } = event?.sourceEvent?.target?.dataset;
+              const {grabber} = event?.sourceEvent?.target?.dataset;
               grabberKey = grabber;
             }
 

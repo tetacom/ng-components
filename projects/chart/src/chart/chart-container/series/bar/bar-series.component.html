@@ -1,3 +1,35 @@
-<svg:rect *ngFor="let point of series.data" [attr.y]="getY(point)" [attr.x]="getX(point)" [attr.width]="width()"
-          [attr.height]="height(point)"
-          [attr.fill]="point.color"></svg:rect>
+<ng-container *ngIf="{
+  x: x | async,
+  x1: x1 | async,
+  y: y | async,
+  barSeriesCount: barSeriesCount | async
+} as data">
+
+
+  <ng-container *ngIf="data.barSeriesCount > 1">
+    <svg:rect
+
+      *ngFor="let point of series.data"
+      [attr.x]="data.x(point.x) + (series.id * data.x1.bandwidth() / data.barSeriesCount)"
+      [attr.y]="point.y > 0 ? data.y(point.y) : data.y(0)"
+      [attr.width]="data.x1.bandwidth() / data.barSeriesCount"
+      [attr.height]="Math.abs(data.y(point.y) - data.y(0))"
+      [attr.fill]="series.color"
+    ></svg:rect>
+  </ng-container>
+
+  <ng-container *ngIf="data.barSeriesCount === 0">
+    <svg:rect
+
+      *ngFor="let point of series.data"
+      [attr.x]="data.x(point.x)"
+      [attr.y]="point.y > 0 ? data.y(point.y) : data.y(0)"
+      [attr.width]="data.x1.bandwidth()"
+      [attr.height]="Math.abs(data.y(point.y) - data.y(0))"
+      [attr.fill]="series.color"
+    ></svg:rect>
+  </ng-container>
+
+
+</ng-container>
+

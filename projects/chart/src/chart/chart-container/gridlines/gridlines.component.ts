@@ -19,7 +19,8 @@ export class GridlinesComponent {
   tickYValues: number[];
   tickXValues: number[];
 
-  constructor() {}
+  constructor() {
+  }
 
   draw() {
     this.tickYValues = this.yScaleMap.get(0).ticks();

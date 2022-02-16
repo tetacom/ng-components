@@ -1,7 +1,14 @@
-import { Directive, ElementRef, HostBinding, Input } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostBinding,
+  Input,
+  SimpleChanges,
+} from '@angular/core';
 import { ZoomService } from '../service/zoom.service';
 import { IChartConfig } from '../model/i-chart-config';
 import { Axis } from '../core/axis/axis';
+import { ScaleService } from '../service/scale.service';
 
 @Directive({
   selector: '[tetaZoomable]',
@@ -31,4 +38,6 @@ export class ZoomableDirective {
     }
   }
   ngAfterViewInit() {}
+
+  ngOnChanges(changes: SimpleChanges) {}
 }

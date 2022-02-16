@@ -5,13 +5,14 @@ import { BrushType } from './enum/brush-type';
 export interface ZoomMessage {
   event: D3ZoomEvent<any, any>;
   axis?: Axis;
-  brushDomain?: number[]
+  brushDomain?: number[];
 }
 
 export interface BrushMessage {
   event: D3BrushEvent<any>;
   brushType: BrushType;
   selection: number[];
+  brushScale?: any;
 }
 
 export interface IBroadcastMessage {
