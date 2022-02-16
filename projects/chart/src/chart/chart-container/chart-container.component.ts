@@ -7,7 +7,16 @@ import {
 } from '@angular/core';
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from '../service/chart.service';
-import {combineLatest, map, Observable, startWith, tap, withLatestFrom} from 'rxjs';
+import {
+  combineLatest,
+  map,
+  Observable,
+  share,
+  shareReplay,
+  startWith,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import {Axis} from '../core/axis/axis';
 import {AxisOrientation} from '../model/enum/axis-orientation';
 import {ScaleService} from '../service/scale.service';
@@ -75,8 +84,11 @@ export class ChartContainerComponent implements OnInit {
       map((data: [[Map<number, any>, Map<number, any>], IChartConfig]) => {
         const [[x, y], config] = data;
 
-        return config.brush?.type === BrushType.x ? x.get(0) : y.get(0);
-      })
+        return config.brush?.type === BrushType.x
+          ? x.get(0).copy()
+          : y.get(0).copy();
+      }),
+      shareReplay(1)
     );
 
     this.visibleRect = combineLatest([
@@ -117,7 +129,6 @@ export class ChartContainerComponent implements OnInit {
       ),
       tap((_) => {
         this._cdr.detectChanges();
-
       })
     );
   }
@@ -125,7 +136,12 @@ export class ChartContainerComponent implements OnInit {
   ngOnInit(): void {
     this.uniqId = (Date.now() + Math.random()).toString(36);
     this._observer = new ResizeObserver((entries: ResizeObserverEntry[]) => {
-      if (!Array.isArray(entries) || !entries.length || entries[0].contentRect.width <= 0 || entries[0].contentRect.height <= 0) {
+      if (
+        !Array.isArray(entries) ||
+        !entries.length ||
+        entries[0].contentRect.width <= 0 ||
+        entries[0].contentRect.height <= 0
+      ) {
         return;
       }
       this._svc.setSize(entries[0].contentRect);
@@ -204,6 +220,30 @@ export class ChartContainerComponent implements OnInit {
 
   identify(index, item) {
     return item.value.index;
+  }
+
+  click(event: PointerEvent, xScales: Map<number, any>, yScales: Map<number, any>) {
+    const x = xScales.get(0);
+    const y = yScales.get(0);
+    this._svc.emitChartClick({
+      event: event,
+      target: {
+        x: x.invert(event.offsetX),
+        y: y.invert(event.offsetY)
+      }
+    });
+  }
+
+  contextMenu(event: MouseEvent, xScales: Map<number, any>, yScales: Map<number, any>) {
+    const x = xScales.get(0);
+    const y = yScales.get(0);
+    this._svc.emitChartContextMenu({
+      event: event,
+      target: {
+        x: x.invert(event.offsetX),
+        y: y.invert(event.offsetY)
+      }
+    });
   }
 
   mouseMove(event) {

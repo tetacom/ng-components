@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IBroadcastMessage } from '../model/i-broadcast-message';
 import { filter, Observable, ReplaySubject, shareReplay } from 'rxjs';
+import { ScaleService } from './scale.service';
 
 @Injectable({
   providedIn: 'root',

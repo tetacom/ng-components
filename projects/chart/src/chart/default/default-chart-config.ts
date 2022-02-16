@@ -3,7 +3,7 @@ import { ZoomType } from '../model/enum/zoom-type';
 import { ChartBounds } from '../model/chart-bounds';
 import { TooltipTracking } from '../model/enum/tooltip-tracking';
 
-export const defaultChartConfig: IChartConfig = {
+export const defaultChartConfig = (): IChartConfig => ({
   zoom: {
     enable: true,
     type: ZoomType.x,
@@ -21,4 +21,4 @@ export const defaultChartConfig: IChartConfig = {
   yAxis: [],
   series: [],
   gridLines: true,
-};
+});

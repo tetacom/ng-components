@@ -5,11 +5,13 @@
   yAxisMap: yAxisMap | async,
   xScaleMap: xScaleMap | async,
   yScaleMap: yScaleMap | async,
-  visibleRect: visibleRect | async
+  visibleRect: visibleRect | async,
+  brushScale: brushScale | async
 } as data">
   <teta-tooltip *ngIf="data.config?.tooltip?.enable"
                 [size]="data.size"
                 [config]="data.config"></teta-tooltip>
+
   <svg height="100%" width="100%" class="position-absolute">
     <g class="y-axis-container">
       <ng-container *ngFor="let item of data.yAxisMap | keyvalue; trackBy: identify">
@@ -23,9 +25,9 @@
           <rect
             tetaZoomable
             fill-opacity="0"
-            [brushScale]="brushScale | async"
+            [brushScale]="data.brushScale"
             [axis]="item.value"
-            [config]="config | async"
+            [config]="data.config"
             [size]="data.size"
             [attr.x]="item.value.options.opposite ? 0 : -item.value.selfSize"
             [attr.y]="0"
@@ -45,13 +47,12 @@
             [scale]="data.xScaleMap.get(item.key)"
             [size]="data.size"
             [attr.transform]="getTranslate(item.value, data.size) | async"></g>
-
           <rect
             tetaZoomable
             fill-opacity="0"
-            [brushScale]="brushScale | async"
+            [brushScale]="data.brushScale"
             [axis]="item.value"
-            [config]="config | async"
+            [config]="data.config"
             [size]="data.size"
             [attr.x]="0"
             [attr.y]="0"
@@ -62,17 +63,19 @@
       </ng-container>
     </g>
   </svg>
-  <ng-container *ngIf="data.visibleRect != null && data.visibleRect.width > 0 && data.visibleRect.height > 0">
+  <ng-container *ngIf="data.visibleRect?.width > 0 && data.visibleRect?.height > 0">
     <svg
       tetaBrushable
       tetaZoomable
       [size]="data.size"
-      [brushScale]="brushScale | async"
-      [config]="config | async"
+      [brushScale]="data.brushScale"
+      [config]="data.config"
       [attr.width]="data.visibleRect.width"
       [attr.height]="data.visibleRect.height"
       [attr.transform]="'translate('+ data.visibleRect.x +', '+ data.visibleRect.y +')'"
       [attr.viewBox]="'0 0 ' + data.visibleRect.width + ' ' + data.visibleRect.height"
+      (contextmenu)="contextMenu($event, data.xScaleMap, data.yScaleMap)"
+      (click)="click($event, data.xScaleMap, data.yScaleMap)"
       (mouseleave)="mouseLeave($event)"
       (mousemove)="mouseMove($event)">
       <g class="gridlines"
@@ -81,7 +84,6 @@
          [size]="data.size"
          [xScaleMap]="data.xScaleMap"
          [yScaleMap]="data.yScaleMap"></g>
-
 
       <g class="x-axis-plotband-container">
         <ng-container *ngFor="let axis of data.config.xAxis; let i = index">

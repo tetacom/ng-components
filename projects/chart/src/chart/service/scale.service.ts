@@ -10,6 +10,7 @@ import {
   map,
   Observable,
   shareReplay,
+  tap,
   withLatestFrom,
 } from 'rxjs';
 import { IChartEvent } from '../model/i-chart-event';
@@ -176,7 +177,6 @@ export class ScaleService {
           const bottom = [...xAxes.values()]
             .filter((_) => _.options?.visible && _.options?.opposite !== true)
             .reduce((acc, cur) => acc + cur.selfSize, 0);
-
 
           const finalHeight = (size.height || 0) - top - bottom;
 
