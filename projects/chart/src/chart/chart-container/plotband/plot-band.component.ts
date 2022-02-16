@@ -49,7 +49,7 @@ export class PlotBandComponent implements AfterViewInit {
     });
   }
 
-  @HostListener('contextMenu', ['$event']) contextMenu(event: MouseEvent) {
+  @HostListener('contextmenu', ['$event']) contextMenu(event: MouseEvent) {
     this.emit({
       target: this.plotBand,
       event

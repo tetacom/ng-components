@@ -2,11 +2,11 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
-  Input,
+  Input, NgZone,
   OnDestroy,
   Output,
 } from '@angular/core';
-import { DomUtil } from '../../common/util/dom-util';
+import {DomUtil} from '../../common/util/dom-util';
 
 @Directive({
   selector: '[tetaClickOutside]',
@@ -21,7 +21,11 @@ export class ClickOutsideDirective implements OnDestroy {
   set tetaClickOutside(val: boolean) {
     this._handleEvents = val;
     if (this._handleEvents) {
-      this.addListener(this.rightClick);
+      this._ngZone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.addListener(this.rightClick);
+        });
+      });
     } else {
       this.removeListener();
     }
@@ -31,7 +35,8 @@ export class ClickOutsideDirective implements OnDestroy {
     return this._handleEvents;
   }
 
-  constructor(private _elementRef: ElementRef) {}
+  constructor(private _elementRef: ElementRef, private _ngZone: NgZone) {
+  }
 
   ngOnDestroy(): void {
     this.removeListener();
@@ -39,6 +44,7 @@ export class ClickOutsideDirective implements OnDestroy {
 
   private addListener(handleRightClick: boolean): void {
     window.addEventListener('click', this.listener);
+    console.log('handleRightClick', handleRightClick);
     if (handleRightClick) {
       window.addEventListener('contextmenu', this.listener);
     }
@@ -58,6 +64,7 @@ export class ClickOutsideDirective implements OnDestroy {
       click
     );
     if (!clickedInside) {
+      console.log('clickedInside', clickedInside);
       this.clickOutside.emit(click);
     }
   };
