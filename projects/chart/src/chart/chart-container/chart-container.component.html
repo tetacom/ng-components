@@ -64,7 +64,7 @@
       </ng-container>
     </g>
   </svg>
-  <ng-container *ngIf="data.visibleRect != null && data.visibleRect.width > 0 && data.visibleRect.height > 0">
+  <ng-container *ngIf="data.visibleRect?.width > 0 && data.visibleRect?.height > 0">
     <svg
       tetaBrushable
       tetaZoomable
