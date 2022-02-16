@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {IChartConfig} from '../model/i-chart-config';
+import { Injectable } from '@angular/core';
+import { IChartConfig } from '../model/i-chart-config';
 import {
   BehaviorSubject,
   filter,
@@ -8,15 +8,15 @@ import {
   shareReplay,
   Subject,
 } from 'rxjs';
-import {IChartEvent} from '../model/i-chart-event';
-import {IDisplayTooltip} from '../model/i-display-tooltip';
-import {PlotBand} from '../model/plot-band';
-import {PlotLine} from '../model/plot-line';
-import {IPointMove} from '../model/i-point-move';
-import {defaultChartConfig} from '../default/default-chart-config';
-import {defaultAxisConfig} from '../default/default-axis-config';
-import {defaultSeriesConfig} from '../default/default-series-config';
-import {ScaleService} from './scale.service';
+import { IChartEvent } from '../model/i-chart-event';
+import { IDisplayTooltip } from '../model/i-display-tooltip';
+import { PlotBand } from '../model/plot-band';
+import { PlotLine } from '../model/plot-line';
+import { IPointMove } from '../model/i-point-move';
+import { defaultChartConfig } from '../default/default-chart-config';
+import { defaultAxisConfig } from '../default/default-axis-config';
+import { defaultSeriesConfig } from '../default/default-series-config';
+import { ScaleService } from './scale.service';
 import {BasePoint} from '../model/base-point';
 
 @Injectable({
@@ -53,11 +53,13 @@ export class ChartService {
         shareReplay(1)
       );
 
-    this.size = this.size$.asObservable().pipe(
+    this.size = this.size$
+      .asObservable()
+      .pipe
       // filter((_) => {
       //   return _.height > 0 && _.width > 0;
       // })
-    );
+      ();
 
     this.pointerMove = this.pointerMove$.asObservable();
     this.tooltips = this.tooltips$.asObservable();
@@ -126,9 +128,7 @@ export class ChartService {
     );
 
     const id = (Date.now() + Math.random()).toString(36);
-    console.log('1', config);
     config.zoom.syncChannel = config.zoom?.syncChannel ?? id;
-    console.log(config.zoom.syncChannel, id);
     return config;
   }
 
@@ -161,8 +161,8 @@ export class ChartService {
     }
 
     if (config?.brush?.enable) {
-      config.yAxis = config.yAxis.map((_) => ({..._, zoom: false}));
-      config.xAxis = config.xAxis.map((_) => ({..._, zoom: false}));
+      config.yAxis = config.yAxis.map((_) => ({ ..._, zoom: false }));
+      config.xAxis = config.xAxis.map((_) => ({ ..._, zoom: false }));
     }
 
     return config;
