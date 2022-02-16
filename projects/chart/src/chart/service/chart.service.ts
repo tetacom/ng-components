@@ -17,7 +17,7 @@ import { defaultChartConfig } from '../default/default-chart-config';
 import { defaultAxisConfig } from '../default/default-axis-config';
 import { defaultSeriesConfig } from '../default/default-series-config';
 import { ScaleService } from './scale.service';
-import {BasePoint} from '../model/base-point';
+import { BasePoint } from '../model/base-point';
 
 @Injectable({
   providedIn: 'root',
@@ -123,7 +123,14 @@ export class ChartService {
 
     config.xAxis = config.xAxis.map(defaultConfig(defaultAxisConfig));
     config.yAxis = config.yAxis.map(defaultConfig(defaultAxisConfig));
-    config.series = config.series.map(defaultConfig(defaultSeriesConfig));
+    config.series = config.series.map(defaultConfig(defaultSeriesConfig()));
+
+    config.series = config.series.map((_, index) => {
+      return {
+        ..._,
+        id: _.id ?? index,
+      };
+    });
 
     config.tooltip = Object.assign(
       {},

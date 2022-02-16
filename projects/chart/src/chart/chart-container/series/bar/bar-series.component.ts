@@ -7,12 +7,14 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import * as d3 from 'd3';
 import { SeriesBaseComponent } from '../../../base/series-base.component';
 import { BasePoint } from '../../../model/base-point';
 import { ChartService } from '../../../service/chart.service';
 import { ScaleService } from '../../../service/scale.service';
 import { ZoomService } from '../../../service/zoom.service';
+import { map, Observable } from 'rxjs';
+import { SeriesType } from '../../../model/enum/series-type';
+import * as d3 from 'd3';
 
 @Component({
   selector: 'svg:svg[teta-bar-series]',
@@ -24,8 +26,13 @@ export class BarSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
   implements OnInit, OnChanges
 {
-  private scaleBand: d3.ScaleBand<any>;
-  private y: any;
+  x: Observable<any>;
+  x1: Observable<any>;
+  y: Observable<any>;
+
+  barSeriesCount: Observable<number>;
+
+  Math: any = Math;
 
   constructor(
     protected override svc: ChartService,
@@ -38,31 +45,38 @@ export class BarSeriesComponent<T extends BasePoint>
   }
 
   override ngOnInit(): void {
-    // const x = this.scaleService.xScaleMap.get(this.series.xAxisIndex);
-    // const y = this.scaleService.yScaleMap.get(this.series.yAxisIndex);
-    //
-    // const domain = this.series.data?.map((_: BasePoint) => _.x);
-    // const range = [x(domain[0]), x(domain[domain?.length - 1])];
-    //
-    // this.scaleBand = d3.scaleBand<number>().domain(domain).range(range);
-    //
-    // this.y = y;
-  }
+    this.barSeriesCount = this.svc.config.pipe(
+      map((_) => {
+        const count = _.series.filter(
+          (_) =>
+            _.type === SeriesType.bar && _.xAxisIndex === this.series.xAxisIndex
+        );
 
-  width() {
-    return this.scaleBand.bandwidth();
-  }
+        return count.length;
+      })
+    );
 
-  height(point: BasePoint) {
-    return Math.abs(this.y(0) - this.y(point.y));
-  }
+    this.x1 = this.scaleService.xScaleMap.pipe(
+      map((_) => {
+        const x = _.get(this.series.xAxisIndex);
+        const range = x.range();
+        const domain = this.series.data.map((_) => _.x);
 
-  getX(point: BasePoint) {
-    return this.scaleBand(point.x);
-  }
+        return d3
+          .scaleBand<number>()
+          .range([0, range[1]])
+          .domain(domain)
+          .padding(0.1);
+      })
+    );
 
-  getY(point: BasePoint) {
-    return this.y(point.y);
+    this.x = this.scaleService.xScaleMap.pipe(
+      map((_) => _.get(this.series.xAxisIndex))
+    );
+
+    this.y = this.scaleService.yScaleMap.pipe(
+      map((_) => _.get(this.series.yAxisIndex))
+    );
   }
 
   ngOnChanges(changes: SimpleChanges) {}
