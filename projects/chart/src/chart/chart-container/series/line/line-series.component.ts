@@ -215,10 +215,19 @@ export class LineSeriesComponent<T extends BasePoint>
         foundX(this.series.data[rightId]?.x),
         foundY(this.series.data[rightId]?.y)
       );
-      this.svc.setTooltip({
-        point: {x: foundX.invert(intersect.x), y: foundY.invert(intersect.y)},
-        series: this.series,
-      });
+      const x = foundX.invert(intersect.x);
+      const y = foundY.invert(intersect.y);
+      if (x !== null && x !== undefined && !isNaN(x) && y !== null && y !== undefined && !isNaN(y)) {
+        this.svc.setTooltip({
+          point: {x: foundX.invert(intersect.x), y: foundY.invert(intersect.y)},
+          series: this.series,
+        });
+      } else {
+        this.svc.setTooltip({
+          point: null,
+          series: this.series,
+        });
+      }
 
       return {
         x: intersect.x,
@@ -245,13 +254,19 @@ export class LineSeriesComponent<T extends BasePoint>
         foundY(this.series.data[rightId]?.y)
       );
 
-      this.svc.setTooltip({
-        point: {
-          x: foundX.invert(intersect.x),
-          y: foundY.invert(intersect.y),
-        },
-        series: this.series,
-      });
+      const x = foundX.invert(intersect.x);
+      const y = foundY.invert(intersect.y);
+      if (x !== null && x !== undefined && !isNaN(x) && y !== null && y !== undefined && !isNaN(y)) {
+        this.svc.setTooltip({
+          point: {x: foundX.invert(intersect.x), y: foundY.invert(intersect.y)},
+          series: this.series,
+        });
+      } else {
+        this.svc.setTooltip({
+          point: null,
+          series: this.series,
+        });
+      }
 
       return {
         x: intersect.x,

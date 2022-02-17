@@ -46,6 +46,7 @@ import { AnnotationComponent } from './chart-container/annotation/annotation.com
   ],
   exports: [
     ChartComponent,
+    LegendComponent,
     SeriesBaseComponent,
     LineSeriesComponent,
     BarSeriesComponent,
