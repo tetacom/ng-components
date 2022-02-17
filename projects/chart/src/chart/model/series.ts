@@ -4,7 +4,6 @@ import {SeriesBaseComponent} from '../base/series-base.component';
 import {SvgAttributes} from './svg-attributes';
 import {FillType} from './enum/fill-type';
 
-
 export interface Series<T extends BasePoint> {
   id?: number | string;
   type: SeriesType;

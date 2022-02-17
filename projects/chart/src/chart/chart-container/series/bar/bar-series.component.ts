@@ -79,5 +79,19 @@ export class BarSeriesComponent<T extends BasePoint>
     );
   }
 
+  mouseenter(point: BasePoint) {
+    this.svc.setTooltip({
+      point: point,
+      series: this.series,
+    });
+  }
+
+  mouseleave(point: BasePoint) {
+    this.svc.setTooltip({
+      point: null,
+      series: this.series,
+    });
+  }
+
   ngOnChanges(changes: SimpleChanges) {}
 }

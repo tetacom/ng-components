@@ -7,6 +7,8 @@
   <ng-container *ngIf="data.barSeriesCount > 1">
     <svg:rect
       *ngFor="let point of series.data"
+      (mouseenter)="mouseenter(point)"
+      (mouseleave)="mouseleave(point)"
       [attr.x]="data.x(point.x) + (series.id * data.x1.bandwidth() / data.barSeriesCount)"
       [attr.y]="point.y > 0 ? data.y(point.y) : data.y(0)"
       [attr.width]="data.x1.bandwidth() / data.barSeriesCount"
@@ -17,6 +19,8 @@
   <ng-container *ngIf="data.barSeriesCount === 1">
     <svg:rect
       *ngFor="let point of series.data"
+      (mouseenter)="mouseenter(point)"
+      (mouseleave)="mouseleave(point)"
       [attr.x]="data.x(point.x)"
       [attr.y]="point.y > 0 ? data.y(point.y) : data.y(0)"
       [attr.width]="data.x1.bandwidth()"

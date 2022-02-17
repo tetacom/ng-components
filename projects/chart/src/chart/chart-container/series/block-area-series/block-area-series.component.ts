@@ -76,14 +76,17 @@ export class BlockAreaSeriesComponent<T extends BasePoint>
   ngAfterViewInit() {
   }
 
-  mouseEnter(point) {
+  mouseenter(point: BasePoint) {
     this.svc.setTooltip({
-      point: {x: point.x, y: point.y},
+      point: point,
       series: this.series,
     });
   }
 
-  mouseleave(point) {
-    this.svc.setTooltip(null);
+  mouseleave(point: BasePoint) {
+    this.svc.setTooltip({
+      point: null,
+      series: this.series,
+    });
   }
 }

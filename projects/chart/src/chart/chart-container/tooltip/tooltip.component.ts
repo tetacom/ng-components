@@ -7,12 +7,13 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { filter, map, merge, Observable, takeWhile, tap, timer } from 'rxjs';
-import { ChartService } from '../../service/chart.service';
-import { ZoomService } from '../../service/zoom.service';
-import { IDisplayTooltip } from '../../model/i-display-tooltip';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { IChartConfig } from '../../model/i-chart-config';
+import {filter, map, Observable, tap, withLatestFrom, of} from 'rxjs';
+import {ChartService} from '../../service/chart.service';
+import {ZoomService} from '../../service/zoom.service';
+import {IDisplayTooltip} from '../../model/i-display-tooltip';
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {IChartConfig} from '../../model/i-chart-config';
+import {Series} from '../../model/series';
 
 @Component({
   selector: 'teta-tooltip',
@@ -32,8 +33,7 @@ export class TooltipComponent implements OnInit, OnDestroy {
   }>;
 
   displayTooltips: Observable<SafeHtml>;
-
-  tooltips: IDisplayTooltip[] = [];
+  tooltips: Observable<Map<Series<any>, IDisplayTooltip>> = of(new Map());
 
   private alive = true;
 
@@ -45,7 +45,8 @@ export class TooltipComponent implements OnInit, OnDestroy {
     private zoomService: ZoomService,
     private sanitizer: DomSanitizer,
     private _zone: NgZone
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.display = this.svc.pointerMove.pipe(
@@ -80,8 +81,8 @@ export class TooltipComponent implements OnInit, OnDestroy {
         html += `<div class="display-flex align-center"><span class="margin-right-1" style="${indicatorStyle}"></span>
           <span class="font-title-3">${_.series.name}
           <span class="font-body-3">x: ${_.point.x?.toFixed(
-            2
-          )} y: ${_.point.y?.toFixed(2)}</span></span></div>`;
+          2
+        )} y: ${_.point.y?.toFixed(2)}</span></span></div>`;
       });
 
       return transformHtml(html);
@@ -89,21 +90,28 @@ export class TooltipComponent implements OnInit, OnDestroy {
 
     const formatter = this.config?.tooltip?.format;
 
-    this.displayTooltips = merge(
-      this.svc.pointerMove.pipe(tap((_) => (this.tooltips = []))),
-      this.svc.tooltips
-    ).pipe(
-      takeWhile((_) => this.alive),
-      filter((data) => !(data instanceof MouseEvent)),
-      map((tooltip: IDisplayTooltip) => {
-        if (tooltip) {
-          this.tooltips.push(tooltip);
+    this.tooltips = this.svc.tooltips.pipe(
+      withLatestFrom(this.tooltips),
+      map((data: [IDisplayTooltip, Map<Series<any>, IDisplayTooltip>]) => {
+        const [tooltip, currentTooltips] = data;
+        if (!tooltip.point) {
+          currentTooltips.delete(tooltip.series);
+        } else {
+          currentTooltips.set(tooltip.series, tooltip);
         }
+        return currentTooltips;
+      })
+    );
 
+    this.displayTooltips = this.tooltips.pipe(
+      map((tooltips: Map<Series<any>, IDisplayTooltip>) => {
+        const tooltipList = [...tooltips.values()];
+        if (tooltipList?.length < 1) {
+          return '';
+        }
         const formatted = formatter
-          ? transformHtml(formatter(this.tooltips))
-          : defaultFormatter(this.tooltips);
-
+          ? transformHtml(formatter(tooltipList))
+          : defaultFormatter(tooltipList);
         return formatted;
       })
     );
@@ -113,7 +121,7 @@ export class TooltipComponent implements OnInit, OnDestroy {
     const centerX = this.size.width / 2;
     const centerY = this.size.height / 2;
 
-    const padding = { x: 10, y: 10 };
+    const padding = {x: 10, y: 10};
 
     const scene = {
       left: event.pageX > centerX ? 'initial' : `${event.pageX + padding.x}px`,
