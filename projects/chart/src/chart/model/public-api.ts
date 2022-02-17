@@ -13,3 +13,4 @@ export * from './plot-band';
 export * from './plot-line';
 export * from './series';
 export * from './svg-attributes';
+export * from './annotation';

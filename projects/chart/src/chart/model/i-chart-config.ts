@@ -5,6 +5,7 @@ import { ZoomType } from './enum/zoom-type';
 import { TooltipOptions } from './tooltip-options';
 import { ChartBounds } from './chart-bounds';
 import { BrushType } from './enum/brush-type';
+import { Annotation } from './annotation';
 
 export interface IChartConfig {
   name?: string;
@@ -29,6 +30,7 @@ export interface IChartConfig {
   tooltip?: TooltipOptions;
   xAxis: AxisOptions[];
   yAxis: AxisOptions[];
+  annotations?: Annotation[];
   gridLines?: boolean;
   width?: number;
   height?: number;
