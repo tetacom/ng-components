@@ -76,11 +76,6 @@ export class LineSeriesComponent<T extends BasePoint>
           )
           .x((point) => this.x(point.x))
           .y((point) => this.y(point.y));
-        const l = line(this.series.data);
-        if (l?.indexOf('NaN') >= 0) {
-          console.log(this.series.name, this.series.data, l);
-        }
-
         return line(this.series.data);
       })
     );
@@ -151,13 +146,13 @@ export class LineSeriesComponent<T extends BasePoint>
 
   getTransform(
     event: any,
-    x: Map<number, any>,
-    y: Map<number, any>
+    scaleX: Map<number, any>,
+    scaleY: Map<number, any>
   ): Pick<BasePoint, 'x' | 'y'> {
     const mouse = [event?.offsetX, event?.offsetY];
 
-    const foundX = x.get(this.series.xAxisIndex);
-    const foundY = y.get(this.series.yAxisIndex);
+    const foundX = scaleX.get(this.series.xAxisIndex);
+    const foundY = scaleY.get(this.series.yAxisIndex);
 
     const tooltipTracking = this.config?.tooltip?.tracking;
 
@@ -199,10 +194,11 @@ export class LineSeriesComponent<T extends BasePoint>
       const bisect = d3.bisector((_: BasePoint) => _.x).right;
       const pointer = mouse[0];
 
-      const x0 = foundX.invert(pointer);
-
+      let x0 = foundX.invert(pointer);
+      if (x0 instanceof Date) {
+        x0 = x0.getTime();
+      }
       const rightId = bisect(this.series.data, x0);
-
       const range = foundY.range();
 
       const intersect = lineIntersection(
@@ -238,8 +234,10 @@ export class LineSeriesComponent<T extends BasePoint>
     if (tooltipTracking === TooltipTracking.y) {
       const bisect = d3.bisector((_: BasePoint) => _.y).right;
 
-      const y0 = foundY.invert(mouse[1]);
-
+      let y0 = foundY.invert(mouse[1]);
+      if (y0 instanceof Date) {
+        y0 = y0.getTime();
+      }
       const rightId = bisect(this.series.data, y0);
       const range = foundX.range();
 
@@ -256,6 +254,7 @@ export class LineSeriesComponent<T extends BasePoint>
 
       const x = foundX.invert(intersect.x);
       const y = foundY.invert(intersect.y);
+
       if (x !== null && x !== undefined && !isNaN(x) && y !== null && y !== undefined && !isNaN(y)) {
         this.svc.setTooltip({
           point: {x: foundX.invert(intersect.x), y: foundY.invert(intersect.y)},

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { IChartConfig } from '../model/i-chart-config';
+import {Injectable} from '@angular/core';
+import {IChartConfig} from '../model/i-chart-config';
 import {
   BehaviorSubject,
   filter,
@@ -8,15 +8,16 @@ import {
   shareReplay,
   Subject,
 } from 'rxjs';
-import { IChartEvent } from '../model/i-chart-event';
-import { IDisplayTooltip } from '../model/i-display-tooltip';
-import { PlotBand } from '../model/plot-band';
-import { PlotLine } from '../model/plot-line';
-import { IPointMove } from '../model/i-point-move';
-import { defaultChartConfig } from '../default/default-chart-config';
-import { defaultAxisConfig } from '../default/default-axis-config';
-import { defaultSeriesConfig } from '../default/default-series-config';
-import { BasePoint } from '../model/base-point';
+import {IChartEvent} from '../model/i-chart-event';
+import {IDisplayTooltip} from '../model/i-display-tooltip';
+import {PlotBand} from '../model/plot-band';
+import {PlotLine} from '../model/plot-line';
+import {IPointMove} from '../model/i-point-move';
+import {defaultChartConfig} from '../default/default-chart-config';
+import {defaultAxisConfig} from '../default/default-axis-config';
+import {defaultSeriesConfig} from '../default/default-series-config';
+import {BasePoint} from '../model/base-point';
+import {Series} from '../model/series';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,7 @@ export class ChartService {
   public config: Observable<IChartConfig>;
   public size: Observable<DOMRect>;
   public pointerMove: Observable<PointerEvent>;
-  public tooltips: Observable<IDisplayTooltip>;
+  public tooltips: Observable<Map<Series<BasePoint>, IDisplayTooltip>>;
   public plotBandEvent: Observable<IChartEvent<PlotBand>>;
   public plotLineMove: Observable<IChartEvent<PlotLine>>;
   public plotBandClick: Observable<IChartEvent<PlotBand>>;
@@ -37,7 +38,7 @@ export class ChartService {
   private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig());
   private size$ = new BehaviorSubject<DOMRect>(new DOMRectReadOnly());
   private pointerMove$ = new BehaviorSubject<PointerEvent>(null);
-  private tooltips$ = new Subject<IDisplayTooltip>();
+  private tooltips$ = new BehaviorSubject<Map<Series<BasePoint>, IDisplayTooltip>>(new Map());
   private plotBandEvent$ = new Subject<IChartEvent<PlotBand>>();
   private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();
   private pointMove$ = new Subject<IChartEvent<IPointMove>>();
@@ -49,17 +50,11 @@ export class ChartService {
       .asObservable()
       .pipe(
         map(this.setDefaults),
-        map(this.setpreparationData),
+        map(this.setPreparationData),
         shareReplay(1)
       );
 
-    this.size = this.size$
-      .asObservable()
-      .pipe
-      // filter((_) => {
-      //   return _.height > 0 && _.width > 0;
-      // })
-      ();
+    this.size = this.size$.asObservable();
 
     this.pointerMove = this.pointerMove$.asObservable();
     this.tooltips = this.tooltips$.asObservable();
@@ -77,6 +72,7 @@ export class ChartService {
   }
 
   public setConfig(config: IChartConfig) {
+    this.clearTooltips();
     this.config$.next(config);
   }
 
@@ -89,7 +85,17 @@ export class ChartService {
   }
 
   public setTooltip(tooltip: IDisplayTooltip) {
-    this.tooltips$.next(tooltip);
+    const currentTooltips = this.tooltips$.value;
+    if (!tooltip.point) {
+      currentTooltips.delete(tooltip.series);
+    } else {
+      currentTooltips.set(tooltip.series, tooltip);
+    }
+    this.tooltips$.next(new Map<Series<BasePoint>, IDisplayTooltip>(currentTooltips));
+  }
+
+  public clearTooltips() {
+    this.tooltips$.next(new Map());
   }
 
   public emitPlotband(event: IChartEvent<PlotBand>) {
@@ -142,7 +148,7 @@ export class ChartService {
     return config;
   }
 
-  private setpreparationData(config: IChartConfig): IChartConfig {
+  private setPreparationData(config: IChartConfig): IChartConfig {
     if (config.inverted) {
       const xAxes = [...config.xAxis];
       const yAxes = [...config.yAxis];
@@ -171,8 +177,8 @@ export class ChartService {
     }
 
     if (config?.brush?.enable) {
-      config.yAxis = config.yAxis.map((_) => ({ ..._, zoom: false }));
-      config.xAxis = config.xAxis.map((_) => ({ ..._, zoom: false }));
+      config.yAxis = config.yAxis.map((_) => ({..._, zoom: false}));
+      config.xAxis = config.xAxis.map((_) => ({..._, zoom: false}));
     }
 
     return config;
