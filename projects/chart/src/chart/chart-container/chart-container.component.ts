@@ -85,8 +85,8 @@ export class ChartContainerComponent implements OnInit {
         const [[x, y], config] = data;
 
         return config.brush?.type === BrushType.x
-          ? x.get(0).copy()
-          : y.get(0).copy();
+          ? x.get(0)
+          : y.get(0);
       }),
       shareReplay(1)
     );
