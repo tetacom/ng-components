@@ -9,7 +9,7 @@
     (mouseleave)="mouseleave(point)"
     [attr.cx]="scales.x(point.x)"
     [attr.cy]="scales.y(point.y)"
-    [attr.r]="series.style.radius ?? 1"
+    [attr.r]="series.style?.radius ?? 1"
     [attr.stroke]="point.color ?? series.color"
     [attr.fill]="point.color ?? series.color"
     [attr.stroke-width]="series.style?.strokeWidth">

@@ -1,6 +1,6 @@
 import { ElementRef, Injectable } from '@angular/core';
 import * as d3 from 'd3';
-import { D3ZoomEvent, zoomIdentity } from 'd3';
+import {D3ZoomEvent, zoomIdentity, ZoomTransform} from 'd3';
 import {
   BehaviorSubject,
   filter,
@@ -35,137 +35,142 @@ export class ZoomService {
     this.zoomed = this.zoomed$.asObservable().pipe(shareReplay(1));
   }
 
-  applyZoom(
-    svgElement: ElementRef,
-    config: IChartConfig,
-    size: DOMRect,
-    axis?: Axis,
-    brushScale?: any
-  ) {
-    this.broadcastSubscription.forEach((_) => _?.unsubscribe());
-
-    const enable = axis?.options?.zoom || config?.zoom?.enable;
-
-    const fakeAxis = Axis.createAxis(
-      config?.zoom.type === ZoomType.x ? AxisOrientation.x : AxisOrientation.y,
-      config,
-      0,
-      true
-    );
-
-    const _axis = axis ? axis : fakeAxis;
-
-    const zoom = d3
-      .zoom()
-      .scaleExtent([0, 500])
-      .extent([
-        [0, 0],
-        [size.width, size.height],
-      ]);
-
-    const zoomed = (event: D3ZoomEvent<any, any>) => {
-      if (enable) {
-        if (event.sourceEvent) {
-          this.zoomed$.next({
-            event,
-            target: _axis,
-          });
-
-          const message: ZoomMessage = {
-            event: event,
-            axis: _axis,
-            brushDomain:
-              config.brush?.type === BrushType.x
-                ? event.transform.rescaleX(brushScale).domain()
-                : event.transform.rescaleY(brushScale).domain(),
-          };
-
-          this.broadcastService.broadcast({
-            channel: config?.zoom?.syncChannel,
-            message,
-          });
-        }
-      }
-    };
-
-    if (enable) {
-      const element = d3.select(svgElement.nativeElement);
-      zoom.on('start zoom end', zoomed);
-      element.call(zoom);
-
-      const subscription = this.broadcastService
-        .subscribeToChannel(config?.zoom?.syncChannel)
-        .pipe(
-          throttleTime(50, undefined, { trailing: true }),
-          filter((_) => {
-            if ('axis' in _.message) {
-              return (
-                _axis.index === _.message?.axis?.index &&
-                _axis.orientation === _.message?.axis?.orientation
-              );
-            }
-            if ('selection' in _.message) {
-              return (
-                (_axis.index === 0 &&
-                  _axis.orientation === AxisOrientation.x &&
-                  _.message.brushType === BrushType.x) ||
-                (_axis.index === 0 &&
-                  _axis.orientation === AxisOrientation.y &&
-                  _.message.brushType === BrushType.y)
-              );
-            }
-            return false;
-          }),
-          map((broadcaseMessage: IBroadcastMessage) => {
-            if ('axis' in broadcaseMessage.message) {
-              const currentTransform = d3.zoomTransform(
-                svgElement.nativeElement
-              );
-
-              if (
-                currentTransform !== broadcaseMessage.message.event?.transform
-              ) {
-                d3.select(svgElement.nativeElement).call(
-                  zoom.transform,
-                  broadcaseMessage.message.event?.transform,
-                  null,
-                  { type: 'sync_transform' }
-                );
-              }
-            }
-
-            if ('selection' in broadcaseMessage.message) {
-              if (!_axis.isFake) return;
-              if (!broadcaseMessage.message.selection) return;
-
-              const s = broadcaseMessage.message.selection;
-
-              brushScale.domain(broadcaseMessage.message.brushScale.domain());
-
-              const domain = brushScale.domain();
-
-              const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
-              let transform = zoomIdentity.scale(scale);
-
-              if (broadcaseMessage.message?.brushType === BrushType.x) {
-                transform = transform.translate(-brushScale(s[0]), 0);
-              }
-              if (broadcaseMessage.message?.brushType === BrushType.y) {
-                transform = transform.translate(0, -brushScale(s[0]));
-              }
-
-              d3.select(svgElement.nativeElement).call(
-                zoom.transform,
-                transform,
-                null,
-                { type: 'brushed' }
-              );
-            }
-
-            this.broadcastSubscription.push(subscription);
-          })
-        )
-        .subscribe();
-    }
+  setZoom(zoom: IChartEvent<Axis>) {
+    this.zoomed$.next(zoom);
   }
+
+  // applyZoom(
+  //   svgElement: ElementRef,
+  //   config: IChartConfig,
+  //   size: DOMRect,
+  //   axis?: Axis,
+  //   brushScale?: any
+  // ) {
+  //   this.broadcastSubscription.forEach((_) => _?.unsubscribe());
+  //
+  //   const enable = axis?.options?.zoom || config?.zoom?.enable;
+  //
+  //   const fakeAxis = Axis.createAxis(
+  //     config?.zoom.type === ZoomType.x ? AxisOrientation.x : AxisOrientation.y,
+  //     config,
+  //     0,
+  //     true
+  //   );
+  //
+  //   const _axis = axis ? axis : fakeAxis;
+  //
+  //   const zoom = d3
+  //     .zoom()
+  //     .scaleExtent([0, 500])
+  //     .extent([
+  //       [0, 0],
+  //       [size.width, size.height],
+  //     ]);
+  //
+  //   const zoomed = (event: D3ZoomEvent<any, any>) => {
+  //     if (enable) {
+  //       if (event.sourceEvent) {
+  //         this.zoomed$.next({
+  //           event,
+  //           target: _axis,
+  //         });
+  //
+  //
+  //         const message = new ZoomMessage({
+  //           event,
+  //           axis: _axis,
+  //           brushDomain:
+  //             config.brush?.type === BrushType.x
+  //               ? event.transform.rescaleX(brushScale).domain()
+  //               : event.transform.rescaleY(brushScale).domain(),
+  //         });
+  //
+  //         this.broadcastService.broadcast({
+  //           channel: config?.zoom?.syncChannel,
+  //           message,
+  //         });
+  //       }
+  //     }
+  //   };
+  //
+  //   if (enable) {
+  //     const element = d3.select(svgElement.nativeElement);
+  //     zoom.on('start zoom end', zoomed);
+  //     element.call(zoom);
+  //
+  //     const subscription = this.broadcastService
+  //       .subscribeToChannel(config?.zoom?.syncChannel)
+  //       .pipe(
+  //         throttleTime(50, undefined, { trailing: true }),
+  //         filter((_) => {
+  //           if ('axis' in _.message) {
+  //             return (
+  //               _axis.index === _.message?.axis?.index &&
+  //               _axis.orientation === _.message?.axis?.orientation
+  //             );
+  //           }
+  //           if ('selection' in _.message) {
+  //             return (
+  //               (_axis.index === 0 &&
+  //                 _axis.orientation === AxisOrientation.x &&
+  //                 _.message.brushType === BrushType.x) ||
+  //               (_axis.index === 0 &&
+  //                 _axis.orientation === AxisOrientation.y &&
+  //                 _.message.brushType === BrushType.y)
+  //             );
+  //           }
+  //           return false;
+  //         }),
+  //         map((broadcaseMessage: IBroadcastMessage) => {
+  //           if ('axis' in broadcaseMessage.message) {
+  //             const currentTransform = d3.zoomTransform(
+  //               svgElement.nativeElement
+  //             );
+  //
+  //             if (
+  //               currentTransform !== broadcaseMessage.message.event?.transform
+  //             ) {
+  //               d3.select(svgElement.nativeElement).call(
+  //                 zoom.transform,
+  //                 broadcaseMessage.message.event?.transform,
+  //                 null,
+  //                 { type: 'sync_transform' }
+  //               );
+  //             }
+  //           }
+  //
+  //           if ('selection' in broadcaseMessage.message) {
+  //             if (!_axis.isFake) return;
+  //             if (!broadcaseMessage.message.selection) return;
+  //
+  //             const s = broadcaseMessage.message.selection;
+  //
+  //             brushScale.domain(broadcaseMessage.message.brushScale.domain());
+  //
+  //             const domain = brushScale.domain();
+  //
+  //             const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
+  //             let transform = zoomIdentity.scale(scale);
+  //
+  //             if (broadcaseMessage.message?.brushType === BrushType.x) {
+  //               transform = transform.translate(-brushScale(s[0]), 0);
+  //             }
+  //             if (broadcaseMessage.message?.brushType === BrushType.y) {
+  //               transform = transform.translate(0, -brushScale(s[0]));
+  //             }
+  //
+  //             d3.select(svgElement.nativeElement).call(
+  //               zoom.transform,
+  //               transform,
+  //               null,
+  //               { type: 'brushed' }
+  //             );
+  //           }
+  //
+  //           this.broadcastSubscription.push(subscription);
+  //         })
+  //       )
+  //       .subscribe();
+  //   }
+  // }
 }

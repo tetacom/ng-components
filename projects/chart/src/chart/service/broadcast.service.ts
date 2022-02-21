@@ -1,24 +1,36 @@
 import { Injectable } from '@angular/core';
-import { IBroadcastMessage } from '../model/i-broadcast-message';
-import { filter, Observable, ReplaySubject, shareReplay } from 'rxjs';
-import { ScaleService } from './scale.service';
+import {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';
+import {filter, map, Observable, ReplaySubject, shareReplay, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BroadcastService {
-  private emitter: ReplaySubject<IBroadcastMessage>;
+  private zoomEmitter: Subject<IBroadcastMessage<ZoomMessage>>;
+  private brushEmitter: ReplaySubject<IBroadcastMessage<BrushMessage>>;
 
   constructor() {
-    this.emitter = new ReplaySubject<IBroadcastMessage>(1);
+    this.zoomEmitter = new Subject<IBroadcastMessage<ZoomMessage>>();
+    this.brushEmitter = new ReplaySubject<IBroadcastMessage<BrushMessage>>(1)
   }
 
-  broadcast(value: IBroadcastMessage) {
-    this.emitter.next(value);
+  broadcastZoom(value: IBroadcastMessage<ZoomMessage>) {
+    this.zoomEmitter.next(value);
   }
 
-  subscribeToChannel(channel: string): Observable<IBroadcastMessage> {
-    return this.emitter.asObservable().pipe(
+  broadcastBrush(value: IBroadcastMessage<BrushMessage>) {
+    this.brushEmitter.next(value);
+  }
+
+  subscribeToZoom(channel: string): Observable<IBroadcastMessage<ZoomMessage>> {
+    return this.zoomEmitter.asObservable().pipe(
+      filter((msg) => channel && msg.channel === channel),
+      shareReplay(1)
+    );
+  }
+
+  subscribeToBrush(channel: string): Observable<IBroadcastMessage<BrushMessage>> {
+    return this.brushEmitter.asObservable().pipe(
       filter((msg) => channel && msg.channel === channel),
       shareReplay(1)
     );

@@ -136,15 +136,21 @@ export class ChartContainerComponent implements OnInit {
   ngOnInit(): void {
     this.uniqId = (Date.now() + Math.random()).toString(36);
     this._observer = new ResizeObserver((entries: ResizeObserverEntry[]) => {
-      if (
-        !Array.isArray(entries) ||
-        !entries.length ||
-        entries[0].contentRect.width <= 0 ||
-        entries[0].contentRect.height <= 0
-      ) {
-        return;
-      }
-      this._svc.setSize(entries[0].contentRect);
+
+      requestAnimationFrame(() => {
+        if (
+          !Array.isArray(entries) ||
+          !entries.length ||
+          entries[0].contentRect.width <= 0 ||
+          entries[0].contentRect.height <= 0
+        ) {
+          return;
+        }
+        this._svc.setSize(entries[0].contentRect);
+
+      })
+
+
     });
     this._observer.observe(this._elementRef.nativeElement);
   }
