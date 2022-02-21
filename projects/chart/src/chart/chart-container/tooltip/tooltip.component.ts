@@ -4,10 +4,9 @@ import {
   Component,
   Input,
   NgZone,
-  OnDestroy,
   OnInit,
 } from '@angular/core';
-import {filter, map, Observable, tap, withLatestFrom, of} from 'rxjs';
+import {filter, map, Observable, tap} from 'rxjs';
 import {ChartService} from '../../service/chart.service';
 import {ZoomService} from '../../service/zoom.service';
 import {IDisplayTooltip} from '../../model/i-display-tooltip';
@@ -21,7 +20,7 @@ import {Series} from '../../model/series';
   styleUrls: ['./tooltip.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TooltipComponent implements OnInit, OnDestroy {
+export class TooltipComponent implements OnInit {
   @Input() size: DOMRect;
   @Input() config: IChartConfig;
 
@@ -33,10 +32,6 @@ export class TooltipComponent implements OnInit, OnDestroy {
   }>;
 
   displayTooltips: Observable<SafeHtml>;
-  tooltips: Observable<Map<Series<any>, IDisplayTooltip>> = of(new Map());
-
-  private alive = true;
-
   display: Observable<number>;
 
   constructor(
@@ -90,20 +85,7 @@ export class TooltipComponent implements OnInit, OnDestroy {
 
     const formatter = this.config?.tooltip?.format;
 
-    this.tooltips = this.svc.tooltips.pipe(
-      withLatestFrom(this.tooltips),
-      map((data: [IDisplayTooltip, Map<Series<any>, IDisplayTooltip>]) => {
-        const [tooltip, currentTooltips] = data;
-        if (!tooltip.point) {
-          currentTooltips.delete(tooltip.series);
-        } else {
-          currentTooltips.set(tooltip.series, tooltip);
-        }
-        return currentTooltips;
-      })
-    );
-
-    this.displayTooltips = this.tooltips.pipe(
+    this.displayTooltips = this.svc.tooltips.pipe(
       map((tooltips: Map<Series<any>, IDisplayTooltip>) => {
         const tooltipList = [...tooltips.values()];
         if (tooltipList?.length < 1) {
@@ -137,9 +119,5 @@ export class TooltipComponent implements OnInit, OnDestroy {
     };
 
     return scene;
-  }
-
-  ngOnDestroy() {
-    this.alive = false;
   }
 }

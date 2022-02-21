@@ -20,7 +20,7 @@ import {IChartEvent} from '../model/i-chart-event';
 import {PlotLine} from '../model/plot-line';
 import {PlotBand} from '../model/plot-band';
 import {IPointMove} from '../model/i-point-move';
-import {map, Observable, takeWhile, tap} from 'rxjs';
+import {map, Observable, takeWhile} from 'rxjs';
 
 @Component({
   selector: 'teta-svg-chart',

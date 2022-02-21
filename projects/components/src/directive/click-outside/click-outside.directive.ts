@@ -44,7 +44,6 @@ export class ClickOutsideDirective implements OnDestroy {
 
   private addListener(handleRightClick: boolean): void {
     window.addEventListener('click', this.listener);
-    console.log('handleRightClick', handleRightClick);
     if (handleRightClick) {
       window.addEventListener('contextmenu', this.listener);
     }
@@ -64,7 +63,6 @@ export class ClickOutsideDirective implements OnDestroy {
       click
     );
     if (!clickedInside) {
-      console.log('clickedInside', clickedInside);
       this.clickOutside.emit(click);
     }
   };
