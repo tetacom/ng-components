@@ -8,6 +8,27 @@
           [attr.y2]="axis.orientation === orientation.x ? height : value">
 </svg:line>
 
+
+<svg:text
+  *ngIf="axis.orientation === orientation.x"
+  text-anchor="middle"
+  dominant-baseline="central"
+  class="label font-title-2 fill-text-70"
+  [attr.x]="value"
+  dy="2em"
+  [attr.transform]="'rotate(-90, '+ value +',' + height / 2 + ')'"
+  [attr.y]="height / 2">{{plotLine.label}}
+</svg:text>
+
+<svg:text
+  *ngIf="axis.orientation === orientation.y"
+  text-anchor="middle"
+  class="label font-title-2 fill-text-70"
+  dominant-baseline="central"
+  [attr.x]="value"
+  [attr.y]="width / 2">{{plotLine.label}}
+</svg:text>
+
 <svg:line class="grabber"
 
           [class.x-grabber]="axis.orientation === orientation.x"

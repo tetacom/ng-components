@@ -99,7 +99,7 @@ export class BrushService {
     }
   }
 
-  clearSelection() {
+  clearPreviousSelection() {
     this.selection = null;
   }
 }
