@@ -1,8 +1,8 @@
 <svg:defs *ngIf="series?.fillType === fillType.gradient">
   <svg:linearGradient [id]="'gradient-fill-' + id" gradientUnits="userSpaceOnUse"
                       x1="0%"
-                      [attr.y1]="config?.inverted ? '0%' : '100%'"
-                      [attr.x2]="config?.inverted ? '100%' : '0%'"
+                      [attr.y1]="config?.inverted || series?.fillDirection === fillDirection.y ? '0%' : '100%'"
+                      [attr.x2]="config?.inverted || series?.fillDirection === fillDirection.y ? '100%' : '0%'"
                       y2="0%">
     <svg:stop offset="0%" [attr.stop-color]="series.color" stop-opacity="0"></svg:stop>
     <svg:stop offset="5%" [attr.stop-color]="series.color" stop-opacity="0.1"></svg:stop>

@@ -2,7 +2,7 @@ import {BasePoint} from './base-point';
 import {SeriesType} from './enum/series-type';
 import {SeriesBaseComponent} from '../base/series-base.component';
 import {SvgAttributes} from './svg-attributes';
-import {FillType} from './enum/fill-type';
+import {FillDirection, FillType} from './enum/fill-type';
 
 export interface Series<T extends BasePoint> {
   id?: number | string;
@@ -15,6 +15,7 @@ export interface Series<T extends BasePoint> {
   visible?: boolean;
   color?: string;
   fillType?: FillType;
+  fillDirection?: FillDirection;
   showInLegend?: boolean;
   style?: SvgAttributes;
 }
