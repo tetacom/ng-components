@@ -1,13 +1,32 @@
 <svg:rect
-          class="plotband"
-          [class.draggable]="plotBand?.draggable === true"
-          [attr.fill]="getFill(plotBand)"
-          [attr.opacity]="plotBand.style?.plotBand?.opacity"
-          [attr.height]="axis.orientation === orientation.x ? height : bandSize"
-          [attr.width]="axis.orientation === orientation.x ? bandSize : width"
-          [attr.y]="axis.orientation === orientation.y ? from : null"
-          [attr.x]="axis.orientation === orientation.x ? from : null">
+  class="plotband" xmlns:svg="http://www.w3.org/1999/html"
+  [class.draggable]="plotBand?.draggable === true"
+  [attr.fill]="getFill(plotBand)"
+  [attr.opacity]="plotBand.style?.plotBand?.opacity"
+  [attr.height]="axis.orientation === orientation.x ? height : bandSize"
+  [attr.width]="axis.orientation === orientation.x ? bandSize : width"
+  [attr.y]="axis.orientation === orientation.y ? from : null"
+  [attr.x]="axis.orientation === orientation.x ? from : null">
 </svg:rect>
+
+<svg:text
+  *ngIf="axis.orientation === orientation.x"
+  text-anchor="middle"
+  dominant-baseline="central"
+  class="label font-title-2 fill-text-70"
+  [attr.x]="getTextCenter()"
+  [attr.transform]="'rotate(-90, '+ getTextCenter() +',' + height / 2 + ')'"
+  [attr.y]="height / 2">{{plotBand.label}}
+</svg:text>
+
+<svg:text
+  *ngIf="axis.orientation === orientation.y"
+  text-anchor="middle"
+  class="label font-title-2 fill-text-70"
+  dominant-baseline="central"
+  [attr.x]="getTextCenter()"
+  [attr.y]="width / 2">{{plotBand.label}}
+</svg:text>
 
 <svg:line class="display-grabber"
           *ngIf="plotBand.showGrabbers"

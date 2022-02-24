@@ -85,8 +85,8 @@ export class ChartContainerComponent implements OnInit {
         const [[x, y], config] = data;
 
         return config.brush?.type === BrushType.x
-          ? x.get(0).copy()
-          : y.get(0).copy();
+          ? x.get(0)
+          : y.get(0);
       }),
       shareReplay(1)
     );
@@ -136,15 +136,21 @@ export class ChartContainerComponent implements OnInit {
   ngOnInit(): void {
     this.uniqId = (Date.now() + Math.random()).toString(36);
     this._observer = new ResizeObserver((entries: ResizeObserverEntry[]) => {
-      if (
-        !Array.isArray(entries) ||
-        !entries.length ||
-        entries[0].contentRect.width <= 0 ||
-        entries[0].contentRect.height <= 0
-      ) {
-        return;
-      }
-      this._svc.setSize(entries[0].contentRect);
+
+      requestAnimationFrame(() => {
+        if (
+          !Array.isArray(entries) ||
+          !entries.length ||
+          entries[0].contentRect.width <= 0 ||
+          entries[0].contentRect.height <= 0
+        ) {
+          return;
+        }
+        this._svc.setSize(entries[0].contentRect);
+
+      })
+
+
     });
     this._observer.observe(this._elementRef.nativeElement);
   }

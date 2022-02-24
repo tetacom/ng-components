@@ -19,6 +19,7 @@ import { ScatterSeriesComponent } from './chart-container/series/scatter-series/
 import { BlockSeriesComponent } from './chart-container/series/block-series/block-series.component';
 import { BlockAreaSeriesComponent } from './chart-container/series/block-area-series/block-area-series.component';
 import { AreaSeriesComponent } from './chart-container/series/area-series/area-series.component';
+import { AnnotationComponent } from './chart-container/annotation/annotation.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { AreaSeriesComponent } from './chart-container/series/area-series/area-s
     ScatterSeriesComponent,
     BlockSeriesComponent,
     BlockAreaSeriesComponent,
+    AnnotationComponent,
   ],
   exports: [
     ChartComponent,
