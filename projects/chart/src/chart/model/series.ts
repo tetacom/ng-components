@@ -3,6 +3,7 @@ import {SeriesType} from './enum/series-type';
 import {SeriesBaseComponent} from '../base/series-base.component';
 import {SvgAttributes} from './svg-attributes';
 import {FillDirection, FillType} from './enum/fill-type';
+import * as d3 from "d3";
 
 export interface Series<T extends BasePoint> {
   id?: number | string;
@@ -14,6 +15,7 @@ export interface Series<T extends BasePoint> {
   component?: typeof SeriesBaseComponent;
   visible?: boolean;
   color?: string;
+  colorScale?: any;
   fillType?: FillType;
   fillDirection?: FillDirection;
   showInLegend?: boolean;
