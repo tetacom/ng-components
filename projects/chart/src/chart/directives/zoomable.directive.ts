@@ -113,9 +113,7 @@ export class ZoomableDirective implements OnDestroy {
         return this.zoomAxis.index === m.message?.axis?.index && this.zoomAxis.orientation === m.message?.axis?.orientation
       }),
       tap((m: IBroadcastMessage<ZoomMessage>) => {
-
-        if(m.message.event.type !== 'zoom') return;
-
+        
         const currentTransform = d3.zoomTransform(
           this.elementRef.nativeElement
         );
