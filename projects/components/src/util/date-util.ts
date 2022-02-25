@@ -1,3 +1,5 @@
+import {prependZero} from '../pipe/util/number-helper';
+
 export class DateUtil {
   /**
    * Вычесть n-дней
@@ -62,10 +64,12 @@ export class DateUtil {
       return '';
     }
     const month = dat.getMonth() + 1;
-    const monthString = month < 10 ? '0' + month.toString() : month.toString();
-    return `${dat.getDate().toString()}.${monthString}.${dat
-      .getFullYear()
-      .toString()} ${dat.getHours()}:${dat.getMinutes()}:${dat.getSeconds()}`;
+    return `${prependZero(dat.getDate(), 2)}.
+    ${prependZero(month, 2)}.
+    ${dat.getFullYear()}
+    ${prependZero(dat.getHours(), 2)}:
+    ${prependZero(dat.getMinutes(), 2)}:
+    ${prependZero(dat.getSeconds(), 2)}`;
   }
 
   /**

@@ -58,7 +58,7 @@ export class TooltipComponent implements OnInit {
     this.position = this.svc.pointerMove.pipe(
       filter((event) => !!event),
       map((_) => {
-        return this.getPoisition(_);
+        return this.getPosition(_);
       }),
       tap(() => this.cdr.detectChanges())
     );
@@ -99,7 +99,7 @@ export class TooltipComponent implements OnInit {
     );
   }
 
-  private getPoisition(event: PointerEvent) {
+  private getPosition(event: PointerEvent) {
     const centerX = this.size.width / 2;
     const centerY = this.size.height / 2;
 
