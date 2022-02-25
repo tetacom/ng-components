@@ -30,6 +30,8 @@ export class ZoomableDirective implements OnDestroy {
   private zoom: ZoomBehavior<any, any>;
   private alive = true;
 
+  private currentTransform = zoomIdentity;
+
   constructor(
     private elementRef: ElementRef,
     private zoomService: ZoomService,
@@ -74,27 +76,36 @@ export class ZoomableDirective implements OnDestroy {
     const zoomed = (event: D3ZoomEvent<any, any>) => {
 
       if (enable) {
+
         if (event.sourceEvent) {
+
+          if(Object.keys(event.sourceEvent).length !== 0) {
+            if(this.currentTransform === event.transform) {
+              return;
+            }
+
+            const message = new ZoomMessage({
+              event,
+              axis: this.zoomAxis,
+              brushDomain:
+                this.config.brush?.type === BrushType.x
+                  ? this.brushScale.domain()
+                  : this.brushScale.domain(),
+            });
+
+            this.broadcastService.broadcastZoom({
+              channel: this.config?.zoom?.syncChannel,
+              message,
+            });
+          }
 
           this.zoomService.setZoom({
             event,
             target: this.zoomAxis
-          })
-
-          const message = new ZoomMessage({
-            event,
-            axis: this.zoomAxis,
-            brushDomain:
-              this.config.brush?.type === BrushType.x
-                ? this.brushScale.domain()
-                : this.brushScale.domain(),
           });
 
+          this.currentTransform = event.transform;
 
-          this.broadcastService.broadcastZoom({
-            channel: this.config?.zoom?.syncChannel,
-            message,
-          });
         }
       }
     };
@@ -120,6 +131,7 @@ export class ZoomableDirective implements OnDestroy {
         if (currentTransform !== m.message.event.transform) {
           this._element.call(this.zoom.transform, m.message.event.transform, null, {})
         }
+
       })
     ).subscribe()
 
@@ -158,12 +170,11 @@ export class ZoomableDirective implements OnDestroy {
     const s = m.message.selection;
 
 
-    this.brushScale.domain(this.zoomAxis.extremes);
+    this.brushScale.domain(m.message.brushScale.domain());
 
     const domain = this.brushScale.domain();
 
     const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
-
 
     let transform = zoomIdentity.scale(scale);
 
