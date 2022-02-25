@@ -21,6 +21,7 @@ export interface IChartConfig {
     type: BrushType;
     from?: number;
     to?: number;
+    limit?: number;
   };
   legend?: {
     enable?: boolean;

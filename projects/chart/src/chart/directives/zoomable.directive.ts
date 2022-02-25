@@ -1,4 +1,4 @@
-import {Directive, ElementRef, HostBinding, Input, OnDestroy, SimpleChanges,} from '@angular/core';
+import {Directive, ElementRef, HostBinding, Input, NgZone, OnDestroy, SimpleChanges,} from '@angular/core';
 import {ZoomService} from '../service/zoom.service';
 import {IChartConfig} from '../model/i-chart-config';
 import {Axis} from '../core/axis/axis';
@@ -11,7 +11,8 @@ import {BrushMessage, IBroadcastMessage, ZoomMessage} from "../model/i-broadcast
 import {BrushType} from "../model/enum/brush-type";
 import {BroadcastService} from "../service/broadcast.service";
 import {tap, throttleTime} from "rxjs/operators";
-import {filter, takeWhile} from "rxjs";
+import {filter, takeWhile, combineLatest, zip, withLatestFrom} from "rxjs";
+import {ChartService} from "../service/chart.service";
 
 @Directive({
   selector: '[tetaZoomable]',
@@ -32,9 +33,9 @@ export class ZoomableDirective implements OnDestroy {
   constructor(
     private elementRef: ElementRef,
     private zoomService: ZoomService,
-    private broadcastService: BroadcastService
-  ) {
-  }
+    private broadcastService: BroadcastService,
+    private zone: NgZone
+  ) {}
 
   ngOnInit() {
     if (this.axis?.options?.zoom || this.config?.zoom?.enable) {
@@ -94,8 +95,6 @@ export class ZoomableDirective implements OnDestroy {
             channel: this.config?.zoom?.syncChannel,
             message,
           });
-
-
         }
       }
     };
@@ -113,7 +112,7 @@ export class ZoomableDirective implements OnDestroy {
         return this.zoomAxis.index === m.message?.axis?.index && this.zoomAxis.orientation === m.message?.axis?.orientation
       }),
       tap((m: IBroadcastMessage<ZoomMessage>) => {
-        
+
         const currentTransform = d3.zoomTransform(
           this.elementRef.nativeElement
         );
@@ -127,48 +126,59 @@ export class ZoomableDirective implements OnDestroy {
 
     // Subscribe to brush events x or y
 
-    if ((this.config.brush?.type === BrushType.x && this.zoomAxis.orientation === AxisOrientation.x) || (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {
+    if ((this.config.brush?.type === BrushType.x && this.zoomAxis.orientation === AxisOrientation.x) ||
+      (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {
+
       this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel).pipe(
         takeWhile((_) => this.alive),
         throttleTime(50, undefined, {trailing: true}),
         filter((m: IBroadcastMessage<BrushMessage>) => Boolean(m.message.selection)),
         tap((m: IBroadcastMessage<BrushMessage>) => {
 
-          const s = m.message.selection;
+          this.zone.runOutsideAngular(() => {
+            setTimeout(() => {
+              this.updateZoom(m)
+            })
+          })
 
-          this.brushScale.domain(m.message.brushScale.domain());
-          const domain = this.brushScale.domain();
-
-          const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
-          let transform = zoomIdentity.scale(scale);
-
-          if (m.message?.brushType === BrushType.x) {
-            transform = transform.translate(-this.brushScale(s[0]), 0);
-          }
-          if (m.message?.brushType === BrushType.y) {
-            transform = transform.translate(0, -this.brushScale(s[0]));
-          }
-
-          this._element.call(
-            this.zoom.transform,
-            transform,
-            null,
-            {}
-          );
 
         })
       ).subscribe()
     }
-
-
   }
 
 
-  ngOnChanges(changes: SimpleChanges) {
-
-  }
+  ngOnChanges(changes: SimpleChanges) {}
 
   ngOnDestroy(): void {
     this.alive = false;
+  }
+
+  private updateZoom(m: IBroadcastMessage<BrushMessage>) {
+    const s = m.message.selection;
+
+
+    this.brushScale.domain(this.zoomAxis.extremes);
+
+    const domain = this.brushScale.domain();
+
+    const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
+
+
+    let transform = zoomIdentity.scale(scale);
+
+    if (m.message?.brushType === BrushType.x) {
+      transform = transform.translate(-this.brushScale(s[0]), 0);
+    }
+    if (m.message?.brushType === BrushType.y) {
+      transform = transform.translate(0, -this.brushScale(s[0]));
+    }
+
+    this._element.call(
+      this.zoom.transform,
+      transform,
+      null,
+      {}
+    );
   }
 }

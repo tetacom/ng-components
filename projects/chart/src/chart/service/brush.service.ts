@@ -22,6 +22,7 @@ export class BrushService {
 
   private selection: number[];
 
+
   constructor(private broadcastService: BroadcastService) {}
 
   applyBrush(
@@ -32,7 +33,7 @@ export class BrushService {
     this.broadcastSubscribtion?.unsubscribe();
 
     if (config.brush?.enable) {
-      this.brush = this.brushMap.get(config?.brush?.type ?? BrushType.x);
+      this.brush = this.brushMap.get(config?.brush?.type ?? BrushType.x)
 
       const container = d3.select(svgElement.nativeElement);
 
@@ -42,6 +43,16 @@ export class BrushService {
           if (!_.selection) return;
 
           const [from, to] = _.selection as number[];
+
+          if(to - from === 0) {
+            const selection: number[] = this.selection?.map(brushScale) ?? [config.brush?.from, config.brush?.to].map(brushScale);
+            const halfBrushHeight = (selection[1] - selection[0]) / 2;
+            container.call(this.brush.move,  [from - halfBrushHeight, to + halfBrushHeight], {});
+
+            return;
+          }
+
+
 
           if(_.type === 'end' && _.sourceEvent instanceof MouseEvent) {
             this.selection = _.selection.map(brushScale.invert);
@@ -77,6 +88,7 @@ export class BrushService {
         }
 
         container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : domain.map(brushScale), {});
+
       }, 0);
 
 
