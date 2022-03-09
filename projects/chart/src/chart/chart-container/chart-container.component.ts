@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
+  ElementRef, OnDestroy,
   OnInit,
 } from '@angular/core';
 import {IChartConfig} from '../model/i-chart-config';
@@ -32,7 +32,7 @@ type Opposite = boolean;
   styleUrls: ['./chart-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChartContainerComponent implements OnInit {
+export class ChartContainerComponent implements OnInit, OnDestroy {
   config: Observable<IChartConfig>;
 
   yAxisMap: Observable<Map<number, Axis>>;
@@ -88,7 +88,10 @@ export class ChartContainerComponent implements OnInit {
           ? x.get(0)
           : y.get(0);
       }),
-      shareReplay(1)
+      shareReplay({
+        bufferSize: 1,
+        refCount: true
+      })
     );
 
     this.visibleRect = combineLatest([
@@ -148,14 +151,15 @@ export class ChartContainerComponent implements OnInit {
         }
         this._svc.setSize(entries[0].contentRect);
 
-      })
+      });
 
 
     });
     this._observer.observe(this._elementRef.nativeElement);
   }
 
-  ngAfterViewInit() {
+  ngOnDestroy() {
+    this._observer.disconnect();
   }
 
   private sumSize = (acc, curr) => acc + curr.selfSize;

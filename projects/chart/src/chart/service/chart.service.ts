@@ -37,7 +37,7 @@ export class ChartService {
 
   private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig());
   private size$ = new BehaviorSubject<DOMRect>(new DOMRectReadOnly());
-  private pointerMove$ = new BehaviorSubject<PointerEvent>(null);
+  private pointerMove$ = new Subject<PointerEvent>();
   private tooltips$ = new BehaviorSubject<Map<Series<BasePoint>, IDisplayTooltip>>(new Map());
   private plotBandEvent$ = new Subject<IChartEvent<PlotBand>>();
   private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();
@@ -51,7 +51,10 @@ export class ChartService {
       .pipe(
         map(this.setDefaults),
         map(this.setPreparationData),
-        shareReplay(1)
+        shareReplay({
+          bufferSize: 1,
+          refCount: true
+        })
       );
 
     this.size = this.size$.asObservable();

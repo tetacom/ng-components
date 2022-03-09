@@ -1,12 +1,14 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   Input,
+  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { Annotation } from '../../model/annotation';
+import {Annotation} from '../../model/annotation';
 import * as d3annotation from 'd3-svg-annotation';
 import * as d3 from 'd3';
 
@@ -14,8 +16,9 @@ import * as d3 from 'd3';
   selector: '[teta-annotation]',
   templateUrl: './annotation.component.html',
   styleUrls: ['./annotation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AnnotationComponent implements OnInit {
+export class AnnotationComponent implements OnInit, OnDestroy {
   @Input() annotations: Annotation[];
   @Input() xScaleMap: Map<number, any>;
   @Input() yScaleMap: Map<number, any>;
@@ -25,9 +28,14 @@ export class AnnotationComponent implements OnInit {
   private _node: any;
   private _makeAnnotations: any;
 
-  constructor() {}
+  constructor() {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
+
+  ngOnDestroy() {
+  }
 
   ngAfterViewInit() {
     this._node = d3.select(this.node.nativeElement);

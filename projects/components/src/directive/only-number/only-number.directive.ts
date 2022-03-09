@@ -99,7 +99,8 @@ export class OnlyNumberDirective {
       return;
     } else {
       if (e.key === ',' && originalValue.indexOf('.') < 0) {
-        this._elementRef.nativeElement.value = originalValue + '.';
+        this._elementRef.nativeElement.value =
+          `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`;
       }
       e.preventDefault();
     }

@@ -148,7 +148,10 @@ export class ScaleService {
           return map;
         }
       ),
-      shareReplay(1)
+      shareReplay({
+        bufferSize: 1,
+        refCount: true
+      })
     );
 
     this.yScaleMap = combineLatest([
@@ -233,7 +236,10 @@ export class ScaleService {
           return map;
         }
       ),
-      shareReplay(1)
+      shareReplay({
+        bufferSize: 1,
+        refCount: true
+      })
     );
   }
 }
