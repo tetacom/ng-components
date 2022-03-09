@@ -246,7 +246,7 @@ const createChart = (size: number): IChartConfig => {
     ],
     yAxis: [
       {
-        visible: false,
+        visible: true,
       },
     ],
     brush: {
@@ -283,8 +283,8 @@ const createChart2 = (size: number): IChartConfig => {
     brush: {
       enable: true,
       type: BrushType.y,
-      from: faker.datatype.number({ min: 500, max: 600 }),
-      to: faker.datatype.number({ min: 650, max: 700 }),
+      from: faker.datatype.number({ min: 50, max: 600 }),
+      to: faker.datatype.number({ min: 650, max: 1000 }),
     },
     zoom: {
       enable: false,
@@ -327,12 +327,6 @@ export const basicChart = () => ({
        config </button>
         <div class="row row_auto gap" style="height: 100%; width: 100%">
             <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-
-            <teta-svg-chart [config]="config2" class="bg-background-50 border border-text-50"></teta-svg-chart>
 
         </div>
 
