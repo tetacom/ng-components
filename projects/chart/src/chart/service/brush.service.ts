@@ -63,7 +63,7 @@ export class BrushService {
             brushScale,
           });
 
-          console.log('brush domain', brushScale.domain())
+          console.log('brush domain', brushScale.domain(), [brushScale.invert(from), brushScale.invert(to)])
 
           this.broadcastService.broadcastBrush({
             channel: config?.zoom?.syncChannel,
