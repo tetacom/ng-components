@@ -7561,7 +7561,7 @@
         },
         {
             "name": "ZoomService",
-            "id": "injectable-ZoomService-4c35dfe80bdd9479a17edf0b360a33b3",
+            "id": "injectable-ZoomService-529d2c2206dbfc7124d1447311d440c5",
             "file": "projects/chart/src/chart/service/zoom.service.ts",
             "properties": [
                 {
@@ -7631,7 +7631,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { ElementRef, Injectable } from '@angular/core';\r\nimport * as d3 from 'd3';\r\nimport {D3ZoomEvent, zoomIdentity, ZoomTransform} from 'd3';\r\nimport {\r\n  BehaviorSubject,\r\n  filter,\r\n  map,\r\n  Observable,\r\n  shareReplay,\r\n  Subscription,\r\n  withLatestFrom,\r\n} from 'rxjs';\r\nimport { IChartConfig } from '../model/i-chart-config';\r\nimport { BroadcastService } from './broadcast.service';\r\nimport { Axis } from '../core/axis/axis';\r\nimport { IChartEvent } from '../model/i-chart-event';\r\nimport { AxisOrientation } from '../model/enum/axis-orientation';\r\nimport { ZoomType } from '../model/enum/zoom-type';\r\nimport { IBroadcastMessage, ZoomMessage } from '../model/i-broadcast-message';\r\nimport { BrushType } from '../model/enum/brush-type';\r\nimport { throttleTime } from 'rxjs/operators';\r\nimport { ChartService } from './chart.service';\r\nimport { ScaleService } from './scale.service';\r\n\r\n@Injectable({\r\n  providedIn: 'root',\r\n})\r\nexport class ZoomService {\r\n  broadcastSubscription: Subscription[] = [];\r\n\r\n  zoomed: Observable<IChartEvent<Axis>>;\r\n  private zoomed$ = new BehaviorSubject<IChartEvent<Axis>>(null);\r\n\r\n  constructor() {\r\n    this.zoomed = this.zoomed$.asObservable().pipe(shareReplay({\r\n      bufferSize: 1,\r\n      refCount: true\r\n    }));\r\n  }\r\n\r\n  setZoom(zoom: IChartEvent<Axis>) {\r\n    this.zoomed$.next(zoom);\r\n  }\r\n}\r\n",
+            "sourceCode": "import {ElementRef, Injectable} from '@angular/core';\r\nimport * as d3 from 'd3';\r\nimport {D3ZoomEvent, zoomIdentity, ZoomTransform} from 'd3';\r\nimport {\r\n  BehaviorSubject,\r\n  filter,\r\n  map,\r\n  Observable,\r\n  shareReplay,\r\n  Subscription,\r\n  withLatestFrom,\r\n} from 'rxjs';\r\nimport {IChartConfig} from '../model/i-chart-config';\r\nimport {BroadcastService} from './broadcast.service';\r\nimport {Axis} from '../core/axis/axis';\r\nimport {IChartEvent} from '../model/i-chart-event';\r\nimport {AxisOrientation} from '../model/enum/axis-orientation';\r\nimport {ZoomType} from '../model/enum/zoom-type';\r\nimport {IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';\r\nimport {BrushType} from '../model/enum/brush-type';\r\nimport {throttleTime} from 'rxjs/operators';\r\nimport {ChartService} from './chart.service';\r\nimport {ScaleService} from './scale.service';\r\n\r\n@Injectable({\r\n  providedIn: 'root',\r\n})\r\nexport class ZoomService {\r\n  broadcastSubscription: Subscription[] = [];\r\n\r\n  zoomed: Observable<IChartEvent<Axis>>;\r\n  private zoomed$ = new BehaviorSubject<IChartEvent<Axis>>(null);\r\n\r\n  constructor() {\r\n    this.zoomed = this.zoomed$.asObservable().pipe(shareReplay({\r\n      bufferSize: 1,\r\n      refCount: true\r\n    }));\r\n  }\r\n\r\n  setZoom(zoom: IChartEvent<Axis>) {\r\n    this.zoomed$.next(zoom);\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -8364,7 +8364,272 @@
         },
         {
             "name": "Axis",
-            "id": "class-Axis-e0c6d94c7f8cc6bbdb1d6d52b19ab300",
+            "id": "class-Axis-4a27bc6a3f9fbd0a9c162579fea2433a",
+            "file": "projects/components/src/component/chart/core/axis-creator.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "import * as d3 from 'd3';\r\nimport {AxisType} from '../model/enum/axis-type';\r\nimport {Series} from '../model/series';\r\nimport {BasePoint} from '../model/point/base-point';\r\nimport {ChartOptions} from '../model/chart-options';\r\nimport {AxisOptions} from '../model/axis-options';\r\n\r\nexport class Axis {\r\n  public static offsetFactor = 22;\r\n  public readonly width: number;\r\n\r\n  private _type: AxisType;\r\n  private _chartOptions: ChartOptions;\r\n  private _extents: [number, number] = [0, 0];\r\n  private _index: number;\r\n  private _height: number;\r\n  private _offset: number;\r\n  private _ticks: any;\r\n\r\n  constructor(options: {\r\n    type: AxisType;\r\n    index: number;\r\n    chartOptions: ChartOptions;\r\n    height?: number;\r\n  }) {\r\n    this._type = options?.type;\r\n    this._index = options?.index || 0;\r\n    this._chartOptions = options?.chartOptions;\r\n    this._height = options?.height;\r\n\r\n    if (this._chartOptions == null) {\r\n      throw new Error(`No chartOptions for axis ${AxisType[this._type]}`);\r\n    }\r\n\r\n    this.createExtents();\r\n    this.width = this.calculateAxisWidth();\r\n  }\r\n\r\n  get index() {\r\n    return this._index;\r\n  }\r\n\r\n  get options(): AxisOptions {\r\n    return this._type === AxisType.abscissa\r\n      ? this._chartOptions.xAxis[this.index]\r\n      : this._chartOptions.yAxis[this.index];\r\n  }\r\n\r\n  get extent(): [number, number] {\r\n    return this._extents;\r\n  }\r\n\r\n  get type(): AxisType {\r\n    return this._type;\r\n  }\r\n\r\n  get offset(): number {\r\n    return this._offset;\r\n  }\r\n\r\n  get ticks() {\r\n    return this._ticks;\r\n  }\r\n\r\n  setOffset(offset: number) {\r\n    this._offset = offset;\r\n  }\r\n\r\n  private calculateAxisWidth(): number {\r\n    if (this.type === AxisType.abscissa) {\r\n      return 0;\r\n    }\r\n\r\n    const y = d3\r\n      .scaleLinear()\r\n      .domain([this.extent[0], this.extent[1]])\r\n      .range([0, this._height])\r\n      .nice();\r\n\r\n    const body = d3\r\n      .select('body')\r\n      .append('svg')\r\n      .attr('class', 'calculate-offset')\r\n      .style('position', 'absolute')\r\n      .style('left', '-9999px');\r\n    const axis = d3.axisRight(y).tickValues(this.ticks);\r\n    const element = body.append('g').attr('class', 'font-caption').call(axis);\r\n\r\n    const bBox = element.node().getBBox();\r\n\r\n    d3.selectAll('.calculate-offset').remove();\r\n\r\n    return bBox.width;\r\n  }\r\n\r\n  private createExtents() {\r\n    const hasMin = this.options?.min != null;\r\n    const hasMax = this.options?.max != null;\r\n\r\n    if (!hasMin || !hasMax) {\r\n      const filtered = this._chartOptions?.series?.filter(\r\n        (serie: Series<BasePoint>) =>\r\n          this._index ===\r\n          serie[this._type === AxisType.abscissa ? 'xAxisIndex' : 'yAxisIndex']\r\n      );\r\n\r\n      const raw = filtered.map((series: Series<BasePoint>) =>\r\n        d3.extent(series?.data, (point: BasePoint) =>\r\n          this._type === AxisType.abscissa ? point.x : point.y\r\n        )\r\n      );\r\n\r\n      const merged = [].concat(...(raw ?? []));\r\n\r\n      const abs = (num) => Math.abs(num);\r\n\r\n      this._extents = this.options.negative\r\n        ? [-Math.abs(d3.max(merged.map(abs))), d3.max(merged.map(abs))]\r\n        : [d3.min(merged), d3.max(merged)];\r\n    }\r\n\r\n    if (hasMin) {\r\n      this._extents[0] = this.options?.min;\r\n    }\r\n\r\n    if (hasMax) {\r\n      this._extents[1] = this.options?.max;\r\n    }\r\n  }\r\n}\r\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "options",
+                        "type": "literal type",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 18,
+                "jsdoctags": [
+                    {
+                        "name": "options",
+                        "type": "literal type",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "properties": [
+                {
+                    "name": "_chartOptions",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ChartOptions",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_extents",
+                    "defaultValue": "[0, 0]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[number, number]",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_height",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_index",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 15,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_offset",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_ticks",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 18,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_type",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "AxisType",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "offsetFactor",
+                    "defaultValue": "22",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 9,
+                    "modifierKind": [
+                        124
+                    ]
+                },
+                {
+                    "name": "width",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 10,
+                    "modifierKind": [
+                        123,
+                        143
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "calculateAxisWidth",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "number",
+                    "typeParameters": [],
+                    "line": 69,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "createExtents",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 96,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "setOffset",
+                    "args": [
+                        {
+                            "name": "offset",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 65,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "offset",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "accessors": {
+                "index": {
+                    "name": "index",
+                    "getSignature": {
+                        "name": "index",
+                        "type": "",
+                        "returnType": "",
+                        "line": 39
+                    }
+                },
+                "options": {
+                    "name": "options",
+                    "getSignature": {
+                        "name": "options",
+                        "type": "",
+                        "returnType": "AxisOptions",
+                        "line": 43
+                    }
+                },
+                "extent": {
+                    "name": "extent",
+                    "getSignature": {
+                        "name": "extent",
+                        "type": "",
+                        "returnType": "",
+                        "line": 49
+                    }
+                },
+                "type": {
+                    "name": "type",
+                    "getSignature": {
+                        "name": "type",
+                        "type": "",
+                        "returnType": "AxisType",
+                        "line": 53
+                    }
+                },
+                "offset": {
+                    "name": "offset",
+                    "getSignature": {
+                        "name": "offset",
+                        "type": "number",
+                        "returnType": "number",
+                        "line": 57
+                    }
+                },
+                "ticks": {
+                    "name": "ticks",
+                    "getSignature": {
+                        "name": "ticks",
+                        "type": "",
+                        "returnType": "",
+                        "line": 61
+                    }
+                }
+            },
+            "inputsClass": [],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": []
+        },
+        {
+            "name": "Axis",
+            "id": "class-Axis-e0c6d94c7f8cc6bbdb1d6d52b19ab300-1",
             "file": "projects/chart/src/chart/core/axis/axis.ts",
             "deprecated": false,
             "deprecationMessage": "",
@@ -9042,271 +9307,6 @@
                         "type": "boolean",
                         "returnType": "boolean",
                         "line": 141
-                    }
-                }
-            },
-            "inputsClass": [],
-            "outputsClass": [],
-            "hostBindings": [],
-            "hostListeners": []
-        },
-        {
-            "name": "Axis",
-            "id": "class-Axis-4a27bc6a3f9fbd0a9c162579fea2433a-1",
-            "file": "projects/components/src/component/chart/core/axis-creator.ts",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "type": "class",
-            "sourceCode": "import * as d3 from 'd3';\r\nimport {AxisType} from '../model/enum/axis-type';\r\nimport {Series} from '../model/series';\r\nimport {BasePoint} from '../model/point/base-point';\r\nimport {ChartOptions} from '../model/chart-options';\r\nimport {AxisOptions} from '../model/axis-options';\r\n\r\nexport class Axis {\r\n  public static offsetFactor = 22;\r\n  public readonly width: number;\r\n\r\n  private _type: AxisType;\r\n  private _chartOptions: ChartOptions;\r\n  private _extents: [number, number] = [0, 0];\r\n  private _index: number;\r\n  private _height: number;\r\n  private _offset: number;\r\n  private _ticks: any;\r\n\r\n  constructor(options: {\r\n    type: AxisType;\r\n    index: number;\r\n    chartOptions: ChartOptions;\r\n    height?: number;\r\n  }) {\r\n    this._type = options?.type;\r\n    this._index = options?.index || 0;\r\n    this._chartOptions = options?.chartOptions;\r\n    this._height = options?.height;\r\n\r\n    if (this._chartOptions == null) {\r\n      throw new Error(`No chartOptions for axis ${AxisType[this._type]}`);\r\n    }\r\n\r\n    this.createExtents();\r\n    this.width = this.calculateAxisWidth();\r\n  }\r\n\r\n  get index() {\r\n    return this._index;\r\n  }\r\n\r\n  get options(): AxisOptions {\r\n    return this._type === AxisType.abscissa\r\n      ? this._chartOptions.xAxis[this.index]\r\n      : this._chartOptions.yAxis[this.index];\r\n  }\r\n\r\n  get extent(): [number, number] {\r\n    return this._extents;\r\n  }\r\n\r\n  get type(): AxisType {\r\n    return this._type;\r\n  }\r\n\r\n  get offset(): number {\r\n    return this._offset;\r\n  }\r\n\r\n  get ticks() {\r\n    return this._ticks;\r\n  }\r\n\r\n  setOffset(offset: number) {\r\n    this._offset = offset;\r\n  }\r\n\r\n  private calculateAxisWidth(): number {\r\n    if (this.type === AxisType.abscissa) {\r\n      return 0;\r\n    }\r\n\r\n    const y = d3\r\n      .scaleLinear()\r\n      .domain([this.extent[0], this.extent[1]])\r\n      .range([0, this._height])\r\n      .nice();\r\n\r\n    const body = d3\r\n      .select('body')\r\n      .append('svg')\r\n      .attr('class', 'calculate-offset')\r\n      .style('position', 'absolute')\r\n      .style('left', '-9999px');\r\n    const axis = d3.axisRight(y).tickValues(this.ticks);\r\n    const element = body.append('g').attr('class', 'font-caption').call(axis);\r\n\r\n    const bBox = element.node().getBBox();\r\n\r\n    d3.selectAll('.calculate-offset').remove();\r\n\r\n    return bBox.width;\r\n  }\r\n\r\n  private createExtents() {\r\n    const hasMin = this.options?.min != null;\r\n    const hasMax = this.options?.max != null;\r\n\r\n    if (!hasMin || !hasMax) {\r\n      const filtered = this._chartOptions?.series?.filter(\r\n        (serie: Series<BasePoint>) =>\r\n          this._index ===\r\n          serie[this._type === AxisType.abscissa ? 'xAxisIndex' : 'yAxisIndex']\r\n      );\r\n\r\n      const raw = filtered.map((series: Series<BasePoint>) =>\r\n        d3.extent(series?.data, (point: BasePoint) =>\r\n          this._type === AxisType.abscissa ? point.x : point.y\r\n        )\r\n      );\r\n\r\n      const merged = [].concat(...(raw ?? []));\r\n\r\n      const abs = (num) => Math.abs(num);\r\n\r\n      this._extents = this.options.negative\r\n        ? [-Math.abs(d3.max(merged.map(abs))), d3.max(merged.map(abs))]\r\n        : [d3.min(merged), d3.max(merged)];\r\n    }\r\n\r\n    if (hasMin) {\r\n      this._extents[0] = this.options?.min;\r\n    }\r\n\r\n    if (hasMax) {\r\n      this._extents[1] = this.options?.max;\r\n    }\r\n  }\r\n}\r\n",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "args": [
-                    {
-                        "name": "options",
-                        "type": "literal type",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    }
-                ],
-                "line": 18,
-                "jsdoctags": [
-                    {
-                        "name": "options",
-                        "type": "literal type",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    }
-                ]
-            },
-            "properties": [
-                {
-                    "name": "_chartOptions",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "ChartOptions",
-                    "optional": false,
-                    "description": "",
-                    "line": 13,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_extents",
-                    "defaultValue": "[0, 0]",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "[number, number]",
-                    "optional": false,
-                    "description": "",
-                    "line": 14,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_height",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 16,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_index",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 15,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_offset",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 17,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_ticks",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "any",
-                    "optional": false,
-                    "description": "",
-                    "line": 18,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "_type",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "AxisType",
-                    "optional": false,
-                    "description": "",
-                    "line": 12,
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "offsetFactor",
-                    "defaultValue": "22",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 9,
-                    "modifierKind": [
-                        124
-                    ]
-                },
-                {
-                    "name": "width",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 10,
-                    "modifierKind": [
-                        123,
-                        143
-                    ]
-                }
-            ],
-            "methods": [
-                {
-                    "name": "calculateAxisWidth",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "number",
-                    "typeParameters": [],
-                    "line": 69,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "createExtents",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 96,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "modifierKind": [
-                        121
-                    ]
-                },
-                {
-                    "name": "setOffset",
-                    "args": [
-                        {
-                            "name": "offset",
-                            "type": "number",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 65,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "name": "offset",
-                            "type": "number",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                }
-            ],
-            "indexSignatures": [],
-            "accessors": {
-                "index": {
-                    "name": "index",
-                    "getSignature": {
-                        "name": "index",
-                        "type": "",
-                        "returnType": "",
-                        "line": 39
-                    }
-                },
-                "options": {
-                    "name": "options",
-                    "getSignature": {
-                        "name": "options",
-                        "type": "",
-                        "returnType": "AxisOptions",
-                        "line": 43
-                    }
-                },
-                "extent": {
-                    "name": "extent",
-                    "getSignature": {
-                        "name": "extent",
-                        "type": "",
-                        "returnType": "",
-                        "line": 49
-                    }
-                },
-                "type": {
-                    "name": "type",
-                    "getSignature": {
-                        "name": "type",
-                        "type": "",
-                        "returnType": "AxisType",
-                        "line": 53
-                    }
-                },
-                "offset": {
-                    "name": "offset",
-                    "getSignature": {
-                        "name": "offset",
-                        "type": "number",
-                        "returnType": "number",
-                        "line": 57
-                    }
-                },
-                "ticks": {
-                    "name": "ticks",
-                    "getSignature": {
-                        "name": "ticks",
-                        "type": "",
-                        "returnType": "",
-                        "line": 61
                     }
                 }
             },
@@ -22860,12 +22860,12 @@
         },
         {
             "name": "OnlyNumberDirective",
-            "id": "directive-OnlyNumberDirective-b055a6d080d1f62a8bee4476d0268408",
+            "id": "directive-OnlyNumberDirective-d24bc6317bab93e39c349adf0d25a92d",
             "file": "projects/components/src/directive/only-number/only-number.directive.ts",
             "type": "directive",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import {Directive, ElementRef, HostListener, Input} from '@angular/core';\r\nimport {NgControl} from '@angular/forms';\r\n\r\n@Directive({\r\n  selector: '[tetaOnlyNumber]',\r\n})\r\nexport class OnlyNumberDirective {\r\n  @Input() tetaOnlyNumber = true;\r\n  @Input() allowDecimals = true;\r\n  @Input() allowSign = true;\r\n  @Input() decimalSeparator = '.';\r\n  @Input() commaSeparator = ',';\r\n\r\n  private _previousValue = '';\r\n\r\n  private _integerUnsigned = '^[0-9]*$';\r\n  private _integerSigned = '^-?[0-9]+$';\r\n  private _decimalUnsigned = '^[0-9]+(.[0-9]+)?$';\r\n  private _decimalSigned = '^-?[0-9]+(.[0-9]+)?$';\r\n\r\n  private readonly _minusSign: string = '-';\r\n\r\n  constructor(private _elementRef: ElementRef, private _control: NgControl) {\r\n  }\r\n\r\n  @HostListener('change', ['$event']) onChange(e: any) {\r\n    if (this.tetaOnlyNumber === false) {\r\n      return;\r\n    }\r\n    this.validateValue(this._elementRef.nativeElement.value);\r\n  }\r\n\r\n  @HostListener('paste', ['$event']) onPaste(e: any) {\r\n    if (this.tetaOnlyNumber === false) {\r\n      return;\r\n    }\r\n    this.validateValue(e.clipboardData.getData('text/plain'));\r\n    e.preventDefault();\r\n  }\r\n\r\n  @HostListener('keydown', ['$event']) onKeyDown(e: KeyboardEvent) {\r\n    if (this.tetaOnlyNumber === false) {\r\n      return;\r\n    }\r\n    const cursorPosition: number =\r\n      (e.target as HTMLInputElement).selectionStart ?? 0;\r\n    const originalValue: string = (e.target as HTMLInputElement).value;\r\n    const controlOrCommand = e.ctrlKey === true || e.metaKey === true;\r\n    const signExists = originalValue.includes('-');\r\n    const separatorExists =\r\n      originalValue.includes(this.decimalSeparator) ||\r\n      originalValue.includes(this.commaSeparator);\r\n\r\n    const allowedKeys = [\r\n      'Backspace',\r\n      'ArrowLeft',\r\n      'ArrowRight',\r\n      'Delete',\r\n      'Escape',\r\n      'Tab',\r\n      'Home',\r\n      'End',\r\n    ];\r\n\r\n    const separatorIsCloseToSign = signExists && cursorPosition <= 1;\r\n    if (this.allowDecimals && !separatorIsCloseToSign && !separatorExists) {\r\n      // if (this.decimalSeparator === '.') {\r\n      allowedKeys.push('.');\r\n      // } else {\r\n      // allowedKeys.push(',');\r\n      // }\r\n    }\r\n\r\n    const firstCharacterIsSeparator =\r\n      originalValue.charAt(0) !== this.decimalSeparator;\r\n    if (\r\n      this.allowSign &&\r\n      !signExists &&\r\n      firstCharacterIsSeparator &&\r\n      cursorPosition === 0\r\n    ) {\r\n      allowedKeys.push('-');\r\n    }\r\n\r\n    if (\r\n      allowedKeys.indexOf(e.key) !== -1 ||\r\n      (e.code === 'KeyA' && controlOrCommand) ||\r\n      (e.code === 'KeyC' && controlOrCommand) ||\r\n      (e.code === 'KeyV' && controlOrCommand) ||\r\n      (e.code === 'KeyZ' && controlOrCommand) ||\r\n      (e.code === 'KeyX' && controlOrCommand)\r\n    ) {\r\n      return;\r\n    }\r\n    this._previousValue = originalValue;\r\n\r\n    const isNumber = new RegExp(this._integerUnsigned).test(e.key);\r\n    if (isNumber) {\r\n      return;\r\n    } else {\r\n      if (e.key === ',' && originalValue.indexOf('.') < 0) {\r\n        this._elementRef.nativeElement.value = originalValue + '.';\r\n      }\r\n      e.preventDefault();\r\n    }\r\n  }\r\n\r\n  validateValue(value: string): void {\r\n    if (this.tetaOnlyNumber === false) {\r\n      return;\r\n    }\r\n    value = value.replace(',', '.').trim();\r\n    let regex: string = this._integerUnsigned;\r\n    if (!this.allowDecimals && !this.allowSign) {\r\n      regex = this._integerUnsigned;\r\n    }\r\n    if (!this.allowDecimals && this.allowSign) {\r\n      regex = this._integerSigned;\r\n    }\r\n    if (this.allowDecimals && !this.allowSign) {\r\n      regex = this._decimalUnsigned;\r\n    }\r\n    if (this.allowDecimals && this.allowSign) {\r\n      regex = this._decimalSigned;\r\n    }\r\n\r\n    let firstCharacter = value.charAt(0);\r\n    if (firstCharacter === this.decimalSeparator) {\r\n      value = 0 + value;\r\n    }\r\n\r\n    const lastCharacter = value.charAt(value.length - 1);\r\n    if (lastCharacter === this.decimalSeparator) {\r\n      value = value + 0;\r\n    }\r\n\r\n    let signedValue = false;\r\n    if (firstCharacter === this._minusSign) {\r\n      signedValue = true;\r\n      value = value.substring(1);\r\n      firstCharacter = value.charAt(0);\r\n    }\r\n    let secondChar = value.charAt(1);\r\n    while (\r\n      firstCharacter === '0' &&\r\n      secondChar !== '' &&\r\n      secondChar !== this.decimalSeparator\r\n      ) {\r\n      value = value.substring(1);\r\n      firstCharacter = value.charAt(0);\r\n      secondChar = value.charAt(1);\r\n    }\r\n    if (signedValue === true) {\r\n      value = this._minusSign + value;\r\n    }\r\n\r\n    const valueParts = value.split(this.decimalSeparator);\r\n    const naturalPart = valueParts?.[0];\r\n    let decimalPart = valueParts?.[1];\r\n\r\n    if (decimalPart != null && /^0+$/.test(decimalPart)) {\r\n      decimalPart = '0';\r\n      value = naturalPart + '.' + decimalPart;\r\n    }\r\n    if (value === '-0') {\r\n      value = '0';\r\n    }\r\n    if (value === '-0.0') {\r\n      value = '0.0';\r\n    }\r\n    const valid: boolean = new RegExp(regex).test(value.toString());\r\n    this._control.control.setValue(valid ? value : this._previousValue ?? 0);\r\n  }\r\n}\r\n",
+            "sourceCode": "import {Directive, ElementRef, HostListener, Input} from '@angular/core';\r\nimport {NgControl} from '@angular/forms';\r\n\r\n@Directive({\r\n  selector: '[tetaOnlyNumber]',\r\n})\r\nexport class OnlyNumberDirective {\r\n  @Input() tetaOnlyNumber = true;\r\n  @Input() allowDecimals = true;\r\n  @Input() allowSign = true;\r\n  @Input() decimalSeparator = '.';\r\n  @Input() commaSeparator = ',';\r\n\r\n  private _previousValue = '';\r\n\r\n  private _integerUnsigned = '^[0-9]*$';\r\n  private _integerSigned = '^-?[0-9]+$';\r\n  private _decimalUnsigned = '^[0-9]+(.[0-9]+)?$';\r\n  private _decimalSigned = '^-?[0-9]+(.[0-9]+)?$';\r\n\r\n  private readonly _minusSign: string = '-';\r\n\r\n  constructor(private _elementRef: ElementRef, private _control: NgControl) {\r\n  }\r\n\r\n  @HostListener('change', ['$event']) onChange(e: any) {\r\n    if (this.tetaOnlyNumber === false) {\r\n      return;\r\n    }\r\n    this.validateValue(this._elementRef.nativeElement.value);\r\n  }\r\n\r\n  @HostListener('paste', ['$event']) onPaste(e: any) {\r\n    if (this.tetaOnlyNumber === false) {\r\n      return;\r\n    }\r\n    this.validateValue(e.clipboardData.getData('text/plain'));\r\n    e.preventDefault();\r\n  }\r\n\r\n  @HostListener('keydown', ['$event']) onKeyDown(e: KeyboardEvent) {\r\n    if (this.tetaOnlyNumber === false) {\r\n      return;\r\n    }\r\n    const cursorPosition: number =\r\n      (e.target as HTMLInputElement).selectionStart ?? 0;\r\n    const originalValue: string = (e.target as HTMLInputElement).value;\r\n    const controlOrCommand = e.ctrlKey === true || e.metaKey === true;\r\n    const signExists = originalValue.includes('-');\r\n    const separatorExists =\r\n      originalValue.includes(this.decimalSeparator) ||\r\n      originalValue.includes(this.commaSeparator);\r\n\r\n    const allowedKeys = [\r\n      'Backspace',\r\n      'ArrowLeft',\r\n      'ArrowRight',\r\n      'Delete',\r\n      'Escape',\r\n      'Tab',\r\n      'Home',\r\n      'End',\r\n    ];\r\n\r\n    const separatorIsCloseToSign = signExists && cursorPosition <= 1;\r\n    if (this.allowDecimals && !separatorIsCloseToSign && !separatorExists) {\r\n      // if (this.decimalSeparator === '.') {\r\n      allowedKeys.push('.');\r\n      // } else {\r\n      // allowedKeys.push(',');\r\n      // }\r\n    }\r\n\r\n    const firstCharacterIsSeparator =\r\n      originalValue.charAt(0) !== this.decimalSeparator;\r\n    if (\r\n      this.allowSign &&\r\n      !signExists &&\r\n      firstCharacterIsSeparator &&\r\n      cursorPosition === 0\r\n    ) {\r\n      allowedKeys.push('-');\r\n    }\r\n\r\n    if (\r\n      allowedKeys.indexOf(e.key) !== -1 ||\r\n      (e.code === 'KeyA' && controlOrCommand) ||\r\n      (e.code === 'KeyC' && controlOrCommand) ||\r\n      (e.code === 'KeyV' && controlOrCommand) ||\r\n      (e.code === 'KeyZ' && controlOrCommand) ||\r\n      (e.code === 'KeyX' && controlOrCommand)\r\n    ) {\r\n      return;\r\n    }\r\n    this._previousValue = originalValue;\r\n\r\n    const isNumber = new RegExp(this._integerUnsigned).test(e.key);\r\n    if (isNumber) {\r\n      return;\r\n    } else {\r\n      if (e.key === ',' && originalValue.indexOf('.') < 0) {\r\n        this._elementRef.nativeElement.value =\r\n          `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`;\r\n      }\r\n      e.preventDefault();\r\n    }\r\n  }\r\n\r\n  validateValue(value: string): void {\r\n    if (this.tetaOnlyNumber === false) {\r\n      return;\r\n    }\r\n    value = value.replace(',', '.').trim();\r\n    let regex: string = this._integerUnsigned;\r\n    if (!this.allowDecimals && !this.allowSign) {\r\n      regex = this._integerUnsigned;\r\n    }\r\n    if (!this.allowDecimals && this.allowSign) {\r\n      regex = this._integerSigned;\r\n    }\r\n    if (this.allowDecimals && !this.allowSign) {\r\n      regex = this._decimalUnsigned;\r\n    }\r\n    if (this.allowDecimals && this.allowSign) {\r\n      regex = this._decimalSigned;\r\n    }\r\n\r\n    let firstCharacter = value.charAt(0);\r\n    if (firstCharacter === this.decimalSeparator) {\r\n      value = 0 + value;\r\n    }\r\n\r\n    const lastCharacter = value.charAt(value.length - 1);\r\n    if (lastCharacter === this.decimalSeparator) {\r\n      value = value + 0;\r\n    }\r\n\r\n    let signedValue = false;\r\n    if (firstCharacter === this._minusSign) {\r\n      signedValue = true;\r\n      value = value.substring(1);\r\n      firstCharacter = value.charAt(0);\r\n    }\r\n    let secondChar = value.charAt(1);\r\n    while (\r\n      firstCharacter === '0' &&\r\n      secondChar !== '' &&\r\n      secondChar !== this.decimalSeparator\r\n      ) {\r\n      value = value.substring(1);\r\n      firstCharacter = value.charAt(0);\r\n      secondChar = value.charAt(1);\r\n    }\r\n    if (signedValue === true) {\r\n      value = this._minusSign + value;\r\n    }\r\n\r\n    const valueParts = value.split(this.decimalSeparator);\r\n    const naturalPart = valueParts?.[0];\r\n    let decimalPart = valueParts?.[1];\r\n\r\n    if (decimalPart != null && /^0+$/.test(decimalPart)) {\r\n      decimalPart = '0';\r\n      value = naturalPart + '.' + decimalPart;\r\n    }\r\n    if (value === '-0') {\r\n      value = '0';\r\n    }\r\n    if (value === '-0.0') {\r\n      value = '0.0';\r\n    }\r\n    const valid: boolean = new RegExp(regex).test(value.toString());\r\n    this._control.control.setValue(valid ? value : this._previousValue ?? 0);\r\n  }\r\n}\r\n",
             "selector": "[tetaOnlyNumber]",
             "providers": [],
             "inputsClass": [
@@ -23164,7 +23164,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 108,
+                    "line": 109,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -24059,12 +24059,12 @@
         },
         {
             "name": "ZoomableDirective",
-            "id": "directive-ZoomableDirective-1ea9bd23a4e3a924d2f7fd059be1740c",
+            "id": "directive-ZoomableDirective-c632f3affa6e7a77b85c37ff3400337f",
             "file": "projects/chart/src/chart/directives/zoomable.directive.ts",
             "type": "directive",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import {Directive, ElementRef, HostBinding, Input, NgZone, OnDestroy, SimpleChanges,} from '@angular/core';\r\nimport {ZoomService} from '../service/zoom.service';\r\nimport {IChartConfig} from '../model/i-chart-config';\r\nimport {Axis} from '../core/axis/axis';\r\n\r\nimport * as d3 from 'd3';\r\nimport {D3ZoomEvent, ZoomBehavior, zoomIdentity} from 'd3';\r\nimport {ZoomType} from '../model/enum/zoom-type';\r\nimport {AxisOrientation} from '../model/enum/axis-orientation';\r\nimport {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';\r\nimport {BrushType} from '../model/enum/brush-type';\r\nimport {BroadcastService} from '../service/broadcast.service';\r\nimport {tap, throttleTime} from 'rxjs/operators';\r\nimport {filter, takeWhile, combineLatest, zip, withLatestFrom} from 'rxjs';\r\nimport {ChartService} from '../service/chart.service';\r\n\r\n@Directive({\r\n  selector: '[tetaZoomable]',\r\n})\r\nexport class ZoomableDirective implements OnDestroy {\r\n  @Input() config?: IChartConfig;\r\n  @Input() axis?: Axis;\r\n  @Input() size?: DOMRect;\r\n  @Input() brushScale?: any;\r\n\r\n  @HostBinding('class.zoomable') private zoomable = false;\r\n\r\n  private _element: d3.Selection<SVGElement, any, any, any>;\r\n  private zoomAxis: Axis;\r\n  private zoom: ZoomBehavior<any, any>;\r\n  private alive = true;\r\n\r\n  private currentTransform = zoomIdentity;\r\n\r\n  constructor(\r\n    private elementRef: ElementRef,\r\n    private zoomService: ZoomService,\r\n    private broadcastService: BroadcastService,\r\n    private zone: NgZone\r\n  ) {\r\n  }\r\n\r\n  ngOnInit() {\r\n    if (this.axis?.options?.zoom || this.config?.zoom?.enable) {\r\n      this.zoomable = true;\r\n    }\r\n  }\r\n\r\n  zoomed = (event: D3ZoomEvent<any, any>) => {\r\n    if (event.sourceEvent) {\r\n      if (Object.keys(event.sourceEvent).length !== 0) {\r\n        if (this.currentTransform === event.transform) {\r\n          return;\r\n        }\r\n\r\n        const message = new ZoomMessage({\r\n          event,\r\n          axis: this.zoomAxis,\r\n          brushDomain:\r\n            this.config.brush?.type === BrushType.x\r\n              ? this.brushScale.domain()\r\n              : this.brushScale.domain(),\r\n        });\r\n\r\n        this.broadcastService.broadcastZoom({\r\n          channel: this.config?.zoom?.syncChannel,\r\n          message,\r\n        });\r\n      }\r\n\r\n      this.zoomService.setZoom({\r\n        event,\r\n        target: this.zoomAxis\r\n      });\r\n\r\n      this.currentTransform = event.transform;\r\n\r\n    }\r\n  };\r\n\r\n  ngAfterViewInit() {\r\n    const enable = this.axis?.options?.zoom || this.config?.zoom?.enable;\r\n\r\n    if (!enable) {\r\n      return;\r\n    }\r\n\r\n    this._element = d3.select(this.elementRef.nativeElement);\r\n\r\n    this.zoom = d3\r\n      .zoom()\r\n      .scaleExtent([0, Infinity])\r\n      .extent([\r\n        [0, 0],\r\n        [this.size.width, this.size.height],\r\n      ]);\r\n\r\n\r\n    const commonZoomAxis = Axis.createAxis(\r\n      this.config?.zoom.type === ZoomType.x ? AxisOrientation.x : AxisOrientation.y,\r\n      this.config,\r\n      0,\r\n      true\r\n    );\r\n\r\n    this.zoomAxis = this.axis ?? commonZoomAxis;\r\n\r\n\r\n    if (enable) {\r\n      this.zoom.on('start zoom end', this.zoomed);\r\n      this._element.call(this.zoom);\r\n    }\r\n\r\n\r\n    // Subscribe to zoom events\r\n    this.broadcastService.subscribeToZoom(this.config?.zoom.syncChannel).pipe(\r\n      filter((m: IBroadcastMessage<ZoomMessage>) => m.message.event.sourceEvent instanceof MouseEvent || m.message.event.sourceEvent instanceof WheelEvent),\r\n      throttleTime(50, undefined, {trailing: true}),\r\n      filter((m: IBroadcastMessage<ZoomMessage>) => {\r\n        return this.zoomAxis.index === m.message?.axis?.index && this.zoomAxis.orientation === m.message?.axis?.orientation;\r\n      }),\r\n      tap((m: IBroadcastMessage<ZoomMessage>) => {\r\n\r\n        const currentTransform = d3.zoomTransform(\r\n          this.elementRef.nativeElement\r\n        );\r\n\r\n        if (currentTransform !== m.message.event.transform) {\r\n          this._element.call(this.zoom.transform, m.message.event.transform, null, {});\r\n        }\r\n\r\n      }),\r\n      takeWhile((_) => this.alive)\r\n    ).subscribe();\r\n\r\n\r\n    // Subscribe to brush events x or y\r\n\r\n    if ((this.config.brush?.type === BrushType.x && this.zoomAxis.orientation === AxisOrientation.x) ||\r\n      (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {\r\n\r\n      this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel).pipe(\r\n        throttleTime(50, undefined, {trailing: true}),\r\n        filter((m: IBroadcastMessage<BrushMessage>) => Boolean(m.message.selection)),\r\n        tap((m: IBroadcastMessage<BrushMessage>) => {\r\n          this.zone.runOutsideAngular(() => {\r\n            setTimeout(() => {\r\n              this.updateZoom(m);\r\n            });\r\n          });\r\n        }),\r\n        takeWhile((_) => this.alive)\r\n      ).subscribe();\r\n    }\r\n  }\r\n\r\n\r\n  ngOnChanges(changes: SimpleChanges) {\r\n  }\r\n\r\n  ngOnDestroy(): void {\r\n    this.zoom?.on('start zoom end', null);\r\n    this.alive = false;\r\n  }\r\n\r\n  private updateZoom(m: IBroadcastMessage<BrushMessage>) {\r\n    const s = m.message.selection;\r\n\r\n\r\n    this.brushScale.domain(m.message.brushScale.domain());\r\n\r\n    const domain = this.brushScale.domain();\r\n\r\n    const scale = (domain[1] - domain[0]) / (s[1] - s[0]);\r\n\r\n    let transform = zoomIdentity.scale(scale);\r\n\r\n    if (m.message?.brushType === BrushType.x) {\r\n      transform = transform.translate(-this.brushScale(s[0]), 0);\r\n    }\r\n    if (m.message?.brushType === BrushType.y) {\r\n      transform = transform.translate(0, -this.brushScale(s[0]));\r\n    }\r\n\r\n    this._element.call(\r\n      this.zoom.transform,\r\n      transform,\r\n      null,\r\n      {}\r\n    );\r\n  }\r\n}\r\n",
+            "sourceCode": "import {Directive, ElementRef, HostBinding, Input, NgZone, OnDestroy, SimpleChanges,} from '@angular/core';\r\nimport {ZoomService} from '../service/zoom.service';\r\nimport {IChartConfig} from '../model/i-chart-config';\r\nimport {Axis} from '../core/axis/axis';\r\nimport * as d3 from 'd3';\r\nimport {D3ZoomEvent, ZoomBehavior, zoomIdentity} from 'd3';\r\nimport {ZoomType} from '../model/enum/zoom-type';\r\nimport {AxisOrientation} from '../model/enum/axis-orientation';\r\nimport {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';\r\nimport {BrushType} from '../model/enum/brush-type';\r\nimport {BroadcastService} from '../service/broadcast.service';\r\nimport {tap, throttleTime} from 'rxjs/operators';\r\nimport {filter, takeWhile} from 'rxjs';\r\n\r\n@Directive({\r\n  selector: '[tetaZoomable]',\r\n})\r\nexport class ZoomableDirective implements OnDestroy {\r\n  @Input() config?: IChartConfig;\r\n  @Input() axis?: Axis;\r\n  @Input() size?: DOMRect;\r\n  @Input() brushScale?: any;\r\n\r\n  @HostBinding('class.zoomable') private zoomable = false;\r\n\r\n  private _element: d3.Selection<SVGElement, any, any, any>;\r\n  private zoomAxis: Axis;\r\n  private zoom: ZoomBehavior<any, any>;\r\n  private alive = true;\r\n\r\n  private currentTransform = zoomIdentity;\r\n\r\n  constructor(\r\n    private elementRef: ElementRef,\r\n    private zoomService: ZoomService,\r\n    private broadcastService: BroadcastService,\r\n    private zone: NgZone\r\n  ) {\r\n  }\r\n\r\n  ngOnInit() {\r\n    if (this.axis?.options?.zoom || this.config?.zoom?.enable) {\r\n      this.zoomable = true;\r\n    }\r\n  }\r\n\r\n  zoomed = (event: D3ZoomEvent<any, any>) => {\r\n    if (event.sourceEvent) {\r\n      if (Object.keys(event.sourceEvent).length !== 0) {\r\n        if (this.currentTransform === event.transform && event.type !== 'end') {\r\n          return;\r\n        }\r\n\r\n        const message = new ZoomMessage({\r\n          event,\r\n          axis: this.zoomAxis,\r\n          brushDomain:\r\n            this.config.brush?.type === BrushType.x\r\n              ? this.brushScale.domain()\r\n              : this.brushScale.domain(),\r\n        });\r\n\r\n        this.broadcastService.broadcastZoom({\r\n          channel: this.config?.zoom?.syncChannel,\r\n          message,\r\n        });\r\n      }\r\n\r\n      this.zoomService.setZoom({\r\n        event,\r\n        target: this.zoomAxis\r\n      });\r\n\r\n      this.currentTransform = event.transform;\r\n\r\n    }\r\n  };\r\n\r\n  ngAfterViewInit() {\r\n    const enable = this.axis?.options?.zoom || this.config?.zoom?.enable;\r\n\r\n    if (!enable) {\r\n      return;\r\n    }\r\n\r\n    this._element = d3.select(this.elementRef.nativeElement);\r\n\r\n    this.zoom = d3\r\n      .zoom()\r\n      .scaleExtent([0, Infinity])\r\n      .extent([\r\n        [0, 0],\r\n        [this.size.width, this.size.height],\r\n      ]);\r\n\r\n\r\n    const commonZoomAxis = Axis.createAxis(\r\n      this.config?.zoom.type === ZoomType.x ? AxisOrientation.x : AxisOrientation.y,\r\n      this.config,\r\n      0,\r\n      true\r\n    );\r\n\r\n    this.zoomAxis = this.axis ?? commonZoomAxis;\r\n\r\n\r\n    if (enable) {\r\n      this.zoom.on('start zoom end', this.zoomed);\r\n      this._element.call(this.zoom);\r\n    }\r\n\r\n\r\n    // Subscribe to zoom events\r\n    this.broadcastService.subscribeToZoom(this.config?.zoom.syncChannel).pipe(\r\n      filter((m: IBroadcastMessage<ZoomMessage>) => m.message.event.sourceEvent instanceof MouseEvent || m.message.event.sourceEvent instanceof WheelEvent),\r\n      throttleTime(50, undefined, {trailing: true}),\r\n      filter((m: IBroadcastMessage<ZoomMessage>) => {\r\n        return this.zoomAxis.index === m.message?.axis?.index && this.zoomAxis.orientation === m.message?.axis?.orientation;\r\n      }),\r\n      tap((m: IBroadcastMessage<ZoomMessage>) => {\r\n\r\n        const currentTransform = d3.zoomTransform(\r\n          this.elementRef.nativeElement\r\n        );\r\n\r\n        if (currentTransform !== m.message.event.transform) {\r\n          this._element.call(this.zoom.transform, m.message.event.transform, null, {});\r\n        }\r\n\r\n      }),\r\n      takeWhile((_) => this.alive)\r\n    ).subscribe();\r\n\r\n\r\n    // Subscribe to brush events x or y\r\n\r\n    if ((this.config.brush?.type === BrushType.x && this.zoomAxis.orientation === AxisOrientation.x) ||\r\n      (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {\r\n\r\n      this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel).pipe(\r\n        throttleTime(50, undefined, {trailing: true}),\r\n        filter((m: IBroadcastMessage<BrushMessage>) => Boolean(m.message.selection)),\r\n        tap((m: IBroadcastMessage<BrushMessage>) => {\r\n          this.zone.runOutsideAngular(() => {\r\n            setTimeout(() => {\r\n              this.updateZoom(m);\r\n            });\r\n          });\r\n        }),\r\n        takeWhile((_) => this.alive)\r\n      ).subscribe();\r\n    }\r\n  }\r\n\r\n\r\n  ngOnChanges(changes: SimpleChanges) {\r\n  }\r\n\r\n  ngOnDestroy(): void {\r\n    this.zoom?.on('start zoom end', null);\r\n    this.alive = false;\r\n  }\r\n\r\n  private updateZoom(m: IBroadcastMessage<BrushMessage>) {\r\n    const s = m.message.selection;\r\n\r\n\r\n    this.brushScale.domain(m.message.brushScale.domain());\r\n\r\n    const domain = this.brushScale.domain();\r\n\r\n    const scale = (domain[1] - domain[0]) / (s[1] - s[0]);\r\n\r\n    let transform = zoomIdentity.scale(scale);\r\n\r\n    if (m.message?.brushType === BrushType.x) {\r\n      transform = transform.translate(-this.brushScale(s[0]), 0);\r\n    }\r\n    if (m.message?.brushType === BrushType.y) {\r\n      transform = transform.translate(0, -this.brushScale(s[0]));\r\n    }\r\n\r\n    this._element.call(\r\n      this.zoom.transform,\r\n      transform,\r\n      null,\r\n      {}\r\n    );\r\n  }\r\n}\r\n",
             "selector": "[tetaZoomable]",
             "providers": [],
             "inputsClass": [
@@ -24072,28 +24072,28 @@
                     "name": "axis",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 22,
+                    "line": 20,
                     "type": "Axis"
                 },
                 {
                     "name": "brushScale",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 24,
+                    "line": 22,
                     "type": "any"
                 },
                 {
                     "name": "config",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 21,
+                    "line": 19,
                     "type": "IChartConfig"
                 },
                 {
                     "name": "size",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 23,
+                    "line": 21,
                     "type": "DOMRect"
                 }
             ],
@@ -24106,7 +24106,7 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 26,
+                    "line": 24,
                     "type": "boolean"
                 }
             ],
@@ -24119,7 +24119,7 @@
                     "type": "d3.Selection<SVGElement | any | any | any>",
                     "optional": false,
                     "description": "",
-                    "line": 28,
+                    "line": 26,
                     "modifierKind": [
                         121
                     ]
@@ -24132,7 +24132,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 31,
+                    "line": 29,
                     "modifierKind": [
                         121
                     ]
@@ -24145,7 +24145,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 33,
+                    "line": 31,
                     "modifierKind": [
                         121
                     ]
@@ -24157,7 +24157,7 @@
                     "type": "ZoomBehavior<any | any>",
                     "optional": false,
                     "description": "",
-                    "line": 30,
+                    "line": 28,
                     "modifierKind": [
                         121
                     ]
@@ -24170,7 +24170,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 26,
+                    "line": 24,
                     "decorators": [
                         {
                             "name": "HostBinding",
@@ -24188,7 +24188,7 @@
                     "type": "Axis",
                     "optional": false,
                     "description": "",
-                    "line": 29,
+                    "line": 27,
                     "modifierKind": [
                         121
                     ]
@@ -24201,7 +24201,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 49
+                    "line": 47
                 }
             ],
             "methodsClass": [
@@ -24211,7 +24211,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 81,
+                    "line": 79,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -24228,7 +24228,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 158,
+                    "line": 156,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -24249,7 +24249,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 161,
+                    "line": 159,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -24259,7 +24259,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 43,
+                    "line": 41,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -24276,7 +24276,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 166,
+                    "line": 164,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -24329,7 +24329,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 33,
+                "line": 31,
                 "jsdoctags": [
                     {
                         "name": "elementRef",
@@ -42497,7 +42497,7 @@
                     }
                 }
             },
-            "templateData": "<div class=\"form-row padding-3\">\r\n  <teta-input [label]=\"'От'\">\r\n    <input class=\"input\" type=\"text\"\r\n           style=\"width: 110px\"\r\n           [ngModel]=\"filter.value?.greaterThan\"\r\n           (ngModelChange)=\"filter.value.greaterThan=$event\"/>\r\n  </teta-input>\r\n  <teta-input [label]=\"'До'\">\r\n    <input class=\"input\" type=\"text\"\r\n           style=\"width: 110px\"\r\n           [ngModel]=\"filter.value?.lessThan\"\r\n           (ngModelChange)=\"filter.value.lessThan=$event\"/>\r\n  </teta-input>\r\n</div>\r\n"
+            "templateData": "<div class=\"form-row padding-3\">\r\n  <teta-input [label]=\"'От'\">\r\n    <input class=\"input\" type=\"text\"\r\n           style=\"width: 110px\"\r\n           [tetaOnlyNumber]=\"true\"\r\n           [ngModel]=\"filter.value?.greaterThan\"\r\n           (ngModelChange)=\"filter.value.greaterThan=$event\"/>\r\n  </teta-input>\r\n  <teta-input [label]=\"'До'\">\r\n    <input class=\"input\" type=\"text\"\r\n           style=\"width: 110px\"\r\n           [tetaOnlyNumber]=\"true\"\r\n           [ngModel]=\"filter.value?.lessThan\"\r\n           (ngModelChange)=\"filter.value.lessThan=$event\"/>\r\n  </teta-input>\r\n</div>\r\n"
         },
         {
             "name": "NumericItemDefaultComponent",
@@ -56874,11 +56874,7 @@
                 },
                 {
                     "type": "declarations",
-                    "elements": [
-                        {
-                            "name": "ChartComponent"
-                        }
-                    ]
+                    "elements": []
                 },
                 {
                     "type": "imports",
@@ -57487,13 +57483,13 @@
         },
         {
             "name": "FilterModule",
-            "id": "module-FilterModule-411869861466590463561997314f100c",
+            "id": "module-FilterModule-ab70341d85bbe86c0c126a7429d700d0",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "projects/components/src/component/filter/filter.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { CommonModule } from '@angular/common';\r\nimport { FilterPanelComponent } from './filter-panel/filter-panel.component';\r\nimport { NumericFilterComponent } from './numeric-filter/numeric-filter.component';\r\nimport { StringFilterComponent } from './string-filter/string-filter.component';\r\nimport { ListFilterComponent } from './list-filter/list-filter.component';\r\nimport { DateFilterComponent } from './date-filter/date-filter.component';\r\nimport { FilterHostComponent } from './filter-host/filter-host.component';\r\nimport { SelectModule } from '../select/select.module';\r\nimport { FormsModule } from '@angular/forms';\r\nimport { DatePickerModule } from '../date-picker/date-picker.module';\r\nimport { BooleanFilterComponent } from './boolean-filter/boolean-filter.component';\r\nimport { RadioModule } from '../radio/radio.module';\r\nimport { InputModule } from '../input/input.module';\r\nimport { CheckboxModule } from '../checkbox/checkbox.module';\r\n\r\n@NgModule({\r\n  declarations: [\r\n    FilterPanelComponent,\r\n    NumericFilterComponent,\r\n    StringFilterComponent,\r\n    ListFilterComponent,\r\n    DateFilterComponent,\r\n    FilterHostComponent,\r\n    BooleanFilterComponent,\r\n  ],\r\n  exports: [\r\n    FilterPanelComponent,\r\n    NumericFilterComponent,\r\n    StringFilterComponent,\r\n    ListFilterComponent,\r\n    DateFilterComponent,\r\n    FilterHostComponent,\r\n    BooleanFilterComponent,\r\n  ],\r\n  imports: [\r\n    CommonModule,\r\n    SelectModule,\r\n    FormsModule,\r\n    DatePickerModule,\r\n    RadioModule,\r\n    InputModule,\r\n    CheckboxModule,\r\n  ],\r\n})\r\nexport class FilterModule {}\r\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { CommonModule } from '@angular/common';\r\nimport { FilterPanelComponent } from './filter-panel/filter-panel.component';\r\nimport { NumericFilterComponent } from './numeric-filter/numeric-filter.component';\r\nimport { StringFilterComponent } from './string-filter/string-filter.component';\r\nimport { ListFilterComponent } from './list-filter/list-filter.component';\r\nimport { DateFilterComponent } from './date-filter/date-filter.component';\r\nimport { FilterHostComponent } from './filter-host/filter-host.component';\r\nimport { SelectModule } from '../select/select.module';\r\nimport { FormsModule } from '@angular/forms';\r\nimport { DatePickerModule } from '../date-picker/date-picker.module';\r\nimport { BooleanFilterComponent } from './boolean-filter/boolean-filter.component';\r\nimport { RadioModule } from '../radio/radio.module';\r\nimport { InputModule } from '../input/input.module';\r\nimport { CheckboxModule } from '../checkbox/checkbox.module';\r\nimport {OnlyNumberModule} from '../../directive/only-number/only-number.module';\r\n\r\n@NgModule({\r\n  declarations: [\r\n    FilterPanelComponent,\r\n    NumericFilterComponent,\r\n    StringFilterComponent,\r\n    ListFilterComponent,\r\n    DateFilterComponent,\r\n    FilterHostComponent,\r\n    BooleanFilterComponent,\r\n  ],\r\n  exports: [\r\n    FilterPanelComponent,\r\n    NumericFilterComponent,\r\n    StringFilterComponent,\r\n    ListFilterComponent,\r\n    DateFilterComponent,\r\n    FilterHostComponent,\r\n    BooleanFilterComponent,\r\n  ],\r\n  imports: [\r\n    CommonModule,\r\n    SelectModule,\r\n    FormsModule,\r\n    DatePickerModule,\r\n    RadioModule,\r\n    InputModule,\r\n    CheckboxModule,\r\n    OnlyNumberModule,\r\n  ],\r\n})\r\nexport class FilterModule {}\r\n",
             "children": [
                 {
                     "type": "providers",
@@ -57536,6 +57532,9 @@
                         },
                         {
                             "name": "InputModule"
+                        },
+                        {
+                            "name": "OnlyNumberModule"
                         },
                         {
                             "name": "RadioModule"
@@ -59708,7 +59707,7 @@
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/chart/src/test.ts",
+                "file": "projects/components/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -59718,7 +59717,7 @@
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/test.ts",
+                "file": "projects/chart/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -60338,7 +60337,7 @@
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/chart/src/test.ts",
+                "file": "projects/components/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "literal type"
@@ -60347,7 +60346,7 @@
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/test.ts",
+                "file": "projects/chart/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "literal type"
@@ -60536,21 +60535,21 @@
                 "name": "treeData",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/component/tree/Tree.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "[]",
-                "defaultValue": "[{\r\n  name: 'Тетакомовское м-р (4)',\r\n  icon: 'layers',\r\n  children: [\r\n    {\r\n      name: 'Скважины для тестирования',\r\n      icon: 'folder',\r\n      children: [\r\n        {\r\n          name: 'Тестовая скважина №1',\r\n          icon: 'well',\r\n          children: []\r\n        }, {\r\n          name: 'Стресс-тест',\r\n          icon: 'well',\r\n          children: []\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}, {\r\n  name: 'Test only (1)',\r\n  icon: 'layers',\r\n  children: [\r\n    {\r\n      name: 'Group (1)',\r\n      icon: 'folder',\r\n      children: [\r\n        {\r\n          name: 'well',\r\n          icon: 'well',\r\n          children: [{\r\n            name: 'ГИС',\r\n            icon: 'map',\r\n            children: []\r\n          }, {\r\n            name: 'Конструкция',\r\n            icon: 'tubes',\r\n            children: []\r\n          }, {\r\n            name: 'D1',\r\n            icon: 'angle',\r\n            children: []\r\n          }, {\r\n            name: 'Дизайн №1 copy',\r\n            icon: 'angle',\r\n            children: [{\r\n              name: 'Зоны продуктивности',\r\n              children: []\r\n            }, {\r\n              name: 'План закачки',\r\n              children: []\r\n            }, {\r\n              name: 'Опции',\r\n              children: []\r\n            }, {\r\n              name: 'Результаты',\r\n              children: []\r\n            }]\r\n          }]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}]"
-            },
-            {
-                "name": "treeData",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/component/toolbar/Toolbar.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "[]",
                 "defaultValue": "[\r\n  {\r\n    name: 'Тетакомовское м-р (4)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Скважины для тестирования',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'Тестовая скважина №1',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n          {\r\n            name: 'Стресс-тест',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n  {\r\n    name: 'Test only (1)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Group (1)',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'well',\r\n            icon: 'well',\r\n            children: [\r\n              {\r\n                name: 'ГИС',\r\n                icon: 'map',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Конструкция',\r\n                icon: 'tubes',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'D1',\r\n                icon: 'angle',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Дизайн №1 copy',\r\n                icon: 'angle',\r\n                children: [\r\n                  {\r\n                    name: 'Зоны продуктивности',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'План закачки',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Опции',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Результаты',\r\n                    children: [],\r\n                  },\r\n                ],\r\n              },\r\n            ],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n]"
+            },
+            {
+                "name": "treeData",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/component/tree/Tree.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "[]",
+                "defaultValue": "[{\r\n  name: 'Тетакомовское м-р (4)',\r\n  icon: 'layers',\r\n  children: [\r\n    {\r\n      name: 'Скважины для тестирования',\r\n      icon: 'folder',\r\n      children: [\r\n        {\r\n          name: 'Тестовая скважина №1',\r\n          icon: 'well',\r\n          children: []\r\n        }, {\r\n          name: 'Стресс-тест',\r\n          icon: 'well',\r\n          children: []\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}, {\r\n  name: 'Test only (1)',\r\n  icon: 'layers',\r\n  children: [\r\n    {\r\n      name: 'Group (1)',\r\n      icon: 'folder',\r\n      children: [\r\n        {\r\n          name: 'well',\r\n          icon: 'well',\r\n          children: [{\r\n            name: 'ГИС',\r\n            icon: 'map',\r\n            children: []\r\n          }, {\r\n            name: 'Конструкция',\r\n            icon: 'tubes',\r\n            children: []\r\n          }, {\r\n            name: 'D1',\r\n            icon: 'angle',\r\n            children: []\r\n          }, {\r\n            name: 'Дизайн №1 copy',\r\n            icon: 'angle',\r\n            children: [{\r\n              name: 'Зоны продуктивности',\r\n              children: []\r\n            }, {\r\n              name: 'План закачки',\r\n              children: []\r\n            }, {\r\n              name: 'Опции',\r\n              children: []\r\n            }, {\r\n              name: 'Результаты',\r\n              children: []\r\n            }]\r\n          }]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}]"
             },
             {
                 "name": "vertical",
@@ -62143,27 +62142,6 @@
                     "defaultValue": "[SeriesType.line, SeriesType.line]"
                 }
             ],
-            "projects/chart/src/test.ts": [
-                {
-                    "name": "context",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/chart/src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
-                },
-                {
-                    "name": "require",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/chart/src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "literal type"
-                }
-            ],
             "projects/components/src/test.ts": [
                 {
                     "name": "context",
@@ -62180,6 +62158,27 @@
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "projects/components/src/test.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type"
+                }
+            ],
+            "projects/chart/src/test.ts": [
+                {
+                    "name": "context",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/chart/src/test.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
+                },
+                {
+                    "name": "require",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/chart/src/test.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "literal type"

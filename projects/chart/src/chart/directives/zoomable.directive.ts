@@ -113,7 +113,7 @@ export class ZoomableDirective implements OnDestroy {
     // Subscribe to zoom events
     this.broadcastService.subscribeToZoom(this.config?.zoom.syncChannel).pipe(
       filter((m: IBroadcastMessage<ZoomMessage>) => m.message.event.sourceEvent instanceof MouseEvent || m.message.event.sourceEvent instanceof WheelEvent),
-      throttleTime(50, undefined, {trailing: true}),
+      // throttleTime(50, undefined, {trailing: true}),
       filter((m: IBroadcastMessage<ZoomMessage>) => {
         return this.zoomAxis.index === m.message?.axis?.index && this.zoomAxis.orientation === m.message?.axis?.orientation;
       }),
@@ -138,7 +138,7 @@ export class ZoomableDirective implements OnDestroy {
       (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {
 
       this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel).pipe(
-        throttleTime(50, undefined, {trailing: true}),
+        // throttleTime(50, undefined, {trailing: true}),
         filter((m: IBroadcastMessage<BrushMessage>) => Boolean(m.message.selection)),
         tap((m: IBroadcastMessage<BrushMessage>) => {
           this.zone.runOutsideAngular(() => {
@@ -166,6 +166,7 @@ export class ZoomableDirective implements OnDestroy {
 
 
     this.brushScale.domain(m.message.brushScale.domain());
+
 
     const domain = this.brushScale.domain();
 

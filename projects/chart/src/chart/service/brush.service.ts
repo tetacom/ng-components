@@ -38,7 +38,6 @@ export class BrushService {
       const container = d3.select(svgElement.nativeElement);
 
       this.brush.on('start brush end', (_: d3.D3BrushEvent<any>) => {
-
         if (_.sourceEvent) {
           if (!_.selection) return;
 
@@ -63,6 +62,8 @@ export class BrushService {
             brushType: config?.brush?.type ?? BrushType.x,
             brushScale,
           });
+
+          console.log('brush domain', brushScale.domain())
 
           this.broadcastService.broadcastBrush({
             channel: config?.zoom?.syncChannel,

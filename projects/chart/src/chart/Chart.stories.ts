@@ -1,19 +1,19 @@
-import { Meta } from '@storybook/angular/types-6-0';
-import { withKnobs } from '@storybook/addon-knobs';
-import { ChartComponent } from './chart/chart.component';
-import { ChartModule } from './chart.module';
-import { IconModule } from '../../../components/src/component/icon/icon.module';
-import { ButtonModule } from '../../../components/src/component/button/button.module';
-import { IChartConfig } from './model/i-chart-config';
-import { SeriesType } from './model/enum/series-type';
-import { randomInt } from 'd3-random';
+import {Meta} from '@storybook/angular/types-6-0';
+import {withKnobs} from '@storybook/addon-knobs';
+import {ChartComponent} from './chart/chart.component';
+import {ChartModule} from './chart.module';
+import {IconModule} from '../../../components/src/component/icon/icon.module';
+import {ButtonModule} from '../../../components/src/component/button/button.module';
+import {IChartConfig} from './model/i-chart-config';
+import {SeriesType} from './model/enum/series-type';
+import {randomInt} from 'd3-random';
 import * as faker from 'faker';
-import { ZoomType } from './model/enum/zoom-type';
-import { TooltipTracking } from './model/enum/tooltip-tracking';
-import { BrushType } from './model/enum/brush-type';
-import { Series } from './model/series';
-import { BasePoint } from './model/base-point';
-import { FillType } from './model/enum/fill-type';
+import {ZoomType} from './model/enum/zoom-type';
+import {TooltipTracking} from './model/enum/tooltip-tracking';
+import {BrushType} from './model/enum/brush-type';
+import {Series} from './model/series';
+import {BasePoint} from './model/base-point';
+import {FillType} from './model/enum/fill-type';
 
 export default {
   title: 'Component/Chart',
@@ -195,15 +195,15 @@ const createSeries = (size: number) => {
         fillType: FillType.gradient,
         data: Array.from(Array(size).keys())
           .map((key, index, arr) => {
-            const num = faker.datatype.number({ min: 0, max: 5000 });
-            const iconId = faker.datatype.number({ min: 1, max: 14 });
+            const num = faker.datatype.number({min: 0, max: 6000});
+            const iconId = faker.datatype.number({min: 1, max: 14});
 
             const point: BasePoint = {
               x: num,
               y:
                 type === SeriesType.block
                   ? 0
-                  : faker.datatype.number({ min: 0, max: 200 }),
+                  : faker.datatype.number({min: 0, max: 200}),
               iconId: `icon${iconId}`,
               text: faker.commerce.productMaterial(),
             };
@@ -276,15 +276,15 @@ const createChart2 = (size: number): IChartConfig => {
         visible: true,
         inverted: true,
         min: 0,
-        max: 5000,
+        max: faker.datatype.number({min: 5000, max: 6000}),
       },
     ],
     yAxis: [{}],
     brush: {
       enable: true,
       type: BrushType.y,
-      from: faker.datatype.number({ min: 500, max: 600 }),
-      to: faker.datatype.number({ min: 650, max: 700 }),
+      from: faker.datatype.number({min: 500, max: 600}),
+      to: faker.datatype.number({min: 650, max: 700}),
     },
     zoom: {
       enable: false,
@@ -319,6 +319,11 @@ export const basicChart = () => ({
           [palette]="'primary'"
           (click)="config=createChart(500); config2=createChart2(200)">
           Create new Data
+        </button>
+        <button teta-button
+          [palette]="'primary'"
+          (click)="config2=createChart2(200)">
+          Update brush chart
         </button>
         <button teta-button
           [palette]="'primary'"
