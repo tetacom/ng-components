@@ -1,11 +1,10 @@
-import {ChangeDetectorRef, ElementRef, Injectable} from '@angular/core';
+import {ElementRef, Injectable} from '@angular/core';
 import {BrushType} from '../model/enum/brush-type';
 import * as d3 from 'd3';
 import {filter, Subscription, tap} from 'rxjs';
 import {BroadcastService} from './broadcast.service';
 import {IChartConfig} from '../model/i-chart-config';
 import {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';
-import {AxisOrientation} from '../model/enum/axis-orientation';
 import {throttleTime} from 'rxjs/operators';
 
 @Injectable({
@@ -23,7 +22,8 @@ export class BrushService {
   private selection: number[];
 
 
-  constructor(private broadcastService: BroadcastService) {}
+  constructor(private broadcastService: BroadcastService) {
+  }
 
   applyBrush(
     svgElement: ElementRef,
@@ -31,30 +31,28 @@ export class BrushService {
     brushScale: any
   ) {
     this.broadcastSubscribtion?.unsubscribe();
-
+    this.brush?.on('start brush end', null);
     if (config.brush?.enable) {
-      this.brush = this.brushMap.get(config?.brush?.type ?? BrushType.x)
+      this.brush = this.brushMap.get(config?.brush?.type ?? BrushType.x);
 
       const container = d3.select(svgElement.nativeElement);
 
       this.brush.on('start brush end', (_: d3.D3BrushEvent<any>) => {
-
         if (_.sourceEvent) {
           if (!_.selection) return;
 
           const [from, to] = _.selection as number[];
 
-          if(to - from === 0) {
+          if (to - from === 0) {
             const selection: number[] = this.selection?.map(brushScale) ?? [config.brush?.from, config.brush?.to].map(brushScale);
             const halfBrushHeight = (selection[1] - selection[0]) / 2;
-            container.call(this.brush.move,  [from - halfBrushHeight, to + halfBrushHeight], {});
+            container.call(this.brush.move, [from - halfBrushHeight, to + halfBrushHeight], {});
 
             return;
           }
 
 
-
-          if(_.type === 'end' && _.sourceEvent instanceof MouseEvent) {
+          if (_.type === 'end' && _.sourceEvent instanceof MouseEvent) {
             this.selection = _.selection.map(brushScale.invert);
           }
 
@@ -87,7 +85,9 @@ export class BrushService {
           domain[1] = config.brush.to;
         }
 
-        container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : domain.map(brushScale), {});
+        console.log('prev select', this.selection?.map(brushScale))
+
+        container.call(this.brush.move, /*this.selection ? this.selection.map(brushScale) :*/ domain.map(brushScale), {});
 
       }, 0);
 
@@ -105,9 +105,11 @@ export class BrushService {
             brushScale(brushDomain[1]),
           ]);
 
+          console.log('zoom brush', brushDomain)
+
           this.selection = brushDomain;
         })
-      ).subscribe()
+      ).subscribe();
     }
   }
 

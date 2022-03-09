@@ -3,17 +3,17 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Input,
+  Input, OnDestroy,
   OnInit,
 } from '@angular/core';
-import { PlotLine } from '../../model/plot-line';
-import { Axis } from '../../core/axis/axis';
-import { AxisOrientation } from '../../model/enum/axis-orientation';
-import { ZoomService } from '../../service/zoom.service';
-import { ScaleService } from '../../service/scale.service';
+import {PlotLine} from '../../model/plot-line';
+import {Axis} from '../../core/axis/axis';
+import {AxisOrientation} from '../../model/enum/axis-orientation';
+import {ZoomService} from '../../service/zoom.service';
+import {ScaleService} from '../../service/scale.service';
 import * as d3 from 'd3';
-import { IChartEvent } from '../../model/i-chart-event';
-import { ChartService } from '../../service/chart.service';
+import {IChartEvent} from '../../model/i-chart-event';
+import {ChartService} from '../../service/chart.service';
 
 @Component({
   selector: '[teta-plot-line]',
@@ -21,12 +21,13 @@ import { ChartService } from '../../service/chart.service';
   styleUrls: ['./plotline.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlotlineComponent implements OnInit {
+export class PlotlineComponent implements OnInit, OnDestroy {
   @Input() plotLine: PlotLine;
   @Input() size: DOMRect;
   @Input() axis: Axis;
   @Input() scale: any;
   orientation = AxisOrientation;
+  dragElements: any;
 
   private _domain: number[];
 
@@ -36,7 +37,8 @@ export class PlotlineComponent implements OnInit {
     private scaleService: ScaleService,
     private chartService: ChartService,
     private element: ElementRef
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this._domain = this.scale.domain();
@@ -49,16 +51,17 @@ export class PlotlineComponent implements OnInit {
       .select(this.element.nativeElement)
       .selectAll('.grabber');
 
-    const drag = d3
+    this.dragElements = d3
       .drag()
       .subject(() => {
         if (this.axis.orientation === AxisOrientation.y) {
-          return { y: plotlineElement.attr('y1') };
+          return {y: plotlineElement.attr('y1')};
         }
         if (this.axis.orientation === AxisOrientation.x) {
-          return { x: plotlineElement.attr('x1') };
+          return {x: plotlineElement.attr('x1')};
         }
-      })
+      });
+    const drag = this.dragElements
       .on(
         'start drag end',
         (event: d3.D3DragEvent<any, PlotLine, any>, d: PlotLine) => {
@@ -81,6 +84,10 @@ export class PlotlineComponent implements OnInit {
     if (this.plotLine.draggable) {
       grabElement.call(drag);
     }
+  }
+
+  ngOnDestroy() {
+    this.dragElements.on('start drag end', null);
   }
 
   emit(event: IChartEvent<PlotLine>) {

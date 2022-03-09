@@ -10,14 +10,20 @@ import {Series} from '../model/series';
 import {BasePoint} from '../model/base-point';
 import {ScaleService} from '../service/scale.service';
 import {ZoomService} from '../service/zoom.service';
-import {Observable} from 'rxjs';
 import {IChartConfig} from '../model/i-chart-config';
 
 @Component({
   template: '',
 })
 export class SeriesBaseComponent<T extends BasePoint> implements OnInit {
-  @Input() config: IChartConfig;
+  @Input()
+  set config(config: IChartConfig) {
+    this._config = config;
+  }
+
+  get config() {
+    return this._config;
+  }
 
   @Input()
   set series(series: Series<T>) {
@@ -28,11 +34,8 @@ export class SeriesBaseComponent<T extends BasePoint> implements OnInit {
     return this._series;
   }
 
-  @Input() size: DOMRect;
-  @Input() rect: any;
-  zoom: Observable<any>;
-
   protected _series: Series<T>;
+  protected _config: IChartConfig;
 
   constructor(
     protected svc: ChartService,

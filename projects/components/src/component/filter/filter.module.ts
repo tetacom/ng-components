@@ -13,6 +13,7 @@ import { BooleanFilterComponent } from './boolean-filter/boolean-filter.componen
 import { RadioModule } from '../radio/radio.module';
 import { InputModule } from '../input/input.module';
 import { CheckboxModule } from '../checkbox/checkbox.module';
+import {OnlyNumberModule} from '../../directive/only-number/only-number.module';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { CheckboxModule } from '../checkbox/checkbox.module';
     RadioModule,
     InputModule,
     CheckboxModule,
+    OnlyNumberModule,
   ],
 })
 export class FilterModule {}

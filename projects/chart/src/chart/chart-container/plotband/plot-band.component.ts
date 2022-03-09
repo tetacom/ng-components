@@ -5,19 +5,18 @@ import {
   Component,
   ElementRef,
   HostListener,
-  Input,
-  OnInit,
+  Input, OnDestroy
 } from '@angular/core';
 
 import * as d3 from 'd3';
-import { PlotBand } from '../../model/plot-band';
-import { ScaleService } from '../../service/scale.service';
+import {PlotBand} from '../../model/plot-band';
+import {ScaleService} from '../../service/scale.service';
 
-import { Axis } from '../../core/axis/axis';
-import { ZoomService } from '../../service/zoom.service';
-import { AxisOrientation } from '../../model/enum/axis-orientation';
-import { IChartEvent } from '../../model/i-chart-event';
-import { ChartService } from '../../service/chart.service';
+import {Axis} from '../../core/axis/axis';
+import {ZoomService} from '../../service/zoom.service';
+import {AxisOrientation} from '../../model/enum/axis-orientation';
+import {IChartEvent} from '../../model/i-chart-event';
+import {ChartService} from '../../service/chart.service';
 
 @Component({
   selector: '[teta-plot-band]',
@@ -25,13 +24,14 @@ import { ChartService } from '../../service/chart.service';
   styleUrls: ['./plot-band.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlotBandComponent implements AfterViewInit {
+export class PlotBandComponent implements AfterViewInit, OnDestroy {
   @Input() plotBand: PlotBand;
   @Input() axis: Axis;
   @Input() scale: any;
   @Input() size: DOMRect;
   orientation = AxisOrientation;
-
+  resizeElements: any;
+  dragElements: any;
   domain: number[];
 
   constructor(
@@ -40,7 +40,8 @@ export class PlotBandComponent implements AfterViewInit {
     private chartService: ChartService,
     private cdr: ChangeDetectorRef,
     private element: ElementRef
-  ) {}
+  ) {
+  }
 
   @HostListener('click', ['$event']) click(event: MouseEvent) {
     this.emit({
@@ -71,17 +72,19 @@ export class PlotBandComponent implements AfterViewInit {
       .select(this.element.nativeElement)
       .selectAll('.grabber');
 
-    const drag = d3
+    this.dragElements = d3
       .drag()
       .subject(() => {
         if (this.axis.orientation === AxisOrientation.x) {
-          return { x: plotbandElement.attr('x') };
+          return {x: plotbandElement.attr('x')};
         }
 
         if (this.axis.orientation === AxisOrientation.y) {
-          return { y: plotbandElement.attr('y') };
+          return {y: plotbandElement.attr('y')};
         }
-      })
+      });
+
+    const drag = this.dragElements
       .on(
         'start drag end',
         (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
@@ -109,15 +112,15 @@ export class PlotBandComponent implements AfterViewInit {
       );
 
     let grabberKey;
-
-    const resize = d3
-      .drag()
+    this.resizeElements = d3
+      .drag();
+    const resize = this.resizeElements
       .on(
         'start drag end',
         (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
           requestAnimationFrame(() => {
             if (event?.type === 'start') {
-              const { grabber } = event?.sourceEvent?.target?.dataset;
+              const {grabber} = event?.sourceEvent?.target?.dataset;
               grabberKey = grabber;
             }
 
@@ -175,6 +178,11 @@ export class PlotBandComponent implements AfterViewInit {
     if (this.plotBand.resizable) {
       grabElements.call(resize);
     }
+  }
+
+  ngOnDestroy() {
+    this.dragElements.on('start drag end', null);
+    this.resizeElements.on('start drag end', null);
   }
 
   get bandSize(): number {
