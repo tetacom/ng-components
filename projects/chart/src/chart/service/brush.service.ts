@@ -63,8 +63,6 @@ export class BrushService {
             brushScale,
           });
 
-          console.log('brush domain', brushScale.domain(), [brushScale.invert(from), brushScale.invert(to)])
-
           this.broadcastService.broadcastBrush({
             channel: config?.zoom?.syncChannel,
             message: brushMessage,
@@ -87,7 +85,9 @@ export class BrushService {
           domain[1] = config.brush.to;
         }
 
-        container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : domain.map(brushScale), {});
+        console.log('prev select', this.selection?.map(brushScale))
+
+        container.call(this.brush.move, /*this.selection ? this.selection.map(brushScale) :*/ domain.map(brushScale), {});
 
       }, 0);
 
@@ -104,6 +104,8 @@ export class BrushService {
             brushScale(brushDomain[0]),
             brushScale(brushDomain[1]),
           ]);
+
+          console.log('zoom brush', brushDomain)
 
           this.selection = brushDomain;
         })

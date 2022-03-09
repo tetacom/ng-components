@@ -138,7 +138,7 @@ export class ZoomableDirective implements OnDestroy {
       (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {
 
       this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel).pipe(
-        // throttleTime(50, undefined, {trailing: true}),
+        throttleTime(50, undefined, {trailing: true}),
         filter((m: IBroadcastMessage<BrushMessage>) => Boolean(m.message.selection)),
         tap((m: IBroadcastMessage<BrushMessage>) => {
           this.zone.runOutsideAngular(() => {
@@ -165,7 +165,7 @@ export class ZoomableDirective implements OnDestroy {
     const s = m.message.selection;
 
 
-    this.brushScale.domain(m.message.brushScale.domain());
+    this.brushScale.domain(this.zoomAxis.extremes);
 
 
     const domain = this.brushScale.domain();
