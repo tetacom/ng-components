@@ -64,7 +64,7 @@ export class AnnotationComponent implements OnInit, OnDestroy {
     this._makeAnnotations = d3annotation
       .annotation()
       .annotations(annotations ?? [])
-      .editMode(false);
+      .editMode(true);
 
     this._node.call(this._makeAnnotations as any);
   }

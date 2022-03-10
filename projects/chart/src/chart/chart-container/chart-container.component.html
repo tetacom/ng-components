@@ -121,17 +121,17 @@
              [axis]="data.yAxisMap.get(i)"></g>
         </ng-container>
       </g>
-      <g class="annotations">
-        <g teta-annotation
-           [xScaleMap]="data.xScaleMap"
-           [yScaleMap]="data.yScaleMap"
-           [annotations]="data.config.annotations"></g>
-      </g>
       <g class="series-container">
         <g teta-series-host
            *ngFor="let series of data.config.series"
            [config]="data.config"
            [series]="series"></g>
+      </g>
+      <g class="annotations">
+        <g teta-annotation
+           [xScaleMap]="data.xScaleMap"
+           [yScaleMap]="data.yScaleMap"
+           [annotations]="data.config.annotations"></g>
       </g>
     </svg>
   </ng-container>

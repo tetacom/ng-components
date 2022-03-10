@@ -11,8 +11,8 @@ import {
   Type,
 } from 'd3-svg-annotation';
 
-import { BasePoint } from './base-point';
-import { SvgAttributes } from './svg-attributes';
+import {BasePoint} from './base-point';
+import {SvgAttributes} from './svg-attributes';
 
 const annotationMap = [
   annotationBadge,
@@ -26,7 +26,7 @@ const annotationMap = [
   annotationXYThreshold,
 ] as const;
 
-type AnnotationTypes = typeof annotationMap[number];
+export type AnnotationTypes = typeof annotationMap[number];
 
 export interface Annotation {
   point: BasePoint;
