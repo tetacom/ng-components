@@ -84,7 +84,7 @@ export class BrushService {
         if (config?.brush?.to) {
           domain[1] = config.brush.to;
         }
-        container.call(this.brush.move, /*this.selection ? this.selection.map(brushScale) :*/ domain.map(brushScale), {});
+        container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : domain.map(brushScale), {});
 
       }, 0);
 
