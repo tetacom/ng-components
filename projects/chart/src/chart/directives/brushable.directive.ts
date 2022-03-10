@@ -27,11 +27,7 @@ export class BrushableDirective implements OnInit, AfterViewInit {
   ngOnInit() {}
 
   ngAfterViewInit() {
-    // this.brushService.applyBrush(
-    //   this.element,
-    //   this.config,
-    //   this.brushScale
-    // );
+
   }
 
   ngOnChanges(changes: SimpleChanges) {

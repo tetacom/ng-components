@@ -29,6 +29,7 @@ export class ZoomableDirective implements OnDestroy {
   private alive = true;
 
   private currentTransform = zoomIdentity;
+  private currentSelection;
 
   constructor(
     private elementRef: ElementRef,
@@ -137,10 +138,13 @@ export class ZoomableDirective implements OnDestroy {
     if ((this.config.brush?.type === BrushType.x && this.zoomAxis.orientation === AxisOrientation.x) ||
       (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {
 
+
+
       this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel).pipe(
         throttleTime(50, undefined, {trailing: true}),
         filter((m: IBroadcastMessage<BrushMessage>) => Boolean(m.message.selection)),
         tap((m: IBroadcastMessage<BrushMessage>) => {
+          this.currentSelection = m.message.selection;
           this.zone.runOutsideAngular(() => {
             setTimeout(() => {
               this.updateZoom(m);
@@ -152,9 +156,6 @@ export class ZoomableDirective implements OnDestroy {
     }
   }
 
-
-  ngOnChanges(changes: SimpleChanges) {
-  }
 
   ngOnDestroy(): void {
     this.zoom?.on('start zoom end', null);
