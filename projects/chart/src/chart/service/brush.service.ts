@@ -101,9 +101,7 @@ export class BrushService {
             brushScale(brushDomain[0]),
             brushScale(brushDomain[1]),
           ]);
-
-          console.log('zoom brush', brushDomain)
-
+          
           this.selection = brushDomain;
         })
       ).subscribe();
