@@ -1,6 +1,7 @@
 import { BasePoint } from './base-point';
 import { SvgAttributes } from './svg-attributes';
 
+
 export interface Annotation {
   id?: number | string;
   point: BasePoint;
