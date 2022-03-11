@@ -19,7 +19,8 @@ import {ChartService} from '../../service/chart.service';
 })
 export class AnnotationComponent implements OnDestroy {
   @Input() set annotation(annotation: Annotation) {
-    this._annotation = Object.assign({}, this.defaultAnnotationConfig, annotation);
+
+    this._annotation = annotation
   }
 
   get annotation(): Annotation {
@@ -45,11 +46,6 @@ export class AnnotationComponent implements OnDestroy {
   private drag: d3.DragBehavior<any, any, any>;
   private _annotation: Annotation;
   private _node: ElementRef;
-
-  private defaultAnnotationConfig = {
-    dx: this.annotation?.dx ?? 0,
-    dy: this.annotation?.dy ?? 0
-  };
 
   constructor(
     private scaleService: ScaleService,
