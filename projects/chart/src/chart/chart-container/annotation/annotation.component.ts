@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ElementRef, HostListener,
-  Input,
+  Input, OnDestroy,
   ViewChild,
 } from '@angular/core';
 import {Annotation} from '../../model/annotation';
@@ -17,7 +17,7 @@ import {ChartService} from '../../service/chart.service';
   styleUrls: ['./annotation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AnnotationComponent {
+export class AnnotationComponent implements OnDestroy {
   @Input() set annotation(annotation: Annotation) {
     this._annotation = Object.assign({}, this.defaultAnnotationConfig, annotation);
   }
@@ -74,10 +74,13 @@ export class AnnotationComponent {
     });
   }
 
+  ngOnDestroy() {
+    this.drag.on('drag end', null);
+  }
+
   private init() {
     d3.select(this.node.nativeElement).datum(this.annotation);
     if (this.annotation.draggable) {
-      this.drag.on('drag end', null);
       this.drag.on('drag end', (event, d: Annotation) => {
         d.dx += event.dx;
         d.dy += event.dy;

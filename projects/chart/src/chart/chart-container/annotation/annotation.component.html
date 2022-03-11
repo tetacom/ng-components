@@ -5,7 +5,7 @@
   <svg:circle
     [attr.r]="annotation.style?.radius ?? 5"
     [attr.cx]="data.x(annotation.point.x)"
-    [attr.fill]="annotation?.style.fill ?? 'black'"
+    [attr.fill]="annotation?.style?.fill ?? 'var(--color-text-90)'"
     [attr.cy]="data.y(annotation.point.y)">
   </svg:circle>
   <svg:line
@@ -13,24 +13,23 @@
     [attr.y1]="data.y(annotation.point.y)"
     [attr.x2]="data.x(annotation.point.x) + (annotation.dx)"
     [attr.y2]="data.y(annotation.point.y) + (annotation.dy)"
-    [attr.stroke]="annotation.style?.stroke ?? 'red'"
+    [attr.stroke]="annotation.style?.stroke ?? 'var(--color-text-90)'"
     [attr.stroke-width]="annotation.style?.strokeWidth ?? 1"
     [attr.stroke-dasharray]="annotation.style?.strokeDasharray ?? null"
   >
   </svg:line>
   <svg:foreignObject
     class="position-absolute"
-    [attr.width]="bBox?.width ?? 0"
-    [attr.height]="bBox?.height ?? 0"
+    [attr.width]="bBox?.width + 10 ?? 0"
+    [attr.height]="bBox?.height + 10 ?? 0"
     [attr.x]="data.x(annotation.point.x) + (annotation.dx) - 10"
     [attr.y]="data.y(annotation.point.y) + (annotation.dy) - 10">
     <div
-      class="padding-h-1"
       #annotationNode
-      [style.background-color]="annotation.style?.fill ?? 'black'"
+      [style.background-color]="annotation.style?.fill ?? 'var(--color-text-90)'"
       [style.cursor]="annotation?.draggable ? 'move' : 'default'"
-      style="box-sizing: border-box;border-radius: 2px; display: inline-block;">
-<!--      {{bBox?.width}}-->
+      class="color-text-10 padding-h-2"
+      style="border-radius: 2px; display: inline-block;">
       {{ annotation.note?.label}}
     </div>
   </svg:foreignObject>
