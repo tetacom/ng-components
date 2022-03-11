@@ -114,7 +114,7 @@ export class ZoomableDirective implements OnDestroy {
     // Subscribe to zoom events
     this.broadcastService.subscribeToZoom(this.config?.zoom.syncChannel).pipe(
       filter((m: IBroadcastMessage<ZoomMessage>) => m.message.event.sourceEvent instanceof MouseEvent || m.message.event.sourceEvent instanceof WheelEvent),
-      // throttleTime(50, undefined, {trailing: true}),
+      throttleTime(50, undefined, {trailing: true}),
       filter((m: IBroadcastMessage<ZoomMessage>) => {
         return this.zoomAxis.index === m.message?.axis?.index && this.zoomAxis.orientation === m.message?.axis?.orientation;
       }),
@@ -138,17 +138,25 @@ export class ZoomableDirective implements OnDestroy {
     if ((this.config.brush?.type === BrushType.x && this.zoomAxis.orientation === AxisOrientation.x) ||
       (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {
 
-
-
       this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel).pipe(
         throttleTime(50, undefined, {trailing: true}),
         filter((m: IBroadcastMessage<BrushMessage>) => Boolean(m.message.selection)),
         tap((m: IBroadcastMessage<BrushMessage>) => {
+
+          const currentTransform = d3.zoomTransform(
+            this.elementRef.nativeElement
+          );
+
+          if(!m.message.event && this.currentSelection && currentTransform.k !== 1) {
+            return;
+          }
+
           this.currentSelection = m.message.selection;
+
           this.zone.runOutsideAngular(() => {
             setTimeout(() => {
               this.updateZoom(m);
-            });
+            }, 0);
           });
         }),
         takeWhile((_) => this.alive)
@@ -164,11 +172,7 @@ export class ZoomableDirective implements OnDestroy {
 
   private updateZoom(m: IBroadcastMessage<BrushMessage>) {
     const s = m.message.selection;
-
-
     this.brushScale.domain(this.zoomAxis.extremes);
-
-
     const domain = this.brushScale.domain();
 
     const scale = (domain[1] - domain[0]) / (s[1] - s[0]);

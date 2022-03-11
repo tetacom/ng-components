@@ -18,6 +18,7 @@ import {defaultAxisConfig} from '../default/default-axis-config';
 import {defaultSeriesConfig} from '../default/default-series-config';
 import {BasePoint} from '../model/base-point';
 import {Series} from '../model/series';
+import {Annotation} from "../model/annotation";
 
 @Injectable({
   providedIn: 'root',
@@ -32,9 +33,11 @@ export class ChartService {
   public plotBandClick: Observable<IChartEvent<PlotBand>>;
   public plotBandContextMenu: Observable<IChartEvent<PlotBand>>;
   public pointMove: Observable<IChartEvent<IPointMove>>;
+  public annotationMove: Observable<IChartEvent<Annotation>>;
+  public annotationClick: Observable<IChartEvent<Annotation>>;
+  public annotationContextMenu: Observable<IChartEvent<Annotation>>;
   public chartClick: Observable<IChartEvent<BasePoint>>;
   public chartContextMenu: Observable<IChartEvent<BasePoint>>;
-
   private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig());
   private size$ = new BehaviorSubject<DOMRect>(new DOMRectReadOnly());
   private pointerMove$ = new Subject<PointerEvent>();
@@ -44,6 +47,9 @@ export class ChartService {
   private pointMove$ = new Subject<IChartEvent<IPointMove>>();
   private chartClick$ = new Subject<IChartEvent<BasePoint>>();
   private chartContextMenu$ = new Subject<IChartEvent<BasePoint>>();
+  private annotationEvent$ = new Subject<IChartEvent<Annotation>>();
+  private annotationMove$ = new Subject<IChartEvent<Annotation>>();
+
 
   constructor() {
     this.config = this.config$
@@ -66,6 +72,10 @@ export class ChartService {
     this.pointMove = this.pointMove$.asObservable();
     this.chartClick = this.chartClick$.asObservable();
     this.chartContextMenu = this.chartContextMenu$.asObservable();
+    this.annotationClick = this.annotationEvent$.asObservable().pipe(filter((_) => _?.event?.type === 'click'));
+    this.annotationContextMenu = this.annotationEvent$.asObservable().pipe(filter((_) => _?.event?.type === 'contextmenu'));
+    this.annotationMove = this.annotationMove$.asObservable();
+
     this.plotBandClick = this.plotBandEvent$
       .asObservable()
       .pipe(filter((_) => _?.event?.type === 'click'));
@@ -99,6 +109,15 @@ export class ChartService {
 
   public clearTooltips() {
     this.tooltips$.next(new Map());
+  }
+
+
+  public emitMoveAnnotation(event: IChartEvent<Annotation>) {
+    this.annotationMove$.next(event);
+  }
+
+  public emitAnnotation(event: IChartEvent<Annotation>) {
+    this.annotationEvent$.next(event);
   }
 
   public emitPlotband(event: IChartEvent<PlotBand>) {

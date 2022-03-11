@@ -101,7 +101,22 @@ export class BrushService {
             brushScale(brushDomain[0]),
             brushScale(brushDomain[1]),
           ]);
-          
+
+          if(m.message.event.type === 'end') {
+            const brushMessage = new BrushMessage({
+              event: null,
+              selection: brushDomain,
+              brushType: config?.brush?.type ?? BrushType.x,
+              brushScale,
+            });
+
+            this.broadcastService.broadcastBrush({
+              channel: config?.zoom?.syncChannel,
+              message: brushMessage,
+            });
+          }
+
+
           this.selection = brushDomain;
         })
       ).subscribe();

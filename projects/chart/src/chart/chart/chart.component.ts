@@ -21,6 +21,7 @@ import {PlotLine} from '../model/plot-line';
 import {PlotBand} from '../model/plot-band';
 import {IPointMove} from '../model/i-point-move';
 import {map, Observable, takeWhile} from 'rxjs';
+import {Annotation} from "../model/annotation";
 
 @Component({
   selector: 'teta-svg-chart',
@@ -54,6 +55,16 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output()
   chartContextMenu: EventEmitter<IChartEvent<BasePoint>> = new EventEmitter<IChartEvent<BasePoint>>();
+
+  @Output()
+  annotationContextMenu: EventEmitter<IChartEvent<Annotation>> = new EventEmitter<IChartEvent<Annotation>>();
+
+  @Output()
+  annotationClick: EventEmitter<IChartEvent<Annotation>> = new EventEmitter<IChartEvent<Annotation>>();
+
+  @Output()
+  annotationMove: EventEmitter<IChartEvent<Annotation>> = new EventEmitter<IChartEvent<Annotation>>();
+
 
   @Input() set config(config: IChartConfig) {
     this._svc.setConfig(config);
@@ -115,6 +126,29 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe((_) => {
         this.plotBandContextMenu.emit(_);
       });
+
+    this._svc.annotationContextMenu
+      .pipe(
+        takeWhile(() => this._alive))
+      .subscribe((_) => {
+        this.annotationContextMenu.emit(_);
+      });
+
+    this._svc.annotationClick
+      .pipe(
+        takeWhile(() => this._alive))
+      .subscribe((_) => {
+        this.annotationClick.emit(_);
+      });
+
+    this._svc.annotationMove
+      .pipe(
+        takeWhile(() => this._alive))
+      .subscribe((_) => {
+        this.annotationMove.emit(_);
+      });
+
+
   }
 
   ngAfterViewInit() {
