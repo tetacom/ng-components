@@ -27,6 +27,10 @@ export class AnnotationComponent implements OnInit, OnDestroy {
     this._annotation = Object.assign({}, this.defaultAnnotationConfig, annotation);
   }
 
+  get annotation(): Annotation {
+    return this._annotation;
+  }
+  
   @HostListener('click', ['$event']) click(event: MouseEvent) {
     this.chartService.emitAnnotation({
       event,
@@ -42,18 +46,12 @@ export class AnnotationComponent implements OnInit, OnDestroy {
     })
   }
 
-  get annotation(): Annotation {
-    return this._annotation;
-  }
-
   x: Observable<any>;
   y: Observable<any>;
   bBox: Observable<DOMRect>;
 
   private drag: d3.DragBehavior<any, any, any>;
   private _annotation: Annotation;
-  private contentCheckedEvent$ = new Subject();
-
 
   private defaultAnnotationConfig  = {
     dx: this.annotation?.dx ?? 0,
@@ -73,23 +71,16 @@ export class AnnotationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
-    this.bBox = this.contentCheckedEvent$.asObservable().pipe(
+    this.bBox = this.chartService.size.pipe(
       throttleTime(300, undefined, {trailing: true}),
-
       map((_) => {
-        console.log('get client rect')
         return this.node.nativeElement.getBoundingClientRect()
       })
     )
-
   }
 
   ngOnDestroy() {}
 
-  ngAfterContentChecked() {
-    this.contentCheckedEvent$.next(null);
-  }
   ngAfterViewInit() {
 
     d3.select(this.node.nativeElement).datum(this.annotation);
