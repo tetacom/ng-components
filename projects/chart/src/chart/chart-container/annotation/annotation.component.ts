@@ -11,9 +11,10 @@ import {
 import {Annotation} from '../../model/annotation';
 import * as d3annotation from 'd3-svg-annotation';
 import * as d3 from 'd3';
-import {map, Observable} from "rxjs";
+import {bufferCount, last, map, Observable, Subject} from "rxjs";
 import {ScaleService} from "../../service/scale.service";
 import {ChartService} from "../../service/chart.service";
+import {throttleTime} from "rxjs/operators";
 
 @Component({
   selector: '[teta-annotation]',
@@ -47,10 +48,12 @@ export class AnnotationComponent implements OnInit, OnDestroy {
 
   x: Observable<any>;
   y: Observable<any>;
+  bBox: Observable<DOMRect>;
 
   private drag: d3.DragBehavior<any, any, any>;
   private _annotation: Annotation;
-  bBox: DOMRect;
+  private contentCheckedEvent$ = new Subject();
+
 
   private defaultAnnotationConfig  = {
     dx: this.annotation?.dx ?? 0,
@@ -59,20 +62,38 @@ export class AnnotationComponent implements OnInit, OnDestroy {
 
   @ViewChild('annotationNode', {static: false}) node: ElementRef;
 
-  constructor(private scaleService: ScaleService, private cdr: ChangeDetectorRef, private chartService: ChartService) {
+  constructor(
+      private zone: NgZone,
+      private scaleService: ScaleService,
+      private cdr: ChangeDetectorRef,
+      private chartService: ChartService) {
     this.x = this.scaleService.xScaleMap.pipe(map((_) => _.get(this.annotation.xAxisIndex ?? 0)));
     this.y = this.scaleService.yScaleMap.pipe(map((_) => _.get(this.annotation.yAxisIndex ?? 0)));
     this.drag = d3.drag()
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+    this.bBox = this.contentCheckedEvent$.asObservable().pipe(
+      throttleTime(300, undefined, {trailing: true}),
+
+      map((_) => {
+        console.log('get client rect')
+        return this.node.nativeElement.getBoundingClientRect()
+      })
+    )
+
+  }
 
   ngOnDestroy() {}
 
+  ngAfterContentChecked() {
+    this.contentCheckedEvent$.next(null);
+  }
   ngAfterViewInit() {
 
     d3.select(this.node.nativeElement).datum(this.annotation);
-    this.bBox = this.node.nativeElement.getBoundingClientRect();
+
 
     if(this.annotation.draggable) {
       this.drag.on('drag end', null);
@@ -86,13 +107,9 @@ export class AnnotationComponent implements OnInit, OnDestroy {
           event,
           target: d
         })
-
       })
 
       d3.select(this.node.nativeElement).call(this.drag);
     }
-
-
   }
-
 }

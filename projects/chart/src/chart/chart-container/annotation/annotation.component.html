@@ -1,20 +1,21 @@
 <ng-container *ngIf="{
       x: x | async,
-      y: y | async
-    } as scales">
+      y: y | async,
+      bBox: bBox | async
+    } as data">
 
   <svg:circle
     [attr.r]="annotation.style?.radius ?? 5"
-    [attr.cx]="scales.x(annotation.point.x)"
+    [attr.cx]="data.x(annotation.point.x)"
     [attr.fill]="annotation?.style.fill ?? 'black'"
-    [attr.cy]="scales.y(annotation.point.y)">
+    [attr.cy]="data.y(annotation.point.y)">
   </svg:circle>
 
   <svg:line
-    [attr.x1]="scales.x(annotation.point.x)"
-    [attr.y1]="scales.y(annotation.point.y)"
-    [attr.x2]="scales.x(annotation.point.x) + (annotation.dx)"
-    [attr.y2]="scales.y(annotation.point.y) + (annotation.dy)"
+    [attr.x1]="data.x(annotation.point.x)"
+    [attr.y1]="data.y(annotation.point.y)"
+    [attr.x2]="data.x(annotation.point.x) + (annotation.dx)"
+    [attr.y2]="data.y(annotation.point.y) + (annotation.dy)"
     [attr.stroke]="annotation.style?.stroke ?? 'red'"
     [attr.stroke-width]="annotation.style?.strokeWidth ?? 1"
     [attr.stroke-dasharray]="annotation.style?.strokeDasharray ?? null"
@@ -23,16 +24,16 @@
 
   <svg:foreignObject
     class="position-absolute"
-    [attr.width]="bBox?.width + 10 ?? 0"
-    [attr.height]="bBox?.height + 10 ?? 0"
-    [attr.x]="scales.x(annotation.point.x) + (annotation.dx) - 10"
-    [attr.y]="scales.y(annotation.point.y) + (annotation.dy) - 10">
+    [attr.width]="data.bBox?.width ?? 0"
+    [attr.height]="data.bBox?.height ?? 0"
+    [attr.x]="data.x(annotation.point.x) + (annotation.dx) - 10"
+    [attr.y]="data.y(annotation.point.y) + (annotation.dy) - 10">
     <div
       class="padding-h-1"
       #annotationNode
       [style.background-color]="annotation.style?.fill ?? 'black'"
       [style.cursor]="annotation?.draggable ? 'move' : 'default'"
-      style="border-radius: 2px; display: inline-block;">
+      style="box-sizing: border-box;border-radius: 2px; display: inline-block;">
       {{ annotation.note?.label}}
     </div>
   </svg:foreignObject>
