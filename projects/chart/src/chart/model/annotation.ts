@@ -1,6 +1,5 @@
-import { BasePoint } from './base-point';
-import { SvgAttributes } from './svg-attributes';
-
+import {BasePoint} from './base-point';
+import {SvgAttributes} from './svg-attributes';
 
 export interface Annotation {
   id?: number | string;
@@ -16,4 +15,5 @@ export interface Annotation {
     title?: string;
   };
   style?: SvgAttributes;
+  data?: any;
 }
