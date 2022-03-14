@@ -5,7 +5,7 @@ import {filter, Subscription, tap} from 'rxjs';
 import {BroadcastService} from './broadcast.service';
 import {IChartConfig} from '../model/i-chart-config';
 import {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';
-import {throttleTime} from 'rxjs/operators';
+import {debounceTime, throttleTime} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -46,13 +46,14 @@ export class BrushService {
           if (to - from === 0) {
             const selection: number[] = this.selection?.map(brushScale) ?? [config.brush?.from, config.brush?.to].map(brushScale);
             const halfBrushHeight = (selection[1] - selection[0]) / 2;
-            container.call(this.brush.move, [from - halfBrushHeight, to + halfBrushHeight], {});
+
+            container.call(this.brush.move, [from - halfBrushHeight, to + halfBrushHeight]);
 
             return;
           }
 
           if(to - from > config.brush?.limit) {
-            container.call(this.brush.move, this.selection.map(brushScale));
+            container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : [config.brush?.from, config.brush?.to].map(brushScale));
             return;
           }
 
@@ -92,7 +93,6 @@ export class BrushService {
 
         container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : domain.map(brushScale), {});
 
-
       }, 0);
 
 
@@ -100,7 +100,7 @@ export class BrushService {
         filter((m: IBroadcastMessage<ZoomMessage>) => {
           return m.message.event.sourceEvent instanceof MouseEvent || m.message.event.sourceEvent instanceof WheelEvent;
         }),
-        throttleTime(50, undefined, {trailing: true}),
+        debounceTime(150),
         tap((m: IBroadcastMessage<ZoomMessage>) => {
           const {message: {brushDomain}} = m;
 
@@ -122,7 +122,6 @@ export class BrushService {
               message: brushMessage,
             });
           }
-
 
           this.selection = brushDomain;
         })
