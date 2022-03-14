@@ -14,7 +14,7 @@
 
   <svg height="100%" width="100%" class="position-absolute">
     <g class="y-axis-container">
-      <ng-container *ngFor="let item of data.yAxisMap | keyvalue; trackBy: identify">
+      <ng-container *ngFor="let item of data.yAxisMap | keyvalue;">
         <ng-container *ngIf="item.value.options.visible">
           <g
             teta-y-axis
@@ -39,7 +39,7 @@
       </ng-container>
     </g>
     <g class="x-axis-container">
-      <ng-container *ngFor="let item of data.xAxisMap | keyvalue; trackBy: identify">
+      <ng-container *ngFor="let item of data.xAxisMap | keyvalue;">
         <ng-container *ngIf="item.value.options.visible">
           <g
             teta-x-axis

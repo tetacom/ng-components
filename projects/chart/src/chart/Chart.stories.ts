@@ -227,6 +227,25 @@ const createChart = (size: number): IChartConfig => {
   return {
     name: '123123123132',
     inverted: true,
+    annotations:
+      Array.from(Array(50).keys()).map(() => {
+        return {
+          point: {
+            x: faker.datatype.number({min: 0, max: 180}),
+            y: faker.datatype.number({min: 0, max: 6000}),
+          },
+          dx: 50,
+          dy: 30,
+          note: {
+            label: 'Аннотация'
+          },
+          draggable: true,
+          style: {
+            radius: 3,
+            strokeWidth: 2
+          }
+        }
+      }),
     tooltip: {
       tracking: TooltipTracking.y,
     },
@@ -283,6 +302,7 @@ const createChart2 = (size: number): IChartConfig => {
     brush: {
       enable: true,
       type: BrushType.y,
+      limit: 100,
       from: faker.datatype.number({min: 500, max: 600}),
       to: faker.datatype.number({min: 650, max: 700}),
     },
@@ -331,14 +351,8 @@ export const basicChart = () => ({
           Create empty data
        config </button>
         <div class="row row_auto gap" style="height: 100%; width: 100%">
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config" class="bg-background-50 border border-text-50"></teta-svg-chart>
-
-            <teta-svg-chart [config]="config2" class="bg-background-50 border border-text-50"></teta-svg-chart>
-
+            <teta-svg-chart [config]="config" class="bg-background-50 row_6 border border-text-50"></teta-svg-chart>
+            <teta-svg-chart [config]="config2" class="bg-background-50 row_6 border border-text-50"></teta-svg-chart>
         </div>
 
       </div>

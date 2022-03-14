@@ -20,10 +20,10 @@
   </svg:line>
   <svg:foreignObject
     class="position-absolute"
-    [attr.width]="bBox?.width ?? 0"
-    [attr.height]="bBox?.height ?? 0"
-    [attr.x]="data.x(annotation.point.x) + (annotation.dx ?? 0)"
-    [attr.y]="data.y(annotation.point.y) + (annotation.dy ?? 0)">
+    [attr.width]="node?.nativeElement.offsetWidth ?? 0"
+    [attr.height]="node?.nativeElement.offsetHeight ?? 0"
+    [attr.x]="data.x(annotation.point.x) + (annotation.dx ?? 0) - 10"
+    [attr.y]="data.y(annotation.point.y) + (annotation.dy ?? 0) - 10">
     <div
       #annotationNode
       [style.background-color]="annotation.style?.fill ?? 'var(--color-text-90)'"

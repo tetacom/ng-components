@@ -19,8 +19,7 @@ import {ChartService} from '../../service/chart.service';
 })
 export class AnnotationComponent implements OnDestroy {
   @Input() set annotation(annotation: Annotation) {
-
-    this._annotation = annotation
+    this._annotation = annotation;
   }
 
   get annotation(): Annotation {
@@ -30,9 +29,10 @@ export class AnnotationComponent implements OnDestroy {
   @ViewChild('annotationNode', {static: false})
   set node(node: ElementRef) {
     this._node = node;
-    this.bBox = node.nativeElement.getBoundingClientRect();
+
     this.init();
-    this.cdr.detectChanges();
+    // this.cdr.detectChanges();
+
   }
 
   get node() {
@@ -42,6 +42,7 @@ export class AnnotationComponent implements OnDestroy {
   x: Observable<any>;
   y: Observable<any>;
   bBox: DOMRect;
+
 
   private drag: d3.DragBehavior<any, any, any>;
   private _annotation: Annotation;
@@ -70,12 +71,15 @@ export class AnnotationComponent implements OnDestroy {
     });
   }
 
+
   ngOnDestroy() {
     this.drag.on('drag end', null);
   }
 
   private init() {
+
     d3.select(this.node.nativeElement).datum(this.annotation);
+
     if (this.annotation.draggable) {
       this.drag.on('drag end', (event, d: Annotation) => {
         d.dx += event.dx;

@@ -51,8 +51,13 @@ export class BrushService {
             return;
           }
 
+          if(to - from > config.brush?.limit) {
+            container.call(this.brush.move, this.selection.map(brushScale));
+            return;
+          }
 
-          if (_.type === 'end' && _.sourceEvent instanceof MouseEvent) {
+
+          if (_.sourceEvent instanceof MouseEvent) {
             this.selection = _.selection.map(brushScale.invert);
           }
 
@@ -84,7 +89,9 @@ export class BrushService {
         if (config?.brush?.to) {
           domain[1] = config.brush.to;
         }
+
         container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : domain.map(brushScale), {});
+
 
       }, 0);
 
