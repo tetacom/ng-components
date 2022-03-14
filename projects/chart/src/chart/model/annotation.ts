@@ -1,5 +1,6 @@
 import {BasePoint} from './base-point';
 import {SvgAttributes} from './svg-attributes';
+import {TemplateRef} from '@angular/core';
 
 export interface Annotation {
   id?: number | string;
@@ -13,7 +14,9 @@ export interface Annotation {
   note?: {
     label?: string;
     title?: string;
+    hint?: string;
   };
   style?: SvgAttributes;
   data?: any;
+  template?: TemplateRef<any>;
 }

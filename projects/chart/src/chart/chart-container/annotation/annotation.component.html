@@ -22,16 +22,20 @@
     class="position-absolute"
     [attr.width]="bBox?.width ?? 0"
     [attr.height]="bBox?.height ?? 0"
-    [attr.x]="data.x(annotation.point.x) + (annotation.dx ?? 0) - 10"
-    [attr.y]="data.y(annotation.point.y) + (annotation.dy ?? 0) - 10">
+    [attr.x]="data.x(annotation.point.x) + (annotation.dx ?? 0)"
+    [attr.y]="data.y(annotation.point.y) + (annotation.dy ?? 0)">
     <div
       #annotationNode
       [style.background-color]="annotation.style?.fill ?? 'var(--color-text-90)'"
       [style.cursor]="annotation?.draggable ? 'move' : 'default'"
       class="color-text-10 padding-h-2"
       style="border-radius: 2px; display: inline-block;">
-      {{ annotation.note?.label}}
+      <ng-container *ngIf="annotation.template;else default">
+        <ng-container *ngTemplateOutlet="annotation.template;context: {$implicit: annotation}"></ng-container>
+      </ng-container>
     </div>
   </svg:foreignObject>
-
 </ng-container>
+<ng-template #default>
+  {{ annotation.note?.label}}
+</ng-template>
