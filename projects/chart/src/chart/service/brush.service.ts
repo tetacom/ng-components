@@ -51,12 +51,10 @@ export class BrushService {
 
             return;
           }
-
-          if(to - from > config.brush?.limit) {
+          if (brushScale.invert(to) - brushScale.invert(from) > config.brush?.limit) {
             container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : [config.brush?.from, config.brush?.to].map(brushScale));
             return;
           }
-
 
           if (_.sourceEvent instanceof MouseEvent) {
             this.selection = _.selection.map(brushScale.invert);
@@ -109,7 +107,7 @@ export class BrushService {
             brushScale(brushDomain[1]),
           ]);
 
-          if(m.message.event.type === 'end') {
+          if (m.message.event.type === 'end') {
             const brushMessage = new BrushMessage({
               event: null,
               selection: brushDomain,
