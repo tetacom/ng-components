@@ -29,10 +29,8 @@ export class AnnotationComponent implements OnDestroy {
   @ViewChild('annotationNode', {static: false})
   set node(node: ElementRef) {
     this._node = node;
-
     this.init();
-    // this.cdr.detectChanges();
-
+    this.cdr.detectChanges();
   }
 
   get node() {
@@ -41,8 +39,6 @@ export class AnnotationComponent implements OnDestroy {
 
   x: Observable<any>;
   y: Observable<any>;
-  bBox: DOMRect;
-
 
   private drag: d3.DragBehavior<any, any, any>;
   private _annotation: Annotation;
