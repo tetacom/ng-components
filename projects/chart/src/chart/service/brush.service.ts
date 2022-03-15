@@ -1,7 +1,7 @@
-import {ElementRef, Injectable} from '@angular/core';
+import {ElementRef, Injectable, NgZone} from '@angular/core';
 import {BrushType} from '../model/enum/brush-type';
 import * as d3 from 'd3';
-import {filter, Subscription, tap} from 'rxjs';
+import {animationFrameScheduler, filter, Subscription, tap} from 'rxjs';
 import {BroadcastService} from './broadcast.service';
 import {IChartConfig} from '../model/i-chart-config';
 import {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';
@@ -22,7 +22,7 @@ export class BrushService {
   private selection: number[];
 
 
-  constructor(private broadcastService: BroadcastService) {
+  constructor(private broadcastService: BroadcastService, private zone: NgZone) {
   }
 
   applyBrush(
@@ -48,9 +48,9 @@ export class BrushService {
             const halfBrushHeight = (selection[1] - selection[0]) / 2;
 
             container.call(this.brush.move, [from - halfBrushHeight, to + halfBrushHeight]);
-
             return;
           }
+
           if (brushScale.invert(to) - brushScale.invert(from) > config.brush?.limit) {
             container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : [config.brush?.from, config.brush?.to].map(brushScale));
             return;
@@ -75,30 +75,34 @@ export class BrushService {
       });
 
 
-      setTimeout(() => {
-        container.call(this.brush);
 
-        let domain = brushScale.domain();
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          container.call(this.brush);
+
+          let domain = brushScale.domain();
 
 
-        if (config?.brush?.from) {
-          domain[0] = config.brush.from;
-        }
+          if (config?.brush?.from) {
+            domain[0] = config.brush.from;
+          }
 
-        if (config?.brush?.to) {
-          domain[1] = config.brush.to;
-        }
+          if (config?.brush?.to) {
+            domain[1] = config.brush.to;
+          }
 
-        container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : domain.map(brushScale), {});
+          container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : domain.map(brushScale), {});
 
-      }, 0);
+        }, 0);
+      })
+
 
 
       this.broadcastSubscribtion = this.broadcastService.subscribeToZoom(config?.zoom?.syncChannel).pipe(
         filter((m: IBroadcastMessage<ZoomMessage>) => {
           return m.message.event.sourceEvent instanceof MouseEvent || m.message.event.sourceEvent instanceof WheelEvent;
         }),
-        debounceTime(150),
+        throttleTime(0, animationFrameScheduler, {trailing: true}),
         tap((m: IBroadcastMessage<ZoomMessage>) => {
           const {message: {brushDomain}} = m;
 
