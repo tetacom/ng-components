@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   HostBinding,
   Input,
   OnDestroy,
@@ -23,7 +22,6 @@ import {ArrayUtil} from '../../../common/util/array-util';
 import {IDictionary} from '../../../common/contract/i-dictionary';
 import {IIdName} from '../../../common/contract/i-id-name';
 import {AggregationType} from '../enum/aggregation-type.enum';
-import {Datasource, IDatasource, SizeStrategy} from 'ngx-ui-scroll';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 
 @Component({
@@ -51,10 +49,6 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
 
   set data(data: TableRow<T>[]) {
     this._data = data;
-    if (!this.dataSource) {
-      this.createAdapter();
-    }
-    this.resetAdapter();
   }
 
   get data() {
@@ -69,7 +63,6 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   unlocked: TableColumn[] = [];
 
   selectTypeEnum = SelectType;
-  dataSource: IDatasource<TableRow<T>>;
 
   private _columns: TableColumn[] = [];
   private _alive = true;
@@ -249,32 +242,5 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
           : current.data[columnName],
       null
     );
-  }
-
-  private async resetAdapter() {
-    await this.dataSource.adapter.relax();
-    await this.dataSource.adapter.reset({
-      get: this.getData,
-      settings: {
-        minIndex: 0,
-        maxIndex: this._data?.length ? this._data.length - 1 : 0,
-        startIndex: 0,
-        itemSize: 24,
-        sizeStrategy: SizeStrategy.Constant,
-      },
-    });
-    await this.dataSource.adapter.check();
-  }
-
-  private createAdapter() {
-    this.dataSource = new Datasource<TableRow<T>>({
-      get: this.getData,
-      settings: {
-        startIndex: 0,
-        bufferSize: 2,
-        sizeStrategy: SizeStrategy.Constant,
-        itemSize: 24,
-      },
-    });
   }
 }
