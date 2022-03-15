@@ -4,6 +4,7 @@ import {
   Input,
   SimpleChanges,
 } from '@angular/core';
+import {IChartConfig} from "../../model/i-chart-config";
 
 @Component({
   selector: '[teta-gridlines]',
@@ -15,6 +16,7 @@ export class GridlinesComponent {
   @Input() size: DOMRect;
   @Input() xScaleMap: Map<number, any>;
   @Input() yScaleMap: Map<number, any>;
+  @Input() config: IChartConfig
 
   tickYValues: number[];
   tickXValues: number[];

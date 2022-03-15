@@ -33,7 +33,11 @@ export interface IChartConfig {
   xAxis: AxisOptions[];
   yAxis: AxisOptions[];
   annotations?: Annotation[];
-  gridLines?: boolean;
+  gridLines?: {
+    enable?: boolean;
+    showX?: boolean;
+    showY?: boolean;
+  };
   width?: number;
   height?: number;
 }

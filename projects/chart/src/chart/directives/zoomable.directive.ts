@@ -10,7 +10,7 @@ import {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast
 import {BrushType} from '../model/enum/brush-type';
 import {BroadcastService} from '../service/broadcast.service';
 import {debounceTime, tap, throttleTime} from 'rxjs/operators';
-import {animationFrameScheduler, filter, takeWhile} from 'rxjs';
+import {animationFrameScheduler, filter, queueScheduler, takeWhile} from 'rxjs';
 
 @Directive({
   selector: '[tetaZoomable]',
@@ -85,7 +85,7 @@ export class ZoomableDirective implements OnDestroy {
   };
 
   ngAfterViewInit() {
-    const enable = this.axis?.options?.zoom || this.config?.zoom?.enable;
+    const enable = this.axis?.options?.zoom && this.axis?.options.visible || this.config?.zoom?.enable;
 
     if (!enable) {
       return;
@@ -120,7 +120,7 @@ export class ZoomableDirective implements OnDestroy {
     // Subscribe to zoom events
     this.broadcastService.subscribeToZoom(this.config?.zoom.syncChannel).pipe(
       filter((m: IBroadcastMessage<ZoomMessage>) => m.message.event.sourceEvent instanceof MouseEvent || m.message.event.sourceEvent instanceof WheelEvent),
-      throttleTime(0, animationFrameScheduler, {trailing: true}),
+      debounceTime(50),
       filter((m: IBroadcastMessage<ZoomMessage>) => {
         return this.zoomAxis.index === m.message?.axis?.index && this.zoomAxis.orientation === m.message?.axis?.orientation;
       }),
@@ -131,7 +131,15 @@ export class ZoomableDirective implements OnDestroy {
         );
 
         if (currentTransform !== m.message.event.transform) {
-          this._element.call(this.zoom.transform, m.message.event.transform, null, {});
+
+          if(this.zoomAxis.isFake && !m.message.axis.isFake || !this.zoomAxis.isFake && m.message.axis.isFake) {
+
+            this._element.call(this.zoom.transform, m.message.event.transform, null, {});
+
+            return;
+          }
+
+          this._element.transition().call(this.zoom.transform, m.message.event.transform, null, {});
         }
 
       }),
@@ -144,7 +152,7 @@ export class ZoomableDirective implements OnDestroy {
     if ((this.config.brush?.type === BrushType.x && this.zoomAxis.orientation === AxisOrientation.x) ||
       (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {
       this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel).pipe(
-        throttleTime(0, animationFrameScheduler, {trailing: true}),
+        throttleTime(0, animationFrameScheduler, {leading: false, trailing: true}),
         filter((m: IBroadcastMessage<BrushMessage>) => Boolean(m.message.selection)),
         tap((m: IBroadcastMessage<BrushMessage>) => {
 
@@ -187,7 +195,7 @@ export class ZoomableDirective implements OnDestroy {
       transform = transform.translate(0, -this.brushScale(s[0]));
     }
 
-    this._element.transition().call(
+    this._element.transition().duration(150).call(
       this.zoom.transform,
       transform,
       null,
