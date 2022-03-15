@@ -15,6 +15,7 @@ export interface IChartConfig {
     type: ZoomType;
     axisIndex?: number;
     syncChannel?: string;
+    limit?: number;
   };
   brush?: {
     enable?: boolean;
