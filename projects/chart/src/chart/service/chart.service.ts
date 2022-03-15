@@ -50,7 +50,6 @@ export class ChartService {
   private annotationEvent$ = new Subject<IChartEvent<Annotation>>();
   private annotationMove$ = new Subject<IChartEvent<Annotation>>();
 
-
   constructor() {
     this.config = this.config$
       .asObservable()

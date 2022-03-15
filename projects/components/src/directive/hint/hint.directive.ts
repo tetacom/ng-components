@@ -114,4 +114,8 @@ export class HintDirective
       'hint',
     ];
   }
+
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+  }
 }
