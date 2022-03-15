@@ -15,12 +15,14 @@ export interface IChartConfig {
     type: ZoomType;
     axisIndex?: number;
     syncChannel?: string;
+    limit?: number;
   };
   brush?: {
     enable?: boolean;
     type: BrushType;
     from?: number;
     to?: number;
+    limit?: number;
   };
   legend?: {
     enable?: boolean;
@@ -31,7 +33,11 @@ export interface IChartConfig {
   xAxis: AxisOptions[];
   yAxis: AxisOptions[];
   annotations?: Annotation[];
-  gridLines?: boolean;
+  gridLines?: {
+    enable?: boolean;
+    showX?: boolean;
+    showY?: boolean;
+  };
   width?: number;
   height?: number;
 }

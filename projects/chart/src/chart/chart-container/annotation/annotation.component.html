@@ -1,1 +1,41 @@
-<svg:g #svg></svg:g>
+<ng-container *ngIf="{
+      x: x | async,
+      y: y | async
+    } as data">
+  <svg:circle
+    [attr.r]="annotation.style?.radius ?? 5"
+    [attr.cx]="data.x(annotation.point.x)"
+    [attr.fill]="annotation?.style?.fill ?? 'var(--color-text-90)'"
+    [attr.cy]="data.y(annotation.point.y)">
+  </svg:circle>
+  <svg:line
+    [attr.x1]="data.x(annotation.point.x)"
+    [attr.y1]="data.y(annotation.point.y)"
+    [attr.x2]="data.x(annotation.point.x) + (annotation.dx ?? 0)"
+    [attr.y2]="data.y(annotation.point.y) + (annotation.dy ?? 0)"
+    [attr.stroke]="annotation.style?.stroke ?? 'var(--color-text-90)'"
+    [attr.stroke-width]="annotation.style?.strokeWidth ?? 1"
+    [attr.stroke-dasharray]="annotation.style?.strokeDasharray ?? null"
+  >
+  </svg:line>
+  <svg:foreignObject
+    class="position-absolute"
+    [attr.width]="node?.nativeElement.offsetWidth ?? 0"
+    [attr.height]="node?.nativeElement.offsetHeight ?? 0"
+    [attr.x]="data.x(annotation.point.x) + (annotation.dx ?? 0) - 10"
+    [attr.y]="data.y(annotation.point.y) + (annotation.dy ?? 0) - 10">
+    <div
+      #annotationNode
+      [style.background-color]="annotation.style?.fill ?? 'var(--color-text-90)'"
+      [style.cursor]="annotation?.draggable ? 'move' : 'default'"
+      class="color-text-10 padding-h-2"
+      style="border-radius: 2px; display: inline-block;">
+      <ng-container *ngIf="annotation.template;else default">
+        <ng-container *ngTemplateOutlet="annotation.template;context: {$implicit: annotation}"></ng-container>
+      </ng-container>
+    </div>
+  </svg:foreignObject>
+</ng-container>
+<ng-template #default>
+  {{ annotation.note?.label}}
+</ng-template>

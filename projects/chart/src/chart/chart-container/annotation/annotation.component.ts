@@ -1,72 +1,92 @@
 import {
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
-  ElementRef,
-  Input,
-  OnInit,
-  SimpleChanges,
+  ElementRef, HostListener,
+  Input, OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { Annotation } from '../../model/annotation';
-import * as d3annotation from 'd3-svg-annotation';
+import {Annotation} from '../../model/annotation';
 import * as d3 from 'd3';
+import {map, Observable} from 'rxjs';
+import {ScaleService} from '../../service/scale.service';
+import {ChartService} from '../../service/chart.service';
 
 @Component({
   selector: '[teta-annotation]',
   templateUrl: './annotation.component.html',
   styleUrls: ['./annotation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AnnotationComponent implements OnInit {
-  @Input() annotations: Annotation[];
-  @Input() xScaleMap: Map<number, any>;
-  @Input() yScaleMap: Map<number, any>;
-
-  @ViewChild('svg') node: ElementRef;
-
-  private _node: any;
-  private _makeAnnotations: any;
-
-  constructor() {}
-
-  ngOnInit(): void {}
-
-  ngAfterViewInit() {
-    this._node = d3.select(this.node.nativeElement);
-    this.drawAnnotations();
+export class AnnotationComponent implements OnDestroy {
+  @Input() set annotation(annotation: Annotation) {
+    this._annotation = annotation;
   }
 
-  drawAnnotations() {
-    if (!this.node) return;
+  get annotation(): Annotation {
+    return this._annotation;
+  }
 
-    const annotations = this.annotations?.map((annotation) => {
-      const x = this.xScaleMap.get(annotation.xAxisIndex);
-      const y = this.yScaleMap.get(annotation.yAxisIndex);
+  @ViewChild('annotationNode', {static: false})
+  set node(node: ElementRef) {
+    this._node = node;
+    this.init();
+    this.cdr.detectChanges();
+  }
 
-      return {
-        note: annotation.note,
-        connector: annotation.connector,
-        x: x(annotation.point?.x),
-        y: y(annotation.point?.y),
-        dx: annotation.dx,
-        dy: annotation.dy,
-        type: annotation.type ?? d3annotation.annotationLabel,
-        className: annotation.className,
-      };
+  get node() {
+    return this._node;
+  }
+
+  x: Observable<any>;
+  y: Observable<any>;
+
+  private drag: d3.DragBehavior<any, any, any>;
+  private _annotation: Annotation;
+  private _node: ElementRef;
+
+  constructor(
+    private scaleService: ScaleService,
+    private cdr: ChangeDetectorRef,
+    private chartService: ChartService) {
+    this.x = this.scaleService.xScaleMap.pipe(map((_) => _.get(this.annotation.xAxisIndex ?? 0)));
+    this.y = this.scaleService.yScaleMap.pipe(map((_) => _.get(this.annotation.yAxisIndex ?? 0)));
+    this.drag = d3.drag();
+  }
+
+  @HostListener('click', ['$event']) click(event: MouseEvent) {
+    this.chartService.emitAnnotation({
+      event,
+      target: this.annotation
     });
-
-    this._makeAnnotations = d3annotation
-      .annotation()
-      .annotations(annotations ?? [])
-      .editMode(false);
-
-    this._node.call(this._makeAnnotations as any);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (
-      changes.hasOwnProperty('xScaleMap') &&
-      changes.hasOwnProperty('yScaleMap')
-    ) {
-      this.drawAnnotations();
+  @HostListener('contextmenu', ['$event']) contextMenu(event: MouseEvent) {
+    this.chartService.emitAnnotation({
+      event,
+      target: this.annotation
+    });
+  }
+
+
+  ngOnDestroy() {
+    this.drag.on('drag end', null);
+  }
+
+  private init() {
+
+    d3.select(this.node.nativeElement).datum(this.annotation);
+
+    if (this.annotation.draggable) {
+      this.drag.on('drag end', (event, d: Annotation) => {
+        d.dx += event.dx;
+        d.dy += event.dy;
+        this.cdr.detectChanges();
+        this.chartService.emitMoveAnnotation({
+          event,
+          target: d
+        });
+      });
+      d3.select(this.node.nativeElement).call(this.drag);
     }
   }
 }

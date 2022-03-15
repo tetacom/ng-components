@@ -20,5 +20,7 @@ export const defaultChartConfig = (): IChartConfig => ({
   xAxis: [],
   yAxis: [],
   series: [],
-  gridLines: true,
+  gridLines: {
+    enable: true
+  }
 });

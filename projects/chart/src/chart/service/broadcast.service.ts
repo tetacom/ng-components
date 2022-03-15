@@ -25,14 +25,20 @@ export class BroadcastService {
   subscribeToZoom(channel: string): Observable<IBroadcastMessage<ZoomMessage>> {
     return this.zoomEmitter.asObservable().pipe(
       filter((msg) => channel && msg.channel === channel),
-      shareReplay(1)
+      shareReplay({
+        bufferSize: 1,
+        refCount: true
+      })
     );
   }
 
   subscribeToBrush(channel: string): Observable<IBroadcastMessage<BrushMessage>> {
     return this.brushEmitter.asObservable().pipe(
       filter((msg) => channel && msg.channel === channel),
-      shareReplay(1)
+      shareReplay({
+        bufferSize: 1,
+        refCount: true
+      })
     );
   }
 }

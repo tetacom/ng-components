@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {Observable, ReplaySubject, Subject} from 'rxjs';
 import {Message} from './model/message';
 
 @Injectable({
@@ -9,7 +9,7 @@ export class MessageService {
   message: Observable<Message>;
   clear: Observable<string>;
 
-  private _message = new Subject<Message>();
+  private _message = new ReplaySubject<Message>(1);
   private _clear = new Subject<string>();
 
 

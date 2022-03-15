@@ -1,12 +1,11 @@
-import {ChangeDetectorRef, ElementRef, Injectable} from '@angular/core';
+import {ElementRef, Injectable, NgZone} from '@angular/core';
 import {BrushType} from '../model/enum/brush-type';
 import * as d3 from 'd3';
-import {filter, Subscription, tap} from 'rxjs';
+import {animationFrameScheduler, filter, Subscription, tap} from 'rxjs';
 import {BroadcastService} from './broadcast.service';
 import {IChartConfig} from '../model/i-chart-config';
 import {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';
-import {AxisOrientation} from '../model/enum/axis-orientation';
-import {throttleTime} from 'rxjs/operators';
+import {debounceTime, throttleTime} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +21,9 @@ export class BrushService {
 
   private selection: number[];
 
-  constructor(private broadcastService: BroadcastService) {}
+
+  constructor(private broadcastService: BroadcastService, private zone: NgZone) {
+  }
 
   applyBrush(
     svgElement: ElementRef,
@@ -30,20 +31,32 @@ export class BrushService {
     brushScale: any
   ) {
     this.broadcastSubscribtion?.unsubscribe();
-
+    this.brush?.on('start brush end', null);
     if (config.brush?.enable) {
       this.brush = this.brushMap.get(config?.brush?.type ?? BrushType.x);
 
       const container = d3.select(svgElement.nativeElement);
 
       this.brush.on('start brush end', (_: d3.D3BrushEvent<any>) => {
-
         if (_.sourceEvent) {
           if (!_.selection) return;
 
           const [from, to] = _.selection as number[];
 
-          if(_.type === 'end' && _.sourceEvent instanceof MouseEvent) {
+          if (to - from === 0) {
+            const selection: number[] = this.selection?.map(brushScale) ?? [config.brush?.from, config.brush?.to].map(brushScale);
+            const halfBrushHeight = (selection[1] - selection[0]) / 2;
+
+            container.call(this.brush.move, [from - halfBrushHeight, to + halfBrushHeight]);
+            return;
+          }
+
+          if (brushScale.invert(to) - brushScale.invert(from) > config.brush?.limit) {
+            container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : [config.brush?.from, config.brush?.to].map(brushScale));
+            return;
+          }
+
+          if (_.sourceEvent instanceof MouseEvent) {
             this.selection = _.selection.map(brushScale.invert);
           }
 
@@ -62,29 +75,34 @@ export class BrushService {
       });
 
 
-      setTimeout(() => {
-        container.call(this.brush);
 
-        let domain = brushScale.domain();
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          container.call(this.brush);
+
+          let domain = brushScale.domain();
 
 
-        if (config?.brush?.from) {
-          domain[0] = config.brush.from;
-        }
+          if (config?.brush?.from) {
+            domain[0] = config.brush.from;
+          }
 
-        if (config?.brush?.to) {
-          domain[1] = config.brush.to;
-        }
+          if (config?.brush?.to) {
+            domain[1] = config.brush.to;
+          }
 
-        container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : domain.map(brushScale), {});
-      }, 0);
+          container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : domain.map(brushScale), {});
+
+        }, 0);
+      })
+
 
 
       this.broadcastSubscribtion = this.broadcastService.subscribeToZoom(config?.zoom?.syncChannel).pipe(
         filter((m: IBroadcastMessage<ZoomMessage>) => {
           return m.message.event.sourceEvent instanceof MouseEvent || m.message.event.sourceEvent instanceof WheelEvent;
         }),
-        throttleTime(50, undefined, {trailing: true}),
+        throttleTime(0, animationFrameScheduler, {trailing: true}),
         tap((m: IBroadcastMessage<ZoomMessage>) => {
           const {message: {brushDomain}} = m;
 
@@ -93,9 +111,23 @@ export class BrushService {
             brushScale(brushDomain[1]),
           ]);
 
+          if (m.message.event.type === 'end') {
+            const brushMessage = new BrushMessage({
+              event: null,
+              selection: brushDomain,
+              brushType: config?.brush?.type ?? BrushType.x,
+              brushScale,
+            });
+
+            this.broadcastService.broadcastBrush({
+              channel: config?.zoom?.syncChannel,
+              message: brushMessage,
+            });
+          }
+
           this.selection = brushDomain;
         })
-      ).subscribe()
+      ).subscribe();
     }
   }
 
