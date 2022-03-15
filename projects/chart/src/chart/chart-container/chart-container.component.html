@@ -80,7 +80,7 @@
       (mousemove)="mouseMove($event)">
       <g class="gridlines"
          teta-gridlines
-         *ngIf="data.config.gridLines.enable !== false"
+         *ngIf="data.config.gridLines?.enable !== false"
          [size]="data.size"
          [config]="data.config"
          [xScaleMap]="data.xScaleMap"
