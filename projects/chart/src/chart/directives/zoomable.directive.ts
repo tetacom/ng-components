@@ -1,4 +1,4 @@
-import {Directive, ElementRef, HostBinding, Input, OnDestroy, SimpleChanges,} from '@angular/core';
+import {Directive, ElementRef, HostBinding, Input, NgZone, OnDestroy, SimpleChanges,} from '@angular/core';
 import {ZoomService} from '../service/zoom.service';
 import {IChartConfig} from '../model/i-chart-config';
 import {Axis} from '../core/axis/axis';
@@ -35,7 +35,8 @@ export class ZoomableDirective implements OnDestroy {
   constructor(
     private elementRef: ElementRef,
     private zoomService: ZoomService,
-    private broadcastService: BroadcastService
+    private broadcastService: BroadcastService,
+    private zone: NgZone
   ) {
   }
 
@@ -166,7 +167,14 @@ export class ZoomableDirective implements OnDestroy {
 
           this.currentSelection = m.message.selection;
 
-          this.updateZoom(m);
+
+          this.zone.runOutsideAngular(() => {
+            setTimeout(() => {
+              this.updateZoom(m);
+            }, 100)
+          })
+
+
         }),
         takeWhile((_) => this.alive)
       ).subscribe();
