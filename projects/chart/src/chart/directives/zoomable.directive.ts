@@ -9,8 +9,8 @@ import {AxisOrientation} from '../model/enum/axis-orientation';
 import {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';
 import {BrushType} from '../model/enum/brush-type';
 import {BroadcastService} from '../service/broadcast.service';
-import {debounceTime, tap, throttleTime} from 'rxjs/operators';
-import {animationFrameScheduler, filter, queueScheduler, takeWhile} from 'rxjs';
+import {debounceTime, tap} from 'rxjs/operators';
+import {filter, takeWhile} from 'rxjs';
 
 @Directive({
   selector: '[tetaZoomable]',
@@ -115,9 +115,6 @@ export class ZoomableDirective implements OnDestroy {
       const minZoom = this.config.zoom?.min ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) / this.config.zoom?.min : Infinity;
 
       this.zoom.scaleExtent([maxZoom, minZoom]);
-
-      console.log(this.zoom.scaleExtent())
-
 
       this.zoom.on('start zoom end', this.zoomed);
       this._element.call(this.zoom);

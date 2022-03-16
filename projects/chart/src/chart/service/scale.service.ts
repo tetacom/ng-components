@@ -10,7 +10,6 @@ import {
   map,
   Observable,
   shareReplay,
-  tap,
   withLatestFrom,
 } from 'rxjs';
 import { IChartEvent } from '../model/i-chart-event';
