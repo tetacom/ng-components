@@ -23,13 +23,14 @@ export const datePicker = () => ({
     date: new Date(),
     log: (name, value) => {
       action(name)(value);
+      console.log(name, value);
     },
     getDate: (num) => new Date(num),
   },
-  template: `<div>{{date}}</div>
+  template: `<div (click)="log('click', date)">{{date}}</div>
               <teta-date-picker [tetaIconSprite]="'assets/icons.svg'"
                                 [ngModel]="date"
-                                (ngModelChange)="date = $event; log('date', $event)"></teta-date-picker>`,
+                                (ngModelChange)="date = $event; log('ngModelChange', $event)"></teta-date-picker>`,
 });
 
 export const dateTimePicker = () => ({

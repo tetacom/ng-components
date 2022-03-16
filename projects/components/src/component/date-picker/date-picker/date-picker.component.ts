@@ -157,7 +157,7 @@ export class DatePickerComponent
   applyValue(date: Date) {
     this.setDate(date);
     this.value = this.currentValue;
-    this.onChange(this.value);
+    this.onChange(new Date(this.value));
     this.open = false;
   }
 
