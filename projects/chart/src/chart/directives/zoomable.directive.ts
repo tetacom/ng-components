@@ -121,7 +121,7 @@ export class ZoomableDirective implements OnDestroy {
     // Subscribe to zoom events
     this.broadcastService.subscribeToZoom(this.config?.zoom.syncChannel).pipe(
       filter((m: IBroadcastMessage<ZoomMessage>) => m.message.event.sourceEvent instanceof MouseEvent || m.message.event.sourceEvent instanceof WheelEvent),
-      debounceTime(50),
+      debounceTime(30),
       filter((m: IBroadcastMessage<ZoomMessage>) => {
         return this.zoomAxis.index === m.message?.axis?.index && this.zoomAxis.orientation === m.message?.axis?.orientation;
       }),
@@ -132,15 +132,7 @@ export class ZoomableDirective implements OnDestroy {
         );
 
         if (currentTransform !== m.message.event.transform) {
-
-          if(this.zoomAxis.isFake && !m.message.axis.isFake || !this.zoomAxis.isFake && m.message.axis.isFake) {
-
-            this._element.call(this.zoom.transform, m.message.event.transform, null, {});
-
-            return;
-          }
-
-          this._element.transition().call(this.zoom.transform, m.message.event.transform, null, {});
+          this._element.call(this.zoom.transform, m.message.event.transform, null, {});
         }
 
       }),
@@ -153,7 +145,8 @@ export class ZoomableDirective implements OnDestroy {
     if ((this.config.brush?.type === BrushType.x && this.zoomAxis.orientation === AxisOrientation.x) ||
       (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {
       this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel).pipe(
-        throttleTime(0, animationFrameScheduler, {leading: false, trailing: true}),
+
+        debounceTime(30),
         filter((m: IBroadcastMessage<BrushMessage>) => Boolean(m.message.selection)),
         tap((m: IBroadcastMessage<BrushMessage>) => {
 
@@ -166,6 +159,8 @@ export class ZoomableDirective implements OnDestroy {
           }
 
           this.currentSelection = m.message.selection;
+
+
 
 
           this.zone.runOutsideAngular(() => {
@@ -201,6 +196,10 @@ export class ZoomableDirective implements OnDestroy {
     }
     if (m.message?.brushType === BrushType.y) {
       transform = transform.translate(0, -this.brushScale(s[0]));
+    }
+
+    if(m.message?.hasLimit) {
+      this.zoom.scaleExtent([scale, Infinity])
     }
 
     this._element.transition().duration(150).call(

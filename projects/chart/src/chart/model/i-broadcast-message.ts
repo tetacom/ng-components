@@ -1,6 +1,7 @@
 import {D3BrushEvent, D3ZoomEvent} from 'd3';
 import {Axis} from '../core/axis/axis';
 import {BrushType} from './enum/brush-type';
+import {IChartConfig} from "./i-chart-config";
 
 export class ZoomMessage {
   event: D3ZoomEvent<any, any>;
@@ -23,6 +24,7 @@ export class BrushMessage {
   brushType: BrushType;
   selection: number[];
   brushScale?: any;
+  hasLimit: boolean;
 
 
   constructor(options?: {
@@ -30,11 +32,13 @@ export class BrushMessage {
     brushType: BrushType;
     selection: number[];
     brushScale?: any;
+    hasLimit?: boolean;
   }) {
     this.event = options?.event;
     this.brushType = options?.brushType;
     this.selection = options?.selection;
     this.brushScale = options?.brushScale;
+    this.hasLimit = options?.hasLimit;
   }
 }
 

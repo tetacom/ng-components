@@ -65,6 +65,7 @@ export class BrushService {
             selection: [brushScale.invert(from), brushScale.invert(to)],
             brushType: config?.brush?.type ?? BrushType.x,
             brushScale,
+            hasLimit: Boolean(config?.brush?.limit)
           });
 
           this.broadcastService.broadcastBrush({
