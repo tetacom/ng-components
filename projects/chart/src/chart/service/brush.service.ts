@@ -47,12 +47,34 @@ export class BrushService {
             const selection: number[] = this.selection?.map(brushScale) ?? [config.brush?.from, config.brush?.to].map(brushScale);
             const halfBrushHeight = (selection[1] - selection[0]) / 2;
 
+            const invertedSelection: number[] = [from - halfBrushHeight, to + halfBrushHeight].map(brushScale.invert)
+
+            if(invertedSelection[1] - invertedSelection[0] > config.brush?.max) {
+              container.call(this.brush.move, [invertedSelection[0], invertedSelection[0] + config.brush?.max].map(brushScale));
+              return;
+            }
+
+            if(invertedSelection[1] - invertedSelection[0] < config.brush?.min) {
+              container.call(this.brush.move, [invertedSelection[0], invertedSelection[0] + config.brush?.min].map(brushScale));
+              return;
+            }
+
             container.call(this.brush.move, [from - halfBrushHeight, to + halfBrushHeight]);
+
             return;
           }
 
-          if (brushScale.invert(to) - brushScale.invert(from) > config.brush?.limit) {
-            container.call(this.brush.move, this.selection ? this.selection.map(brushScale) : [config.brush?.from, config.brush?.to].map(brushScale));
+
+
+          if (brushScale.invert(to) - brushScale.invert(from) > config.brush?.max) {
+
+            container.call(this.brush.move, this.selection ? [this.selection[0], this.selection[0] + config.brush?.max].map(brushScale) : [config.brush?.from, config.brush?.to].map(brushScale));
+            return;
+          }
+
+          if (brushScale.invert(to) - brushScale.invert(from) < config.brush?.min) {
+
+            container.call(this.brush.move, this.selection ? [this.selection[0], this.selection[0] + config.brush?.min].map(brushScale) : [config.brush?.from, config.brush?.to].map(brushScale));
             return;
           }
 
@@ -64,8 +86,7 @@ export class BrushService {
             event: _,
             selection: [brushScale.invert(from), brushScale.invert(to)],
             brushType: config?.brush?.type ?? BrushType.x,
-            brushScale,
-            hasLimit: Boolean(config?.brush?.limit)
+            brushScale
           });
 
           this.broadcastService.broadcastBrush({

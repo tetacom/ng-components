@@ -93,7 +93,6 @@ export class ZoomableDirective implements OnDestroy {
 
     this.zoom = d3
       .zoom()
-      .scaleExtent([0, Infinity])
       .extent([
         [0, 0],
         [this.size.width, this.size.height],
@@ -110,6 +109,16 @@ export class ZoomableDirective implements OnDestroy {
     this.zoomAxis = this.axis ?? commonZoomAxis;
 
     if (enable) {
+
+
+      const maxZoom = this.config.zoom?.max ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) / this.config.zoom?.max : 0;
+      const minZoom = this.config.zoom?.min ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) / this.config.zoom?.min : Infinity;
+
+      this.zoom.scaleExtent([maxZoom, minZoom]);
+
+      console.log(this.zoom.scaleExtent())
+
+
       this.zoom.on('start zoom end', this.zoomed);
       this._element.call(this.zoom);
     }
@@ -190,13 +199,6 @@ export class ZoomableDirective implements OnDestroy {
     if (m.message?.brushType === BrushType.y) {
       transform = transform.translate(0, -this.brushScale(s[0]));
     }
-
-    const scaleExtent = this.zoom.scaleExtent();
-
-    if(m.message?.hasLimit && scaleExtent[0] === 0) {
-      this.zoom.scaleExtent([scale, Infinity])
-    }
-
 
     this._element.transition().duration(150).call(
       this.zoom.transform,

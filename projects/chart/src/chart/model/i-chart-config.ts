@@ -15,14 +15,16 @@ export interface IChartConfig {
     type: ZoomType;
     axisIndex?: number;
     syncChannel?: string;
-    limit?: number;
+    min?: number;
+    max?: number
   };
   brush?: {
     enable?: boolean;
     type: BrushType;
     from?: number;
     to?: number;
-    limit?: number;
+    min?: number;
+    max?: number
   };
   legend?: {
     enable?: boolean;

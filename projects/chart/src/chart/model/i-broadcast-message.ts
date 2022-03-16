@@ -24,7 +24,6 @@ export class BrushMessage {
   brushType: BrushType;
   selection: number[];
   brushScale?: any;
-  hasLimit: boolean;
 
 
   constructor(options?: {
@@ -32,13 +31,11 @@ export class BrushMessage {
     brushType: BrushType;
     selection: number[];
     brushScale?: any;
-    hasLimit?: boolean;
   }) {
     this.event = options?.event;
     this.brushType = options?.brushType;
     this.selection = options?.selection;
     this.brushScale = options?.brushScale;
-    this.hasLimit = options?.hasLimit;
   }
 }
 
