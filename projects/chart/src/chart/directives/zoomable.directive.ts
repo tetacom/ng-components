@@ -30,7 +30,6 @@ export class ZoomableDirective implements OnDestroy {
 
   private currentTransform = zoomIdentity;
   private currentSelection;
-  private originScale: any;
 
   constructor(
     private elementRef: ElementRef,
@@ -46,8 +45,6 @@ export class ZoomableDirective implements OnDestroy {
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-  }
 
   zoomed = (event: D3ZoomEvent<any, any>) => {
     if (event.sourceEvent) {
@@ -145,7 +142,6 @@ export class ZoomableDirective implements OnDestroy {
     if ((this.config.brush?.type === BrushType.x && this.zoomAxis.orientation === AxisOrientation.x) ||
       (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {
       this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel).pipe(
-
         debounceTime(30),
         filter((m: IBroadcastMessage<BrushMessage>) => Boolean(m.message.selection)),
         tap((m: IBroadcastMessage<BrushMessage>) => {
@@ -159,9 +155,6 @@ export class ZoomableDirective implements OnDestroy {
           }
 
           this.currentSelection = m.message.selection;
-
-
-
 
           this.zone.runOutsideAngular(() => {
             setTimeout(() => {
@@ -198,9 +191,12 @@ export class ZoomableDirective implements OnDestroy {
       transform = transform.translate(0, -this.brushScale(s[0]));
     }
 
-    if(m.message?.hasLimit) {
+    const scaleExtent = this.zoom.scaleExtent();
+
+    if(m.message?.hasLimit && scaleExtent[0] === 0) {
       this.zoom.scaleExtent([scale, Infinity])
     }
+
 
     this._element.transition().duration(150).call(
       this.zoom.transform,
