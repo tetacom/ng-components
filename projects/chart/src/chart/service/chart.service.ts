@@ -4,9 +4,9 @@ import {
   BehaviorSubject,
   filter,
   map,
-  Observable,
+  Observable, of,
   shareReplay,
-  Subject,
+  Subject, withLatestFrom,
 } from 'rxjs';
 import {IChartEvent} from '../model/i-chart-event';
 import {IDisplayTooltip} from '../model/i-display-tooltip';
@@ -51,9 +51,13 @@ export class ChartService {
   private annotationMove$ = new Subject<IChartEvent<Annotation>>();
 
   constructor() {
+
+    const id = of((Date.now() + Math.random()).toString(36))
+
     this.config = this.config$
       .asObservable()
       .pipe(
+        withLatestFrom(id),
         map(this.setDefaults),
         map(this.setPreparationData),
         shareReplay({
@@ -139,7 +143,10 @@ export class ChartService {
     this.chartContextMenu$.next(event);
   }
 
-  private setDefaults(config: IChartConfig): IChartConfig {
+  private setDefaults(data: [IChartConfig, string]): IChartConfig {
+
+    let [config, id] = data;
+
     const defaultConfig = (defaultConfig) => {
       return (source) => {
         return Object.assign({}, defaultConfig, source);
@@ -164,8 +171,8 @@ export class ChartService {
       config.tooltip
     );
 
-    const id = (Date.now() + Math.random()).toString(36);
     config.zoom.syncChannel = config.zoom?.syncChannel ?? id;
+
     return config;
   }
 

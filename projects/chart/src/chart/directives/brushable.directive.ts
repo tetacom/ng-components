@@ -11,11 +11,10 @@ import { BrushService } from '../service/brush.service';
 import { ChartService } from '../service/chart.service';
 
 @Directive({
-  selector: 'svg:svg[tetaBrushable]',
+  selector: '[tetaBrushable]',
 })
 export class BrushableDirective implements OnInit, AfterViewInit {
-  @Input() config?: IChartConfig;
-  @Input() size?: DOMRect;
+  @Input() config: IChartConfig;
   @Input() brushScale: any;
 
   constructor(
@@ -35,7 +34,6 @@ export class BrushableDirective implements OnInit, AfterViewInit {
     if(changes.hasOwnProperty('config')) {
       this.brushService.clearPreviousSelection();
     }
-
 
     this.brushService.applyBrush(
       this.element,

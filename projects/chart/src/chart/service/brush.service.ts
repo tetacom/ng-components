@@ -50,24 +50,22 @@ export class BrushService {
             const invertedSelection: number[] = [from - halfBrushHeight, to + halfBrushHeight].map(brushScale.invert)
 
             if(invertedSelection[1] - invertedSelection[0] > config.brush?.max) {
-              container.call(this.brush.move, [invertedSelection[0], invertedSelection[0] + config.brush?.max].map(brushScale));
+              container.call(this.brush.move, [Math.floor(invertedSelection[0]), Math.floor(invertedSelection[0] + config.brush?.max)].map(brushScale));
               return;
             }
 
             if(invertedSelection[1] - invertedSelection[0] < config.brush?.min) {
-              container.call(this.brush.move, [invertedSelection[0], invertedSelection[0] + config.brush?.min].map(brushScale));
+              container.call(this.brush.move, [Math.floor(invertedSelection[0]), Math.ceil(invertedSelection[0] + config.brush?.min)].map(brushScale));
               return;
             }
 
             container.call(this.brush.move, [from - halfBrushHeight, to + halfBrushHeight]);
-
             return;
           }
 
 
 
           if (brushScale.invert(to) - brushScale.invert(from) > config.brush?.max) {
-
             container.call(this.brush.move, this.selection ? [this.selection[0], this.selection[0] + config.brush?.max].map(brushScale) : [config.brush?.from, config.brush?.to].map(brushScale));
             return;
           }
