@@ -7,4 +7,8 @@ export interface TooltipOptions {
   showLine?: boolean;
   tracking?: TooltipTracking;
   format?: (data: IDisplayTooltip[]) => string;
+  padding?: {
+    x?: number,
+    y?: number
+  }
 }

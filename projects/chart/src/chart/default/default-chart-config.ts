@@ -16,6 +16,10 @@ export const defaultChartConfig = (): IChartConfig => ({
     enable: true,
     showMarkers: true,
     tracking: TooltipTracking.x,
+    padding: {
+      x: 16,
+      y: 16
+    }
   },
   xAxis: [],
   yAxis: [],

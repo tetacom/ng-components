@@ -103,14 +103,14 @@ export class TooltipComponent implements OnInit {
     const centerX = this.size.width / 2;
     const centerY = this.size.height / 2;
 
-    const padding = {x: 10, y: 10};
+    const padding = this.config?.tooltip?.padding;
 
     const scene = {
       left: event.pageX > centerX ? 'initial' : `${event.pageX + padding.x}px`,
       top: event.pageY > centerY ? 'initial' : `${event.pageY + padding.y}px`,
       bottom:
         event.pageY > centerY
-          ? `${window.innerHeight - event.pageY}px`
+          ? `${window.innerHeight - event.pageY + padding.y}px`
           : 'initial',
       right:
         event.pageX > centerX
