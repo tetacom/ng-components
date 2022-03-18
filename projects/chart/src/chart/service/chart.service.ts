@@ -24,6 +24,7 @@ import {Annotation} from "../model/annotation";
   providedIn: 'root',
 })
 export class ChartService {
+  public id: Observable<string>;
   public config: Observable<IChartConfig>;
   public size: Observable<DOMRect>;
   public pointerMove: Observable<PointerEvent>;
@@ -52,12 +53,12 @@ export class ChartService {
 
   constructor() {
 
-    const id = of((Date.now() + Math.random()).toString(36))
+    this.id = of((Date.now() + Math.random()).toString(36))
 
     this.config = this.config$
       .asObservable()
       .pipe(
-        withLatestFrom(id),
+        withLatestFrom(this.id),
         map(this.setDefaults),
         map(this.setPreparationData),
         shareReplay({
@@ -152,7 +153,9 @@ export class ChartService {
         return Object.assign({}, defaultConfig, source);
       };
     };
+
     config = Object.assign({}, defaultChartConfig(), config);
+    config.id = id;
 
     config.xAxis = config.xAxis.map(defaultConfig(defaultAxisConfig));
     config.yAxis = config.yAxis.map(defaultConfig(defaultAxisConfig));

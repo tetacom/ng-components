@@ -45,7 +45,6 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
   brushScale: Observable<any>;
 
   private _observer: ResizeObserver;
-  private uniqId: string;
 
   private filterPositionMap = new Map<Opposite,
     (axis: Axis) => (_: Axis) => boolean>()
@@ -137,7 +136,6 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.uniqId = (Date.now() + Math.random()).toString(36);
     this._observer = new ResizeObserver((entries: ResizeObserverEntry[]) => {
 
       requestAnimationFrame(() => {
@@ -262,9 +260,5 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
   mouseLeave(event) {
     this._svc.setPointerMove(event);
-  }
-
-  id(): string {
-    return this.uniqId;
   }
 }

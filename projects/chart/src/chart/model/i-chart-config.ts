@@ -9,6 +9,7 @@ import { Annotation } from './annotation';
 
 export interface IChartConfig {
   name?: string;
+  id?: string;
   series?: Series<BasePoint>[];
   zoom?: {
     enable: boolean;

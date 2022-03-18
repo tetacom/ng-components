@@ -1,21 +1,23 @@
 import {D3BrushEvent, D3ZoomEvent} from 'd3';
 import {Axis} from '../core/axis/axis';
 import {BrushType} from './enum/brush-type';
-import {IChartConfig} from "./i-chart-config";
 
 export class ZoomMessage {
   event: D3ZoomEvent<any, any>;
   axis?: Axis;
   brushDomain?: number[];
+  chartId: string;
 
   constructor(options?: {
     event: D3ZoomEvent<any, any>;
     axis?: Axis;
     brushDomain?: number[]
+    chartId: string;
   }) {
     this.event = options?.event;
     this.axis = options?.axis;
     this.brushDomain = options.brushDomain;
+    this.chartId = options?.chartId;
   }
 }
 

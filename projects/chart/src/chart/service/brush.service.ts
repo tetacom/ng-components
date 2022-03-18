@@ -5,7 +5,8 @@ import {animationFrameScheduler, filter, Subscription, tap} from 'rxjs';
 import {BroadcastService} from './broadcast.service';
 import {IChartConfig} from '../model/i-chart-config';
 import {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';
-import {debounceTime, throttleTime} from 'rxjs/operators';
+import {throttleTime} from 'rxjs/operators';
+import {AxisOrientation} from "../model/enum/axis-orientation";
 
 @Injectable({
   providedIn: 'root',
@@ -126,26 +127,35 @@ export class BrushService {
         tap((m: IBroadcastMessage<ZoomMessage>) => {
           const {message: {brushDomain}} = m;
 
-          container.call(this.brush.move, [
-            brushScale(brushDomain[0]),
-            brushScale(brushDomain[1]),
-          ]);
+          if(m.message?.axis.index === 0 && m.message?.axis.orientation === AxisOrientation.y && config.brush?.type === BrushType.y || m.message?.axis.orientation === AxisOrientation.x && config.brush?.type === BrushType.x) {
 
-          if (m.message.event.type === 'end') {
-            const brushMessage = new BrushMessage({
-              event: null,
-              selection: brushDomain,
-              brushType: config?.brush?.type ?? BrushType.x,
-              brushScale,
-            });
+            container.call(this.brush.move, [
+              brushScale(brushDomain[0]),
+              brushScale(brushDomain[1]),
+            ]);
 
-            this.broadcastService.broadcastBrush({
-              channel: config?.zoom?.syncChannel,
-              message: brushMessage,
-            });
+            if (m.message.event.type === 'end') {
+              const brushMessage = new BrushMessage({
+                event: null,
+                selection: brushDomain,
+                brushType: config?.brush?.type ?? BrushType.x,
+                brushScale,
+              });
+
+              this.broadcastService.broadcastBrush({
+                channel: config?.zoom?.syncChannel,
+                message: brushMessage,
+              });
+            }
+
+            this.selection = brushDomain;
+
+
+
           }
 
-          this.selection = brushDomain;
+
+
         })
       ).subscribe();
     }
