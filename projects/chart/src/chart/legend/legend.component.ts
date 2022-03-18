@@ -17,6 +17,7 @@ import { SeriesType } from '../model/enum/series-type';
 export class LegendComponent {
   private sizeMapping = new Map<SeriesType, number>()
     .set(SeriesType.line, 2)
+    .set(SeriesType.scatter, 12)
     .set(SeriesType.bar, 12)
     .set(SeriesType.area, 2)
     .set(SeriesType.block, 12)

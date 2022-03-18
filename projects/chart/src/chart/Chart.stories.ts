@@ -302,7 +302,7 @@ const createChart2 = (size: number): IChartConfig => {
     brush: {
       enable: true,
       type: BrushType.y,
-      limit: 100,
+      max: 100,
       from: faker.datatype.number({min: 500, max: 600}),
       to: faker.datatype.number({min: 650, max: 700}),
     },

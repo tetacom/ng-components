@@ -11,16 +11,13 @@ import {
   combineLatest,
   map,
   Observable,
-  share,
   shareReplay,
-  startWith,
   tap,
   withLatestFrom,
 } from 'rxjs';
 import {Axis} from '../core/axis/axis';
 import {AxisOrientation} from '../model/enum/axis-orientation';
 import {ScaleService} from '../service/scale.service';
-import {IChartEvent} from '../model/i-chart-event';
 import {ZoomService} from '../service/zoom.service';
 import {BrushType} from '../model/enum/brush-type';
 
@@ -72,8 +69,16 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     this.size = this._svc.size;
     this.yAxisMap = this._scaleService.yAxisMap;
     this.xAxisMap = this._scaleService.xAxisMap;
-    this.yScaleMap = this._scaleService.yScaleMap;
-    this.xScaleMap = this._scaleService.xScaleMap;
+    this.yScaleMap = this._scaleService.yScaleMap.pipe(tap(() => this._cdr.detectChanges()),
+      shareReplay({
+        bufferSize: 1,
+        refCount: true
+      }));
+    this.xScaleMap = this._scaleService.xScaleMap.pipe(tap(() => this._cdr.detectChanges()),
+      shareReplay({
+        bufferSize: 1,
+        refCount: true
+      }));
 
     this.brushScale = combineLatest([
       this._scaleService.xScaleMap,
@@ -97,11 +102,11 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       this.size,
       this.xAxisMap,
       this.yAxisMap,
-      this._zoomService.zoomed,
+      // this._zoomService.zoomed,
     ]).pipe(
       map(
         (
-          data: [DOMRect, Map<number, any>, Map<number, any>, IChartEvent<Axis>]
+          data: [DOMRect, Map<number, any>, Map<number, any>]
         ) => {
           const [size, x, y] = data;
           const yAxesArray = [...y.values()];
@@ -130,7 +135,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
         }
       ),
       tap((_) => {
-        this._cdr.detectChanges();
+        setTimeout(() => this._cdr.detectChanges());
       })
     );
   }

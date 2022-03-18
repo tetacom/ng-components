@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as d3 from 'd3';
-import { D3ZoomEvent, ZoomTransform } from 'd3';
-import { Axis } from '../core/axis/axis';
-import { AxisOrientation } from '../model/enum/axis-orientation';
-import { IChartConfig } from '../model/i-chart-config';
-import { ChartService } from './chart.service';
+import {D3ZoomEvent, ZoomTransform} from 'd3';
+import {Axis} from '../core/axis/axis';
+import {AxisOrientation} from '../model/enum/axis-orientation';
+import {IChartConfig} from '../model/i-chart-config';
+import {ChartService} from './chart.service';
 import {
   combineLatest,
   map,
@@ -12,9 +12,9 @@ import {
   shareReplay,
   withLatestFrom,
 } from 'rxjs';
-import { IChartEvent } from '../model/i-chart-event';
-import { ZoomService } from './zoom.service';
-import { ScaleType } from '../model/enum/scale-type';
+import {IChartEvent} from '../model/i-chart-event';
+import {ZoomService} from './zoom.service';
+import {ScaleType} from '../model/enum/scale-type';
 
 @Injectable({
   providedIn: 'root',
@@ -52,6 +52,10 @@ export class ScaleService {
           map.set(index, Axis.createAxis(AxisOrientation.x, config, index));
         });
         return map;
+      }),
+      shareReplay({
+        bufferSize: 1,
+        refCount: true
       })
     );
 
@@ -67,6 +71,10 @@ export class ScaleService {
         });
 
         return map;
+      }),
+      shareReplay({
+        bufferSize: 1,
+        refCount: true
       })
     );
 
@@ -143,7 +151,6 @@ export class ScaleService {
               this.transformCacheX.set(axis.index, event.transform);
             }
           }
-
           return map;
         }
       ),
