@@ -12,7 +12,7 @@ import {TooltipTracking} from '../../model/enum/tooltip-tracking';
 @Component({
   template: '',
 })
-export class LinearSeriesBase <T extends BasePoint>
+export class LinearSeriesBase<T extends BasePoint>
   extends SeriesBaseComponent<T>
   implements OnInit, AfterViewInit, OnDestroy {
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
@@ -41,7 +41,7 @@ export class LinearSeriesBase <T extends BasePoint>
 
         return this.getTransform(event, x, y);
       }),
-      tap(() => this.cdr.detectChanges())
+      tap(() => setTimeout(() => this.cdr.detectChanges()))
     );
 
     this.path = combineLatest([
@@ -147,13 +147,13 @@ export class LinearSeriesBase <T extends BasePoint>
     scaleX: Map<number, any>,
     scaleY: Map<number, any>
   ): Pick<BasePoint, 'x' | 'y'> {
+    if (event.type === 'mouseleave') {
+      return null;
+    }
     const mouse = [event?.offsetX, event?.offsetY];
-
     const foundX = scaleX.get(this.series.xAxisIndex);
     const foundY = scaleY.get(this.series.yAxisIndex);
-
     const tooltipTracking = this.config?.tooltip?.tracking;
-
     const lineIntersection = (
       p0_x,
       p0_y,

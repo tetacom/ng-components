@@ -21,6 +21,7 @@ import {BlockAreaSeriesComponent} from './chart-container/series/block-area-seri
 import {AreaSeriesComponent} from './chart-container/series/area-series/area-series.component';
 import {AnnotationComponent} from './chart-container/annotation/annotation.component';
 import {LinearSeriesBase} from './chart-container/series/linear-series-base';
+import {TuiLetModule} from '@taiga-ui/cdk';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,7 @@ import {LinearSeriesBase} from './chart-container/series/linear-series-base';
     BlockSeriesComponent,
     BlockAreaSeriesComponent,
   ],
-  imports: [CommonModule],
+  imports: [CommonModule, TuiLetModule],
 })
 export class ChartModule {
 }

@@ -27,9 +27,9 @@
   [attr.stroke-dasharray]="series.style?.strokeDasharray"
   [attr.stroke-width]="series.style?.strokeWidth">
 </svg:path>
-<ng-container *ngIf="transform | async as t">
+<ng-container *tuiLet="transform | async as t">
   <svg:circle
-    *ngIf="t.x !== undefined && t.y!== undefined"
+    *ngIf="t?.x !=null && t?.y !=null"
     r="3"
     [attr.fill]="series.color"
     [attr.transform]="'translate('+ t.x +', '+ t.y +')'"

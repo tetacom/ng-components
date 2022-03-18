@@ -1834,6 +1834,27 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
+"@ng-web-apis/common@^1.12.1":
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/@ng-web-apis/common/-/common-1.13.0.tgz#f5acc279b4b524366af262749d12c04097f093e4"
+  integrity sha512-tr/0YHKlfAl0ECo0BPNdNnpQLdI9G4m3nUr9Nf7MXOBqk4p/fOwTtgCyl9IZFpfAxVezFLCZU+ootTaYWVyVlA==
+  dependencies:
+    tslib "^1.9.0"
+
+"@ng-web-apis/mutation-observer@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@ng-web-apis/mutation-observer/-/mutation-observer-1.1.0.tgz#bc2b8c9e954f5ba68e230366658cb13a7553c10b"
+  integrity sha512-ThcsCaGCXf07xvIAFdP967MVxE74rH6dfZtoKky6RR69aMhdPz0AQuevVKIpcX4mU2P3ROpZhqP8MGhWD7DnOg==
+  dependencies:
+    tslib "^1.9.0"
+
+"@ng-web-apis/resize-observer@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@ng-web-apis/resize-observer/-/resize-observer-1.0.3.tgz#7f594f588d6706bfdeab514dec6249b5afc44534"
+  integrity sha512-ddmhxlca4knmN7BicgPTBScYXNTEKKF3z2WXPgmhOTxhVOyg/HHRDtq5nDljJt1eEaut2gcnhgDm4/6eGfedWw==
+  dependencies:
+    tslib "^1.9.0"
+
 "@ngneat/transloco-utils@^3.0.1":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@ngneat/transloco-utils/-/transloco-utils-3.0.2.tgz#43470e314d4815eab82a5247ff3123992d2fec3c"
@@ -3366,6 +3387,33 @@
     resolve-from "^5.0.0"
     store2 "^2.12.0"
 
+"@taiga-ui/cdk@^2.37.1":
+  version "2.37.1"
+  resolved "https://registry.yarnpkg.com/@taiga-ui/cdk/-/cdk-2.37.1.tgz#4362e44adaae3d6433851404616ba5b951ff7c46"
+  integrity sha512-I4wQFTk0Z8hq7MumyrlsS+Uoc3Lwhw08OGXw8/nciUtbLdRVkkpr+WeM7Jh/wp4Zy0pq40+gI3Fln8/Q8zi/HQ==
+  dependencies:
+    "@ng-web-apis/common" "^1.12.1"
+    "@ng-web-apis/mutation-observer" "^1.1.0"
+    "@ng-web-apis/resize-observer" "^1.0.3"
+    "@tinkoff/ng-event-plugins" "^2.5.1"
+    "@tinkoff/ng-polymorpheus" "^3.1.12"
+    "@types/resize-observer-browser" "^0.1.7"
+    tslib "^1.10.0"
+
+"@tinkoff/ng-event-plugins@^2.5.1":
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/@tinkoff/ng-event-plugins/-/ng-event-plugins-2.5.1.tgz#c55f1d0e621442e6d33c601b911de9a3d577c4ea"
+  integrity sha512-sjBxdHa4+EYHsYro83vCq6s4NJd1D1pHbOLOR+i0/lCKqImnuiIHw1ZJXG6Y8xYg//U8xK8nPgXMKHio5yIz7w==
+  dependencies:
+    tslib "^1.10.0"
+
+"@tinkoff/ng-polymorpheus@^3.1.12":
+  version "3.1.12"
+  resolved "https://registry.yarnpkg.com/@tinkoff/ng-polymorpheus/-/ng-polymorpheus-3.1.12.tgz#e7a453ac640b330e4962e7eeeb205f872ad0a80f"
+  integrity sha512-DNZrOPyqBePi+KKT4ZDQkWCS9q633nHM2MLzldDp2srb3QdEpcjNVEbw7vgxFNkwhe11VS/eUCxnMONPg0OjBw==
+  dependencies:
+    tslib "^1.10.0"
+
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
@@ -3839,6 +3887,11 @@
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@types/resize-observer-browser/-/resize-observer-browser-0.1.6.tgz#d8e6c2f830e2650dc06fe74464472ff64b54a302"
   integrity sha512-61IfTac0s9jvNtBCpyo86QeaN8qqpMGHdK0uGKCCIy2dt5/Yk84VduHIdWAcmkC5QvdkPL0p5eWYgUZtHKKUVg==
+
+"@types/resize-observer-browser@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@types/resize-observer-browser/-/resize-observer-browser-0.1.7.tgz#294aaadf24ac6580b8fbd1fe3ab7b59fe85f9ef3"
+  integrity sha512-G9eN0Sn0ii9PWQ3Vl72jDPgeJwRWhv2Qk/nQkJuWmRmOB4HX3/BhD5SE1dZs/hzPZL/WKnvF0RHdTSG54QJFyg==
 
 "@types/resolve@1.17.1":
   version "1.17.1"
@@ -15934,7 +15987,7 @@ tslib@2.3.1, tslib@^2.0.0, tslib@^2.0.3, tslib@^2.2.0, tslib@^2.3.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
 
-tslib@^1.9.0:
+tslib@^1.10.0, tslib@^1.9.0:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
