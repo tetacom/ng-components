@@ -31,7 +31,7 @@ export class GridlinesComponent {
 
   ngOnChanges(changes: SimpleChanges) {
     if (
-      changes.hasOwnProperty('xScaleMap') &&
+      changes.hasOwnProperty('xScaleMap') ||
       changes.hasOwnProperty('yScaleMap')
     ) {
       this.draw();

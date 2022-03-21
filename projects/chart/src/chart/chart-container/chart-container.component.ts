@@ -69,11 +69,13 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     this.size = this._svc.size;
     this.yAxisMap = this._scaleService.yAxisMap;
     this.xAxisMap = this._scaleService.xAxisMap;
+
     this.yScaleMap = this._scaleService.yScaleMap.pipe(tap(() => this._cdr.detectChanges()),
       shareReplay({
         bufferSize: 1,
         refCount: true
       }));
+
     this.xScaleMap = this._scaleService.xScaleMap.pipe(tap(() => this._cdr.detectChanges()),
       shareReplay({
         bufferSize: 1,
@@ -101,8 +103,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     this.visibleRect = combineLatest([
       this.size,
       this.xAxisMap,
-      this.yAxisMap,
-      // this._zoomService.zoomed,
+      this.yAxisMap
     ]).pipe(
       map(
         (
@@ -134,9 +135,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
           };
         }
       ),
-      tap((_) => {
-        setTimeout(() => this._cdr.detectChanges());
-      })
+      tap(() => setTimeout(() => this._cdr.detectChanges()))
     );
   }
 

@@ -4,9 +4,7 @@ import {
   ElementRef,
   HostBinding,
   Input,
-  NgZone,
   OnDestroy,
-  SimpleChanges,
 } from '@angular/core';
 import {ZoomService} from '../service/zoom.service';
 import {IChartConfig} from '../model/i-chart-config';
@@ -19,7 +17,7 @@ import {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast
 import {BrushType} from '../model/enum/brush-type';
 import {BroadcastService} from '../service/broadcast.service';
 import {debounceTime, tap, throttleTime} from 'rxjs/operators';
-import {animationFrameScheduler, filter, takeWhile, withLatestFrom} from 'rxjs';
+import {animationFrameScheduler, filter, takeWhile, combineLatest} from 'rxjs';
 import {ChartService} from "../service/chart.service";
 
 @Directive({
@@ -147,19 +145,17 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         );
 
         if (currentTransform !== m.message.event.transform) {
-          this._element.call(this.zoom.transform, m.message.event.transform);
+
+          if(this.config.id !== m.message.chartId) {
+            this._element.call(this.zoom.transform, m.message.event.transform, null, {});
+            return;
+          } else {
+            // if(m.message.axis.isFake && !this.zoomAxis.isFake || !m.message.axis.isFake && this.zoomAxis.isFake) {
+            //   this._element.call(this.zoom.transform, m.message.event.transform);
+            // }
+          }
+
         }
-
-        if(this.config.id !== m.message.chartId) {
-
-          this.zoomService.setZoom({
-            event: m.message.event,
-            target: this.zoomAxis
-          });
-
-          this.currentTransform = m.message.event.transform;
-        }
-
       })
     ).subscribe();
 
@@ -168,14 +164,17 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
     if ((this.config.brush?.type === BrushType.x && this.zoomAxis.orientation === AxisOrientation.x) ||
       (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {
-      this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel).pipe(
+
+      combineLatest([this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel), this.chartService.size]).pipe(
         takeWhile((_) => this.alive),
         debounceTime(150),
-        filter((m: IBroadcastMessage<BrushMessage>) => Boolean(m.message.selection)),
-        tap((m: IBroadcastMessage<BrushMessage>) => {
+        filter((data: [IBroadcastMessage<BrushMessage>, DOMRect]) => Boolean(data[0].message.selection)),
+        tap((data: [IBroadcastMessage<BrushMessage>, DOMRect]) => {
+
+          const [m] = data;
 
           const currentTransform = d3.zoomTransform(
-            this.elementRef.nativeElement
+            this._element.node()
           );
 
           if (!m.message.event && this.currentSelection && currentTransform.k !== 1) {
@@ -183,6 +182,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           }
 
           this.currentSelection = m.message.selection;
+
 
           this.updateZoom(m);
 
@@ -198,8 +198,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   }
 
   private updateZoom(m: IBroadcastMessage<BrushMessage>) {
-
-
 
     const s = m.message.selection;
     this.brushScale.domain(this.zoomAxis.extremes);
