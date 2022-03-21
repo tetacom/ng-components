@@ -13,7 +13,6 @@
 </svg:defs>
 <svg:path
   class="area"
-  *ngIf="series?.fillType === fillType.gradient"
   [attr.d]="areaPath | async"
   [attr.stroke-width]="0"
   [attr.fill-opacity]="series.style?.fillOpacity"
