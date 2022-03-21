@@ -1,18 +1,28 @@
-<ng-container *ngIf="config.gridLines?.showY !== false" >
-  <ng-container *ngFor="let tick of tickYValues">
-    <svg:line [attr.x1]="0" stroke="red"
-              [attr.y1]="yScaleMap.get(0)(tick)"
-              [attr.x2]="size?.width"
-              [attr.y2]="yScaleMap.get(0)(tick)"></svg:line>
+<ng-container *ngIf="{
+  xValues: tickXValues | async,
+  yValues: tickYValues | async,
+  x: x | async,
+  y: y | async,
+  config: config | async
+} as data">
+  <ng-container *ngIf="data.config.gridLines?.showY !== false">
+    <ng-container *ngFor="let tick of data.yValues">
+      <svg:line [attr.x1]="0"
+                [attr.y1]="data.y(tick)"
+                [attr.x2]="size?.width"
+                [attr.y2]="data.y(tick)"></svg:line>
+    </ng-container>
   </ng-container>
+
+  <ng-container *ngIf="data.config.gridLines?.showX !== false">
+    <ng-container *ngFor="let tick of data.xValues">
+      <svg:line [attr.x1]="data.x(tick)"
+                [attr.y1]="0"
+                [attr.x2]="data.x(tick)"
+                [attr.y2]="size?.height"></svg:line>
+    </ng-container>
+  </ng-container>
+
 </ng-container>
 
-<ng-container *ngIf="config.gridLines?.showX !== false" >
-  <ng-container *ngFor="let tick of tickXValues">
-    <svg:line [attr.x1]="xScaleMap.get(0)(tick)"
-              stroke="red"
-              [attr.y1]="0"
-              [attr.x2]="xScaleMap.get(0)(tick)"
-              [attr.y2]="size?.height"></svg:line>
-  </ng-container>
-</ng-container>
+

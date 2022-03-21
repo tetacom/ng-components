@@ -85,9 +85,7 @@
          teta-gridlines
          *ngIf="data.config.gridLines?.enable !== false"
          [size]="data.size"
-         [config]="data.config"
-         [xScaleMap]="data.xScaleMap"
-         [yScaleMap]="data.yScaleMap"></g>
+         [config]="data.config"></g>
 
       <g class="x-axis-plotband-container">
         <ng-container *ngFor="let axis of data.config.xAxis; let i = index">

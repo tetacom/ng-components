@@ -8,6 +8,7 @@ import {
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from '../service/chart.service';
 import {
+  animationFrameScheduler,
   combineLatest,
   map,
   Observable,
@@ -20,6 +21,7 @@ import {AxisOrientation} from '../model/enum/axis-orientation';
 import {ScaleService} from '../service/scale.service';
 import {ZoomService} from '../service/zoom.service';
 import {BrushType} from '../model/enum/brush-type';
+import {throttleTime} from "rxjs/operators";
 
 type Opposite = boolean;
 
@@ -70,13 +72,17 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     this.yAxisMap = this._scaleService.yAxisMap;
     this.xAxisMap = this._scaleService.xAxisMap;
 
-    this.yScaleMap = this._scaleService.yScaleMap.pipe(tap(() => this._cdr.detectChanges()),
+    this.yScaleMap = this._scaleService.yScaleMap.pipe(
+      throttleTime(0, animationFrameScheduler, {trailing: true}),
+      tap(() => this._cdr.detectChanges()),
       shareReplay({
         bufferSize: 1,
         refCount: true
       }));
 
-    this.xScaleMap = this._scaleService.xScaleMap.pipe(tap(() => this._cdr.detectChanges()),
+    this.xScaleMap = this._scaleService.xScaleMap.pipe(
+      throttleTime(0, animationFrameScheduler, {trailing: true}),
+      tap(() => this._cdr.detectChanges()),
       shareReplay({
         bufferSize: 1,
         refCount: true
@@ -94,6 +100,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
           ? x.get(0)
           : y.get(0);
       }),
+
       shareReplay({
         bufferSize: 1,
         refCount: true
@@ -105,6 +112,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       this.xAxisMap,
       this.yAxisMap
     ]).pipe(
+      throttleTime(0, animationFrameScheduler, {trailing: true}),
       map(
         (
           data: [DOMRect, Map<number, any>, Map<number, any>]

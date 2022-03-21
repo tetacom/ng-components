@@ -79,7 +79,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           channel: this.config?.zoom?.syncChannel,
           message,
         });
-
       }
 
       this.zoomService.setZoom({
@@ -134,28 +133,18 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     this.broadcastService.subscribeToZoom(this.config?.zoom.syncChannel).pipe(
       takeWhile((_) => this.alive),
       filter((m: IBroadcastMessage<ZoomMessage>) => m.message.event.sourceEvent instanceof MouseEvent || m.message.event.sourceEvent instanceof WheelEvent),
-      throttleTime(0, animationFrameScheduler, {trailing: true}),
       filter((m: IBroadcastMessage<ZoomMessage>) => {
         return this.zoomAxis.index === m.message?.axis?.index && this.zoomAxis.orientation === m.message?.axis?.orientation;
       }),
       tap((m: IBroadcastMessage<ZoomMessage>) => {
 
-        const currentTransform = d3.zoomTransform(
-          this._element.node()
-        );
-
-        if (currentTransform !== m.message.event.transform) {
-
           if(this.config.id !== m.message.chartId) {
             this._element.call(this.zoom.transform, m.message.event.transform, null, {});
-            return;
           } else {
-            // if(m.message.axis.isFake && !this.zoomAxis.isFake || !m.message.axis.isFake && this.zoomAxis.isFake) {
-            //   this._element.call(this.zoom.transform, m.message.event.transform);
-            // }
+            if(m.message.axis.isFake && !this.zoomAxis.isFake || !m.message.axis.isFake && this.zoomAxis.isFake) {
+              this._element.call(this.zoom.transform, m.message.event.transform);
+            }
           }
-
-        }
       })
     ).subscribe();
 
