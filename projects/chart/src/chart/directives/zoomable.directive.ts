@@ -165,11 +165,11 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             const delta = type === 'end' ? 0 : this.config.zoom?.type === ZoomType.y ? event.deltaY : event.deltaX;
 
             if(this.config.zoom?.type === ZoomType.y) {
-              transform = transform.translate(0, this.currentTransform.y - delta);
+              transform = transform.translate(0, this.currentTransform.y - delta / 2);
             }
 
             if(this.config.zoom?.type === ZoomType.x) {
-              transform = transform.translate(this.currentTransform.x - delta, 0);
+              transform = transform.translate(this.currentTransform.x - delta / 2, 0);
             }
 
             transform = transform.scale(this.currentTransform.k);
