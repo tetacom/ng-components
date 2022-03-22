@@ -6,6 +6,7 @@ import { TooltipOptions } from './tooltip-options';
 import { ChartBounds } from './chart-bounds';
 import { BrushType } from './enum/brush-type';
 import { Annotation } from './annotation';
+import {ZoomBehaviorType} from "./enum/zoom-behavior-type";
 
 export interface IChartConfig {
   name?: string;
@@ -17,7 +18,10 @@ export interface IChartConfig {
     axisIndex?: number;
     syncChannel?: string;
     min?: number;
-    max?: number
+    max?: number;
+    limitTranslateByData?: boolean;
+    limitZoomByData?: boolean;
+    zoomBehavior?: ZoomBehaviorType
   };
   brush?: {
     enable?: boolean;
