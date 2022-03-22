@@ -3,13 +3,13 @@ import {Axis} from '../core/axis/axis';
 import {BrushType} from './enum/brush-type';
 
 export class ZoomMessage {
-  event: D3ZoomEvent<any, any>;
+  event: D3ZoomEvent<any, any> | any;
   axis?: Axis;
   brushDomain?: number[];
   chartId: string;
 
   constructor(options?: {
-    event: D3ZoomEvent<any, any>;
+    event: D3ZoomEvent<any, any> | any;
     axis?: Axis;
     brushDomain?: number[]
     chartId: string;

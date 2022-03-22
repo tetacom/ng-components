@@ -1,5 +1,5 @@
 export class ChartBounds {
-  top = 0;
+  top = 30;
   right = 30;
   bottom = 0;
   left = 0;
