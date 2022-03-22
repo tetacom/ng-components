@@ -142,16 +142,14 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         let wheeling;
         let type: 'start' | 'zoom' | 'end' = 'start';
 
+        const origin = this.brushScale.copy().domain(this.zoomAxis.extremes);
+
         this.zoom
           .filter((event) => event.ctrlKey)
           .wheelDelta((event) => {
             const delta = this.config?.zoom.type === ZoomType.x ? -event.deltaX : -event.deltaY
             return delta * 0.002
           })
-
-
-
-
 
         this._element.on('wheel', (event) => {
           event.preventDefault();
@@ -164,16 +162,15 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           const emit = (type: string) => {
 
             let transform = zoomIdentity;
-            const origin = this.brushScale.copy().domain(this.zoomAxis.extremes);
+            const delta = type === 'end' ? 0 : this.config.zoom?.type === ZoomType.y ? event.deltaY : event.deltaX;
 
             if(this.config.zoom?.type === ZoomType.y) {
-              transform = transform.translate(0, this.currentTransform.y - event.deltaY);
+              transform = transform.translate(0, this.currentTransform.y - delta / 2);
             }
 
             if(this.config.zoom?.type === ZoomType.x) {
-              transform = transform.translate(this.currentTransform.x - event.deltaX, 0);
+              transform = transform.translate(this.currentTransform.x - delta / 2, 0);
             }
-
 
             transform = transform.scale(this.currentTransform.k);
 
@@ -219,6 +216,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             wheeling = setTimeout(() => {
               type = 'end';
               emit(type)
+
+
               type = 'start';
             }, 400)
           })
