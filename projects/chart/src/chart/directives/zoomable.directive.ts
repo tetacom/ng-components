@@ -1,4 +1,13 @@
-import {AfterViewInit, Directive, ElementRef, HostBinding, Input, NgZone, OnDestroy,} from '@angular/core';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
+  NgZone,
+  OnDestroy,
+} from '@angular/core';
 import {ZoomService} from '../service/zoom.service';
 import {IChartConfig} from '../model/i-chart-config';
 import {Axis} from '../core/axis/axis';
@@ -141,6 +150,9 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           })
 
 
+
+
+
         this._element.on('wheel', (event) => {
           event.preventDefault();
 
@@ -157,6 +169,11 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             if(this.config.zoom?.type === ZoomType.y) {
               transform = transform.translate(0, this.currentTransform.y - event.deltaY);
             }
+
+            if(this.config.zoom?.type === ZoomType.x) {
+              transform = transform.translate(this.currentTransform.x - event.deltaX, 0);
+            }
+
 
             transform = transform.scale(this.currentTransform.k);
 
@@ -267,8 +284,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     this.zoom?.on('start zoom end', null);
+    this._element?.on('wheel', null);
 
-    this._element.on('wheel', null);
     this.alive = false;
   }
 
