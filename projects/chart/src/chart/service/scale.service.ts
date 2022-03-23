@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as d3 from 'd3';
-import {D3ZoomEvent, ZoomTransform} from 'd3';
-import {Axis} from '../core/axis/axis';
-import {AxisOrientation} from '../model/enum/axis-orientation';
-import {IChartConfig} from '../model/i-chart-config';
-import {ChartService} from './chart.service';
+import { D3ZoomEvent, ZoomTransform } from 'd3';
+import { Axis } from '../core/axis/axis';
+import { AxisOrientation } from '../model/enum/axis-orientation';
+import { IChartConfig } from '../model/i-chart-config';
+import { ChartService } from './chart.service';
 import {
   combineLatest,
   map,
@@ -12,9 +12,9 @@ import {
   shareReplay,
   withLatestFrom,
 } from 'rxjs';
-import {IChartEvent} from '../model/i-chart-event';
-import {ZoomService} from './zoom.service';
-import {ScaleType} from '../model/enum/scale-type';
+import { IChartEvent } from '../model/i-chart-event';
+import { ZoomService } from './zoom.service';
+import { ScaleType } from '../model/enum/scale-type';
 
 @Injectable({
   providedIn: 'root',
@@ -55,7 +55,7 @@ export class ScaleService {
       }),
       shareReplay({
         bufferSize: 1,
-        refCount: true
+        refCount: true,
       })
     );
 
@@ -74,7 +74,7 @@ export class ScaleService {
       }),
       shareReplay({
         bufferSize: 1,
-        refCount: true
+        refCount: true,
       })
     );
 
@@ -116,7 +116,7 @@ export class ScaleService {
             let scale = this.scaleMapping
               .get(axis.options.scaleType.type)()
               .domain(domain)
-              .range([0, finalWidth]);
+              .range([0, finalWidth - config.bounds.right]);
 
             if (axis.options.niceTicks) {
               scale.nice();
@@ -156,7 +156,7 @@ export class ScaleService {
       ),
       shareReplay({
         bufferSize: 1,
-        refCount: true
+        refCount: true,
       })
     );
 
@@ -186,7 +186,12 @@ export class ScaleService {
             .filter((_) => _.options?.visible && _.options?.opposite !== true)
             .reduce((acc, cur) => acc + cur.selfSize, 0);
 
-          const finalHeight = (size.height || 0) - top - bottom;
+          const finalHeight =
+            (size.height || 0) -
+            top -
+            bottom -
+            config?.bounds?.top -
+            config.bounds?.bottom;
 
           yAxes.forEach((axis) => {
             let domain = axis.extremes;
@@ -202,7 +207,7 @@ export class ScaleService {
             const scale = this.scaleMapping
               .get(axis.options.scaleType.type)()
               .domain(domain)
-              .range([0, finalHeight]);
+              .range([config.bounds.top, finalHeight]);
 
             if (axis.options.niceTicks) {
               scale.nice();
@@ -244,7 +249,7 @@ export class ScaleService {
       ),
       shareReplay({
         bufferSize: 1,
-        refCount: true
+        refCount: true,
       })
     );
   }
