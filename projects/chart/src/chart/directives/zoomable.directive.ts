@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  Directive,
-  ElementRef,
-  HostBinding,
-  HostListener,
-  Input,
-  NgZone,
-  OnDestroy,
-} from '@angular/core';
+import {AfterViewInit, Directive, ElementRef, HostBinding, Input, NgZone, OnDestroy,} from '@angular/core';
 import {ZoomService} from '../service/zoom.service';
 import {IChartConfig} from '../model/i-chart-config';
 import {Axis} from '../core/axis/axis';
@@ -54,7 +45,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
   ngOnInit() {
     if (this.axis?.options?.zoom || this.config?.zoom?.enable) {
-      this.zoomable = true;
+      this.zoomable = this.config?.zoom?.zoomBehavior === ZoomBehaviorType.move;
     }
   }
 
@@ -133,8 +124,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       this.zoom.scaleExtent([maxZoom, minZoom]);
 
       this.zoom.on('start zoom end', this.zoomed)
-      this._element.call(this.zoom)
-        .on('dblclick.zoom', null)
+      this._element.call(this.zoom).on('dblclick.zoom', null)
 
 
       if(this.config?.zoom?.zoomBehavior === ZoomBehaviorType.wheel) {
@@ -145,7 +135,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         const origin = this.brushScale.copy().domain(this.zoomAxis.extremes);
 
         this.zoom
-          .filter((event) => event.ctrlKey)
+          .filter((event) => event.ctrlKey && event.type === 'wheel')
           .wheelDelta((event) => {
             const delta = this.config?.zoom.type === ZoomType.x ? -event.deltaX : -event.deltaY
             return delta * 0.002
@@ -216,17 +206,12 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             wheeling = setTimeout(() => {
               type = 'end';
               emit(type)
-
-
               type = 'start';
-            }, 400)
+            }, 300)
           })
-
 
         })
       }
-
-
     }
 
 
@@ -305,7 +290,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       transform = transform.translate(0, -this.brushScale(s[0]));
     }
 
-    this._element.transition().duration(150).call(
+    this._element.call(
       this.zoom.transform,
       transform,
       null,
