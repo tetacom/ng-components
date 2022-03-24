@@ -6,14 +6,14 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { TableColumn } from '../../contract/table-column';
-import { TableRow } from '../../contract/table-row';
-import { TableService } from '../../service/table.service';
-import { CellComponentBase } from '../../base/cell-component-base';
-import { SelectComponent } from '../../../select/select/select.component';
-import { IIdName } from '../../../../common/contract/i-id-name';
-import { ICellCoordinates } from '../../contract/i-cell-coordinates';
-import { VerticalAlign } from '../../../../common/enum/vertical-align.enum';
+import {TableColumn} from '../../contract/table-column';
+import {TableRow} from '../../contract/table-row';
+import {TableService} from '../../service/table.service';
+import {CellComponentBase} from '../../base/cell-component-base';
+import {SelectComponent} from '../../../select/select/select.component';
+import {IIdName} from '../../../../common/contract/i-id-name';
+import {ICellCoordinates} from '../../contract/i-cell-coordinates';
+import {VerticalAlign} from '../../../../common/enum/vertical-align.enum';
 
 @Component({
   selector: 'teta-list-cell',
@@ -23,8 +23,7 @@ import { VerticalAlign } from '../../../../common/enum/vertical-align.enum';
 })
 export class ListCellComponent<T>
   extends CellComponentBase<T>
-  implements OnInit
-{
+  implements OnInit {
   @Input() override column: TableColumn;
   @Input() override row: TableRow<T>;
   @Input() override filterOptions: IIdName<any>[] = [];
@@ -33,7 +32,17 @@ export class ListCellComponent<T>
     return this.getValue();
   }
 
-  @ViewChild('input', { static: false }) input: SelectComponent;
+  get displayFilterOptions(): IIdName<any>[] {
+    if (this.column?.parentName?.length > 0) {
+      const parentValue = this.row.data[this.column.parentName];
+      if (parentValue) {
+        return this.filterOptions.filter(_ => _.parentId === parentValue);
+      }
+    }
+    return this.filterOptions;
+  }
+
+  @ViewChild('input', {static: false}) input: SelectComponent;
 
   verticalAlign = VerticalAlign;
 
@@ -45,6 +54,7 @@ export class ListCellComponent<T>
   }
 
   setValue(value: any): void {
+    // if(this.c)
     this.row.data[this.column.name] = value;
     this.valueChanged();
   }
