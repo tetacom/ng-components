@@ -2,11 +2,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef, OnDestroy,
+  ElementRef,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
-import {IChartConfig} from '../model/i-chart-config';
-import {ChartService} from '../service/chart.service';
+import { IChartConfig } from '../model/i-chart-config';
+import { ChartService } from '../service/chart.service';
 import {
   animationFrameScheduler,
   combineLatest,
@@ -16,12 +17,12 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs';
-import {Axis} from '../core/axis/axis';
-import {AxisOrientation} from '../model/enum/axis-orientation';
-import {ScaleService} from '../service/scale.service';
-import {ZoomService} from '../service/zoom.service';
-import {BrushType} from '../model/enum/brush-type';
-import {throttleTime} from "rxjs/operators";
+import { Axis } from '../core/axis/axis';
+import { AxisOrientation } from '../model/enum/axis-orientation';
+import { ScaleService } from '../service/scale.service';
+import { ZoomService } from '../service/zoom.service';
+import { BrushType } from '../model/enum/brush-type';
+import { throttleTime } from 'rxjs/operators';
 
 type Opposite = boolean;
 
@@ -45,8 +46,10 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
   private _observer: ResizeObserver;
 
-  private filterPositionMap = new Map<Opposite,
-    (axis: Axis) => (_: Axis) => boolean>()
+  private filterPositionMap = new Map<
+    Opposite,
+    (axis: Axis) => (_: Axis) => boolean
+  >()
     .set(
       true,
       (axis) => (_: Axis) =>
@@ -73,20 +76,22 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     this.xAxisMap = this._scaleService.xAxisMap;
 
     this.yScaleMap = this._scaleService.yScaleMap.pipe(
-      throttleTime(0, animationFrameScheduler, {trailing: true}),
+      throttleTime(0, animationFrameScheduler, { trailing: true }),
       tap(() => this._cdr.detectChanges()),
       shareReplay({
         bufferSize: 1,
-        refCount: true
-      }));
+        refCount: true,
+      })
+    );
 
     this.xScaleMap = this._scaleService.xScaleMap.pipe(
-      throttleTime(0, animationFrameScheduler, {trailing: true}),
+      throttleTime(0, animationFrameScheduler, { trailing: true }),
       tap(() => this._cdr.detectChanges()),
       shareReplay({
         bufferSize: 1,
-        refCount: true
-      }));
+        refCount: true,
+      })
+    );
 
     this.brushScale = combineLatest([
       this._scaleService.xScaleMap,
@@ -96,28 +101,27 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       map((data: [[Map<number, any>, Map<number, any>], IChartConfig]) => {
         const [[x, y], config] = data;
 
-        return config.brush?.type === BrushType.x
-          ? x.get(0)
-          : y.get(0);
+        return config.brush?.type === BrushType.x ? x.get(0) : y.get(0);
       }),
 
       shareReplay({
         bufferSize: 1,
-        refCount: true
+        refCount: true,
       })
     );
 
     this.visibleRect = combineLatest([
       this.size,
       this.xAxisMap,
-      this.yAxisMap
+      this.yAxisMap,
     ]).pipe(
-      throttleTime(0, animationFrameScheduler, {trailing: true}),
+      throttleTime(0, animationFrameScheduler, { trailing: true }),
+      withLatestFrom(this.config),
       map(
         (
-          data: [DOMRect, Map<number, any>, Map<number, any>]
+          data: [[DOMRect, Map<number, any>, Map<number, any>], IChartConfig]
         ) => {
-          const [size, x, y] = data;
+          const [[size, x, y], config] = data;
           const yAxesArray = [...y.values()];
           const xAxesArray = [...x.values()];
           const left = yAxesArray
@@ -136,10 +140,20 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
             .filter((_) => _.options.opposite && _.options.visible)
             .reduce(this.sumSize, 0);
           return {
-            x: left,
-            y: top,
-            width: size.width - left - right,
-            height: size.height - top - bottom,
+            x: left + config.bounds?.left,
+            y: top + config.bounds?.top,
+            width:
+              size.width -
+              left -
+              right -
+              config.bounds?.left -
+              config.bounds?.right,
+            height:
+              size.height -
+              top -
+              bottom -
+              config.bounds?.top -
+              config.bounds?.bottom,
           };
         }
       ),
@@ -149,7 +163,6 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._observer = new ResizeObserver((entries: ResizeObserverEntry[]) => {
-
       requestAnimationFrame(() => {
         if (
           !Array.isArray(entries) ||
@@ -160,10 +173,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
           return;
         }
         this._svc.setSize(entries[0].contentRect);
-
       });
-
-
     });
     this._observer.observe(this._elementRef.nativeElement);
   }
@@ -176,8 +186,9 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
   getTranslate(axis?: Axis, size?: DOMRect): Observable<string> {
     return combineLatest([this.xAxisMap, this.yAxisMap]).pipe(
-      map((data: [Map<number, Axis>, Map<number, Axis>]) => {
-        const [x, y] = data;
+      withLatestFrom(this.config),
+      map((data: [[Map<number, Axis>, Map<number, Axis>], IChartConfig]) => {
+        const [[x, y], config] = data;
         const xAxesArray = [...x.values()];
         const yAxesArray = [...y.values()];
 
@@ -211,11 +222,11 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
         const left = yAxesArray
           .filter((_) => _.options.visible && _.options.opposite !== true)
-          .reduce((acc, curr) => acc + curr.selfSize, 0);
+          .reduce((acc, curr) => acc + curr.selfSize, config.bounds?.left);
 
         const top = xAxesArray
           .filter((_) => _.options.visible && _.options.opposite === true)
-          .reduce((acc, curr) => acc + curr.selfSize, 0);
+          .reduce((acc, curr) => acc + curr.selfSize, config.bounds?.top);
 
         if (axis.orientation === AxisOrientation.x) {
           return `translate(${left}, ${
@@ -242,27 +253,35 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     return item.value.index;
   }
 
-  click(event: PointerEvent, xScales: Map<number, any>, yScales: Map<number, any>) {
+  click(
+    event: PointerEvent,
+    xScales: Map<number, any>,
+    yScales: Map<number, any>
+  ) {
     const x = xScales.get(0);
     const y = yScales.get(0);
     this._svc.emitChartClick({
       event: event,
       target: {
         x: x.invert(event.offsetX),
-        y: y.invert(event.offsetY)
-      }
+        y: y.invert(event.offsetY),
+      },
     });
   }
 
-  contextMenu(event: MouseEvent, xScales: Map<number, any>, yScales: Map<number, any>) {
+  contextMenu(
+    event: MouseEvent,
+    xScales: Map<number, any>,
+    yScales: Map<number, any>
+  ) {
     const x = xScales.get(0);
     const y = yScales.get(0);
     this._svc.emitChartContextMenu({
       event: event,
       target: {
         x: x.invert(event.offsetX),
-        y: y.invert(event.offsetY)
-      }
+        y: y.invert(event.offsetY),
+      },
     });
   }
 

@@ -382,6 +382,7 @@ export class TableService<T> {
   startEditRow(cellCoordinates: ICellCoordinates<T>): void {
     if (this._currentEditRow?.row !== cellCoordinates?.row) {
       if (this._currentEditRow != null) {
+        const row = this._displayData.value.indexOf(this._currentEditRow.row)
         this._editRowStop.next(this._currentEditRow);
       }
       if (cellCoordinates === null) {

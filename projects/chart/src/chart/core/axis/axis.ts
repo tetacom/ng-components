@@ -20,7 +20,7 @@ export class Axis {
 
   private defaultFormatters = new Map<ScaleType, any>()
     .set(ScaleType.linear, d3.format(',.2f'))
-    .set(ScaleType.time, d3.timeFormat('%B %d, %Y'))
+    .set(ScaleType.time, d3.timeFormat('%d.%m.%Y'))
     .set(ScaleType.log, d3.format(',.2f'))
     .set(ScaleType.pow, d3.format(',.2f'))
     .set(ScaleType.sqrt, d3.format(',.2f'));

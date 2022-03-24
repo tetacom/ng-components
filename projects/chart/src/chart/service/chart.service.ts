@@ -1,24 +1,26 @@
-import {Injectable} from '@angular/core';
-import {IChartConfig} from '../model/i-chart-config';
+import { Injectable } from '@angular/core';
+import { IChartConfig } from '../model/i-chart-config';
 import {
   BehaviorSubject,
   filter,
   map,
-  Observable, of,
+  Observable,
+  of,
   shareReplay,
-  Subject, withLatestFrom,
+  Subject,
+  withLatestFrom,
 } from 'rxjs';
-import {IChartEvent} from '../model/i-chart-event';
-import {IDisplayTooltip} from '../model/i-display-tooltip';
-import {PlotBand} from '../model/plot-band';
-import {PlotLine} from '../model/plot-line';
-import {IPointMove} from '../model/i-point-move';
-import {defaultChartConfig} from '../default/default-chart-config';
-import {defaultAxisConfig} from '../default/default-axis-config';
-import {defaultSeriesConfig} from '../default/default-series-config';
-import {BasePoint} from '../model/base-point';
-import {Series} from '../model/series';
-import {Annotation} from "../model/annotation";
+import { IChartEvent } from '../model/i-chart-event';
+import { IDisplayTooltip } from '../model/i-display-tooltip';
+import { PlotBand } from '../model/plot-band';
+import { PlotLine } from '../model/plot-line';
+import { IPointMove } from '../model/i-point-move';
+import { defaultChartConfig } from '../default/default-chart-config';
+import { defaultAxisConfig } from '../default/default-axis-config';
+import { defaultSeriesConfig } from '../default/default-series-config';
+import { BasePoint } from '../model/base-point';
+import { Series } from '../model/series';
+import { Annotation } from '../model/annotation';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +44,9 @@ export class ChartService {
   private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig());
   private size$ = new BehaviorSubject<DOMRect>(new DOMRectReadOnly());
   private pointerMove$ = new Subject<PointerEvent>();
-  private tooltips$ = new BehaviorSubject<Map<Series<BasePoint>, IDisplayTooltip>>(new Map());
+  private tooltips$ = new BehaviorSubject<
+    Map<Series<BasePoint>, IDisplayTooltip>
+  >(new Map());
   private plotBandEvent$ = new Subject<IChartEvent<PlotBand>>();
   private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();
   private pointMove$ = new Subject<IChartEvent<IPointMove>>();
@@ -52,20 +56,17 @@ export class ChartService {
   private annotationMove$ = new Subject<IChartEvent<Annotation>>();
 
   constructor() {
+    this.id = of((Date.now() + Math.random()).toString(36));
 
-    this.id = of((Date.now() + Math.random()).toString(36))
-
-    this.config = this.config$
-      .asObservable()
-      .pipe(
-        withLatestFrom(this.id),
-        map(this.setDefaults),
-        map(this.setPreparationData),
-        shareReplay({
-          bufferSize: 1,
-          refCount: true
-        })
-      );
+    this.config = this.config$.asObservable().pipe(
+      withLatestFrom(this.id),
+      map(this.setDefaults),
+      map(this.setPreparationData),
+      shareReplay({
+        bufferSize: 1,
+        refCount: true,
+      })
+    );
 
     this.size = this.size$.asObservable();
 
@@ -76,8 +77,12 @@ export class ChartService {
     this.pointMove = this.pointMove$.asObservable();
     this.chartClick = this.chartClick$.asObservable();
     this.chartContextMenu = this.chartContextMenu$.asObservable();
-    this.annotationClick = this.annotationEvent$.asObservable().pipe(filter((_) => _?.event?.type === 'click'));
-    this.annotationContextMenu = this.annotationEvent$.asObservable().pipe(filter((_) => _?.event?.type === 'contextmenu'));
+    this.annotationClick = this.annotationEvent$
+      .asObservable()
+      .pipe(filter((_) => _?.event?.type === 'click'));
+    this.annotationContextMenu = this.annotationEvent$
+      .asObservable()
+      .pipe(filter((_) => _?.event?.type === 'contextmenu'));
     this.annotationMove = this.annotationMove$.asObservable();
 
     this.plotBandClick = this.plotBandEvent$
@@ -108,13 +113,14 @@ export class ChartService {
     } else {
       currentTooltips.set(tooltip.series, tooltip);
     }
-    this.tooltips$.next(new Map<Series<BasePoint>, IDisplayTooltip>(currentTooltips));
+    this.tooltips$.next(
+      new Map<Series<BasePoint>, IDisplayTooltip>(currentTooltips)
+    );
   }
 
   public clearTooltips() {
     this.tooltips$.next(new Map());
   }
-
 
   public emitMoveAnnotation(event: IChartEvent<Annotation>) {
     this.annotationMove$.next(event);
@@ -145,7 +151,6 @@ export class ChartService {
   }
 
   private setDefaults(data: [IChartConfig, string]): IChartConfig {
-
     let [config, id] = data;
 
     const defaultConfig = (defaultConfig) => {
@@ -167,6 +172,28 @@ export class ChartService {
         id: _.id ?? index,
       };
     });
+
+    const oppositeYCount = config.yAxis?.filter((_) => _.opposite);
+    const oppositeXCount = config.xAxis?.filter((_) => _.opposite);
+
+    const nonOppositeYCount = config.yAxis?.filter((_) => !_.opposite);
+    const nonOppositeXCount = config.xAxis?.filter((_) => !_.opposite);
+
+    if (nonOppositeXCount?.length > 1) {
+      config.bounds.bottom = 0;
+    }
+
+    if (oppositeXCount?.length > 1) {
+      config.bounds.top = 0;
+    }
+
+    if (nonOppositeYCount?.length > 1) {
+      config.bounds.left = 0;
+    }
+
+    if (oppositeYCount?.length > 1) {
+      config.bounds.right = 0;
+    }
 
     config.tooltip = Object.assign(
       {},
@@ -214,8 +241,8 @@ export class ChartService {
     }
 
     if (config?.brush?.enable) {
-      config.yAxis = config.yAxis.map((_) => ({..._, zoom: false}));
-      config.xAxis = config.xAxis.map((_) => ({..._, zoom: false}));
+      config.yAxis = config.yAxis.map((_) => ({ ..._, zoom: false }));
+      config.xAxis = config.xAxis.map((_) => ({ ..._, zoom: false }));
     }
 
     return config;

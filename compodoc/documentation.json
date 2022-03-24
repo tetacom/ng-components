@@ -4911,7 +4911,7 @@
         },
         {
             "name": "ScaleService",
-            "id": "injectable-ScaleService-21f263596238bb1b40c3a8579f964ceb",
+            "id": "injectable-ScaleService-9d4f7d0793548d98cd17c48f0f91b68b",
             "file": "projects/chart/src/chart/service/scale.service.ts",
             "properties": [
                 {
@@ -5007,7 +5007,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from '@angular/core';\r\nimport * as d3 from 'd3';\r\nimport { D3ZoomEvent, ZoomTransform } from 'd3';\r\nimport { Axis } from '../core/axis/axis';\r\nimport { AxisOrientation } from '../model/enum/axis-orientation';\r\nimport { IChartConfig } from '../model/i-chart-config';\r\nimport { ChartService } from './chart.service';\r\nimport {\r\n  combineLatest,\r\n  map,\r\n  Observable,\r\n  shareReplay,\r\n  withLatestFrom,\r\n} from 'rxjs';\r\nimport { IChartEvent } from '../model/i-chart-event';\r\nimport { ZoomService } from './zoom.service';\r\nimport { ScaleType } from '../model/enum/scale-type';\r\n\r\n@Injectable({\r\n  providedIn: 'root',\r\n})\r\nexport class ScaleService {\r\n  public yAxisMap: Observable<Map<number, Axis>>;\r\n  public xAxisMap: Observable<Map<number, Axis>>;\r\n\r\n  public yScaleMap: Observable<Map<number, any>>;\r\n  public xScaleMap: Observable<Map<number, any>>;\r\n\r\n  private transformCacheX = new Map<number, ZoomTransform>();\r\n  private transformCacheY = new Map<number, ZoomTransform>();\r\n\r\n  private scaleMapping = new Map<ScaleType, any>()\r\n    .set(ScaleType.linear, d3.scaleLinear)\r\n    .set(ScaleType.time, d3.scaleTime)\r\n    .set(ScaleType.category, d3.scaleOrdinal)\r\n    .set(ScaleType.log, d3.scaleLog)\r\n    .set(ScaleType.pow, d3.scalePow)\r\n    .set(ScaleType.sqrt, d3.scaleSqrt);\r\n\r\n  constructor(\r\n    private chartService: ChartService,\r\n    private zoomService: ZoomService\r\n  ) {\r\n    this.xAxisMap = combineLatest([\r\n      this.chartService.size,\r\n      this.chartService.config,\r\n    ]).pipe(\r\n      map((data: [DOMRectReadOnly, IChartConfig]) => {\r\n        const [, config] = data;\r\n        const map = new Map<number, Axis>();\r\n        config.xAxis.map((_, index) => {\r\n          map.set(index, Axis.createAxis(AxisOrientation.x, config, index));\r\n        });\r\n        return map;\r\n      })\r\n    );\r\n\r\n    this.yAxisMap = combineLatest([\r\n      this.chartService.size,\r\n      this.chartService.config,\r\n    ]).pipe(\r\n      map((data: [DOMRectReadOnly, IChartConfig]) => {\r\n        const [, config] = data;\r\n        const map = new Map<number, Axis>();\r\n        config.yAxis.map((_, index) => {\r\n          map.set(index, Axis.createAxis(AxisOrientation.y, config, index));\r\n        });\r\n\r\n        return map;\r\n      })\r\n    );\r\n\r\n    this.xScaleMap = combineLatest([\r\n      this.chartService.size,\r\n      this.chartService.config,\r\n      this.zoomService.zoomed,\r\n    ]).pipe(\r\n      withLatestFrom(this.yAxisMap, this.xAxisMap),\r\n      map(\r\n        (\r\n          data: [\r\n            [DOMRectReadOnly, IChartConfig, IChartEvent<Axis>],\r\n            Map<number, Axis>,\r\n            Map<number, Axis>\r\n          ]\r\n        ) => {\r\n          const [[size, config, zoom], yAxes, xAxes] = data;\r\n\r\n          const map = new Map<number, any>();\r\n\r\n          const left = [...yAxes.values()]\r\n            .filter((_) => _.options?.visible && _.options?.opposite)\r\n            .reduce((acc, cur) => acc + cur.selfSize, 0);\r\n\r\n          const right = [...yAxes.values()]\r\n            .filter((_) => _.options?.visible && _.options?.opposite !== true)\r\n            .reduce((acc, cur) => acc + cur.selfSize, 0);\r\n\r\n          const finalWidth = (size.width || 0) - left - right;\r\n\r\n          xAxes.forEach((axis) => {\r\n            let domain = axis.extremes;\r\n\r\n            if (axis?.options.inverted) {\r\n              domain = [...axis.extremes].reverse();\r\n            }\r\n\r\n            let scale = this.scaleMapping\r\n              .get(axis.options.scaleType.type)()\r\n              .domain(domain)\r\n              .range([0, finalWidth]);\r\n\r\n            if (axis.options.niceTicks) {\r\n              scale.nice();\r\n            }\r\n\r\n            if (axis.options.scaleType.type === ScaleType.log) {\r\n              scale.base(axis.options.scaleType.base);\r\n            }\r\n\r\n            map.set(axis.index, scale);\r\n\r\n            const hasCache = this.transformCacheX.has(axis.index);\r\n            const shouldRestore =\r\n              zoom?.target?.orientation !== AxisOrientation.x ||\r\n              zoom.target?.index !== axis.index;\r\n\r\n            if (hasCache && shouldRestore) {\r\n              const restoredTransform = this.transformCacheX.get(axis.index);\r\n              map.set(axis.index, restoredTransform.rescaleX(scale));\r\n            }\r\n          });\r\n\r\n          if (zoom) {\r\n            const event = zoom.event as D3ZoomEvent<any, any>;\r\n\r\n            if (zoom.target?.orientation === AxisOrientation.x) {\r\n              const currentScale = map.get(zoom.target.index);\r\n              const rescaled = event.transform.rescaleX(currentScale);\r\n              map.set(zoom.target.index, rescaled);\r\n\r\n              const axis = xAxes.get(zoom.target.index);\r\n              this.transformCacheX.set(axis.index, event.transform);\r\n            }\r\n          }\r\n\r\n          return map;\r\n        }\r\n      ),\r\n      shareReplay({\r\n        bufferSize: 1,\r\n        refCount: true\r\n      })\r\n    );\r\n\r\n    this.yScaleMap = combineLatest([\r\n      this.chartService.size,\r\n      this.chartService.config,\r\n      this.zoomService.zoomed,\r\n    ]).pipe(\r\n      withLatestFrom(this.yAxisMap, this.xAxisMap),\r\n      map(\r\n        (\r\n          data: [\r\n            [DOMRectReadOnly, IChartConfig, IChartEvent<Axis>],\r\n            Map<number, Axis>,\r\n            Map<number, Axis>\r\n          ]\r\n        ) => {\r\n          const [[size, config, zoom], yAxes, xAxes] = data;\r\n\r\n          const map = new Map<number, any>();\r\n\r\n          const top = [...xAxes.values()]\r\n            .filter((_) => _.options?.visible && _.options?.opposite)\r\n            .reduce((acc, cur) => acc + cur.selfSize, 0);\r\n\r\n          const bottom = [...xAxes.values()]\r\n            .filter((_) => _.options?.visible && _.options?.opposite !== true)\r\n            .reduce((acc, cur) => acc + cur.selfSize, 0);\r\n\r\n          const finalHeight = (size.height || 0) - top - bottom;\r\n\r\n          yAxes.forEach((axis) => {\r\n            let domain = axis.extremes;\r\n\r\n            if (axis.orientation === AxisOrientation.y) {\r\n              domain = [...axis.extremes].reverse();\r\n            }\r\n\r\n            if (axis?.options.inverted) {\r\n              domain = domain.reverse();\r\n            }\r\n\r\n            const scale = this.scaleMapping\r\n              .get(axis.options.scaleType.type)()\r\n              .domain(domain)\r\n              .range([0, finalHeight]);\r\n\r\n            if (axis.options.niceTicks) {\r\n              scale.nice();\r\n            }\r\n\r\n            if (axis.options.scaleType.type === ScaleType.log) {\r\n              scale.base(axis.options.scaleType.base);\r\n            }\r\n\r\n            map.set(axis.index, scale);\r\n\r\n            const hasCache = this.transformCacheY.has(axis.index);\r\n\r\n            const shouldRestore =\r\n              zoom?.target?.orientation !== AxisOrientation.y ||\r\n              zoom.target?.index !== axis.index;\r\n\r\n            if (hasCache && shouldRestore) {\r\n              const restoredTransform = this.transformCacheY.get(axis.index);\r\n              map.set(axis.index, restoredTransform.rescaleY(scale));\r\n            }\r\n          });\r\n\r\n          if (zoom) {\r\n            const event = zoom.event as D3ZoomEvent<any, any>;\r\n\r\n            if (zoom.target?.orientation === AxisOrientation.y) {\r\n              const currentScale = map.get(zoom.target.index);\r\n              const rescaled = event.transform.rescaleY(currentScale);\r\n              map.set(zoom.target.index, rescaled);\r\n\r\n              const axis = yAxes.get(zoom.target.index);\r\n              this.transformCacheY.set(axis.index, event.transform);\r\n            }\r\n          }\r\n\r\n          return map;\r\n        }\r\n      ),\r\n      shareReplay({\r\n        bufferSize: 1,\r\n        refCount: true\r\n      })\r\n    );\r\n  }\r\n}\r\n",
+            "sourceCode": "import {Injectable} from '@angular/core';\r\nimport * as d3 from 'd3';\r\nimport {D3ZoomEvent, ZoomTransform} from 'd3';\r\nimport {Axis} from '../core/axis/axis';\r\nimport {AxisOrientation} from '../model/enum/axis-orientation';\r\nimport {IChartConfig} from '../model/i-chart-config';\r\nimport {ChartService} from './chart.service';\r\nimport {\r\n  combineLatest,\r\n  map,\r\n  Observable,\r\n  shareReplay,\r\n  withLatestFrom,\r\n} from 'rxjs';\r\nimport {IChartEvent} from '../model/i-chart-event';\r\nimport {ZoomService} from './zoom.service';\r\nimport {ScaleType} from '../model/enum/scale-type';\r\n\r\n@Injectable({\r\n  providedIn: 'root',\r\n})\r\nexport class ScaleService {\r\n  public yAxisMap: Observable<Map<number, Axis>>;\r\n  public xAxisMap: Observable<Map<number, Axis>>;\r\n\r\n  public yScaleMap: Observable<Map<number, any>>;\r\n  public xScaleMap: Observable<Map<number, any>>;\r\n\r\n  private transformCacheX = new Map<number, ZoomTransform>();\r\n  private transformCacheY = new Map<number, ZoomTransform>();\r\n\r\n  private scaleMapping = new Map<ScaleType, any>()\r\n    .set(ScaleType.linear, d3.scaleLinear)\r\n    .set(ScaleType.time, d3.scaleTime)\r\n    .set(ScaleType.category, d3.scaleOrdinal)\r\n    .set(ScaleType.log, d3.scaleLog)\r\n    .set(ScaleType.pow, d3.scalePow)\r\n    .set(ScaleType.sqrt, d3.scaleSqrt);\r\n\r\n  constructor(\r\n    private chartService: ChartService,\r\n    private zoomService: ZoomService\r\n  ) {\r\n    this.xAxisMap = combineLatest([\r\n      this.chartService.size,\r\n      this.chartService.config,\r\n    ]).pipe(\r\n      map((data: [DOMRectReadOnly, IChartConfig]) => {\r\n        const [, config] = data;\r\n        const map = new Map<number, Axis>();\r\n        config.xAxis.map((_, index) => {\r\n          map.set(index, Axis.createAxis(AxisOrientation.x, config, index));\r\n        });\r\n        return map;\r\n      }),\r\n      shareReplay({\r\n        bufferSize: 1,\r\n        refCount: true\r\n      })\r\n    );\r\n\r\n    this.yAxisMap = combineLatest([\r\n      this.chartService.size,\r\n      this.chartService.config,\r\n    ]).pipe(\r\n      map((data: [DOMRectReadOnly, IChartConfig]) => {\r\n        const [, config] = data;\r\n        const map = new Map<number, Axis>();\r\n        config.yAxis.map((_, index) => {\r\n          map.set(index, Axis.createAxis(AxisOrientation.y, config, index));\r\n        });\r\n\r\n        return map;\r\n      }),\r\n      shareReplay({\r\n        bufferSize: 1,\r\n        refCount: true\r\n      })\r\n    );\r\n\r\n    this.xScaleMap = combineLatest([\r\n      this.chartService.size,\r\n      this.chartService.config,\r\n      this.zoomService.zoomed,\r\n    ]).pipe(\r\n      withLatestFrom(this.yAxisMap, this.xAxisMap),\r\n      map(\r\n        (\r\n          data: [\r\n            [DOMRectReadOnly, IChartConfig, IChartEvent<Axis>],\r\n            Map<number, Axis>,\r\n            Map<number, Axis>\r\n          ]\r\n        ) => {\r\n          const [[size, config, zoom], yAxes, xAxes] = data;\r\n\r\n          const map = new Map<number, any>();\r\n\r\n          const left = [...yAxes.values()]\r\n            .filter((_) => _.options?.visible && _.options?.opposite)\r\n            .reduce((acc, cur) => acc + cur.selfSize, 0);\r\n\r\n          const right = [...yAxes.values()]\r\n            .filter((_) => _.options?.visible && _.options?.opposite !== true)\r\n            .reduce((acc, cur) => acc + cur.selfSize, 0);\r\n\r\n          const finalWidth = (size.width || 0) - left - right;\r\n\r\n          xAxes.forEach((axis) => {\r\n            let domain = axis.extremes;\r\n\r\n            if (axis?.options.inverted) {\r\n              domain = [...axis.extremes].reverse();\r\n            }\r\n\r\n            let scale = this.scaleMapping\r\n              .get(axis.options.scaleType.type)()\r\n              .domain(domain)\r\n              .range([0, finalWidth]);\r\n\r\n            if (axis.options.niceTicks) {\r\n              scale.nice();\r\n            }\r\n\r\n            if (axis.options.scaleType.type === ScaleType.log) {\r\n              scale.base(axis.options.scaleType.base);\r\n            }\r\n\r\n            map.set(axis.index, scale);\r\n\r\n            const hasCache = this.transformCacheX.has(axis.index);\r\n            const shouldRestore =\r\n              zoom?.target?.orientation !== AxisOrientation.x ||\r\n              zoom.target?.index !== axis.index;\r\n\r\n            if (hasCache && shouldRestore) {\r\n              const restoredTransform = this.transformCacheX.get(axis.index);\r\n              map.set(axis.index, restoredTransform.rescaleX(scale));\r\n            }\r\n          });\r\n\r\n          if (zoom) {\r\n            const event = zoom.event as D3ZoomEvent<any, any>;\r\n\r\n            if (zoom.target?.orientation === AxisOrientation.x) {\r\n              const currentScale = map.get(zoom.target.index);\r\n              const rescaled = event.transform.rescaleX(currentScale);\r\n              map.set(zoom.target.index, rescaled);\r\n\r\n              const axis = xAxes.get(zoom.target.index);\r\n              this.transformCacheX.set(axis.index, event.transform);\r\n            }\r\n          }\r\n          return map;\r\n        }\r\n      ),\r\n      shareReplay({\r\n        bufferSize: 1,\r\n        refCount: true\r\n      })\r\n    );\r\n\r\n    this.yScaleMap = combineLatest([\r\n      this.chartService.size,\r\n      this.chartService.config,\r\n      this.zoomService.zoomed,\r\n    ]).pipe(\r\n      withLatestFrom(this.yAxisMap, this.xAxisMap),\r\n      map(\r\n        (\r\n          data: [\r\n            [DOMRectReadOnly, IChartConfig, IChartEvent<Axis>],\r\n            Map<number, Axis>,\r\n            Map<number, Axis>\r\n          ]\r\n        ) => {\r\n          const [[size, config, zoom], yAxes, xAxes] = data;\r\n\r\n          const map = new Map<number, any>();\r\n\r\n          const top = [...xAxes.values()]\r\n            .filter((_) => _.options?.visible && _.options?.opposite)\r\n            .reduce((acc, cur) => acc + cur.selfSize, 0);\r\n\r\n          const bottom = [...xAxes.values()]\r\n            .filter((_) => _.options?.visible && _.options?.opposite !== true)\r\n            .reduce((acc, cur) => acc + cur.selfSize, 0);\r\n\r\n          const finalHeight = (size.height || 0) - top - bottom;\r\n\r\n          yAxes.forEach((axis) => {\r\n            let domain = axis.extremes;\r\n\r\n            if (axis.orientation === AxisOrientation.y) {\r\n              domain = [...axis.extremes].reverse();\r\n            }\r\n\r\n            if (axis?.options.inverted) {\r\n              domain = domain.reverse();\r\n            }\r\n\r\n            const scale = this.scaleMapping\r\n              .get(axis.options.scaleType.type)()\r\n              .domain(domain)\r\n              .range([0, finalHeight]);\r\n\r\n            if (axis.options.niceTicks) {\r\n              scale.nice();\r\n            }\r\n\r\n            if (axis.options.scaleType.type === ScaleType.log) {\r\n              scale.base(axis.options.scaleType.base);\r\n            }\r\n\r\n            map.set(axis.index, scale);\r\n\r\n            const hasCache = this.transformCacheY.has(axis.index);\r\n\r\n            const shouldRestore =\r\n              zoom?.target?.orientation !== AxisOrientation.y ||\r\n              zoom.target?.index !== axis.index;\r\n\r\n            if (hasCache && shouldRestore) {\r\n              const restoredTransform = this.transformCacheY.get(axis.index);\r\n              map.set(axis.index, restoredTransform.rescaleY(scale));\r\n            }\r\n          });\r\n\r\n          if (zoom) {\r\n            const event = zoom.event as D3ZoomEvent<any, any>;\r\n\r\n            if (zoom.target?.orientation === AxisOrientation.y) {\r\n              const currentScale = map.get(zoom.target.index);\r\n              const rescaled = event.transform.rescaleY(currentScale);\r\n              map.set(zoom.target.index, rescaled);\r\n\r\n              const axis = yAxes.get(zoom.target.index);\r\n              this.transformCacheY.set(axis.index, event.transform);\r\n            }\r\n          }\r\n\r\n          return map;\r\n        }\r\n      ),\r\n      shareReplay({\r\n        bufferSize: 1,\r\n        refCount: true\r\n      })\r\n    );\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -20527,12 +20527,12 @@
         },
         {
             "name": "ZoomableDirective",
-            "id": "directive-ZoomableDirective-89cb0efc844f8135b8f8d5e1ad6d35ae",
+            "id": "directive-ZoomableDirective-8a75fe0ac1e54e43acd04705606aa2af",
             "file": "projects/chart/src/chart/directives/zoomable.directive.ts",
             "type": "directive",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import {\r\n  AfterViewInit,\r\n  Directive,\r\n  ElementRef,\r\n  HostBinding,\r\n  Input,\r\n  NgZone,\r\n  OnDestroy,\r\n  SimpleChanges,\r\n} from '@angular/core';\r\nimport {ZoomService} from '../service/zoom.service';\r\nimport {IChartConfig} from '../model/i-chart-config';\r\nimport {Axis} from '../core/axis/axis';\r\nimport * as d3 from 'd3';\r\nimport {D3ZoomEvent, ZoomBehavior, zoomIdentity} from 'd3';\r\nimport {ZoomType} from '../model/enum/zoom-type';\r\nimport {AxisOrientation} from '../model/enum/axis-orientation';\r\nimport {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';\r\nimport {BrushType} from '../model/enum/brush-type';\r\nimport {BroadcastService} from '../service/broadcast.service';\r\nimport {debounceTime, tap, throttleTime} from 'rxjs/operators';\r\nimport {animationFrameScheduler, filter, takeWhile, withLatestFrom} from 'rxjs';\r\nimport {ChartService} from \"../service/chart.service\";\r\n\r\n@Directive({\r\n  selector: '[tetaZoomable]',\r\n})\r\nexport class ZoomableDirective implements OnDestroy, AfterViewInit {\r\n  @Input() config: IChartConfig;\r\n  @Input() axis?: Axis;\r\n  @Input() size: DOMRect;\r\n  @Input() brushScale?: any;\r\n\r\n\r\n  @HostBinding('class.zoomable') private zoomable = false;\r\n\r\n  private _element: d3.Selection<SVGElement, any, any, any>;\r\n  private zoomAxis: Axis;\r\n  private zoom: ZoomBehavior<any, any>;\r\n  private alive = true;\r\n\r\n  private currentTransform = zoomIdentity;\r\n  private currentSelection;\r\n\r\n  constructor(\r\n    private elementRef: ElementRef,\r\n    private zoomService: ZoomService,\r\n    private broadcastService: BroadcastService,\r\n    private chartService: ChartService\r\n  ) {\r\n  }\r\n\r\n  ngOnInit() {\r\n    if (this.axis?.options?.zoom || this.config?.zoom?.enable) {\r\n      this.zoomable = true;\r\n    }\r\n  }\r\n\r\n\r\n  zoomed = (event: D3ZoomEvent<any, any>) => {\r\n    if (event.sourceEvent) {\r\n      if (Object.keys(event.sourceEvent).length !== 0) {\r\n        if (this.currentTransform === event.transform && event.type !== 'end') {\r\n          return;\r\n        }\r\n\r\n        const origin = this.brushScale.copy().domain(this.zoomAxis.extremes);\r\n\r\n        let domain = this.config.zoom?.type === ZoomType.y ?\r\n          event.transform.rescaleY(origin).domain() :\r\n          event.transform.rescaleX(origin).domain();\r\n\r\n        const message = new ZoomMessage({\r\n          event,\r\n          axis: this.zoomAxis,\r\n          brushDomain: domain,\r\n          chartId: this.config.id\r\n        });\r\n\r\n        this.broadcastService.broadcastZoom({\r\n          channel: this.config?.zoom?.syncChannel,\r\n          message,\r\n        });\r\n\r\n      }\r\n\r\n      this.zoomService.setZoom({\r\n        event,\r\n        target: this.zoomAxis\r\n      });\r\n\r\n      this.currentTransform = event.transform;\r\n    }\r\n  };\r\n\r\n  ngAfterViewInit() {\r\n\r\n    const enable = this.axis?.options?.zoom && this.axis?.options.visible !== false  || this.config?.zoom?.enable;\r\n\r\n    if (!enable) {\r\n      return;\r\n    }\r\n\r\n    this._element = d3.select(this.elementRef.nativeElement);\r\n    this.zoom = d3\r\n      .zoom()\r\n      .extent([\r\n        [0, 0],\r\n        [this.size.width, this.size.height],\r\n      ]);\r\n\r\n\r\n    const commonZoomAxis = Axis.createAxis(\r\n      this.config?.zoom.type === ZoomType.x ? AxisOrientation.x : AxisOrientation.y,\r\n      this.config,\r\n      0,\r\n      true\r\n    );\r\n\r\n    this.zoomAxis = this.axis ?? commonZoomAxis;\r\n\r\n    if (enable) {\r\n      const maxZoom = this.config.zoom?.max ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) / this.config.zoom?.max : 0;\r\n      const minZoom = this.config.zoom?.min ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) / this.config.zoom?.min : Infinity;\r\n\r\n\r\n      this.zoom.scaleExtent([maxZoom, minZoom]);\r\n\r\n      this.zoom.on('start zoom end', this.zoomed);\r\n      this._element.call(this.zoom);\r\n    }\r\n\r\n\r\n\r\n    // Subscribe to zoom events\r\n    this.broadcastService.subscribeToZoom(this.config?.zoom.syncChannel).pipe(\r\n      takeWhile((_) => this.alive),\r\n      filter((m: IBroadcastMessage<ZoomMessage>) => m.message.event.sourceEvent instanceof MouseEvent || m.message.event.sourceEvent instanceof WheelEvent),\r\n      throttleTime(0, animationFrameScheduler, {trailing: true}),\r\n      filter((m: IBroadcastMessage<ZoomMessage>) => {\r\n        return this.zoomAxis.index === m.message?.axis?.index && this.zoomAxis.orientation === m.message?.axis?.orientation;\r\n      }),\r\n      tap((m: IBroadcastMessage<ZoomMessage>) => {\r\n\r\n        const currentTransform = d3.zoomTransform(\r\n          this._element.node()\r\n        );\r\n\r\n        if (currentTransform !== m.message.event.transform) {\r\n          this._element.call(this.zoom.transform, m.message.event.transform);\r\n        }\r\n\r\n        if(this.config.id !== m.message.chartId) {\r\n\r\n          this.zoomService.setZoom({\r\n            event: m.message.event,\r\n            target: this.zoomAxis\r\n          });\r\n\r\n          this.currentTransform = m.message.event.transform;\r\n        }\r\n\r\n      })\r\n    ).subscribe();\r\n\r\n\r\n    // Subscribe to brush events x or y\r\n\r\n    if ((this.config.brush?.type === BrushType.x && this.zoomAxis.orientation === AxisOrientation.x) ||\r\n      (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {\r\n      this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel).pipe(\r\n        takeWhile((_) => this.alive),\r\n        debounceTime(150),\r\n        filter((m: IBroadcastMessage<BrushMessage>) => Boolean(m.message.selection)),\r\n        tap((m: IBroadcastMessage<BrushMessage>) => {\r\n\r\n          const currentTransform = d3.zoomTransform(\r\n            this.elementRef.nativeElement\r\n          );\r\n\r\n          if (!m.message.event && this.currentSelection && currentTransform.k !== 1) {\r\n            return;\r\n          }\r\n\r\n          this.currentSelection = m.message.selection;\r\n\r\n          this.updateZoom(m);\r\n\r\n        }),\r\n      ).subscribe();\r\n    }\r\n  }\r\n\r\n\r\n  ngOnDestroy(): void {\r\n    this.zoom?.on('start zoom end', null);\r\n    this.alive = false;\r\n  }\r\n\r\n  private updateZoom(m: IBroadcastMessage<BrushMessage>) {\r\n\r\n\r\n\r\n    const s = m.message.selection;\r\n    this.brushScale.domain(this.zoomAxis.extremes);\r\n    const domain = this.brushScale.domain();\r\n\r\n    const scale = (domain[1] - domain[0]) / (s[1] - s[0]);\r\n\r\n    let transform = zoomIdentity.scale(scale);\r\n\r\n    if (m.message?.brushType === BrushType.x) {\r\n      transform = transform.translate(-this.brushScale(s[0]), 0);\r\n    }\r\n    if (m.message?.brushType === BrushType.y) {\r\n      transform = transform.translate(0, -this.brushScale(s[0]));\r\n    }\r\n\r\n    this._element.transition().duration(150).call(\r\n      this.zoom.transform,\r\n      transform,\r\n      null,\r\n      {}\r\n    );\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  AfterViewInit,\r\n  Directive,\r\n  ElementRef,\r\n  HostBinding,\r\n  Input,\r\n  OnDestroy,\r\n} from '@angular/core';\r\nimport {ZoomService} from '../service/zoom.service';\r\nimport {IChartConfig} from '../model/i-chart-config';\r\nimport {Axis} from '../core/axis/axis';\r\nimport * as d3 from 'd3';\r\nimport {D3ZoomEvent, ZoomBehavior, zoomIdentity} from 'd3';\r\nimport {ZoomType} from '../model/enum/zoom-type';\r\nimport {AxisOrientation} from '../model/enum/axis-orientation';\r\nimport {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';\r\nimport {BrushType} from '../model/enum/brush-type';\r\nimport {BroadcastService} from '../service/broadcast.service';\r\nimport {debounceTime, tap, throttleTime} from 'rxjs/operators';\r\nimport {animationFrameScheduler, filter, takeWhile, combineLatest} from 'rxjs';\r\nimport {ChartService} from \"../service/chart.service\";\r\n\r\n@Directive({\r\n  selector: '[tetaZoomable]',\r\n})\r\nexport class ZoomableDirective implements OnDestroy, AfterViewInit {\r\n  @Input() config: IChartConfig;\r\n  @Input() axis?: Axis;\r\n  @Input() size: DOMRect;\r\n  @Input() brushScale?: any;\r\n\r\n\r\n  @HostBinding('class.zoomable') private zoomable = false;\r\n\r\n  private _element: d3.Selection<SVGElement, any, any, any>;\r\n  private zoomAxis: Axis;\r\n  private zoom: ZoomBehavior<any, any>;\r\n  private alive = true;\r\n\r\n  private currentTransform = zoomIdentity;\r\n  private currentSelection;\r\n\r\n  constructor(\r\n    private elementRef: ElementRef,\r\n    private zoomService: ZoomService,\r\n    private broadcastService: BroadcastService,\r\n    private chartService: ChartService\r\n  ) {\r\n  }\r\n\r\n  ngOnInit() {\r\n    if (this.axis?.options?.zoom || this.config?.zoom?.enable) {\r\n      this.zoomable = true;\r\n    }\r\n  }\r\n\r\n\r\n  zoomed = (event: D3ZoomEvent<any, any>) => {\r\n    if (event.sourceEvent) {\r\n      if (Object.keys(event.sourceEvent).length !== 0) {\r\n        if (this.currentTransform === event.transform && event.type !== 'end') {\r\n          return;\r\n        }\r\n\r\n        const origin = this.brushScale.copy().domain(this.zoomAxis.extremes);\r\n\r\n        let domain = this.config.zoom?.type === ZoomType.y ?\r\n          event.transform.rescaleY(origin).domain() :\r\n          event.transform.rescaleX(origin).domain();\r\n\r\n        const message = new ZoomMessage({\r\n          event,\r\n          axis: this.zoomAxis,\r\n          brushDomain: domain,\r\n          chartId: this.config.id\r\n        });\r\n\r\n        this.broadcastService.broadcastZoom({\r\n          channel: this.config?.zoom?.syncChannel,\r\n          message,\r\n        });\r\n\r\n      }\r\n\r\n      this.zoomService.setZoom({\r\n        event,\r\n        target: this.zoomAxis\r\n      });\r\n\r\n      this.currentTransform = event.transform;\r\n    }\r\n  };\r\n\r\n  ngAfterViewInit() {\r\n\r\n    const enable = this.axis?.options?.zoom && this.axis?.options.visible !== false  || this.config?.zoom?.enable;\r\n\r\n    if (!enable) {\r\n      return;\r\n    }\r\n\r\n    this._element = d3.select(this.elementRef.nativeElement);\r\n    this.zoom = d3\r\n      .zoom()\r\n      .extent([\r\n        [0, 0],\r\n        [this.size.width, this.size.height],\r\n      ]);\r\n\r\n\r\n    const commonZoomAxis = Axis.createAxis(\r\n      this.config?.zoom.type === ZoomType.x ? AxisOrientation.x : AxisOrientation.y,\r\n      this.config,\r\n      0,\r\n      true\r\n    );\r\n\r\n    this.zoomAxis = this.axis ?? commonZoomAxis;\r\n\r\n    if (enable) {\r\n      const maxZoom = this.config.zoom?.max ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) / this.config.zoom?.max : 0;\r\n      const minZoom = this.config.zoom?.min ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) / this.config.zoom?.min : Infinity;\r\n\r\n\r\n      this.zoom.scaleExtent([maxZoom, minZoom]);\r\n\r\n      this.zoom.on('start zoom end', this.zoomed);\r\n      this._element.call(this.zoom);\r\n    }\r\n\r\n\r\n\r\n    // Subscribe to zoom events\r\n    this.broadcastService.subscribeToZoom(this.config?.zoom.syncChannel).pipe(\r\n      takeWhile((_) => this.alive),\r\n      filter((m: IBroadcastMessage<ZoomMessage>) => m.message.event.sourceEvent instanceof MouseEvent || m.message.event.sourceEvent instanceof WheelEvent),\r\n      throttleTime(0, animationFrameScheduler, {trailing: true}),\r\n      filter((m: IBroadcastMessage<ZoomMessage>) => {\r\n        return this.zoomAxis.index === m.message?.axis?.index && this.zoomAxis.orientation === m.message?.axis?.orientation;\r\n      }),\r\n      tap((m: IBroadcastMessage<ZoomMessage>) => {\r\n\r\n        const currentTransform = d3.zoomTransform(\r\n          this._element.node()\r\n        );\r\n\r\n        if (currentTransform !== m.message.event.transform) {\r\n\r\n          if(this.config.id !== m.message.chartId) {\r\n            this._element.call(this.zoom.transform, m.message.event.transform, null, {});\r\n            return;\r\n          } else {\r\n            // if(m.message.axis.isFake && !this.zoomAxis.isFake || !m.message.axis.isFake && this.zoomAxis.isFake) {\r\n            //   this._element.call(this.zoom.transform, m.message.event.transform);\r\n            // }\r\n          }\r\n\r\n        }\r\n      })\r\n    ).subscribe();\r\n\r\n\r\n    // Subscribe to brush events x or y\r\n\r\n    if ((this.config.brush?.type === BrushType.x && this.zoomAxis.orientation === AxisOrientation.x) ||\r\n      (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {\r\n\r\n      combineLatest([this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel), this.chartService.size]).pipe(\r\n        takeWhile((_) => this.alive),\r\n        debounceTime(150),\r\n        filter((data: [IBroadcastMessage<BrushMessage>, DOMRect]) => Boolean(data[0].message.selection)),\r\n        tap((data: [IBroadcastMessage<BrushMessage>, DOMRect]) => {\r\n\r\n          const [m] = data;\r\n\r\n          const currentTransform = d3.zoomTransform(\r\n            this._element.node()\r\n          );\r\n\r\n          if (!m.message.event && this.currentSelection && currentTransform.k !== 1) {\r\n            return;\r\n          }\r\n\r\n          this.currentSelection = m.message.selection;\r\n\r\n\r\n          this.updateZoom(m);\r\n\r\n        }),\r\n      ).subscribe();\r\n    }\r\n  }\r\n\r\n\r\n  ngOnDestroy(): void {\r\n    this.zoom?.on('start zoom end', null);\r\n    this.alive = false;\r\n  }\r\n\r\n  private updateZoom(m: IBroadcastMessage<BrushMessage>) {\r\n\r\n    const s = m.message.selection;\r\n    this.brushScale.domain(this.zoomAxis.extremes);\r\n    const domain = this.brushScale.domain();\r\n\r\n    const scale = (domain[1] - domain[0]) / (s[1] - s[0]);\r\n\r\n    let transform = zoomIdentity.scale(scale);\r\n\r\n    if (m.message?.brushType === BrushType.x) {\r\n      transform = transform.translate(-this.brushScale(s[0]), 0);\r\n    }\r\n    if (m.message?.brushType === BrushType.y) {\r\n      transform = transform.translate(0, -this.brushScale(s[0]));\r\n    }\r\n\r\n    this._element.transition().duration(150).call(\r\n      this.zoom.transform,\r\n      transform,\r\n      null,\r\n      {}\r\n    );\r\n  }\r\n}\r\n",
             "selector": "[tetaZoomable]",
             "providers": [],
             "inputsClass": [
@@ -20540,28 +20540,28 @@
                     "name": "axis",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 30,
+                    "line": 28,
                     "type": "Axis"
                 },
                 {
                     "name": "brushScale",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 32,
+                    "line": 30,
                     "type": "any"
                 },
                 {
                     "name": "config",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 29,
+                    "line": 27,
                     "type": "IChartConfig"
                 },
                 {
                     "name": "size",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 31,
+                    "line": 29,
                     "type": "DOMRect"
                 }
             ],
@@ -20574,7 +20574,7 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 35,
+                    "line": 33,
                     "type": "boolean"
                 }
             ],
@@ -20587,7 +20587,7 @@
                     "type": "d3.Selection<SVGElement | any | any | any>",
                     "optional": false,
                     "description": "",
-                    "line": 37,
+                    "line": 35,
                     "modifierKind": [
                         121
                     ]
@@ -20600,7 +20600,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 40,
+                    "line": 38,
                     "modifierKind": [
                         121
                     ]
@@ -20612,7 +20612,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 43,
+                    "line": 41,
                     "modifierKind": [
                         121
                     ]
@@ -20625,7 +20625,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 42,
+                    "line": 40,
                     "modifierKind": [
                         121
                     ]
@@ -20637,7 +20637,7 @@
                     "type": "ZoomBehavior<any | any>",
                     "optional": false,
                     "description": "",
-                    "line": 39,
+                    "line": 37,
                     "modifierKind": [
                         121
                     ]
@@ -20650,7 +20650,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 35,
+                    "line": 33,
                     "decorators": [
                         {
                             "name": "HostBinding",
@@ -20668,7 +20668,7 @@
                     "type": "Axis",
                     "optional": false,
                     "description": "",
-                    "line": 38,
+                    "line": 36,
                     "modifierKind": [
                         121
                     ]
@@ -20681,7 +20681,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 60
+                    "line": 58
                 }
             ],
             "methodsClass": [
@@ -20691,7 +20691,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 96,
+                    "line": 94,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -20711,7 +20711,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 53,
+                    "line": 51,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -20782,7 +20782,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 43,
+                "line": 41,
                 "jsdoctags": [
                     {
                         "name": "elementRef",
@@ -22185,7 +22185,7 @@
                 "AfterViewInit",
                 "OnDestroy"
             ],
-            "templateData": "<svg:defs *ngIf=\"series?.fillType === fillType.gradient\">\r\n  <svg:linearGradient [id]=\"'gradient-fill-' + id\" gradientUnits=\"userSpaceOnUse\"\r\n                      x1=\"0%\"\r\n                      [attr.y1]=\"config?.inverted || series?.fillDirection === fillDirection.y ? '0%' : '100%'\"\r\n                      [attr.x2]=\"config?.inverted || series?.fillDirection === fillDirection.y ? '100%' : '0%'\"\r\n                      y2=\"0%\">\r\n    <svg:stop offset=\"0%\" [attr.stop-color]=\"series.color\" stop-opacity=\"0\"></svg:stop>\r\n    <svg:stop offset=\"5%\" [attr.stop-color]=\"series.color\" stop-opacity=\"0.1\"></svg:stop>\r\n    <svg:stop offset=\"20%\" [attr.stop-color]=\"series.color\" stop-opacity=\"0.2\"></svg:stop>\r\n    <svg:stop offset=\"60%\" [attr.stop-color]=\"series.color\" stop-opacity=\"0.5\"></svg:stop>\r\n    <svg:stop offset=\"100%\" [attr.stop-color]=\"series.color\" stop-opacity=\"0.8\"></svg:stop>\r\n  </svg:linearGradient>\r\n</svg:defs>\r\n<svg:path\r\n  class=\"area\"\r\n  *ngIf=\"series?.fillType === fillType.gradient\"\r\n  [attr.d]=\"areaPath | async\"\r\n  [attr.stroke-width]=\"0\"\r\n  [attr.fill-opacity]=\"series.style?.fillOpacity\"\r\n  [attr.fill]=\"series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : series.style.fill ?? series.color\">\r\n</svg:path>\r\n<svg:path\r\n  class=\"area\"\r\n  fill=\"none\"\r\n  [attr.d]=\"path | async\"\r\n  [attr.stroke]=\"series.color\"\r\n  [attr.stroke-dasharray]=\"series.style?.strokeDasharray\"\r\n  [attr.stroke-width]=\"series.style?.strokeWidth\">\r\n</svg:path>\r\n<ng-container *tuiLet=\"transform | async as t\">\r\n  <svg:circle\r\n    *ngIf=\"t?.x !=null && t?.y !=null\"\r\n    r=\"3\"\r\n    [attr.fill]=\"series.color\"\r\n    [attr.transform]=\"'translate('+ t.x +', '+ t.y +')'\"\r\n  >\r\n  </svg:circle>\r\n</ng-container>\r\n<ng-container *ngIf=\"getMarkers() as markers\">\r\n  <svg:circle\r\n    class=\"marker\"\r\n    *ngFor=\"let point of markers\"\r\n    [class.draggable-marker]=\"point?.marker?.draggable\"\r\n    [attr.r]=\"point.marker.style?.radius ?? 5\"\r\n    [attr.fill]=\"point.marker.style?.fill ?? 'transparent'\"\r\n    [attr.stroke]=\"point.marker.style?.stroke ?? 'none'\"\r\n    [attr.stroke-width]=\"point.marker.style?.strokeWidth\"\r\n    [attr.stroke-dasharray]=\"point.marker.style?.strokeDasharray\"\r\n    [attr.cx]=\"x(point.x)\"\r\n    [attr.cy]=\"y(point.y)\"\r\n  >\r\n  </svg:circle>\r\n</ng-container>\r\n\r\n\r\n\r\n"
+            "templateData": "<svg:defs *ngIf=\"series?.fillType === fillType.gradient\">\r\n  <svg:linearGradient [id]=\"'gradient-fill-' + id\" gradientUnits=\"userSpaceOnUse\"\r\n                      x1=\"0%\"\r\n                      [attr.y1]=\"config?.inverted || series?.fillDirection === fillDirection.y ? '0%' : '100%'\"\r\n                      [attr.x2]=\"config?.inverted || series?.fillDirection === fillDirection.y ? '100%' : '0%'\"\r\n                      y2=\"0%\">\r\n    <svg:stop offset=\"0%\" [attr.stop-color]=\"series.color\" stop-opacity=\"0\"></svg:stop>\r\n    <svg:stop offset=\"5%\" [attr.stop-color]=\"series.color\" stop-opacity=\"0.1\"></svg:stop>\r\n    <svg:stop offset=\"20%\" [attr.stop-color]=\"series.color\" stop-opacity=\"0.2\"></svg:stop>\r\n    <svg:stop offset=\"60%\" [attr.stop-color]=\"series.color\" stop-opacity=\"0.5\"></svg:stop>\r\n    <svg:stop offset=\"100%\" [attr.stop-color]=\"series.color\" stop-opacity=\"0.8\"></svg:stop>\r\n  </svg:linearGradient>\r\n</svg:defs>\r\n<svg:path\r\n  class=\"area\"\r\n  [attr.d]=\"areaPath | async\"\r\n  [attr.stroke-width]=\"0\"\r\n  [attr.fill-opacity]=\"series.style?.fillOpacity\"\r\n  [attr.fill]=\"series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : series.style.fill ?? series.color\">\r\n</svg:path>\r\n<svg:path\r\n  class=\"area\"\r\n  fill=\"none\"\r\n  [attr.d]=\"path | async\"\r\n  [attr.stroke]=\"series.color\"\r\n  [attr.stroke-dasharray]=\"series.style?.strokeDasharray\"\r\n  [attr.stroke-width]=\"series.style?.strokeWidth\">\r\n</svg:path>\r\n<ng-container *tuiLet=\"transform | async as t\">\r\n  <svg:circle\r\n    *ngIf=\"t?.x !=null && t?.y !=null\"\r\n    r=\"3\"\r\n    [attr.fill]=\"series.color\"\r\n    [attr.transform]=\"'translate('+ t.x +', '+ t.y +')'\"\r\n  >\r\n  </svg:circle>\r\n</ng-container>\r\n<ng-container *ngIf=\"getMarkers() as markers\">\r\n  <svg:circle\r\n    class=\"marker\"\r\n    *ngFor=\"let point of markers\"\r\n    [class.draggable-marker]=\"point?.marker?.draggable\"\r\n    [attr.r]=\"point.marker.style?.radius ?? 5\"\r\n    [attr.fill]=\"point.marker.style?.fill ?? 'transparent'\"\r\n    [attr.stroke]=\"point.marker.style?.stroke ?? 'none'\"\r\n    [attr.stroke-width]=\"point.marker.style?.strokeWidth\"\r\n    [attr.stroke-dasharray]=\"point.marker.style?.strokeDasharray\"\r\n    [attr.cx]=\"x(point.x)\"\r\n    [attr.cy]=\"y(point.y)\"\r\n  >\r\n  </svg:circle>\r\n</ng-container>\r\n\r\n\r\n\r\n"
         },
         {
             "name": "BarSeriesComponent",
@@ -25670,7 +25670,7 @@
         },
         {
             "name": "ChartContainerComponent",
-            "id": "component-ChartContainerComponent-9d685cc16a33f6edd3a33aaf1b48c544",
+            "id": "component-ChartContainerComponent-2ab94f0b5c80dfbc2d84a48022401fa5",
             "file": "projects/chart/src/chart/chart-container/chart-container.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -25697,7 +25697,7 @@
                     "type": "ResizeObserver",
                     "optional": false,
                     "description": "",
-                    "line": 47,
+                    "line": 44,
                     "modifierKind": [
                         121
                     ]
@@ -25709,7 +25709,7 @@
                     "type": "Observable<any>",
                     "optional": false,
                     "description": "",
-                    "line": 45
+                    "line": 42
                 },
                 {
                     "name": "config",
@@ -25718,7 +25718,7 @@
                     "type": "Observable<IChartConfig>",
                     "optional": false,
                     "description": "",
-                    "line": 36
+                    "line": 33
                 },
                 {
                     "name": "filterPositionMap",
@@ -25728,7 +25728,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 49,
+                    "line": 46,
                     "modifierKind": [
                         121
                     ]
@@ -25740,7 +25740,7 @@
                     "type": "Observable<DOMRect>",
                     "optional": false,
                     "description": "",
-                    "line": 42
+                    "line": 39
                 },
                 {
                     "name": "sumSize",
@@ -25750,7 +25750,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 163,
+                    "line": 167,
                     "modifierKind": [
                         121
                     ]
@@ -25762,7 +25762,7 @@
                     "type": "Observable<any>",
                     "optional": false,
                     "description": "",
-                    "line": 43
+                    "line": 40
                 },
                 {
                     "name": "xAxisMap",
@@ -25771,7 +25771,7 @@
                     "type": "Observable<Map<number, Axis>>",
                     "optional": false,
                     "description": "",
-                    "line": 39
+                    "line": 36
                 },
                 {
                     "name": "xScaleMap",
@@ -25780,7 +25780,7 @@
                     "type": "Observable<Map<number, any>>",
                     "optional": false,
                     "description": "",
-                    "line": 41
+                    "line": 38
                 },
                 {
                     "name": "yAxisMap",
@@ -25789,7 +25789,7 @@
                     "type": "Observable<Map<number, Axis>>",
                     "optional": false,
                     "description": "",
-                    "line": 38
+                    "line": 35
                 },
                 {
                     "name": "yScaleMap",
@@ -25798,7 +25798,7 @@
                     "type": "Observable<Map<number, any>>",
                     "optional": false,
                     "description": "",
-                    "line": 40
+                    "line": 37
                 }
             ],
             "methodsClass": [
@@ -25827,7 +25827,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 233,
+                    "line": 237,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -25885,7 +25885,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 245,
+                    "line": 249,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -25939,7 +25939,7 @@
                     "optional": false,
                     "returnType": "Observable<string>",
                     "typeParameters": [],
-                    "line": 165,
+                    "line": 169,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -25984,7 +25984,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 229,
+                    "line": 233,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -26021,7 +26021,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 261,
+                    "line": 265,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -26049,7 +26049,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 257,
+                    "line": 261,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -26070,7 +26070,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 159,
+                    "line": 163,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -26080,7 +26080,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 138,
+                    "line": 142,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -26092,7 +26092,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  ElementRef, OnDestroy,\r\n  OnInit,\r\n} from '@angular/core';\r\nimport {IChartConfig} from '../model/i-chart-config';\r\nimport {ChartService} from '../service/chart.service';\r\nimport {\r\n  combineLatest,\r\n  map,\r\n  Observable,\r\n  share,\r\n  shareReplay,\r\n  startWith,\r\n  tap,\r\n  withLatestFrom,\r\n} from 'rxjs';\r\nimport {Axis} from '../core/axis/axis';\r\nimport {AxisOrientation} from '../model/enum/axis-orientation';\r\nimport {ScaleService} from '../service/scale.service';\r\nimport {IChartEvent} from '../model/i-chart-event';\r\nimport {ZoomService} from '../service/zoom.service';\r\nimport {BrushType} from '../model/enum/brush-type';\r\n\r\ntype Opposite = boolean;\r\n\r\n@Component({\r\n  selector: 'teta-chart-container',\r\n  templateUrl: './chart-container.component.html',\r\n  styleUrls: ['./chart-container.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ChartContainerComponent implements OnInit, OnDestroy {\r\n  config: Observable<IChartConfig>;\r\n\r\n  yAxisMap: Observable<Map<number, Axis>>;\r\n  xAxisMap: Observable<Map<number, Axis>>;\r\n  yScaleMap: Observable<Map<number, any>>;\r\n  xScaleMap: Observable<Map<number, any>>;\r\n  size: Observable<DOMRect>;\r\n  visibleRect: Observable<any>;\r\n\r\n  brushScale: Observable<any>;\r\n\r\n  private _observer: ResizeObserver;\r\n\r\n  private filterPositionMap = new Map<Opposite,\r\n    (axis: Axis) => (_: Axis) => boolean>()\r\n    .set(\r\n      true,\r\n      (axis) => (_: Axis) =>\r\n        _.options.opposite && _.options.visible && axis.index <= _.index\r\n    )\r\n    .set(\r\n      false,\r\n      (axis) => (_: Axis) =>\r\n        _.options.opposite !== true &&\r\n        _.options.visible &&\r\n        _.index <= axis.index\r\n    );\r\n\r\n  constructor(\r\n    private _svc: ChartService,\r\n    private _cdr: ChangeDetectorRef,\r\n    private _scaleService: ScaleService,\r\n    private _zoomService: ZoomService,\r\n    private _elementRef: ElementRef\r\n  ) {\r\n    this.config = this._svc.config;\r\n    this.size = this._svc.size;\r\n    this.yAxisMap = this._scaleService.yAxisMap;\r\n    this.xAxisMap = this._scaleService.xAxisMap;\r\n    this.yScaleMap = this._scaleService.yScaleMap;\r\n    this.xScaleMap = this._scaleService.xScaleMap;\r\n\r\n    this.brushScale = combineLatest([\r\n      this._scaleService.xScaleMap,\r\n      this._scaleService.yScaleMap,\r\n    ]).pipe(\r\n      withLatestFrom(this.config),\r\n      map((data: [[Map<number, any>, Map<number, any>], IChartConfig]) => {\r\n        const [[x, y], config] = data;\r\n\r\n        return config.brush?.type === BrushType.x\r\n          ? x.get(0)\r\n          : y.get(0);\r\n      }),\r\n      shareReplay({\r\n        bufferSize: 1,\r\n        refCount: true\r\n      })\r\n    );\r\n\r\n    this.visibleRect = combineLatest([\r\n      this.size,\r\n      this.xAxisMap,\r\n      this.yAxisMap,\r\n      this._zoomService.zoomed,\r\n    ]).pipe(\r\n      map(\r\n        (\r\n          data: [DOMRect, Map<number, any>, Map<number, any>, IChartEvent<Axis>]\r\n        ) => {\r\n          const [size, x, y] = data;\r\n          const yAxesArray = [...y.values()];\r\n          const xAxesArray = [...x.values()];\r\n          const left = yAxesArray\r\n            .filter((_) => _.options.opposite !== true && _.options.visible)\r\n            .reduce(this.sumSize, 0);\r\n\r\n          const right = yAxesArray\r\n            .filter((_) => _.options.opposite && _.options.visible)\r\n            .reduce(this.sumSize, 0);\r\n\r\n          const bottom = xAxesArray\r\n            .filter((_) => _.options.opposite !== true && _.options.visible)\r\n            .reduce(this.sumSize, 0);\r\n\r\n          const top = xAxesArray\r\n            .filter((_) => _.options.opposite && _.options.visible)\r\n            .reduce(this.sumSize, 0);\r\n          return {\r\n            x: left,\r\n            y: top,\r\n            width: size.width - left - right,\r\n            height: size.height - top - bottom,\r\n          };\r\n        }\r\n      ),\r\n      tap((_) => {\r\n        this._cdr.detectChanges();\r\n      })\r\n    );\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this._observer = new ResizeObserver((entries: ResizeObserverEntry[]) => {\r\n\r\n      requestAnimationFrame(() => {\r\n        if (\r\n          !Array.isArray(entries) ||\r\n          !entries.length ||\r\n          entries[0].contentRect.width <= 0 ||\r\n          entries[0].contentRect.height <= 0\r\n        ) {\r\n          return;\r\n        }\r\n        this._svc.setSize(entries[0].contentRect);\r\n\r\n      });\r\n\r\n\r\n    });\r\n    this._observer.observe(this._elementRef.nativeElement);\r\n  }\r\n\r\n  ngOnDestroy() {\r\n    this._observer.disconnect();\r\n  }\r\n\r\n  private sumSize = (acc, curr) => acc + curr.selfSize;\r\n\r\n  getTranslate(axis?: Axis, size?: DOMRect): Observable<string> {\r\n    return combineLatest([this.xAxisMap, this.yAxisMap]).pipe(\r\n      map((data: [Map<number, Axis>, Map<number, Axis>]) => {\r\n        const [x, y] = data;\r\n        const xAxesArray = [...x.values()];\r\n        const yAxesArray = [...y.values()];\r\n\r\n        const oppositeFilter = this.filterPositionMap.get(true);\r\n        const nonOppositeFilter = this.filterPositionMap.get(false);\r\n\r\n        const oppositeOffsetY = yAxesArray.filter(oppositeFilter(axis));\r\n        const nonOppositeOffsetY = yAxesArray.filter(nonOppositeFilter(axis));\r\n\r\n        const oppositeOffsetX = xAxesArray.filter(oppositeFilter(axis));\r\n        const nonOppositeOffsetX = xAxesArray.filter(nonOppositeFilter(axis));\r\n\r\n        const oppositeTranslateY = oppositeOffsetY.reduce(\r\n          (acc, curr) => acc + curr.selfSize,\r\n          0\r\n        );\r\n        const nonOppisteTranslateY = nonOppositeOffsetY.reduce(\r\n          (acc, curr) => acc + curr.selfSize,\r\n          0\r\n        );\r\n\r\n        const oppositeTranslateX = oppositeOffsetX.reduce(\r\n          (acc, curr) => acc + curr.selfSize,\r\n          0\r\n        );\r\n\r\n        const nonOppisteTranslateX = nonOppositeOffsetX.reduce(\r\n          (acc, curr) => acc + curr.selfSize,\r\n          0\r\n        );\r\n\r\n        const left = yAxesArray\r\n          .filter((_) => _.options.visible && _.options.opposite !== true)\r\n          .reduce((acc, curr) => acc + curr.selfSize, 0);\r\n\r\n        const top = xAxesArray\r\n          .filter((_) => _.options.visible && _.options.opposite === true)\r\n          .reduce((acc, curr) => acc + curr.selfSize, 0);\r\n\r\n        if (axis.orientation === AxisOrientation.x) {\r\n          return `translate(${left}, ${\r\n            axis.options.opposite\r\n              ? oppositeTranslateX\r\n              : size.height - nonOppisteTranslateX\r\n          })`;\r\n        }\r\n\r\n        if (axis.orientation === AxisOrientation.y) {\r\n          return `translate(${\r\n            axis.options.opposite\r\n              ? size.width - oppositeTranslateY\r\n              : nonOppisteTranslateY\r\n          }, ${top})`;\r\n        }\r\n\r\n        return 'translate(0, 0)';\r\n      })\r\n    );\r\n  }\r\n\r\n  identify(index, item) {\r\n    return item.value.index;\r\n  }\r\n\r\n  click(event: PointerEvent, xScales: Map<number, any>, yScales: Map<number, any>) {\r\n    const x = xScales.get(0);\r\n    const y = yScales.get(0);\r\n    this._svc.emitChartClick({\r\n      event: event,\r\n      target: {\r\n        x: x.invert(event.offsetX),\r\n        y: y.invert(event.offsetY)\r\n      }\r\n    });\r\n  }\r\n\r\n  contextMenu(event: MouseEvent, xScales: Map<number, any>, yScales: Map<number, any>) {\r\n    const x = xScales.get(0);\r\n    const y = yScales.get(0);\r\n    this._svc.emitChartContextMenu({\r\n      event: event,\r\n      target: {\r\n        x: x.invert(event.offsetX),\r\n        y: y.invert(event.offsetY)\r\n      }\r\n    });\r\n  }\r\n\r\n  mouseMove(event) {\r\n    this._svc.setPointerMove(event);\r\n  }\r\n\r\n  mouseLeave(event) {\r\n    this._svc.setPointerMove(event);\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  ChangeDetectorRef,\r\n  Component,\r\n  ElementRef, OnDestroy,\r\n  OnInit,\r\n} from '@angular/core';\r\nimport {IChartConfig} from '../model/i-chart-config';\r\nimport {ChartService} from '../service/chart.service';\r\nimport {\r\n  combineLatest,\r\n  map,\r\n  Observable,\r\n  shareReplay,\r\n  tap,\r\n  withLatestFrom,\r\n} from 'rxjs';\r\nimport {Axis} from '../core/axis/axis';\r\nimport {AxisOrientation} from '../model/enum/axis-orientation';\r\nimport {ScaleService} from '../service/scale.service';\r\nimport {ZoomService} from '../service/zoom.service';\r\nimport {BrushType} from '../model/enum/brush-type';\r\n\r\ntype Opposite = boolean;\r\n\r\n@Component({\r\n  selector: 'teta-chart-container',\r\n  templateUrl: './chart-container.component.html',\r\n  styleUrls: ['./chart-container.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class ChartContainerComponent implements OnInit, OnDestroy {\r\n  config: Observable<IChartConfig>;\r\n\r\n  yAxisMap: Observable<Map<number, Axis>>;\r\n  xAxisMap: Observable<Map<number, Axis>>;\r\n  yScaleMap: Observable<Map<number, any>>;\r\n  xScaleMap: Observable<Map<number, any>>;\r\n  size: Observable<DOMRect>;\r\n  visibleRect: Observable<any>;\r\n\r\n  brushScale: Observable<any>;\r\n\r\n  private _observer: ResizeObserver;\r\n\r\n  private filterPositionMap = new Map<Opposite,\r\n    (axis: Axis) => (_: Axis) => boolean>()\r\n    .set(\r\n      true,\r\n      (axis) => (_: Axis) =>\r\n        _.options.opposite && _.options.visible && axis.index <= _.index\r\n    )\r\n    .set(\r\n      false,\r\n      (axis) => (_: Axis) =>\r\n        _.options.opposite !== true &&\r\n        _.options.visible &&\r\n        _.index <= axis.index\r\n    );\r\n\r\n  constructor(\r\n    private _svc: ChartService,\r\n    private _cdr: ChangeDetectorRef,\r\n    private _scaleService: ScaleService,\r\n    private _zoomService: ZoomService,\r\n    private _elementRef: ElementRef\r\n  ) {\r\n    this.config = this._svc.config;\r\n    this.size = this._svc.size;\r\n    this.yAxisMap = this._scaleService.yAxisMap;\r\n    this.xAxisMap = this._scaleService.xAxisMap;\r\n\r\n    this.yScaleMap = this._scaleService.yScaleMap.pipe(tap(() => this._cdr.detectChanges()),\r\n      shareReplay({\r\n        bufferSize: 1,\r\n        refCount: true\r\n      }));\r\n\r\n    this.xScaleMap = this._scaleService.xScaleMap.pipe(tap(() => this._cdr.detectChanges()),\r\n      shareReplay({\r\n        bufferSize: 1,\r\n        refCount: true\r\n      }));\r\n\r\n    this.brushScale = combineLatest([\r\n      this._scaleService.xScaleMap,\r\n      this._scaleService.yScaleMap,\r\n    ]).pipe(\r\n      withLatestFrom(this.config),\r\n      map((data: [[Map<number, any>, Map<number, any>], IChartConfig]) => {\r\n        const [[x, y], config] = data;\r\n\r\n        return config.brush?.type === BrushType.x\r\n          ? x.get(0)\r\n          : y.get(0);\r\n      }),\r\n      shareReplay({\r\n        bufferSize: 1,\r\n        refCount: true\r\n      })\r\n    );\r\n\r\n    this.visibleRect = combineLatest([\r\n      this.size,\r\n      this.xAxisMap,\r\n      this.yAxisMap\r\n    ]).pipe(\r\n      map(\r\n        (\r\n          data: [DOMRect, Map<number, any>, Map<number, any>]\r\n        ) => {\r\n          const [size, x, y] = data;\r\n          const yAxesArray = [...y.values()];\r\n          const xAxesArray = [...x.values()];\r\n          const left = yAxesArray\r\n            .filter((_) => _.options.opposite !== true && _.options.visible)\r\n            .reduce(this.sumSize, 0);\r\n\r\n          const right = yAxesArray\r\n            .filter((_) => _.options.opposite && _.options.visible)\r\n            .reduce(this.sumSize, 0);\r\n\r\n          const bottom = xAxesArray\r\n            .filter((_) => _.options.opposite !== true && _.options.visible)\r\n            .reduce(this.sumSize, 0);\r\n\r\n          const top = xAxesArray\r\n            .filter((_) => _.options.opposite && _.options.visible)\r\n            .reduce(this.sumSize, 0);\r\n          return {\r\n            x: left,\r\n            y: top,\r\n            width: size.width - left - right,\r\n            height: size.height - top - bottom,\r\n          };\r\n        }\r\n      ),\r\n      tap(() => setTimeout(() => this._cdr.detectChanges()))\r\n    );\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this._observer = new ResizeObserver((entries: ResizeObserverEntry[]) => {\r\n\r\n      requestAnimationFrame(() => {\r\n        if (\r\n          !Array.isArray(entries) ||\r\n          !entries.length ||\r\n          entries[0].contentRect.width <= 0 ||\r\n          entries[0].contentRect.height <= 0\r\n        ) {\r\n          return;\r\n        }\r\n        this._svc.setSize(entries[0].contentRect);\r\n\r\n      });\r\n\r\n\r\n    });\r\n    this._observer.observe(this._elementRef.nativeElement);\r\n  }\r\n\r\n  ngOnDestroy() {\r\n    this._observer.disconnect();\r\n  }\r\n\r\n  private sumSize = (acc, curr) => acc + curr.selfSize;\r\n\r\n  getTranslate(axis?: Axis, size?: DOMRect): Observable<string> {\r\n    return combineLatest([this.xAxisMap, this.yAxisMap]).pipe(\r\n      map((data: [Map<number, Axis>, Map<number, Axis>]) => {\r\n        const [x, y] = data;\r\n        const xAxesArray = [...x.values()];\r\n        const yAxesArray = [...y.values()];\r\n\r\n        const oppositeFilter = this.filterPositionMap.get(true);\r\n        const nonOppositeFilter = this.filterPositionMap.get(false);\r\n\r\n        const oppositeOffsetY = yAxesArray.filter(oppositeFilter(axis));\r\n        const nonOppositeOffsetY = yAxesArray.filter(nonOppositeFilter(axis));\r\n\r\n        const oppositeOffsetX = xAxesArray.filter(oppositeFilter(axis));\r\n        const nonOppositeOffsetX = xAxesArray.filter(nonOppositeFilter(axis));\r\n\r\n        const oppositeTranslateY = oppositeOffsetY.reduce(\r\n          (acc, curr) => acc + curr.selfSize,\r\n          0\r\n        );\r\n        const nonOppisteTranslateY = nonOppositeOffsetY.reduce(\r\n          (acc, curr) => acc + curr.selfSize,\r\n          0\r\n        );\r\n\r\n        const oppositeTranslateX = oppositeOffsetX.reduce(\r\n          (acc, curr) => acc + curr.selfSize,\r\n          0\r\n        );\r\n\r\n        const nonOppisteTranslateX = nonOppositeOffsetX.reduce(\r\n          (acc, curr) => acc + curr.selfSize,\r\n          0\r\n        );\r\n\r\n        const left = yAxesArray\r\n          .filter((_) => _.options.visible && _.options.opposite !== true)\r\n          .reduce((acc, curr) => acc + curr.selfSize, 0);\r\n\r\n        const top = xAxesArray\r\n          .filter((_) => _.options.visible && _.options.opposite === true)\r\n          .reduce((acc, curr) => acc + curr.selfSize, 0);\r\n\r\n        if (axis.orientation === AxisOrientation.x) {\r\n          return `translate(${left}, ${\r\n            axis.options.opposite\r\n              ? oppositeTranslateX\r\n              : size.height - nonOppisteTranslateX\r\n          })`;\r\n        }\r\n\r\n        if (axis.orientation === AxisOrientation.y) {\r\n          return `translate(${\r\n            axis.options.opposite\r\n              ? size.width - oppositeTranslateY\r\n              : nonOppisteTranslateY\r\n          }, ${top})`;\r\n        }\r\n\r\n        return 'translate(0, 0)';\r\n      })\r\n    );\r\n  }\r\n\r\n  identify(index, item) {\r\n    return item.value.index;\r\n  }\r\n\r\n  click(event: PointerEvent, xScales: Map<number, any>, yScales: Map<number, any>) {\r\n    const x = xScales.get(0);\r\n    const y = yScales.get(0);\r\n    this._svc.emitChartClick({\r\n      event: event,\r\n      target: {\r\n        x: x.invert(event.offsetX),\r\n        y: y.invert(event.offsetY)\r\n      }\r\n    });\r\n  }\r\n\r\n  contextMenu(event: MouseEvent, xScales: Map<number, any>, yScales: Map<number, any>) {\r\n    const x = xScales.get(0);\r\n    const y = yScales.get(0);\r\n    this._svc.emitChartContextMenu({\r\n      event: event,\r\n      target: {\r\n        x: x.invert(event.offsetX),\r\n        y: y.invert(event.offsetY)\r\n      }\r\n    });\r\n  }\r\n\r\n  mouseMove(event) {\r\n    this._svc.setPointerMove(event);\r\n  }\r\n\r\n  mouseLeave(event) {\r\n    this._svc.setPointerMove(event);\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -26138,7 +26138,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 62,
+                "line": 59,
                 "jsdoctags": [
                     {
                         "name": "_svc",
@@ -26191,7 +26191,7 @@
                 "OnInit",
                 "OnDestroy"
             ],
-            "templateData": "<ng-container *ngIf=\"{\r\n  size: size | async,\r\n  config: config | async,\r\n  xAxisMap: xAxisMap | async,\r\n  yAxisMap: yAxisMap | async,\r\n  xScaleMap: xScaleMap | async,\r\n  yScaleMap: yScaleMap | async,\r\n  visibleRect: visibleRect | async,\r\n  brushScale: brushScale | async\r\n} as data\" xmlns:svg=\"http://www.w3.org/1999/html\">\r\n  <teta-tooltip *ngIf=\"data.config?.tooltip?.enable\"\r\n                [size]=\"data.size\"\r\n                [config]=\"data.config\"></teta-tooltip>\r\n\r\n  <ng-container *ngIf=\"data.visibleRect?.width > 0 && data.visibleRect?.height > 0\">\r\n    <svg height=\"100%\" width=\"100%\" class=\"position-absolute\">\r\n      <g class=\"y-axis-container\">\r\n        <ng-container *ngFor=\"let item of data.yAxisMap | keyvalue;\">\r\n          <ng-container *ngIf=\"item.value.options.visible\">\r\n            <g\r\n              teta-y-axis\r\n              [axis]=\"item.value\"\r\n              [scale]=\"data.yScaleMap.get(item.key)\"\r\n              [size]=\"data.size\"\r\n              [attr.transform]=\"getTranslate(item.value, data.size) | async\"></g>\r\n            <rect\r\n              tetaZoomable\r\n              fill-opacity=\"0\"\r\n              [brushScale]=\"data.brushScale\"\r\n              [axis]=\"item.value\"\r\n              [config]=\"data.config\"\r\n              [size]=\"data.size\"\r\n              [attr.x]=\"item.value.options.opposite ? 0 : -item.value.selfSize\"\r\n              [attr.y]=\"0\"\r\n              [attr.height]=\"data.size.height\"\r\n              [attr.width]=\"item.value.selfSize\"\r\n              [attr.transform]=\"getTranslate(item.value, data.size) | async\"></rect>\r\n          </ng-container>\r\n\r\n        </ng-container>\r\n      </g>\r\n      <g class=\"x-axis-container\">\r\n        <ng-container *ngFor=\"let item of data.xAxisMap | keyvalue;\">\r\n          <ng-container *ngIf=\"item.value.options.visible\">\r\n            <g\r\n              teta-x-axis\r\n              [axis]=\"item.value\"\r\n              [scale]=\"data.xScaleMap.get(item.key)\"\r\n              [size]=\"data.size\"\r\n              [attr.transform]=\"getTranslate(item.value, data.size) | async\"></g>\r\n            <rect\r\n              tetaZoomable\r\n              fill-opacity=\"0\"\r\n              [brushScale]=\"data.brushScale\"\r\n              [axis]=\"item.value\"\r\n              [config]=\"data.config\"\r\n              [size]=\"data.size\"\r\n              [attr.x]=\"0\"\r\n              [attr.y]=\"0\"\r\n              [attr.width]=\"data.size.width\"\r\n              [attr.height]=\"item.value.selfSize\"\r\n              [attr.transform]=\"getTranslate(item.value, data.size) | async\"></rect>\r\n          </ng-container>\r\n        </ng-container>\r\n      </g>\r\n    </svg>\r\n  </ng-container>\r\n  <ng-container *ngIf=\"data.visibleRect?.width > 0 && data.visibleRect?.height > 0\">\r\n    <svg\r\n      tetaBrushable\r\n      tetaZoomable\r\n      class=\"position-absolute\"\r\n      [size]=\"data.size\"\r\n      [brushScale]=\"data.brushScale\"\r\n      [config]=\"data.config\"\r\n      [attr.width]=\"data.visibleRect.width\"\r\n      [attr.height]=\"data.visibleRect.height\"\r\n      [attr.viewBox]=\"'0 0 ' + data.visibleRect.width + ' ' + data.visibleRect.height\"\r\n      [style.transform]=\"'translate('+ data.visibleRect.x +'px, '+ data.visibleRect.y +'px)'\"\r\n      (contextmenu)=\"contextMenu($event, data.xScaleMap, data.yScaleMap)\"\r\n      (click)=\"click($event, data.xScaleMap, data.yScaleMap)\"\r\n      (mouseleave)=\"mouseLeave($event)\"\r\n      (mousemove)=\"mouseMove($event)\">\r\n\r\n      <g class=\"gridlines\"\r\n         teta-gridlines\r\n         *ngIf=\"data.config.gridLines?.enable !== false\"\r\n         [size]=\"data.size\"\r\n         [config]=\"data.config\"\r\n         [xScaleMap]=\"data.xScaleMap\"\r\n         [yScaleMap]=\"data.yScaleMap\"></g>\r\n\r\n      <g class=\"x-axis-plotband-container\">\r\n        <ng-container *ngFor=\"let axis of data.config.xAxis; let i = index\">\r\n          <g teta-plot-band *ngFor=\"let plotBand of axis.plotBands\"\r\n             [plotBand]=\"plotBand\"\r\n             [scale]=\"data.xScaleMap.get(i)\"\r\n             [size]=\"data.size\"\r\n             [axis]=\"data.xAxisMap.get(i)\"></g>\r\n        </ng-container>\r\n      </g>\r\n      <g class=\"y-axis-plotband-container\">\r\n        <ng-container *ngFor=\"let axis of data.config.yAxis; let i = index\">\r\n          <g teta-plot-band *ngFor=\"let plotBand of axis.plotBands\"\r\n             [plotBand]=\"plotBand\"\r\n             [scale]=\"data.yScaleMap.get(i)\"\r\n             [size]=\"data.size\"\r\n             [axis]=\"data.yAxisMap.get(i)\"></g>\r\n        </ng-container>\r\n      </g>\r\n      <g class=\"x-axis-plotline-container\">\r\n        <ng-container *ngFor=\"let axis of data.config.xAxis; let i = index\">\r\n          <g teta-plot-line *ngFor=\"let plotLine of axis.plotLines\"\r\n             [plotLine]=\"plotLine\"\r\n             [scale]=\"data.xScaleMap.get(i)\"\r\n             [size]=\"data.size\"\r\n             [axis]=\"data.xAxisMap.get(i)\"></g>\r\n        </ng-container>\r\n      </g>\r\n      <g class=\"y-axis-plotline-container\">\r\n        <ng-container *ngFor=\"let axis of data.config.yAxis; let i = index\">\r\n          <g teta-plot-line *ngFor=\"let plotLine of axis.plotLines\"\r\n             [plotLine]=\"plotLine\"\r\n             [scale]=\"data.yScaleMap.get(i)\"\r\n             [size]=\"data.size\"\r\n             [axis]=\"data.yAxisMap.get(i)\"></g>\r\n        </ng-container>\r\n      </g>\r\n      <g class=\"series-container\">\r\n        <g teta-series-host\r\n           *ngFor=\"let series of data.config.series\"\r\n           [config]=\"data.config\"\r\n           [series]=\"series\"></g>\r\n      </g>\r\n      <g class=\"annotations\">\r\n        <g teta-annotation\r\n           *ngFor=\"let annotation of data.config.annotations\"\r\n           [annotation]=\"annotation\"></g>\r\n      </g>\r\n    </svg>\r\n\r\n  </ng-container>\r\n</ng-container>\r\n"
+            "templateData": "<ng-container *ngIf=\"{\r\n  size: size | async,\r\n  config: config | async,\r\n  xAxisMap: xAxisMap | async,\r\n  yAxisMap: yAxisMap | async,\r\n  xScaleMap: xScaleMap | async,\r\n  yScaleMap: yScaleMap | async,\r\n  visibleRect: visibleRect | async,\r\n  brushScale: brushScale | async\r\n} as data\" xmlns:svg=\"http://www.w3.org/1999/html\">\r\n  <teta-tooltip *ngIf=\"data.config?.tooltip?.enable\"\r\n                [size]=\"data.size\"\r\n                [config]=\"data.config\"></teta-tooltip>\r\n  <ng-container *ngIf=\"data.visibleRect?.width > 0 && data.visibleRect?.height > 0 && data.xScaleMap && data.yScaleMap\">\r\n    <svg height=\"100%\" width=\"100%\" class=\"position-absolute\">\r\n      <g class=\"y-axis-container\">\r\n        <ng-container *ngFor=\"let item of data.yAxisMap | keyvalue;\">\r\n          <ng-container *ngIf=\"item.value.options.visible\">\r\n            <g\r\n              teta-y-axis\r\n              [axis]=\"item.value\"\r\n              [scale]=\"data.yScaleMap.get(item.key)\"\r\n              [size]=\"data.size\"\r\n              [attr.transform]=\"getTranslate(item.value, data.size) | async\"></g>\r\n            <rect\r\n              tetaZoomable\r\n              fill-opacity=\"0\"\r\n              [brushScale]=\"data.brushScale\"\r\n              [axis]=\"item.value\"\r\n              [config]=\"data.config\"\r\n              [size]=\"data.size\"\r\n              [attr.x]=\"item.value.options.opposite ? 0 : -item.value.selfSize\"\r\n              [attr.y]=\"0\"\r\n              [attr.height]=\"data.size.height\"\r\n              [attr.width]=\"item.value.selfSize\"\r\n              [attr.transform]=\"getTranslate(item.value, data.size) | async\"></rect>\r\n          </ng-container>\r\n\r\n        </ng-container>\r\n      </g>\r\n      <g class=\"x-axis-container\">\r\n        <ng-container *ngFor=\"let item of data.xAxisMap | keyvalue;\">\r\n          <ng-container *ngIf=\"item.value.options.visible && data.xScaleMap && data.yScaleMap\">\r\n            <g\r\n              teta-x-axis\r\n              [axis]=\"item.value\"\r\n              [scale]=\"data.xScaleMap.get(item.key)\"\r\n              [size]=\"data.size\"\r\n              [attr.transform]=\"getTranslate(item.value, data.size) | async\"></g>\r\n            <rect\r\n              tetaZoomable\r\n              fill-opacity=\"0\"\r\n              [brushScale]=\"data.brushScale\"\r\n              [axis]=\"item.value\"\r\n              [config]=\"data.config\"\r\n              [size]=\"data.size\"\r\n              [attr.x]=\"0\"\r\n              [attr.y]=\"0\"\r\n              [attr.width]=\"data.size.width\"\r\n              [attr.height]=\"item.value.selfSize\"\r\n              [attr.transform]=\"getTranslate(item.value, data.size) | async\"></rect>\r\n          </ng-container>\r\n        </ng-container>\r\n      </g>\r\n    </svg>\r\n  </ng-container>\r\n  <ng-container *ngIf=\"data.visibleRect?.width > 0 && data.visibleRect?.height > 0 && data.xScaleMap && data.yScaleMap\">\r\n    <svg\r\n      tetaBrushable\r\n      tetaZoomable\r\n      class=\"position-absolute\"\r\n      [size]=\"data.size\"\r\n      [brushScale]=\"data.brushScale\"\r\n      [config]=\"data.config\"\r\n      [attr.width]=\"data.visibleRect.width\"\r\n      [attr.height]=\"data.visibleRect.height\"\r\n      [attr.viewBox]=\"'0 0 ' + data.visibleRect.width + ' ' + data.visibleRect.height\"\r\n      [style.transform]=\"'translate('+ data.visibleRect.x +'px, '+ data.visibleRect.y +'px)'\"\r\n      (contextmenu)=\"contextMenu($event, data.xScaleMap, data.yScaleMap)\"\r\n      (click)=\"click($event, data.xScaleMap, data.yScaleMap)\"\r\n      (mouseleave)=\"mouseLeave($event)\"\r\n      (mousemove)=\"mouseMove($event)\">\r\n\r\n      <g class=\"gridlines\"\r\n         teta-gridlines\r\n         *ngIf=\"data.config.gridLines?.enable !== false\"\r\n         [size]=\"data.size\"\r\n         [config]=\"data.config\"\r\n         [xScaleMap]=\"data.xScaleMap\"\r\n         [yScaleMap]=\"data.yScaleMap\"></g>\r\n\r\n      <g class=\"x-axis-plotband-container\">\r\n        <ng-container *ngFor=\"let axis of data.config.xAxis; let i = index\">\r\n          <g teta-plot-band *ngFor=\"let plotBand of axis.plotBands\"\r\n             [plotBand]=\"plotBand\"\r\n             [scale]=\"data.xScaleMap.get(i)\"\r\n             [size]=\"data.size\"\r\n             [axis]=\"data.xAxisMap.get(i)\"></g>\r\n        </ng-container>\r\n      </g>\r\n      <g class=\"y-axis-plotband-container\">\r\n        <ng-container *ngFor=\"let axis of data.config.yAxis; let i = index\">\r\n          <g teta-plot-band *ngFor=\"let plotBand of axis.plotBands\"\r\n             [plotBand]=\"plotBand\"\r\n             [scale]=\"data.yScaleMap.get(i)\"\r\n             [size]=\"data.size\"\r\n             [axis]=\"data.yAxisMap.get(i)\"></g>\r\n        </ng-container>\r\n      </g>\r\n      <g class=\"x-axis-plotline-container\">\r\n        <ng-container *ngFor=\"let axis of data.config.xAxis; let i = index\">\r\n          <g teta-plot-line *ngFor=\"let plotLine of axis.plotLines\"\r\n             [plotLine]=\"plotLine\"\r\n             [scale]=\"data.xScaleMap.get(i)\"\r\n             [size]=\"data.size\"\r\n             [axis]=\"data.xAxisMap.get(i)\"></g>\r\n        </ng-container>\r\n      </g>\r\n      <g class=\"y-axis-plotline-container\">\r\n        <ng-container *ngFor=\"let axis of data.config.yAxis; let i = index\">\r\n          <g teta-plot-line *ngFor=\"let plotLine of axis.plotLines\"\r\n             [plotLine]=\"plotLine\"\r\n             [scale]=\"data.yScaleMap.get(i)\"\r\n             [size]=\"data.size\"\r\n             [axis]=\"data.yAxisMap.get(i)\"></g>\r\n        </ng-container>\r\n      </g>\r\n      <g class=\"series-container\">\r\n        <g teta-series-host\r\n           *ngFor=\"let series of data.config.series\"\r\n           [config]=\"data.config\"\r\n           [series]=\"series\"></g>\r\n      </g>\r\n      <g class=\"annotations\">\r\n        <g teta-annotation\r\n           *ngFor=\"let annotation of data.config.annotations\"\r\n           [annotation]=\"annotation\"></g>\r\n      </g>\r\n    </svg>\r\n\r\n  </ng-container>\r\n</ng-container>\r\n"
         },
         {
             "name": "CheckboxComponent",
@@ -31696,7 +31696,7 @@
         },
         {
             "name": "GridlinesComponent",
-            "id": "component-GridlinesComponent-c4d725a78fefb06b53b6a85d6abff621",
+            "id": "component-GridlinesComponent-16e984ee26a4f6eeb6c92e69c2fdda7a",
             "file": "projects/chart/src/chart/chart-container/gridlines/gridlines.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -31811,7 +31811,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  Input,\r\n  SimpleChanges,\r\n} from '@angular/core';\r\nimport {IChartConfig} from \"../../model/i-chart-config\";\r\n\r\n@Component({\r\n  selector: '[teta-gridlines]',\r\n  templateUrl: './gridlines.component.html',\r\n  styleUrls: ['./gridlines.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class GridlinesComponent {\r\n  @Input() size: DOMRect;\r\n  @Input() xScaleMap: Map<number, any>;\r\n  @Input() yScaleMap: Map<number, any>;\r\n  @Input() config: IChartConfig\r\n\r\n  tickYValues: number[];\r\n  tickXValues: number[];\r\n\r\n  constructor() {\r\n  }\r\n\r\n  draw() {\r\n    this.tickYValues = this.yScaleMap.get(0).ticks();\r\n    this.tickXValues = this.xScaleMap.get(0).ticks();\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges) {\r\n    if (\r\n      changes.hasOwnProperty('xScaleMap') &&\r\n      changes.hasOwnProperty('yScaleMap')\r\n    ) {\r\n      this.draw();\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  Input,\r\n  SimpleChanges,\r\n} from '@angular/core';\r\nimport {IChartConfig} from \"../../model/i-chart-config\";\r\n\r\n@Component({\r\n  selector: '[teta-gridlines]',\r\n  templateUrl: './gridlines.component.html',\r\n  styleUrls: ['./gridlines.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class GridlinesComponent {\r\n  @Input() size: DOMRect;\r\n  @Input() xScaleMap: Map<number, any>;\r\n  @Input() yScaleMap: Map<number, any>;\r\n  @Input() config: IChartConfig\r\n\r\n  tickYValues: number[];\r\n  tickXValues: number[];\r\n\r\n  constructor() {\r\n  }\r\n\r\n  draw() {\r\n    this.tickYValues = this.yScaleMap.get(0).ticks();\r\n    this.tickXValues = this.xScaleMap.get(0).ticks();\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges) {\r\n    if (\r\n      changes.hasOwnProperty('xScaleMap') ||\r\n      changes.hasOwnProperty('yScaleMap')\r\n    ) {\r\n      this.draw();\r\n    }\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -33941,7 +33941,7 @@
         },
         {
             "name": "LegendComponent",
-            "id": "component-LegendComponent-8583cffe5fbdcb501c0f16d9dc1890d0",
+            "id": "component-LegendComponent-aad22c814a445eb6c24739c26e9af474",
             "file": "projects/chart/src/chart/legend/legend.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -33963,7 +33963,7 @@
                     "name": "series",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 25,
+                    "line": 26,
                     "type": "Array<Series<BasePoint>>"
                 }
             ],
@@ -33977,7 +33977,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 26,
+                    "line": 27,
                     "decorators": [
                         {
                             "name": "HostBinding",
@@ -33987,7 +33987,7 @@
                 },
                 {
                     "name": "sizeMapping",
-                    "defaultValue": "new Map<SeriesType, number>()\r\n    .set(SeriesType.line, 2)\r\n    .set(SeriesType.bar, 12)\r\n    .set(SeriesType.area, 2)\r\n    .set(SeriesType.block, 12)\r\n    .set(SeriesType.blockArea, 2)",
+                    "defaultValue": "new Map<SeriesType, number>()\r\n    .set(SeriesType.line, 2)\r\n    .set(SeriesType.scatter, 12)\r\n    .set(SeriesType.bar, 12)\r\n    .set(SeriesType.area, 2)\r\n    .set(SeriesType.block, 12)\r\n    .set(SeriesType.blockArea, 2)",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -34013,7 +34013,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 30,
+                    "line": 31,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -34037,7 +34037,7 @@
                     "defaultValue": "true",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 26,
+                    "line": 27,
                     "type": "boolean"
                 }
             ],
@@ -34045,7 +34045,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  HostBinding,\r\n  Input,\r\n} from '@angular/core';\r\nimport { Series } from '../model/series';\r\nimport { BasePoint } from '../model/base-point';\r\nimport { SeriesType } from '../model/enum/series-type';\r\n\r\n@Component({\r\n  selector: 'teta-legend',\r\n  templateUrl: './legend.component.html',\r\n  styleUrls: ['./legend.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class LegendComponent {\r\n  private sizeMapping = new Map<SeriesType, number>()\r\n    .set(SeriesType.line, 2)\r\n    .set(SeriesType.bar, 12)\r\n    .set(SeriesType.area, 2)\r\n    .set(SeriesType.block, 12)\r\n    .set(SeriesType.blockArea, 2);\r\n\r\n  @Input() series: Array<Series<BasePoint>>;\r\n  @HostBinding('class.padding-bottom-4') classLegend = true;\r\n\r\n  constructor() {}\r\n\r\n  getHeight(serie: Series<BasePoint>) {\r\n    return this.sizeMapping.get(serie.type ?? SeriesType.line);\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  ChangeDetectionStrategy,\r\n  Component,\r\n  HostBinding,\r\n  Input,\r\n} from '@angular/core';\r\nimport { Series } from '../model/series';\r\nimport { BasePoint } from '../model/base-point';\r\nimport { SeriesType } from '../model/enum/series-type';\r\n\r\n@Component({\r\n  selector: 'teta-legend',\r\n  templateUrl: './legend.component.html',\r\n  styleUrls: ['./legend.component.scss'],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n})\r\nexport class LegendComponent {\r\n  private sizeMapping = new Map<SeriesType, number>()\r\n    .set(SeriesType.line, 2)\r\n    .set(SeriesType.scatter, 12)\r\n    .set(SeriesType.bar, 12)\r\n    .set(SeriesType.area, 2)\r\n    .set(SeriesType.block, 12)\r\n    .set(SeriesType.blockArea, 2);\r\n\r\n  @Input() series: Array<Series<BasePoint>>;\r\n  @HostBinding('class.padding-bottom-4') classLegend = true;\r\n\r\n  constructor() {}\r\n\r\n  getHeight(serie: Series<BasePoint>) {\r\n    return this.sizeMapping.get(serie.type ?? SeriesType.line);\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -34060,7 +34060,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 26
+                "line": 27
             },
             "templateData": "<ng-container *ngFor=\"let serie of series\" class=\"padding-bottom-4\">\r\n  <div *ngIf=\"serie?.showInLegend !== false\">\r\n    <div class=\"legend-item\">\r\n      <div class=\"legend-icon-form\" [style.height.px]=\"getHeight(serie)\" [style.background-color]=\"serie.color\"></div>\r\n      <div class=\"legend-label\">{{ serie.name }}</div>\r\n    </div>\r\n  </div>\r\n</ng-container>\r\n"
         },
@@ -56564,21 +56564,21 @@
                 "name": "treeData",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/component/toolbar/Toolbar.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "[]",
-                "defaultValue": "[\r\n  {\r\n    name: 'Тетакомовское м-р (4)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Скважины для тестирования',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'Тестовая скважина №1',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n          {\r\n            name: 'Стресс-тест',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n  {\r\n    name: 'Test only (1)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Group (1)',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'well',\r\n            icon: 'well',\r\n            children: [\r\n              {\r\n                name: 'ГИС',\r\n                icon: 'map',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Конструкция',\r\n                icon: 'tubes',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'D1',\r\n                icon: 'angle',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Дизайн №1 copy',\r\n                icon: 'angle',\r\n                children: [\r\n                  {\r\n                    name: 'Зоны продуктивности',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'План закачки',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Опции',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Результаты',\r\n                    children: [],\r\n                  },\r\n                ],\r\n              },\r\n            ],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n]"
-            },
-            {
-                "name": "treeData",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/component/tree/Tree.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "[]",
                 "defaultValue": "[{\r\n  name: 'Тетакомовское м-р (4)',\r\n  icon: 'layers',\r\n  children: [\r\n    {\r\n      name: 'Скважины для тестирования',\r\n      icon: 'folder',\r\n      children: [\r\n        {\r\n          name: 'Тестовая скважина №1',\r\n          icon: 'well',\r\n          children: []\r\n        }, {\r\n          name: 'Стресс-тест',\r\n          icon: 'well',\r\n          children: []\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}, {\r\n  name: 'Test only (1)',\r\n  icon: 'layers',\r\n  children: [\r\n    {\r\n      name: 'Group (1)',\r\n      icon: 'folder',\r\n      children: [\r\n        {\r\n          name: 'well',\r\n          icon: 'well',\r\n          children: [{\r\n            name: 'ГИС',\r\n            icon: 'map',\r\n            children: []\r\n          }, {\r\n            name: 'Конструкция',\r\n            icon: 'tubes',\r\n            children: []\r\n          }, {\r\n            name: 'D1',\r\n            icon: 'angle',\r\n            children: []\r\n          }, {\r\n            name: 'Дизайн №1 copy',\r\n            icon: 'angle',\r\n            children: [{\r\n              name: 'Зоны продуктивности',\r\n              children: []\r\n            }, {\r\n              name: 'План закачки',\r\n              children: []\r\n            }, {\r\n              name: 'Опции',\r\n              children: []\r\n            }, {\r\n              name: 'Результаты',\r\n              children: []\r\n            }]\r\n          }]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}]"
+            },
+            {
+                "name": "treeData",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/component/toolbar/Toolbar.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "[]",
+                "defaultValue": "[\r\n  {\r\n    name: 'Тетакомовское м-р (4)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Скважины для тестирования',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'Тестовая скважина №1',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n          {\r\n            name: 'Стресс-тест',\r\n            icon: 'well',\r\n            children: [],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n  {\r\n    name: 'Test only (1)',\r\n    icon: 'layer',\r\n    children: [\r\n      {\r\n        name: 'Group (1)',\r\n        icon: 'folder',\r\n        children: [\r\n          {\r\n            name: 'well',\r\n            icon: 'well',\r\n            children: [\r\n              {\r\n                name: 'ГИС',\r\n                icon: 'map',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Конструкция',\r\n                icon: 'tubes',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'D1',\r\n                icon: 'angle',\r\n                children: [],\r\n              },\r\n              {\r\n                name: 'Дизайн №1 copy',\r\n                icon: 'angle',\r\n                children: [\r\n                  {\r\n                    name: 'Зоны продуктивности',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'План закачки',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Опции',\r\n                    children: [],\r\n                  },\r\n                  {\r\n                    name: 'Результаты',\r\n                    children: [],\r\n                  },\r\n                ],\r\n              },\r\n            ],\r\n          },\r\n        ],\r\n      },\r\n    ],\r\n  },\r\n]"
             },
             {
                 "name": "vertical",
