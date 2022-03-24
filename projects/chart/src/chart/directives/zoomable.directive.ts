@@ -1,18 +1,35 @@
-import {AfterViewInit, Directive, ElementRef, HostBinding, Input, NgZone, OnDestroy,} from '@angular/core';
-import {ZoomService} from '../service/zoom.service';
-import {IChartConfig} from '../model/i-chart-config';
-import {Axis} from '../core/axis/axis';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  HostBinding,
+  Input,
+  NgZone,
+  OnDestroy,
+} from '@angular/core';
+import { ZoomService } from '../service/zoom.service';
+import { IChartConfig } from '../model/i-chart-config';
+import { Axis } from '../core/axis/axis';
 import * as d3 from 'd3';
-import {D3ZoomEvent, ZoomBehavior, zoomIdentity} from 'd3';
-import {ZoomType} from '../model/enum/zoom-type';
-import {AxisOrientation} from '../model/enum/axis-orientation';
-import {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';
-import {BrushType} from '../model/enum/brush-type';
-import {BroadcastService} from '../service/broadcast.service';
-import {debounceTime, tap, throttle, throttleTime} from 'rxjs/operators';
-import {animationFrameScheduler, combineLatest, filter, takeWhile} from 'rxjs';
-import {ChartService} from "../service/chart.service";
-import {ZoomBehaviorType} from "../model/enum/zoom-behavior-type";
+import { D3ZoomEvent, ZoomBehavior, zoomIdentity } from 'd3';
+import { ZoomType } from '../model/enum/zoom-type';
+import { AxisOrientation } from '../model/enum/axis-orientation';
+import {
+  BrushMessage,
+  IBroadcastMessage,
+  ZoomMessage,
+} from '../model/i-broadcast-message';
+import { BrushType } from '../model/enum/brush-type';
+import { BroadcastService } from '../service/broadcast.service';
+import { debounceTime, tap, throttle, throttleTime } from 'rxjs/operators';
+import {
+  animationFrameScheduler,
+  combineLatest,
+  filter,
+  takeWhile,
+} from 'rxjs';
+import { ChartService } from '../service/chart.service';
+import { ZoomBehaviorType } from '../model/enum/zoom-behavior-type';
 
 @Directive({
   selector: '[tetaZoomable]',
@@ -22,7 +39,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   @Input() axis?: Axis;
   @Input() size: DOMRect;
   @Input() brushScale?: any;
-
 
   @HostBinding('class.zoomable') private zoomable = false;
 
@@ -41,15 +57,13 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     private broadcastService: BroadcastService,
     private chartService: ChartService,
     private zone: NgZone
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     if (this.axis?.options?.zoom || this.config?.zoom?.enable) {
       this.zoomable = this.config?.zoom?.zoomBehavior === ZoomBehaviorType.move;
     }
   }
-
 
   zoomed = (event: D3ZoomEvent<any, any>) => {
     if (event.sourceEvent) {
@@ -60,15 +74,16 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
         const origin = this.brushScale.copy().domain(this.zoomAxis.extremes);
 
-        let domain = this.config.zoom?.type === ZoomType.y ?
-          event.transform.rescaleY(origin).domain() :
-          event.transform.rescaleX(origin).domain();
+        let domain =
+          this.config.zoom?.type === ZoomType.y
+            ? event.transform.rescaleY(origin).domain()
+            : event.transform.rescaleX(origin).domain();
 
         const message = new ZoomMessage({
           event,
           axis: this.zoomAxis,
           brushDomain: domain,
-          chartId: this.config.id
+          chartId: this.config.id,
         });
 
         this.broadcastService.broadcastZoom({
@@ -79,38 +94,39 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
       this.zoomService.setZoom({
         event,
-        target: this.zoomAxis
+        target: this.zoomAxis,
       });
 
-
       this.currentTransform = event.transform;
-
     }
   };
 
   ngAfterViewInit() {
-
-    const enable = this.axis?.options?.zoom && this.axis?.options.visible !== false || this.config?.zoom?.enable;
+    const enable =
+      (this.axis?.options?.zoom && this.axis?.options.visible !== false) ||
+      this.config?.zoom?.enable;
 
     if (!enable) {
       return;
     }
 
     this._element = d3.select(this.elementRef.nativeElement);
-    this.zoom = d3
-      .zoom()
-      .extent([
+    this.zoom = d3.zoom().extent([
+      [0, 0],
+      [this.size.width, this.size.height],
+    ]);
+
+    if (this.config.zoom?.limitTranslateByData) {
+      this.zoom.translateExtent([
         [0, 0],
         [this.size.width, this.size.height],
       ]);
-
-    if (this.config.zoom?.limitTranslateByData) {
-      this.zoom.translateExtent([[0, 0], [this.size.width, this.size.height]])
     }
 
-
     const commonZoomAxis = Axis.createAxis(
-      this.config?.zoom.type === ZoomType.x ? AxisOrientation.x : AxisOrientation.y,
+      this.config?.zoom.type === ZoomType.x
+        ? AxisOrientation.x
+        : AxisOrientation.y,
       this.config,
       0,
       true
@@ -119,66 +135,90 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     this.zoomAxis = this.axis ?? commonZoomAxis;
 
     if (enable) {
+      const maxZoom = this.config.zoom?.max
+        ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) /
+          this.config.zoom?.max
+        : this.config.zoom?.limitZoomByData
+        ? 1
+        : 0;
 
-      const maxZoom = this.config.zoom?.max ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) / this.config.zoom?.max : this.config.zoom?.limitZoomByData ? 1 : 0;
-      const minZoom = this.config.zoom?.min ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) / this.config.zoom?.min : Infinity;
+      const minZoom = this.config.zoom?.min
+        ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) /
+          this.config.zoom?.min
+        : Infinity;
 
       this.zoom.scaleExtent([maxZoom, minZoom]);
 
-      this.zoom.on('start zoom end', this.zoomed)
+      this.zoom.on('start zoom end', this.zoomed);
       this._element.call(this.zoom).on('dblclick.zoom', null);
 
       if (this.config?.zoom?.zoomBehavior === ZoomBehaviorType.wheel) {
-
         let type: 'start' | 'zoom' | 'end' = 'start';
         let wheeling;
 
-        const origin = this.brushScale.copy().domain(this.zoomAxis.extremes);
-
         this.zoom
-          .filter((event) => event.ctrlKey && event.type === 'wheel')
+          .filter(
+            (event) =>
+              (event.ctrlKey && event.type === 'wheel') ||
+              Boolean(window.TouchEvent)
+          )
           .wheelDelta((event) => {
-            const delta = this.config?.zoom.type === ZoomType.x ? -event.deltaX : -event.deltaY
-            return delta * 0.002
-          })
+            const delta =
+              this.config?.zoom.type === ZoomType.x
+                ? -event.deltaX
+                : -event.deltaY;
+            return delta * 0.002;
+          });
 
         const emit = (type: string, event: WheelEvent) => {
+          const origin = this.brushScale.copy().domain(this.zoomAxis.extremes);
           let transform = zoomIdentity;
-          const delta = type === 'end' ? 0 : this.config.zoom?.type === ZoomType.y ? event.deltaY : event.deltaX;
+          const delta =
+            type === 'end'
+              ? 0
+              : this.config.zoom?.type === ZoomType.y
+              ? event.deltaY
+              : event.deltaX;
 
           if (this.config.zoom?.type === ZoomType.y) {
-            transform = transform.translate(0, this.currentTransform.y - delta / 2);
+            transform = transform.translate(
+              0,
+              this.currentTransform.y - delta / 2
+            );
           }
 
           if (this.config.zoom?.type === ZoomType.x) {
-            transform = transform.translate(this.currentTransform.x - delta / 2, 0);
+            transform = transform.translate(
+              this.currentTransform.x - delta / 2,
+              0
+            );
           }
 
           transform = transform.scale(this.currentTransform.k);
 
-          let domain = this.config.zoom?.type === ZoomType.y ?
-            transform.rescaleY(origin).domain() :
-            transform.rescaleX(origin).domain();
-
+          let domain =
+            this.config.zoom?.type === ZoomType.y
+              ? transform.rescaleY(origin).domain()
+              : transform.rescaleX(origin).domain();
 
           const message = new ZoomMessage({
             event: {
               sourceEvent: event,
               transform,
-              type
+              type,
             },
             axis: this.zoomAxis,
             brushDomain: domain,
-            chartId: this.config.id
+            chartId: this.config.id,
           });
 
           this.zoomService.setZoom({
             event: {
               sourceEvent: event,
               transform,
-              type
+              type,
             },
-            target: this.zoomAxis
+            target: this.zoomAxis,
           });
 
           this._element.call(this.zoom.transform, transform);
@@ -188,7 +228,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             channel: this.config?.zoom?.syncChannel,
             message,
           });
-        }
+        };
 
         this._element.on('wheel', (event: WheelEvent) => {
           event.preventDefault();
@@ -199,7 +239,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
           this.zone.runOutsideAngular(() => {
             clearTimeout(wheeling);
-            emit(type, event)
+            emit(type, event);
             type = 'zoom';
 
             this.wheelIdle = false;
@@ -210,73 +250,100 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
               this.wheelIdle = true;
               type = 'start';
             }, 150);
-
-          })
-        })
+          });
+        });
       }
     }
 
-
     // Subscribe to zoom events
-    this.broadcastService.subscribeToZoom(this.config?.zoom.syncChannel).pipe(
-      takeWhile((_) => this.alive),
-      filter((m: IBroadcastMessage<ZoomMessage>) => m.message.event.sourceEvent instanceof MouseEvent || m.message.event.sourceEvent instanceof WheelEvent),
-      filter((m: IBroadcastMessage<ZoomMessage>) => {
-        return this.zoomAxis.index === m.message?.axis?.index && this.zoomAxis.orientation === m.message?.axis?.orientation;
-      }),
-      tap((m: IBroadcastMessage<ZoomMessage>) => {
-        if (this.config.id !== m.message.chartId) {
-          this.wheelIdle = false;
+    this.broadcastService
+      .subscribeToZoom(this.config?.zoom.syncChannel)
+      .pipe(
+        takeWhile((_) => this.alive),
+        filter(
+          (m: IBroadcastMessage<ZoomMessage>) =>
+            m.message.event.sourceEvent instanceof MouseEvent ||
+            m.message.event.sourceEvent instanceof WheelEvent ||
+            (window.TouchEvent &&
+              m.message.event.sourceEvent instanceof TouchEvent)
+        ),
+        filter((m: IBroadcastMessage<ZoomMessage>) => {
+          return (
+            this.zoomAxis.index === m.message?.axis?.index &&
+            this.zoomAxis.orientation === m.message?.axis?.orientation
+          );
+        }),
+        tap((m: IBroadcastMessage<ZoomMessage>) => {
+          if (this.config.id !== m.message.chartId) {
+            this.wheelIdle = false;
 
-          if(m.message.event.type === 'end') {
-            this.wheelIdle = true;
+            if (m.message.event.type === 'end') {
+              this.wheelIdle = true;
+            }
+
+            this._element.call(
+              this.zoom.transform,
+              m.message.event.transform,
+              null,
+              {}
+            );
+          } else {
+            if (
+              (m.message.axis.isFake && !this.zoomAxis.isFake) ||
+              (!m.message.axis.isFake && this.zoomAxis.isFake)
+            ) {
+              this._element.call(
+                this.zoom.transform,
+                m.message.event.transform
+              );
+            }
           }
-
-          this._element.call(this.zoom.transform, m.message.event.transform, null, {});
-
-
-        } else {
-          if (m.message.axis.isFake && !this.zoomAxis.isFake || !m.message.axis.isFake && this.zoomAxis.isFake) {
-            this._element.call(this.zoom.transform, m.message.event.transform);
-          }
-        }
-      })
-    ).subscribe();
-
+        })
+      )
+      .subscribe();
 
     // Subscribe to brush events x or y
 
-    if ((this.config.brush?.type === BrushType.x && this.zoomAxis.orientation === AxisOrientation.x) ||
-      (this.config.brush?.type === BrushType.y && this.zoomAxis.orientation === AxisOrientation.y)) {
+    if (
+      (this.config.brush?.type === BrushType.x &&
+        this.zoomAxis.orientation === AxisOrientation.x) ||
+      (this.config.brush?.type === BrushType.y &&
+        this.zoomAxis.orientation === AxisOrientation.y)
+    ) {
+      combineLatest([
+        this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel),
+        this.chartService.size,
+      ])
+        .pipe(
+          takeWhile((_) => this.alive),
+          debounceTime(150),
+          filter((data: [IBroadcastMessage<BrushMessage>, DOMRect]) =>
+            Boolean(data[0].message.selection)
+          ),
+          tap((data: [IBroadcastMessage<BrushMessage>, DOMRect]) => {
+            const [m] = data;
 
-      combineLatest([this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel), this.chartService.size]).pipe(
-        takeWhile((_) => this.alive),
-        debounceTime(150),
-        filter((data: [IBroadcastMessage<BrushMessage>, DOMRect]) => Boolean(data[0].message.selection)),
-        tap((data: [IBroadcastMessage<BrushMessage>, DOMRect]) => {
+            if (!this.wheelIdle) {
+              return;
+            }
 
-          const [m] = data;
+            const currentTransform = d3.zoomTransform(this._element.node());
 
-          if(!this.wheelIdle) {
-            return;
-          }
+            if (
+              !m.message.event &&
+              this.currentSelection &&
+              currentTransform.k !== 1
+            ) {
+              return;
+            }
 
-          const currentTransform = d3.zoomTransform(
-            this._element.node()
-          );
-
-          if (!m.message.event && this.currentSelection && currentTransform.k !== 1) {
-            return;
-          }
-
-          this.updateZoom(m);
-          this.currentSelection = m.message.selection;
-
-        }),
-      ).subscribe();
+            this.updateZoom(m);
+            this.currentSelection = m.message.selection;
+          })
+        )
+        .subscribe();
     }
   }
-
 
   ngOnDestroy(): void {
     this.zoom?.on('start zoom end', null);
@@ -286,7 +353,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   }
 
   private updateZoom(m: IBroadcastMessage<BrushMessage>) {
-
     const s = m.message.selection;
     this.brushScale.domain(this.zoomAxis.extremes);
     const domain = this.brushScale.domain();
@@ -302,13 +368,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       transform = transform.translate(0, -this.brushScale(s[0]));
     }
 
-    this._element.call(
-      this.zoom.transform,
-      transform,
-      null,
-      {}
-    );
+    this._element.call(this.zoom.transform, transform, null, {});
   }
-
-
 }
