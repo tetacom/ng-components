@@ -28,7 +28,7 @@ export class BlockAreaSeriesComponent<T extends BasePoint>
   displayPoints: Observable<BasePoint[]>;
   fillType = FillType;
   id: string;
-
+  Math = Math;
   constructor(
     protected override svc: ChartService,
     protected override cdr: ChangeDetectorRef,
@@ -53,12 +53,8 @@ export class BlockAreaSeriesComponent<T extends BasePoint>
     this.displayPoints = this.y.pipe(
       map((y) => {
         return this.series.data.filter((point, index, arr) => {
-          const height = Math.abs(y(point.y1) - y(point.y));
           const [min, max] = y.domain();
-
-          const visibleCondition =
-            height > defaultVisiblePixels &&
-            (point.y >= min ||
+          return (point.y >= min ||
               point.y1 >= min ||
               arr[index + 1]?.y >= min ||
               arr[index + 1]?.y1 >= min) &&
@@ -66,8 +62,6 @@ export class BlockAreaSeriesComponent<T extends BasePoint>
               point.y1 <= max ||
               arr[index - 1]?.y <= max ||
               arr[index - 1]?.y1 <= max);
-
-          return visibleCondition;
         });
       })
     );

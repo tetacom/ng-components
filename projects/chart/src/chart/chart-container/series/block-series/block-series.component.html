@@ -22,7 +22,7 @@
       <svg:rect
         x="0"
         [attr.y]="data.y(point.y)"
-        [attr.height]="data.y(point.y1) - data.y(point.y)"
+        [attr.height]="Math.abs(data.y(point.y1) - data.y(point.y))"
         [attr.fill]="series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : point.iconId ? 'url(#pattern'+point.iconId+')' : point.color ?? series.color"
         [attr.fill-opacity]="series.style?.fillOpacity"
         width="100%">
