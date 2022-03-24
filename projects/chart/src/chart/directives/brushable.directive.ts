@@ -35,10 +35,15 @@ export class BrushableDirective implements OnInit, AfterViewInit {
       this.brushService.clearPreviousSelection();
     }
 
-    this.brushService.applyBrush(
-      this.element,
-      this.config,
-      this.brushScale
-    );
+    if(this.config.brush.enable) {
+
+      this.brushService.applyBrush(
+        this.element,
+        this.config,
+        this.brushScale
+      );
+    }
+
+
   }
 }

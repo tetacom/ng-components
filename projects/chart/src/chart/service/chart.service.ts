@@ -201,6 +201,12 @@ export class ChartService {
       config.tooltip
     );
 
+    config.zoom = Object.assign(
+      {},
+      defaultChartConfig().zoom,
+      config.zoom
+    );
+
     config.zoom.syncChannel = config.zoom?.syncChannel ?? id;
 
     return config;
