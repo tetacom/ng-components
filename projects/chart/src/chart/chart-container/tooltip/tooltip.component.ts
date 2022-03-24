@@ -13,7 +13,7 @@ import {IDisplayTooltip} from '../../model/i-display-tooltip';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {IChartConfig} from '../../model/i-chart-config';
 import {Series} from '../../model/series';
-
+import * as d3 from 'd3';
 @Component({
   selector: 'teta-tooltip',
   templateUrl: './tooltip.component.html',
@@ -69,15 +69,17 @@ export class TooltipComponent implements OnInit {
 
     const defaultFormatter = (tooltips: IDisplayTooltip[]): SafeHtml => {
       let html = '';
-
+      const format = d3.timeFormat('%d.%m.%Y');
       tooltips.forEach((_) => {
         const indicatorStyle = `display:block; width: 10px; height: 2px; background-color: ${_?.series?.color}`;
 
         html += `<div class="display-flex align-center"><span class="margin-right-1" style="${indicatorStyle}"></span>
           <span class="font-title-3">${_.series.name}
-          <span class="font-body-3">x: ${_.point.x?.toFixed(
-          2
-        )} y: ${_.point.y?.toFixed(2)}</span></span></div>`;
+            <span class="font-body-3">
+              x: ${(_.point.x as any) instanceof Date ? format(_.point.x as any) :  _.point.x?.toFixed(2)}
+              y: ${(_.point.y as any) instanceof Date ? format(_.point.y as any) :  _.point.y?.toFixed(2)}
+            </span>
+          </span></div>`;
       });
 
       return transformHtml(html);

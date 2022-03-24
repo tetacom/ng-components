@@ -75,8 +75,8 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   private _alive = true;
 
   constructor(public chartService: ChartService,
-              private _zoomService: ZoomService,
-              private _scaleService: ScaleService) {
+              public zoomService: ZoomService,
+              public scaleService: ScaleService) {
     this.svcConfig = this.chartService.config;
     this.hasSeriesData = this.svcConfig.pipe(
       map(
@@ -92,7 +92,7 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
     this.chartService.pointerMove
       .pipe(
         takeWhile(() => this._alive),
-        withLatestFrom(this._scaleService.xScaleMap, this._scaleService.yScaleMap, this.chartService.config)
+        withLatestFrom(this.scaleService.xScaleMap, this.scaleService.yScaleMap, this.chartService.config)
       )
       .subscribe((data: [PointerEvent, Map<number, any>, Map<number, any>, IChartConfig]) => {
         const [event, x, y, config] = data;
@@ -189,7 +189,7 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this._alive = false;
-    this._zoomService.broadcastSubscription?.forEach((sub) => {
+    this.zoomService.broadcastSubscription?.forEach((sub) => {
       sub.unsubscribe();
     });
   }
