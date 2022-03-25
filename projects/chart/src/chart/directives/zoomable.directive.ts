@@ -257,10 +257,9 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             type = 'zoom';
 
             wheeling = setTimeout(() => {
-              type = 'end';
-              emit(type, event);
+              emit('end', event);
               type = 'start';
-            }, 100);
+            }, 50);
           });
         });
 
@@ -372,6 +371,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       transform = transform.translate(0, -this.brushScale(s[0]));
     }
 
-    this._element.transition().duration(150).call(this.zoom.transform, transform, null, {});
+    this._element.call(this.zoom.transform, transform, null, {});
   }
 }
