@@ -7,29 +7,29 @@ import {
   NgZone,
   OnDestroy,
 } from '@angular/core';
-import { ZoomService } from '../service/zoom.service';
-import { IChartConfig } from '../model/i-chart-config';
-import { Axis } from '../core/axis/axis';
+import {ZoomService} from '../service/zoom.service';
+import {IChartConfig} from '../model/i-chart-config';
+import {Axis} from '../core/axis/axis';
 import * as d3 from 'd3';
-import { D3ZoomEvent, ZoomBehavior, zoomIdentity } from 'd3';
-import { ZoomType } from '../model/enum/zoom-type';
-import { AxisOrientation } from '../model/enum/axis-orientation';
+import {D3ZoomEvent, ZoomBehavior, zoomIdentity} from 'd3';
+import {ZoomType} from '../model/enum/zoom-type';
+import {AxisOrientation} from '../model/enum/axis-orientation';
 import {
   BrushMessage,
   IBroadcastMessage,
   ZoomMessage,
 } from '../model/i-broadcast-message';
-import { BrushType } from '../model/enum/brush-type';
-import { BroadcastService } from '../service/broadcast.service';
-import { debounceTime, tap, throttle, throttleTime } from 'rxjs/operators';
+import {BrushType} from '../model/enum/brush-type';
+import {BroadcastService} from '../service/broadcast.service';
+import {debounceTime, tap, throttle, throttleTime} from 'rxjs/operators';
 import {
   animationFrameScheduler,
   combineLatest,
   filter,
   takeWhile,
 } from 'rxjs';
-import { ChartService } from '../service/chart.service';
-import { ZoomBehaviorType } from '../model/enum/zoom-behavior-type';
+import {ChartService} from '../service/chart.service';
+import {ZoomBehaviorType} from '../model/enum/zoom-behavior-type';
 
 @Directive({
   selector: '[tetaZoomable]',
@@ -57,7 +57,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     private broadcastService: BroadcastService,
     private chartService: ChartService,
     private zone: NgZone
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     if (this.axis?.options?.zoom || this.config?.zoom?.enable) {
@@ -137,14 +138,14 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     if (enable) {
       const maxZoom = this.config.zoom?.max
         ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) /
-          this.config.zoom?.max
+        this.config.zoom?.max
         : this.config.zoom?.limitZoomByData
-        ? 1
-        : 0;
+          ? 1
+          : 0;
 
       const minZoom = this.config.zoom?.min
         ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) /
-          this.config.zoom?.min
+        this.config.zoom?.min
         : Infinity;
 
       this.zoom.scaleExtent([maxZoom, minZoom]);
@@ -156,11 +157,11 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         let type: 'start' | 'zoom' | 'end' = 'start';
         let wheeling;
 
+
         this.zoom
           .filter(
-            (event) =>
-              (event.ctrlKey && event.type === 'wheel') ||
-              Boolean(window.TouchEvent)
+            (event) => (event.ctrlKey && event.type === 'wheel') ||
+              Boolean(window.TouchEvent && event.type !== 'wheel')
           )
           .wheelDelta((event) => {
             const delta =
@@ -177,8 +178,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             type === 'end'
               ? 0
               : this.config.zoom?.type === ZoomType.y
-              ? event.deltaY
-              : event.deltaX;
+                ? event.deltaY
+                : event.deltaX;
 
           if (this.config.zoom?.type === ZoomType.y) {
             transform = transform.translate(
