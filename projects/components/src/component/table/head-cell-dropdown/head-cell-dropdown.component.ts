@@ -3,22 +3,22 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  HostBinding,
+  HostBinding, HostListener,
   Input,
   OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
-import { TableService } from '../service/table.service';
-import { TableColumn } from '../contract/table-column';
-import { FilterState } from '../../filter/contarct/filter-state';
-import { StateUtil } from '../util/state-util';
-import { ITreeData } from '../../../common/contract/i-tree-data';
-import { IDictionary } from '../../../common/contract/i-dictionary';
-import { IIdName } from '../../../common/contract/i-id-name';
-import { Observable } from 'rxjs';
-import { map, takeWhile } from 'rxjs/operators';
-import { ArrayUtil } from '../../../common/util/array-util';
+import {TableService} from '../service/table.service';
+import {TableColumn} from '../contract/table-column';
+import {FilterState} from '../../filter/contarct/filter-state';
+import {StateUtil} from '../util/state-util';
+import {ITreeData} from '../../../common/contract/i-tree-data';
+import {IDictionary} from '../../../common/contract/i-dictionary';
+import {IIdName} from '../../../common/contract/i-id-name';
+import {Observable} from 'rxjs';
+import {map, takeWhile} from 'rxjs/operators';
+import {ArrayUtil} from '../../../common/util/array-util';
 import {SortParam} from '../../filter/contarct/sort-param';
 
 @Component({
@@ -43,6 +43,10 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
 
   dict: Observable<IDictionary<IIdName<any>[]>>;
   hiddenColumns: string[];
+
+  @HostListener('keydown.enter') enter() {
+    this.applyFilter();
+  }
 
   get sortParam(): SortParam {
     return StateUtil.getSortState(this.state, this.column);
@@ -158,7 +162,8 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
 
   compareItems = (item: TableColumn) => item.name;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngOnDestroy(): void {
     this._alive = false;
