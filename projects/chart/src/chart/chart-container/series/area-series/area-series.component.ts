@@ -14,6 +14,7 @@ import {FillDirection, FillType} from '../../../model/enum/fill-type';
 import {LinearSeriesBase} from '../linear-series-base';
 import {combineLatest, map, Observable} from 'rxjs';
 import * as d3 from 'd3';
+import {ClipPointsDirection} from "../../../model/enum/clip-points-direction";
 
 @Component({
   selector: 'svg:svg[teta-area-series]',
@@ -52,8 +53,7 @@ export class AreaSeriesComponent<T extends BasePoint>
           data: [Map<number, any>, Map<number, any>]
         ) => {
           const [x, y] = data;
-          this.x = x.get(this.series.xAxisIndex);
-          this.y = y.get(this.series.yAxisIndex);
+
           this.x = x.get(this.series.xAxisIndex);
           this.y = y.get(this.series.yAxisIndex);
 
@@ -76,7 +76,31 @@ export class AreaSeriesComponent<T extends BasePoint>
             .y((_) =>
               this.y(_.y)
             );
-          return area(this.series.data);
+
+
+          const filter = this.defaultClipPointsMapping.get(this.series.clipPointsDirection);
+          let filteredData = this.series.data;
+
+          if(this.series.clipPointsDirection === ClipPointsDirection.x) {
+            let [min, max] = this.x.domain();
+
+            min = min instanceof Date ? min.getTime() : min;
+            max = max instanceof Date ? max.getTime() : max;
+
+            filteredData = filteredData?.filter(filter(min, max));
+          }
+
+
+          if(this.series.clipPointsDirection === ClipPointsDirection.y) {
+            let [min, max] = this.y.domain();
+
+            min = min instanceof Date ? min.getTime() : min;
+            max = max instanceof Date ? max.getTime() : max;
+
+            filteredData = filteredData?.filter(filter(min, max));
+          }
+
+          return area(filteredData);
         }
       )
     );

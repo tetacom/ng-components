@@ -3,7 +3,8 @@ import {SeriesType} from './enum/series-type';
 import {SeriesBaseComponent} from '../base/series-base.component';
 import {SvgAttributes} from './svg-attributes';
 import {FillDirection, FillType} from './enum/fill-type';
-import * as d3 from "d3";
+
+import {ClipPointsDirection} from "./enum/clip-points-direction";
 
 export interface Series<T extends BasePoint> {
   id?: number | string;
@@ -20,4 +21,5 @@ export interface Series<T extends BasePoint> {
   fillDirection?: FillDirection;
   showInLegend?: boolean;
   style?: SvgAttributes;
+  clipPointsDirection?: ClipPointsDirection
 }

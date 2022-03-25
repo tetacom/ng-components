@@ -8,6 +8,7 @@ import {ZoomService} from '../../service/zoom.service';
 import * as d3 from 'd3';
 import {DragPointType} from '../../model/enum/drag-point-type';
 import {TooltipTracking} from '../../model/enum/tooltip-tracking';
+import {ClipPointsDirection} from "../../model/enum/clip-points-direction";
 
 @Component({
   template: '',
@@ -15,6 +16,9 @@ import {TooltipTracking} from '../../model/enum/tooltip-tracking';
 export class LinearSeriesBase<T extends BasePoint>
   extends SeriesBaseComponent<T>
   implements OnInit, AfterViewInit, OnDestroy {
+
+  public defaultClipPointsMapping: Map<ClipPointsDirection, (min: number, max: number) => (point: BasePoint, idx: number, arr: Array<BasePoint>) => {}> = new Map()
+
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
   display: Observable<number>;
   path: Observable<string>;
@@ -34,6 +38,38 @@ export class LinearSeriesBase<T extends BasePoint>
   }
 
   override ngOnInit(): void {
+
+
+    const filterX = (min: number, max: number) => (
+      point: BasePoint,
+      idx: number,
+      arr: Array<BasePoint>
+    ) =>
+      (point.x <= max ||
+        point.x1 <= max ||
+        (arr[idx - 1] && arr[idx - 1].x <= max) ||
+        (arr[idx - 1] && arr[idx - 1].x1 <= max)) &&
+      (point.x >= min ||
+        point.x1 >= min ||
+        (arr[idx + 1] && arr[idx + 1].x >= min) ||
+        (arr[idx + 1] && arr[idx + 1].x1 >= min))
+
+    const filterY = (min: number, max: number) => (
+      point: BasePoint,
+      idx: number,
+      arr: Array<BasePoint>
+    ) => (point.y <= max ||
+        point.y1 <= max ||
+        (arr[idx - 1] && arr[idx - 1].y <= max) ||
+        (arr[idx - 1] && arr[idx - 1].y1 <= max)) &&
+      (point.y >= min ||
+        point.y1 >= min ||
+        (arr[idx + 1] && arr[idx + 1].y >= min) ||
+        (arr[idx + 1] && arr[idx + 1].y1 >= min));
+
+    this.defaultClipPointsMapping.set(ClipPointsDirection.x, filterX);
+    this.defaultClipPointsMapping.set(ClipPointsDirection.y, filterY);
+
     this.transform = this.svc.pointerMove.pipe(
       withLatestFrom(this.scaleService.xScaleMap, this.scaleService.yScaleMap),
       map((data: [PointerEvent, Map<number, any>, Map<number, any>]) => {
@@ -53,6 +89,8 @@ export class LinearSeriesBase<T extends BasePoint>
         this.x = x.get(this.series.xAxisIndex);
         this.y = y.get(this.series.yAxisIndex);
 
+        const filter = this.defaultClipPointsMapping.get(this.series.clipPointsDirection);
+
         const line = d3
           .line<BasePoint>()
           .defined(
@@ -66,7 +104,29 @@ export class LinearSeriesBase<T extends BasePoint>
           )
           .x((point) => this.x(point.x))
           .y((point) => this.y(point.y));
-        return line(this.series.data);
+
+        let filteredData = this.series.data;
+
+        if(this.series.clipPointsDirection === ClipPointsDirection.x) {
+          let [min, max] = this.x.domain();
+
+          min = min instanceof Date ? min.getTime() : min;
+          max = max instanceof Date ? max.getTime() : max;
+
+          filteredData = filteredData?.filter(filter(min, max));
+        }
+
+
+        if(this.series.clipPointsDirection === ClipPointsDirection.y) {
+          let [min, max] = this.y.domain();
+
+          min = min instanceof Date ? min.getTime() : min;
+          max = max instanceof Date ? max.getTime() : max;
+
+          filteredData = filteredData?.filter(filter(min, max));
+        }
+
+        return line(filteredData);
       })
     );
   }

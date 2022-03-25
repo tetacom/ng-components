@@ -49,7 +49,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
   private currentTransform = zoomIdentity;
   private currentSelection;
-  private wheelIdle = true;
 
   constructor(
     private elementRef: ElementRef,
@@ -93,7 +92,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         });
       }
 
-      this.zoomService.setZoom({
+      this.zoomService.fireZoom({
         event,
         target: this.zoomAxis,
       });
@@ -112,6 +111,11 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     }
 
     this._element = d3.select(this.elementRef.nativeElement);
+
+    if (!this.axis) {
+      this.zoomService.setElement(this._element);
+    }
+
     this.zoom = d3.zoom().extent([
       [0, 0],
       [this.size.width, this.size.height],
@@ -135,6 +139,10 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
     this.zoomAxis = this.axis ?? commonZoomAxis;
 
+    if (!this.axis) {
+      this.zoomService.setAxis(commonZoomAxis);
+    }
+
     if (enable) {
       const maxZoom = this.config.zoom?.max
         ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) /
@@ -150,8 +158,10 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
       this.zoom.scaleExtent([maxZoom, minZoom]);
 
-      this.zoom.on('start zoom end', this.zoomed);
+      this.zoom.on('zoom end', this.zoomed);
       this._element.call(this.zoom).on('dblclick.zoom', null);
+
+      this.zoomService.setZoomBehavior(this.zoom);
 
       if (this.config?.zoom?.zoomBehavior === ZoomBehaviorType.wheel) {
         let type: 'start' | 'zoom' | 'end' = 'start';
@@ -160,8 +170,10 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
         this.zoom
           .filter(
-            (event) => (event.ctrlKey && event.type === 'wheel') ||
-              Boolean(window.TouchEvent && event.type !== 'wheel')
+            (event) => {
+              return (event.ctrlKey && event.type === 'wheel') ||
+                Boolean(window.TouchEvent && event.type !== 'wheel')
+            }
           )
           .wheelDelta((event) => {
             const delta =
@@ -213,7 +225,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             chartId: this.config.id,
           });
 
-          this.zoomService.setZoom({
+          this.zoomService.fireZoom({
             event: {
               sourceEvent: event,
               transform,
@@ -231,6 +243,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           });
         };
 
+
         this._element.on('wheel', (event: WheelEvent) => {
           event.preventDefault();
 
@@ -243,16 +256,15 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             emit(type, event);
             type = 'zoom';
 
-            this.wheelIdle = false;
-
             wheeling = setTimeout(() => {
               type = 'end';
               emit(type, event);
-              this.wheelIdle = true;
               type = 'start';
-            }, 150);
+            }, 100);
           });
         });
+
+
       }
     }
 
@@ -261,6 +273,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       .subscribeToZoom(this.config?.zoom.syncChannel)
       .pipe(
         takeWhile((_) => this.alive),
+
         filter(
           (m: IBroadcastMessage<ZoomMessage>) =>
             m.message.event.sourceEvent instanceof MouseEvent ||
@@ -276,12 +289,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         }),
         tap((m: IBroadcastMessage<ZoomMessage>) => {
           if (this.config.id !== m.message.chartId) {
-            this.wheelIdle = false;
-
-            if (m.message.event.type === 'end') {
-              this.wheelIdle = true;
-            }
-
             this._element.call(
               this.zoom.transform,
               m.message.event.transform,
@@ -324,10 +331,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           tap((data: [IBroadcastMessage<BrushMessage>, DOMRect]) => {
             const [m] = data;
 
-            if (!this.wheelIdle) {
-              return;
-            }
-
             const currentTransform = d3.zoomTransform(this._element.node());
 
             if (
@@ -369,6 +372,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       transform = transform.translate(0, -this.brushScale(s[0]));
     }
 
-    this._element.call(this.zoom.transform, transform, null, {});
+    this._element.transition().duration(150).call(this.zoom.transform, transform, null, {});
   }
 }

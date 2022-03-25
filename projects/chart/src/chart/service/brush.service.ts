@@ -149,9 +149,6 @@ export class BrushService {
             }
 
             this.selection = brushDomain;
-
-
-
           }
 
 
