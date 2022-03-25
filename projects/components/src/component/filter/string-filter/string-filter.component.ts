@@ -7,12 +7,12 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { StringFilter } from '../contarct/string-filter';
-import { FilterState } from '../contarct/filter-state';
-import { FilterBase } from '../base/filter-base';
-import { FilterComponentBase } from '../base/filter-component-base';
-import { FilterItem } from '../contarct/filter-item';
-import { IIdName } from '../../../common/contract/i-id-name';
+import {StringFilter} from '../contarct/string-filter';
+import {FilterState} from '../contarct/filter-state';
+import {FilterBase} from '../base/filter-base';
+import {FilterComponentBase} from '../base/filter-component-base';
+import {FilterItem} from '../contarct/filter-item';
+import {IIdName} from '../../../common/contract/i-id-name';
 
 @Component({
   selector: 'teta-string-filter',
@@ -22,8 +22,7 @@ import { IIdName } from '../../../common/contract/i-id-name';
 })
 export class StringFilterComponent
   extends FilterComponentBase
-  implements OnInit
-{
+  implements OnInit {
   @Input() column: FilterItem;
   @Input() filterOptions: IIdName<any>[] = [];
   @Output() filterChanged: EventEmitter<FilterBase> =
@@ -47,7 +46,8 @@ export class StringFilterComponent
     super();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   setFilter() {
     this.filterChanged.emit(this.filter);

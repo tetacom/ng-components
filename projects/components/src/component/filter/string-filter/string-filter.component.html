@@ -1,6 +1,6 @@
 <div class="padding-3">
   <teta-input [label]="'Поиск'">
-    <input type="text" class="input" [(ngModel)]="filter.value" (blur)="setFilter()" />
+    <input type="text" class="input" [(ngModel)]="filter.value" (blur)="setFilter()" (keydown.enter)="setFilter()" />
   </teta-input>
 </div>
 

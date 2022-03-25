@@ -4,7 +4,8 @@
       <teta-icon [name]="'filter'"></teta-icon>
     </ng-template>
     <ng-template tetaTabContent>
-      <teta-filter-host [column]="column" [state]="state"
+      <teta-filter-host [column]="column"
+                        [state]="state"
                         *ngIf="dict | async as d"
                         [filterOptions]="d[column.name]"></teta-filter-host>
       <teta-toolbar class="justify-content-between">

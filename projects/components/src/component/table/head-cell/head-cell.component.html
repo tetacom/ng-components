@@ -7,6 +7,7 @@
                [name]="icon"></teta-icon>
     <teta-head-cell-host [column]="column"></teta-head-cell-host>
     <teta-dropdown *ngIf="showHeadCellMenu"
+                   [autoCloseIgnore]="['enter']"
                    [verticalAlign]="verticalAlign.bottom"
                    [appendToBody]="true"
                    [(open)]="dropDownOpen"

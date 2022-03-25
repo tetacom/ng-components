@@ -29,7 +29,7 @@
 </svg:text>
 
 <svg:line class="display-grabber"
-          *ngIf="plotBand.showGrabbers"
+          *ngIf="plotBand.showGrabbers && plotBand.resizable"
           [attr.stroke]="plotBand.style?.grabbers?.stroke || 'red'"
           [attr.stroke-width]="plotBand.style?.grabbers?.strokeWidth || 4"
           [attr.stroke-dasharray]="plotBand.style?.grabbers?.strokeDasharray"
@@ -41,7 +41,7 @@
 </svg:line>
 
 <svg:line class="display-grabber"
-          *ngIf="plotBand.showGrabbers"
+          *ngIf="plotBand.showGrabbers && plotBand.resizable"
           [attr.stroke]="plotBand.style?.grabbers?.stroke || 'red'"
           [attr.stroke-width]="plotBand.style?.grabbers?.strokeWidth || 4"
           [attr.stroke-dasharray]="plotBand.style?.grabbers?.strokeDasharray"
@@ -53,6 +53,7 @@
 </svg:line>
 
 <svg:line class="grabber"
+          *ngIf="plotBand.resizable"
           [class.x-grabber]="axis.orientation === orientation.x"
           [class.y-grabber]="axis.orientation === orientation.y"
           [class.resizeable]="plotBand?.resizable"
@@ -67,6 +68,7 @@
 </svg:line>
 
 <svg:line class="grabber"
+          *ngIf="plotBand.resizable"
           [class.x-grabber]="axis.orientation === orientation.x"
           [class.y-grabber]="axis.orientation === orientation.y"
           [class.resizeable]="plotBand?.resizable"
