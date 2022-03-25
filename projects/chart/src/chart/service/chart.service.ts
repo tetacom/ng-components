@@ -169,6 +169,7 @@ export class ChartService {
     config.series = config.series.map((_, index) => {
       return {
         ..._,
+        data: _.data ?? [],
         id: _.id ?? index,
       };
     });
@@ -208,7 +209,7 @@ export class ChartService {
     );
 
     config.zoom.syncChannel = config.zoom?.syncChannel ?? id;
-
+    
     return config;
   }
 
