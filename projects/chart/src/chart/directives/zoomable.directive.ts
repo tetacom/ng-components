@@ -258,6 +258,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
             wheeling = setTimeout(() => {
               emit('end', event);
+              
               type = 'start';
             }, 50);
           });
