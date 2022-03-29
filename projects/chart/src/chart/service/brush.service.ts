@@ -196,13 +196,7 @@ export class BrushService {
 
               if (m.message.event.type === 'end') {
                 const brushMessage = new BrushMessage({
-                  event: {
-                    type: 'end',
-                    selection: brushDomain as [number, number],
-                    sourceEvent: {},
-                    mode: undefined,
-                    target: undefined,
-                  },
+                  event: null,
                   selection: brushDomain,
                   brushType: config?.brush?.type ?? BrushType.x,
                   brushScale,
