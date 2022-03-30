@@ -139,13 +139,15 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         takeWhile((_) => this.alive),
         tap((m: IBroadcastMessage<ZoomMessage>) => {
 
+
           // Sync fake axis and index axis 0
           if (
             this.zoomAxis.index === m.message?.axis?.index &&
             this.zoomAxis.orientation === m.message?.axis?.orientation &&
-            (m.message?.axis.isFake && !this.zoomAxis.isFake) ||
-            (!m.message?.axis.isFake && this.zoomAxis.isFake)
+            ((m.message?.axis.isFake && !this.zoomAxis.isFake) ||
+            (!m.message?.axis.isFake && this.zoomAxis.isFake))
           ) {
+            
             this._element.call(
               this.zoom.transform,
               m.message.event.transform
