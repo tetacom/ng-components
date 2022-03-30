@@ -15,7 +15,6 @@ import {GroupRowComponentBase} from '../base/group-row-component-base';
 import {TableService} from '../service/table.service';
 import {DetailComponentBase} from '../base/detail-component-base';
 import {takeWhile} from 'rxjs/operators';
-import {TableUtil} from '../util/table-util';
 import {SelectType} from '../enum/select-type.enum';
 import {combineLatest} from 'rxjs';
 import {ArrayUtil} from '../../../common/util/array-util';
@@ -57,23 +56,26 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
 
   dict: IDictionary<IIdName<any>[]>;
 
-  gridTemplateColumns: string;
   selectedRows: TableRow<T>[] = [];
   locked: TableColumn[] = [];
   unlocked: TableColumn[] = [];
 
   selectTypeEnum = SelectType;
+  lockedFlex: number;
+  lockedWidth: number;
 
   private _columns: TableColumn[] = [];
   private _alive = true;
   private _data: TableRow<T>[];
   private _hiddenColumns: string[] = [];
-  private _index: number;
 
   set columns(columns: TableColumn[]) {
     this._columns = columns;
     this.locked = this._columns?.filter((_) => _.locked === true);
     this.unlocked = this._columns?.filter((_) => _.locked === false);
+    const startWidth = this.selectType !== SelectType.none ? 28 : 0;
+    this.lockedFlex = this.locked.reduce((prev: number, curr: TableColumn) => prev + curr.flex, 0);
+    this.lockedWidth = this.locked.reduce((prev: number, curr: TableColumn) => prev + curr.width, startWidth);
   }
 
   get columns(): TableColumn[] {
@@ -88,9 +90,6 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
         this._hiddenColumns = hiddenColumns;
         this.columns = ArrayUtil.flatten(columns, 'columns', true).filter(
           (_) => this._hiddenColumns.indexOf(_.name) < 0
-        );
-        this.gridTemplateColumns = TableUtil.getGridTemplateColumns(
-          this.columns.sort((a, b) => Number(b.locked) - Number(a.locked))
         );
         this._cdr.markForCheck();
       });
@@ -180,33 +179,6 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
       return 'Макс=';
     }
     return '';
-  }
-
-  getSpan(): string {
-    if (this.locked?.length > 0) {
-      let span = this.locked.length;
-      if (this.selectType !== SelectType.none) {
-        span += 1;
-      }
-      return `span ${span}`;
-    }
-    return null;
-  }
-
-  getTemplateColumns() {
-    let template = this.gridTemplateColumns;
-    if (this.selectType !== SelectType.none) {
-      template = `48px ${template}`;
-    }
-    return template;
-  }
-
-  getLockedGridTemplateColumns(columns: TableColumn[]) {
-    let template = TableUtil.getGridTemplateColumns(columns);
-    if (this.selectType !== SelectType.none) {
-      template = `48px ${template}`;
-    }
-    return template;
   }
 
   trackRow(index: number, row: TableRow<T>): any {

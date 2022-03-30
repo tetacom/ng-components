@@ -55,6 +55,7 @@ export class DropdownBase {
   @Input() autoClose = true;
   @Input() autoCloseIgnore: Array<AutoCloseIgnoreCase> = ['inside'];
 
+
   @ContentChild(DropdownHeadDirective, {
     static: false,
     read: ElementRef,

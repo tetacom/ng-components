@@ -16,8 +16,7 @@ import { takeWhile } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectionHeadCellComponent<T> implements OnInit, OnDestroy {
-  @HostBinding('class.table-head__group') private readonly tableCellClass =
-    true;
+  @HostBinding('class.table-head__group') private readonly tableCellClass = true;
 
   private _alive = true;
 

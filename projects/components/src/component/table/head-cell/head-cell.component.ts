@@ -137,10 +137,12 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
 
   resizeProcess(event: MouseEvent): void {
     if (this._startPosition && event.pageX > 0) {
-      this._svc.resizeColumn(
-        new ColumnResizeEvent(this.column, event.pageX - this._startPosition)
-      );
-      this._app.tick();
+      requestAnimationFrame(() =>{
+        this._svc.resizeColumn(
+          new ColumnResizeEvent(this.column, event.pageX - this._startPosition)
+        );
+        this._app.tick();
+      })
     }
   }
 

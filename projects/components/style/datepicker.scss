@@ -14,13 +14,13 @@
     display: inline-flex;
     flex-grow: 1;
     align-items: center;
-    height: 24px;
+    height: 28px;
     border: solid 1px getColorVar('text', '20');
     background: getColorVar('background', '50');
     color: getColorVar('text', '90');
     fill: getColorVar('text', '90');
-    border-radius: 2px;
-    padding: 0 4px;
+    border-radius: 4px;
+    padding: 0 8px;
     transition: border-color 0.4s;
 
     &_disabled {

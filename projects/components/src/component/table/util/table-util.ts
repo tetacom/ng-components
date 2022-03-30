@@ -17,11 +17,11 @@ export class TableUtil {
     return null;
   }
 
-  public static getGridTemplateColumns(columns: TableColumn[]): string {
-    const res = columns?.map((column: TableColumn) =>
-      column.flex > 0 ? `minmax(${column.width}px, ${column.flex}fr)` : `${column.width}px`).join(' ');
-    return res;
-  }
+  // public static getGridTemplateColumns(columns: TableColumn[]): string {
+  //   const res = columns?.map((column: TableColumn) =>
+  //     column.flex > 0 ? `minmax(${column.width}px, ${column.flex}fr)` : `${column.width}px`).join(' ');
+  //   return res;
+  // }
 
   static getData<T>(data: T[], state: FilterState): T[] {
     let result: T[] = data;

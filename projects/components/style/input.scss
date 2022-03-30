@@ -29,9 +29,9 @@
 }
 
 .text-field, .input, .textarea {
-  padding: 4px;
+  padding: 6px 8px;
   border: solid 1px getColorVar('text', '20');
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: getColorVar('background', '50');
   color: getColorVar('text', 90);
   @include getFont($fonts, 'body-3');
@@ -95,7 +95,7 @@
 }
 
 .text-field, .input {
-  height: 24px;
+  height: 28px;
 }
 
 .text-field {

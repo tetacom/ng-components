@@ -3,7 +3,7 @@
     <div class="table-head__group__caption">
       {{column.caption}}
     </div>
-    <div class="table-head__group__children" [style.grid-template-columns]="gridTemplateColumns">
+    <div class="table-head__group__children">
       <ng-container *ngFor="let col of column.columns">
         <teta-table-head-group
           class="table-head__group"

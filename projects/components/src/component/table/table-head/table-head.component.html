@@ -1,21 +1,24 @@
 <div class="table-head_locked"
      *ngIf="locked?.length"
-     [style.grid-template-columns]="getLockedGridTemplateColumns(locked)"
-     [style.grid-column-end]="getSpan()">
-  <teta-selection-head-cell *ngIf="selectType !== selectTypeEnum.none"></teta-selection-head-cell>
-  <ng-container *ngFor="let column of locked; trackBy: track">
-    <teta-table-head-group
-      class="table-head__group"
-      [showHeadCellMenu]="showHeadCellMenu"
-      [column]="column"></teta-table-head-group>
-  </ng-container>
+     [style.flex-grow]="lockedFlex"
+     [style.flex-basis.px]="lockedWidth"
+     [style.min-width.px]="lockedWidth">
+  <teta-selection-head-cell
+    *ngIf="selectType !== selectTypeEnum.none"
+    style="width: 28px;"></teta-selection-head-cell>
+  <teta-table-head-group
+    *ngFor="let column of locked; trackBy: track"
+    class="table-head__group"
+    [showHeadCellMenu]="showHeadCellMenu"
+    [column]="column"></teta-table-head-group>
 </div>
 <ng-container *ngIf="unlocked?.length">
-  <teta-selection-head-cell *ngIf="selectType !== selectTypeEnum.none && locked?.length < 1"></teta-selection-head-cell>
-  <ng-container *ngFor="let column of unlocked; trackBy: track">
-    <teta-table-head-group
-      class="table-head__group"
-      [showHeadCellMenu]="showHeadCellMenu"
-      [column]="column"></teta-table-head-group>
-  </ng-container>
+  <teta-selection-head-cell
+    *ngIf="selectType !== selectTypeEnum.none && locked?.length < 1"
+    style="width: 28px;"></teta-selection-head-cell>
+  <teta-table-head-group
+    *ngFor="let column of unlocked; trackBy: track"
+    class="table-head__group"
+    [showHeadCellMenu]="showHeadCellMenu"
+    [column]="column"></teta-table-head-group>
 </ng-container>

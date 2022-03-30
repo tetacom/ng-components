@@ -9,32 +9,33 @@
   min-height: 0;
   min-width: 0;
   color: getColorVar('text', '90');
-  @include getFont($fonts, 'title-3');
+  background-color: getColorVar('background', '50');
+  @include getFont($fonts, 'body-3');
 
   &-head {
-    display: grid;
+    display: flex;
     overflow: hidden;
     flex-shrink: 0;
-    border-bottom: solid 1px getColorVar('text', '5');
+    background-color:  getColorVar('text', '5');
     @include getFont($fonts, 'table-header');
 
     &_locked {
-      display: grid;
+      box-sizing: content-box;
+      display: flex;
       position: sticky;
       left: 0;
-      background-color: getColorVar('background', '50');
       z-index: 1;
+      background-color: inherit;
       border-right: solid 1px getColorVar('text', '30');
     }
 
     &__group {
-      min-height: 24px;
+      min-height: 28px;
       flex-shrink: 0;
       display: flex;
       flex-direction: row;
       justify-content: center;
       text-overflow: ellipsis;
-      border-right: solid 1px getColorVar('text', '5');
 
       &:last-child {
         border-right: 0;
@@ -58,7 +59,7 @@
       }
 
       &__children {
-        display: grid;
+        display: flex;
         flex-direction: row;
         flex-grow: 1;
       }
@@ -66,7 +67,7 @@
 
     &__cell {
       position: relative;
-      min-height: 24px;
+      min-height: 28px;
       display: flex;
       flex-grow: 1;
       justify-content: center;
@@ -84,7 +85,9 @@
           cursor: pointer;
         }
       }
-
+      &:hover {
+        background: getColorVar('text', 10);
+      }
       &:hover &__menu, &__menu_open {
         display: flex;
       }
@@ -92,10 +95,10 @@
       &__wrapper {
         flex-grow: 1;
         display: flex;
-        padding: 0;
         min-width: 0;
         position: relative;
-        justify-content: center;
+        //justify-content: center;
+        padding: 6px 8px;
         align-items: center;
         grid-gap: 8px;
       }
@@ -123,7 +126,7 @@
         z-index: 10;
 
         &:hover {
-          background-color: getColorVar('text', '10');
+          background-color: getColorVar('text', '20');
         }
       }
     }
@@ -146,7 +149,8 @@
     @include getFont($fonts, 'body-3');
 
     &-container {
-      display: grid;
+      display: flex;
+      flex-direction: column;
       flex-grow: 1;
       @include scrollable();
 
@@ -159,30 +163,29 @@
   }
 
   &-row {
-    display: contents;
+    display: flex;
+    flex-shrink: 0;
     background-color: getColorVar('background', '50');
 
-    &:hover .cell {
-      background-color: getColorVar('text', '5');
+    &:hover {
+      background-color: getColorVar('primary', '5');
     }
 
     &_locked {
+      box-sizing: content-box;
+      display: flex;
       background-color: inherit;
-      display: grid;
       position: sticky;
       left: 0;
-
-      & .cell:last-child {
-        border-right: solid 1px getColorVar('text', '30');
-      }
+      border-right: solid 1px getColorVar('text', '30');
+      z-index: 1;
     }
 
-    &_virtual {
-      display: grid;
+    &_odd {
+      background-color: getColorVar('background', '0');
     }
-
-    &_active {
-      background-color: getColorVar('text', '10');
+    &_active, &_active:hover {
+      background-color: getColorVar('primary', '10');
     }
   }
 }
@@ -190,16 +193,11 @@
 .cell {
   display: flex;
   white-space: nowrap;
-  height: 24px;
-  border-bottom: solid 1px getColorVar('text', '5');
-  border-right: solid 1px getColorVar('text', '5');
+  height: 28px;
   padding: 0;
   background-color: inherit;
-
-  &:last-child {
-    border-right: 0;
-  }
-
+  flex-shrink: 0;
+  overflow: hidden;
 
   &:focus {
     box-shadow: inset 0 0 0 1px getColorVar('primary', '50');

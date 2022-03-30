@@ -52,6 +52,7 @@ export class TableDemoComponent implements OnInit {
         name: 'name',
         flex: 1,
         locked: true,
+        unit: 'v',
         filterType: FilterType.string,
         headDropdownTemplate: this.dropdownTpl
       }),
@@ -76,6 +77,7 @@ export class TableDemoComponent implements OnInit {
       }),
       new TableColumn({
         name: 'ram',
+        unit: 'Gb',
         caption: 'RAM',
         filterType: FilterType.list,
       }),

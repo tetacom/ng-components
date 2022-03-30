@@ -2,10 +2,10 @@
   <div class="table-head__cell__wrapper"
        [ngClass]="column.headCellClass"
        (click)="sortColumn(column, $event)">
+    <teta-head-cell-host [column]="column"></teta-head-cell-host>
     <teta-icon *ngIf="iconName | async as icon"
                [palette]="'text'"
                [name]="icon"></teta-icon>
-    <teta-head-cell-host [column]="column"></teta-head-cell-host>
     <teta-dropdown *ngIf="showHeadCellMenu"
                    [autoCloseIgnore]="['enter']"
                    [verticalAlign]="verticalAlign.bottom"
