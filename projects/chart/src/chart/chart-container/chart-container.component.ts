@@ -1,28 +1,14 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import { IChartConfig } from '../model/i-chart-config';
-import { ChartService } from '../service/chart.service';
-import {
-  animationFrameScheduler,
-  combineLatest,
-  map,
-  Observable,
-  shareReplay,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
-import { Axis } from '../core/axis/axis';
-import { AxisOrientation } from '../model/enum/axis-orientation';
-import { ScaleService } from '../service/scale.service';
-import { ZoomService } from '../service/zoom.service';
-import { BrushType } from '../model/enum/brush-type';
-import { throttleTime } from 'rxjs/operators';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit,} from '@angular/core';
+import {IChartConfig} from '../model/i-chart-config';
+import {ChartService} from '../service/chart.service';
+import {animationFrameScheduler, combineLatest, map, Observable, shareReplay, tap, withLatestFrom,} from 'rxjs';
+import {Axis} from '../core/axis/axis';
+import {AxisOrientation} from '../model/enum/axis-orientation';
+import {ScaleService} from '../service/scale.service';
+import {ZoomService} from '../service/zoom.service';
+import {BrushType} from '../model/enum/brush-type';
+import {throttleTime} from 'rxjs/operators';
+import {ZoomType} from "../model/enum/zoom-type";
 
 type Opposite = boolean;
 
@@ -101,7 +87,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       map((data: [[Map<number, any>, Map<number, any>], IChartConfig]) => {
         const [[x, y], config] = data;
 
-        return config.brush?.type === BrushType.x ? x.get(0) : y.get(0);
+        return config.brush?.type === BrushType.x || config?.zoom?.type === ZoomType.x ? x.get(0) : y.get(0);
       }),
 
       shareReplay({
