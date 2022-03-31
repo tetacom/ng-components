@@ -9,12 +9,12 @@
     display: flex;
     flex-grow: 0;
     flex-shrink: 0;
-    height: 40px;
+    height: 52px;
 
     &-item {
       display: flex;
       align-items: center;
-      padding: 0 12px;
+      padding: 0 20px;
       white-space: nowrap;
       @include getFont($fonts, 'body-3');
       color: getColorVar('text', '40');

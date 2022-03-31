@@ -51,7 +51,7 @@
       &__caption {
         display: flex;
         flex-grow: 1;
-        min-height: 24px;
+        min-height: 28px;
         justify-content: center;
         align-items: center;
         text-align: center;
@@ -76,7 +76,7 @@
 
       &__menu {
         position: absolute;
-        right: 0;
+        right: 8px;
         //top: 0;
         //bottom: 0;
         display: none;

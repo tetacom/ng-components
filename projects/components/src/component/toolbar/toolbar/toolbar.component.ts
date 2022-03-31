@@ -18,7 +18,7 @@ export class ToolbarComponent implements OnInit {
 
   @HostBinding('class')
   private get getClass() {
-    const result = [this.class, 'toolbar', 'toolbar_panel'];
+    const result = [this.class, 'toolbar'];
     if (this.palette) {
       result.push(`toolbar-${this.palette}`);
     }

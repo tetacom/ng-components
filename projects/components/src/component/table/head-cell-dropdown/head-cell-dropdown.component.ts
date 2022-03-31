@@ -38,9 +38,6 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
   @Output() autosize: EventEmitter<void> = new EventEmitter<void>();
   @Output() autosizeAll: EventEmitter<void> = new EventEmitter<void>();
 
-  @HostBinding('class.shadow-2') private readonly shadow = true;
-  @HostBinding('class.bg-background-50') private readonly bg = true;
-
   dict: Observable<IDictionary<IIdName<any>[]>>;
   hiddenColumns: string[];
 

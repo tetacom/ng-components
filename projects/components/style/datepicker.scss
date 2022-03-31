@@ -5,6 +5,7 @@
 .datepicker {
   display: inline-flex;
   width: 150px;
+  min-width: 0;
 
   &-wide {
     width: 170px;
@@ -22,6 +23,7 @@
     border-radius: 4px;
     padding: 0 8px;
     transition: border-color 0.4s;
+    min-width: 0;
 
     &_disabled {
       background-color: getColorVar('text', 5);
@@ -40,17 +42,17 @@
   }
 
   &-table &-head {
-    border-radius: 0;
+    //border-radius: 0;
   }
 
   &:focus &-head, &_open &-head {
     border-color: getColorVar('primary', '50');
   }
 
-  &-body {
-    @include shadow(2);
-    background-color: getColorVar('background', '50');
-  }
+  //&-body {
+  //  @include shadow(2);
+  //  background-color: getColorVar('background', '50');
+  //}
 
   &-content {
     width: 224px;

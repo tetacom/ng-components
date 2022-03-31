@@ -12,12 +12,12 @@
        [class.datepicker-head_disabled]="disabled"
        [class.datepicker-head_invalid]="invalid">
     <teta-icon [name]="'calendar'" class="margin-right-1"></teta-icon>
-    <div class="row_auto">
+    <div class="row_auto nowrap">
       {{currentValue !== null && currentValue !== undefined ? (currentValue | date : format) : ''}}
     </div>
     <teta-icon [name]="'closeBig'" (click)="clearPicker($event);" class="margin-left-1"></teta-icon>
   </div>
-  <div tetaDropdownContent class="datepicker-body scrollable" (click)="$event.preventDefault()">
+  <div tetaDropdownContent class="scrollable" (click)="$event.preventDefault()">
     <div class="padding-3">
       <div class="row align-center justify-content-between">
         <div>

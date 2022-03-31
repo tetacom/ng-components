@@ -51,7 +51,7 @@
   }
 
   &-table &-head {
-    border-radius: 0;
+    //border-radius: 0;
 
     &:hover {
       cursor: pointer;
@@ -88,8 +88,8 @@
     padding: 8px 0;
     display: inline-flex;
     flex-direction: column;
-    border-radius: 2px;
-    background-color: getColorVar('background', '50');
+    //border-radius: 2px;
+    //background-color: getColorVar('background', '50');
     @include getFont($fonts, 'body-3');
 
     &-item {

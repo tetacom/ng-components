@@ -9,11 +9,8 @@
   overflow: hidden;
   flex-shrink: 0;
   align-items: center;
+  padding: 0 12px;
   @include getFont($fonts, 'title-3');
-
-  &_panel {
-    padding: 0 8px;
-  }
 
   @each $paletteName in $palettes {
     &.toolbar-#{$paletteName} {
