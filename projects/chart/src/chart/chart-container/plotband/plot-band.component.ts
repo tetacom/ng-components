@@ -17,6 +17,7 @@ import {ZoomService} from '../../service/zoom.service';
 import {AxisOrientation} from '../../model/enum/axis-orientation';
 import {IChartEvent} from '../../model/i-chart-event';
 import {ChartService} from '../../service/chart.service';
+import {map, Observable} from "rxjs";
 
 @Component({
   selector: '[teta-plot-band]',
@@ -29,10 +30,10 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
   @Input() axis: Axis;
   @Input() scale: any;
   @Input() size: DOMRect;
+
   orientation = AxisOrientation;
   resizeElements: any;
   dragElements: any;
-  domain: number[];
 
   constructor(
     private scaleService: ScaleService,
@@ -41,6 +42,8 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private element: ElementRef
   ) {
+
+
   }
 
   @HostListener('click', ['$event']) click(event: MouseEvent) {
@@ -62,7 +65,6 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.domain = this.scale.domain();
 
     const plotbandElement = d3
       .select(this.element.nativeElement)
@@ -88,6 +90,7 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
       .on(
         'start drag end',
         (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
+
           let bandSize = parseFloat(
             plotbandElement.attr(
               this.axis.orientation === AxisOrientation.x ? 'width' : 'height'
@@ -114,18 +117,18 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
     let grabberKey;
     this.resizeElements = d3
       .drag();
+
     const resize = this.resizeElements
       .on(
         'start drag end',
         (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
-          requestAnimationFrame(() => {
             if (event?.type === 'start') {
               const {grabber} = event?.sourceEvent?.target?.dataset;
               grabberKey = grabber;
             }
 
-            const min = Math.min(...this.domain);
-            const max = Math.max(...this.domain);
+            const min = Math.min(...this.scale.domain());
+            const max = Math.max(...this.scale.domain());
 
             const minValue = d.min ?? min;
             const maxValue = d.max ?? max;
@@ -164,7 +167,6 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
             });
 
             this.cdr.detectChanges();
-          });
         }
       );
 
@@ -185,12 +187,6 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
     this.resizeElements.on('start drag end', null);
   }
 
-  get bandSize(): number {
-    return Math.abs(
-      this.scale(this.plotBand.to) - this.scale(this.plotBand.from)
-    );
-  }
-
   get height(): number {
     return this.size.height;
   }
@@ -205,6 +201,12 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
 
   get to(): number {
     return this.scale(this.plotBand.to);
+  }
+
+  get bandSize(): number {
+    return Math.abs(
+      this.scale(this.plotBand.to) - this.scale(this.plotBand.from)
+    );
   }
 
   getTextCenter = () => this.scale((this.plotBand.from + this.plotBand.to) / 2);

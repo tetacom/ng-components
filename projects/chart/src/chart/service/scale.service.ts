@@ -143,12 +143,15 @@ export class ScaleService {
             const event = zoom.event as D3ZoomEvent<any, any>;
 
             if (zoom.target?.orientation === AxisOrientation.x) {
-              const currentScale = map.get(zoom.target.index);
-              const rescaled = event.transform.rescaleX(currentScale);
-              map.set(zoom.target.index, rescaled);
 
-              const axis = xAxes.get(zoom.target.index);
-              this.transformCacheX.set(axis.index, event.transform);
+              if(map.has(zoom.target.index)) {
+                const currentScale = map.get(zoom.target.index);
+                const rescaled = event.transform.rescaleX(currentScale);
+                map.set(zoom.target.index, rescaled);
+
+                const axis = xAxes.get(zoom.target.index);
+                this.transformCacheX.set(axis.index, event.transform);
+              }
             }
           }
           return map;
@@ -235,12 +238,16 @@ export class ScaleService {
             const event = zoom.event as D3ZoomEvent<any, any>;
 
             if (zoom.target?.orientation === AxisOrientation.y) {
-              const currentScale = map.get(zoom.target.index);
-              const rescaled = event.transform.rescaleY(currentScale);
-              map.set(zoom.target.index, rescaled);
 
-              const axis = yAxes.get(zoom.target.index);
-              this.transformCacheY.set(axis.index, event.transform);
+              if(map.has(zoom.target.index)) {
+                const currentScale = map.get(zoom.target.index);
+
+                const rescaled = event.transform.rescaleY(currentScale);
+                map.set(zoom.target.index, rescaled);
+
+                const axis = yAxes.get(zoom.target.index);
+                this.transformCacheY.set(axis.index, event.transform);
+              }
             }
           }
 
