@@ -19,6 +19,7 @@ import { StateUtil } from '../util/state-util';
 import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
 import { Align } from '../../../common/enum/align.enum';
 import { combineLatest, Observable } from 'rxjs';
+import {TableRow} from '../contract/table-row';
 
 @Component({
   selector: 'teta-head-cell',
@@ -29,6 +30,8 @@ import { combineLatest, Observable } from 'rxjs';
 export class HeadCellComponent<T> implements OnInit, OnDestroy {
   @Input() column: TableColumn;
   @Input() showHeadCellMenu: boolean;
+  @Input() data: TableRow<T>[];
+
   verticalAlign = VerticalAlign;
   align = Align;
   state: Observable<FilterState>;

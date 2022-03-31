@@ -10,6 +10,8 @@ import {TableColumn} from '../contract/table-column';
 import {TableUtil} from '../util/table-util';
 import {TableService} from '../service/table.service';
 import {takeWhile} from 'rxjs/operators';
+import {TableRow} from '../contract/table-row';
+import {ArrayUtil} from '../../../common/util/array-util';
 
 @Component({
   selector: 'teta-table-head-group',
@@ -19,6 +21,7 @@ import {takeWhile} from 'rxjs/operators';
 })
 export class TableHeadGroupComponent<T> implements OnInit, OnDestroy {
   @Input() showHeadCellMenu: boolean;
+  @Input() data: TableRow<T>[];
 
   @Input()
   set column(column: TableColumn) {
@@ -30,8 +33,9 @@ export class TableHeadGroupComponent<T> implements OnInit, OnDestroy {
   }
 
   @HostBinding('style.flex-grow') get flexGrow() {
-    if(this.column?.columns?.length > 0) {
-
+    if (this.column?.columns?.length > 0) {
+      const flat = ArrayUtil.flatten(this.column?.columns, 'columns', true);
+      return flat?.reduce((prev, curr) => prev + curr.flex, 0);
     }
     return this.column.flex;
   }
@@ -39,17 +43,12 @@ export class TableHeadGroupComponent<T> implements OnInit, OnDestroy {
   @HostBinding('style.min-width.px')
   @HostBinding('style.flex-basis.px')
   get flexBasis() {
-    if(this.column?.columns?.length > 0) {
-
+    if (this.column?.columns?.length > 0) {
+      const flat = ArrayUtil.flatten(this.column?.columns, 'columns', true);
+      return flat?.reduce((prev, curr) => prev + curr.width, 0);
     }
     return this.column.width;
   }
-  //  get minWidth() {
-  //   if(this.column?.columns?.length > 0) {
-  //
-  //   }
-  //   return this.column.width;
-  // }
 
   private _alive = true;
   private _column: TableColumn;

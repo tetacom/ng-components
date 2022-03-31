@@ -14,6 +14,7 @@ import { FilterState } from '../contarct/filter-state';
 import { FilterItem } from '../contarct/filter-item';
 import { NumericFilterValue } from '../contarct/numeric-filter-value';
 import { IIdName } from '../../../common/contract/i-id-name';
+import {TableRow} from '../../table/contract/table-row';
 
 @Component({
   selector: 'teta-numeric-filter',
@@ -21,11 +22,12 @@ import { IIdName } from '../../../common/contract/i-id-name';
   styleUrls: ['./numeric-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NumericFilterComponent
-  extends FilterComponentBase
+export class NumericFilterComponent<T>
+  extends FilterComponentBase<T>
   implements OnInit
 {
   @Input() column: FilterItem;
+  @Input() data: TableRow<T>[];
   @Input() filterOptions: IIdName<any>[] = [];
   @Output() filterChanged: EventEmitter<FilterBase> =
     new EventEmitter<FilterBase>();

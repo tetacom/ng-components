@@ -14,6 +14,7 @@ import { FilterBase } from '../base/filter-base';
 import { FilterComponentBase } from '../base/filter-component-base';
 import { FilterItem } from '../contarct/filter-item';
 import { IIdName } from '../../../common/contract/i-id-name';
+import {TableRow} from '../../table/contract/table-row';
 
 @Component({
   selector: 'teta-date-filter',
@@ -21,8 +22,9 @@ import { IIdName } from '../../../common/contract/i-id-name';
   styleUrls: ['./date-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DateFilterComponent extends FilterComponentBase implements OnInit {
+export class DateFilterComponent<T> extends FilterComponentBase<T> implements OnInit {
   @Input() column: FilterItem;
+  @Input() data: TableRow<T>[];
   @Input() filterOptions: IIdName<any>[] = [];
   @Output() filterChanged: EventEmitter<FilterBase> =
     new EventEmitter<FilterBase>();

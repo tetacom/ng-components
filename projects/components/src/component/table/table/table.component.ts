@@ -55,8 +55,6 @@ export class TableComponent<T>
   set state(state: FilterState) {
     this._state = state;
   }
-
-  @Input() rowHeight = 24;
   @Input() cookieName: string;
   @Input() virtual: boolean;
   @Input() detailComponent: Type<DetailComponentBase<T>>;

@@ -3,7 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  HostBinding, HostListener,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -20,6 +20,7 @@ import {Observable} from 'rxjs';
 import {map, takeWhile} from 'rxjs/operators';
 import {ArrayUtil} from '../../../common/util/array-util';
 import {SortParam} from '../../filter/contarct/sort-param';
+import {TableRow} from '../contract/table-row';
 
 @Component({
   selector: 'teta-head-cell-dropdown',
@@ -31,6 +32,7 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
   @Input() columns: ITreeData[];
   @Input() column: TableColumn;
   @Input() state: FilterState;
+  @Input() data: TableRow<T>[];
   @Input() dropDownOpen: boolean;
   @Output() dropDownOpenChange: EventEmitter<boolean> =
     new EventEmitter<boolean>();

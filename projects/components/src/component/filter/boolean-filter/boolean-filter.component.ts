@@ -13,6 +13,7 @@ import { IIdName } from '../../../common/contract/i-id-name';
 import { FilterBase } from '../base/filter-base';
 import { FilterState } from '../contarct/filter-state';
 import { BooleanFilter } from '../contarct/boolean-filter';
+import {TableRow} from '../../table/contract/table-row';
 
 @Component({
   selector: 'teta-boolean-filter',
@@ -20,11 +21,12 @@ import { BooleanFilter } from '../contarct/boolean-filter';
   styleUrls: ['./boolean-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BooleanFilterComponent
-  extends FilterComponentBase
+export class BooleanFilterComponent<T>
+  extends FilterComponentBase<T>
   implements OnInit
 {
   @Input() column: FilterItem;
+  @Input() data: TableRow<T>[];
   @Input() filterOptions: IIdName<any>[] = [];
   @Output() filterChanged: EventEmitter<FilterBase> =
     new EventEmitter<FilterBase>();

@@ -9,6 +9,7 @@
   <teta-table-head-group
     *ngFor="let column of locked; trackBy: track"
     class="table-head__group"
+    [data]="data"
     [showHeadCellMenu]="showHeadCellMenu"
     [column]="column"></teta-table-head-group>
 </div>
@@ -19,6 +20,7 @@
   <teta-table-head-group
     *ngFor="let column of unlocked; trackBy: track"
     class="table-head__group"
+    [data]="data"
     [showHeadCellMenu]="showHeadCellMenu"
     [column]="column"></teta-table-head-group>
 </ng-container>

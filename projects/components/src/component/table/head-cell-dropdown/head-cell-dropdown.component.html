@@ -5,6 +5,7 @@
     </ng-template>
     <ng-template tetaTabContent>
       <teta-filter-host [column]="column"
+                        [data]="data"
                         [state]="state"
                         *ngIf="dict | async as d"
                         [filterOptions]="d[column.name]"></teta-filter-host>

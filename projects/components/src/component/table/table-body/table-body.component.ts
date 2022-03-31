@@ -32,7 +32,6 @@ import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 export class TableBodyComponent<T> implements OnInit, OnDestroy {
   @Input() virtual: boolean;
   @Input() activeRow: TableRow<T>;
-  @Input() rowHeight: number;
   @Input() additionalComponent: Type<DetailComponentBase<T>>;
   @Input() tree: boolean;
   @Input() aggregate: boolean;
@@ -63,6 +62,8 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   selectTypeEnum = SelectType;
   lockedFlex: number;
   lockedWidth: number;
+  totalFlex: number;
+  totalWidth: number;
 
   private _columns: TableColumn[] = [];
   private _alive = true;
@@ -76,6 +77,8 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     const startWidth = this.selectType !== SelectType.none ? 28 : 0;
     this.lockedFlex = this.locked.reduce((prev: number, curr: TableColumn) => prev + curr.flex, 0);
     this.lockedWidth = this.locked.reduce((prev: number, curr: TableColumn) => prev + curr.width, startWidth);
+    this.totalFlex = this._columns.reduce((prev: number, curr: TableColumn) => prev + curr.flex, 0);
+    this.totalWidth = this._columns.reduce((prev: number, curr: TableColumn) => prev + curr.width, startWidth);
   }
 
   get columns(): TableColumn[] {

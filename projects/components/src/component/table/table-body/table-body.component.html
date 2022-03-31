@@ -1,14 +1,12 @@
 <cdk-virtual-scroll-viewport *ngIf="virtual"
                              class="table-body-container"
-                             [itemSize]="24">
+                             [itemSize]="28">
   <ng-container *cdkVirtualFor="let row of data;templateCacheSize: 0; let rowIndex = index; trackBy: trackRow;">
     <ng-container *ngTemplateOutlet="bodyTemplate; context: {row: row, rowIndex: rowIndex}"></ng-container>
   </ng-container>
 </cdk-virtual-scroll-viewport>
 <div *ngIf="!virtual"
-     class="table-body-container"
-     [style.grid-template-rows]="rowHeight + 'px'"
-     [style.grid-auto-rows]="rowHeight + 'px'">
+     class="table-body-container">
   <ng-container *ngFor="let row of data; let rowIndex = index; trackBy: trackRow;">
     <ng-container *ngTemplateOutlet="bodyTemplate; context: {row: row, rowIndex: rowIndex}"></ng-container>
   </ng-container>
@@ -23,7 +21,10 @@
        [attr.data-row]="rowIndex"
        [class.table-row_odd]="rowIndex % 2 === 1"
        [ngClass]="rowClass ? rowClass(row, rowIndex) : ''"
-       [class.table-row_active]="row === activeRow || selectedRows.indexOf(row) >= 0">
+       [class.table-row_active]="row === activeRow || selectedRows.indexOf(row) >= 0"
+       [style.flex-grow]="virtual ? totalFlex : ''"
+       [style.flex-basis.px]="virtual ? totalWidth : ''"
+       [style.min-width.px]="virtual ? totalWidth : ''">
     <ng-container *ngIf="!grouping">
       <div class="table-row_locked"
            *ngIf="locked.length > 0"
