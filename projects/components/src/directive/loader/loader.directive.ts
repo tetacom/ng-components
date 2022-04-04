@@ -13,7 +13,7 @@ import { DOCUMENT } from '@angular/common';
 })
 export class LoaderDirective implements OnDestroy {
   @Input() appendToBody = false;
-  @Input() mask = false;
+  @Input() mask = false; 
 
   @Input()
   set tetaLoader(value: boolean) {
