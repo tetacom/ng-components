@@ -1,6 +1,5 @@
 <div draggable="true" class="row row_auto">
-  <teta-dropdown *ngIf="showHeadCellMenu"
-                 [autoCloseIgnore]="['enter']"
+  <teta-dropdown [autoCloseIgnore]="['enter']"
                  [verticalAlign]="verticalAlign.bottom"
                  [appendToBody]="true"
                  [(open)]="dropDownOpen"
@@ -25,6 +24,7 @@
 
     </div>
     <teta-head-cell-dropdown tetaDropdownContent
+                             *ngIf="showHeadCellMenu"
                              (autosize)="autosizeColumn()"
                              (autosizeAll)="autosizeAllColumns()"
                              [data]="data"

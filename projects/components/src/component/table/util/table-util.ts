@@ -71,15 +71,15 @@ export class TableUtil {
     const filterString = (row: T) => {
       const item = row as any;
       if (filter.type === StringFilterType.EndsWith) {
-        return item[filter.field].endsWith(filter.value);
+        return item[filter.field]?.toLowerCase().endsWith(filter.value?.toLowerCase());
       }
       if (filter.type === StringFilterType.Equals) {
-        return item[filter.field] === filter.value;
+        return item[filter.field]?.toLowerCase() === filter.value?.toLowerCase();
       }
       if (filter.type === StringFilterType.StartsWith) {
-        return item[filter.field].startsWith(filter.value);
+        return item[filter.field]?.toLowerCase().startsWith(filter.value?.toLowerCase());
       }
-      return item[filter.field].indexOf(filter.value) >= 0;
+      return item[filter.field]?.toLowerCase().indexOf(filter.value?.toLowerCase()) >= 0;
     };
     return data.filter(filterString);
   }
@@ -129,7 +129,7 @@ export class TableUtil {
 
   static sort<T>(data: T[], sortParam: SortParam): T[] {
     const res = data.sort(sortParam.asc ? TableUtil.asc(sortParam.field) : TableUtil.desc(sortParam.field));
-    return res;
+    return [...res];
   }
 
   static desc(field: string) {

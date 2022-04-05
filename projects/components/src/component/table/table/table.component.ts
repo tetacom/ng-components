@@ -50,11 +50,13 @@ export class TableComponent<T>
   @Input() data: T[] = [];
   @Input() columns: TableColumn[] = [];
   @Input() dict: IDictionary<IIdName<any>[]>;
+  @Input() filterOptions: IDictionary<IIdName<any>[]>;
 
   @Input()
   set state(state: FilterState) {
     this._state = state;
   }
+
   @Input() cookieName: string;
   @Input() virtual: boolean;
   @Input() detailComponent: Type<DetailComponentBase<T>>;
@@ -208,9 +210,11 @@ export class TableComponent<T>
     switch (event.key) {
       case 'Enter':
         this._svc.startEditRow(null);
+        this._svc.startEditCell(null);
         break;
       case 'Escape':
         this._svc.startEditRow(null);
+        this._svc.startEditCell(null);
         break;
       default:
         break;
@@ -323,6 +327,11 @@ export class TableComponent<T>
     }
     if (changes.hasOwnProperty('dict')) {
       this._svc.setDict(this.dict);
+      this._svc.setFilterOptions(this.dict);
+    }
+
+    if (changes.hasOwnProperty('filterOptions')) {
+      this._svc.setFilterOptions(this.filterOptions);
     }
   }
 

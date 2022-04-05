@@ -22,13 +22,14 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   private readonly tableCellComponent = true;
 
   get edit() {
-    return (
-      this._edit &&
-      this.svc.boolOrFuncCallback(this.column.editable)({
-        column: this.column,
-        row: this.row,
-      })
-    );
+    return (this._edit && this.editable);
+  }
+
+  get editable() {
+    return this.svc.boolOrFuncCallback(this.column.editable)({
+      column: this.column,
+      row: this.row,
+    });
   }
 
   _edit: boolean;
@@ -88,14 +89,14 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       )
       .subscribe((cell: ICellCoordinates<T>) => {
         if (
-          this.row === cell.row &&
-          this.column.name === cell.column.name &&
+          this.row === cell?.row &&
+          this.column.name === cell?.column?.name &&
           !this._edit
         ) {
           this.start(cell, 'cell');
         }
         if (
-          (this.row !== cell.row || this.column.name !== cell.column.name) &&
+          (this.row !== cell?.row || this.column.name !== cell?.column?.name) &&
           this._edit
         ) {
           this.stop();

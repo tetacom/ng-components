@@ -16,7 +16,7 @@
     display: flex;
     overflow: hidden;
     flex-shrink: 0;
-    background-color:  getColorVar('text', '5');
+    background-color: getColorVar('text', '5');
     @include getFont($fonts, 'table-header');
 
     &_locked {
@@ -52,8 +52,8 @@
         display: flex;
         flex-grow: 1;
         min-height: 28px;
-        justify-content: center;
         align-items: center;
+        padding: 0 8px;
         text-align: center;
         border-bottom: solid 1px getColorVar('text', '5');
       }
@@ -85,9 +85,11 @@
           cursor: pointer;
         }
       }
+
       &:hover {
         background: getColorVar('text', 10);
       }
+
       &:hover &__menu, &__menu_open {
         display: flex;
       }
@@ -184,6 +186,7 @@
     &_odd {
       background-color: getColorVar('background', '0');
     }
+
     &_active, &_active:hover {
       background-color: getColorVar('primary', '10');
     }
@@ -219,6 +222,10 @@
 
     &_numeric {
       text-align: right;
+    }
+
+    &_disabled {
+      color: getColorVar('text', 50);
     }
   }
 }

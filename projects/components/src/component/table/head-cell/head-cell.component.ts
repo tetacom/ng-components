@@ -125,13 +125,6 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
   autosizeAllColumns() {
     this._svc.autosizeAllColumns(this._elementRef.nativeElement);
   }
-
-  sortColumn(column: TableColumn, event: MouseEvent): void {
-    if (!event.defaultPrevented) {
-      this._svc.sort(new SortEvent(this.column, event.shiftKey));
-    }
-  }
-
   resizeStart(event: MouseEvent): void {
     const rect = this._elementRef.nativeElement.getBoundingClientRect();
     this._startPosition = rect.x;

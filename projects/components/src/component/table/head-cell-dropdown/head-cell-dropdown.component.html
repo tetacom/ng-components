@@ -1,34 +1,4 @@
 <teta-tabs class="column_auto">
-  <teta-tab *ngIf="column.filterable">
-    <ng-template tetaTabTitle>
-      <teta-icon [name]="'filter'"></teta-icon>
-    </ng-template>
-    <ng-template tetaTabContent>
-      <teta-filter-host [column]="column"
-                        [data]="data"
-                        [state]="state"
-                        *ngIf="dict | async as d"
-                        [filterOptions]="d[column.name]"></teta-filter-host>
-      <teta-toolbar class="justify-content-between">
-        <button teta-button [palette]="'text'" [view]="'ghost'" (click)="clearFilter()">
-          Очистить
-        </button>
-        <button teta-button [palette]="'primary'" (click)="applyFilter()">
-          <teta-icon [name]="'tick'"></teta-icon>
-          Применить
-        </button>
-      </teta-toolbar>
-    </ng-template>
-  </teta-tab>
-  <teta-tab *ngIf="column.headDropdownTemplate">
-    <ng-template tetaTabTitle>
-      <teta-icon [name]="'measurement'"></teta-icon>
-    </ng-template>
-    <ng-template tetaTabContent>
-      <ng-container
-        *ngTemplateOutlet="column.headDropdownTemplate; context: {$implicit: column, column: column}"></ng-container>
-    </ng-template>
-  </teta-tab>
   <teta-tab>
     <ng-template tetaTabTitle>
       <teta-icon [name]="'menu'"></teta-icon>
@@ -42,22 +12,38 @@
           {{column.locked ? 'Открепить' : 'Закрепить'}}
         </div>
         <div class="list-divider"></div>
-        <ng-container *ngIf="hasSortedColumns()">
+        <ng-container *ngIf="column.sortable">
           <div class="list-item list-item_interactive"
-               *ngIf="sortParam"
-               (click)="clearSort()">
+               (click)="sortAsc($event)">
             <teta-icon [palette]="'text'"
-                       [name]="'pin'" class="margin-right-2"></teta-icon>
-            Сбросить сортировку
-          </div>
-          <div class="list-item list-item_interactive"
-               (click)="clearAllSort()">
-            <teta-icon [palette]="'text'"
-                       [name]="'pin'"
+                       [name]="'arrowUp'"
                        class="margin-right-2"></teta-icon>
-            Сбросить все сортировки
+            Сортировать по возрастанию
           </div>
-          <div class="list-divider"></div>
+          <div class="list-item list-item_interactive"
+               (click)="sortDesc($event)">
+            <teta-icon [palette]="'text'"
+                       [name]="'arrowDown'"
+                       class="margin-right-2"></teta-icon>
+            Сортировать по убыванию
+          </div>
+          <ng-container *ngIf="hasSortedColumns()">
+            <div class="list-item list-item_interactive"
+                 *ngIf="sortParam"
+                 (click)="clearSort()">
+              <teta-icon [palette]="'text'"
+                         [name]="'pin'" class="margin-right-2"></teta-icon>
+              Сбросить сортировку
+            </div>
+            <div class="list-item list-item_interactive"
+                 (click)="clearAllSort()">
+              <teta-icon [palette]="'text'"
+                         [name]="'pin'"
+                         class="margin-right-2"></teta-icon>
+              Сбросить все сортировки
+            </div>
+            <div class="list-divider"></div>
+          </ng-container>
         </ng-container>
         <ng-container *ngIf="hasFilteredColumns()">
           <div class="list-item list-item_interactive"
@@ -97,6 +83,36 @@
           Отменить все изменения
         </div>
       </div>
+    </ng-template>
+  </teta-tab>
+  <teta-tab *ngIf="column.filterable">
+    <ng-template tetaTabTitle>
+      <teta-icon [name]="'filter'"></teta-icon>
+    </ng-template>
+    <ng-template tetaTabContent>
+      <teta-filter-host [column]="column"
+                        [data]="data"
+                        [state]="state"
+                        *ngIf="filterOptions | async as options"
+                        [filterOptions]="options[column.name]"></teta-filter-host>
+      <teta-toolbar class="justify-content-between">
+        <button teta-button [palette]="'text'" [view]="'ghost'" (click)="clearFilter()">
+          Очистить
+        </button>
+        <button teta-button [palette]="'primary'" (click)="applyFilter()">
+          <teta-icon [name]="'tick'"></teta-icon>
+          Применить
+        </button>
+      </teta-toolbar>
+    </ng-template>
+  </teta-tab>
+  <teta-tab *ngIf="column.headDropdownTemplate">
+    <ng-template tetaTabTitle>
+      <teta-icon [name]="'measurement'"></teta-icon>
+    </ng-template>
+    <ng-template tetaTabContent>
+      <ng-container
+        *ngTemplateOutlet="column.headDropdownTemplate; context: {$implicit: column, column: column}"></ng-container>
     </ng-template>
   </teta-tab>
   <teta-tab>

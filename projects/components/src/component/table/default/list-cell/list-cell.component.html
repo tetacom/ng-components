@@ -1,4 +1,6 @@
-<span [style.display]="edit ? 'none' : 'block'" class="cell-text">
+<span [style.display]="edit ? 'none' : 'block'"
+      class="cell-text"
+      [class.cell-text_disabled]="!editable">
   {{value}}
 </span>
 <teta-select #input

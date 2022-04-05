@@ -36,8 +36,7 @@ export class ListFilterComponent<T> extends FilterComponentBase<T> implements On
   get visibleOptions() {
     return this.filterOptions?.filter(
       (option: IIdName<any>) => {
-        return option.name?.toString().indexOf(this.search) >= 0
-          && this.data?.map(_ => _.data[this.column.name])?.indexOf(option.id) >= 0;
+        return option.name?.toString().indexOf(this.search) >= 0;
       }
     );
   }

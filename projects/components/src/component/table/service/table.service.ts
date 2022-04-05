@@ -34,6 +34,7 @@ export class TableService<T> {
   columns: Observable<TableColumn[]>;
   displayData: Observable<TableRow<T>[]>;
   dict: Observable<IDictionary<IIdName<any>[]>>;
+  filterOptions: Observable<IDictionary<IIdName<any>[]>>;
   state: Observable<FilterState>;
   selectType: SelectType;
   editRowStart: Observable<ICellCoordinates<T>>;
@@ -54,7 +55,6 @@ export class TableService<T> {
   editType: EditType;
   editEvent: EditEvent;
   rowEditable: boolean | ((row: TableRow<T>) => boolean);
-  // cellEditable: boolean | ((row: ICellCoordinates<T>) => boolean);
 
   get dragSource() {
     return this._dragSource;
@@ -64,9 +64,10 @@ export class TableService<T> {
   private initialColumns: TableColumn[] = [];
   private displayColumns: TableColumn[] = [];
   private _columns: BehaviorSubject<TableColumn[]> = new BehaviorSubject<TableColumn[]>([]);
-  private initialData: TableRow<T>[] = [];
   private _displayData: BehaviorSubject<TableRow<T>[]> = new BehaviorSubject<TableRow<T>[]>([]);
   private _dict: BehaviorSubject<IDictionary<IIdName<any>[]>> =
+    new BehaviorSubject<IDictionary<IIdName<any>[]>>({});
+  private _filterOptions: BehaviorSubject<IDictionary<IIdName<any>[]>> =
     new BehaviorSubject<IDictionary<IIdName<any>[]>>({});
   private _state: BehaviorSubject<FilterState> =
     new BehaviorSubject<FilterState>(new FilterState());
@@ -95,6 +96,7 @@ export class TableService<T> {
     this.columns = this._columns.asObservable();
     this.displayData = this._displayData.asObservable();
     this.dict = this._dict.asObservable();
+    this.filterOptions = this._filterOptions.asObservable();
     this.state = this._state.asObservable();
     this.editRowStart = this._editRowStart.asObservable();
     this.editRowStop = this._editRowStop.asObservable();
@@ -112,12 +114,15 @@ export class TableService<T> {
   }
 
   setData(data: T[]): void {
-    this.initialData = data?.map((_) => new TableRow<T>(_));
-    this._displayData.next(this.initialData);
+    this._displayData.next(data?.map((_) => new TableRow<T>(_)));
   }
 
   setDict(dict: IDictionary<IIdName<any>[]>): void {
     this._dict.next(dict);
+  }
+
+  setFilterOptions(filterOptions: IDictionary<IIdName<any>[]>): void {
+    this._filterOptions.next(filterOptions);
   }
 
   setColumns(columns: TableColumn[]): void {
@@ -230,9 +235,15 @@ export class TableService<T> {
     this._hiddenColumns.next(JSON.parse(hiddenColumns));
   }
 
-  sort(sortEvent: SortEvent): void {
+  sortAsc(sortEvent: SortEvent): void {
     if (sortEvent.column.sortable) {
-      this.setState(StateUtil.sortColumn(sortEvent, this._state.value));
+      this.setState(StateUtil.sortAsc(sortEvent, this._state.value));
+    }
+  }
+
+  sortDesc(sortEvent: SortEvent): void {
+    if (sortEvent.column.sortable) {
+      this.setState(StateUtil.sortDesc(sortEvent, this._state.value));
     }
   }
 
@@ -382,7 +393,7 @@ export class TableService<T> {
   startEditRow(cellCoordinates: ICellCoordinates<T>): void {
     if (this._currentEditRow?.row !== cellCoordinates?.row) {
       if (this._currentEditRow != null) {
-        const row = this._displayData.value.indexOf(this._currentEditRow.row)
+        const row = this._displayData.value.indexOf(this._currentEditRow.row);
         this._editRowStop.next(this._currentEditRow);
       }
       if (cellCoordinates === null) {
@@ -410,7 +421,7 @@ export class TableService<T> {
         this._editCellStop.next(this._currentEditCell);
       }
       if (
-        this.boolOrFuncCallback<ICellCoordinates<T>>(cellCoordinates.column.editable)(
+        this.boolOrFuncCallback<ICellCoordinates<T>>(cellCoordinates?.column?.editable)(
           cellCoordinates
         )
       ) {

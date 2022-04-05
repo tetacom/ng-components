@@ -1,8 +1,8 @@
-import { FilterState } from '../../filter/contarct/filter-state';
-import { TableColumn } from '../contract/table-column';
-import { SortParam } from '../../filter/contarct/sort-param';
-import { FilterType } from '../../filter/enum/filter-type.enum';
-import { SortEvent } from '../contract/sort-event';
+import {FilterState} from '../../filter/contarct/filter-state';
+import {TableColumn} from '../contract/table-column';
+import {SortParam} from '../../filter/contarct/sort-param';
+import {FilterType} from '../../filter/enum/filter-type.enum';
+import {SortEvent} from '../contract/sort-event';
 
 export class StateUtil {
   static hasSortedColumns(state: FilterState): boolean {
@@ -30,7 +30,7 @@ export class StateUtil {
           filter &&
           filter.value &&
           ((filter.value.lessThan !== null &&
-            filter.value.lessThan !== undefined) ||
+              filter.value.lessThan !== undefined) ||
             (filter.value.greaterThan !== null &&
               filter.value.greaterThan !== undefined) ||
             (filter.value.equalsTo !== null &&
@@ -46,7 +46,7 @@ export class StateUtil {
           filter &&
           filter.value &&
           ((filter.value.lessThan !== null &&
-            filter.value.lessThan !== undefined) ||
+              filter.value.lessThan !== undefined) ||
             (filter.value.greaterThan !== null &&
               filter.value.greaterThan !== undefined))
       )
@@ -105,7 +105,7 @@ export class StateUtil {
             filter &&
             filter.value &&
             ((filter.value.lessThan !== null &&
-              filter.value.lessThan !== undefined) ||
+                filter.value.lessThan !== undefined) ||
               (filter.value.greaterThan !== null &&
                 filter.value.greaterThan !== undefined) ||
               (filter.value.equalsTo !== null &&
@@ -124,7 +124,7 @@ export class StateUtil {
             filter &&
             filter.value &&
             ((filter.value.lessThan !== null &&
-              filter.value.lessThan !== undefined) ||
+                filter.value.lessThan !== undefined) ||
               (filter.value.greaterThan !== null &&
                 filter.value.greaterThan !== undefined))
           ) {
@@ -147,7 +147,7 @@ export class StateUtil {
         state.sortParams.length = 0;
       }
       state.sortParams.push(
-        new SortParam({ field: column.sortField, asc: true, order: 0 })
+        new SortParam({field: column.sortField, asc: true, order: 0})
       );
     } else {
       if (!sort.asc) {
@@ -159,6 +159,32 @@ export class StateUtil {
         }
       }
     }
+    return new FilterState(state);
+  }
+
+  static sortAsc(sortEvent: SortEvent, state: FilterState): FilterState {
+    return StateUtil.sort(sortEvent, state, true);
+  }
+
+  static sortDesc(sortEvent: SortEvent, state: FilterState): FilterState {
+    return StateUtil.sort(sortEvent, state, false);
+  }
+
+  static sort(sortEvent: SortEvent, state: FilterState, asc: boolean) {
+    const column = sortEvent.column;
+    const shiftKey = sortEvent.shiftKey;
+    const sort = state.sortParams.find(
+      (sortParam: SortParam) => sortParam.field === column.sortField
+    );
+    if (sort) {
+      state.sortParams = StateUtil.clearSortParam(sort, state.sortParams);
+    }
+    if (!shiftKey) {
+      state.sortParams.length = 0;
+    }
+    state.sortParams.push(
+      new SortParam({field: column.sortField, asc: asc, order: 0})
+    );
     return new FilterState(state);
   }
 

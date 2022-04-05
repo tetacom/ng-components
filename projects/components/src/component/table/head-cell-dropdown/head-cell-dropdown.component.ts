@@ -21,6 +21,7 @@ import {map, takeWhile} from 'rxjs/operators';
 import {ArrayUtil} from '../../../common/util/array-util';
 import {SortParam} from '../../filter/contarct/sort-param';
 import {TableRow} from '../contract/table-row';
+import {SortEvent} from '../contract/sort-event';
 
 @Component({
   selector: 'teta-head-cell-dropdown',
@@ -40,7 +41,7 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
   @Output() autosize: EventEmitter<void> = new EventEmitter<void>();
   @Output() autosizeAll: EventEmitter<void> = new EventEmitter<void>();
 
-  dict: Observable<IDictionary<IIdName<any>[]>>;
+  filterOptions: Observable<IDictionary<IIdName<any>[]>>;
   hiddenColumns: string[];
 
   @HostListener('keydown.enter') enter() {
@@ -73,8 +74,9 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
   private _openItems: ITreeData[];
   private _alive = true;
 
-  constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {
-    this.dict = this._svc.dict;
+  constructor(private _svc: TableService<T>,
+              private _cdr: ChangeDetectorRef) {
+    this.filterOptions = this._svc.filterOptions;
     this._svc.hiddenColumns
       .pipe(
         takeWhile((_) => this._alive),
@@ -101,6 +103,14 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
     this._svc.pinColumn(this.column);
   }
 
+  sortAsc(event: MouseEvent) {
+    this._svc.sortAsc(new SortEvent(this.column, event.shiftKey));
+  }
+
+  sortDesc(event: MouseEvent) {
+    this._svc.sortDesc(new SortEvent(this.column, event.shiftKey));
+  }
+
   clearSort(): void {
     this._svc.clearSort(this.column);
   }
@@ -108,6 +118,12 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
   clearAllSort(): void {
     this._svc.clearAllSort();
   }
+
+  // sortColumn(column: TableColumn, event: MouseEvent): void {
+  //   if (!event.defaultPrevented) {
+  //     this._svc.sort(new SortEvent(this.column, event.shiftKey));
+  //   }
+  // }
 
   hasFilteredColumns() {
     return StateUtil.hasFilteredColumns(this.state);

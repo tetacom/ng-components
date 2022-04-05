@@ -1,10 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild,} from '@angular/core';
 import {CellComponentBase} from '../../base/cell-component-base';
 import {TableColumn} from '../../contract/table-column';
 import {TableRow} from '../../contract/table-row';
@@ -16,6 +10,7 @@ import {DatePickerComponent} from '../../../date-picker/date-picker/date-picker.
   selector: 'teta-date-time-cell',
   templateUrl: './date-time-cell.component.html',
   styleUrls: ['./date-time-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DateTimeCellComponent<T>
   extends CellComponentBase<T>
@@ -44,7 +39,7 @@ export class DateTimeCellComponent<T>
   startEdit(initiator: ICellCoordinates<T>, type: 'cell' | 'row'): void {
     if (initiator?.column.name === this.column.name) {
       setTimeout(() => {
-        this.input.openPicker(true);
+        this.input?.openPicker(true);
         this.cdr.markForCheck();
       }, 0);
     }
