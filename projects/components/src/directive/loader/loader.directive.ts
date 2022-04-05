@@ -13,6 +13,7 @@ import { DOCUMENT } from '@angular/common';
 })
 export class LoaderDirective implements OnDestroy {
   @Input() appendToBody = false;
+  @Input() mask = false; 
 
   @Input()
   set tetaLoader(value: boolean) {
@@ -30,6 +31,7 @@ export class LoaderDirective implements OnDestroy {
 
   private _element: HTMLElement;
   private _loader: any;
+  private _mask: any;
   private _alive = true;
   private _loading: boolean;
 
@@ -51,6 +53,19 @@ export class LoaderDirective implements OnDestroy {
       this._loader = this._renderer.createElement('div');
       this._loader.setAttribute('class', 'loader');
     }
+
+    if ((this._mask === null || this._mask === undefined) && this.mask) {
+      this._mask = this._renderer.createElement('div');
+      this._mask.setAttribute('class', 'loader-mask');
+    }
+
+    if(this.mask) {
+      this._renderer.appendChild(
+        this.appendToBody ? this._document.body : this._element,
+        this._mask
+      );
+    }
+
     this._renderer.appendChild(
       this.appendToBody ? this._document.body : this._element,
       this._loader
@@ -61,6 +76,9 @@ export class LoaderDirective implements OnDestroy {
   private hide() {
     if (this._loader && this._loader.parentElement) {
       this._renderer.removeChild(this._loader.parentElement, this._loader);
+    }
+    if (this._mask && this._mask.parentElement) {
+      this._renderer.removeChild(this._loader.parentElement, this._mask);
     }
   }
 

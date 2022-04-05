@@ -20,6 +20,16 @@
     border-top-color: transparent;
     animation: spinner 1.5s linear infinite;
   }
+
+  &-mask {
+    background: getColorVar('background', '50');
+    opacity: 0.2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
 }
 
 @keyframes spinner {
