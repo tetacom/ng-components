@@ -8,13 +8,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 import * as d3 from 'd3';
-import { Chart3dOptions } from '../model/chart-3d-options';
-import { Base3dPoint } from '../model/base-3d-point';
-import { Series3d } from '../model/series-3d';
-import { ThemeSwitchService } from '../../theme-switch/theme-switch.service';
-import { takeWhile, tap } from 'rxjs/operators';
+import {Chart3dOptions} from '../model/chart-3d-options';
+import {Base3dPoint} from '../model/base-3d-point';
+import {Series3d} from '../model/series-3d';
+import {ThemeSwitchService} from '../../theme-switch/theme-switch.service';
+import {takeWhile, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'teta-chart3d',
@@ -34,13 +34,15 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private SIDE_SIZE = 100;
   private gridColor: any;
+  private axesColor: any;
 
   private _alive = true;
 
   constructor(
     private _elementRef: ElementRef,
     private _themeService: ThemeSwitchService
-  ) {}
+  ) {
+  }
 
   @Input() set config(config: Chart3dOptions) {
     if (config) {
@@ -62,7 +64,8 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(
         takeWhile((_) => this._alive),
         tap((_) => {
-          this.gridColor = _ ? '#474751' : '#d7dee3';
+          this.gridColor = _ ? '#5d6a73' : '#bdbdc6';
+          this.axesColor =  _ ? '#8e8f9d' : '#7d8f9a';
           this.init();
         })
       )
@@ -73,6 +76,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addResizeObserver();
     this.createScene();
     this.startRenderingLoop();
+    this.init();
   }
 
   ngOnDestroy() {
@@ -88,12 +92,15 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
       this._scene.remove(this._scene.children[0]);
     }
 
-    const { x, y, z } = this.getScales(this._config.series);
+    const {x, y, z} = this.getScales(this._config.series);
 
     this.config.series.forEach((data, idx) => {
-      const geometry = new THREE.BufferGeometry().setFromPoints(
-        data.points.map((_) => new THREE.Vector3(x(_.x), z(_.z), y(_.y)))
-      );
+
+      if (!data.points?.length) {
+        return
+      }
+
+      const points = data.points.map((_) => new THREE.Vector3(x(_.x), y(_.y), z(_.z)));
 
       const color = d3.scaleOrdinal(d3.schemeTableau10);
 
@@ -101,56 +108,74 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
         color: data?.color ?? color(idx.toString()),
       });
 
-      const line = new THREE.Line(geometry, material);
+      const tubeGeometry = new THREE.TubeGeometry(
+        new THREE.CatmullRomCurve3(points),
+        1024,
+        0.5,
+        20,
+        false
+      );
 
-      line.computeLineDistances();
-      line.scale.set(1, 1, 1);
-      this._scene.add(line);
+      let tube = new THREE.Line(tubeGeometry, material);
+      this._scene.add(tube);
+
+
     });
 
-    const plane = new THREE.GridHelper(
-      this.SIDE_SIZE,
-      this.SIDE_SIZE / 10,
-      this.gridColor,
-      this.gridColor
-    );
 
-    plane.position.set(this.SIDE_SIZE / 2, 0, this.SIDE_SIZE / 2);
-    this._scene.add(plane);
+    const circles = x.ticks(this.SIDE_SIZE / 10);
 
-    const gridX = new THREE.GridHelper(
-      this.SIDE_SIZE,
-      this.SIDE_SIZE / 10,
-      this.gridColor,
-      this.gridColor
-    );
-    gridX.geometry.rotateX(-Math.PI / 2);
-    gridX.position.set(this.SIDE_SIZE / 2, this.SIDE_SIZE / 2, 0);
-    this._scene.add(gridX);
 
-    const gridY = new THREE.GridHelper(
-      this.SIDE_SIZE,
-      this.SIDE_SIZE / 10,
-      this.gridColor,
-      this.gridColor
-    );
-    gridY.geometry.rotateZ(Math.PI / 2);
-    gridY.position.set(0, this.SIDE_SIZE / 2, this.SIDE_SIZE / 2);
-    this._scene.add(gridY);
+    const material = new THREE.LineBasicMaterial( { color: this.axesColor } );
+    const pointsLines = [];
+    pointsLines.push(new THREE.Vector3(0, 0 , 0));
+    pointsLines.push(new THREE.Vector3(0, 0 , z(-z.domain()[1])));
+
+    pointsLines.push(new THREE.Vector3(0, 0 , 0));
+    pointsLines.push(new THREE.Vector3(x(-x.domain()[1]), 0 , 0));
+
+    const geometryLines = new THREE.BufferGeometry().setFromPoints(pointsLines);
+    const line = new THREE.Line(geometryLines, material);
+
+    this._scene.add(line)
+
+    circles.forEach((r) => {
+
+      const material = new THREE.LineDashedMaterial({
+        color: this.gridColor,
+        dashSize: 1,
+        gapSize: 3
+      });
+
+      const circleGeometry = new THREE.BufferGeometry().setFromPoints(
+        new THREE.Path().absarc(0, 0, x(r), 0, Math.PI * 2, false).getSpacedPoints(100)
+      );
+
+      const circle = new THREE.LineSegments(circleGeometry, material);
+
+      circle.geometry.rotateX(-Math.PI / 2)
+
+      this._scene.add(circle);
+
+    });
 
     this.drawTicks(x, y, z);
 
-    this._controls = new OrbitControls(this._camera, this._renderer.domElement);
+    if(!this._controls) {
+      this._controls = new OrbitControls(this._camera, this._renderer.domElement);
 
-    this._controls.enableDamping = true;
-    this._controls.enablePan = true;
-    this._controls.dampingFactor = 0.25;
-    this._controls.screenSpacePanning = true;
-    this._controls.minDistance = 0;
-    this._controls.maxDistance = 10000;
-    this._controls.maxPolarAngle = Math.PI / 2;
+      this._controls.enableDamping = true;
+      this._controls.enablePan = true;
+      this._controls.dampingFactor = 0.25;
+      this._controls.screenSpacePanning = true;
+      this._controls.minDistance = 0;
+      this._controls.maxDistance = 10000;
+      this._controls.maxPolarAngle = Math.PI / 2;
 
-    this._controls.enableZoom = true;
+      this._controls.enableZoom = true;
+    }
+
+
   }
 
   private createScene() {
@@ -173,6 +198,8 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this._camera.position.set(1300, 1300, 1300).setLength(1300);
     this._scene.add(this._camera);
+
+
   }
 
   private setSize(width: number, height: number) {
@@ -220,7 +247,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
     canvas.height = 50;
     canvas.width = 50;
 
-    if(ctx) {
+    if (ctx) {
       ctx.font = `${fontSize}px Arial`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -236,7 +263,9 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     const sprite = new THREE.Sprite(spriteMaterial);
-    sprite.scale.set(5, 5, 5);
+    sprite.scale.set(0.4 * fontSize, 0.4 * fontSize, 0.4 * fontSize);
+
+
 
     return sprite;
   }
@@ -246,7 +275,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
     const scalesExtrems: any[] = [];
 
     [x, y, z].forEach((scale, idx) => {
-      const generatedTicks = scale.ticks(this.SIDE_SIZE / 10);
+      const generatedTicks = scale.ticks(this.SIDE_SIZE / 10)
 
       scalesExtrems.push(d3.max(generatedTicks));
 
@@ -254,30 +283,38 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
         const sprite = this.makeSprite(_);
 
         if (idx === 0) {
-          sprite.position.set(x(_), z(0), -5);
+          sprite.position.set(x(_), y(y.domain()[1]), 0);
         }
 
         if (idx === 1) {
-          sprite.position.set(-5, z(0), y(_));
+          sprite.position.set(-10, y(_), 0);
+
         }
 
         if (idx === 2) {
-          sprite.position.set(0, z(_), -5);
+          sprite.position.set(0, y(y.domain()[1]), z(_));
         }
 
         ticks.add(sprite);
+
       });
     });
 
-    const northLabel = this.makeSprite('North', { fontSize: 28 });
-    const westLabel = this.makeSprite('West', { fontSize: 28 });
-    const tvdLabel = this.makeSprite('TVD', { fontSize: 28 });
+    const northLabel = this.makeSprite('X', {fontSize: 28});
+    const westLabel = this.makeSprite('Y', {fontSize: 28});
+    const tvdLabel = this.makeSprite('TVD', {fontSize: 28});
 
-    northLabel.position.set(x(scalesExtrems[0]) + 10, 0, 0);
-    westLabel.position.set(0, 0, y(scalesExtrems[1]) + 10);
-    tvdLabel.position.set(0, z(scalesExtrems[2]), 0);
+    northLabel.position.set(x(x.domain()[1]) + 5, 0, 0);
+    westLabel.position.set(0, 0, y(y.domain()[0]) + 5);
+    tvdLabel.position.set(0, z(z.domain()[1]) + 5, 0);
 
     ticks.add(northLabel, westLabel, tvdLabel);
+
+
+    const axesHelper = new THREE.AxesHelper(this.SIDE_SIZE);
+    axesHelper.setColors(this.axesColor, this.axesColor, this.axesColor)
+
+    this._scene.add(axesHelper);
 
     this._scene.add(ticks);
   }
@@ -296,42 +333,31 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
         acc.z = acc.z.concat(_.z);
         return acc as any;
       },
-      { x: [], y: [], z: [] }
+      {x: [], y: [], z: []}
     );
 
     const x = d3
       .scaleLinear()
-      .domain([
-        d3.min(flattenExtrems.x) as any,
-        this._config?.axes?.max == null
-          ? d3.max(flattenExtrems.x)
+      .domain([0, this._config?.axes?.max == null
+          ? parseInt(d3.max(flattenExtrems.x))
           : this._config.axes.max,
       ])
-      .range([0, this.SIDE_SIZE])
-      .nice();
+      .range([0, this.SIDE_SIZE]).nice()
 
     const y = d3
       .scaleLinear()
-      .domain([
-        d3.min(flattenExtrems.y) as any,
-        this._config?.axes?.max == null
-          ? d3.max(flattenExtrems.y)
-          : this._config.axes.max,
-      ])
-      .range([0, this.SIDE_SIZE])
-      .nice();
+      .domain([0, parseInt(d3.max(flattenExtrems.y), 10)])
+      .range([this.SIDE_SIZE, 0])
 
     const z = d3
       .scaleLinear()
-      .domain([
-        d3.min(flattenExtrems.z) as any,
+      .domain([0,
         this._config?.axes?.max == null
-          ? d3.max(flattenExtrems.z)
-          : this._config.axes.max,
-      ])
-      .range([this.SIDE_SIZE, 0])
-      .nice();
+          ? parseInt(d3.max(flattenExtrems.z))
+          : this._config.axes.max])
+      .range([0, this.SIDE_SIZE]).nice()
 
-    return { x, y, z };
+
+    return {x, y, z};
   }
 }

@@ -3,7 +3,9 @@ import { Series3d } from './series-3d';
 
 export class Chart3dOptions {
   axes?: {
+    min?: number;
     max?: number;
+
   };
 
   series: Series3d<Base3dPoint>[];
