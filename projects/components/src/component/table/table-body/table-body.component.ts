@@ -32,6 +32,7 @@ import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 export class TableBodyComponent<T> implements OnInit, OnDestroy {
   @Input() virtual: boolean;
   @Input() activeRow: TableRow<T>;
+  @Input() selectedRows: TableRow<T>[] = [];
   @Input() additionalComponent: Type<DetailComponentBase<T>>;
   @Input() tree: boolean;
   @Input() aggregate: boolean;
@@ -54,11 +55,8 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   }
 
   dict: IDictionary<IIdName<any>[]>;
-
-  selectedRows: TableRow<T>[] = [];
   locked: TableColumn[] = [];
   unlocked: TableColumn[] = [];
-
   selectTypeEnum = SelectType;
   lockedFlex: number;
   lockedWidth: number;
@@ -110,12 +108,6 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     this._svc.scrollIndex
       .pipe(takeWhile((_) => this._alive))
       .subscribe(async (_) => {
-        // if (this.viewport && this.dataSource && _ !== null) {
-        //   await this.dataSource.adapter.relax();
-        //   await this.dataSource.adapter.fix({
-        //     scrollPosition: (_ + 1) * 24,
-        //   });
-        // }
         if (this.viewport) {
           this.viewport.scrollToIndex(_, 'smooth');
         }

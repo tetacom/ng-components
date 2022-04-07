@@ -128,8 +128,8 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
 
   private start(initiator: ICellCoordinates<T>, type: 'cell' | 'row') {
     this._edit = true;
+    this.cdr.detectChanges();
     this.startEdit(initiator, type);
-    this.cdr.markForCheck();
   }
 
   private stop() {

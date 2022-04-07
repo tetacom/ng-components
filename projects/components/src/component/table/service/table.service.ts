@@ -26,6 +26,7 @@ import {DateUtil} from '../../../util/date-util';
 import objectHash from 'object-hash';
 import {TableColumnStore} from '../contract/table-column-store';
 import {ICellValue} from '../contract/i-cell-value';
+import {ICellEvent} from '../contract/i-cell-event';
 
 @Injectable({
   providedIn: 'root',
@@ -37,10 +38,9 @@ export class TableService<T> {
   filterOptions: Observable<IDictionary<IIdName<any>[]>>;
   state: Observable<FilterState>;
   selectType: SelectType;
-  editRowStart: Observable<ICellCoordinates<T>>;
+  editRowStart: Observable<ICellEvent<T>>;
   editRowStop: Observable<ICellCoordinates<T>>;
-
-  editCellStart: Observable<ICellCoordinates<T>>;
+  editCellStart: Observable<ICellEvent<T>>;
   editCellStop: Observable<ICellCoordinates<T>>;
   valueChanged: Observable<ICellCoordinates<T>>;
   valueSet: Observable<ICellValue<T>>;
@@ -74,9 +74,9 @@ export class TableService<T> {
   private _cookieName: string;
   private _hiddenCookieName: string;
   private _columnsCookieName: string;
-  private _editRowStart = new Subject<ICellCoordinates<T> | null>();
+  private _editRowStart = new Subject<ICellEvent<T> | null>();
   private _editRowStop = new Subject<ICellCoordinates<T> | null>();
-  private _editCellStart = new Subject<ICellCoordinates<T> | null>();
+  private _editCellStart = new Subject<ICellEvent<T> | null>();
   private _editCellStop = new Subject<ICellCoordinates<T> | null>();
   private _valueChanged = new Subject<ICellCoordinates<T> | null>();
   private _valueSet = new Subject<ICellValue<T>>();
@@ -89,8 +89,11 @@ export class TableService<T> {
   private _hiddenColumns = new BehaviorSubject<string[]>([]);
   private _scrollIndex = new Subject<number>();
 
-  private _currentEditRow: ICellCoordinates<T>;
   private _currentEditCell: ICellCoordinates<T>;
+
+  get currentEditCell(): ICellCoordinates<T> {
+    return this._currentEditCell;
+  }
 
   constructor() {
     this.columns = this._columns.asObservable();
@@ -390,15 +393,14 @@ export class TableService<T> {
     }
   }
 
-  startEditRow(cellCoordinates: ICellCoordinates<T>): void {
-    if (this._currentEditRow?.row !== cellCoordinates?.row) {
-      if (this._currentEditRow != null) {
-        const row = this._displayData.value.indexOf(this._currentEditRow.row);
-        this._editRowStop.next(this._currentEditRow);
+  startEditRow(cellCoordinates: ICellEvent<T>): void {
+    if (this._currentEditCell?.row !== cellCoordinates?.row) {
+      if (this._currentEditCell != null) {
+        this._editRowStop.next(this._currentEditCell);
       }
       if (cellCoordinates === null) {
         this._editRowStart.next(cellCoordinates);
-        this._currentEditRow = cellCoordinates;
+        this._currentEditCell = cellCoordinates;
       } else {
         if (
           this.boolOrFuncCallback<TableRow<T>>(this.rowEditable)(
@@ -406,27 +408,31 @@ export class TableService<T> {
           )
         ) {
           this._editRowStart.next(cellCoordinates);
-          this._currentEditRow = cellCoordinates;
+          this._currentEditCell = cellCoordinates;
         }
       }
     }
   }
 
-  startEditCell(cellCoordinates: ICellCoordinates<T>): void {
+  startEditCell(cellEvent: ICellEvent<T>): void {
     if (
-      this._currentEditCell?.column.name !== cellCoordinates?.column.name ||
-      this._currentEditCell?.row !== cellCoordinates?.row
+      this._currentEditCell?.column.name !== cellEvent?.column.name ||
+      this._currentEditCell?.row !== cellEvent?.row
     ) {
       if (this._currentEditCell != null) {
         this._editCellStop.next(this._currentEditCell);
       }
       if (
-        this.boolOrFuncCallback<ICellCoordinates<T>>(cellCoordinates?.column?.editable)(
-          cellCoordinates
+        this.boolOrFuncCallback<ICellCoordinates<T>>(cellEvent?.column?.editable)(
+          cellEvent
         )
       ) {
-        this._editCellStart.next(cellCoordinates);
-        this._currentEditCell = cellCoordinates;
+        this._editCellStart.next(cellEvent);
+        this._currentEditCell = cellEvent;
+        const key = (cellEvent?.event as KeyboardEvent)?.key;
+        if (key && (key.length === 1 || (key === 'Delete' && !cellEvent.column.required))) {
+          this.clearValue(cellEvent);
+        }
       }
     }
   }
@@ -437,6 +443,48 @@ export class TableService<T> {
 
   selectRows(rows: TableRow<T>[]): void {
     this._selectedRows.next(rows);
+  }
+
+  selectOrDeselectRow(row: TableRow<T>): void {
+    if (this._selectedRows.value.indexOf(row) >= 0) {
+      this._selectedRows.next(
+        this._selectedRows.value.filter((_) => _ !== row)
+      );
+    } else {
+      if (this.selectType === SelectType.single) {
+        this._selectedRows.next([row]);
+      } else {
+        this._selectedRows.next([...this._selectedRows.value, row]);
+      }
+    }
+  }
+
+  selectRange(row: TableRow<T>): void {
+    const index = this._displayData.value.indexOf(row);
+    let minIndex = this._selectedRows.value.reduce((prev, curr) => {
+      const newIndex = this._displayData.value.indexOf(curr);
+      if (newIndex < prev) {
+        return newIndex;
+      }
+      return prev;
+    }, this._displayData.value.length);
+    let maxIndex = this._selectedRows.value.reduce((prev, curr) => {
+      const newIndex = this._displayData.value.indexOf(curr);
+      if (newIndex > prev) {
+        return newIndex;
+      }
+      return prev;
+    }, 0);
+    if (index > maxIndex) {
+      maxIndex = index;
+    }
+    if (index < minIndex) {
+      minIndex = index;
+    }
+    if (minIndex < index && index < maxIndex) {
+      minIndex = index;
+    }
+    this._selectedRows.next([...this._displayData.value.slice(minIndex, maxIndex + 1)]);
   }
 
   selectRow(row: TableRow<T>): void {
@@ -514,6 +562,100 @@ export class TableService<T> {
     return this._displayData.value[parseInt(rowIndex, 10)];
   }
 
+  getRowIndex(row: TableRow<T>) {
+    return this._displayData.value.indexOf(row);
+  }
+
+  getNextEditableCell(coords: ICellCoordinates<T>): ICellCoordinates<T> {
+    const nextCell = this.getNextCell(coords);
+    if (!nextCell) {
+      return null;
+    }
+    if (this.boolOrFuncCallback<ICellCoordinates<T>>(nextCell?.column?.editable)(
+      nextCell
+    )) {
+      return nextCell;
+    }
+    return this.getNextEditableCell(nextCell);
+  }
+
+  getPreviousEditableCell(coords: ICellCoordinates<T>): ICellCoordinates<T> {
+    const prevCell = this.getPreviousCell(coords);
+    if (!prevCell) {
+      return null;
+    }
+    if (this.boolOrFuncCallback<ICellCoordinates<T>>(prevCell?.column?.editable)(
+      prevCell
+    )) {
+      return prevCell;
+    }
+    return this.getPreviousEditableCell(prevCell);
+  }
+
+  getNextCell(coords: ICellCoordinates<T>): ICellCoordinates<T> {
+    const columns = this.getFlatColumns();
+    let colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column?.name);
+    let rowIndex = this._displayData.value.indexOf(coords?.row);
+    if (colIndex >= 0 && rowIndex >= 0) {
+      if (colIndex === columns.length - 1) {
+        colIndex = 0;
+        rowIndex = rowIndex + 1;
+      } else {
+        colIndex = colIndex + 1;
+      }
+      return {
+        column: columns[colIndex],
+        row: this._displayData.value[rowIndex]
+      };
+    }
+    return null;
+  }
+
+  getPreviousCell(coords: ICellCoordinates<T>) {
+    const columns = this.getFlatColumns();
+    let colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column?.name);
+    let rowIndex = this._displayData.value.indexOf(coords?.row);
+    if (colIndex >= 0 && rowIndex >= 0) {
+      if (colIndex === 0) {
+        colIndex = columns.length - 1;
+        rowIndex = rowIndex - 1;
+      } else {
+        colIndex = colIndex - 1;
+      }
+      return {
+        column: columns[colIndex],
+        row: this._displayData.value[rowIndex]
+      };
+    }
+    return null;
+  }
+
+  getNextRowCell(coords: ICellCoordinates<T>): ICellCoordinates<T> {
+    const columns = this.getFlatColumns();
+    let colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column?.name);
+    let rowIndex = this._displayData.value.indexOf(coords?.row);
+    if (colIndex >= 0 && rowIndex >= 0 && rowIndex < this._displayData.value.length - 1) {
+      return {
+        column: columns[colIndex],
+        row: this._displayData.value[rowIndex + 1]
+      };
+    }
+    return null;
+  }
+
+  getPreviousRowCell(coords: ICellCoordinates<T>) {
+    const columns = this.getFlatColumns();
+    let colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column?.name);
+    let rowIndex = this._displayData.value.indexOf(coords?.row);
+    if (colIndex >= 0 && rowIndex > 1) {
+      return {
+        column: columns[colIndex],
+        row: this._displayData.value[rowIndex - 1]
+      };
+    }
+    return null;
+  }
+
   getColumnByName(columnName: string) {
     return ArrayUtil.findRecursive(
       this.displayColumns,
@@ -536,6 +678,12 @@ export class TableService<T> {
       }
       return true;
     };
+  }
+
+  private getFlatColumns() {
+    return ArrayUtil.flatten(this.displayColumns, 'columns', true).sort(
+      (a, b) => Number(b.locked) - Number(a.locked)
+    );
   }
 
   private findParent(
@@ -578,5 +726,12 @@ export class TableService<T> {
     });
     column.flex = 0;
     column.width = maxWidth + 20;
+  }
+
+  private clearValue(event: ICellEvent<T>) {
+    this.setValue({
+      cell: event,
+      value: null
+    });
   }
 }

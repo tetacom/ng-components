@@ -36,6 +36,7 @@ import {ToolbarModule} from '../toolbar/toolbar.module';
 import {ClickOutsideModule} from '../../directive/click-outside/click-outside.module';
 import {ResizeDragModule} from '../../directive/resize-drag/resize-drag.module';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import {ContextMenuModule} from '../../directive/context-menu/context-menu.module';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     ClickOutsideModule,
     ResizeDragModule,
     ScrollingModule,
+    ContextMenuModule,
   ],
 })
 export class TableModule {

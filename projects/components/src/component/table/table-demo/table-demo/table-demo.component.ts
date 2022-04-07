@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, TemplateRef, ViewChild, ViewChildren} from '@angular/core';
+import {Component, HostListener, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import * as faker from 'faker';
 import {TableColumn} from '../../contract/table-column';
 import {FilterType} from '../../../filter/enum/filter-type.enum';
@@ -8,6 +8,8 @@ import {EditType} from '../../enum/edit-type.enum';
 import {SelectType} from '../../enum/select-type.enum';
 import {EditEvent} from '../../enum/edit-event.enum';
 import {TableService} from '../../service/table.service';
+import {TableRow} from '../../contract/table-row';
+import {ICellEvent} from '../../contract/i-cell-event';
 
 @Component({
   selector: 'teta-table-demo',
@@ -21,8 +23,9 @@ export class TableDemoComponent implements OnInit {
   @Input() selectType: SelectType;
   @Input() editEvent: EditEvent;
   @ViewChild(TemplateRef, {read: TemplateRef, static: true}) dropdownTpl: TemplateRef<any>;
+  @ViewChild(TemplateRef, {read: TemplateRef, static: true}) contextMenu: TemplateRef<any>;
   tableService: TableService<any>;
-
+  activeRow: TableRow<any>;
   dict: IDictionary<IIdName<any>[]> = {
     ram: [
       {id: 8, name: '8'},
@@ -34,11 +37,18 @@ export class TableDemoComponent implements OnInit {
     long: []
   };
   data: any[] = [];
-  columns = []
+  columns = [];
 
 
   constructor() {
     this.dict['long'] = this.getLong();
+  }
+
+  @HostListener('keydown', ['$event'])
+  @HostListener('keyup', ['$event'])
+  @HostListener('keypress', ['$event'])
+  keydown(event: KeyboardEvent) {
+    event.stopPropagation();
   }
 
   log = (name, value) => {
@@ -55,6 +65,12 @@ export class TableDemoComponent implements OnInit {
         unit: 'v',
         filterType: FilterType.string,
         headDropdownTemplate: this.dropdownTpl
+      }),
+      new TableColumn({
+        name: 'city',
+        filterType: FilterType.string,
+        locked: true,
+        editable: false
       }),
       new TableColumn({
         name: 'date',
@@ -84,10 +100,6 @@ export class TableDemoComponent implements OnInit {
       new TableColumn({
         name: 'location',
         columns: [
-          new TableColumn({
-            name: 'city',
-            filterType: FilterType.string,
-          }),
           new TableColumn({
             name: 'state',
             filterType: FilterType.string,
@@ -135,4 +147,8 @@ export class TableDemoComponent implements OnInit {
     }
     return res;
   };
+
+  cellEditStart(event: ICellEvent<any>) {
+
+  }
 }

@@ -11,7 +11,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
+  SimpleChanges, TemplateRef,
   Type,
   ViewChild,
 } from '@angular/core';
@@ -32,9 +32,6 @@ import {IIdName} from '../../../common/contract/i-id-name';
 import {IDictionary} from '../../../common/contract/i-dictionary';
 import {of} from 'rxjs';
 import {ArrayUtil} from '../../../common/util/array-util';
-import {PositionUtil} from '../../../common/util/position-util';
-import {Align} from '../../../common/enum/align.enum';
-import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
 import {FilterType} from '../../filter/enum/filter-type.enum';
 import {TableContextMenuConfig} from '../contract/table-context-menu-config';
 
@@ -83,6 +80,7 @@ export class TableComponent<T>
     new TableContextMenuConfig();
 
   @Input() showHeadCellMenu = true;
+  @Input() contextMenu: TemplateRef<any>;
 
   @Output()
   stateChange: EventEmitter<FilterState> = new EventEmitter<FilterState>();
@@ -90,16 +88,19 @@ export class TableComponent<T>
   @Output() activeRowChange: EventEmitter<TableRow<T>> = new EventEmitter();
   @Output() selectedRowsChange: EventEmitter<TableRow<T>[]> =
     new EventEmitter();
-  @Output() rowLeft = new EventEmitter<TableRow<T>>();
-  @Output() rowEditStart = new EventEmitter<TableRow<T>>();
-  @Output() rowEditEnd = new EventEmitter<TableRow<T>>();
   @Output() cellClick = new EventEmitter<ICellEvent<T>>();
   @Output() cellDoubleClick = new EventEmitter<ICellEvent<T>>();
   @Output() cellFocus = new EventEmitter<ICellEvent<T>>();
-  @Output() cellEditStart = new EventEmitter<ICellCoordinates<T>>();
+  @Output() cellKeyDown = new EventEmitter<ICellEvent<T>>();
+
+  @Output() rowLeft = new EventEmitter<TableRow<T>>();
+
+  @Output() rowEditStart = new EventEmitter<ICellEvent<T>>();
+  @Output() rowEditEnd = new EventEmitter<TableRow<T>>();
+  @Output() cellEditStart = new EventEmitter<ICellEvent<T>>();
   @Output() cellEditEnd = new EventEmitter<ICellCoordinates<T>>();
+
   @Output() valueChange = new EventEmitter<ICellCoordinates<T>>();
-  @Output() cellKeyUp = new EventEmitter<ICellEvent<T>>();
 
   @Output() pasteRows = new EventEmitter<any[]>();
   @Output() addRow = new EventEmitter<void>();
@@ -129,7 +130,7 @@ export class TableComponent<T>
 
     this._svc.editCellStart
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((item: ICellCoordinates<T>) => this.cellEditStart.emit(item));
+      .subscribe((item: ICellEvent<T>) => this.cellEditStart.emit(item));
 
     this._svc.editCellStop
       .pipe(takeWhile((_) => this._alive))
@@ -137,8 +138,8 @@ export class TableComponent<T>
 
     this._svc.editRowStart
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((item: ICellCoordinates<T>) =>
-        this.rowEditStart.emit(item?.row)
+      .subscribe((item: ICellEvent<T>) =>
+        this.rowEditStart.emit(item)
       );
 
     this._svc.editRowStop
@@ -173,6 +174,21 @@ export class TableComponent<T>
       this.cellClick.emit(coordinates);
       if (this.editEvent === EditEvent.click) {
         this.startEditRowOrCell(coordinates);
+      } else {
+        if (this._svc.currentEditCell
+          && (coordinates.row !== this._svc.currentEditCell.row
+            || coordinates.column.name !== this._svc.currentEditCell.column.name)) {
+          this.startEditRowOrCell(null);
+        }
+      }
+    }
+    const row = this.getRow(event);
+    if (row) {
+      if (event.ctrlKey) {
+        this._svc.selectOrDeselectRow(row);
+      }
+      if (event.shiftKey) {
+        this._svc.selectRange(row);
       }
     }
     if (!this.eventIsOnRow(event) && !event.defaultPrevented) {
@@ -201,23 +217,56 @@ export class TableComponent<T>
     }
   }
 
-  @HostListener('window:keyup', ['$event'])
-  keyup(event: KeyboardEvent) {
+  @HostListener('keydown', ['$event'])
+  keydown(event: KeyboardEvent) {
+    if (event.key === 'Enter' || event.key === 'Escape') {
+      this._svc.startEditRow(null);
+      this._svc.startEditCell(null);
+    }
     const coordinates = this.getCoordinates(event);
     if (coordinates) {
-      this.cellKeyUp.emit(coordinates);
-    }
-    switch (event.key) {
-      case 'Enter':
-        this._svc.startEditRow(null);
-        this._svc.startEditCell(null);
-        break;
-      case 'Escape':
-        this._svc.startEditRow(null);
-        this._svc.startEditCell(null);
-        break;
-      default:
-        break;
+      this.cellKeyDown.emit(coordinates);
+      if (event.key && (event.key.length === 1 || event.key === 'Delete')) {
+        this._svc.startEditCell({
+          row: coordinates.row,
+          column: coordinates.column,
+          event: event
+        });
+      }
+      if (event.key === 'Tab' && this._svc.currentEditCell) {
+        event.preventDefault();
+        let target = this._svc.getNextEditableCell(coordinates);
+        if (event.shiftKey) {
+          target = this._svc.getPreviousEditableCell(coordinates);
+        }
+        if (target && target.row && target.column) {
+          this._svc.startEditCell({
+            row: target.row,
+            column: target.column,
+            event: undefined
+          });
+        }
+      }
+      if (!this._svc.currentEditCell) {
+        let target;
+        if (event.key === 'ArrowRight') {
+          target = this._svc.getNextCell(coordinates);
+        }
+        if (event.key === 'ArrowLeft') {
+          target = this._svc.getPreviousCell(coordinates);
+        }
+        if (event.key === 'ArrowUp') {
+          target = this._svc.getPreviousRowCell(coordinates);
+        }
+        if (event.key === 'ArrowDown') {
+          target = this._svc.getNextRowCell(coordinates);
+        }
+        if (target) {
+          event.preventDefault();
+          const element = this.getCellElement(target);
+          element?.focus();
+        }
+      }
     }
   }
 
@@ -227,19 +276,19 @@ export class TableComponent<T>
     }
   }
 
-  @HostListener('contextmenu', ['$event']) contextMenu(event: MouseEvent) {
-    if (
-      this.getSelectedText() ||
-      this.contextMenuConfig?.contextMenu === false
-    ) {
-      return;
-    }
-    event.preventDefault();
-    event.stopPropagation();
-    this.contextMenuTarget = this.getCoordinates(event);
-    this.showContextMenu = true;
-    this.setPosition(event);
-  }
+  // @HostListener('contextmenu', ['$event']) contextMenu(event: MouseEvent) {
+  //   if (
+  //     this.getSelectedText() ||
+  //     this.contextMenuConfig?.contextMenu === false
+  //   ) {
+  //     return;
+  //   }
+  //   event.preventDefault();
+  //   event.stopPropagation();
+  //   this.contextMenuTarget = this.getCoordinates(event);
+  //   this.showContextMenu = true;
+  //   this.setPosition(event);
+  // }
 
   rowAdd() {
     this.addRow.emit();
@@ -335,7 +384,7 @@ export class TableComponent<T>
     }
   }
 
-  private startEditRowOrCell(coordinates: ICellCoordinates<T>): void {
+  private startEditRowOrCell(coordinates: ICellEvent<T>): void {
     if (this.editType === EditType.row) {
       this._svc.startEditRow(coordinates);
     }
@@ -348,6 +397,18 @@ export class TableComponent<T>
     return event.composedPath().find((target: HTMLElement) => {
       return target.tagName?.toLowerCase() === 'teta-cell';
     }) as HTMLElement;
+  }
+
+  private getEventRow(event: Event): HTMLElement | null {
+    return event.composedPath().find((target: HTMLElement) => {
+      return target?.getAttribute && target?.getAttribute('data-row');
+    }) as HTMLElement;
+  }
+
+  private getCellElement(coordinates: ICellCoordinates<T>): HTMLElement | null {
+    return this._elementRef.nativeElement.querySelector(
+      `teta-cell[data-row="${this._svc.getRowIndex(coordinates.row)}"][data-column="${coordinates.column.name}"]`
+    );
   }
 
   private eventIsOnRow(event: Event): boolean {
@@ -375,6 +436,17 @@ export class TableComponent<T>
     return null;
   }
 
+  private getRow(event: Event): TableRow<T> | null {
+    const rowElement = this.getEventRow(event);
+    if (rowElement) {
+      const rowIndex = rowElement.getAttribute('data-row');
+      if (rowIndex) {
+        return this._svc.getRowByIndex(rowIndex);
+      }
+    }
+    return null;
+  }
+
   private onScroll = () => {
     this._headElement.scrollLeft = this._bodyElement.scrollLeft;
   };
@@ -387,20 +459,20 @@ export class TableComponent<T>
     return text;
   }
 
-  private setPosition(event: MouseEvent) {
-    const position = PositionUtil.getPosition(
-      {
-        top: event.y,
-        bottom: event.y,
-        left: event.x,
-        right: event.x,
-      },
-      this.menu.nativeElement.getBoundingClientRect(),
-      Align.left,
-      VerticalAlign.auto
-    );
-    PositionUtil.setElementPosition(this.menu.nativeElement, position);
-  }
+  // private setPosition(event: MouseEvent) {
+  //   const position = PositionUtil.getPosition(
+  //     {
+  //       top: event.y,
+  //       bottom: event.y,
+  //       left: event.x,
+  //       right: event.x,
+  //     },
+  //     this.menu.nativeElement.getBoundingClientRect(),
+  //     Align.left,
+  //     VerticalAlign.auto
+  //   );
+  //   PositionUtil.setElementPosition(this.menu.nativeElement, position);
+  // }
 
   private toClipboardString(rows: TableRow<T>[], columns: TableColumn[]) {
     return rows.reduce(

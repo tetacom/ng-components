@@ -16,7 +16,8 @@
     display: flex;
     overflow: hidden;
     flex-shrink: 0;
-    background-color: getColorVar('text', '5');
+    background-color: getColorVar('text', '50');
+    color: getColorVar('white', '50');
     @include getFont($fonts, 'table-header');
 
     &_locked {
@@ -55,7 +56,6 @@
         align-items: center;
         padding: 0 8px;
         text-align: center;
-        border-bottom: solid 1px getColorVar('text', '5');
       }
 
       &__children {
@@ -77,8 +77,6 @@
       &__menu {
         position: absolute;
         right: 8px;
-        //top: 0;
-        //bottom: 0;
         display: none;
 
         &:hover {
@@ -86,8 +84,8 @@
         }
       }
 
-      &:hover {
-        background: getColorVar('text', 10);
+      &:hover, &_active {
+        background: getColorVar('text', 60);
       }
 
       &:hover &__menu, &__menu_open {
@@ -99,7 +97,6 @@
         display: flex;
         min-width: 0;
         position: relative;
-        //justify-content: center;
         padding: 6px 8px;
         align-items: center;
         grid-gap: 8px;
@@ -151,16 +148,8 @@
     @include getFont($fonts, 'body-3');
 
     &-container {
-      display: flex;
-      flex-direction: column;
       flex-grow: 1;
       @include scrollable();
-
-      &-virtual {
-        display: flex;
-        flex-grow: 1;
-        flex-direction: column;
-      }
     }
   }
 
@@ -219,6 +208,7 @@
     padding: 0 8px;
     overflow: hidden;
     text-overflow: ellipsis;
+    user-select: none;
 
     &_numeric {
       text-align: right;
