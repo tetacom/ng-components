@@ -26,6 +26,7 @@ export class TableDemoComponent implements OnInit {
   @ViewChild(TemplateRef, {read: TemplateRef, static: true}) contextMenu: TemplateRef<any>;
   tableService: TableService<any>;
   activeRow: TableRow<any>;
+  selectedRows: TableRow<any>[];
   dict: IDictionary<IIdName<any>[]> = {
     ram: [
       {id: 8, name: '8'},
@@ -150,5 +151,72 @@ export class TableDemoComponent implements OnInit {
 
   cellEditStart(event: ICellEvent<any>) {
 
+  }
+
+  addRow() {
+  }
+
+  delete() {
+
+  }
+
+  deleteAll() {
+
+  }
+
+  copy() {
+    navigator.clipboard.writeText(
+      this.toClipboardString([this.activeRow], this.tableService.getVisibleColumns())
+    );
+  }
+
+  copyAll() {
+    navigator.clipboard.writeText(
+      this.toClipboardString(this.selectedRows, this.tableService.getVisibleColumns())
+    );
+  }
+
+  async paste() {
+    const result = await navigator.clipboard.readText();
+    console.log(this.fromClipboard(result, this.tableService.getVisibleColumns()));
+  }
+
+  private toClipboardString(rows: TableRow<any>[], columns: TableColumn[]) {
+    return rows.reduce(
+      (res: string, currentRow: TableRow<any>, i: number) =>
+        `${res}${i === 0 ? '' : '\n'}${columns.reduce(
+          (columnResult: string, column: TableColumn, j: number) =>
+            `${columnResult}${j === 0 ? '' : '\t'}${
+              currentRow.data[column.name] ?? ''
+            }`,
+          ''
+        )}`,
+      ''
+    );
+  }
+
+  private fromClipboard(data: string, columns: TableColumn[]) {
+    const rows = data.split('\n').filter((_) => _?.length > 0);
+    const result = rows.map((_) =>
+      _.replace('\r', '').replace('\n', '').split('\t')
+    );
+    return result.map((row: string[]) =>
+      row.reduce((res, item, index) => {
+        let value: any = item;
+        if (
+          columns[index]?.filterType === FilterType.number ||
+          columns[index]?.filterType === FilterType.list
+        ) {
+          value = parseFloat(item);
+        }
+        if (columns[index]?.filterType === FilterType.boolean) {
+          value = Boolean(JSON.parse(item.toLowerCase()));
+        }
+        if (columns[index]) {
+          res[columns[index].name] = value;
+        }
+        return res;
+      }, {})
+    );
   }
 }

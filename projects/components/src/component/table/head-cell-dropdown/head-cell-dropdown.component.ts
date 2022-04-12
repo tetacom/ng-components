@@ -22,6 +22,7 @@ import {ArrayUtil} from '../../../common/util/array-util';
 import {SortParam} from '../../filter/contarct/sort-param';
 import {TableRow} from '../contract/table-row';
 import {SortEvent} from '../contract/sort-event';
+import {IId} from '../../../common/contract/i-id';
 
 @Component({
   selector: 'teta-head-cell-dropdown',

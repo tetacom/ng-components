@@ -4,6 +4,8 @@
     [showHeadCellMenu]="showHeadCellMenu"></teta-table-head>
   <teta-table-body
     [tetaContextMenu]="contextMenu"
+    [open]="contextMenuOpen"
+    (openChange)="setContextMenuOpen($event)"
     [aggregate]="aggregate"
     [virtual]="virtual"
     [activeRow]="activeRow"
@@ -16,56 +18,3 @@
     [rowClass]="rowClass"
     [tree]="tree"></teta-table-body>
 </div>
-
-<!--<div #contextMenu-->
-<!--     class="list shadow-1"-->
-<!--     style="position: fixed; z-index: 2;"-->
-<!--     [style.visibility]="showContextMenu ? 'visible ' : 'hidden'"-->
-<!--     [tetaClickOutside]="showContextMenu"-->
-<!--     (clickOutside)="showContextMenu = false">-->
-<!--  <ng-container *ngIf="contextMenuConfig?.add">-->
-<!--    <div class="list-item list-item_interactive"-->
-<!--         (click)="rowAdd()">-->
-<!--      <teta-icon [name]="'add'" [palette]="'text'"></teta-icon>-->
-<!--      Добавить строку-->
-<!--    </div>-->
-<!--    <div class="list-divider"></div>-->
-<!--  </ng-container>-->
-<!--  <ng-container *ngIf="contextMenuConfig?.copy">-->
-<!--    <div class="list-item list-item_interactive"-->
-<!--         (click)="copy(selectedRowsList)"-->
-<!--         *ngIf="selectedRowsList?.length > 0">-->
-<!--      <teta-icon [name]="'copySelected'" [palette]="'text'"></teta-icon>-->
-<!--      Копировать выделенные строки-->
-<!--    </div>-->
-<!--    <div class="list-item list-item_interactive"-->
-<!--         (click)="copy([contextMenuTarget.row])"-->
-<!--         *ngIf="contextMenuTarget">-->
-<!--      <teta-icon [name]="'copy'" [palette]="'text'"></teta-icon>-->
-<!--      Копировать строку-->
-<!--    </div>-->
-<!--    <div class="list-divider"></div>-->
-<!--  </ng-container>-->
-<!--  <ng-container *ngIf="contextMenuConfig?.paste">-->
-<!--    <div class="list-item list-item_interactive"-->
-<!--         (click)="pasteData()">-->
-<!--      <teta-icon [name]="'paste'" [palette]="'text'"></teta-icon>-->
-<!--      Вставить-->
-<!--    </div>-->
-<!--    <div class="list-divider"></div>-->
-<!--  </ng-container>-->
-<!--  <ng-container *ngIf="contextMenuConfig?.delete">-->
-<!--    <div class="list-item list-item_interactive"-->
-<!--         (click)="delete(selectedRowsList)"-->
-<!--         *ngIf="selectedRowsList?.length > 0">-->
-<!--      <teta-icon [name]="'deleteSelected'" [palette]="'text'"></teta-icon>-->
-<!--      Удалить выделенные строки-->
-<!--    </div>-->
-<!--    <div class="list-item list-item_interactive"-->
-<!--         (click)="delete([contextMenuTarget.row])"-->
-<!--         *ngIf="contextMenuTarget">-->
-<!--      <teta-icon [name]="'delete'" [palette]="'text'"></teta-icon>-->
-<!--      Удалить строку-->
-<!--    </div>-->
-<!--  </ng-container>-->
-<!--</div>-->

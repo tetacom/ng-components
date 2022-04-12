@@ -27,6 +27,7 @@ import objectHash from 'object-hash';
 import {TableColumnStore} from '../contract/table-column-store';
 import {ICellValue} from '../contract/i-cell-value';
 import {ICellEvent} from '../contract/i-cell-event';
+import {IId} from '../../../common/contract/i-id';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +38,7 @@ export class TableService<T> {
   dict: Observable<IDictionary<IIdName<any>[]>>;
   filterOptions: Observable<IDictionary<IIdName<any>[]>>;
   state: Observable<FilterState>;
-  selectType: SelectType;
+  selectType: SelectType = SelectType.multiple;
   editRowStart: Observable<ICellEvent<T>>;
   editRowStop: Observable<ICellCoordinates<T>>;
   editCellStart: Observable<ICellEvent<T>>;
@@ -52,9 +53,10 @@ export class TableService<T> {
   hiddenColumns: Observable<string[]>;
   scrollIndex: Observable<number>;
 
-  editType: EditType;
-  editEvent: EditEvent;
+  editType: EditType = EditType.cell;
+  editEvent: EditEvent = EditEvent.doubleClick;
   rowEditable: boolean | ((row: TableRow<T>) => boolean);
+  trackRow: (row: TableRow<T>) => any = (row: TableRow<T>) => (row?.data as any)?.id;
 
   get dragSource() {
     return this._dragSource;
@@ -64,6 +66,7 @@ export class TableService<T> {
   private initialColumns: TableColumn[] = [];
   private displayColumns: TableColumn[] = [];
   private _columns: BehaviorSubject<TableColumn[]> = new BehaviorSubject<TableColumn[]>([]);
+  private _hiddenColumns = new BehaviorSubject<string[]>([]);
   private _displayData: BehaviorSubject<TableRow<T>[]> = new BehaviorSubject<TableRow<T>[]>([]);
   private _dict: BehaviorSubject<IDictionary<IIdName<any>[]>> =
     new BehaviorSubject<IDictionary<IIdName<any>[]>>({});
@@ -86,7 +89,6 @@ export class TableService<T> {
   private _groupToggle = new Subject<TableRow<T>>();
   private _selectedRows = new BehaviorSubject<TableRow<T>[]>([]);
   private _activeRow = new BehaviorSubject<TableRow<T>>(null);
-  private _hiddenColumns = new BehaviorSubject<string[]>([]);
   private _scrollIndex = new Subject<number>();
 
   private _currentEditCell: ICellCoordinates<T>;
@@ -393,22 +395,28 @@ export class TableService<T> {
     }
   }
 
-  startEditRow(cellCoordinates: ICellEvent<T>): void {
-    if (this._currentEditCell?.row !== cellCoordinates?.row) {
+  startEditRow(cellEvent: ICellEvent<T>): void {
+    if (this._currentEditCell?.row !== cellEvent?.row) {
       if (this._currentEditCell != null) {
-        this._editRowStop.next(this._currentEditCell);
+        const row = this._displayData.value.find((row) => {
+          return this.trackRow(row) === this.trackRow(this._currentEditCell?.row);
+        });
+        this._editRowStop.next({
+          row,
+          column: this._currentEditCell.column
+        });
       }
-      if (cellCoordinates === null) {
-        this._editRowStart.next(cellCoordinates);
-        this._currentEditCell = cellCoordinates;
+      if (cellEvent === null) {
+        this._editRowStart.next(cellEvent);
+        this._currentEditCell = cellEvent;
       } else {
         if (
           this.boolOrFuncCallback<TableRow<T>>(this.rowEditable)(
-            cellCoordinates.row
+            cellEvent.row
           )
         ) {
-          this._editRowStart.next(cellCoordinates);
-          this._currentEditCell = cellCoordinates;
+          this._editRowStart.next(cellEvent);
+          this._currentEditCell = cellEvent;
         }
       }
     }
@@ -417,10 +425,16 @@ export class TableService<T> {
   startEditCell(cellEvent: ICellEvent<T>): void {
     if (
       this._currentEditCell?.column.name !== cellEvent?.column.name ||
-      this._currentEditCell?.row !== cellEvent?.row
+      this.trackRow(this._currentEditCell?.row) !== this.trackRow(cellEvent?.row)
     ) {
       if (this._currentEditCell != null) {
-        this._editCellStop.next(this._currentEditCell);
+        const row = this._displayData.value.find((row) => {
+          return this.trackRow(row) === this.trackRow(this._currentEditCell?.row);
+        });
+        this._editCellStop.next({
+          row,
+          column: this._currentEditCell.column
+        });
       }
       if (
         this.boolOrFuncCallback<ICellCoordinates<T>>(cellEvent?.column?.editable)(
@@ -482,7 +496,7 @@ export class TableService<T> {
       minIndex = index;
     }
     if (minIndex < index && index < maxIndex) {
-      minIndex = index;
+      maxIndex = index;
     }
     this._selectedRows.next([...this._displayData.value.slice(minIndex, maxIndex + 1)]);
   }
@@ -678,6 +692,13 @@ export class TableService<T> {
       }
       return true;
     };
+  }
+
+  getVisibleColumns() {
+    const visible = ArrayUtil.flatten(this._columns.value, 'columns', true).filter(
+      (_) => this._hiddenColumns.value.indexOf(_.name) < 0
+    );
+    return visible.sort((a, b) => Number(b.locked) - Number(a.locked));
   }
 
   private getFlatColumns() {

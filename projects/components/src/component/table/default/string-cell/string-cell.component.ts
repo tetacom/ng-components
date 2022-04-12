@@ -40,9 +40,10 @@ export class StringCellComponent<T>
 
   startEdit(initiator: ICellCoordinates<T>, type: 'cell' | 'row'): void {
     if (initiator?.column.name === this.column.name) {
+      this.cdr.detectChanges();
       this.input.nativeElement?.focus();
       this.input.nativeElement?.select();
-      this.cdr.detectChanges();
+      // this.cdr.detectChanges();
       // this.input.nativeElement?.focus();
       // this.input.nativeElement?.select();
       // this.cdr.detectChanges();

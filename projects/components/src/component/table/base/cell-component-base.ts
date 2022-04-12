@@ -68,7 +68,7 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       )
       .subscribe((cell: ICellCoordinates<T>) => {
         if (
-          this.row === cell?.row &&
+          this.svc.trackRow(this.row) === this.svc.trackRow(cell?.row) &&
           !this._edit
           // &&
           // this.svc.boolOrFuncCallback(this.svc.cellEditable)({
@@ -89,14 +89,14 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       )
       .subscribe((cell: ICellCoordinates<T>) => {
         if (
-          this.row === cell?.row &&
+          this.svc.trackRow(this.row) === this.svc.trackRow(cell?.row) &&
           this.column.name === cell?.column?.name &&
           !this._edit
         ) {
           this.start(cell, 'cell');
         }
         if (
-          (this.row !== cell?.row || this.column.name !== cell?.column?.name) &&
+          (this.svc.trackRow(this.row) !== this.svc.trackRow(cell?.row) || this.column.name !== cell?.column?.name) &&
           this._edit
         ) {
           this.stop();
@@ -107,7 +107,7 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       .pipe(takeWhile((_) => this._alive))
       .subscribe((cellValue: ICellValue<T>) => {
         if (
-          this.row === cellValue.cell.row
+          this.svc.trackRow(this.row) === this.svc.trackRow(cellValue.cell.row)
           && this.column.name === cellValue.cell.column.name
         ) {
           this.row.data[this.column.name] = cellValue.value;
@@ -119,7 +119,7 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       .pipe(takeWhile((_) => this._alive))
       .subscribe((cellValue: ICellCoordinates<T>) => {
         if (
-          this.row === cellValue.row
+          this.svc.trackRow(this.row) === this.svc.trackRow(cellValue.row)
         ) {
           this.cdr.detectChanges();
         }

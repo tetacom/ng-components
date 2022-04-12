@@ -7,5 +7,4 @@ export * from './i-cell-value';
 export * from './sort-event';
 export * from './table-column';
 export * from './table-column-store';
-export * from './table-context-menu-config';
 export * from './table-row';

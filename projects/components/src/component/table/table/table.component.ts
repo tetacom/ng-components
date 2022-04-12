@@ -11,7 +11,8 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges, TemplateRef,
+  SimpleChanges,
+  TemplateRef,
   Type,
   ViewChild,
 } from '@angular/core';
@@ -24,16 +25,12 @@ import {ICellEvent} from '../contract/i-cell-event';
 import {ICellCoordinates} from '../contract/i-cell-coordinates';
 import {GroupRowComponentBase} from '../base/group-row-component-base';
 import {GroupRowComponent} from '../default/group-row/group-row.component';
-import {filter, takeWhile, withLatestFrom} from 'rxjs/operators';
+import {filter, takeWhile} from 'rxjs/operators';
 import {EditType} from '../enum/edit-type.enum';
 import {EditEvent} from '../enum/edit-event.enum';
 import {SelectType} from '../enum/select-type.enum';
 import {IIdName} from '../../../common/contract/i-id-name';
 import {IDictionary} from '../../../common/contract/i-dictionary';
-import {of} from 'rxjs';
-import {ArrayUtil} from '../../../common/util/array-util';
-import {FilterType} from '../../filter/enum/filter-type.enum';
-import {TableContextMenuConfig} from '../contract/table-context-menu-config';
 
 @Component({
   selector: 'teta-table',
@@ -59,16 +56,16 @@ export class TableComponent<T>
   @Input() detailComponent: Type<DetailComponentBase<T>>;
   @Input() activeRow: TableRow<T>;
   @Input() selectedRows: TableRow<T>[];
-  @Input() selectType: SelectType = SelectType.none;
+  @Input() selectType: SelectType = SelectType.multiple;
   @Input() aggregate: boolean;
   @Input() grouping: boolean;
   @Input() groupRowComponent: Type<GroupRowComponentBase<T>> =
     GroupRowComponent;
   @Input() openLevels: number;
   @Input() tree: boolean;
-  @Input() trackBy: (row: TableRow<T>) => any;
-  @Input() editType: EditType;
-  @Input() editEvent: EditEvent;
+  @Input() trackRow: (row: TableRow<T>) => any = (row: TableRow<T>) => (row?.data as any)?.id;
+  @Input() editType: EditType = EditType.cell;
+  @Input() editEvent: EditEvent = EditEvent.doubleClick;
   @Input() rowEditable: boolean | ((row: TableRow<T>) => boolean);
   @Input() rowClass: (row: TableRow<T>, index?: number) => string;
 
@@ -76,11 +73,10 @@ export class TableComponent<T>
     this._svc.scrollToIndex(index);
   }
 
-  @Input() contextMenuConfig: TableContextMenuConfig =
-    new TableContextMenuConfig();
-
   @Input() showHeadCellMenu = true;
   @Input() contextMenu: TemplateRef<any>;
+  @Input() contextMenuOpen: boolean;
+  @Output() contextMenuOpenChange = new EventEmitter<boolean>();
 
   @Output()
   stateChange: EventEmitter<FilterState> = new EventEmitter<FilterState>();
@@ -92,32 +88,21 @@ export class TableComponent<T>
   @Output() cellDoubleClick = new EventEmitter<ICellEvent<T>>();
   @Output() cellFocus = new EventEmitter<ICellEvent<T>>();
   @Output() cellKeyDown = new EventEmitter<ICellEvent<T>>();
-
   @Output() rowLeft = new EventEmitter<TableRow<T>>();
-
   @Output() rowEditStart = new EventEmitter<ICellEvent<T>>();
   @Output() rowEditEnd = new EventEmitter<TableRow<T>>();
   @Output() cellEditStart = new EventEmitter<ICellEvent<T>>();
   @Output() cellEditEnd = new EventEmitter<ICellCoordinates<T>>();
-
   @Output() valueChange = new EventEmitter<ICellCoordinates<T>>();
-
-  @Output() pasteRows = new EventEmitter<any[]>();
-  @Output() addRow = new EventEmitter<void>();
-  @Output() deleteRows = new EventEmitter<TableRow<T>[]>();
   @Output() tableService = new EventEmitter<TableService<T>>();
-
   @ViewChild('contextMenu', {static: true}) menu: ElementRef;
   @HostBinding('class.table') private readonly tableClass = true;
 
-  showContextMenu: boolean;
   selectedRowsList: TableRow<T>[];
-  contextMenuTarget: ICellCoordinates<T>;
 
   private _alive = true;
   private _bodyElement: HTMLElement;
   private _headElement: HTMLElement;
-
   private _state: FilterState;
 
   constructor(private _svc: TableService<T>, private _elementRef: ElementRef) {
@@ -220,8 +205,11 @@ export class TableComponent<T>
   @HostListener('keydown', ['$event'])
   keydown(event: KeyboardEvent) {
     if (event.key === 'Enter' || event.key === 'Escape') {
-      this._svc.startEditRow(null);
-      this._svc.startEditCell(null);
+      if (this.editType === EditType.row) {
+        this._svc.startEditRow(null);
+      } else {
+        this._svc.startEditCell(null);
+      }
     }
     const coordinates = this.getCoordinates(event);
     if (coordinates) {
@@ -276,59 +264,6 @@ export class TableComponent<T>
     }
   }
 
-  // @HostListener('contextmenu', ['$event']) contextMenu(event: MouseEvent) {
-  //   if (
-  //     this.getSelectedText() ||
-  //     this.contextMenuConfig?.contextMenu === false
-  //   ) {
-  //     return;
-  //   }
-  //   event.preventDefault();
-  //   event.stopPropagation();
-  //   this.contextMenuTarget = this.getCoordinates(event);
-  //   this.showContextMenu = true;
-  //   this.setPosition(event);
-  // }
-
-  rowAdd() {
-    this.addRow.emit();
-    this.contextMenuTarget = null;
-    this.showContextMenu = false;
-  }
-
-  copy(rows: TableRow<T>[]) {
-    of(1)
-      .pipe(withLatestFrom(this._svc.columns, this._svc.hiddenColumns))
-      .subscribe((data: [number, TableColumn[], string[]]) => {
-        const [, columns, hidden] = data;
-        navigator.clipboard.writeText(
-          this.toClipboardString(rows, this.getVisibleColumns(columns, hidden))
-        );
-        this.contextMenuTarget = null;
-        this.showContextMenu = false;
-      });
-  }
-
-  delete(rows: TableRow<T>[]) {
-    this.deleteRows.emit(rows);
-    this.contextMenuTarget = null;
-    this.showContextMenu = false;
-  }
-
-  async pasteData() {
-    const result = await navigator.clipboard.readText();
-    of(1)
-      .pipe(withLatestFrom(this._svc.columns, this._svc.hiddenColumns))
-      .subscribe((data: [number, TableColumn[], string[]]) => {
-        const [, columns, hidden] = data;
-        this.pasteRows.emit(
-          this.fromClipboard(result, this.getVisibleColumns(columns, hidden))
-        );
-      });
-    this.contextMenuTarget = null;
-    this.showContextMenu = false;
-  }
-
   ngOnInit(): void {
     this._svc.restoreState();
     this._svc.restoreHiddenColumns();
@@ -378,10 +313,17 @@ export class TableComponent<T>
       this._svc.setDict(this.dict);
       this._svc.setFilterOptions(this.dict);
     }
-
     if (changes.hasOwnProperty('filterOptions')) {
       this._svc.setFilterOptions(this.filterOptions);
     }
+    if (changes.hasOwnProperty('trackRow')) {
+      this._svc.trackRow = this.trackRow;
+    }
+  }
+
+  setContextMenuOpen(value: boolean) {
+    this.contextMenuOpen = value;
+    this.contextMenuOpenChange.emit(this.contextMenuOpen);
   }
 
   private startEditRowOrCell(coordinates: ICellEvent<T>): void {
@@ -451,72 +393,11 @@ export class TableComponent<T>
     this._headElement.scrollLeft = this._bodyElement.scrollLeft;
   };
 
-  private getSelectedText() {
-    let text = '';
-    if (typeof window.getSelection != 'undefined') {
-      text = window.getSelection().toString();
-    }
-    return text;
-  }
-
-  // private setPosition(event: MouseEvent) {
-  //   const position = PositionUtil.getPosition(
-  //     {
-  //       top: event.y,
-  //       bottom: event.y,
-  //       left: event.x,
-  //       right: event.x,
-  //     },
-  //     this.menu.nativeElement.getBoundingClientRect(),
-  //     Align.left,
-  //     VerticalAlign.auto
-  //   );
-  //   PositionUtil.setElementPosition(this.menu.nativeElement, position);
+  // private getSelectedText() {
+  //   let text = '';
+  //   if (typeof window.getSelection != 'undefined') {
+  //     text = window.getSelection().toString();
+  //   }
+  //   return text;
   // }
-
-  private toClipboardString(rows: TableRow<T>[], columns: TableColumn[]) {
-    return rows.reduce(
-      (res: string, currentRow: TableRow<T>, i: number) =>
-        `${res}${i === 0 ? '' : '\n'}${columns.reduce(
-          (columnResult: string, column: TableColumn, j: number) =>
-            `${columnResult}${j === 0 ? '' : '\t'}${
-              currentRow.data[column.name] ?? ''
-            }`,
-          ''
-        )}`,
-      ''
-    );
-  }
-
-  private fromClipboard(data: string, columns: TableColumn[]) {
-    const rows = data.split('\n').filter((_) => _?.length > 0);
-    const result = rows.map((_) =>
-      _.replace('\r', '').replace('\n', '').split('\t')
-    );
-    return result.map((row: string[]) =>
-      row.reduce((res, item, index) => {
-        let value: any = item;
-        if (
-          columns[index]?.filterType === FilterType.number ||
-          columns[index]?.filterType === FilterType.list
-        ) {
-          value = parseFloat(item);
-        }
-        if (columns[index]?.filterType === FilterType.boolean) {
-          value = Boolean(JSON.parse(item.toLowerCase()));
-        }
-        if (columns[index]) {
-          res[columns[index].name] = value;
-        }
-        return res;
-      }, {})
-    );
-  }
-
-  private getVisibleColumns(columns: TableColumn[], hidden: string[]) {
-    const visible = ArrayUtil.flatten(columns, 'columns', true).filter(
-      (_) => hidden.indexOf(_.name) < 0
-    );
-    return visible.sort((a, b) => Number(b.locked) - Number(a.locked));
-  }
 }
