@@ -4,7 +4,7 @@
 } as data">
   <ng-container *ngIf="data.hasSeriesData === true else noData">
     <div class="column column_auto">
-      <teta-chart-container class="chart-container"></teta-chart-container>
+      <teta-chart-container class="chart-container position-relative"></teta-chart-container>
     </div>
     <teta-legend *ngIf="data.svcConfig.legend?.enable === true" [series]="data.svcConfig.series"></teta-legend>
   </ng-container>

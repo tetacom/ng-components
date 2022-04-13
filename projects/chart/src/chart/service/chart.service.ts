@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { IChartConfig } from '../model/i-chart-config';
+import {Injectable} from '@angular/core';
+import {IChartConfig} from '../model/i-chart-config';
 import {
   BehaviorSubject,
-  filter,
+  filter, first,
   map,
   Observable,
   of,
@@ -10,17 +10,17 @@ import {
   Subject,
   withLatestFrom,
 } from 'rxjs';
-import { IChartEvent } from '../model/i-chart-event';
-import { IDisplayTooltip } from '../model/i-display-tooltip';
-import { PlotBand } from '../model/plot-band';
-import { PlotLine } from '../model/plot-line';
-import { IPointMove } from '../model/i-point-move';
-import { defaultChartConfig } from '../default/default-chart-config';
-import { defaultAxisConfig } from '../default/default-axis-config';
-import { defaultSeriesConfig } from '../default/default-series-config';
-import { BasePoint } from '../model/base-point';
-import { Series } from '../model/series';
-import { Annotation } from '../model/annotation';
+import {IChartEvent} from '../model/i-chart-event';
+import {IDisplayTooltip} from '../model/i-display-tooltip';
+import {PlotBand} from '../model/plot-band';
+import {PlotLine} from '../model/plot-line';
+import {IPointMove} from '../model/i-point-move';
+import {defaultChartConfig} from '../default/default-chart-config';
+import {defaultAxisConfig} from '../default/default-axis-config';
+import {defaultSeriesConfig} from '../default/default-series-config';
+import {BasePoint} from '../model/base-point';
+import {Series} from '../model/series';
+import {Annotation} from '../model/annotation';
 
 @Injectable({
   providedIn: 'root',
@@ -44,9 +44,7 @@ export class ChartService {
   private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig());
   private size$ = new BehaviorSubject<DOMRect>(new DOMRectReadOnly());
   private pointerMove$ = new Subject<PointerEvent>();
-  private tooltips$ = new BehaviorSubject<
-    Map<Series<BasePoint>, IDisplayTooltip>
-  >(new Map());
+  private tooltips$ = new BehaviorSubject<Map<Series<BasePoint>, IDisplayTooltip>>(new Map());
   private plotBandEvent$ = new Subject<IChartEvent<PlotBand>>();
   private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();
   private pointMove$ = new Subject<IChartEvent<IPointMove>>();
@@ -122,6 +120,32 @@ export class ChartService {
     this.tooltips$.next(new Map());
   }
 
+  public toggleVisibilitySeries(seriesIndex: Array<number | string>, visible?: boolean) {
+
+
+    if(seriesIndex?.length === 0) {
+      return;
+    }
+
+    const currentConfig = this.config$.value
+
+    seriesIndex.forEach((serieIndex) => {
+      const currentSerieIndex = currentConfig.series.findIndex((_) => _.id === serieIndex);
+
+      if(currentSerieIndex === -1) {
+        return;
+      }
+
+      const serie = currentConfig.series[currentSerieIndex];
+      if (!serie.hasOwnProperty('visible')) {
+        currentConfig.series[currentSerieIndex].visible = true;
+      }
+      currentConfig.series[currentSerieIndex].visible = visible !== undefined ? visible : !currentConfig.series[currentSerieIndex].visible;
+    })
+
+    this.config$.next(currentConfig);
+  }
+
   public emitMoveAnnotation(event: IChartEvent<Annotation>) {
     this.annotationMove$.next(event);
   }
@@ -174,6 +198,11 @@ export class ChartService {
       };
     });
 
+    config.yAxis = config.yAxis.map((axis, idx) => {
+      const seriesLinkCount = config.series.filter((_) => _.yAxisIndex === idx && _.visible).length
+      return Object.assign({}, axis, {visible: seriesLinkCount !== 0})
+    })
+
     const oppositeYCount = config.yAxis?.filter((_) => _.opposite);
     const oppositeXCount = config.xAxis?.filter((_) => _.opposite);
 
@@ -209,7 +238,7 @@ export class ChartService {
     );
 
     config.zoom.syncChannel = config.zoom?.syncChannel ?? id;
-    
+
     return config;
   }
 
@@ -242,8 +271,8 @@ export class ChartService {
     }
 
     if (config?.brush?.enable) {
-      config.yAxis = config.yAxis.map((_) => ({ ..._, zoom: false }));
-      config.xAxis = config.xAxis.map((_) => ({ ..._, zoom: false }));
+      config.yAxis = config.yAxis.map((_) => ({..._, zoom: false}));
+      config.xAxis = config.xAxis.map((_) => ({..._, zoom: false}));
     }
 
     return config;

@@ -7,6 +7,7 @@ import {
 import { Series } from '../model/series';
 import { BasePoint } from '../model/base-point';
 import { SeriesType } from '../model/enum/series-type';
+import {ChartService} from "../service/chart.service";
 
 @Component({
   selector: 'teta-legend',
@@ -26,9 +27,13 @@ export class LegendComponent {
   @Input() series: Array<Series<BasePoint>>;
   @HostBinding('class.padding-bottom-4') classLegend = true;
 
-  constructor() {}
+  constructor(private chartService: ChartService) {}
 
   getHeight(serie: Series<BasePoint>) {
     return this.sizeMapping.get(serie.type ?? SeriesType.line);
+  }
+
+  click(serie: Series<BasePoint>) {
+   this.chartService.toggleVisibilitySeries([serie.id]);
   }
 }
