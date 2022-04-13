@@ -11,5 +11,6 @@ export const defaultSeriesConfig = (): Series<BasePoint> => ({
   yAxisIndex: 0,
   fillType: FillType.default,
   color: 'coral',
+  visible: true,
   clipPointsDirection: ClipPointsDirection.x
 });
