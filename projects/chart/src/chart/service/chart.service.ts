@@ -3,11 +3,12 @@ import {IChartConfig} from '../model/i-chart-config';
 import {
   BehaviorSubject,
   filter, first,
+  lastValueFrom,
   map,
   Observable,
   of,
   shareReplay,
-  Subject,
+  Subject, take,
   withLatestFrom,
 } from 'rxjs';
 import {IChartEvent} from '../model/i-chart-event';
@@ -120,25 +121,19 @@ export class ChartService {
     this.tooltips$.next(new Map());
   }
 
-  public toggleVisibilitySeries(seriesIndex: Array<number | string>, visible?: boolean) {
-
+  public async toggleVisibilitySeries(seriesIndex: Array<number | string>, visible?: boolean) {
 
     if(seriesIndex?.length === 0) {
       return;
     }
 
-    const currentConfig = this.config$.value
-
+    const currentConfig = await lastValueFrom(this.config.pipe(take(1)));
+    
     seriesIndex.forEach((serieIndex) => {
       const currentSerieIndex = currentConfig.series.findIndex((_) => _.id === serieIndex);
 
       if(currentSerieIndex === -1) {
         return;
-      }
-
-      const serie = currentConfig.series[currentSerieIndex];
-      if (!serie.hasOwnProperty('visible')) {
-        currentConfig.series[currentSerieIndex].visible = true;
       }
       currentConfig.series[currentSerieIndex].visible = visible !== undefined ? visible : !currentConfig.series[currentSerieIndex].visible;
     })
