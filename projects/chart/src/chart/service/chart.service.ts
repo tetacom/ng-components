@@ -199,8 +199,8 @@ export class ChartService {
     });
 
     config.yAxis = config.yAxis.map((axis, idx) => {
-      const seriesLinkCount = config.series.filter((_) => _.yAxisIndex === idx && _.visible).length
-      return Object.assign({}, axis, {visible: seriesLinkCount !== 0})
+      const seriesLinkCount = config.series.filter((_) => _.yAxisIndex === idx && _.visible === true).length
+      return Object.assign({}, axis, {visible: axis.visible === false ? false : seriesLinkCount !== 0})
     })
 
     const oppositeYCount = config.yAxis?.filter((_) => _.opposite);
