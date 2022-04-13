@@ -23,3 +23,6 @@ export * from './common/public-api';
  * Util
  */
 export * from './util/public-api';
+
+/* locale */
+export * from './locale/public-api';

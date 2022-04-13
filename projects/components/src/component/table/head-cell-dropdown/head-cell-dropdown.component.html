@@ -1,4 +1,4 @@
-<teta-tabs class="column_auto">
+<teta-tabs class="column_auto" *ngIf="locale | async as loc">
   <teta-tab>
     <ng-template tetaTabTitle>
       <teta-icon [name]="'menu'"></teta-icon>
@@ -6,41 +6,27 @@
     <ng-template tetaTabContent>
       <div class="list column_auto">
         <div class="list-item list-item_interactive" (click)="pinColumn()">
-          <teta-icon [palette]="'text'"
-                     [name]="column.locked ? 'unpin' : 'pin'"
-                     class="margin-right-2"></teta-icon>
-          {{column.locked ? 'Открепить' : 'Закрепить'}}
+          {{column.locked ? loc.unpin : loc.pin}}
         </div>
         <div class="list-divider"></div>
         <ng-container *ngIf="column.sortable">
           <div class="list-item list-item_interactive"
                (click)="sortAsc($event)">
-            <teta-icon [palette]="'text'"
-                       [name]="'arrowUp'"
-                       class="margin-right-2"></teta-icon>
-            Сортировать по возрастанию
+            {{loc.sortAsc}}
           </div>
           <div class="list-item list-item_interactive"
                (click)="sortDesc($event)">
-            <teta-icon [palette]="'text'"
-                       [name]="'arrowDown'"
-                       class="margin-right-2"></teta-icon>
-            Сортировать по убыванию
+            {{loc.sortDesc}}
           </div>
           <ng-container *ngIf="hasSortedColumns()">
             <div class="list-item list-item_interactive"
                  *ngIf="sortParam"
                  (click)="clearSort()">
-              <teta-icon [palette]="'text'"
-                         [name]="'pin'" class="margin-right-2"></teta-icon>
-              Сбросить сортировку
+              {{loc.clearSort}}
             </div>
             <div class="list-item list-item_interactive"
                  (click)="clearAllSort()">
-              <teta-icon [palette]="'text'"
-                         [name]="'pin'"
-                         class="margin-right-2"></teta-icon>
-              Сбросить все сортировки
+              {{loc.clearAllSort}}
             </div>
             <div class="list-divider"></div>
           </ng-container>
@@ -49,38 +35,23 @@
           <div class="list-item list-item_interactive"
                *ngIf="filtered"
                (click)="clearFilter()">
-            <teta-icon [palette]="'text'"
-                       [name]="'pin'"
-                       class="margin-right-2"></teta-icon>
-            Очистить фильтр
+            {{loc.clearFilter}}
           </div>
           <div class="list-item list-item_interactive"
                (click)="clearAllFilters()">
-            <teta-icon [palette]="'text'"
-                       [name]="'pin'"
-                       class="margin-right-2"></teta-icon>
-            Очистить все фильтры
+            {{loc.clearAllFilters}}
           </div>
           <div class="list-divider"></div>
         </ng-container>
         <div class="list-item list-item_interactive" (click)="autosize.emit()">
-          <teta-icon [palette]="'text'"
-                     [name]="'autoSize'"
-                     class="margin-right-2"></teta-icon>
-          Авторазмер колонки
+          {{loc.autosizeColumn}}
         </div>
         <div class="list-item list-item_interactive" (click)="autosizeAll.emit()">
-          <teta-icon [palette]="'text'"
-                     [name]="'autoSizeAll'"
-                     class="margin-right-2"></teta-icon>
-          Авторазмер всех колонок
+          {{loc.autosizeAll}}
         </div>
         <div class="list-divider"></div>
         <div class="list-item list-item_interactive" (click)="restoreDefaultColumns()">
-          <teta-icon [palette]="'text'"
-                     [name]="'undo'"
-                     class="margin-right-2"></teta-icon>
-          Отменить все изменения
+          {{loc.resetColumnsSize}}
         </div>
       </div>
     </ng-template>
@@ -97,11 +68,11 @@
                         [filterOptions]="options[column.name]"></teta-filter-host>
       <teta-toolbar class="justify-content-between">
         <button teta-button [palette]="'text'" [view]="'ghost'" (click)="clearFilter()">
-          Очистить
+          {{loc.clear}}
         </button>
         <button teta-button [palette]="'primary'" (click)="applyFilter()">
           <teta-icon [name]="'tick'"></teta-icon>
-          Применить
+          {{loc.apply}}
         </button>
       </teta-toolbar>
     </ng-template>
@@ -125,7 +96,7 @@
                        [allowNull]="true"
                        [ngModel]="allColumnsVisible()"
                        (ngModelChange)="setAllColumns($event)">
-          Все
+          {{loc.all}}
         </teta-checkbox>
       </div>
       <div class="list-divider"></div>
@@ -155,7 +126,7 @@
                 [disabled]="allColumnsVisible() === false"
                 [palette]="'primary'"
                 (click)="setColumnsVisibility()">
-          Применить
+          {{loc.apply}}
         </button>
       </teta-toolbar>
     </ng-template>

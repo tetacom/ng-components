@@ -6,6 +6,7 @@ import {TableRow} from './table-row';
 import {AggregationType} from '../enum/aggregation-type.enum';
 import {TemplateRef} from '@angular/core';
 import {ICellCoordinates} from './i-cell-coordinates';
+import {ICellInstance} from './i-cell-instance';
 
 export class TableColumn extends FilterItem {
   /**
@@ -51,7 +52,7 @@ export class TableColumn extends FilterItem {
   /**
    * Колонка доступна для редактирования
    */
-  editable: boolean | ((coordinates: ICellCoordinates<any>) => boolean);
+  editable: boolean | ((coordinates: ICellInstance<any>) => boolean);
   /**
    * Компонент для рендера ячейки
    */
@@ -130,7 +131,7 @@ export class TableColumn extends FilterItem {
     headCellClass?: string[];
     cellClass?: string[];
     data?: any;
-    editable?: boolean | ((coordinates: ICellCoordinates<any>) => boolean);
+    editable?: boolean | ((coordinates: ICellInstance<any>) => boolean);
     objectType?: boolean;
     cellComponent?: any;
     headCellComponent?: any;

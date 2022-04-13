@@ -36,8 +36,8 @@ export class DateTimeCellComponent<T>
     this.valueChanged();
   }
 
-  startEdit(initiator: ICellCoordinates<T>, type: 'cell' | 'row'): void {
-    if (initiator?.column.name === this.column.name) {
+  startEdit(initiator: ICellCoordinates, type: 'cell' | 'row'): void {
+    if (initiator?.column === this.column.name) {
       setTimeout(() => {
         this.input?.openPicker(true);
         this.cdr.markForCheck();

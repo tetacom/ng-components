@@ -1,5 +1,5 @@
 <div class="padding-3">
-  <teta-input [label]="'Поиск'">
+  <teta-input [label]="(locale | async)?.search">
     <input type="text" class="input" [(ngModel)]="filter.value" (blur)="setFilter()" (keydown.enter)="setFilter()" />
   </teta-input>
 </div>

@@ -22,7 +22,8 @@ import {ArrayUtil} from '../../../common/util/array-util';
 import {SortParam} from '../../filter/contarct/sort-param';
 import {TableRow} from '../contract/table-row';
 import {SortEvent} from '../contract/sort-event';
-import {IId} from '../../../common/contract/i-id';
+import {TetaLocalisation} from '../../../locale/teta-localisation';
+import {TetaConfigService} from '../../../locale/teta-config.service';
 
 @Component({
   selector: 'teta-head-cell-dropdown',
@@ -44,6 +45,7 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
 
   filterOptions: Observable<IDictionary<IIdName<any>[]>>;
   hiddenColumns: string[];
+  locale: Observable<TetaLocalisation>;
 
   @HostListener('keydown.enter') enter() {
     this.applyFilter();
@@ -76,7 +78,9 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
   private _alive = true;
 
   constructor(private _svc: TableService<T>,
+              private _config: TetaConfigService,
               private _cdr: ChangeDetectorRef) {
+    this.locale = this._config.locale;
     this.filterOptions = this._svc.filterOptions;
     this._svc.hiddenColumns
       .pipe(

@@ -9,12 +9,11 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  ViewChild,
 } from '@angular/core';
-import { PickerLocaleModel } from '../model/picker-locale-model';
-import { fromEvent, merge } from 'rxjs';
-import { takeWhile, tap } from 'rxjs/operators';
-import { PickerTouchService } from '../service/picker-touch.service';
+import {fromEvent} from 'rxjs';
+import {takeWhile, tap} from 'rxjs/operators';
+import {PickerTouchService} from '../service/picker-touch.service';
+import {TetaLocalisation} from '../../../locale/teta-localisation';
 
 @Component({
   selector: 'teta-month-select',
@@ -23,7 +22,7 @@ import { PickerTouchService } from '../service/picker-touch.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MonthSelectComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Input() locale: PickerLocaleModel;
+  @Input() locale: TetaLocalisation;
   @Input() minDate: Date;
   @Input() maxDate: Date;
   @Input() size = 8;
@@ -85,7 +84,8 @@ export class MonthSelectComponent implements OnInit, AfterViewInit, OnDestroy {
     this.today.setHours(0, 0, 0, 0);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   ngOnDestroy() {
     this._alive = false;

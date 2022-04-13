@@ -218,4 +218,8 @@
       color: getColorVar('text', 50);
     }
   }
+
+  &:hover {
+    background: getColorVar('primary', 10);
+  }
 }

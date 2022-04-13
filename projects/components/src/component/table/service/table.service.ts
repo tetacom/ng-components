@@ -27,7 +27,7 @@ import objectHash from 'object-hash';
 import {TableColumnStore} from '../contract/table-column-store';
 import {ICellValue} from '../contract/i-cell-value';
 import {ICellEvent} from '../contract/i-cell-event';
-import {IId} from '../../../common/contract/i-id';
+import {ICellInstance, ICellInstanceValue} from '../contract/i-cell-instance';
 
 @Injectable({
   providedIn: 'root',
@@ -39,12 +39,12 @@ export class TableService<T> {
   filterOptions: Observable<IDictionary<IIdName<any>[]>>;
   state: Observable<FilterState>;
   selectType: SelectType = SelectType.multiple;
-  editRowStart: Observable<ICellEvent<T>>;
-  editRowStop: Observable<ICellCoordinates<T>>;
-  editCellStart: Observable<ICellEvent<T>>;
-  editCellStop: Observable<ICellCoordinates<T>>;
-  valueChanged: Observable<ICellCoordinates<T>>;
-  valueSet: Observable<ICellValue<T>>;
+  editRowStart: Observable<ICellEvent>;
+  editRowStop: Observable<ICellCoordinates>;
+  editCellStart: Observable<ICellEvent>;
+  editCellStop: Observable<ICellCoordinates>;
+  valueChanged: Observable<ICellCoordinates>;
+  valueSet: Observable<ICellValue>;
   stateChanged: Observable<FilterState>;
   filterClear: Observable<TableColumn>;
   groupToggle: Observable<TableRow<T>>;
@@ -56,7 +56,7 @@ export class TableService<T> {
   editType: EditType = EditType.cell;
   editEvent: EditEvent = EditEvent.doubleClick;
   rowEditable: boolean | ((row: TableRow<T>) => boolean);
-  trackRow: (row: TableRow<T>) => any = (row: TableRow<T>) => (row?.data as any)?.id;
+  trackRow: (index: number, row: TableRow<T>) => any = (index: number, row: TableRow<T>) => index;
 
   get dragSource() {
     return this._dragSource;
@@ -77,12 +77,12 @@ export class TableService<T> {
   private _cookieName: string;
   private _hiddenCookieName: string;
   private _columnsCookieName: string;
-  private _editRowStart = new Subject<ICellEvent<T> | null>();
-  private _editRowStop = new Subject<ICellCoordinates<T> | null>();
-  private _editCellStart = new Subject<ICellEvent<T> | null>();
-  private _editCellStop = new Subject<ICellCoordinates<T> | null>();
-  private _valueChanged = new Subject<ICellCoordinates<T> | null>();
-  private _valueSet = new Subject<ICellValue<T>>();
+  private _editRowStart = new Subject<ICellEvent | null>();
+  private _editRowStop = new Subject<ICellCoordinates | null>();
+  private _editCellStart = new Subject<ICellEvent | null>();
+  private _editCellStop = new Subject<ICellCoordinates | null>();
+  private _valueChanged = new Subject<ICellCoordinates | null>();
+  private _valueSet = new Subject<ICellValue>();
   private _stateChanged = new Subject<FilterState>();
   private _filterClear = new Subject<TableColumn>();
   private _dragSource: TableColumn;
@@ -91,9 +91,9 @@ export class TableService<T> {
   private _activeRow = new BehaviorSubject<TableRow<T>>(null);
   private _scrollIndex = new Subject<number>();
 
-  private _currentEditCell: ICellCoordinates<T>;
+  private _currentEditCell: ICellCoordinates;
 
-  get currentEditCell(): ICellCoordinates<T> {
+  get currentEditCell(): ICellCoordinates {
     return this._currentEditCell;
   }
 
@@ -395,16 +395,10 @@ export class TableService<T> {
     }
   }
 
-  startEditRow(cellEvent: ICellEvent<T>): void {
+  startEditRow(cellEvent: ICellEvent): void {
     if (this._currentEditCell?.row !== cellEvent?.row) {
       if (this._currentEditCell != null) {
-        const row = this._displayData.value.find((row) => {
-          return this.trackRow(row) === this.trackRow(this._currentEditCell?.row);
-        });
-        this._editRowStop.next({
-          row,
-          column: this._currentEditCell.column
-        });
+        this._editRowStop.next(this._currentEditCell);
       }
       if (cellEvent === null) {
         this._editRowStart.next(cellEvent);
@@ -412,7 +406,7 @@ export class TableService<T> {
       } else {
         if (
           this.boolOrFuncCallback<TableRow<T>>(this.rowEditable)(
-            cellEvent.row
+            this.getRowByIndex(cellEvent?.row)
           )
         ) {
           this._editRowStart.next(cellEvent);
@@ -422,29 +416,25 @@ export class TableService<T> {
     }
   }
 
-  startEditCell(cellEvent: ICellEvent<T>): void {
+  startEditCell(cellEvent: ICellEvent): void {
     if (
-      this._currentEditCell?.column.name !== cellEvent?.column.name ||
-      this.trackRow(this._currentEditCell?.row) !== this.trackRow(cellEvent?.row)
+      this._currentEditCell?.column !== cellEvent?.column ||
+      this._currentEditCell?.row !== cellEvent?.row
     ) {
       if (this._currentEditCell != null) {
-        const row = this._displayData.value.find((row) => {
-          return this.trackRow(row) === this.trackRow(this._currentEditCell?.row);
-        });
-        this._editCellStop.next({
-          row,
-          column: this._currentEditCell.column
-        });
+        this._editCellStop.next(this._currentEditCell);
       }
+      const column = this.getColumnByName(cellEvent?.column);
       if (
-        this.boolOrFuncCallback<ICellCoordinates<T>>(cellEvent?.column?.editable)(
-          cellEvent
-        )
+        this.boolOrFuncCallback<ICellInstance<T>>(column?.editable)({
+          row: this.getRowByIndex(cellEvent?.row),
+          column: column
+        })
       ) {
         this._editCellStart.next(cellEvent);
         this._currentEditCell = cellEvent;
         const key = (cellEvent?.event as KeyboardEvent)?.key;
-        if (key && (key.length === 1 || (key === 'Delete' && !cellEvent.column.required))) {
+        if (key && (key.length === 1 || (key === 'Delete' && !column.required))) {
           this.clearValue(cellEvent);
         }
       }
@@ -564,52 +554,68 @@ export class TableService<T> {
     this._groupToggle.next(row);
   }
 
-  changeValue(coordinates: ICellCoordinates<T>): void {
+  changeValue(coordinates: ICellCoordinates): void {
     this._valueChanged.next(coordinates);
   }
 
-  setValue(cellValue: ICellValue<T>): void {
-    this._valueSet.next(cellValue);
+  setValue(cellValue: ICellValue): void;
+  setValue(cellValue: ICellInstanceValue<T>): void;
+  setValue(cellValue: ICellValue | ICellInstanceValue<T>): void {
+    let value: ICellValue;
+    if (typeof cellValue.row === 'object' && typeof cellValue.column === 'object') {
+      value = {
+        row: this.getRowIndex(cellValue.row),
+        column: cellValue.column.name,
+        value: cellValue.value
+      };
+    } else {
+      value = cellValue as ICellValue;
+    }
+    this._valueSet.next(value);
   }
 
-  getRowByIndex(rowIndex: string) {
-    return this._displayData.value[parseInt(rowIndex, 10)];
+  getRowByIndex(rowIndex: number) {
+    return this._displayData.value[rowIndex];
   }
 
   getRowIndex(row: TableRow<T>) {
     return this._displayData.value.indexOf(row);
   }
 
-  getNextEditableCell(coords: ICellCoordinates<T>): ICellCoordinates<T> {
+  getNextEditableCell(coords: ICellCoordinates): ICellCoordinates {
     const nextCell = this.getNextCell(coords);
     if (!nextCell) {
       return null;
     }
-    if (this.boolOrFuncCallback<ICellCoordinates<T>>(nextCell?.column?.editable)(
-      nextCell
-    )) {
+    const column = this.getColumnByName(nextCell?.column);
+    if (this.boolOrFuncCallback<ICellInstance<T>>(column.editable)({
+      row: this.getRowByIndex(nextCell.row),
+      column
+    })) {
       return nextCell;
     }
     return this.getNextEditableCell(nextCell);
   }
 
-  getPreviousEditableCell(coords: ICellCoordinates<T>): ICellCoordinates<T> {
+  getPreviousEditableCell(coords: ICellCoordinates): ICellCoordinates {
     const prevCell = this.getPreviousCell(coords);
     if (!prevCell) {
       return null;
     }
-    if (this.boolOrFuncCallback<ICellCoordinates<T>>(prevCell?.column?.editable)(
-      prevCell
-    )) {
+    const column = this.getColumnByName(prevCell?.column);
+    if (this.boolOrFuncCallback<ICellInstance<T>>(column.editable)({
+      row: this.getRowByIndex(prevCell.row),
+      column
+    })) {
       return prevCell;
     }
     return this.getPreviousEditableCell(prevCell);
   }
 
-  getNextCell(coords: ICellCoordinates<T>): ICellCoordinates<T> {
+  getNextCell(coords: ICellCoordinates): ICellCoordinates {
     const columns = this.getFlatColumns();
-    let colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column?.name);
-    let rowIndex = this._displayData.value.indexOf(coords?.row);
+    let colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column);
+    let rowIndex = coords?.row;
     if (colIndex >= 0 && rowIndex >= 0) {
       if (colIndex === columns.length - 1) {
         colIndex = 0;
@@ -618,17 +624,17 @@ export class TableService<T> {
         colIndex = colIndex + 1;
       }
       return {
-        column: columns[colIndex],
-        row: this._displayData.value[rowIndex]
+        column: columns[colIndex]?.name,
+        row: rowIndex
       };
     }
     return null;
   }
 
-  getPreviousCell(coords: ICellCoordinates<T>) {
+  getPreviousCell(coords: ICellCoordinates): ICellCoordinates {
     const columns = this.getFlatColumns();
-    let colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column?.name);
-    let rowIndex = this._displayData.value.indexOf(coords?.row);
+    let colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column);
+    let rowIndex = coords?.row;
     if (colIndex >= 0 && rowIndex >= 0) {
       if (colIndex === 0) {
         colIndex = columns.length - 1;
@@ -637,34 +643,34 @@ export class TableService<T> {
         colIndex = colIndex - 1;
       }
       return {
-        column: columns[colIndex],
-        row: this._displayData.value[rowIndex]
+        column: columns[colIndex]?.name,
+        row: rowIndex
       };
     }
     return null;
   }
 
-  getNextRowCell(coords: ICellCoordinates<T>): ICellCoordinates<T> {
+  getNextRowCell(coords: ICellCoordinates): ICellCoordinates {
     const columns = this.getFlatColumns();
-    let colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column?.name);
-    let rowIndex = this._displayData.value.indexOf(coords?.row);
+    let colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column);
+    let rowIndex = coords?.row;
     if (colIndex >= 0 && rowIndex >= 0 && rowIndex < this._displayData.value.length - 1) {
       return {
-        column: columns[colIndex],
-        row: this._displayData.value[rowIndex + 1]
+        column: columns[colIndex]?.name,
+        row: rowIndex + 1
       };
     }
     return null;
   }
 
-  getPreviousRowCell(coords: ICellCoordinates<T>) {
+  getPreviousRowCell(coords: ICellCoordinates) {
     const columns = this.getFlatColumns();
-    let colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column?.name);
-    let rowIndex = this._displayData.value.indexOf(coords?.row);
+    let colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column);
+    let rowIndex = coords?.row;
     if (colIndex >= 0 && rowIndex > 1) {
       return {
-        column: columns[colIndex],
-        row: this._displayData.value[rowIndex - 1]
+        column: columns[colIndex]?.name,
+        row: rowIndex - 1
       };
     }
     return null;
@@ -699,6 +705,13 @@ export class TableService<T> {
       (_) => this._hiddenColumns.value.indexOf(_.name) < 0
     );
     return visible.sort((a, b) => Number(b.locked) - Number(a.locked));
+  }
+
+  getCellInstance(coords: ICellCoordinates): ICellInstance<T> {
+    return coords ? {
+      row: this.getRowByIndex(coords.row),
+      column: this.getColumnByName(coords.column)
+    } : null;
   }
 
   private getFlatColumns() {
@@ -749,9 +762,9 @@ export class TableService<T> {
     column.width = maxWidth + 20;
   }
 
-  private clearValue(event: ICellEvent<T>) {
+  private clearValue(event: ICellEvent) {
     this.setValue({
-      cell: event,
+      ...event,
       value: null
     });
   }

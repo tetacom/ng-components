@@ -8,11 +8,11 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { PickerLocaleModel } from '../model/picker-locale-model';
-import { PickerLocaleService } from '../service/picker-locale.service';
-import { takeWhile } from 'rxjs/operators';
-import { DatePickerMode } from '../model/date-picker-mode.enum';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {takeWhile} from 'rxjs/operators';
+import {DatePickerMode} from '../model/date-picker-mode.enum';
+import {TetaLocalisation} from '../../../locale/teta-localisation';
+import {TetaConfigService} from '../../../locale/teta-config.service';
 
 export const MONTH_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -28,8 +28,7 @@ export const MONTH_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MonthPickerComponent
-  implements ControlValueAccessor, OnInit, OnDestroy
-{
+  implements ControlValueAccessor, OnInit, OnDestroy {
   @Input() disabled: boolean;
   @Input() minDate: Date;
   @Input() maxDate: Date;
@@ -42,7 +41,7 @@ export class MonthPickerComponent
 
   datePickerModeEnum = DatePickerMode;
 
-  locale: PickerLocaleModel;
+  locale: TetaLocalisation;
   today: Date;
 
   displayMode: DatePickerMode = DatePickerMode.month;
@@ -88,12 +87,12 @@ export class MonthPickerComponent
   private _alive = true;
 
   constructor(
-    public localeService: PickerLocaleService,
+    public localeService: TetaConfigService,
     private _cdr: ChangeDetectorRef
   ) {
     localeService.locale
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((locale: PickerLocaleModel) => {
+      .subscribe((locale: TetaLocalisation) => {
         this.locale = locale;
       });
     this.setDefaults();
@@ -124,9 +123,11 @@ export class MonthPickerComponent
     this.value = null;
   }
 
-  onChange = (_: any) => {};
+  onChange = (_: any) => {
+  };
 
-  onTouched = () => {};
+  onTouched = () => {
+  };
 
   registerOnChange(fn: (_: any) => void): void {
     this.onChange = fn;

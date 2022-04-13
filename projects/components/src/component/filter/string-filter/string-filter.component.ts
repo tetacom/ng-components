@@ -14,6 +14,9 @@ import {FilterComponentBase} from '../base/filter-component-base';
 import {FilterItem} from '../contarct/filter-item';
 import {IIdName} from '../../../common/contract/i-id-name';
 import {TableRow} from '../../table/contract/table-row';
+import {TetaConfigService} from '../../../locale/teta-config.service';
+import {Observable} from 'rxjs';
+import {TetaLocalisation} from '../../../locale/teta-localisation';
 
 @Component({
   selector: 'teta-string-filter',
@@ -43,9 +46,12 @@ export class StringFilterComponent<T>
   get state() {
     return this.state$;
   }
+  locale: Observable<TetaLocalisation>;
 
-  constructor(private changeDetector: ChangeDetectorRef) {
+  constructor(private changeDetector: ChangeDetectorRef,
+              private _config: TetaConfigService) {
     super();
+    this.locale = this._config.locale;
   }
 
   ngOnInit() {

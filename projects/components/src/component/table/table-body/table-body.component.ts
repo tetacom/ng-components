@@ -16,12 +16,14 @@ import {TableService} from '../service/table.service';
 import {DetailComponentBase} from '../base/detail-component-base';
 import {takeWhile} from 'rxjs/operators';
 import {SelectType} from '../enum/select-type.enum';
-import {combineLatest} from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 import {ArrayUtil} from '../../../common/util/array-util';
 import {IDictionary} from '../../../common/contract/i-dictionary';
 import {IIdName} from '../../../common/contract/i-id-name';
 import {AggregationType} from '../enum/aggregation-type.enum';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
+import {TetaLocalisation} from '../../../locale/teta-localisation';
+import {TetaConfigService} from '../../../locale/teta-config.service';
 
 @Component({
   selector: 'teta-table-body',
@@ -83,7 +85,12 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     return this._columns;
   }
 
-  constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {
+  locale: Observable<TetaLocalisation>;
+
+  constructor(private _svc: TableService<T>,
+              private _config: TetaConfigService,
+              private _cdr: ChangeDetectorRef) {
+    this.locale = this._config.locale;
     combineLatest([this._svc.columns, this._svc.hiddenColumns])
       .pipe(takeWhile((_) => this._alive))
       .subscribe((values: [TableColumn[], string[]]) => {
@@ -162,16 +169,16 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
 
   getAggregateText(column: TableColumn): string {
     if (column.aggregate === AggregationType.sum) {
-      return 'Сумма=';
+      return 'sum';
     }
     if (column.aggregate === AggregationType.avg) {
-      return 'Среднее=';
+      return 'avg';
     }
     if (column.aggregate === AggregationType.min) {
-      return 'Мин=';
+      return 'min';
     }
     if (column.aggregate === AggregationType.max) {
-      return 'Макс=';
+      return 'max';
     }
     return '';
   }

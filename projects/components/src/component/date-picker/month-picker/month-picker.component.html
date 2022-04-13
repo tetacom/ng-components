@@ -9,7 +9,7 @@
     <teta-icon [name]="'calendar'" class="margin-right-2"></teta-icon>
     <div class="row_auto">
       <ng-container *ngIf="_value !==null && _value!==undefined">
-        {{locale.monthNames[_value.getMonth()]}} {{_value.getFullYear()}}
+        {{locale.months[_value.getMonth()]}} {{_value.getFullYear()}}
       </ng-container>
     </div>
     <teta-icon [name]="'closeBig'" (click)="clearPicker()" class="margin-left-2"></teta-icon>
@@ -22,7 +22,7 @@
                 [view]="displayMode===datePickerModeEnum.month ? 'primary' : 'ghost'"
                 (click)="setMode(datePickerModeEnum.month)"
                 (wheel)="scrollMonth($event);">
-          {{locale.monthNames[_currentMonth || today.getMonth()]}}
+          {{locale.months[_currentMonth || today.getMonth()]}}
         </button>
         <button teta-button
                 class="margin-left-2"

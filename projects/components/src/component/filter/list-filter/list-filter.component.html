@@ -6,7 +6,8 @@
     <teta-checkbox [binary]="true"
                    [allowNull]="true"
                    [ngModel]="all()"
-                   (ngModelChange)="setAll($event)">Все
+                   (ngModelChange)="setAll($event)">
+      {{(locale | async)?.all}}
     </teta-checkbox>
   </div>
   <div class="list-divider"></div>

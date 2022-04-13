@@ -32,6 +32,10 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
     });
   }
 
+  get index() {
+    return this.svc.getRowIndex(this.row);
+  }
+
   _edit: boolean;
   column: TableColumn;
   filterOptions: IIdName<any>[] = [];
@@ -48,8 +52,8 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
 
   valueChanged(): void {
     this.svc.changeValue({
-      column: this.column,
-      row: this.row,
+      column: this.column.name,
+      row: this.index,
     });
   }
 
@@ -66,19 +70,11 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       .pipe(
         takeWhile((_) => this._alive)
       )
-      .subscribe((cell: ICellCoordinates<T>) => {
-        if (
-          this.svc.trackRow(this.row) === this.svc.trackRow(cell?.row) &&
-          !this._edit
-          // &&
-          // this.svc.boolOrFuncCallback(this.svc.cellEditable)({
-          //   column: this.column,
-          //   row: this.row,
-          // })
-        ) {
+      .subscribe((cell: ICellCoordinates) => {
+        if (this.index === cell?.row && !this._edit) {
           this.start(cell, 'row');
         }
-        if (this.row !== cell?.row && this._edit) {
+        if (this.index !== cell?.row && this._edit) {
           this.stop();
         }
       });
@@ -87,29 +83,19 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       .pipe(
         takeWhile((_) => this._alive)
       )
-      .subscribe((cell: ICellCoordinates<T>) => {
-        if (
-          this.svc.trackRow(this.row) === this.svc.trackRow(cell?.row) &&
-          this.column.name === cell?.column?.name &&
-          !this._edit
-        ) {
+      .subscribe((cell: ICellCoordinates) => {
+        if (this.index === cell?.row && this.column.name === cell?.column && !this._edit) {
           this.start(cell, 'cell');
         }
-        if (
-          (this.svc.trackRow(this.row) !== this.svc.trackRow(cell?.row) || this.column.name !== cell?.column?.name) &&
-          this._edit
-        ) {
+        if ((this.index !== cell?.row || this.column.name !== cell?.column) && this._edit) {
           this.stop();
         }
       });
 
     this.svc.valueSet
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((cellValue: ICellValue<T>) => {
-        if (
-          this.svc.trackRow(this.row) === this.svc.trackRow(cellValue.cell.row)
-          && this.column.name === cellValue.cell.column.name
-        ) {
+      .subscribe((cellValue: ICellValue) => {
+        if (this.index === cellValue.row && this.column.name === cellValue.column) {
           this.row.data[this.column.name] = cellValue.value;
           this.cdr.detectChanges();
         }
@@ -117,16 +103,14 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
 
     this.svc.valueChanged
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((cellValue: ICellCoordinates<T>) => {
-        if (
-          this.svc.trackRow(this.row) === this.svc.trackRow(cellValue.row)
-        ) {
+      .subscribe((cellValue: ICellCoordinates) => {
+        if (this.index === cellValue.row) {
           this.cdr.detectChanges();
         }
       });
   }
 
-  private start(initiator: ICellCoordinates<T>, type: 'cell' | 'row') {
+  private start(initiator: ICellCoordinates, type: 'cell' | 'row') {
     this._edit = true;
     this.cdr.detectChanges();
     this.startEdit(initiator, type);
@@ -139,7 +123,7 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   }
 
   abstract startEdit(
-    initiator: ICellCoordinates<T>,
+    initiator: ICellCoordinates,
     type: 'cell' | 'row'
   ): void;
 

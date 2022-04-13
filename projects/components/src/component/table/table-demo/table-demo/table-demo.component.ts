@@ -10,6 +10,7 @@ import {EditEvent} from '../../enum/edit-event.enum';
 import {TableService} from '../../service/table.service';
 import {TableRow} from '../../contract/table-row';
 import {ICellEvent} from '../../contract/i-cell-event';
+import {ICellInstance} from '../../contract/i-cell-instance';
 
 @Component({
   selector: 'teta-table-demo',
@@ -149,7 +150,7 @@ export class TableDemoComponent implements OnInit {
     return res;
   };
 
-  cellEditStart(event: ICellEvent<any>) {
+  cellEditStart(event: ICellInstance<any>) {
 
   }
 

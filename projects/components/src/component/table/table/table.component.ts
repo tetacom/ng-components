@@ -31,6 +31,7 @@ import {EditEvent} from '../enum/edit-event.enum';
 import {SelectType} from '../enum/select-type.enum';
 import {IIdName} from '../../../common/contract/i-id-name';
 import {IDictionary} from '../../../common/contract/i-dictionary';
+import {ICellInstance, ICellInstanceEvent} from '../contract/i-cell-instance';
 
 @Component({
   selector: 'teta-table',
@@ -63,7 +64,7 @@ export class TableComponent<T>
     GroupRowComponent;
   @Input() openLevels: number;
   @Input() tree: boolean;
-  @Input() trackRow: (row: TableRow<T>) => any = (row: TableRow<T>) => (row?.data as any)?.id;
+  @Input() trackRow: (index: number, row: TableRow<T>) => any = (index: number, row: TableRow<T>) => index;
   @Input() editType: EditType = EditType.cell;
   @Input() editEvent: EditEvent = EditEvent.doubleClick;
   @Input() rowEditable: boolean | ((row: TableRow<T>) => boolean);
@@ -84,16 +85,16 @@ export class TableComponent<T>
   @Output() activeRowChange: EventEmitter<TableRow<T>> = new EventEmitter();
   @Output() selectedRowsChange: EventEmitter<TableRow<T>[]> =
     new EventEmitter();
-  @Output() cellClick = new EventEmitter<ICellEvent<T>>();
-  @Output() cellDoubleClick = new EventEmitter<ICellEvent<T>>();
-  @Output() cellFocus = new EventEmitter<ICellEvent<T>>();
-  @Output() cellKeyDown = new EventEmitter<ICellEvent<T>>();
+  @Output() cellClick = new EventEmitter<ICellInstanceEvent<T>>();
+  @Output() cellDoubleClick = new EventEmitter<ICellInstanceEvent<T>>();
+  @Output() cellFocus = new EventEmitter<ICellInstanceEvent<T>>();
+  @Output() cellKeyDown = new EventEmitter<ICellInstanceEvent<T>>();
   @Output() rowLeft = new EventEmitter<TableRow<T>>();
-  @Output() rowEditStart = new EventEmitter<ICellEvent<T>>();
+  @Output() rowEditStart = new EventEmitter<ICellInstance<T>>();
   @Output() rowEditEnd = new EventEmitter<TableRow<T>>();
-  @Output() cellEditStart = new EventEmitter<ICellEvent<T>>();
-  @Output() cellEditEnd = new EventEmitter<ICellCoordinates<T>>();
-  @Output() valueChange = new EventEmitter<ICellCoordinates<T>>();
+  @Output() cellEditStart = new EventEmitter<ICellInstance<T>>();
+  @Output() cellEditEnd = new EventEmitter<ICellInstance<T>>();
+  @Output() valueChange = new EventEmitter<ICellInstance<T>>();
   @Output() tableService = new EventEmitter<TableService<T>>();
   @ViewChild('contextMenu', {static: true}) menu: ElementRef;
   @HostBinding('class.table') private readonly tableClass = true;
@@ -115,22 +116,22 @@ export class TableComponent<T>
 
     this._svc.editCellStart
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((item: ICellEvent<T>) => this.cellEditStart.emit(item));
+      .subscribe((item: ICellEvent) => this.cellEditStart.emit(this._svc.getCellInstance(item)));
 
     this._svc.editCellStop
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((item: ICellCoordinates<T>) => this.cellEditEnd.emit(item));
+      .subscribe((item: ICellCoordinates) => this.cellEditEnd.emit(this._svc.getCellInstance(item)));
 
     this._svc.editRowStart
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((item: ICellEvent<T>) =>
-        this.rowEditStart.emit(item)
+      .subscribe((item: ICellEvent) =>
+        this.rowEditStart.emit(this._svc.getCellInstance(item))
       );
 
     this._svc.editRowStop
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((item: ICellCoordinates<T>) =>
-        this.rowEditEnd.emit(item?.row)
+      .subscribe((item: ICellCoordinates) =>
+        this.rowEditEnd.emit(this._svc.getRowByIndex(item?.row))
       );
 
     this._svc.selectedRows
@@ -146,8 +147,8 @@ export class TableComponent<T>
 
     this._svc.valueChanged
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((coordinates: ICellCoordinates<T>) => {
-        this.valueChange.emit(coordinates);
+      .subscribe((coordinates: ICellCoordinates) => {
+        this.valueChange.emit(this._svc.getCellInstance(coordinates));
       });
   }
 
@@ -156,13 +157,14 @@ export class TableComponent<T>
   ) {
     const coordinates = this.getCoordinates(event);
     if (coordinates) {
-      this.cellClick.emit(coordinates);
+      this.cellClick.emit({
+        ...this._svc.getCellInstance(coordinates),
+        event
+      });
       if (this.editEvent === EditEvent.click) {
         this.startEditRowOrCell(coordinates);
       } else {
-        if (this._svc.currentEditCell
-          && (coordinates.row !== this._svc.currentEditCell.row
-            || coordinates.column.name !== this._svc.currentEditCell.column.name)) {
+        if (this._svc.currentEditCell && (coordinates.row !== this._svc.currentEditCell.row || coordinates.column !== this._svc.currentEditCell.column)) {
           this.startEditRowOrCell(null);
         }
       }
@@ -184,7 +186,10 @@ export class TableComponent<T>
   @HostListener('focusin', ['$event']) focusIn(event: any) {
     const coordinates = this.getCoordinates(event);
     if (coordinates) {
-      this.cellFocus.emit(coordinates);
+      this.cellFocus.emit({
+        ...this._svc.getCellInstance(coordinates),
+        event
+      });
       if (this.editEvent === EditEvent.focus) {
         this.startEditRowOrCell(coordinates);
       }
@@ -195,7 +200,10 @@ export class TableComponent<T>
   dblclick(event: MouseEvent) {
     const coordinates = this.getCoordinates(event);
     if (coordinates) {
-      this.cellDoubleClick.emit(coordinates);
+      this.cellDoubleClick.emit({
+        ...this._svc.getCellInstance(coordinates),
+        event
+      });
       if (this.editEvent === EditEvent.doubleClick) {
         this.startEditRowOrCell(coordinates);
       }
@@ -204,7 +212,7 @@ export class TableComponent<T>
 
   @HostListener('keydown', ['$event'])
   keydown(event: KeyboardEvent) {
-    if (event.key === 'Enter' || event.key === 'Escape') {
+    if (event.key === 'Escape') {
       if (this.editType === EditType.row) {
         this._svc.startEditRow(null);
       } else {
@@ -212,8 +220,29 @@ export class TableComponent<T>
       }
     }
     const coordinates = this.getCoordinates(event);
+    if (event.key === 'Enter') {
+      if (this.editType === EditType.row) {
+        this._svc.startEditRow(null);
+      } else {
+        if (this._svc.currentEditCell) {
+          const target = this._svc.getNextRowCell(coordinates);
+          if (target) {
+            this._svc.startEditCell({
+              row: target.row,
+              column: target.column,
+              event: undefined
+            });
+          } else {
+            this._svc.startEditCell(null);
+          }
+        }
+      }
+    }
     if (coordinates) {
-      this.cellKeyDown.emit(coordinates);
+      this.cellKeyDown.emit({
+        ...this._svc.getCellInstance(coordinates),
+        event
+      });
       if (event.key && (event.key.length === 1 || event.key === 'Delete')) {
         this._svc.startEditCell({
           row: coordinates.row,
@@ -227,7 +256,7 @@ export class TableComponent<T>
         if (event.shiftKey) {
           target = this._svc.getPreviousEditableCell(coordinates);
         }
-        if (target && target.row && target.column) {
+        if (target) {
           this._svc.startEditCell({
             row: target.row,
             column: target.column,
@@ -326,7 +355,7 @@ export class TableComponent<T>
     this.contextMenuOpenChange.emit(this.contextMenuOpen);
   }
 
-  private startEditRowOrCell(coordinates: ICellEvent<T>): void {
+  private startEditRowOrCell(coordinates: ICellEvent): void {
     if (this.editType === EditType.row) {
       this._svc.startEditRow(coordinates);
     }
@@ -347,9 +376,9 @@ export class TableComponent<T>
     }) as HTMLElement;
   }
 
-  private getCellElement(coordinates: ICellCoordinates<T>): HTMLElement | null {
+  private getCellElement(coordinates: ICellCoordinates): HTMLElement | null {
     return this._elementRef.nativeElement.querySelector(
-      `teta-cell[data-row="${this._svc.getRowIndex(coordinates.row)}"][data-column="${coordinates.column.name}"]`
+      `teta-cell[data-row="${coordinates.row}"][data-column="${coordinates.column}"]`
     );
   }
 
@@ -360,17 +389,15 @@ export class TableComponent<T>
     return row && this._elementRef.nativeElement.contains(row);
   }
 
-  private getCoordinates(event: Event): ICellEvent<T> | null {
+  private getCoordinates(event: Event): ICellEvent | null {
     const cell = this.getEventCell(event);
     if (cell) {
-      const rowIndex = cell.getAttribute('data-row');
+      const rowIndex = parseInt(cell.getAttribute('data-row'), 10);
       const columnName = cell.getAttribute('data-column');
-      if (rowIndex && columnName) {
-        const row = this._svc.getRowByIndex(rowIndex);
-        const column = this._svc.getColumnByName(columnName);
+      if (rowIndex >= 0 && columnName) {
         return {
-          row,
-          column: column ? column : new TableColumn(),
+          row: rowIndex,
+          column: columnName,
           event,
         };
       }
@@ -381,8 +408,8 @@ export class TableComponent<T>
   private getRow(event: Event): TableRow<T> | null {
     const rowElement = this.getEventRow(event);
     if (rowElement) {
-      const rowIndex = rowElement.getAttribute('data-row');
-      if (rowIndex) {
+      const rowIndex = parseInt(rowElement.getAttribute('data-row'), 10);
+      if (rowIndex >= 0) {
         return this._svc.getRowByIndex(rowIndex);
       }
     }
