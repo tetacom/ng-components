@@ -5,18 +5,13 @@ import {
   Component,
   ElementRef,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges,
-  ViewChild,
 } from '@angular/core';
 import { Axis } from '../../core/axis/axis';
-import { ScaleService } from '../../service/scale.service';
-import { ChartService } from '../../service/chart.service';
-import * as d3 from 'd3';
-import { ZoomService } from '../../service/zoom.service';
-import { merge, takeWhile, tap } from 'rxjs';
+
+import {map, Observable} from "rxjs";
+import {ScaleService} from "../../service/scale.service";
 
 @Component({
   selector: '[teta-x-axis]',
@@ -25,24 +20,24 @@ import { merge, takeWhile, tap } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
+  x: Observable<any>;
+
   @Input() axis: Axis;
-  @Input() set scale(scale: any) {
-    this._scale = scale;
-
-    this.draw();
-  }
-
-  get scale() {
-    return this._scale;
-  }
-
   @Input() size: DOMRect;
-  @ViewChild('svg') node: ElementRef;
 
-  private _scale: any;
   private _alive = true;
 
-  constructor() {}
+  constructor(private scaleService: ScaleService) {
+    this.x = this.scaleService.xScaleMap.pipe(map((_) => {
+      return _.get(this.axis.index)
+    }))
+  }
+
+  getLabelTransform() {
+    return `translate(${
+      this.size.width / 2
+    }, ${this.axis.options.opposite ? -32 : 32})`;
+  }
 
   ngOnInit(): void {}
 
@@ -51,28 +46,28 @@ export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.draw();
+    // this.draw();
   }
 
   private draw() {
-    if (!this.node || !this.axis) {
-      return;
-    }
-
-    const axis = this.axis.options.opposite
-      ? d3
-          .axisTop(this.scale)
-          .tickFormat(
-            this.axis.options.tickFormat ?? this.axis.defaultFormatter()
-          )
-      : d3
-          .axisBottom(this.scale)
-          .tickFormat(
-            this.axis.options.tickFormat ?? this.axis.defaultFormatter()
-          );
-
-    d3.select(this.node.nativeElement)
-      .call(axis)
-      .call((_) => _.select('.domain').remove());
+    // if (!this.node || !this.axis) {
+    //   return;
+    // }
+    //
+    // const axis = this.axis.options.opposite
+    //   ? d3
+    //       .axisTop(this.scale)
+    //       .tickFormat(
+    //         this.axis.options.tickFormat ?? this.axis.defaultFormatter()
+    //       )
+    //   : d3
+    //       .axisBottom(this.scale)
+    //       .tickFormat(
+    //         this.axis.options.tickFormat ?? this.axis.defaultFormatter()
+    //       );
+    //
+    // d3.select(this.node.nativeElement)
+    //   .call(axis)
+    //   .call((_) => _.select('.domain').remove());
   }
 }

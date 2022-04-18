@@ -2,15 +2,13 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   Input,
-  OnChanges,
-  OnDestroy,
   OnInit,
-  ViewChild,
 } from '@angular/core';
 import { Axis } from '../../core/axis/axis';
-import * as d3 from 'd3';
+
+import {ScaleService} from "../../service/scale.service";
+import {map, Observable} from "rxjs";
 
 @Component({
   selector: '[teta-y-axis]',
@@ -19,22 +17,19 @@ import * as d3 from 'd3';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class YAxisComponent implements OnInit, AfterViewInit {
-  @Input() axis: Axis;
-  @Input() set scale(scale: any) {
-    this._scale = scale;
-    this.draw();
-  }
 
-  get scale() {
-    return this._scale;
-  }
+  y: Observable<any>;
+
+  @Input() axis: Axis;
   @Input() size: DOMRect;
-  @ViewChild('svg', { static: false }) node: ElementRef;
 
   private _alive = true;
-  private _scale: any;
 
-  constructor() {}
+  constructor(private scaleService: ScaleService) {
+    this.y = this.scaleService.yScaleMap.pipe(map((_) => {
+      return _.get(this.axis.index)
+    }))
+  }
 
   ngOnInit(): void {}
 
@@ -43,7 +38,6 @@ export class YAxisComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.draw();
   }
 
   getLabelTransform() {
@@ -56,25 +50,4 @@ export class YAxisComponent implements OnInit, AfterViewInit {
     })`;
   }
 
-  private draw() {
-    if (!this.node || !this.axis) {
-      return;
-    }
-
-    const axis = this.axis.options.opposite
-      ? d3
-          .axisRight(this.scale)
-          .tickFormat(
-            this.axis.options.tickFormat ?? this.axis.defaultFormatter()
-          )
-      : d3
-          .axisLeft(this.scale)
-          .tickFormat(
-            this.axis.options.tickFormat ?? this.axis.defaultFormatter()
-          );
-
-    d3.select(this.node.nativeElement)
-      .call(axis)
-      .call((_) => _.select('.domain').remove());
-  }
 }

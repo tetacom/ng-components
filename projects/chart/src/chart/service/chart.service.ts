@@ -128,7 +128,7 @@ export class ChartService {
     }
 
     const currentConfig = await lastValueFrom(this.config.pipe(take(1)));
-    
+
     seriesIndex.forEach((serieIndex) => {
       const currentSerieIndex = currentConfig.series.findIndex((_) => _.id === serieIndex);
 
@@ -195,7 +195,8 @@ export class ChartService {
 
     config.yAxis = config.yAxis.map((axis, idx) => {
       const seriesLinkCount = config.series.filter((_) => _.yAxisIndex === idx && _.visible === true).length
-      return Object.assign({}, axis, {visible: axis.visible === false ? false : seriesLinkCount !== 0})
+
+      return Object.assign({}, axis, {visible: seriesLinkCount !== 0})
     })
 
     const oppositeYCount = config.yAxis?.filter((_) => _.opposite);
