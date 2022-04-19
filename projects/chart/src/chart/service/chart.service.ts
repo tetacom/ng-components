@@ -128,7 +128,7 @@ export class ChartService {
     }
 
     const currentConfig = await lastValueFrom(this.config.pipe(take(1)));
-    
+
     seriesIndex.forEach((serieIndex) => {
       const currentSerieIndex = currentConfig.series.findIndex((_) => _.id === serieIndex);
 
@@ -136,7 +136,12 @@ export class ChartService {
         return;
       }
       currentConfig.series[currentSerieIndex].visible = visible !== undefined ? visible : !currentConfig.series[currentSerieIndex].visible;
+
+      const seriesLinkCount = currentConfig.series.filter((_) => _.yAxisIndex === currentConfig.series[currentSerieIndex].yAxisIndex && _.visible === true).length
+      currentConfig.yAxis[currentConfig.series[currentSerieIndex].yAxisIndex].visible = seriesLinkCount !== 0;
+
     })
+
 
     this.config$.next(currentConfig);
   }
@@ -192,12 +197,7 @@ export class ChartService {
         id: _.id ?? index,
       };
     });
-
-    config.yAxis = config.yAxis.map((axis, idx) => {
-      const seriesLinkCount = config.series.filter((_) => _.yAxisIndex === idx && _.visible === true).length
-      return Object.assign({}, axis, {visible: axis.visible === false ? false : seriesLinkCount !== 0})
-    })
-
+    
     const oppositeYCount = config.yAxis?.filter((_) => _.opposite);
     const oppositeXCount = config.xAxis?.filter((_) => _.opposite);
 

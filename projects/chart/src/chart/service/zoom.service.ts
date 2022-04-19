@@ -7,6 +7,7 @@ import {ZoomBehavior, zoomIdentity} from "d3";
 import {AxisOrientation} from "../model/enum/axis-orientation";
 import {BroadcastService} from "./broadcast.service";
 import {ZoomMessage} from "../model/i-broadcast-message";
+import objectHash from 'object-hash';
 
 @Injectable({
   providedIn: 'root',
@@ -16,11 +17,12 @@ export class ZoomService {
   zoomed: Observable<IChartEvent<Axis>>;
   private zoomed$ = new BehaviorSubject<IChartEvent<Axis>>(null);
 
-  private element: d3.Selection<SVGElement, any, any, any>;
-  private zoom: ZoomBehavior<any, any>;
-  private axis: Axis;
-  private currentScale: any;
   private broadcastChannel: string;
+
+  axisHashMap = new Map<string, Axis>();
+  scaleHashMap = new Map<string, any>();
+  elementHashMap = new Map<string, any>();
+  zoomHashMap = new Map<string, ZoomBehavior<any, any>>();
 
   constructor(private broadcast: BroadcastService) {
     this.zoomed = this.zoomed$.asObservable().pipe(shareReplay({
@@ -33,57 +35,60 @@ export class ZoomService {
     this.zoomed$.next(zoom);
   }
 
-  setElement(e: d3.Selection<SVGElement, any, any, any>) {
-    this.element = e;
-  }
-
-  setScale(scale: any) {
-    this.currentScale = scale;
-  }
-
-
   setBroadcastChannel(channel: string) {
     this.broadcastChannel = channel;
   }
 
-  setZoomBehavior(zoom: ZoomBehavior<any, any>) {
-    this.zoom = zoom;
-  }
+  setZoom(from: number, to: number, axisIndex = 0, axisOrientation = AxisOrientation.x) {
 
-  setAxis(axis: Axis) {
-    this.axis = axis;
-  }
+    const hash = objectHash.sha1({index: axisIndex, orientation: axisOrientation});
 
-  setZoom(from: number, to: number) {
-
-    if(!this.zoom) {
-      return
+    if (!this.zoomHashMap.has(hash)) {
+      return;
     }
 
-    this.currentScale.domain(this.axis.extremes);
-    const domain = this.currentScale.domain();
-    const scale = (domain[1] - domain[0])  / (to - from);
+    const currentAxis = this.axisHashMap.get(hash);
+    const currentScale = this.scaleHashMap.get(hash)?.copy();
+    const currentElement = this.elementHashMap.get(hash);
+    const currentZoom = this.zoomHashMap.get(hash);
+
+
+
+    if (axisOrientation === AxisOrientation.x) {
+      currentScale.domain(currentAxis.options.inverted ? [...currentAxis.extremes].reverse() : currentAxis.extremes)
+    }
+
+    if (axisOrientation === AxisOrientation.y) {
+      currentScale.domain(currentAxis.options.inverted ? currentAxis.extremes : [...currentAxis.extremes].reverse())
+    }
+
+    const min = d3.min<number>(currentAxis.extremes);
+    const max = d3.max<number>(currentAxis.extremes);
+
+
+    const scale = (max - min) / (Math.abs(to - from));
+
     let transform = zoomIdentity.scale(scale);
 
-    if(this.axis.orientation === AxisOrientation.x) {
-      transform = transform.translate(-this.currentScale(from), 0);
+    if (currentAxis.orientation === AxisOrientation.x) {
+      transform = transform.translate(-currentScale(from), 0);
     }
 
-    if(this.axis.orientation === AxisOrientation.y) {
-      transform = transform.translate(0, -this.currentScale(from));
+    if (currentAxis.orientation === AxisOrientation.y) {
+      transform = transform.translate(0, -currentScale(from));
     }
 
-    this.element.transition().call(this.zoom.transform, transform, null, {});
+
+    currentElement.transition().call(currentZoom.transform, transform, null, {});
 
     const zoomMessage = new ZoomMessage({
       event: {
         sourceEvent: null,
         transform: transform
       },
-      axis: this.axis,
+      axis: currentAxis,
       brushDomain: [from, to],
       chartId: null,
-
     })
 
     this.broadcast.broadcastZoom({
@@ -93,19 +98,26 @@ export class ZoomService {
 
   }
 
-  resetZoom() {
-    if(!this.zoom) {
-      return
+  resetZoom(axisIndex = 0, axisOrientation = AxisOrientation.x) {
+
+    const hash = objectHash.sha1({index: axisIndex, orientation: axisOrientation});
+
+    if (!this.zoomHashMap.has(hash)) {
+      return;
     }
 
-    this.element.transition().call(this.zoom.transform, zoomIdentity, null, {});
+    const currentElement = this.elementHashMap.get(hash);
+    const currentZoom = this.zoomHashMap.get(hash);
+    const currentAxis = this.axisHashMap.get(hash);
+
+    currentElement.transition().call(currentZoom.transform, zoomIdentity, null, {});
 
     const zoomMessage = new ZoomMessage({
       event: {
         sourceEvent: null,
         transform: zoomIdentity
       },
-      axis: this.axis,
+      axis: currentAxis,
       brushDomain: null,
       chartId: null,
 
