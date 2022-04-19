@@ -35,8 +35,12 @@ export class TextFieldComponent implements ControlValueAccessor {
   @Input()
   invalid: boolean;
   @ViewChild('input', {static: false}) input: ElementRef;
+
   @HostBinding('attr.tabindex')
-  private readonly tabindex = 0;
+  private get tabindex() {
+    return this.disabled ? null : 0;
+  }
+
   @HostBinding('class.text-field')
   private readonly textField = true;
   value = '';
@@ -45,6 +49,9 @@ export class TextFieldComponent implements ControlValueAccessor {
   }
 
   @HostListener('click') onFocus() {
+    if (this.disabled) {
+      return;
+    }
     this.input.nativeElement.focus();
   }
 
@@ -66,9 +73,9 @@ export class TextFieldComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
+  setDisabledState?(isDisabled: boolean): void {
     this.disabled = isDisabled;
-    this._cdr.detectChanges();
+    this._cdr.markForCheck();
   }
 
   writeValue(input: string): void {

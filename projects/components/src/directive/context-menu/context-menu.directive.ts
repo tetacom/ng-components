@@ -12,23 +12,22 @@ import {
   TemplateRef,
   Type,
 } from '@angular/core';
-import { DynamicComponentService } from '../../common/service/dynamic-component.service';
-import { DOCUMENT } from '@angular/common';
-import { ArrayUtil } from '../../common/util/array-util';
-import { DomUtil } from '../../common/util/dom-util';
-import { PositionUtil } from '../../common/util/position-util';
-import { DynamicContentBaseDirective } from '../dynamic-content-base.directive';
-import { ClickService } from '../../common/service/click.service';
-import { merge } from 'rxjs';
-import { filter, takeWhile, tap } from 'rxjs/operators';
+import {DynamicComponentService} from '../../common/service/dynamic-component.service';
+import {DOCUMENT} from '@angular/common';
+import {ArrayUtil} from '../../common/util/array-util';
+import {DomUtil} from '../../common/util/dom-util';
+import {PositionUtil} from '../../common/util/position-util';
+import {DynamicContentBaseDirective} from '../dynamic-content-base.directive';
+import {ClickService} from '../../common/service/click.service';
+import {merge} from 'rxjs';
+import {filter, takeWhile, tap} from 'rxjs/operators';
 
 @Directive({
   selector: '[tetaContextMenu]',
 })
 export class ContextMenuDirective
   extends DynamicContentBaseDirective
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   /**
    * Строка, шаблон или компонент для создания контекстного меню
    */
@@ -58,10 +57,12 @@ export class ContextMenuDirective
 
   @HostListener('contextmenu', ['$event'])
   showContent(event: MouseEvent): void {
-    event.preventDefault();
-    setTimeout(() => {
-      this.createMenu(event);
-    });
+    if(this.tetaContextMenu) {
+      event.preventDefault();
+      setTimeout(() => {
+        this.createMenu(event);
+      });
+    }
   }
 
   @HostListener('click', ['$event'])

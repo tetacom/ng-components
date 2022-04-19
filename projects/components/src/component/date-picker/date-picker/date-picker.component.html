@@ -15,7 +15,10 @@
     <div class="row_auto nowrap">
       {{currentValue !== null && currentValue !== undefined ? (currentValue | date : format) : ''}}
     </div>
-    <teta-icon [name]="'closeBig'" (click)="clearPicker($event);" class="margin-left-1"></teta-icon>
+    <teta-icon *ngIf="allowNull"
+               [name]="'closeBig'"
+               (click)="clearPicker($event);"
+               class="margin-left-1"></teta-icon>
   </div>
   <div tetaDropdownContent class="scrollable" (click)="$event.preventDefault()">
     <div class="padding-3">

@@ -9,12 +9,12 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { Align } from '../../../common/enum/align.enum';
-import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
-import { AutoCloseIgnoreCase } from '../../../common/contract/auto-close-ignore-case';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { SelectOptionDirective } from '../select-option.directive';
-import { SelectValueDirective } from '../select-value.directive';
+import {Align} from '../../../common/enum/align.enum';
+import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
+import {AutoCloseIgnoreCase} from '../../../common/contract/auto-close-ignore-case';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {SelectOptionDirective} from '../select-option.directive';
+import {SelectValueDirective} from '../select-value.directive';
 
 @Component({
   selector: 'teta-select',
@@ -51,16 +51,20 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   @Input() textRef: ((item: any) => string) | string;
   @Input() searchRef: string | ((item: any) => string);
 
-  @ContentChild(SelectOptionDirective, { static: true })
+  @ContentChild(SelectOptionDirective, {static: true})
   optionDirective: SelectOptionDirective;
 
-  @ContentChild(SelectValueDirective, { static: true })
+  @ContentChild(SelectValueDirective, {static: true})
   valueDirective: SelectValueDirective;
 
   @HostBinding('class.select_open') open = false;
 
   @HostBinding('class.select') private readonly selectClass = true;
-  @HostBinding('tabindex') private readonly tabindex = 0;
+
+  @HostBinding('tabindex')
+  private get tabindex() {
+    return this.disabled ? null : 0;
+  }
 
   @HostBinding('class.select_disabled')
   get isDisabled() {
@@ -85,7 +89,8 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   constructor(
     private _cdr: ChangeDetectorRef,
     private _elementRef: ElementRef
-  ) {}
+  ) {
+  }
 
   clear() {
     let val: any;
@@ -183,15 +188,16 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
     this._elementRef.nativeElement.focus();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   writeValue(value: any | any[]): void {
     if (this.multiple) {
       this.value =
         value && this.options
           ? this.options.filter(
-              (option) => value.indexOf(this.getValue(option)) > -1
-            )
+            (option) => value.indexOf(this.getValue(option)) > -1
+          )
           : [];
     } else {
       this.value =
@@ -201,13 +207,15 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
     this._cdr.detectChanges();
   }
 
-  onChange: (value: any) => void = () => {};
+  onChange: (value: any) => void = () => {
+  };
 
   registerOnChange(fn: (value: any) => void): void {
     this.onChange = fn;
   }
 
-  onTouched = () => {};
+  onTouched = () => {
+  };
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
@@ -218,5 +226,6 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
     this._cdr.markForCheck();
   }
 
-  private getSelectedValue() {}
+  private getSelectedValue() {
+  }
 }

@@ -49,6 +49,7 @@ export class DatePickerComponent
   @Input() align: Align = Align.left;
   @Input() verticalAlign: VerticalAlign = VerticalAlign.auto;
   @Input() appendToBody: boolean;
+  @Input() allowNull = true;
 
   @HostBinding('class.datepicker-wide')
   @Input()
@@ -145,6 +146,11 @@ export class DatePickerComponent
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+    this._cdr.detectChanges();
   }
 
   ngOnInit() {

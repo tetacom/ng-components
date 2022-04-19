@@ -179,7 +179,11 @@ export class TableComponent<T>
       }
     }
     if (!this.eventIsOnRow(event) && !event.defaultPrevented) {
-      this._svc.startEditRow(null);
+      if (this.editType === EditType.row) {
+        this._svc.startEditRow(null);
+      } else {
+        this._svc.startEditCell(null);
+      }
     }
   }
 
@@ -227,7 +231,7 @@ export class TableComponent<T>
         if (this._svc.currentEditCell) {
           const target = this._svc.getNextRowCell(coordinates);
           if (target) {
-            this._svc.startEditCell({
+            this.startEditRowOrCell({
               row: target.row,
               column: target.column,
               event: undefined
@@ -244,7 +248,7 @@ export class TableComponent<T>
         event
       });
       if (event.key && (event.key.length === 1 || event.key === 'Delete')) {
-        this._svc.startEditCell({
+        this.startEditRowOrCell({
           row: coordinates.row,
           column: coordinates.column,
           event: event
@@ -257,7 +261,7 @@ export class TableComponent<T>
           target = this._svc.getPreviousEditableCell(coordinates);
         }
         if (target) {
-          this._svc.startEditCell({
+          this.startEditRowOrCell({
             row: target.row,
             column: target.column,
             event: undefined

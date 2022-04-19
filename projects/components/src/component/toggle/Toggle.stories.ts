@@ -30,5 +30,15 @@ export const sample = () => ({
               [ngModel]="value"
               (ngModelChange)="setValue($event)">
               {{text}}
+            </teta-toggle>
+            <teta-toggle [tetaIconSprite]="'assets/icons.svg'"
+              [disabled]="true"
+              [ngModel]="1">
+              disabled true
+            </teta-toggle>
+            <teta-toggle [tetaIconSprite]="'assets/icons.svg'"
+              [disabled]="true"
+              [ngModel]="0">
+              disabled false
             </teta-toggle>`,
 });
