@@ -50,6 +50,7 @@ export class DatePickerComponent
   @Input() verticalAlign: VerticalAlign = VerticalAlign.auto;
   @Input() appendToBody: boolean;
   @Input() allowNull = true;
+  @Input() backdrop: boolean;
 
   @HostBinding('class.datepicker-wide')
   @Input()
