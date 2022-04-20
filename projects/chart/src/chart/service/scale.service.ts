@@ -1,20 +1,14 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as d3 from 'd3';
-import { D3ZoomEvent, ZoomTransform } from 'd3';
-import { Axis } from '../core/axis/axis';
-import { AxisOrientation } from '../model/enum/axis-orientation';
-import { IChartConfig } from '../model/i-chart-config';
-import { ChartService } from './chart.service';
-import {
-  combineLatest,
-  map,
-  Observable,
-  shareReplay,
-  withLatestFrom,
-} from 'rxjs';
-import { IChartEvent } from '../model/i-chart-event';
-import { ZoomService } from './zoom.service';
-import { ScaleType } from '../model/enum/scale-type';
+import {D3ZoomEvent, ZoomTransform} from 'd3';
+import {Axis} from '../core/axis/axis';
+import {AxisOrientation} from '../model/enum/axis-orientation';
+import {IChartConfig} from '../model/i-chart-config';
+import {ChartService} from './chart.service';
+import {combineLatest, map, Observable, shareReplay, withLatestFrom,} from 'rxjs';
+import {IChartEvent} from '../model/i-chart-event';
+import {ZoomService} from './zoom.service';
+import {ScaleType} from '../model/enum/scale-type';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +28,7 @@ export class ScaleService {
     .set(ScaleType.time, d3.scaleTime)
     .set(ScaleType.category, d3.scaleOrdinal)
     .set(ScaleType.log, d3.scaleLog)
+    .set(ScaleType.symlog, d3.scaleSymlog)
     .set(ScaleType.pow, d3.scalePow)
     .set(ScaleType.sqrt, d3.scaleSqrt);
 
@@ -41,6 +36,7 @@ export class ScaleService {
     private chartService: ChartService,
     private zoomService: ZoomService
   ) {
+
     this.xAxisMap = combineLatest([
       this.chartService.size,
       this.chartService.config,
@@ -123,10 +119,12 @@ export class ScaleService {
             }
 
             if (axis.options.scaleType.type === ScaleType.log) {
-              scale.base(axis.options.scaleType.base);
+              scale.base(axis.options.scaleType.base)
             }
 
             map.set(axis.index, scale);
+            axis.setOriginDomain(scale.domain());
+
 
             const hasCache = this.transformCacheX.has(axis.index);
             const shouldRestore =
@@ -217,10 +215,11 @@ export class ScaleService {
             }
 
             if (axis.options.scaleType.type === ScaleType.log) {
-              scale.base(axis.options.scaleType.base);
+              scale.base(axis.options.scaleType.base)
             }
 
             map.set(axis.index, scale);
+            axis.setOriginDomain(scale.domain());
 
             const hasCache = this.transformCacheY.has(axis.index);
 

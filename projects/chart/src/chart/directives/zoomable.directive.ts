@@ -61,10 +61,13 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.hasOwnProperty('brushScale') || changes.hasOwnProperty('scale')) {
+
+    if (changes.hasOwnProperty('brushScale') || changes.hasOwnProperty('scale') || changes.hasOwnProperty('axis')) {
 
       if (this.hash) {
         this.zoomService.scaleHashMap.set(this.hash, this.scale);
+        this.zoomService.axisHashMap.set(this.hash, this.axis);
+
       }
     }
   }
@@ -108,11 +111,10 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         ]);
       }
 
-
-
       this.zoomService.axisHashMap.set(this.hash, this.zoomAxis);
       this.zoomService.elementHashMap.set(this.hash, this._element);
       this.zoomService.scaleHashMap.set(this.hash, this.scale);
+
       this.zoomService.zoomHashMap.set(this.hash, this.zoom);
       this.zoomService.setBroadcastChannel(this.config?.zoom.syncChannel)
 
@@ -145,8 +147,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       .pipe(
         takeWhile((_) => this.alive),
         tap((m: IBroadcastMessage<ZoomMessage>) => {
-
-
           // Sync fake axis and index axis 0
           if (
             this.zoomAxis.index === m.message?.axis?.index &&
@@ -252,6 +252,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
 
   zoomed = (event: D3ZoomEvent<any, any>) => {
+
     if (event.sourceEvent) {
       if (Object.keys(event.sourceEvent).length !== 0) {
         if (this.currentTransform === event.transform && event.type !== 'end') {

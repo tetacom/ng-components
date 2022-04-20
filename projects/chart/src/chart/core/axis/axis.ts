@@ -17,13 +17,15 @@ export class Axis {
   private _ticksValues: number[];
   private _options: AxisOptions;
   private _isFake: boolean;
+  private _originDomain: Array<any> = [];
 
   private defaultFormatters = new Map<ScaleType, any>()
-    .set(ScaleType.linear, d3.format(',.2f'))
+    .set(ScaleType.linear, d3.format(',.5~r'))
     .set(ScaleType.time, d3.timeFormat('%d.%m.%Y'))
-    .set(ScaleType.log, d3.format(',.2f'))
-    .set(ScaleType.pow, d3.format(',.2f'))
-    .set(ScaleType.sqrt, d3.format(',.2f'));
+    .set(ScaleType.log, d3.format('~s'))
+    .set(ScaleType.symlog, d3.format('~s'))
+    .set(ScaleType.pow, d3.format('~s'))
+    .set(ScaleType.sqrt, d3.format('~s'));
 
   constructor(config: IChartConfig) {
     this.chartConfig = config;
@@ -92,9 +94,13 @@ export class Axis {
     return this.chartConfig?.series.filter(linkedFilter);
   }
 
-  private setExtremes(): void {
+  public setExtremes(): void {
     const builder = new ExtremesBuilder();
     this._extremes = builder.build(this);
+  }
+
+  public setOriginDomain(domain: Array<any>) {
+    this._originDomain = domain;
   }
 
   private setSelfSize(): void {
@@ -140,6 +146,10 @@ export class Axis {
 
   get isFake(): boolean {
     return this._isFake;
+  }
+
+  get originDomain(): Array<any> {
+    return this._originDomain
   }
 
   public defaultFormatter() {
