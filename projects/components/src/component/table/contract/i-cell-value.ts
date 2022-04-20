@@ -1,6 +1,5 @@
-import { ICellCoordinates } from './i-cell-coordinates';
+import {ICellCoordinates} from './i-cell-coordinates';
 
-export interface ICellValue<T> {
-  cell: ICellCoordinates<T>;
+export interface ICellValue extends ICellCoordinates {
   value: any;
 }

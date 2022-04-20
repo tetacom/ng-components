@@ -1,11 +1,11 @@
-<div class="form-row padding-3">
-  <teta-input [label]="'От'">
+<div class="form-row padding-3" *ngIf="locale | async as loc">
+  <teta-input [label]="loc.from">
     <teta-date-picker style="width: 110px"
                       [ngModel]="filter.value?.greaterThan"
                       [appendToBody]="true"
                       (ngModelChange)="filter.value.greaterThan=$event"></teta-date-picker>
   </teta-input>
-  <teta-input [label]="'До'">
+  <teta-input [label]="loc.to">
     <teta-date-picker style="width: 110px"
                       [ngModel]="filter.value?.lessThan"
                       [appendToBody]="true"

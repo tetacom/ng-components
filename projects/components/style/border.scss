@@ -10,7 +10,7 @@
   }
   @for $radius from 0 through 12 {
     &-radius-#{$radius} {
-      border-radius: 1px * $radius;
+      border-radius: 1px * $radius!important;
     }
   }
 }

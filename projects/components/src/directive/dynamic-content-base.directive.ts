@@ -13,12 +13,12 @@ import {
   TemplateRef,
   Type,
 } from '@angular/core';
-import { DynamicComponentService } from '../common/service/dynamic-component.service';
-import { Align } from '../common/enum/align.enum';
-import { VerticalAlign } from '../common/enum/vertical-align.enum';
-import { filter, takeWhile } from 'rxjs/operators';
-import { TetaContentRef } from '../common/contract/teta-content-ref';
-import { PopupContentComponent } from '../component/dynamic-component/popup-content/popup-content.component';
+import {DynamicComponentService} from '../common/service/dynamic-component.service';
+import {Align} from '../common/enum/align.enum';
+import {VerticalAlign} from '../common/enum/vertical-align.enum';
+import {filter, takeWhile} from 'rxjs/operators';
+import {TetaContentRef} from '../common/contract/teta-content-ref';
+import {PopupContentComponent} from '../component/dynamic-component/popup-content/popup-content.component';
 
 @Directive()
 export abstract class DynamicContentBaseDirective implements OnInit, OnDestroy {
@@ -27,6 +27,7 @@ export abstract class DynamicContentBaseDirective implements OnInit, OnDestroy {
   @Input() align: Align = Align.left;
   @Input() verticalAlign: VerticalAlign = VerticalAlign.bottom;
   @Input() appendToBody: boolean;
+
   @Input() set open(open: boolean) {
     this._open = open;
     if (this._open) {
@@ -35,6 +36,7 @@ export abstract class DynamicContentBaseDirective implements OnInit, OnDestroy {
       this.destroyContentRef();
     }
   }
+
   @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   protected _alive = true;
@@ -70,7 +72,8 @@ export abstract class DynamicContentBaseDirective implements OnInit, OnDestroy {
     this.destroyContentRef();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   protected createContentRef<T>(
     className?: string | string[]
@@ -98,15 +101,13 @@ export abstract class DynamicContentBaseDirective implements OnInit, OnDestroy {
   }
 
   protected destroyContentRef(): void {
-    if (this._open) {
-      this._open = false;
-      this._service.destroy(
-        this._componentRef,
-        this._content,
-        this.appendToBody ? this._document.body : this._elementRef.nativeElement
-      );
-      this._componentRef = null;
-    }
+    this._open = false;
+    this._service.destroy(
+      this._componentRef,
+      this._content,
+      this.appendToBody ? this._document.body : this._elementRef.nativeElement
+    );
+    this._componentRef = null;
   }
 
   protected abstract setPosition(): void;

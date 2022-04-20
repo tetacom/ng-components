@@ -7,13 +7,17 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ListFilter } from '../contarct/list-filter';
-import { ListFilterType } from '../enum/list-filter-type.enum';
-import { FilterComponentBase } from '../base/filter-component-base';
-import { FilterBase } from '../base/filter-base';
-import { FilterState } from '../contarct/filter-state';
-import { FilterItem } from '../contarct/filter-item';
-import { IIdName } from '../../../common/contract/i-id-name';
+import {ListFilter} from '../contarct/list-filter';
+import {ListFilterType} from '../enum/list-filter-type.enum';
+import {FilterComponentBase} from '../base/filter-component-base';
+import {FilterBase} from '../base/filter-base';
+import {FilterState} from '../contarct/filter-state';
+import {FilterItem} from '../contarct/filter-item';
+import {IIdName} from '../../../common/contract/i-id-name';
+import {TableRow} from '../../table/contract/table-row';
+import {Observable} from 'rxjs';
+import {TetaLocalisation} from '../../../locale/teta-localisation';
+import {TetaConfigService} from '../../../locale/teta-config.service';
 
 @Component({
   selector: 'teta-list-filter',
@@ -21,8 +25,9 @@ import { IIdName } from '../../../common/contract/i-id-name';
   styleUrls: ['./list-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListFilterComponent extends FilterComponentBase implements OnInit {
+export class ListFilterComponent<T> extends FilterComponentBase<T> implements OnInit {
   @Input() column: FilterItem;
+  @Input() data: TableRow<T>[];
   @Input() filterOptions: IIdName<any>[] = [];
   @Output() filterChanged: EventEmitter<FilterBase> =
     new EventEmitter<FilterBase>();
@@ -30,10 +35,13 @@ export class ListFilterComponent extends FilterComponentBase implements OnInit {
   filter: ListFilter;
   state$: FilterState;
   search = '';
+  locale: Observable<TetaLocalisation>;
 
   get visibleOptions() {
     return this.filterOptions?.filter(
-      (_) => _.name?.toString().indexOf(this.search) >= 0
+      (option: IIdName<any>) => {
+        return option.name?.toString().indexOf(this.search) >= 0;
+      }
     );
   }
 
@@ -50,11 +58,14 @@ export class ListFilterComponent extends FilterComponentBase implements OnInit {
 
   excluded: boolean;
 
-  constructor(private changeDetector: ChangeDetectorRef) {
+  constructor(private changeDetector: ChangeDetectorRef,
+              private _config: TetaConfigService) {
     super();
+    this.locale = this._config.locale;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   all() {
     if (!this.filter?.value || this.filter?.value?.length === 0) {

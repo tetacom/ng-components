@@ -1,15 +1,12 @@
 <cdk-virtual-scroll-viewport *ngIf="virtual"
                              class="table-body-container"
-                             [itemSize]="24">
+                             [itemSize]="28">
   <ng-container *cdkVirtualFor="let row of data;templateCacheSize: 0; let rowIndex = index; trackBy: trackRow;">
     <ng-container *ngTemplateOutlet="bodyTemplate; context: {row: row, rowIndex: rowIndex}"></ng-container>
   </ng-container>
 </cdk-virtual-scroll-viewport>
 <div *ngIf="!virtual"
-     class="table-body-container"
-     [style.grid-template-rows]="rowHeight + 'px'"
-     [style.grid-auto-rows]="rowHeight + 'px'"
-     [style.grid-template-columns]="getTemplateColumns()">
+     class="table-body-container">
   <ng-container *ngFor="let row of data; let rowIndex = index; trackBy: trackRow;">
     <ng-container *ngTemplateOutlet="bodyTemplate; context: {row: row, rowIndex: rowIndex}"></ng-container>
   </ng-container>
@@ -21,43 +18,53 @@
 <ng-template #bodyTemplate let-row="row" let-rowIndex="rowIndex">
   <div class="table-row"
        (click)="setActiveRow(row)"
+       (contextmenu)="setActiveRow(row)"
        [attr.data-row]="rowIndex"
+       [class.table-row_odd]="rowIndex % 2 === 1"
        [ngClass]="rowClass ? rowClass(row, rowIndex) : ''"
-       [class.table-row_virtual]="virtual"
-       [style.grid-template-columns]="virtual ? getTemplateColumns() : ''"
-       [class.table-row_active]="row === activeRow || selectedRows.indexOf(row) >= 0">
+       [class.table-row_active]="row === activeRow || (selectedRows && selectedRows.indexOf(row) >= 0)"
+       [style.flex-grow]="totalFlex"
+       [style.flex-basis.px]="totalWidth"
+       [style.min-width.px]="totalWidth">
     <ng-container *ngIf="!grouping">
       <div class="table-row_locked"
            *ngIf="locked.length > 0"
-           [style.grid-template-columns]="getLockedGridTemplateColumns(locked)"
-           [style.zIndex]="row === activeRow ? 1 : 'unset'"
-           [style.grid-column-end]="getSpan()">
+           [style.flex-grow]="lockedFlex"
+           [style.flex-basis.px]="lockedWidth"
+           [style.min-width.px]="lockedWidth"
+           [style.zIndex]="row === activeRow ? 1 : 'unset'">
         <teta-selection-cell *ngIf="selectType !== selectTypeEnum.none && locked.length"
-                             [row]="row"></teta-selection-cell>
+                             [row]="row"
+                             style="width: 28px;"></teta-selection-cell>
         <teta-cell
           *ngFor="let column of locked; let colIndex = index; trackBy: trackColumns;"
           [attr.data-row]="rowIndex"
           [attr.data-column]="column.name"
           [column]="column"
-          [filterOptions]="dict[column.name]"
+          [filterOptions]="dict?dict[column.name]:[]"
           [dict]="dict"
           [row]="row"
           [ngClass]="column.cellClass"
           [attr.tabindex]="0"
+          [style.flex-grow]="column.flex"
+          [style.flex-basis.px]="column.width"
         ></teta-cell>
       </div>
       <teta-selection-cell *ngIf="selectType !== selectTypeEnum.none && locked.length < 1"
-                           [row]="row"></teta-selection-cell>
+                           [row]="row"
+                           style="width: 28px;"></teta-selection-cell>
       <teta-cell
         *ngFor="let column of unlocked; let colIndex = index; trackBy: trackColumns;"
         [attr.data-row]="rowIndex"
         [attr.data-column]="column.name"
         [column]="column"
-        [filterOptions]="dict[column.name]"
+        [filterOptions]="dict?dict[column.name]:[]"
         [dict]="dict"
         [row]="row"
         [ngClass]="column.cellClass"
         [attr.tabindex]="0"
+        [style.flex-grow]="column.flex"
+        [style.flex-basis.px]="column.width"
       ></teta-cell>
     </ng-container>
     <ng-container *ngIf="grouping">
@@ -66,41 +73,52 @@
 </ng-template>
 
 <ng-template #aggTemplate>
-  <div class="table-row"
-       *ngIf="aggregate"
-       [class.table-row_virtual]="virtual"
-       [style.grid-template-columns]="virtual ? getTemplateColumns() : ''">
-    <div class="table-row_locked"
-         *ngIf="locked.length > 0"
-         [style.grid-template-columns]="getLockedGridTemplateColumns(locked)"
-         [style.grid-column-end]="getSpan()">
-      <div class="cell align-center justify-content-center">
+  <ng-container *ngIf="locale | async as loc">
+    <div class="table-row"
+         *ngIf="aggregate"
+         [class.table-row_virtual]="virtual"
+         [style.flex-grow]="virtual ? totalFlex : ''"
+         [style.flex-basis.px]="virtual ? totalWidth : ''"
+         [style.min-width.px]="virtual ? totalWidth : ''">
+      <div class="table-row_locked"
+           *ngIf="locked.length > 0"
+           [style.flex-grow]="lockedFlex"
+           [style.flex-basis.px]="lockedWidth"
+           [style.min-width.px]="lockedWidth">
+        <div class="cell align-center justify-content-center"
+             style="width: 28px;">
+          <teta-icon [name]="'sumColor'"></teta-icon>
+        </div>
+        <div class="cell cell-component justify-content-end"
+             *ngFor="let column of locked; let colIndex = index; trackBy: trackColumns;"
+             [attr.data-column]="column.name"
+             [ngClass]="column.cellClass"
+             [attr.tabindex]="0"
+             [style.flex-grow]="column.flex"
+             [style.flex-basis.px]="column.width">
+        <span class="cell-text cell-text_numeric font-title-3">
+          {{loc[getAggregateText(column)]}}:
+          {{getAggregateValue(column) | tetaNumber : 2}}
+        </span>
+        </div>
+      </div>
+      <div class="cell align-center justify-content-center"
+           style="width: 28px;"
+           *ngIf="selectType !== selectTypeEnum.none && locked.length < 1">
         <teta-icon [name]="'sumColor'"></teta-icon>
       </div>
       <div class="cell cell-component justify-content-end"
-           *ngFor="let column of locked; let colIndex = index; trackBy: trackColumns;"
+           *ngFor="let column of unlocked; let colIndex = index; trackBy: trackColumns;"
            [attr.data-column]="column.name"
            [ngClass]="column.cellClass"
-           [attr.tabindex]="0">
-        <span class="cell-text cell-text_numeric font-title-3">
-          {{getAggregateText(column)}}:
-          {{getAggregateValue(column) | tetaNumber : 2}}
-        </span>
-      </div>
-    </div>
-    <div class="cell align-center justify-content-center"
-         *ngIf="selectType !== selectTypeEnum.none && locked.length < 1">
-      <teta-icon [name]="'sumColor'"></teta-icon>
-    </div>
-    <div class="cell cell-component justify-content-end"
-         *ngFor="let column of unlocked; let colIndex = index; trackBy: trackColumns;"
-         [attr.data-column]="column.name"
-         [ngClass]="column.cellClass"
-         [attr.tabindex]="0">
+           [attr.tabindex]="0"
+           [style.flex-grow]="column.flex"
+           [style.flex-basis.px]="column.width">
       <span class="cell-text cell-text_numeric font-title-3">
-        {{getAggregateText(column)}}
+        {{loc[getAggregateText(column)]}}:
         {{getAggregateValue(column) | tetaNumber : 2}}
       </span>
+      </div>
     </div>
-  </div>
+  </ng-container>
 </ng-template>

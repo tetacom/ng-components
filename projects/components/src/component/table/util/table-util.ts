@@ -17,12 +17,6 @@ export class TableUtil {
     return null;
   }
 
-  public static getGridTemplateColumns(columns: TableColumn[]): string {
-    const res = columns?.map((column: TableColumn) =>
-      column.flex > 0 ? `minmax(${column.width}px, ${column.flex}fr)` : `${column.width}px`).join(' ');
-    return res;
-  }
-
   static getData<T>(data: T[], state: FilterState): T[] {
     let result: T[] = data;
     result = TableUtil.filterData(result, state);
@@ -77,15 +71,15 @@ export class TableUtil {
     const filterString = (row: T) => {
       const item = row as any;
       if (filter.type === StringFilterType.EndsWith) {
-        return item[filter.field].endsWith(filter.value);
+        return item[filter.field]?.toLowerCase().endsWith(filter.value?.toLowerCase());
       }
       if (filter.type === StringFilterType.Equals) {
-        return item[filter.field] === filter.value;
+        return item[filter.field]?.toLowerCase() === filter.value?.toLowerCase();
       }
       if (filter.type === StringFilterType.StartsWith) {
-        return item[filter.field].startsWith(filter.value);
+        return item[filter.field]?.toLowerCase().startsWith(filter.value?.toLowerCase());
       }
-      return item[filter.field].indexOf(filter.value) >= 0;
+      return item[filter.field]?.toLowerCase().indexOf(filter.value?.toLowerCase()) >= 0;
     };
     return data.filter(filterString);
   }
@@ -95,10 +89,10 @@ export class TableUtil {
       const item = row as any;
       return (filter.value.lessThan === null || filter.value.lessThan === undefined
           ? true
-          : filter.value.lessThan.getTime() > item[filter.field].getTime()) &&
+          : filter.value.lessThan.getTime() >= item[filter.field].getTime()) &&
         (filter.value.greaterThan === null || filter.value.greaterThan === undefined
           ? true
-          : filter.value.greaterThan.getTime() < item[filter.field].getTime());
+          : filter.value.greaterThan.getTime() <= item[filter.field].getTime());
     };
     return data.filter(filterDate);
   }
@@ -108,10 +102,10 @@ export class TableUtil {
       const item = row as any;
       return (filter.value.lessThan === null || filter.value.lessThan === undefined
           ? true
-          : filter.value.lessThan > item[filter.field]) &&
+          : filter.value.lessThan >= item[filter.field]) &&
         (filter.value.greaterThan === null || filter.value.greaterThan === undefined
           ? true
-          : filter.value.greaterThan < item[filter.field]) &&
+          : filter.value.greaterThan <= item[filter.field]) &&
         (filter.value.equalsTo === null || filter.value.equalsTo === undefined
           ? true
           : filter.value.equalsTo === item[filter.field]);
@@ -135,7 +129,7 @@ export class TableUtil {
 
   static sort<T>(data: T[], sortParam: SortParam): T[] {
     const res = data.sort(sortParam.asc ? TableUtil.asc(sortParam.field) : TableUtil.desc(sortParam.field));
-    return res;
+    return [...res];
   }
 
   static desc(field: string) {

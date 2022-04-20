@@ -1,6 +1,7 @@
 import {FilterType} from '../enum/filter-type.enum';
 import {StringFilterType} from '../enum/string-filter-type.enum';
 import {ListFilterType} from '../enum/list-filter-type.enum';
+import {StringUtil} from '../../../util/string-util';
 
 export class FilterItem {
   /**
@@ -83,8 +84,8 @@ export class FilterItem {
     this.hint = options?.hint ?? '';
     this.sortable = options?.sortable ?? true;
     this.filterable = options?.filterable ?? true;
-    this.sortField = options?.sortField ?? this.name;
-    this.filterField = options?.filterField ?? this.name;
+    this.sortField = StringUtil.firstLetterToLower(options?.sortField ?? this.name);
+    this.filterField = StringUtil.firstLetterToLower(options?.filterField ?? this.name);
     this.filterType = options?.filterType;
     this.stringFilterType = options?.stringFilterType ?? StringFilterType.Contains;
     this.listFilterType = options?.listFilterType ?? ListFilterType.None;

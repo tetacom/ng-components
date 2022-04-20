@@ -1,5 +1,4 @@
 export * from './filter.module';
-export * from './filter-panel/filter-panel.component';
 
 export * from './date-filter/date-filter.component';
 export * from './list-filter/list-filter.component';

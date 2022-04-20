@@ -7,14 +7,14 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { TableColumn } from '../contract/table-column';
-import { FilterState } from '../../filter/contarct/filter-state';
-import { TableService } from '../service/table.service';
-import { takeWhile } from 'rxjs/operators';
-import { TableUtil } from '../util/table-util';
-import { SelectType } from '../enum/select-type.enum';
-import { combineLatest } from 'rxjs';
-import { ArrayUtil } from '../../../common/util/array-util';
+import {TableColumn} from '../contract/table-column';
+import {FilterState} from '../../filter/contarct/filter-state';
+import {TableService} from '../service/table.service';
+import {takeWhile} from 'rxjs/operators';
+import {SelectType} from '../enum/select-type.enum';
+import {combineLatest} from 'rxjs';
+import {ArrayUtil} from '../../../common/util/array-util';
+import {TableRow} from '../contract/table-row';
 
 @Component({
   selector: 'teta-table-head',
@@ -26,19 +26,11 @@ export class TableHeadComponent<T> implements OnInit, OnDestroy {
   @Input() selectType: SelectType;
   @Input() showHeadCellMenu: boolean;
   @HostBinding('class.table-head') private readonly tableHeadClass = true;
-  gridTemplateColumns: string;
-
-  @HostBinding('style.grid-template-columns')
-  get getTemplateColumns() {
-    let template = this.gridTemplateColumns;
-    if (this.selectType !== SelectType.none) {
-      template = `48px ${template}`;
-    }
-    return template;
-  }
 
   state: FilterState;
   selectTypeEnum = SelectType;
+  lockedFlex: number;
+  lockedWidth: number;
 
   private _alive = true;
   private _columns: TableColumn[] = [];
@@ -65,6 +57,8 @@ export class TableHeadComponent<T> implements OnInit, OnDestroy {
     );
   }
 
+  data: TableRow<T>[];
+
   constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {
     combineLatest([this._svc.columns, this._svc.hiddenColumns])
       .pipe(takeWhile((_) => this._alive))
@@ -72,12 +66,11 @@ export class TableHeadComponent<T> implements OnInit, OnDestroy {
         const [columns, hiddenColumns] = values;
         this._hiddenColumns = hiddenColumns;
         this.columns = columns;
-
-        this.gridTemplateColumns = TableUtil.getGridTemplateColumns(
-          ArrayUtil.flatten(columns, 'columns', true)
-            .filter((_) => this._hiddenColumns.indexOf(_.name) < 0)
-            .sort((a, b) => Number(b.locked) - Number(a.locked))
-        );
+        const locked = ArrayUtil.flatten(columns, 'columns', true)
+          .filter((_) => this._hiddenColumns.indexOf(_.name) < 0 && _.locked);
+        const startWidth = this.selectType !== SelectType.none ? 28 : 0;
+        this.lockedFlex = locked.reduce((prev: number, curr: TableColumn) => prev + curr.flex, 0);
+        this.lockedWidth = locked.reduce((prev: number, curr: TableColumn) => prev + curr.width, startWidth);
         this._cdr.markForCheck();
       });
 
@@ -85,32 +78,19 @@ export class TableHeadComponent<T> implements OnInit, OnDestroy {
       this.state = _;
       this._cdr.markForCheck();
     });
-  }
 
-  getSpan(): string {
-    if (this.locked?.length > 0) {
-      let span = this.locked.length;
-      if (this.selectType !== SelectType.none) {
-        span += 1;
-      }
-      return `span ${span}`;
-    }
-    return null;
-  }
-
-  getLockedGridTemplateColumns(columns: TableColumn[]) {
-    let template = TableUtil.getGridTemplateColumns(columns);
-    if (this.selectType !== SelectType.none) {
-      template = `48px ${template}`;
-    }
-    return template;
+    this._svc.displayData.pipe(takeWhile((_) => this._alive)).subscribe((_) => {
+      this.data = _;
+      this._cdr.markForCheck();
+    });
   }
 
   track(index: number, item: TableColumn): any {
     return item.name;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngOnDestroy(): void {
     this._alive = false;

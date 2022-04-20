@@ -39,8 +39,8 @@ export class BooleanCellComponent<T>
     super.ngOnInit();
   }
 
-  startEdit(initiator: ICellCoordinates<T>, type: 'cell' | 'row'): void {
-    if (initiator?.column.name === this.column.name) {
+  startEdit(initiator: ICellCoordinates, type: 'cell' | 'row'): void {
+    if (initiator?.column === this.column.name) {
       this.cdr.markForCheck();
       setTimeout(() => {
         this.input?.nativeElement.focus();

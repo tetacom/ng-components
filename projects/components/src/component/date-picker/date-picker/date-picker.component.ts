@@ -11,15 +11,15 @@ import {
   OnInit,
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {PickerLocaleService} from '../service/picker-locale.service';
 import {takeWhile} from 'rxjs/operators';
 import {DatePeriod} from '../model/date-period';
-import {PickerLocaleModel} from '../model/picker-locale-model';
 import {DatePickerMode} from '../model/date-picker-mode.enum';
 import {DateUtil} from '../../../util/date-util';
 import {DatePickerUtil} from '../util/date-picker-util';
 import {Align} from '../../../common/enum/align.enum';
 import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
+import {TetaLocalisation} from '../../../locale/teta-localisation';
+import {TetaConfigService} from '../../../locale/teta-config.service';
 
 export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -49,6 +49,8 @@ export class DatePickerComponent
   @Input() align: Align = Align.left;
   @Input() verticalAlign: VerticalAlign = VerticalAlign.auto;
   @Input() appendToBody: boolean;
+  @Input() allowNull = true;
+  @Input() backdrop: boolean;
 
   @HostBinding('class.datepicker-wide')
   @Input()
@@ -70,7 +72,7 @@ export class DatePickerComponent
   @HostBinding('class.datepicker') private readonly classDatepicker = true;
   @HostBinding('tabindex') private readonly tabindex = 0;
 
-  locale: PickerLocaleModel;
+  locale: TetaLocalisation;
   today: Date = new Date();
 
   datePickerModeEnum = DatePickerMode;
@@ -107,13 +109,13 @@ export class DatePickerComponent
   }
 
   constructor(
-    public localeService: PickerLocaleService,
+    public localeService: TetaConfigService,
     private _cdr: ChangeDetectorRef,
     private _elementRef: ElementRef
   ) {
     localeService.locale
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((locale: PickerLocaleModel) => {
+      .subscribe((locale: TetaLocalisation) => {
         this.locale = locale;
       });
   }
@@ -145,6 +147,11 @@ export class DatePickerComponent
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+    this._cdr.detectChanges();
   }
 
   ngOnInit() {

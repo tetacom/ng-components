@@ -1,5 +1,6 @@
 export * from './constructor-type';
 export * from './dynamic-data';
+export * from './i-id';
 export * from './i-id-name';
 export * from './i-dictionary';
 export * from './i-tree-data';

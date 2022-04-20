@@ -9,6 +9,7 @@ import {
 import {HeadCellComponentBase} from '../base/head-cell-component-base';
 import {TableColumn} from '../contract/table-column';
 import {DefaultHeadCellComponent} from '../default/default-head-cell/default-head-cell.component';
+import {TableRow} from '../contract/table-row';
 
 @Component({
   selector: 'teta-head-cell-host',
@@ -16,9 +17,11 @@ import {DefaultHeadCellComponent} from '../default/default-head-cell/default-hea
   styleUrls: ['./head-cell-host.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeadCellHostComponent implements OnInit {
+export class HeadCellHostComponent<T> implements OnInit {
   private _column: TableColumn;
-  private componentRef: ComponentRef<HeadCellComponentBase>;
+  private _data: TableRow<T>[];
+
+  private componentRef: ComponentRef<HeadCellComponentBase<T>>;
   private init: boolean;
 
   @Input()
@@ -33,6 +36,18 @@ export class HeadCellHostComponent implements OnInit {
     return this._column;
   }
 
+  @Input()
+  set data(data: TableRow<T>[]) {
+    this._data = data;
+    if (this.init) {
+      this.componentRef.instance.data = this._data;
+    }
+  }
+
+  get data(): TableRow<T>[] {
+    return this._data;
+  }
+
   constructor(
     private viewContainerRef: ViewContainerRef
   ) {
@@ -43,8 +58,9 @@ export class HeadCellHostComponent implements OnInit {
       this.column.headCellComponent = DefaultHeadCellComponent;
     }
     this.componentRef =
-      this.viewContainerRef.createComponent<HeadCellComponentBase>(this.column.headCellComponent);
+      this.viewContainerRef.createComponent<HeadCellComponentBase<T>>(this.column.headCellComponent);
     this.componentRef.instance.column = this.column;
+    this.componentRef.instance.data = this.data;
     this.init = true;
   }
 }

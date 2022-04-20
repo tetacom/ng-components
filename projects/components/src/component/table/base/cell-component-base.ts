@@ -22,13 +22,18 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   private readonly tableCellComponent = true;
 
   get edit() {
-    return (
-      this._edit &&
-      this.svc.boolOrFuncCallback(this.column.editable)({
-        column: this.column,
-        row: this.row,
-      })
-    );
+    return (this._edit && this.editable);
+  }
+
+  get editable() {
+    return this.svc.boolOrFuncCallback(this.column.editable)({
+      column: this.column,
+      row: this.row,
+    });
+  }
+
+  get index() {
+    return this.svc.getRowIndex(this.row);
   }
 
   _edit: boolean;
@@ -47,8 +52,8 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
 
   valueChanged(): void {
     this.svc.changeValue({
-      column: this.column,
-      row: this.row,
+      column: this.column.name,
+      row: this.index,
     });
   }
 
@@ -65,19 +70,11 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       .pipe(
         takeWhile((_) => this._alive)
       )
-      .subscribe((cell: ICellCoordinates<T>) => {
-        if (
-          this.row === cell?.row &&
-          !this._edit
-          // &&
-          // this.svc.boolOrFuncCallback(this.svc.cellEditable)({
-          //   column: this.column,
-          //   row: this.row,
-          // })
-        ) {
+      .subscribe((cell: ICellCoordinates) => {
+        if (this.index === cell?.row && !this._edit) {
           this.start(cell, 'row');
         }
-        if (this.row !== cell?.row && this._edit) {
+        if (this.index !== cell?.row && this._edit) {
           this.stop();
         }
       });
@@ -86,29 +83,19 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       .pipe(
         takeWhile((_) => this._alive)
       )
-      .subscribe((cell: ICellCoordinates<T>) => {
-        if (
-          this.row === cell.row &&
-          this.column.name === cell.column.name &&
-          !this._edit
-        ) {
+      .subscribe((cell: ICellCoordinates) => {
+        if (this.index === cell?.row && this.column.name === cell?.column && !this._edit) {
           this.start(cell, 'cell');
         }
-        if (
-          (this.row !== cell.row || this.column.name !== cell.column.name) &&
-          this._edit
-        ) {
+        if ((this.index !== cell?.row || this.column.name !== cell?.column) && this._edit) {
           this.stop();
         }
       });
 
     this.svc.valueSet
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((cellValue: ICellValue<T>) => {
-        if (
-          this.row === cellValue.cell.row
-          && this.column.name === cellValue.cell.column.name
-        ) {
+      .subscribe((cellValue: ICellValue) => {
+        if (this.index === cellValue.row && this.column.name === cellValue.column) {
           this.row.data[this.column.name] = cellValue.value;
           this.cdr.detectChanges();
         }
@@ -116,19 +103,17 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
 
     this.svc.valueChanged
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((cellValue: ICellCoordinates<T>) => {
-        if (
-          this.row === cellValue.row
-        ) {
+      .subscribe((cellValue: ICellCoordinates) => {
+        if (this.index === cellValue.row) {
           this.cdr.detectChanges();
         }
       });
   }
 
-  private start(initiator: ICellCoordinates<T>, type: 'cell' | 'row') {
+  private start(initiator: ICellCoordinates, type: 'cell' | 'row') {
     this._edit = true;
+    this.cdr.detectChanges();
     this.startEdit(initiator, type);
-    this.cdr.markForCheck();
   }
 
   private stop() {
@@ -138,7 +123,7 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   }
 
   abstract startEdit(
-    initiator: ICellCoordinates<T>,
+    initiator: ICellCoordinates,
     type: 'cell' | 'row'
   ): void;
 

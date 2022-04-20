@@ -3,26 +3,41 @@
             [columns]="columns"
             [virtual]="virtual"
             [dict]="dict"
+            [contextMenu]="contextMenu"
+            [filterOptions]="dict"
             [editType]="editType"
             [editEvent]="editEvent"
             [selectType]="selectType"
+            [(selectedRows)]="selectedRows"
             (tableService)="tableService = $event"
-            (bodyLeft)="log('bodyLeft', $event)"
-            (cellClick)="log('cellClick', $event)"
-            (cellDoubleClick)="log('cellDoubleClick', $event)"
             (cellEditEnd)="log('cellEditEnd', $event)"
-            (cellEditStart)="log('cellEditStart', $event)"
-            (cellFocus)="log('cellFocus', $event)"
-            (cellKeyUp)="log('cellKeyUp', $event)"
+            (cellEditStart)="cellEditStart($event)"
             (rowEditEnd)="log('rowEditEnd', $event)"
             (rowEditStart)="log('rowEditStart', $event)"
-            (rowLeft)="log('rowLeft', $event)"
-            (selectedRowsChange)="log('selectedRowsChange', $event)"
-            (stateChange)="log('stateChange', $event)"
-            (valueChange)="log('valueChange', $event)"
-            (activeRowChange)="log('activeRowChange', $event)"></teta-table>
-<ng-template let-data>
+            (activeRowChange)="activeRow = $event"></teta-table>
+<ng-template let-data #dropdownTpl>
   <div class="padding-2">
     Some additional stuff here
+  </div>
+</ng-template>
+<ng-template let-data #contextMenu>
+  <div class="list shadow-2">
+    <div class="list-item list-item_interactive"
+         (click)="addRow()">Добавить строку</div>
+    <div class="list-divider"></div>
+    <div class="list-item list-item_interactive"
+         (click)="copy()">Copy</div>
+    <div class="list-item list-item_interactive"
+         *ngIf="selectedRows?.length > 0"
+         (click)="copyAll()">Copy selected</div>
+    <div class="list-item list-item_interactive"
+         (click)="paste()">Paste</div>
+    <div class="list-divider"></div>
+    <div class="list-item list-item_interactive"
+         (click)="delete()">Удалить</div>
+    <div class="list-item list-item_interactive"
+         *ngIf="selectedRows?.length > 0"
+         (click)="deleteAll()">Удалить выделенные</div>
+    {{activeRow.data.name | json}}
   </div>
 </ng-template>

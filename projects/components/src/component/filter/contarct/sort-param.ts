@@ -1,3 +1,5 @@
+import {StringUtil} from '../../../util/string-util';
+
 export class SortParam {
   /**
    * Поле сортировки
@@ -21,7 +23,7 @@ export class SortParam {
     order?: number;
   }) {
     if (options) {
-      this.field = options.field || this.field;
+      this.field = StringUtil.firstLetterToLower(options.field || this.field);
       this.asc = options.asc || false;
       this.order = options.order || this.order;
     }

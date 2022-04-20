@@ -48,7 +48,7 @@ export const basicTable = () => ({
     ),
   },
   template: `<div [tetaIconSprite]="['assets/icons.svg', 'assets/color-icons.svg']"
-                  class="bg-panel-50 padding-3"
+                  class="bg-panel-0 padding-10"
                   style="display: flex; width: 1200px; height: 600px;">
                 <teta-table-demo [size]="50"
                                   [editEvent]="editEvent"
@@ -91,7 +91,7 @@ export const virtualTable = () => ({
     ),
   },
   template: `<div [tetaIconSprite]="['assets/icons.svg', 'assets/color-icons.svg']"
-                  class="bg-panel-50 padding-3"
+                  class="bg-panel-0 padding-10"
                   style="display: flex; width: 1200px; height: 600px;">
                 <teta-table-demo [size]="1000"
                                   [editEvent]="editEvent"

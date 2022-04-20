@@ -1,16 +1,17 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
-  HostBinding,
+  Component, HostBinding,
   Input,
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { TableColumn } from '../contract/table-column';
-import { TableUtil } from '../util/table-util';
-import { TableService } from '../service/table.service';
-import { takeWhile } from 'rxjs/operators';
+import {TableColumn} from '../contract/table-column';
+import {TableUtil} from '../util/table-util';
+import {TableService} from '../service/table.service';
+import {takeWhile} from 'rxjs/operators';
+import {TableRow} from '../contract/table-row';
+import {ArrayUtil} from '../../../common/util/array-util';
 
 @Component({
   selector: 'teta-table-head-group',
@@ -20,6 +21,7 @@ import { takeWhile } from 'rxjs/operators';
 })
 export class TableHeadGroupComponent<T> implements OnInit, OnDestroy {
   @Input() showHeadCellMenu: boolean;
+  @Input() data: TableRow<T>[];
 
   @Input()
   set column(column: TableColumn) {
@@ -30,6 +32,24 @@ export class TableHeadGroupComponent<T> implements OnInit, OnDestroy {
     return this._column;
   }
 
+  @HostBinding('style.flex-grow') get flexGrow() {
+    if (this.column?.columns?.length > 0) {
+      const flat = ArrayUtil.flatten(this.column?.columns, 'columns', true);
+      return flat?.reduce((prev, curr) => prev + curr.flex, 0);
+    }
+    return this.column.flex;
+  }
+
+  @HostBinding('style.min-width.px')
+  @HostBinding('style.flex-basis.px')
+  get flexBasis() {
+    if (this.column?.columns?.length > 0) {
+      const flat = ArrayUtil.flatten(this.column?.columns, 'columns', true);
+      return flat?.reduce((prev, curr) => prev + curr.width, 0);
+    }
+    return this.column.width;
+  }
+
   private _alive = true;
   private _column: TableColumn;
   private _hiddenColumns: string[];
@@ -38,18 +58,6 @@ export class TableHeadGroupComponent<T> implements OnInit, OnDestroy {
     return TableUtil.getColumnLeaves(this._column)?.filter(
       (_) => this._hiddenColumns.indexOf(_.name) < 0
     );
-  }
-
-  @HostBinding('style.grid-column-end')
-  get gridColumnEnd(): string {
-    if (this._leaves?.length > 0) {
-      return `span ${this._leaves.length}`;
-    }
-    return null;
-  }
-
-  get gridTemplateColumns(): string {
-    return TableUtil.getGridTemplateColumns(this._leaves);
   }
 
   constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {
@@ -65,7 +73,8 @@ export class TableHeadGroupComponent<T> implements OnInit, OnDestroy {
     return this._svc.columnIsHidden(column);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngOnDestroy(): void {
     this._alive = false;

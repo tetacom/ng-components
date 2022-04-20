@@ -1,8 +1,8 @@
-<div class="column column_auto align-center" [tetaHint]="column.hint || column.caption">
-  <div class="table-head__cell__text align-center">
+<div class="column column_auto" [tetaHint]="column.hint || column.caption">
+  <div class="table-head__cell__text">
     {{column.caption}}
   </div>
-  <div *ngIf="column.unit" class="table-head__cell__text align-center color-text-70" style="overflow: visible;">
+  <div *ngIf="column.unit" class="table-head__cell__text" style="overflow: visible;">
     [{{column.unit}}]
   </div>
 </div>

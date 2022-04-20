@@ -10,15 +10,15 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { DayModel } from '../model/day-model';
-import { DatePeriod } from '../model/date-period';
-import { PickerLocaleService } from '../service/picker-locale.service';
-import { takeWhile, tap, withLatestFrom } from 'rxjs/operators';
-import { PickerLocaleModel } from '../model/picker-locale-model';
-import { DatePickerUtil } from '../util/date-picker-util';
-import { fromEvent } from 'rxjs';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DateUtil } from '../../../util/date-util';
+import {DayModel} from '../model/day-model';
+import {DatePeriod} from '../model/date-period';
+import {takeWhile, tap, withLatestFrom} from 'rxjs/operators';
+import {DatePickerUtil} from '../util/date-picker-util';
+import {fromEvent} from 'rxjs';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {DateUtil} from '../../../util/date-util';
+import {TetaLocalisation} from '../../../locale/teta-localisation';
+import {TetaConfigService} from '../../../locale/teta-config.service';
 
 export const DAY_SELECT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -34,8 +34,7 @@ export const DAY_SELECT_CONTROL_VALUE_ACCESSOR: any = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DaySelectComponent
-  implements OnInit, OnDestroy, ControlValueAccessor
-{
+  implements OnInit, OnDestroy, ControlValueAccessor {
   @Input() firstDayOfWeek = 1;
   @Input() disabledDates: Date[];
   @Input() disabledPeriods: DatePeriod[];
@@ -48,7 +47,7 @@ export class DaySelectComponent
   @Output() monthSelected = new EventEmitter<number>();
   @Output() yearSelected = new EventEmitter<number>();
 
-  locale: PickerLocaleModel;
+  locale: TetaLocalisation;
 
   value: Date;
 
@@ -58,7 +57,7 @@ export class DaySelectComponent
     if (
       !this._currentValue ||
       DateUtil.truncateToDay(val)?.getTime() !==
-        DateUtil.truncateToDay(this._currentValue)?.getTime()
+      DateUtil.truncateToDay(this._currentValue)?.getTime()
     ) {
       this._currentValue = val;
       this.createDays();
@@ -79,13 +78,13 @@ export class DaySelectComponent
   private _alive = true;
 
   constructor(
-    public localeService: PickerLocaleService,
+    public localeService: TetaConfigService,
     private _cdr: ChangeDetectorRef,
     private _elementRef: ElementRef
   ) {
     localeService.locale
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((locale: PickerLocaleModel) => {
+      .subscribe((locale: TetaLocalisation) => {
         this.locale = locale;
       });
   }
@@ -121,9 +120,11 @@ export class DaySelectComponent
     this._cdr.markForCheck();
   }
 
-  onChange(_: any) {}
+  onChange(_: any) {
+  }
 
-  onTouched() {}
+  onTouched() {
+  }
 
   registerOnChange(fn: (_: any) => void): void {
     this.onChange = fn;

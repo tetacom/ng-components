@@ -2,23 +2,23 @@ import {
   ApplicationRef,
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
+  ElementRef, HostBinding,
   HostListener,
   Input,
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { TableColumn } from '../contract/table-column';
-import { ColumnResizeEvent } from '../contract/column-resize-event';
-import { FilterState } from '../../filter/contarct/filter-state';
-import { TableService } from '../service/table.service';
-import { SortEvent } from '../contract/sort-event';
-import { map } from 'rxjs/operators';
-import { SortParam } from '../../filter/contarct/sort-param';
-import { StateUtil } from '../util/state-util';
-import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
-import { Align } from '../../../common/enum/align.enum';
-import { combineLatest, Observable } from 'rxjs';
+import {TableColumn} from '../contract/table-column';
+import {ColumnResizeEvent} from '../contract/column-resize-event';
+import {FilterState} from '../../filter/contarct/filter-state';
+import {TableService} from '../service/table.service';
+import {map} from 'rxjs/operators';
+import {SortParam} from '../../filter/contarct/sort-param';
+import {StateUtil} from '../util/state-util';
+import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
+import {Align} from '../../../common/enum/align.enum';
+import {combineLatest, Observable} from 'rxjs';
+import {TableRow} from '../contract/table-row';
 
 @Component({
   selector: 'teta-head-cell',
@@ -29,6 +29,8 @@ import { combineLatest, Observable } from 'rxjs';
 export class HeadCellComponent<T> implements OnInit, OnDestroy {
   @Input() column: TableColumn;
   @Input() showHeadCellMenu: boolean;
+  @Input() data: TableRow<T>[];
+
   verticalAlign = VerticalAlign;
   align = Align;
   state: Observable<FilterState>;
@@ -36,6 +38,7 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
   filtered: Observable<boolean>;
   sortParam: Observable<SortParam>;
   iconName: Observable<string>;
+  @HostBinding('class.table-head__cell_active')
   dropDownOpen: boolean;
   showDrag: 'left' | 'right' | null = null;
   private rect: any;
@@ -47,7 +50,8 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
     private _svc: TableService<T>,
     private _app: ApplicationRef,
     private _elementRef: ElementRef
-  ) {}
+  ) {
+  }
 
   @HostListener('dragstart', ['$event']) dragstart(event: DragEvent): void {
     if (event && event.dataTransfer) {
@@ -123,12 +127,6 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
     this._svc.autosizeAllColumns(this._elementRef.nativeElement);
   }
 
-  sortColumn(column: TableColumn, event: MouseEvent): void {
-    if (!event.defaultPrevented) {
-      this._svc.sort(new SortEvent(this.column, event.shiftKey));
-    }
-  }
-
   resizeStart(event: MouseEvent): void {
     const rect = this._elementRef.nativeElement.getBoundingClientRect();
     this._startPosition = rect.x;
@@ -137,10 +135,12 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
 
   resizeProcess(event: MouseEvent): void {
     if (this._startPosition && event.pageX > 0) {
-      this._svc.resizeColumn(
-        new ColumnResizeEvent(this.column, event.pageX - this._startPosition)
-      );
-      this._app.tick();
+      requestAnimationFrame(() => {
+        this._svc.resizeColumn(
+          new ColumnResizeEvent(this.column, event.pageX - this._startPosition)
+        );
+        this._app.tick();
+      });
     }
   }
 

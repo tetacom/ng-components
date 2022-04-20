@@ -15,14 +15,15 @@ import {GroupRowComponentBase} from '../base/group-row-component-base';
 import {TableService} from '../service/table.service';
 import {DetailComponentBase} from '../base/detail-component-base';
 import {takeWhile} from 'rxjs/operators';
-import {TableUtil} from '../util/table-util';
 import {SelectType} from '../enum/select-type.enum';
-import {combineLatest} from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 import {ArrayUtil} from '../../../common/util/array-util';
 import {IDictionary} from '../../../common/contract/i-dictionary';
 import {IIdName} from '../../../common/contract/i-id-name';
 import {AggregationType} from '../enum/aggregation-type.enum';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
+import {TetaLocalisation} from '../../../locale/teta-localisation';
+import {TetaConfigService} from '../../../locale/teta-config.service';
 
 @Component({
   selector: 'teta-table-body',
@@ -33,7 +34,7 @@ import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 export class TableBodyComponent<T> implements OnInit, OnDestroy {
   @Input() virtual: boolean;
   @Input() activeRow: TableRow<T>;
-  @Input() rowHeight: number;
+  @Input() selectedRows: TableRow<T>[] = [];
   @Input() additionalComponent: Type<DetailComponentBase<T>>;
   @Input() tree: boolean;
   @Input() aggregate: boolean;
@@ -56,31 +57,40 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   }
 
   dict: IDictionary<IIdName<any>[]>;
-
-  gridTemplateColumns: string;
-  selectedRows: TableRow<T>[] = [];
   locked: TableColumn[] = [];
   unlocked: TableColumn[] = [];
-
   selectTypeEnum = SelectType;
+  lockedFlex: number;
+  lockedWidth: number;
+  totalFlex: number;
+  totalWidth: number;
 
   private _columns: TableColumn[] = [];
   private _alive = true;
   private _data: TableRow<T>[];
   private _hiddenColumns: string[] = [];
-  private _index: number;
 
   set columns(columns: TableColumn[]) {
     this._columns = columns;
     this.locked = this._columns?.filter((_) => _.locked === true);
     this.unlocked = this._columns?.filter((_) => _.locked === false);
+    const startWidth = this.selectType !== SelectType.none ? 28 : 0;
+    this.lockedFlex = this.locked.reduce((prev: number, curr: TableColumn) => prev + curr.flex, 0);
+    this.lockedWidth = this.locked.reduce((prev: number, curr: TableColumn) => prev + curr.width, startWidth);
+    this.totalFlex = this._columns.reduce((prev: number, curr: TableColumn) => prev + curr.flex, 0);
+    this.totalWidth = this._columns.reduce((prev: number, curr: TableColumn) => prev + curr.width, startWidth);
   }
 
   get columns(): TableColumn[] {
     return this._columns;
   }
 
-  constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {
+  locale: Observable<TetaLocalisation>;
+
+  constructor(private _svc: TableService<T>,
+              private _config: TetaConfigService,
+              private _cdr: ChangeDetectorRef) {
+    this.locale = this._config.locale;
     combineLatest([this._svc.columns, this._svc.hiddenColumns])
       .pipe(takeWhile((_) => this._alive))
       .subscribe((values: [TableColumn[], string[]]) => {
@@ -88,9 +98,6 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
         this._hiddenColumns = hiddenColumns;
         this.columns = ArrayUtil.flatten(columns, 'columns', true).filter(
           (_) => this._hiddenColumns.indexOf(_.name) < 0
-        );
-        this.gridTemplateColumns = TableUtil.getGridTemplateColumns(
-          this.columns.sort((a, b) => Number(b.locked) - Number(a.locked))
         );
         this._cdr.markForCheck();
       });
@@ -108,12 +115,6 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     this._svc.scrollIndex
       .pipe(takeWhile((_) => this._alive))
       .subscribe(async (_) => {
-        // if (this.viewport && this.dataSource && _ !== null) {
-        //   await this.dataSource.adapter.relax();
-        //   await this.dataSource.adapter.fix({
-        //     scrollPosition: (_ + 1) * 24,
-        //   });
-        // }
         if (this.viewport) {
           this.viewport.scrollToIndex(_, 'smooth');
         }
@@ -168,45 +169,18 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
 
   getAggregateText(column: TableColumn): string {
     if (column.aggregate === AggregationType.sum) {
-      return 'Сумма=';
+      return 'sum';
     }
     if (column.aggregate === AggregationType.avg) {
-      return 'Среднее=';
+      return 'avg';
     }
     if (column.aggregate === AggregationType.min) {
-      return 'Мин=';
+      return 'min';
     }
     if (column.aggregate === AggregationType.max) {
-      return 'Макс=';
+      return 'max';
     }
     return '';
-  }
-
-  getSpan(): string {
-    if (this.locked?.length > 0) {
-      let span = this.locked.length;
-      if (this.selectType !== SelectType.none) {
-        span += 1;
-      }
-      return `span ${span}`;
-    }
-    return null;
-  }
-
-  getTemplateColumns() {
-    let template = this.gridTemplateColumns;
-    if (this.selectType !== SelectType.none) {
-      template = `48px ${template}`;
-    }
-    return template;
-  }
-
-  getLockedGridTemplateColumns(columns: TableColumn[]) {
-    let template = TableUtil.getGridTemplateColumns(columns);
-    if (this.selectType !== SelectType.none) {
-      template = `48px ${template}`;
-    }
-    return template;
   }
 
   trackRow(index: number, row: TableRow<T>): any {

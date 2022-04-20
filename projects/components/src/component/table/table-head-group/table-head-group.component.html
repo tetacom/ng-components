@@ -3,11 +3,12 @@
     <div class="table-head__group__caption">
       {{column.caption}}
     </div>
-    <div class="table-head__group__children" [style.grid-template-columns]="gridTemplateColumns">
+    <div class="table-head__group__children">
       <ng-container *ngFor="let col of column.columns">
         <teta-table-head-group
           class="table-head__group"
           *ngIf="!columnIsHidden(col)"
+          [data]="data"
           [showHeadCellMenu]="showHeadCellMenu"
           [column]="col"></teta-table-head-group>
       </ng-container>
@@ -18,6 +19,7 @@
   <teta-head-cell
     *ngIf="!columnIsHidden(column)"
     class="table-head__cell"
+    [data]="data"
     [showHeadCellMenu]="showHeadCellMenu"
     [attr.data-column]="column.name"
     [column]="column"></teta-head-cell>

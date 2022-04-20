@@ -10,7 +10,12 @@ export const defaultChartConfig = (): IChartConfig => ({
     type: ZoomType.x,
     zoomBehavior: ZoomBehaviorType.move
   },
-  bounds: new ChartBounds(),
+  bounds: new ChartBounds({
+    bottom: 12,
+    left: 12,
+    top: 12,
+    right: 12
+  }),
   legend: {
     enable: true,
   },

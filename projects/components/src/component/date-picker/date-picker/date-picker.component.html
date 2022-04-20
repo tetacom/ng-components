@@ -6,18 +6,22 @@
   (openChange)="openPicker($event)"
   [align]="align"
   [verticalAlign]="verticalAlign"
-  [appendToBody]="appendToBody">
+  [appendToBody]="appendToBody"
+  [backdrop]="backdrop">
   <div tetaDropdownHead
        class="datepicker-head font-body-3"
        [class.datepicker-head_disabled]="disabled"
        [class.datepicker-head_invalid]="invalid">
     <teta-icon [name]="'calendar'" class="margin-right-1"></teta-icon>
-    <div class="row_auto">
+    <div class="row_auto nowrap">
       {{currentValue !== null && currentValue !== undefined ? (currentValue | date : format) : ''}}
     </div>
-    <teta-icon [name]="'closeBig'" (click)="clearPicker($event);" class="margin-left-1"></teta-icon>
+    <teta-icon *ngIf="allowNull"
+               [name]="'closeBig'"
+               (click)="clearPicker($event);"
+               class="margin-left-1"></teta-icon>
   </div>
-  <div tetaDropdownContent class="datepicker-body scrollable" (click)="$event.preventDefault()">
+  <div tetaDropdownContent class="scrollable" (click)="$event.preventDefault()">
     <div class="padding-3">
       <div class="row align-center justify-content-between">
         <div>
@@ -26,7 +30,7 @@
                   [view]="displayMode===datePickerModeEnum.month ? 'primary' : 'ghost'"
                   (click)="setMode(datePickerModeEnum.month)"
                   (wheel)="scrollMonth($event);">
-            {{locale.monthNames[internalValue?.getMonth()]}}
+            {{locale.months[internalValue?.getMonth()]}}
           </button>
           <button teta-button
                   class="margin-left-2"

@@ -7,11 +7,11 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { CellComponentBase } from '../../base/cell-component-base';
-import { TableService } from '../../service/table.service';
-import { TableColumn } from '../../contract/table-column';
-import { TableRow } from '../../contract/table-row';
-import { ICellCoordinates } from '../../contract/i-cell-coordinates';
+import {CellComponentBase} from '../../base/cell-component-base';
+import {TableService} from '../../service/table.service';
+import {TableColumn} from '../../contract/table-column';
+import {TableRow} from '../../contract/table-row';
+import {ICellCoordinates} from '../../contract/i-cell-coordinates';
 
 @Component({
   selector: 'teta-numeric-cell',
@@ -21,11 +21,10 @@ import { ICellCoordinates } from '../../contract/i-cell-coordinates';
 })
 export class NumericCellComponent<T>
   extends CellComponentBase<T>
-  implements OnInit
-{
+  implements OnInit {
   @Input() override column: TableColumn;
   @Input() override row: TableRow<T>;
-  @ViewChild('input', { static: false }) input: ElementRef;
+  @ViewChild('input', {static: false}) input: ElementRef;
 
   constructor(
     protected override svc: TableService<T>,
@@ -42,13 +41,18 @@ export class NumericCellComponent<T>
     super.ngOnInit();
   }
 
-  startEdit(initiator: ICellCoordinates<T>, type: 'cell' | 'row'): void {
-    if (initiator?.column.name === this.column.name) {
-      setTimeout(() => {
-        this.input?.nativeElement.focus();
-        this.input?.nativeElement.select();
-        this.cdr.markForCheck();
-      }, 0);
+  startEdit(initiator: ICellCoordinates, type: 'cell' | 'row'): void {
+    if (initiator?.column === this.column.name) {
+      this.cdr.detectChanges();
+      this.input.nativeElement?.focus();
+      // this.input.nativeElement?.select();
+      // this.cdr.detectChanges();
+
+      // setTimeout(() => {
+      //   this.input?.nativeElement.focus();
+      //   this.input?.nativeElement.select();
+      //   this.cdr.markForCheck();
+      // }, 0);
     }
   }
 

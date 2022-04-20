@@ -27,7 +27,7 @@ export class DropdownBase {
   @Input() verticalAlign: VerticalAlign = VerticalAlign.bottom;
   @Input() appendToBody: boolean;
   @Input() disabled: boolean;
-  @Input() shadow = true;
+  @Input() backdrop = false;
   @Input() className: string | string[];
 
   @Input()
@@ -55,6 +55,7 @@ export class DropdownBase {
   @Input() autoClose = true;
   @Input() autoCloseIgnore: Array<AutoCloseIgnoreCase> = ['inside'];
 
+
   @ContentChild(DropdownHeadDirective, {
     static: false,
     read: ElementRef,
@@ -65,6 +66,7 @@ export class DropdownBase {
   protected _content: DropdownContentDirective;
 
   protected _body: HTMLElement | null = null;
+  protected _backdrop: HTMLElement | null = null;
   protected _open = false;
   protected _alive = true;
 
@@ -149,6 +151,9 @@ export class DropdownBase {
       this._renderer.removeChild(this.container, this._body);
       this._open = false;
       this._body = null;
+      if (this._backdrop) {
+        this._renderer.removeChild(this._document.body, this._backdrop);
+      }
       this.openChange.emit(this.open);
     }
   }
@@ -161,9 +166,13 @@ export class DropdownBase {
     this.openChange.emit(this.open);
     const renderer = this._renderer;
     const content = this._content.nativeElement;
-    const container = (this._body =
-      this._body || renderer.createElement('div'));
+    const container = (this._body = this._body || renderer.createElement('div'));
     renderer.addClass(container, 'dropdown');
+    if (this.backdrop) {
+      this._backdrop = renderer.createElement('div');
+      renderer.addClass(this._backdrop, 'dropdown-backdrop');
+      renderer.appendChild(this._document.body, this._backdrop);
+    }
     if (this.className != null) {
       if (this.className instanceof Array && this.className.length > 0) {
         this.className.forEach((_) => {
@@ -174,10 +183,8 @@ export class DropdownBase {
         renderer.addClass(container, this.className);
       }
     }
-
     renderer.appendChild(container, content);
     renderer.appendChild(this.container, container);
-
     this.setPosition(this._head.nativeElement, this._body);
   }
 

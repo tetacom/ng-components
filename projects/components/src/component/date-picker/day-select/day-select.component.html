@@ -2,12 +2,11 @@
   <div class="datepicker-day"
        [class.font-caption-bold]="day === 0 || day === 6"
        *ngFor="let day of weekDays">
-    {{locale.dayNamesMin[day]}}
+    {{locale.daysShort[day]}}
   </div>
 </div>
 <div class="datepicker-picker color-text-90 font-body-3"
-     (wheel)="scrollMonth($event)"
->
+     (wheel)="scrollMonth($event)">
   <div *ngFor="let day of days"
        class="datepicker-date"
        (click)="setDate(day, $event);"

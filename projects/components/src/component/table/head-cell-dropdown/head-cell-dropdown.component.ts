@@ -3,7 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  HostBinding, HostListener,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -20,6 +20,10 @@ import {Observable} from 'rxjs';
 import {map, takeWhile} from 'rxjs/operators';
 import {ArrayUtil} from '../../../common/util/array-util';
 import {SortParam} from '../../filter/contarct/sort-param';
+import {TableRow} from '../contract/table-row';
+import {SortEvent} from '../contract/sort-event';
+import {TetaLocalisation} from '../../../locale/teta-localisation';
+import {TetaConfigService} from '../../../locale/teta-config.service';
 
 @Component({
   selector: 'teta-head-cell-dropdown',
@@ -31,6 +35,7 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
   @Input() columns: ITreeData[];
   @Input() column: TableColumn;
   @Input() state: FilterState;
+  @Input() data: TableRow<T>[];
   @Input() dropDownOpen: boolean;
   @Output() dropDownOpenChange: EventEmitter<boolean> =
     new EventEmitter<boolean>();
@@ -38,11 +43,9 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
   @Output() autosize: EventEmitter<void> = new EventEmitter<void>();
   @Output() autosizeAll: EventEmitter<void> = new EventEmitter<void>();
 
-  @HostBinding('class.shadow-2') private readonly shadow = true;
-  @HostBinding('class.bg-background-50') private readonly bg = true;
-
-  dict: Observable<IDictionary<IIdName<any>[]>>;
+  filterOptions: Observable<IDictionary<IIdName<any>[]>>;
   hiddenColumns: string[];
+  locale: Observable<TetaLocalisation>;
 
   @HostListener('keydown.enter') enter() {
     this.applyFilter();
@@ -74,8 +77,11 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
   private _openItems: ITreeData[];
   private _alive = true;
 
-  constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {
-    this.dict = this._svc.dict;
+  constructor(private _svc: TableService<T>,
+              private _config: TetaConfigService,
+              private _cdr: ChangeDetectorRef) {
+    this.locale = this._config.locale;
+    this.filterOptions = this._svc.filterOptions;
     this._svc.hiddenColumns
       .pipe(
         takeWhile((_) => this._alive),
@@ -102,6 +108,14 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
     this._svc.pinColumn(this.column);
   }
 
+  sortAsc(event: MouseEvent) {
+    this._svc.sortAsc(new SortEvent(this.column, event.shiftKey));
+  }
+
+  sortDesc(event: MouseEvent) {
+    this._svc.sortDesc(new SortEvent(this.column, event.shiftKey));
+  }
+
   clearSort(): void {
     this._svc.clearSort(this.column);
   }
@@ -109,6 +123,12 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
   clearAllSort(): void {
     this._svc.clearAllSort();
   }
+
+  // sortColumn(column: TableColumn, event: MouseEvent): void {
+  //   if (!event.defaultPrevented) {
+  //     this._svc.sort(new SortEvent(this.column, event.shiftKey));
+  //   }
+  // }
 
   hasFilteredColumns() {
     return StateUtil.hasFilteredColumns(this.state);

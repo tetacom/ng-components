@@ -5,7 +5,7 @@
   display: inline-flex;
   border: solid 0;
   border-radius: 2px;
-  height: 24px;
+  height: 28px;
   @include getFont($fonts, 'button-2');
   background: getColorVar('text', '5');
   color: getColorVar('text', '90');

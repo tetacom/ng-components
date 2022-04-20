@@ -1,35 +1,29 @@
 <div draggable="true" class="row row_auto">
-  <div class="table-head__cell__wrapper"
-       [ngClass]="column.headCellClass"
-       (click)="sortColumn(column, $event)">
-    <teta-icon *ngIf="iconName | async as icon"
-               [palette]="'text'"
-               [name]="icon"></teta-icon>
-    <teta-head-cell-host [column]="column"></teta-head-cell-host>
-    <teta-dropdown *ngIf="showHeadCellMenu"
-                   [autoCloseIgnore]="['enter']"
-                   [verticalAlign]="verticalAlign.bottom"
-                   [appendToBody]="true"
-                   [(open)]="dropDownOpen"
-                   [align]="align.right"
-                   (click)="$event.preventDefault()"
-                   [class.table-head__cell__menu_open]="dropDownOpen"
-                   class="table-head__cell__menu">
-      <button tetaDropdownHead teta-button
-              [square]="true"
-              [palette]="'text'"
-              [view]="'ghost'">
-        <teta-icon [palette]="'text'" [name]="'menu'"></teta-icon>
-      </button>
-      <teta-head-cell-dropdown tetaDropdownContent
-                               (autosize)="autosizeColumn()"
-                               (autosizeAll)="autosizeAllColumns()"
-                               [column]="column"
-                               [columns]="columns | async"
-                               [state]="state | async"
-                               [(dropDownOpen)]="dropDownOpen"></teta-head-cell-dropdown>
-    </teta-dropdown>
-  </div>
+  <teta-dropdown [autoCloseIgnore]="['enter']"
+                 [verticalAlign]="verticalAlign.bottom"
+                 [appendToBody]="true"
+                 [(open)]="dropDownOpen"
+                 [align]="align.left"
+                 (click)="$event.preventDefault()"
+                 [class.table-head__cell__menu_open]="dropDownOpen"
+                 class="column column_auto justify-content-center">
+    <div tetaDropdownHead class="table-head__cell__wrapper"
+         [ngClass]="column.headCellClass">
+      <teta-head-cell-host [column]="column" [data]="data"></teta-head-cell-host>
+      <teta-icon *ngIf="iconName | async as icon"
+                 [palette]="'text'"
+                 [name]="icon"></teta-icon>
+    </div>
+    <teta-head-cell-dropdown tetaDropdownContent
+                             *ngIf="showHeadCellMenu"
+                             (autosize)="autosizeColumn()"
+                             (autosizeAll)="autosizeAllColumns()"
+                             [data]="data"
+                             [column]="column"
+                             [columns]="columns | async"
+                             [state]="state | async"
+                             [(dropDownOpen)]="dropDownOpen"></teta-head-cell-dropdown>
+  </teta-dropdown>
   <div class="drop-area"
        draggable="false"
        [class.drop-area_left]="showDrag === 'left'"

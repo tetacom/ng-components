@@ -1,4 +1,5 @@
 import {IFilter} from '../contarct/i-filter';
+import {StringUtil} from '../../../util/string-util';
 
 export class FilterBase implements IFilter {
   field: string;
@@ -10,8 +11,8 @@ export class FilterBase implements IFilter {
     name: string;
   }) {
     if (options) {
-      this.field = options.field;
-      this.name = options.name;
+      this.field = StringUtil.firstLetterToLower(options.field);
+      this.name = StringUtil.firstLetterToLower(options.name);
     }
   }
 }
