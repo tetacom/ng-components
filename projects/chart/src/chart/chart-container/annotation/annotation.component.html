@@ -28,7 +28,7 @@
       #annotationNode
       [style.background-color]="annotation.style?.fill ?? 'var(--color-text-90)'"
       [style.cursor]="annotation?.draggable ? 'move' : 'default'"
-      class="color-text-10 padding-h-2"
+      [className]="'padding-h-2 ' + annotation.className ?? ''"
       style="border-radius: 2px; display: inline-block;">
       <ng-container *ngIf="annotation.template;else default">
         <ng-container *ngTemplateOutlet="annotation.template;context: {$implicit: annotation}"></ng-container>
