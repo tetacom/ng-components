@@ -255,10 +255,9 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
     if (event.sourceEvent) {
       if (Object.keys(event.sourceEvent).length !== 0) {
-        if (this.currentTransform === event.transform && event.type !== 'end') {
+        if (this.currentTransform === event.transform) {
           return;
         }
-
         const origin = this.brushScale.copy().domain(this.zoomAxis.extremes);
 
         let domain =
