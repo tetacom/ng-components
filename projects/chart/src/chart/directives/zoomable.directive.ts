@@ -63,11 +63,20 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   ngOnChanges(changes: SimpleChanges) {
 
     if (changes.hasOwnProperty('brushScale') || changes.hasOwnProperty('scale') || changes.hasOwnProperty('axis')) {
-
       if (this.hash) {
         this.zoomService.scaleHashMap.set(this.hash, this.scale);
         this.zoomService.axisHashMap.set(this.hash, this.axis);
+      }
 
+      if(!this.axis && changes.hasOwnProperty('config')) {
+        this.zoomAxis = Axis.createAxis(
+          this.config?.zoom.type === ZoomType.x
+            ? AxisOrientation.x
+            : AxisOrientation.y,
+          this.config,
+          0,
+          true
+        );
       }
     }
   }
@@ -114,7 +123,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       this.zoomService.axisHashMap.set(this.hash, this.zoomAxis);
       this.zoomService.elementHashMap.set(this.hash, this._element);
       this.zoomService.scaleHashMap.set(this.hash, this.scale);
-
       this.zoomService.zoomHashMap.set(this.hash, this.zoom);
       this.zoomService.setBroadcastChannel(this.config?.zoom.syncChannel)
 
@@ -219,8 +227,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
               return;
             }
 
-
             const s = m.message.selection;
+
             this.brushScale.domain(this.zoomAxis.extremes);
             const domain = this.brushScale.domain();
 
