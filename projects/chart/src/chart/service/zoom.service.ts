@@ -38,9 +38,11 @@ export class ZoomService {
 
   setZoom(from: number, to: number, axisIndex = 0, axisOrientation = AxisOrientation.x) {
     const hash = objectHash.sha1({index: axisIndex, orientation: axisOrientation});
+
     if (!this.zoomHashMap.has(hash)) {
       return;
     }
+
     const currentAxis = this.axisHashMap.get(hash);
     const currentScale = this.scaleHashMap.get(hash)?.copy();
     const currentElement = this.elementHashMap.get(hash);
@@ -60,9 +62,9 @@ export class ZoomService {
       }
     }
 
-    const bBox = currentElement.node().getBBox();
     const delta = Math.abs(currentScale(to) - currentScale(from));
-    const scale = axisOrientation === AxisOrientation.x ? bBox.width / delta : bBox.height / delta;
+    const scale = currentScale.range()[1] / delta;
+
     let transform = zoomIdentity.scale(scale);
 
     if (currentAxis.orientation === AxisOrientation.x) {

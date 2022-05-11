@@ -35,6 +35,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   @Input() scale?: any;
 
   @HostBinding('class.zoomable') private zoomable = false;
+  @HostBinding('class.crosshair') private crosshair = false;
 
   private _element: d3.Selection<SVGElement, any, any, any>;
   private zoomAxis: Axis;
@@ -56,7 +57,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
   ngOnInit() {
     if (this.axis?.options?.zoom || this.config?.zoom?.enable) {
-      this.zoomable = this.config?.zoom?.zoomBehavior === ZoomBehaviorType.move;
+      this.zoomable = this.config?.zoom?.zoomBehavior === ZoomBehaviorType.move && !this.config?.tooltip?.showCrosshair;
+      this.crosshair = this.config?.tooltip?.showCrosshair;
     }
   }
 

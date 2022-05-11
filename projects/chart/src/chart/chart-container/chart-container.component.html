@@ -136,6 +136,9 @@
            *ngFor="let annotation of data.config.annotations"
            [annotation]="annotation"></g>
       </g>
+      <g class="crosshair" *ngIf="data.config.tooltip?.showCrosshair">
+        <g teta-crosshair [size]="data.visibleRect"></g>
+      </g>
     </svg>
 
   </ng-container>
