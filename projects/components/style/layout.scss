@@ -74,7 +74,31 @@ body {
 }
 
 .gap {
-  grid-gap: 8px
+  grid-gap: 8px !important;
+}
+
+.gap-4 {
+  grid-gap: 4px !important;
+}
+
+.gap-8 {
+  grid-gap: 8px !important;
+}
+
+.gap-12 {
+  grid-gap: 12px !important;
+}
+
+.gap-16 {
+  grid-gap: 16px !important;
+}
+
+.gap-20 {
+  grid-gap: 20px !important;
+}
+
+.gap-40 {
+  grid-gap: 40px !important;
 }
 
 .grid {

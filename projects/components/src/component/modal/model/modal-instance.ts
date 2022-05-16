@@ -1,12 +1,12 @@
-import { Observable, Subject } from 'rxjs';
-import { IModalResult } from './i-modal-result';
-import { ComponentRef } from '@angular/core';
-import { TetaContentRef } from '../../../common/contract/teta-content-ref';
-import { ModalContainerComponent } from '../modal-container/modal-container.component';
+import {Observable, Subject} from 'rxjs';
+import {IModalResult} from './i-modal-result';
+import {ComponentRef} from '@angular/core';
+import {TetaContentRef} from '../../../common/contract/teta-content-ref';
+import {ModalContainerComponent} from '../modal-container/modal-container.component';
 
-export class ModalInstance {
-  onClose: Observable<IModalResult>;
-  private _onClose: Subject<IModalResult> = new Subject<IModalResult>();
+export class ModalInstance<T = any> {
+  onClose: Observable<IModalResult<T>>;
+  private _onClose: Subject<IModalResult<T>> = new Subject<IModalResult<T>>();
 
   constructor(
     private _window: ComponentRef<ModalContainerComponent>,
@@ -38,7 +38,9 @@ export class ModalInstance {
     this._window.destroy();
 
     if (this._content && this._content.viewRef) {
-      this._content.viewRef.destroy();
+      setTimeout(() => {
+        this._content.viewRef.destroy();
+      }, 150);
     }
   }
 }

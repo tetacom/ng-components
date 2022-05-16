@@ -5,16 +5,16 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { TableColumn } from '../component/table/contract/table-column';
-import { ArrayUtil } from '../common/util/array-util';
+import {TableColumn} from '../component/table/contract/table-column';
+import {ArrayUtil} from '../common/util/array-util';
 
 export class FormsUtil {
   static validateAllFormFields(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach((field) => {
       const control = formGroup.get(field);
       if (control instanceof FormControl) {
-        control.markAsTouched({ onlySelf: true });
-        control.markAsDirty({ onlySelf: true });
+        control.markAsTouched({onlySelf: true});
+        control.markAsDirty({onlySelf: true});
       } else if (control instanceof FormGroup) {
         this.validateAllFormFields(control);
       }
@@ -28,6 +28,13 @@ export class FormsUtil {
     );
   }
 
+  static getControlErrors(formGroup: FormGroup, controlName: string): string[] {
+    if (FormsUtil.controlIsInvalid(formGroup, controlName)) {
+      return Object.keys(formGroup.controls[controlName]?.errors);
+    }
+    return [];
+  }
+
   static matchValuesValidator(
     matchTo: string
   ): (control: AbstractControl) => ValidationErrors | null {
@@ -36,7 +43,7 @@ export class FormsUtil {
       !!control.parent.value &&
       control.value === control.parent.controls[matchTo].value
         ? null
-        : { isMatching: false };
+        : {isMatching: false};
   }
 
   static requiredIf(
@@ -48,7 +55,7 @@ export class FormsUtil {
       control.value != null &&
       value
         ? null
-        : { isMatching: false };
+        : {isMatching: false};
   }
 
   static initFormFromColumns(columns: TableColumn[], dataItem: any) {

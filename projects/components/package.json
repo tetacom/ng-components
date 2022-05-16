@@ -4,7 +4,11 @@
   "private": false,
   "peerDependencies": {
     "@angular/common": "^13.0.0",
-    "@angular/core": "^13.0.0"
+    "@angular/core": "^13.0.0",
+    "d3": "^7.1.1",
+    "@ngneat/transloco": "^3.1.0",
+    "object-hash": "^2.2.0",
+    "three": "^0.139.2"
   },
   "dependencies": {
     "tslib": "^2.3.0"

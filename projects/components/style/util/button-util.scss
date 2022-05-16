@@ -18,8 +18,8 @@
   }
 
   .button_ghost.button-#{$paletteName} {
-    color: getColorVar($paletteName, '50');
-    fill: getColorVar($paletteName, '50');
+    color: getColorVar($paletteName, '90');
+    fill: getColorVar($paletteName, '90');
     background-color: transparent;
     background-position: center;
     transition: background 0.8s;

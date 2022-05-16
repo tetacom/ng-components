@@ -25,7 +25,6 @@
     "@angular/platform-browser-dynamic": "~13.0.0",
     "@angular/router": "~13.0.0",
     "@ngneat/transloco": "^3.1.0",
-    "@taiga-ui/cdk": "^2.37.1",
     "d3": "^7.1.1",
     "object-hash": "^2.2.0",
     "rxjs": "~7.4.0",

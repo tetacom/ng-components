@@ -21,6 +21,8 @@
   &__container {
     @include shadow(5);
     background-color: getColorVar('background', '50');
+    border: solid 0;
+    border-radius: 4px;
 
     &_resize {
       resize: both;

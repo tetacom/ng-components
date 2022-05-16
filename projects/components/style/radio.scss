@@ -21,7 +21,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border: solid 1px getColorVar('text', '30');
+      border: solid 1px getColorVar('primary', '50');
       border-radius: 8px;
     }
 
@@ -50,7 +50,7 @@
     }
 
     &:hover:not(&_disabled) &-icon {
-      border: solid 1px getColorVar('text', '50');
+      background: getColorVar('text', '5');
     }
   }
 }

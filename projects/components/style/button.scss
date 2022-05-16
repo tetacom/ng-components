@@ -28,7 +28,6 @@
   }
 
   &-square {
-    //padding: 4px;
     width: 28px;
     flex-shrink: 0;
     align-items: center;
@@ -36,6 +35,7 @@
   }
 
   &[disabled] {
+
     filter: grayscale(1);
     opacity: 0.3;
   }
