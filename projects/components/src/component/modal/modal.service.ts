@@ -43,12 +43,12 @@ export class ModalService {
     }
   }
 
-  create(
+  create<T = any>(
     content: string | TemplateRef<any> | Type<any>,
     data?: any,
     config?: IModalConfig,
     injector?: Injector
-  ): ModalInstance {
+  ): ModalInstance<T> {
     if (content === null || content === undefined) {
       throw new Error('Specify template or component to render');
     }

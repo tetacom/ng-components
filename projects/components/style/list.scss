@@ -2,10 +2,10 @@
 @import "util/font-util.scss";
 
 .list {
-  padding: 4px 0;
+  padding: 8px 0;
   display: inline-flex;
   flex-direction: column;
-  border-radius: 2px;
+  border-radius: 4px;
   color: getColorVar('text', '90');
   background-color: getColorVar('background', '50');
   @include getFont($fonts, 'body-3');
@@ -24,6 +24,11 @@
     &-xl {
       min-height: 44px;
       padding: 0 16px;
+    }
+
+    &_disabled {
+      color: getColorVar('text', '20');
+      pointer-events: none;
     }
 
     &_interactive {
@@ -48,8 +53,8 @@
   &-divider {
     height: 1px;
     flex-shrink: 0;
-    margin: 4px 0;
-    background-color: getColorVar('text', '5');
+    margin: 8px 0;
+    background-color: getColorVar('text', '10');
   }
 
   &-title {

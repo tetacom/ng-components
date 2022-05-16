@@ -4,10 +4,10 @@
 .switch {
   display: inline-flex;
   border: solid 0;
-  border-radius: 2px;
+  border-radius: 4px;
   height: 28px;
   @include getFont($fonts, 'button-2');
-  background: getColorVar('text', '5');
+  background: getColorVar('background', '50');
   color: getColorVar('text', '90');
   fill: getColorVar('text', '90');
   overflow: hidden;

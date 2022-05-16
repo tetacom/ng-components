@@ -26,3 +26,6 @@ export * from './util/public-api';
 
 /* locale */
 export * from './locale/public-api';
+
+/* observable util */
+export * from './observable/public-api';

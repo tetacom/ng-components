@@ -21,6 +21,7 @@ import {DynamicContentBaseDirective} from '../dynamic-content-base.directive';
 import {ClickService} from '../../common/service/click.service';
 import {merge} from 'rxjs';
 import {filter, takeWhile, tap} from 'rxjs/operators';
+import {AutoCloseIgnoreCase} from '../../common/contract/auto-close-ignore-case';
 
 @Directive({
   selector: '[tetaContextMenu]',
@@ -32,6 +33,7 @@ export class ContextMenuDirective
    * Строка, шаблон или компонент для создания контекстного меню
    */
   @Input() tetaContextMenu: string | TemplateRef<any> | Type<any>;
+  @Input() autoCloseIgnore: AutoCloseIgnoreCase[] = [];
 
   get _dynamicContent() {
     return this.tetaContextMenu;
@@ -57,7 +59,7 @@ export class ContextMenuDirective
 
   @HostListener('contextmenu', ['$event'])
   showContent(event: MouseEvent): void {
-    if(this.tetaContextMenu) {
+    if (this.tetaContextMenu && !event.defaultPrevented) {
       event.preventDefault();
       setTimeout(() => {
         this.createMenu(event);
@@ -76,26 +78,36 @@ export class ContextMenuDirective
     }
   }
 
+  @HostListener('document:click', ['$event'])
+  @HostListener('document:contextmenu', ['$event'])
+  documentClick(event: MouseEvent): void {
+    if (this._open && this._componentRef && (!DomUtil.clickedInside(this._componentRef.location.nativeElement,
+      event) || this.autoCloseIgnore.indexOf('inside') < 0)) {
+      this.destroyContentRef();
+      this.openChange.emit(false);
+    }
+  }
+
   override ngOnInit() {
     super.ngOnInit();
-    merge(this._click.click, this._click.contextMenu)
-      .pipe(
-        takeWhile(() => this._alive),
-        filter(() => this._open),
-        filter(() => this._componentRef != null),
-        filter(
-          (event: MouseEvent) =>
-            !DomUtil.clickedInside(
-              this._componentRef.location.nativeElement,
-              event
-            )
-        ),
-        tap((_) => {
-          this.destroyContentRef();
-          this.openChange.emit(false);
-        })
-      )
-      .subscribe();
+    // merge(this._click.click, this._click.contextMenu)
+    //   .pipe(
+    //     takeWhile(() => this._alive),
+    //     filter(() => this._open),
+    //     filter(() => this._componentRef != null),
+    //     filter(
+    //       (event: MouseEvent) =>
+    //         !DomUtil.clickedInside(
+    //           this._componentRef.location.nativeElement,
+    //           event
+    //         ) || this.autoCloseIgnore.indexOf('inside') < 0
+    //     ),
+    //     tap((_) => {
+    //       this.destroyContentRef();
+    //       this.openChange.emit(false);
+    //     })
+    //   )
+    //   .subscribe();
   }
 
   override ngOnDestroy() {

@@ -95,7 +95,7 @@ export class DropdownBase {
 
   @HostListener('click', ['$event']) click(event: MouseEvent): void {
     if (this.open) {
-      if (!DomUtil.clickedInside(this._body, event)) {
+      if (!DomUtil.clickedInside(this._body, event) || this.autoCloseIgnore.indexOf('inside') < 0) {
         this.closeDropdown();
       }
     } else {
@@ -112,8 +112,7 @@ export class DropdownBase {
       !this.open ||
       !this.autoClose ||
       event.detail === 0 ||
-      DomUtil.clickedInside(this._head.nativeElement, event) ||
-      DomUtil.clickedInside(this._body, event)
+      DomUtil.clickedInside(this._head.nativeElement, event)
     ) {
       return;
     }

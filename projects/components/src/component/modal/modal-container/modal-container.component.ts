@@ -20,10 +20,10 @@ import { animate, style, transition, trigger } from '@angular/animations';
   animations: [
     trigger('dialog', [
       transition('void => *', [
-        style({ opacity: '0' }),
-        animate(150, style({ opacity: '1' })),
+        style({ top: '-100%' }),
+        animate('150ms ease-in', style({ top: '0' })),
       ]),
-      transition('* => void', [animate(150, style({ opacity: '0' }))]),
+      transition('* => void', [animate('150ms ease-in', style({ top: '-100%' }))]),
     ]),
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
