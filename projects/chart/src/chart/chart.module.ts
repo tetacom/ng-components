@@ -21,6 +21,7 @@ import {BlockAreaSeriesComponent} from './chart-container/series/block-area-seri
 import {AreaSeriesComponent} from './chart-container/series/area-series/area-series.component';
 import {AnnotationComponent} from './chart-container/annotation/annotation.component';
 import {LinearSeriesBase} from './chart-container/series/linear-series-base';
+import { CrosshairComponent } from './chart-container/crosshair/crosshair.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import {LinearSeriesBase} from './chart-container/series/linear-series-base';
     BlockSeriesComponent,
     BlockAreaSeriesComponent,
     AnnotationComponent,
+    CrosshairComponent,
   ],
   exports: [
     ChartComponent,

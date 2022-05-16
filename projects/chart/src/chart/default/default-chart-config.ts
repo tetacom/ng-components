@@ -23,6 +23,7 @@ export const defaultChartConfig = (): IChartConfig => ({
     enable: true,
     showMarkers: true,
     tracking: TooltipTracking.x,
+    showCrosshair: false,
     padding: {
       x: 16,
       y: 16

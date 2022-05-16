@@ -199,6 +199,52 @@ export class DateUtil {
     return date instanceof Date && !isNaN(date.getTime());
   }
 
+  public static millisecondToHumanFormat(milliSeconds: number, maxValue = 5000, showDays = false): string {
+    const negative = milliSeconds < 0;
+    if (negative) {
+      milliSeconds = -milliSeconds;
+    }
+    let d;
+    if (showDays) {
+      d = Math.trunc(milliSeconds / (60000 * 60 * 24));
+      milliSeconds = milliSeconds - 60000 * 60 * 24 * d;
+    }
+    const h = Math.trunc(milliSeconds / (60000 * 60));
+    milliSeconds = milliSeconds - 60000 * 60 * h;
+    const m = Math.trunc(milliSeconds / 60000);
+    milliSeconds = milliSeconds - 60000 * m;
+    const s = Math.trunc(milliSeconds / 1000);
+    milliSeconds = milliSeconds - 1000 * s;
+    const frac = milliSeconds;
+    let result = m ? m + ' м ' : ''; // start with minutes
+    if (maxValue < 60000 * 60) {
+      if (s) {
+        result = result + s + ' с '; // add seconds value
+      }
+
+      if(s === 0 && !m) {
+        result = result + '0 c'
+      }
+    }
+    if (maxValue < 5000) {
+      result = frac ? result + frac + ' мс ' : result;
+    }
+
+    if (h) {
+      result = h + ' ч ' + result;
+    }
+    if (d) {
+      result = d + 'д ' + result;
+    }
+    if (negative) {
+      result = '-' + result;
+    }
+
+
+
+    return result.trim();
+  }
+
   private static fillConvertDates(result: any, input: any): any {
     for (const key in input) {
       if (!input.hasOwnProperty || !input.hasOwnProperty(key)) {

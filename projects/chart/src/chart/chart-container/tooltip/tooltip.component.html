@@ -1,13 +1,43 @@
 <ng-container *ngIf="position | async as p">
-  <div class="chart-tooltip color-text-90 bg-background-50 shadow-2 padding-2 border-radius-1"
-       *ngIf="displayTooltips | async as tool"
-       [style.position]="'fixed'"
-       [style.opacity]="display | async"
-       style="pointer-events: none; min-width: 200px;"
-       [style.left]="p.left"
-       [style.top]="p.top"
-       [style.bottom]="p.bottom"
-       [style.right]="p.right"
-       [innerHTML]="tool">
-  </div>
+  <ng-container *ngIf="tooltips | async as t">
+    <div class="chart-tooltip color-text-90 bg-background-50 shadow-2 padding-2 border-radius-1"
+         [style.position]="'fixed'"
+         *ngIf="t.length > 0"
+         [style.opacity]="display | async"
+         style="pointer-events: none; min-width: 200px;"
+         [style.left]="p.left"
+         [style.top]="p.top"
+         [style.bottom]="p.bottom"
+         [style.right]="p.right"
+    >
+      <ng-container *ngIf="config.tooltip?.template">
+        <ng-container *ngTemplateOutlet="config.tooltip.template; context: {$implicit: t}"></ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="config.tooltip?.format; else default">
+        <div [innerHTML]="displayTooltips | async"></div>
+      </ng-container>
+
+      <ng-template #default>
+        <ng-container *ngIf="!config.tooltip?.template">
+          <ng-container *ngFor="let tooltip of t">
+            <div class="display-flex align-center">
+            <span class="display-block margin-right-1" [style.width.px]="10" [style.height.px]="2"
+                  [style.background-color]="tooltip.series?.color"></span>
+              <span class="font-title-3">
+            {{ tooltip.series?.name }}
+                <span class="font-body-3">
+              x: {{ format(tooltip.point?.x) }}
+                  y: {{ format(tooltip.point?.y) }}
+            </span>
+          </span>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-template>
+    </div>
+  </ng-container>
 </ng-container>
+
+
+

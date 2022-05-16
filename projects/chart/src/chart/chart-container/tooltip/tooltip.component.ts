@@ -33,6 +33,7 @@ export class TooltipComponent implements OnInit {
 
   displayTooltips: Observable<SafeHtml>;
   display: Observable<number>;
+  tooltips: Observable<IDisplayTooltip[]>
 
   constructor(
     private svc: ChartService,
@@ -41,6 +42,7 @@ export class TooltipComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private _zone: NgZone
   ) {
+    this.tooltips = this.svc.tooltips.pipe(map((_) => [..._.values()]))
   }
 
   ngOnInit(): void {
@@ -121,5 +123,17 @@ export class TooltipComponent implements OnInit {
     };
 
     return scene;
+  }
+
+
+  format(input: number | Date): string {
+
+    if(input instanceof Date) {
+      const format = d3.timeFormat('%d.%m.%Y');
+      return format(input);
+    }
+
+    const format = d3.format(',.5~r')
+    return format(input)
   }
 }

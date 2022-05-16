@@ -35,6 +35,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   @Input() scale?: any;
 
   @HostBinding('class.zoomable') private zoomable = false;
+  @HostBinding('class.crosshair') private crosshair = false;
 
   private _element: d3.Selection<SVGElement, any, any, any>;
   private zoomAxis: Axis;
@@ -56,14 +57,15 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
   ngOnInit() {
     if (this.axis?.options?.zoom || this.config?.zoom?.enable) {
-      this.zoomable = this.config?.zoom?.zoomBehavior === ZoomBehaviorType.move;
+      this.zoomable = this.config?.zoom?.zoomBehavior === ZoomBehaviorType.move && !this.config?.tooltip?.showCrosshair;
+      this.crosshair = this.config?.tooltip?.showCrosshair;
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
 
     if (changes.hasOwnProperty('brushScale') || changes.hasOwnProperty('scale') || changes.hasOwnProperty('axis')) {
-      if (this.hash) {
+      if (this.hash && this.axis) {
         this.zoomService.scaleHashMap.set(this.hash, this.scale);
         this.zoomService.axisHashMap.set(this.hash, this.axis);
       }
@@ -120,12 +122,13 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         ]);
       }
 
-      this.zoomService.axisHashMap.set(this.hash, this.zoomAxis);
-      this.zoomService.elementHashMap.set(this.hash, this._element);
-      this.zoomService.scaleHashMap.set(this.hash, this.scale);
-      this.zoomService.zoomHashMap.set(this.hash, this.zoom);
-      this.zoomService.setBroadcastChannel(this.config?.zoom.syncChannel)
-
+      if(this.axis) {
+        this.zoomService.axisHashMap.set(this.hash, this.zoomAxis);
+        this.zoomService.elementHashMap.set(this.hash, this._element);
+        this.zoomService.scaleHashMap.set(this.hash, this.scale);
+        this.zoomService.zoomHashMap.set(this.hash, this.zoom);
+        this.zoomService.setBroadcastChannel(this.config?.zoom.syncChannel)
+      }
 
       const maxZoom = this.config.zoom?.max
         ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) /
@@ -290,7 +293,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         event,
         target: this.zoomAxis,
       });
-
 
       this.currentTransform = event.transform;
     }

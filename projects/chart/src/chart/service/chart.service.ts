@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import {IChartConfig} from '../model/i-chart-config';
 import {
   BehaviorSubject,
-  filter, first,
+  filter,
   lastValueFrom,
   map,
   Observable,
   of,
   shareReplay,
-  Subject, take,
+  Subject,
+  take,
   withLatestFrom,
 } from 'rxjs';
 import {IChartEvent} from '../model/i-chart-event';
@@ -22,6 +23,7 @@ import {defaultSeriesConfig} from '../default/default-series-config';
 import {BasePoint} from '../model/base-point';
 import {Series} from '../model/series';
 import {Annotation} from '../model/annotation';
+import {ClipPointsDirection} from "../model/enum/clip-points-direction";
 
 @Injectable({
   providedIn: 'root',
@@ -197,7 +199,7 @@ export class ChartService {
         id: _.id ?? index,
       };
     });
-    
+
     const oppositeYCount = config.yAxis?.filter((_) => _.opposite);
     const oppositeXCount = config.xAxis?.filter((_) => _.opposite);
 
@@ -239,6 +241,8 @@ export class ChartService {
 
   private setPreparationData(config: IChartConfig): IChartConfig {
     if (config.inverted) {
+
+
       const xAxes = [...config.xAxis];
       const yAxes = [...config.yAxis];
 
@@ -252,6 +256,7 @@ export class ChartService {
         serie.yAxisIndex = x;
         return {
           ...serie,
+          clipPointsDirection: ClipPointsDirection.y,
           data: serie?.data?.map((point) => {
             return {
               ...point,

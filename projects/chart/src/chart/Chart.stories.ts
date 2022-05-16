@@ -14,6 +14,8 @@ import {BrushType} from './model/enum/brush-type';
 import {Series} from './model/series';
 import {BasePoint} from './model/base-point';
 import {FillType} from './model/enum/fill-type';
+import {AxisOrientation} from "./model/enum/axis-orientation";
+import {ChartBounds} from "./model/chart-bounds";
 
 export default {
   title: 'Component/Chart',
@@ -177,7 +179,7 @@ const cssColorNames = [
 
 const randomColor = randomInt(0, cssColorNames.length - 1);
 
-const seriesType = [SeriesType.block, SeriesType.blockArea];
+const seriesType = [SeriesType.line, SeriesType.line];
 
 faker.locale = 'ru';
 
@@ -227,34 +229,19 @@ const createChart = (size: number): IChartConfig => {
   return {
     name: '123123123132',
     inverted: true,
-    annotations:
-      Array.from(Array(50).keys()).map(() => {
-        return {
-          point: {
-            x: faker.datatype.number({min: 0, max: 180}),
-            y: faker.datatype.number({min: 0, max: 6000}),
-          },
-          dx: 50,
-          dy: 30,
-          note: {
-            label: 'Аннотация'
-          },
-          draggable: true,
-          style: {
-            radius: 3,
-            strokeWidth: 2
-          }
-        }
-      }),
     tooltip: {
       tracking: TooltipTracking.y,
     },
+    bounds: new ChartBounds({
+      top: 50
+    }),
     xAxis: [
       {
         min: 0,
         max: 5000,
         visible: true,
         inverted: true,
+        niceTicks: false,
         plotLines: [
           {
             value: 1000,
@@ -324,12 +311,12 @@ export const basicChart = () => ({
   },
 
   props: {
-    config: createChart(500),
+    config: createChart(200),
     config2: createChart2(200),
     createChart: createChart,
     createChart2: createChart2,
-    click: (e) => {
-      console.log(e);
+    setZoom: function() {
+      this.storyComponentElementRef.zoomService.setZoom(1500, 2000, 0, AxisOrientation.y)
     },
   },
   template: `
@@ -350,9 +337,13 @@ export const basicChart = () => ({
           (click)="config=createChart(0); config2=createChart(0)">
           Create empty data
        config </button>
+        <button teta-button
+          [palette]="'primary'"
+          (click)="setZoom()">Set zoom</button>
+
         <div class="row row_auto gap" style="height: 100%; width: 100%">
             <teta-svg-chart [config]="config" class="bg-background-50 row_6 border border-text-50"></teta-svg-chart>
-            <teta-svg-chart [config]="config2" class="bg-background-50 row_6 border border-text-50"></teta-svg-chart>
+
         </div>
 
       </div>
