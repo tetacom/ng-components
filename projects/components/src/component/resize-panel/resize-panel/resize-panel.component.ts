@@ -27,6 +27,9 @@ export class ResizePanelComponent implements OnInit, OnDestroy {
     return this._direction;
   }
 
+  get icon() {
+    return this.direction === "horizontal" ? 'moreHorizontal' : 'moreVertical'
+  }
   @Input()
   set grabPosition(val: 'top' | 'left' | 'bottom' | 'right') {
     this._grabPosition = val;
