@@ -17,6 +17,7 @@ import { DropdownBase } from '../dropdown-base';
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  exportAs: 'dropdown'
 })
 export class DropdownComponent
   extends DropdownBase

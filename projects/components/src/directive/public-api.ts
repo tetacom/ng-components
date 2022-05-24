@@ -13,3 +13,4 @@ export * from './tooltip/public-api';
 export * from './no-autofill/public-api';
 export * from './resize-drag/public-api';
 export * from './let/public-api';
+export * from './scroll-into-view/public-api';
