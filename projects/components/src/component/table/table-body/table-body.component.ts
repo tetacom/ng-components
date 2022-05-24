@@ -74,7 +74,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     this._columns = columns;
     this.locked = this._columns?.filter((_) => _.locked === true);
     this.unlocked = this._columns?.filter((_) => _.locked === false);
-    const startWidth = this.selectType !== SelectType.none ? 28 : 0;
+    const startWidth = this.selectType === SelectType.checkBox ? 28 : 0;
     this.lockedFlex = this.locked.reduce((prev: number, curr: TableColumn) => prev + curr.flex, 0);
     this.lockedWidth = this.locked.reduce((prev: number, curr: TableColumn) => prev + curr.width, startWidth);
     this.totalFlex = this._columns.reduce((prev: number, curr: TableColumn) => prev + curr.flex, 0);

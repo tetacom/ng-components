@@ -10,7 +10,7 @@
   background: getColorVar('background', '50');
   color: getColorVar('text', '90');
   fill: getColorVar('text', '90');
-  overflow: hidden;
+  //overflow: hidden;
 
   &-button {
     display: inline-flex;

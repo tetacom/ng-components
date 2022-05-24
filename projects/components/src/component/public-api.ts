@@ -19,6 +19,9 @@ export * from './dropdown/public-api';
 /* dynamic-component */
 export * from './dynamic-component/public-api';
 
+/* expand-card */
+export * from './expand-card/public-api';
+
 /* expand-panel */
 export * from './expand-panel/public-api';
 
@@ -84,3 +87,6 @@ export * from './tree/public-api';
 
 /* 3d-chart */
 export * from './chart-3d/public-api';
+
+/* Resize panel */
+export * from './resize-panel/public-api';

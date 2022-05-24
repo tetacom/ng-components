@@ -32,10 +32,10 @@ export const basicTable = () => ({
       'selectType',
       {
         none: SelectType.none,
-        multiple: SelectType.multiple,
-        single: SelectType.single,
+        multiple: SelectType.checkBox,
+        single: SelectType.mouse,
       },
-      SelectType.multiple
+      SelectType.checkBox
     ),
     editEvent: select(
       'editEvent',
@@ -75,10 +75,10 @@ export const virtualTable = () => ({
       'selectType',
       {
         none: SelectType.none,
-        multiple: SelectType.multiple,
-        single: SelectType.single,
+        multiple: SelectType.checkBox,
+        single: SelectType.mouse,
       },
-      SelectType.multiple
+      SelectType.checkBox
     ),
     editEvent: select(
       'editEvent',

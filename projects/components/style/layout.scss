@@ -97,6 +97,10 @@ body {
   grid-gap: 20px !important;
 }
 
+.gap-24 {
+  grid-gap: 24px !important;
+}
+
 .gap-40 {
   grid-gap: 40px !important;
 }
@@ -127,7 +131,7 @@ body {
 
 .content-block {
   border: solid 0;
-  border-radius: 2px;
+  border-radius: 4px;
   overflow: hidden;
   background: getColorVar('background', 50);
 }

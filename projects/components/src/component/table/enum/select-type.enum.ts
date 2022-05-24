@@ -1,5 +1,5 @@
 export enum SelectType {
   none,
-  multiple,
-  single
+  checkBox,
+  mouse
 }

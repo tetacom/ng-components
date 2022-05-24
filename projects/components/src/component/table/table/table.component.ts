@@ -57,7 +57,7 @@ export class TableComponent<T>
   @Input() detailComponent: Type<DetailComponentBase<T>>;
   @Input() activeRow: TableRow<T>;
   @Input() selectedRows: TableRow<T>[];
-  @Input() selectType: SelectType = SelectType.multiple;
+  @Input() selectType: SelectType = SelectType.mouse;
   @Input() aggregate: boolean;
   @Input() grouping: boolean;
   @Input() groupRowComponent: Type<GroupRowComponentBase<T>> =
@@ -173,9 +173,10 @@ export class TableComponent<T>
     if (row) {
       if (event.ctrlKey) {
         this._svc.selectOrDeselectRow(row);
-      }
-      if (event.shiftKey) {
+      } else if (event.shiftKey) {
         this._svc.selectRange(row);
+      } else {
+        this._svc.selectRows([row]);
       }
     }
     if (!this.eventIsOnRow(event) && !event.defaultPrevented) {

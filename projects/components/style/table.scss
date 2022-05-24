@@ -175,7 +175,7 @@
       background-color: getColorVar('background', '0');
     }
 
-    &_active, &_active:hover {
+    &_selected, &_selected:hover {
       background-color: getColorVar('primary', '10');
     }
   }
