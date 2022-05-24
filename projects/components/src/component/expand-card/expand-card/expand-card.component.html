@@ -1,0 +1,19 @@
+<teta-toolbar class="justify-content-between align-center">
+  <div class="font-title-3">
+    <ng-content select="head"></ng-content>
+  </div>
+  <div class="row gap align-center">
+    <button teta-button (click)="setOpen()" [palette]="'text'" [view]="'ghost'" [square]="true">
+      <teta-icon [name]="open ? 'arrowUpKey' : 'arrowDownKey'"></teta-icon>
+    </button>
+    <ng-container *ngIf="showCross">
+      <teta-delimiter [palette]="'text'" class='height-4'></teta-delimiter>
+      <button teta-button (click)="crossClick.emit($event)" [palette]="'text'" [view]="'ghost'" [square]="true">
+        <teta-icon [name]="'closeBig'"></teta-icon>
+      </button>
+    </ng-container>
+  </div>
+</teta-toolbar>
+<div class="content" *ngIf="open">
+  <ng-content></ng-content>
+</div>

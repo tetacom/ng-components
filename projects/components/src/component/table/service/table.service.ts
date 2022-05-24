@@ -38,7 +38,7 @@ export class TableService<T> {
   dict: Observable<IDictionary<IIdName<any>[]>>;
   filterOptions: Observable<IDictionary<IIdName<any>[]>>;
   state: Observable<FilterState>;
-  selectType: SelectType = SelectType.multiple;
+  selectType: SelectType = SelectType.mouse;
   editRowStart: Observable<ICellEvent>;
   editRowStop: Observable<ICellCoordinates>;
   editCellStart: Observable<ICellEvent>;
@@ -455,11 +455,7 @@ export class TableService<T> {
         this._selectedRows.value.filter((_) => _ !== row)
       );
     } else {
-      if (this.selectType === SelectType.single) {
-        this._selectedRows.next([row]);
-      } else {
-        this._selectedRows.next([...this._selectedRows.value, row]);
-      }
+      this._selectedRows.next([...this._selectedRows.value, row]);
     }
   }
 
@@ -495,24 +491,16 @@ export class TableService<T> {
     if (this.selectType === SelectType.none) {
       return;
     }
-    if (this.selectType === SelectType.single) {
-      this._selectedRows.next([row]);
-    } else {
-      this._selectedRows.next([...this._selectedRows.value, row]);
-    }
+    this._selectedRows.next([...this._selectedRows.value, row]);
   }
 
   deselectRow(row: TableRow<T>): void {
     if (this.selectType === SelectType.none) {
       return;
     }
-    if (this.selectType === SelectType.single) {
-      this._selectedRows.next([]);
-    } else {
-      this._selectedRows.next(
-        this._selectedRows.value.filter((_) => _ !== row)
-      );
-    }
+    this._selectedRows.next(
+      this._selectedRows.value.filter((_) => _ !== row)
+    );
   }
 
   selectAll() {

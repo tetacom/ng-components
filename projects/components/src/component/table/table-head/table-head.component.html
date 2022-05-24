@@ -4,7 +4,7 @@
      [style.flex-basis.px]="lockedWidth"
      [style.min-width.px]="lockedWidth">
   <teta-selection-head-cell
-    *ngIf="selectType !== selectTypeEnum.none"
+    *ngIf="selectType === selectTypeEnum.checkBox"
     style="width: 28px;"></teta-selection-head-cell>
   <teta-table-head-group
     *ngFor="let column of locked; trackBy: track"
@@ -15,7 +15,7 @@
 </div>
 <ng-container *ngIf="unlocked?.length">
   <teta-selection-head-cell
-    *ngIf="selectType !== selectTypeEnum.none && locked?.length < 1"
+    *ngIf="selectType === selectTypeEnum.checkBox && locked?.length < 1"
     style="width: 28px;"></teta-selection-head-cell>
   <teta-table-head-group
     *ngFor="let column of unlocked; trackBy: track"

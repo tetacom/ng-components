@@ -1,0 +1,41 @@
+<div [tetaDragContainer]="items"
+     (tetaDrop)="log($event)"
+     multiple="true"
+     class="padding-10 margin-10 row row_auto border border-text-5 row gap-20">
+  <div [tetaDrag]="item"
+       (tetaDrop)="log($event)"
+       *ngFor="let item of items"
+       class="padding-4 border border-text-10">
+    {{item?.name}}
+  </div>
+  <div *tetaDragPreview="let test; let data = data" style="padding: 10px;background: blueviolet;">
+    <div *ngFor="let item of data">
+      {{item.data | json}}
+    </div>
+  </div>
+</div>
+<div [tetaDragContainer]="items2"
+     (tetaDrop)="log($event)"
+     class="padding-10 margin-10 row row_auto border border-text-5 row gap-20">
+  <div [tetaDrag]="item"
+       (tetaDrop)="log($event)"
+       *ngFor="let item of items2"
+       class="padding-4 border border-text-10">
+    {{item?.name}}
+  </div>
+</div>
+
+
+<!--<div class="padding-10 margin-10 row row_auto border border-text-5 row gap-20"-->
+<!--     (drop)="start()"-->
+<!--(dragenter)="start()">-->
+<!--  <div draggable="true"-->
+
+<!--       (dragstart)="start()"-->
+<!--       (dragend)="start()"-->
+<!--       (drop)="start()"-->
+<!--       *ngFor="let item of items2"-->
+<!--       class="padding-4 border border-text-10">-->
+<!--    {{item?.name}}-->
+<!--  </div>-->
+<!--</div>-->

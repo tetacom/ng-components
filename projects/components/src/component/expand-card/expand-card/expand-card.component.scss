@@ -1,0 +1,19 @@
+:host {
+  border: solid 1px var(--color-text-5);
+  border-radius: 4px;
+  animation: append-animate .5s linear
+}
+
+.content {
+  padding: 0 12px 12px 12px;
+  animation: append-animate .5s linear
+}
+
+@keyframes append-animate {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

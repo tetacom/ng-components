@@ -22,7 +22,7 @@
        [attr.data-row]="rowIndex"
        [class.table-row_odd]="rowIndex % 2 === 1"
        [ngClass]="rowClass ? rowClass(row, rowIndex) : ''"
-       [class.table-row_active]="row === activeRow || (selectedRows && selectedRows.indexOf(row) >= 0)"
+       [class.table-row_selected]="selectedRows && selectedRows.indexOf(row) >= 0"
        [style.flex-grow]="totalFlex"
        [style.flex-basis.px]="totalWidth"
        [style.min-width.px]="totalWidth">
@@ -33,7 +33,7 @@
            [style.flex-basis.px]="lockedWidth"
            [style.min-width.px]="lockedWidth"
            [style.zIndex]="row === activeRow ? 1 : 'unset'">
-        <teta-selection-cell *ngIf="selectType !== selectTypeEnum.none && locked.length"
+        <teta-selection-cell *ngIf="selectType === selectTypeEnum.checkBox && locked.length"
                              [row]="row"
                              style="width: 28px;"></teta-selection-cell>
         <teta-cell
@@ -50,7 +50,7 @@
           [style.flex-basis.px]="column.width"
         ></teta-cell>
       </div>
-      <teta-selection-cell *ngIf="selectType !== selectTypeEnum.none && locked.length < 1"
+      <teta-selection-cell *ngIf="selectType === selectTypeEnum.checkBox && locked.length < 1"
                            [row]="row"
                            style="width: 28px;"></teta-selection-cell>
       <teta-cell
@@ -104,7 +104,7 @@
       </div>
       <div class="cell align-center justify-content-center"
            style="width: 28px;"
-           *ngIf="selectType !== selectTypeEnum.none && locked.length < 1">
+           *ngIf="selectType === selectTypeEnum.checkBox && locked.length < 1">
         <teta-icon [name]="'sumColor'"></teta-icon>
       </div>
       <div class="cell cell-component justify-content-end"

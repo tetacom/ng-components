@@ -1,0 +1,21 @@
+:host {
+
+}
+
+.teta-drag-selection {
+  background: green;
+}
+
+.teta-drag-item, .teta-drag-container {
+  transition: background 0.3s, transform 0.3s, outline 0.3s ;
+}
+
+.teta-drop-target.teta-drag-item {
+  transform: scale(1.2);
+  background: grey;
+}
+
+.teta-drop-target.teta-drag-container {
+  outline: dashed 2px red;
+  background: grey;
+}

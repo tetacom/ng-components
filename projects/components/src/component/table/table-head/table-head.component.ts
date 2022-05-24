@@ -68,7 +68,7 @@ export class TableHeadComponent<T> implements OnInit, OnDestroy {
         this.columns = columns;
         const locked = ArrayUtil.flatten(columns, 'columns', true)
           .filter((_) => this._hiddenColumns.indexOf(_.name) < 0 && _.locked);
-        const startWidth = this.selectType !== SelectType.none ? 28 : 0;
+        const startWidth = this.selectType === SelectType.checkBox ? 28 : 0;
         this.lockedFlex = locked.reduce((prev: number, curr: TableColumn) => prev + curr.flex, 0);
         this.lockedWidth = locked.reduce((prev: number, curr: TableColumn) => prev + curr.width, startWidth);
         this._cdr.markForCheck();
