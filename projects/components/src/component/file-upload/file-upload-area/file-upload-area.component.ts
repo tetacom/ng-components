@@ -1,13 +1,13 @@
 import {
   ChangeDetectionStrategy,
-  Component,
+  Component, ContentChild,
   ElementRef,
   EventEmitter,
   HostBinding,
   HostListener,
   Input,
   OnInit,
-  Output,
+  Output, TemplateRef,
   ViewChild,
 } from '@angular/core';
 
@@ -32,7 +32,7 @@ export class FileUploadAreaComponent implements OnInit {
   @Output() upload: EventEmitter<FileList> = new EventEmitter();
 
   @ViewChild('fileUpload', { static: false }) input: ElementRef;
-
+  @ContentChild('buttonTemplate') buttonTemplate: TemplateRef<any>;
   files: any;
 
   private _asActive: boolean;
