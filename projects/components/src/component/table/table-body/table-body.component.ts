@@ -50,6 +50,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
 
   set data(data: TableRow<T>[]) {
     this._data = data;
+    this.viewport?.checkViewportSize();
   }
 
   get data() {
@@ -184,6 +185,9 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   }
 
   trackRow(index: number, row: TableRow<T>): any {
+    if (row.data['id']) {
+      return row.data['id'];
+    }
     return index;
   }
 

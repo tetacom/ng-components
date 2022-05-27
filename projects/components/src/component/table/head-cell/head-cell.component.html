@@ -1,7 +1,7 @@
 <div draggable="true" class="row row_auto">
-  <teta-dropdown [autoCloseIgnore]="['enter']"
+  <teta-dropdown [autoCloseIgnore]="['enter', 'inside']"
                  [verticalAlign]="verticalAlign.bottom"
-                 [appendToBody]="true"
+                 [appendToBody]="false"
                  [(open)]="dropDownOpen"
                  [align]="align.left"
                  (click)="$event.preventDefault()"
@@ -16,8 +16,7 @@
     </div>
     <teta-head-cell-dropdown tetaDropdownContent
                              *ngIf="showHeadCellMenu"
-                             (autosize)="autosizeColumn()"
-                             (autosizeAll)="autosizeAllColumns()"
+                             [tabTemplates]="tabTemplates"
                              [data]="data"
                              [column]="column"
                              [columns]="columns | async"
@@ -37,4 +36,25 @@
      [tetaResizeDrag]="'vertical'"
      (resizeStart)="resizeStart($event)"
      (resizeProcess)="resizeProcess($event)"
-     (resizeEnd)="resizeEnd()"></div>
+     (resizeEnd)="resizeEnd()">
+  <div class="table-head__cell__resize_drag"></div>
+</div>
+<ng-template #mainTemplate let-column="column" let-columns="columns" let-data="data" let-state="state"
+             let-close="close">
+  <teta-main-dropdown-tab [column]="column" [state]="state" [close]="close"></teta-main-dropdown-tab>
+</ng-template>
+<ng-template #filterTemplate let-column="column" let-columns="columns" let-data="data" let-state="state"
+             let-close="close">
+  <teta-filter-dropdown-tab [column]="column"
+                            [state]="state"
+                            [close]="close"
+                            [data]="data"></teta-filter-dropdown-tab>
+</ng-template>
+<ng-template #columnsTemplate let-column="column" let-columns="columns" let-data="data" let-state="state"
+             let-close="close">
+  <teta-visibility-dropdown-tab [column]="column"
+                                [columns]="columns"
+                                [state]="state"
+                                [close]="close"
+                                [data]="data"></teta-visibility-dropdown-tab>
+</ng-template>

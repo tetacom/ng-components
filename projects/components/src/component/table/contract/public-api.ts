@@ -9,3 +9,4 @@ export * from './sort-event';
 export * from './table-column';
 export * from './table-column-store';
 export * from './table-row';
+export * from './head-dropdown-tab';
