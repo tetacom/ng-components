@@ -50,7 +50,6 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
 
   set data(data: TableRow<T>[]) {
     this._data = data;
-    this.viewport?.checkViewportSize();
   }
 
   get data() {
@@ -91,6 +90,26 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   constructor(private _svc: TableService<T>,
               private _config: TetaConfigService,
               private _cdr: ChangeDetectorRef) {
+
+  }
+
+  setActiveRow(row: TableRow<T>) {
+    this._svc.setActiveRow(row);
+  }
+
+  getData = (index, count, success) => {
+    const data = [];
+    if (this.data?.length > 0) {
+      const start = Math.max(0, index);
+      const end = Math.min(index + count - 1, this.data.length - 1);
+      for (let i = start; i <= end; i++) {
+        data.push(this.data[i]);
+      }
+    }
+    return success(data);
+  };
+
+  ngOnInit(): void {
     this.locale = this._config.locale;
     combineLatest([this._svc.columns, this._svc.hiddenColumns])
       .pipe(takeWhile((_) => this._alive))
@@ -103,9 +122,12 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
         this._cdr.markForCheck();
       });
 
-    this._svc.displayData.pipe(takeWhile((_) => this._alive)).subscribe((_) => {
+    this._svc.displayData.pipe(
+      takeWhile((_) => this._alive)
+    ).subscribe((_) => {
       this.data = _;
       this._cdr.markForCheck();
+      this.viewport?.checkViewportSize();
     });
 
     this._svc.dict.pipe(takeWhile((_) => this._alive)).subscribe((_) => {
@@ -128,25 +150,6 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
         this.activeRow = _;
         this._cdr.markForCheck();
       });
-  }
-
-  setActiveRow(row: TableRow<T>) {
-    this._svc.setActiveRow(row);
-  }
-
-  getData = (index, count, success) => {
-    const data = [];
-    if (this.data?.length > 0) {
-      const start = Math.max(0, index);
-      const end = Math.min(index + count - 1, this.data.length - 1);
-      for (let i = start; i <= end; i++) {
-        data.push(this.data[i]);
-      }
-    }
-    return success(data);
-  };
-
-  ngOnInit(): void {
   }
 
   ngOnDestroy(): void {

@@ -93,7 +93,7 @@ export const virtualTable = () => ({
   template: `<div [tetaIconSprite]="['assets/icons.svg', 'assets/color-icons.svg']"
                   class="bg-panel-0 padding-10"
                   style="display: flex; width: 1200px; height: 600px;">
-                <teta-table-demo [size]="1000"
+                <teta-table-demo [size]="100"
                                   [editEvent]="editEvent"
                                   [editType]="editType"
                                   [selectType]="selectType"

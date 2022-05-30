@@ -1,9 +1,6 @@
 <cdk-virtual-scroll-viewport *ngIf="virtual"
                              class="table-body-container"
-                             [appendOnly]="false"
-                             [minBufferPx]="280"
-                             [maxBufferPx]="560"
-                             itemSize="28">
+                             [itemSize]="28">
   <ng-container *cdkVirtualFor="let row of data;templateCacheSize: 0; let rowIndex = index; trackBy: trackRow;">
     <ng-container *ngTemplateOutlet="bodyTemplate; context: {row: row, rowIndex: rowIndex}"></ng-container>
   </ng-container>

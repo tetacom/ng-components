@@ -60,6 +60,14 @@ export class TableHeadComponent<T> implements OnInit, OnDestroy {
   data: TableRow<T>[];
 
   constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {
+
+  }
+
+  track(index: number, item: TableColumn): any {
+    return item.name;
+  }
+
+  ngOnInit(): void {
     combineLatest([this._svc.columns, this._svc.hiddenColumns])
       .pipe(takeWhile((_) => this._alive))
       .subscribe((values: [TableColumn[], string[]]) => {
@@ -83,13 +91,6 @@ export class TableHeadComponent<T> implements OnInit, OnDestroy {
       this.data = _;
       this._cdr.markForCheck();
     });
-  }
-
-  track(index: number, item: TableColumn): any {
-    return item.name;
-  }
-
-  ngOnInit(): void {
   }
 
   ngOnDestroy(): void {

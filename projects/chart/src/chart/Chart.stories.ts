@@ -239,7 +239,7 @@ const createChart = (size: number): IChartConfig => {
       {
         min: 0,
         max: 5000,
-        visible: true,
+        visible: false,
         inverted: true,
         niceTicks: false,
         plotLines: [

@@ -1,3 +1,12 @@
+<teta-toolbar>
+  <button teta-button
+          (click)='delete(selectedRows)'
+          [square]='true'
+          [palette]='"text"'
+          [view]='"ghost"'>
+    <teta-icon [name]='"delete"'></teta-icon>
+  </button>
+</teta-toolbar>
 <teta-table [data]="data"
             [cookieName]="'table-stories'"
             [columns]="columns"
@@ -23,21 +32,27 @@
 <ng-template let-data #contextMenu>
   <div class="list shadow-2">
     <div class="list-item list-item_interactive"
-         (click)="addRow()">Добавить строку</div>
+         (click)="addRow()">Добавить строку
+    </div>
     <div class="list-divider"></div>
     <div class="list-item list-item_interactive"
-         (click)="copy()">Copy</div>
+         (click)="copy()">Copy
+    </div>
     <div class="list-item list-item_interactive"
          *ngIf="selectedRows?.length > 0"
-         (click)="copyAll()">Copy selected</div>
+         (click)="copyAll()">Copy selected
+    </div>
     <div class="list-item list-item_interactive"
-         (click)="paste()">Paste</div>
+         (click)="paste()">Paste
+    </div>
     <div class="list-divider"></div>
     <div class="list-item list-item_interactive"
-         (click)="delete()">Удалить</div>
+         (click)="delete()">Удалить
+    </div>
     <div class="list-item list-item_interactive"
          *ngIf="selectedRows?.length > 0"
-         (click)="deleteAll()">Удалить выделенные</div>
+         (click)="deleteAll()">Удалить выделенные
+    </div>
     {{activeRow.data.name | json}}
   </div>
 </ng-template>
