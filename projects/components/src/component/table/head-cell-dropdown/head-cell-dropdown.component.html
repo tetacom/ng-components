@@ -1,134 +1,56 @@
-<teta-tabs class="column_auto" *ngIf="locale | async as loc">
-  <teta-tab>
-    <ng-template tetaTabTitle>
-      <teta-icon [name]="'menu'"></teta-icon>
-    </ng-template>
-    <ng-template tetaTabContent>
-      <div class="list column_auto">
-        <div class="list-item list-item_interactive" (click)="pinColumn()">
-          {{column.locked ? loc.unpin : loc.pin}}
-        </div>
-        <div class="list-divider"></div>
-        <ng-container *ngIf="column.sortable">
-          <div class="list-item list-item_interactive"
-               (click)="sortAsc($event)">
-            {{loc.sortAsc}}
-          </div>
-          <div class="list-item list-item_interactive"
-               (click)="sortDesc($event)">
-            {{loc.sortDesc}}
-          </div>
-          <ng-container *ngIf="hasSortedColumns()">
-            <div class="list-item list-item_interactive"
-                 *ngIf="sortParam"
-                 (click)="clearSort()">
-              {{loc.clearSort}}
-            </div>
-            <div class="list-item list-item_interactive"
-                 (click)="clearAllSort()">
-              {{loc.clearAllSort}}
-            </div>
-            <div class="list-divider"></div>
-          </ng-container>
+<teta-tabs class="column_auto">
+  <ng-container *ngFor="let tab of tabTemplates; trackBy: trackIndex">
+    <teta-tab *ngIf="tab.showTab(column)">
+      <ng-template tetaTabTitle>
+        <ng-container *ngIf="tab.icon">
+          <teta-icon [name]="tab.icon"></teta-icon>
         </ng-container>
-        <ng-container *ngIf="hasFilteredColumns()">
-          <div class="list-item list-item_interactive"
-               *ngIf="filtered"
-               (click)="clearFilter()">
-            {{loc.clearFilter}}
-          </div>
-          <div class="list-item list-item_interactive"
-               (click)="clearAllFilters()">
-            {{loc.clearAllFilters}}
-          </div>
-          <div class="list-divider"></div>
-        </ng-container>
-        <div class="list-item list-item_interactive" (click)="autosize.emit()">
-          {{loc.autosizeColumn}}
-        </div>
-        <div class="list-item list-item_interactive" (click)="autosizeAll.emit()">
-          {{loc.autosizeAll}}
-        </div>
-        <div class="list-divider"></div>
-        <div class="list-item list-item_interactive" (click)="restoreDefaultColumns()">
-          {{loc.resetColumnsSize}}
-        </div>
-      </div>
-    </ng-template>
-  </teta-tab>
-  <teta-tab *ngIf="column.filterable">
-    <ng-template tetaTabTitle>
-      <teta-icon [name]="'filter'"></teta-icon>
-    </ng-template>
-    <ng-template tetaTabContent>
-      <teta-filter-host [column]="column"
-                        [data]="data"
-                        [state]="state"
-                        *ngIf="filterOptions | async as options"
-                        [filterOptions]="options[column.name]"></teta-filter-host>
-      <teta-toolbar class="justify-content-between">
-        <button teta-button [palette]="'text'" [view]="'ghost'" (click)="clearFilter()">
-          {{loc.clear}}
-        </button>
-        <button teta-button [palette]="'primary'" (click)="applyFilter()">
-          <teta-icon [name]="'tick'"></teta-icon>
-          {{loc.apply}}
-        </button>
-      </teta-toolbar>
-    </ng-template>
-  </teta-tab>
-  <teta-tab *ngIf="column.headDropdownTemplate">
-    <ng-template tetaTabTitle>
-      <teta-icon [name]="'measurement'"></teta-icon>
-    </ng-template>
-    <ng-template tetaTabContent>
-      <ng-container
-        *ngTemplateOutlet="column.headDropdownTemplate; context: {$implicit: column, column: column}"></ng-container>
-    </ng-template>
-  </teta-tab>
-  <teta-tab>
-    <ng-template tetaTabTitle>
-      <teta-icon [name]="'eye'"></teta-icon>
-    </ng-template>
-    <ng-template tetaTabContent>
-      <div class="list-item padding-left-6 padding-top-2" [class.padding-left-9]="childMode">
-        <teta-checkbox [binary]="true"
-                       [allowNull]="true"
-                       [ngModel]="allColumnsVisible()"
-                       (ngModelChange)="setAllColumns($event)">
-          {{loc.all}}
-        </teta-checkbox>
-      </div>
-      <div class="list-divider"></div>
-      <div class="padding-v-2 column column_auto scrollable">
-        <teta-tree [data]="columns"
-                   [openItems]="openItems"
-                   (openItemsChange)="openItems = $event"
-                   [childNodeName]="'columns'"
-                   [compareItems]="compareItems">
-          <ng-template tetaTemplate let-item>
-            <div class="tree__item">
-              <teta-tree-item-toggle [item]="item" *ngIf="item.columns?.length > 0"></teta-tree-item-toggle>
-              <teta-checkbox
-                [ngModel]="!columnIsHidden(item)"
-                (ngModelChange)="setColumnVisibility(item, $event)"
-                (click)="$event.stopPropagation()"
-                [binary]="true"
-              >
-                {{item.caption}}
-              </teta-checkbox>
-            </div>
-          </ng-template>
-        </teta-tree>
-      </div>
-      <teta-toolbar class="justify-content-end">
-        <button teta-button
-                [disabled]="allColumnsVisible() === false"
-                [palette]="'primary'"
-                (click)="setColumnsVisibility()">
-          {{loc.apply}}
-        </button>
-      </teta-toolbar>
-    </ng-template>
-  </teta-tab>
+      </ng-template>
+      <ng-template tetaTabContent>
+        <ng-container
+          *ngTemplateOutlet="tab.template; context: {
+            column: column,
+            columns: columns,
+            data: data,
+            state: state,
+            close: closeDropdown
+          }"></ng-container>
+      </ng-template>
+    </teta-tab>
+  </ng-container>
+<!--  <teta-tab>-->
+
+<!--  </teta-tab>-->
+<!--  <teta-tab *ngIf="column.filterable">-->
+<!--    <ng-template tetaTabTitle>-->
+<!--      <teta-icon [name]="'filter'"></teta-icon>-->
+<!--    </ng-template>-->
+<!--    <ng-template tetaTabContent>-->
+<!--      <teta-filter-dropdown-tab [column]="column"-->
+<!--                                [state]="state"-->
+<!--                                [close]="closeDropdown"-->
+<!--                                [data]="data"></teta-filter-dropdown-tab>-->
+<!--    </ng-template>-->
+<!--  </teta-tab>-->
+<!--  <teta-tab *ngIf="column.headDropdownTemplate">-->
+<!--    <ng-template tetaTabTitle>-->
+<!--      <teta-icon [name]="'measurement'"></teta-icon>-->
+<!--    </ng-template>-->
+<!--    <ng-template tetaTabContent>-->
+<!--      <ng-container-->
+<!--        *ngTemplateOutlet="column.headDropdownTemplate; context: {$implicit: column, column: column}"></ng-container>-->
+<!--    </ng-template>-->
+<!--  </teta-tab>-->
+<!--  <teta-tab>-->
+<!--    <ng-template tetaTabTitle>-->
+<!--      <teta-icon [name]="'eye'"></teta-icon>-->
+<!--    </ng-template>-->
+<!--    <ng-template tetaTabContent>-->
+<!--      <teta-visibility-dropdown-tab [column]="column"-->
+<!--                                    [columns]="columns"-->
+<!--                                    [state]="state"-->
+<!--                                    [close]="closeDropdown"-->
+<!--                                    [data]="data"></teta-visibility-dropdown-tab>-->
+<!--    </ng-template>-->
+<!--  </teta-tab>-->
 </teta-tabs>

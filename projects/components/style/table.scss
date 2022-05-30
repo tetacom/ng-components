@@ -122,11 +122,24 @@
         width: 8px;
         background: transparent;
         z-index: 10;
+        display: none;
+        padding: 0 4px;
+
+        &_drag {
+          background: getColorVar('white', '50');
+          width: 1px;
+          height: 100%;
+        }
 
         &:hover {
-          background-color: getColorVar('text', '20');
+          cursor: col-resize;
         }
       }
+
+      &:hover &__resize {
+        display: block;
+      }
+
     }
 
     &__dropdown {

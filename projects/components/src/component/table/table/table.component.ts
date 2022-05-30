@@ -217,7 +217,13 @@ export class TableComponent<T>
 
   @HostListener('keydown', ['$event'])
   keydown(event: KeyboardEvent) {
+    if (event.ctrlKey && event.code === 'KeyA') {
+      event.preventDefault();
+      this._svc.selectAll();
+      return;
+    }
     if (event.key === 'Escape') {
+      this._svc.deselectAll();
       if (this.editType === EditType.row) {
         this._svc.startEditRow(null);
       } else {

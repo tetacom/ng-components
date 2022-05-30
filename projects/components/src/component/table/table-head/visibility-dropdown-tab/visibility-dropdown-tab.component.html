@@ -1,0 +1,40 @@
+<ng-container *ngIf="locale | async as loc">
+  <div class="list-item padding-left-6 padding-top-2" [class.padding-left-9]="childMode">
+    <teta-checkbox [binary]="true"
+                   [allowNull]="true"
+                   [ngModel]="allColumnsVisible()"
+                   (ngModelChange)="setAllColumns($event)">
+      {{loc.all}}
+    </teta-checkbox>
+  </div>
+  <div class="list-divider"></div>
+  <div class="padding-v-2 column column_auto scrollable">
+    <teta-tree [data]="columns"
+               [openItems]="openItems"
+               (openItemsChange)="openItems = $event"
+               [childNodeName]="'columns'"
+               [compareItems]="compareItems">
+      <ng-template tetaTemplate let-item>
+        <div class="tree__item">
+          <teta-tree-item-toggle [item]="item" *ngIf="item.columns?.length > 0"></teta-tree-item-toggle>
+          <teta-checkbox
+            [ngModel]="!columnIsHidden(item)"
+            (ngModelChange)="setColumnVisibility(item, $event)"
+            (click)="$event.stopPropagation()"
+            [binary]="true"
+          >
+            {{item.caption}}
+          </teta-checkbox>
+        </div>
+      </ng-template>
+    </teta-tree>
+  </div>
+  <teta-toolbar class="justify-content-end">
+    <button teta-button
+            [disabled]="allColumnsVisible() === false"
+            [palette]="'primary'"
+            (click)="setColumnsVisibility()">
+      {{loc.apply}}
+    </button>
+  </teta-toolbar>
+</ng-container>

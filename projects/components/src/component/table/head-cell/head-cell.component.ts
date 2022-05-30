@@ -6,7 +6,7 @@ import {
   HostListener,
   Input,
   OnDestroy,
-  OnInit,
+  OnInit, TemplateRef, ViewChild,
 } from '@angular/core';
 import {TableColumn} from '../contract/table-column';
 import {ColumnResizeEvent} from '../contract/column-resize-event';
@@ -19,6 +19,7 @@ import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
 import {Align} from '../../../common/enum/align.enum';
 import {combineLatest, Observable} from 'rxjs';
 import {TableRow} from '../contract/table-row';
+import {HeadDropdownTab, HeadDropdownTabConfig} from '../contract/head-dropdown-tab';
 
 @Component({
   selector: 'teta-head-cell',
@@ -45,6 +46,43 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
 
   private _alive = true;
   private _startPosition: number;
+
+  @ViewChild('mainTemplate', {static: true}) mainTemplate: TemplateRef<any>;
+  @ViewChild('filterTemplate', {static: true}) filterTemplate: TemplateRef<any>;
+  @ViewChild('columnsTemplate', {static: true}) columnsTemplate: TemplateRef<any>;
+
+  get defaultTemplates(): HeadDropdownTab[] {
+    return [
+      {
+        icon: 'menu',
+        template: this.mainTemplate,
+        order: 10,
+        showTab: () => true,
+      }, {
+        icon: 'filter',
+        template: this.filterTemplate,
+        order: 20,
+        showTab: (column) => column.filterable,
+      }, {
+        icon: 'eye',
+        template: this.columnsTemplate,
+        order: 30,
+        showTab: () => true,
+      }
+    ];
+  }
+
+  get tabTemplates() {
+    if (this.column?.headDropdownConfig && this.column.headDropdownConfig.tabs?.length > 0) {
+      if (this.column.headDropdownConfig.strategy === 'replace') {
+        return this.column.headDropdownConfig.tabs;
+      }
+      return [...this.defaultTemplates, ...this.column.headDropdownConfig.tabs]
+        .sort((a, b) => a.order - b.order);
+    }
+
+    return this.defaultTemplates;
+  }
 
   constructor(
     private _svc: TableService<T>,
@@ -119,13 +157,13 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
     this._alive = false;
   }
 
-  autosizeColumn() {
-    this._svc.autosizeColumn(this.column, this._elementRef.nativeElement);
-  }
-
-  autosizeAllColumns() {
-    this._svc.autosizeAllColumns(this._elementRef.nativeElement);
-  }
+  // autosizeColumn() {
+  //   this._svc.autosizeColumn(this.column, this._elementRef.nativeElement);
+  // }
+  //
+  // autosizeAllColumns() {
+  //   this._svc.autosizeAllColumns(this._elementRef.nativeElement);
+  // }
 
   resizeStart(event: MouseEvent): void {
     const rect = this._elementRef.nativeElement.getBoundingClientRect();

@@ -5,8 +5,8 @@ import {ListFilterType} from '../../filter/enum/list-filter-type.enum';
 import {TableRow} from './table-row';
 import {AggregationType} from '../enum/aggregation-type.enum';
 import {TemplateRef} from '@angular/core';
-import {ICellCoordinates} from './i-cell-coordinates';
 import {ICellInstance} from './i-cell-instance';
+import {HeadDropdownTabConfig} from './head-dropdown-tab';
 
 export class TableColumn extends FilterItem {
   /**
@@ -37,6 +37,8 @@ export class TableColumn extends FilterItem {
    * Единицы измерения
    */
   unit: string;
+  unitMeasureParameterId: number;
+  unitId: number;
   /**
    * список style классов для шапки таблицы
    */
@@ -64,7 +66,7 @@ export class TableColumn extends FilterItem {
   /**
    * Custom head dropdown for column
    */
-  headDropdownTemplate: TemplateRef<any>;
+  headDropdownConfig: HeadDropdownTabConfig;
   /**
    * Группировать по этому столбцу
    */
@@ -120,6 +122,8 @@ export class TableColumn extends FilterItem {
     caption?: string;
     hint?: string;
     unit?: string;
+    unitMeasureParameterId?: number;
+    unitId?: number;
     sortable?: boolean;
     sortField?: string;
     filterable?: boolean;
@@ -135,7 +139,7 @@ export class TableColumn extends FilterItem {
     objectType?: boolean;
     cellComponent?: any;
     headCellComponent?: any;
-    headDropdownTemplate?: TemplateRef<any>;
+    headDropdownConfig?: HeadDropdownTabConfig;
     filterComponent?: any;
     groupBy?: boolean;
     groupingOrder?: number;
@@ -155,13 +159,15 @@ export class TableColumn extends FilterItem {
     this.locked = options?.locked ?? false;
     this.parentName = options?.parentName;
     this.unit = options?.unit ?? '';
+    this.unitMeasureParameterId = options?.unitMeasureParameterId;
+    this.unitId = options?.unitId;
     this.data = options?.data;
     this.editable = options?.editable ?? true;
     this.groupBy = options?.groupBy ?? false;
     this.groupingOrder = options?.groupingOrder ?? 0;
     this.groupByFn = options?.groupByFn;
     this.headCellComponent = options?.headCellComponent;
-    this.headDropdownTemplate = options?.headDropdownTemplate;
+    this.headDropdownConfig = options?.headDropdownConfig;
     this.cellComponent = options?.cellComponent;
     this.aggregate = options?.aggregate;
     this.defaultValue = options?.defaultValue;

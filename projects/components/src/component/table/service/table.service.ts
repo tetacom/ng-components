@@ -28,6 +28,8 @@ import {TableColumnStore} from '../contract/table-column-store';
 import {ICellValue} from '../contract/i-cell-value';
 import {ICellEvent} from '../contract/i-cell-event';
 import {ICellInstance, ICellInstanceValue} from '../contract/i-cell-instance';
+import {HeadDropdownTabConfig} from '../contract/head-dropdown-tab';
+import {AggregationType} from '../enum/aggregation-type.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -132,10 +134,19 @@ export class TableService<T> {
 
   setColumns(columns: TableColumn[]): void {
     this.initialColumns = columns ? columns.map((_) => new TableColumn(_)) : [];
+    const excludeKeys = [
+      'editable',
+      'cellComponent',
+      'headCellComponent',
+      'headDropdownConfig',
+      'groupByFn',
+    ];
     this.initialColumnsHash = objectHash(this.initialColumns, {
       algorithm: 'sha1',
       ignoreUnknown: true,
-      excludeKeys: key => key === 'headDropdownTemplate',
+      excludeKeys: (key) => {
+        return excludeKeys.indexOf(key) >= 0;
+      },
     });
     const restored = this.restoreColumns();
 

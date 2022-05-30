@@ -9,8 +9,13 @@
          [attr.multiple]="multiple ? 'multiple' : null"
          [disabled]="disabled"
          (change)="fileChanged($event)"/>
+  <ng-container
+    [ngTemplateOutlet]="buttonTemplate || defaultTemplate"
+  ></ng-container>
+</label>
+<ng-template #defaultTemplate>
   <teta-button [palette]="'primary'" type="button">
     <teta-icon [name]="'search'"></teta-icon>
     {{'common.browse' | transloco}}
   </teta-button>
-</label>
+</ng-template>

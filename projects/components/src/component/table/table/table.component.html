@@ -2,19 +2,26 @@
   <teta-table-head
     [selectType]="selectType"
     [showHeadCellMenu]="showHeadCellMenu"></teta-table-head>
-  <teta-table-body
-    [tetaContextMenu]="contextMenu"
-    [open]="contextMenuOpen"
-    (openChange)="setContextMenuOpen($event)"
-    [aggregate]="aggregate"
-    [virtual]="virtual"
-    [activeRow]="activeRow"
-    [selectedRows]="selectedRowsList"
-    [additionalComponent]="detailComponent"
-    [grouping]="grouping"
-    [groupRowComponent]="groupRowComponent"
-    [openLevels]="openLevels"
-    [selectType]="selectType"
-    [rowClass]="rowClass"
-    [tree]="tree"></teta-table-body>
+  <div class="column column_auto position-relative">
+    <teta-table-body
+      [tetaContextMenu]="contextMenu"
+      [open]="contextMenuOpen"
+      (openChange)="setContextMenuOpen($event)"
+      [aggregate]="aggregate"
+      [virtual]="virtual"
+      [activeRow]="activeRow"
+      [selectedRows]="selectedRowsList"
+      [additionalComponent]="detailComponent"
+      [grouping]="grouping"
+      [groupRowComponent]="groupRowComponent"
+      [openLevels]="openLevels"
+      [selectType]="selectType"
+      [rowClass]="rowClass"
+      [tree]="tree"></teta-table-body>
+    <div class="column column_auto"
+         style="position: absolute; top:0; bottom:0;left:0;right:0;"
+         *ngIf="!data?.length">
+      <ng-content></ng-content>
+    </div>
+  </div>
 </div>

@@ -37,6 +37,9 @@ import {ClickOutsideModule} from '../../directive/click-outside/click-outside.mo
 import {ResizeDragModule} from '../../directive/resize-drag/resize-drag.module';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {ContextMenuModule} from '../../directive/context-menu/context-menu.module';
+import { MainDropdownTabComponent } from './table-head/main-dropdown-tab/main-dropdown-tab.component';
+import { FilterDropdownTabComponent } from './table-head/filter-dropdown-tab/filter-dropdown-tab.component';
+import { VisibilityDropdownTabComponent } from './table-head/visibility-dropdown-tab/visibility-dropdown-tab.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +62,9 @@ import {ContextMenuModule} from '../../directive/context-menu/context-menu.modul
     HeadCellDropdownComponent,
     DateTimeCellComponent,
     BooleanCellComponent,
+    MainDropdownTabComponent,
+    FilterDropdownTabComponent,
+    VisibilityDropdownTabComponent,
   ],
   exports: [
     TableComponent,

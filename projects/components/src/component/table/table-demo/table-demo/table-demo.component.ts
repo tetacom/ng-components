@@ -66,7 +66,15 @@ export class TableDemoComponent implements OnInit {
         locked: true,
         unit: 'v',
         filterType: FilterType.string,
-        headDropdownTemplate: this.dropdownTpl
+        headDropdownConfig: {
+          strategy: 'replace',
+          tabs: [{
+            template: this.dropdownTpl,
+            icon: 'fx',
+            order: 15,
+            showTab: () => true
+          }]
+        }
       }),
       new TableColumn({
         name: 'city',
@@ -157,8 +165,10 @@ export class TableDemoComponent implements OnInit {
   addRow() {
   }
 
-  delete() {
-
+  delete(selectedRows: TableRow<any>[]) {
+    this.data = this.data.filter((row) => {
+      return selectedRows.findIndex(_ => _.data === row) < 0;
+    })
   }
 
   deleteAll() {

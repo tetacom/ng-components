@@ -1,7 +1,8 @@
+@use "sass:math";
 @import "util/color-util";
 
 @function widthCol($n) {
-  @return (100% / $columns-count) * $n
+  @return math.div(100%, $columns-count) * $n
 }
 
 body {

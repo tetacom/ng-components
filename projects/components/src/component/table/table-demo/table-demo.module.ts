@@ -4,6 +4,8 @@ import {TableDemoComponent} from './table-demo/table-demo.component';
 import {TableModule} from '../table.module';
 import {TabsModule} from '../../tabs/tabs.module';
 import {IconModule} from '../../icon/icon.module';
+import {ToolbarModule} from '../../toolbar/toolbar.module';
+import {ButtonModule} from '../../button/button.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import {IconModule} from '../../icon/icon.module';
     CommonModule,
     TableModule,
     TabsModule,
-    IconModule
+    IconModule,
+    ToolbarModule,
+    ButtonModule
   ]
 })
 export class TableDemoModule {
