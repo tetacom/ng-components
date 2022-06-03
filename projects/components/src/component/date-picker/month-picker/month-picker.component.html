@@ -1,6 +1,7 @@
 <teta-dropdown
   class="row row_auto"
   [appendToBody]="appendToBody"
+  [autoCloseIgnore]="['esc', 'inside']"
   [(open)]="showPicker"
   [disabled]="disabled">
   <div tetaDropdownHead

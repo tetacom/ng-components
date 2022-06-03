@@ -1,6 +1,6 @@
 <ng-container *ngIf="position | async as p">
   <ng-container *ngIf="tooltips | async as t">
-    <div class="chart-tooltip color-text-90 bg-background-50 shadow-2 padding-2 border-radius-1"
+    <div class="chart-tooltip color-text-90 bg-background-50 shadow-2"
          [style.position]="'fixed'"
          *ngIf="t.length > 0"
          [style.opacity]="display | async"
@@ -19,7 +19,7 @@
       </ng-container>
 
       <ng-template #default>
-        <ng-container *ngIf="!config.tooltip?.template">
+        <div *ngIf="!config.tooltip?.template" class="padding-2 border-radius-1">
           <ng-container *ngFor="let tooltip of t">
             <div class="display-flex align-center">
             <span class="display-block margin-right-1" [style.width.px]="10" [style.height.px]="2"
@@ -33,7 +33,7 @@
           </span>
             </div>
           </ng-container>
-        </ng-container>
+        </div>
       </ng-template>
     </div>
   </ng-container>
