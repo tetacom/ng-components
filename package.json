@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
     "@ngneat/transloco": "^3.1.0",
+    "@tetacom/ng-components": "^1.0.41",
     "d3": "^7.1.1",
     "object-hash": "^2.2.0",
     "rxjs": "~7.4.0",
