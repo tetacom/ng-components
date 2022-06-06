@@ -10,7 +10,7 @@ import { TableColumn } from '../../../table/contract/table-column';
 import { IDictionary } from '../../../../common/contract/i-dictionary';
 import { IIdName } from '../../../../common/contract/i-id-name';
 import { FilterType } from '../../../filter/enum/filter-type.enum';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormsUtil } from '../../../../util/forms-util';
 import { TranslocoService } from '@ngneat/transloco';
 import { filter, takeWhile } from 'rxjs/operators';
@@ -28,7 +28,7 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
   @Input() dict: IDictionary<IIdName<any>[]>;
 
   @Input()
-  set formGroup(form: FormGroup) {
+  set formGroup(form: UntypedFormGroup) {
     this._formGroup = form;
     this._formSub?.unsubscribe();
     this._formSub = this._formGroup.controls[this.column.name].valueChanges
@@ -57,7 +57,7 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
   align = Align;
   filterTypeEnum = FilterType;
 
-  private _formGroup: FormGroup;
+  private _formGroup: UntypedFormGroup;
   private _formSub: Subscription;
 
   get caption(): string {

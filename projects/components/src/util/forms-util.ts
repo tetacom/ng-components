@@ -1,7 +1,7 @@
 import {
   AbstractControl,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   ValidationErrors,
   Validators,
 } from '@angular/forms';
@@ -9,26 +9,26 @@ import {TableColumn} from '../component/table/contract/table-column';
 import {ArrayUtil} from '../common/util/array-util';
 
 export class FormsUtil {
-  static validateAllFormFields(formGroup: FormGroup) {
+  static validateAllFormFields(formGroup: UntypedFormGroup) {
     Object.keys(formGroup.controls).forEach((field) => {
       const control = formGroup.get(field);
-      if (control instanceof FormControl) {
+      if (control instanceof UntypedFormControl) {
         control.markAsTouched({onlySelf: true});
         control.markAsDirty({onlySelf: true});
-      } else if (control instanceof FormGroup) {
+      } else if (control instanceof UntypedFormGroup) {
         this.validateAllFormFields(control);
       }
     });
   }
 
-  static controlIsInvalid(formGroup: FormGroup, controlName: string) {
+  static controlIsInvalid(formGroup: UntypedFormGroup, controlName: string) {
     return (
       formGroup.controls[controlName]?.invalid &&
       formGroup.controls[controlName]?.dirty
     );
   }
 
-  static getControlErrors(formGroup: FormGroup, controlName: string): string[] {
+  static getControlErrors(formGroup: UntypedFormGroup, controlName: string): string[] {
     if (FormsUtil.controlIsInvalid(formGroup, controlName)) {
       return Object.keys(formGroup.controls[controlName]?.errors);
     }
@@ -59,10 +59,10 @@ export class FormsUtil {
   }
 
   static initFormFromColumns(columns: TableColumn[], dataItem: any) {
-    const form = new FormGroup({});
+    const form = new UntypedFormGroup({});
     const flat = ArrayUtil.flatten(columns, 'columns');
     flat.forEach((column: TableColumn) => {
-      const control = new FormControl(
+      const control = new UntypedFormControl(
         {
           value: dataItem ? dataItem[column.name] : undefined,
           disabled: !column.editable,

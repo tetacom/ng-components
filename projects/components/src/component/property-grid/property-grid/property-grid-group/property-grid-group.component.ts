@@ -9,7 +9,7 @@ import {
 import { TableColumn } from '../../../table/contract/table-column';
 import { IDictionary } from '../../../../common/contract/i-dictionary';
 import { IIdName } from '../../../../common/contract/i-id-name';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'teta-property-grid-group',
@@ -21,7 +21,7 @@ export class PropertyGridGroupComponent<T> implements OnInit {
   @Input() column: TableColumn;
   @Input() hideNonEditable: boolean;
   @Input() dict: IDictionary<IIdName<any>[]>;
-  @Input() formGroup: FormGroup;
+  @Input() formGroup: UntypedFormGroup;
   @Input() horizontal: boolean;
   @Output() controlValueChange = new EventEmitter<IIdName<any>>();
 
