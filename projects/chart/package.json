@@ -5,10 +5,10 @@
   "peerDependencies": {
     "@angular/common": "^13.0.0",
     "@angular/core": "^13.0.0",
-    "d3": "^7.1.1",
-    "@tetacom/ng-components": "^1.0.39"
+    "d3": "^7.1.1"
   },
   "dependencies": {
+    "@tetacom/ng-components": "^1.0.41",
     "tslib": "^2.3.0"
   },
   "publishConfig": {
