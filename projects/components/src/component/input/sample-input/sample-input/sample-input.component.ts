@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 
 @Component({
   selector: 'teta-sample-input',
@@ -7,18 +7,18 @@ import {FormControl, FormGroup} from '@angular/forms';
   styleUrls: ['./sample-input.component.scss']
 })
 export class SampleInputComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   show: number;
   value = new Array(20).fill(1684);
   constructor() {
-    this.form = new FormGroup({
-      name: new FormControl('', {
+    this.form = new UntypedFormGroup({
+      name: new UntypedFormControl('', {
         updateOn: 'blur'
       }),
-      name2: new FormControl('', {
+      name2: new UntypedFormControl('', {
         updateOn: 'blur'
       }),
-      surname: new FormControl('', {
+      surname: new UntypedFormControl('', {
         updateOn: 'change'
       })
     });
