@@ -76,16 +76,15 @@
       }
     },
     "storybook": {
-      "projectType": "application",
-      "root": "",
-      "sourceRoot": "",
+      "builder": "@storybook/angular:start-storybook",
+      "options": {
+        "browserTarget": "angular-cli:build",
+        "port": 6006
+      },
+      "projectType": "",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "index": "",
-            "main": "",
-            "outputPath": "",
             "assets": [
               {
                 "glob": "**/*",
@@ -96,11 +95,36 @@
             "styles": [
               ".storybook/sb.scss",
               "projects/components/style/assembly.scss"
-            ],
-            "tsConfig": "tsconfig.json"
+            ]
           }
         }
-      }
+      },
+      "root": ""
+    },
+    "build-storybook": {
+      "builder": "@storybook/angular:build-storybook",
+      "options": {
+        "browserTarget": "angular-cli:build"
+      },
+      "projectType": "",
+      "architect": {
+        "build": {
+          "options": {
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/components/assets",
+                "output": "/assets/"
+              }
+            ],
+            "styles": [
+              ".storybook/sb.scss",
+              "projects/components/style/assembly.scss"
+            ]
+          }
+        }
+      },
+      "root": ""
     }
   }
 }
