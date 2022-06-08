@@ -2412,7 +2412,7 @@
     lodash "^4.17.4"
     read-pkg-up "^7.0.0"
 
-"@storybook/addon-actions@6.5.7", "@storybook/addon-actions@^6.5.0-alpha.5":
+"@storybook/addon-actions@6.5.7", "@storybook/addon-actions@^6.5.7":
   version "6.5.7"
   resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-6.5.7.tgz#0280a994f42e80ae7e8b71ccf04cd0279cbce01d"
   integrity sha512-gTkPr2FYX+vySZKEg5Wq7uHPkVUq3hJ7ZKvGls+/xjgaTwfu3iIly53FEFUl8A6kMQ+4gtTC+YRr3cSJgXMbAg==
@@ -2474,7 +2474,7 @@
     lodash "^4.17.21"
     ts-dedent "^2.0.0"
 
-"@storybook/addon-docs@6.5.7", "@storybook/addon-docs@^6.5.0-alpha.5":
+"@storybook/addon-docs@6.5.7", "@storybook/addon-docs@^6.5.7":
   version "6.5.7"
   resolved "https://registry.yarnpkg.com/@storybook/addon-docs/-/addon-docs-6.5.7.tgz#405e20a02053c8933aeb51b8161aa4b665e69887"
   integrity sha512-RghRpimJOJl9c/H6qvCCD0zHLETBIVWXsdYJF8GiY6iTKd+tgQYizuuoBT4f3PAMEMHVhmvWSjkkFLxKxzQLjQ==
@@ -2508,7 +2508,7 @@
     ts-dedent "^2.0.0"
     util-deprecate "^1.0.2"
 
-"@storybook/addon-essentials@^6.5.0-alpha.5":
+"@storybook/addon-essentials@^6.5.7":
   version "6.5.7"
   resolved "https://registry.yarnpkg.com/@storybook/addon-essentials/-/addon-essentials-6.5.7.tgz#455b754f79399f0dcf7409b8a45ccae9b6433bab"
   integrity sha512-JZ80W9PgZOEUp2SjhBYyYHxQduxSIe4n9Wdoy8XDtV28152jDNms6UPjFeEVb+a9rVybYOwWnOnEhBWF6ZfJ/g==
@@ -2546,7 +2546,7 @@
     react-lifecycles-compat "^3.0.4"
     react-select "^3.2.0"
 
-"@storybook/addon-links@^6.5.0-alpha.5":
+"@storybook/addon-links@^6.5.7":
   version "6.5.7"
   resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-6.5.7.tgz#b3a794b19c5c0277c3f20f86915c851f577dc45b"
   integrity sha512-kiCzGLlCyhfBjwYfM/xACe5l6s2+8exQNOGoLzNeAhprgD7dzpsZ0ZaEgpF4ay9bG9H9gOeX4jc/TAvVW/v6nw==
@@ -2641,7 +2641,7 @@
     global "^4.4.0"
     regenerator-runtime "^0.13.7"
 
-"@storybook/angular@^6.5.0-alpha.5":
+"@storybook/angular@^6.5.7":
   version "6.5.7"
   resolved "https://registry.yarnpkg.com/@storybook/angular/-/angular-6.5.7.tgz#136129a035a8b623791d4e1e6c621ff19372c51f"
   integrity sha512-HTnMIDwpeImee3PSSqei4AExRceaGvmUpJhrxStVH/JFffS1gQTzpx4dycuWvxTpAQBNqhv5cXdED/MpP5sk7g==
@@ -2759,7 +2759,7 @@
     webpack-hot-middleware "^2.25.1"
     webpack-virtual-modules "^0.2.2"
 
-"@storybook/builder-webpack5@^6.5.0-alpha.5":
+"@storybook/builder-webpack5@^6.5.7":
   version "6.5.7"
   resolved "https://registry.yarnpkg.com/@storybook/builder-webpack5/-/builder-webpack5-6.5.7.tgz#499706419d6b75808534a699a1fa23c35d82999c"
   integrity sha512-3mbQ09KBTUsFYxnEtR4vr7W1wodRen3o8fANY5XxvE1sr1TopHVOKpIlePjrpcrXcLKFI/ZWrX3IfK88LCuI9w==
@@ -3114,7 +3114,7 @@
     webpack-dev-middleware "^3.7.3"
     webpack-virtual-modules "^0.2.2"
 
-"@storybook/manager-webpack5@^6.5.0-alpha.5":
+"@storybook/manager-webpack5@^6.5.7":
   version "6.5.7"
   resolved "https://registry.yarnpkg.com/@storybook/manager-webpack5/-/manager-webpack5-6.5.7.tgz#a7446c86d96bb4b91e5dc554d21da8102795a11f"
   integrity sha512-4TZKe71noCRui8sUxSuSqO6zMnCxCLn7dE1dOlCr/UvyZbCaGWACO5olUDQrT+n1glZL8i9L998JGQroksucNw==
