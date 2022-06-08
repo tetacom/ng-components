@@ -38,7 +38,6 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
   }
 
   closeDropdown = () => {
-    console.log('closeDropdown');
     this.dropDownOpen = false;
     this.dropDownOpenChange.emit(false);
   };
