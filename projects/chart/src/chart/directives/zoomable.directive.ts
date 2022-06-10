@@ -192,8 +192,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             Boolean(data.message.selection)
           ),
           tap((m: IBroadcastMessage<BrushMessage>) => {
-            
-            console.log('BRUSH', m.message.selection)
 
             const currentTransform = d3.zoomTransform(this._element.node());
 
@@ -221,7 +219,11 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
               transform = transform.translate(0, -this.brushScale(s[0]));
             }
 
-            this._element.call(this.zoom.transform, transform, null, {});
+            if(m.message?.style?.transition) {
+              this._element.transition().call(this.zoom.transform, transform, null, {});
+            } else {
+              this._element.call(this.zoom.transform, transform, null, {});
+            }
 
             this.currentSelection = m.message.selection;
           })
