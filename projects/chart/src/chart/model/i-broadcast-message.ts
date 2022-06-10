@@ -22,14 +22,14 @@ export class ZoomMessage {
 }
 
 export class BrushMessage {
-  event: D3BrushEvent<any>;
+  event: D3BrushEvent<any> | null;
   brushType: BrushType;
   selection: number[];
   brushScale?: any;
 
 
   constructor(options?: {
-    event: D3BrushEvent<any>;
+    event: D3BrushEvent<any> | null;
     brushType: BrushType;
     selection: number[];
     brushScale?: any;
