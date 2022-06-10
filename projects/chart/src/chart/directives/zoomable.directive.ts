@@ -205,7 +205,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
             const s = m.message.selection;
 
-            this.brushScale.domain(this.axis.extremes);
+            this.brushScale.domain(this.axis.originDomain);
             const domain = this.brushScale.domain();
 
             const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
