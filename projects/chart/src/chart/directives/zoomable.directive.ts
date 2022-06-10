@@ -137,7 +137,9 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           if (
             this.axis.index === m.message?.axis?.index && this.axis.orientation === m.message?.axis?.orientation
           ) {
-            const currentZoom = d3.zoomTransform(this._element.node())
+            const currentZoom = d3.zoomTransform(this._element.node());
+
+
 
             if(currentZoom !== m.message.event.transform) {
               this._element.call(
@@ -181,18 +183,15 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       (this.config.brush?.type === BrushType.y &&
         this.axis.orientation === AxisOrientation.y)
     ) {
-      combineLatest([
-        this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel),
-        this.chartService.size,
-      ])
+
+      this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel)
         .pipe(
           takeWhile((_) => this.alive),
           debounceTime(150),
-          filter((data: [IBroadcastMessage<BrushMessage>, DOMRect]) =>
-            Boolean(data[0].message.selection)
+          filter((data: IBroadcastMessage<BrushMessage>) =>
+            Boolean(data.message.selection)
           ),
-          tap((data: [IBroadcastMessage<BrushMessage>, DOMRect]) => {
-            const [m] = data;
+          tap((m: IBroadcastMessage<BrushMessage>) => {
 
             const currentTransform = d3.zoomTransform(this._element.node());
 
@@ -220,7 +219,11 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
               transform = transform.translate(0, -this.brushScale(s[0]));
             }
 
-            this._element.call(this.zoom.transform, transform, null, {});
+            if(m.message?.style?.transition) {
+              this._element.transition().call(this.zoom.transform, transform, null, {});
+            } else {
+              this._element.call(this.zoom.transform, transform, null, {});
+            }
 
             this.currentSelection = m.message.selection;
           })
