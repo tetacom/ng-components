@@ -37,7 +37,9 @@ export class ZoomService {
   }
 
   setZoom(from: number, to: number, axisIndex = 0, axisOrientation = AxisOrientation.x) {
+
     const hash = objectHash.sha1({index: axisIndex, orientation: axisOrientation});
+
 
     if (!this.zoomHashMap.has(hash)) {
       return;

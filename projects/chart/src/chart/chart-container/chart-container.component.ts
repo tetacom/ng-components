@@ -10,7 +10,7 @@ import {
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from '../service/chart.service';
 import {
-  animationFrameScheduler,
+  animationFrameScheduler, asapScheduler,
   combineLatest,
   debounce,
   map,
@@ -50,6 +50,8 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
   private _observer: ResizeObserver;
 
+  zoomType = ZoomType
+
   private filterPositionMap = new Map<
     Opposite,
     (axis: Axis) => (_: Axis) => boolean
@@ -81,7 +83,6 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     this.xAxisMap = this._scaleService.xAxisMap;
 
     this.yScaleMap = this._scaleService.yScaleMap.pipe(
-      debounceTime(0),
       tetaZoneFull(this._zone),
       shareReplay({
         bufferSize: 1,
@@ -90,7 +91,6 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     );
 
     this.xScaleMap = this._scaleService.xScaleMap.pipe(
-      debounceTime(0),
       tetaZoneFull(this._zone),
       shareReplay({
         bufferSize: 1,
@@ -119,7 +119,6 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       this.xAxisMap,
       this.yAxisMap,
     ]).pipe(
-      throttleTime(0, undefined, {trailing: true}),
       withLatestFrom(this.config),
       map(
         (
@@ -161,7 +160,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
           };
         }
       ),
-      tetaZoneFull(this._zone)
+      tetaZoneFull(this._zone),
     );
   }
 
