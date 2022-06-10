@@ -73,6 +73,7 @@
       [brushScale]="data.brushScale"
       [scale]="data.brushScale"
       [config]="data.config"
+      [axis]="data.config?.zoom?.type === zoomType.x ? data.xAxisMap.get(0) : data.yAxisMap.get(0)"
       [attr.width]="data.visibleRect.width"
       [attr.height]="data.visibleRect.height"
       [attr.viewBox]="'0 0 ' + data.visibleRect.width + ' ' + data.visibleRect.height"

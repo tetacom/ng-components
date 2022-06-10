@@ -19,7 +19,7 @@ import {BrushMessage, IBroadcastMessage, ZoomMessage,} from '../model/i-broadcas
 import {BrushType} from '../model/enum/brush-type';
 import {BroadcastService} from '../service/broadcast.service';
 import {debounceTime, tap} from 'rxjs/operators';
-import {combineLatest, filter, takeWhile,} from 'rxjs';
+import {combineLatest, filter, takeWhile} from 'rxjs';
 import {ChartService} from '../service/chart.service';
 import {ZoomBehaviorType} from '../model/enum/zoom-behavior-type';
 import objectHash from 'object-hash';
@@ -29,7 +29,7 @@ import objectHash from 'object-hash';
 })
 export class ZoomableDirective implements OnDestroy, AfterViewInit {
   @Input() config: IChartConfig;
-  @Input() axis?: Axis;
+  @Input() axis: Axis;
   @Input() size: DOMRect;
   @Input() brushScale?: any;
   @Input() scale?: any;
@@ -38,7 +38,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   @HostBinding('class.crosshair') private crosshair = false;
 
   private _element: d3.Selection<SVGElement, any, any, any>;
-  private zoomAxis: Axis;
   private zoom: ZoomBehavior<any, any>;
   private alive = true;
 
@@ -65,20 +64,9 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   ngOnChanges(changes: SimpleChanges) {
 
     if (changes.hasOwnProperty('brushScale') || changes.hasOwnProperty('scale') || changes.hasOwnProperty('axis')) {
-      if (this.hash && this.axis) {
+      if (this.hash) {
         this.zoomService.scaleHashMap.set(this.hash, this.scale);
         this.zoomService.axisHashMap.set(this.hash, this.axis);
-      }
-
-      if(!this.axis && changes.hasOwnProperty('config')) {
-        this.zoomAxis = Axis.createAxis(
-          this.config?.zoom.type === ZoomType.x
-            ? AxisOrientation.x
-            : AxisOrientation.y,
-          this.config,
-          0,
-          true
-        );
       }
     }
   }
@@ -94,21 +82,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
 
     if (enable) {
-
       this._element = d3.select(this.elementRef.nativeElement);
-
-      const commonZoomAxis = Axis.createAxis(
-        this.config?.zoom.type === ZoomType.x
-          ? AxisOrientation.x
-          : AxisOrientation.y,
-        this.config,
-        0,
-        true
-      );
-
-      this.zoomAxis = this.axis ?? commonZoomAxis;
-
-      this.hash = objectHash.sha1({index: this.zoomAxis.index, orientation: this.zoomAxis.orientation})
+      this.hash = objectHash.sha1({index: this.axis.index, orientation:  this.axis.orientation })
 
       this.zoom = d3.zoom().extent([
         [0, 0],
@@ -122,23 +97,22 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         ]);
       }
 
-      if(this.axis) {
-        this.zoomService.axisHashMap.set(this.hash, this.zoomAxis);
-        this.zoomService.elementHashMap.set(this.hash, this._element);
-        this.zoomService.scaleHashMap.set(this.hash, this.scale);
-        this.zoomService.zoomHashMap.set(this.hash, this.zoom);
-        this.zoomService.setBroadcastChannel(this.config?.zoom.syncChannel)
-      }
+      this.zoomService.axisHashMap.set(this.hash, this.axis);
+      this.zoomService.elementHashMap.set(this.hash, this._element);
+      this.zoomService.scaleHashMap.set(this.hash, this.scale);
+      this.zoomService.zoomHashMap.set(this.hash, this.zoom);
+      this.zoomService.setBroadcastChannel(this.config?.zoom.syncChannel)
+
 
       const maxZoom = this.config.zoom?.max
-        ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) /
+        ? (this.axis.extremes[1] - this.axis.extremes[0]) /
         this.config.zoom?.max
         : this.config.zoom?.limitZoomByData
           ? 1
           : 0;
 
       const minZoom = this.config.zoom?.min
-        ? (this.zoomAxis.extremes[1] - this.zoomAxis.extremes[0]) /
+        ? (this.axis.extremes[1] - this.axis.extremes[0]) /
         this.config.zoom?.min
         : Infinity;
 
@@ -159,19 +133,19 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         takeWhile((_) => this.alive),
         tap((m: IBroadcastMessage<ZoomMessage>) => {
           // Sync fake axis and index axis 0
+
           if (
-            this.zoomAxis.index === m.message?.axis?.index &&
-            this.zoomAxis.orientation === m.message?.axis?.orientation &&
-            ((m.message?.axis.isFake && !this.zoomAxis.isFake) ||
-              (!m.message?.axis.isFake && this.zoomAxis.isFake))
+            this.axis.index === m.message?.axis?.index && this.axis.orientation === m.message?.axis?.orientation
           ) {
+            const currentZoom = d3.zoomTransform(this._element.node())
 
-            this._element.call(
-              this.zoom.transform,
-              m.message.event.transform
-            );
+            if(currentZoom !== m.message.event.transform) {
+              this._element.call(
+                this.zoom.transform,
+                m.message.event.transform
+              );
+            }
           }
-
         }),
         filter(
           (m: IBroadcastMessage<ZoomMessage>) =>
@@ -182,8 +156,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         ),
         filter((m: IBroadcastMessage<ZoomMessage>) => {
           return (
-            this.zoomAxis.index === m.message?.axis?.index &&
-            this.zoomAxis.orientation === m.message?.axis?.orientation
+            this.axis.index === m.message?.axis?.index &&
+            this.axis.orientation === m.message?.axis?.orientation
           );
         }),
         tap((m: IBroadcastMessage<ZoomMessage>) => {
@@ -203,9 +177,9 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
     if (
       (this.config.brush?.type === BrushType.x &&
-        this.zoomAxis.orientation === AxisOrientation.x) ||
+        this.axis.orientation === AxisOrientation.x) ||
       (this.config.brush?.type === BrushType.y &&
-        this.zoomAxis.orientation === AxisOrientation.y)
+        this.axis.orientation === AxisOrientation.y)
     ) {
       combineLatest([
         this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel),
@@ -232,7 +206,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
             const s = m.message.selection;
 
-            this.brushScale.domain(this.zoomAxis.extremes);
+            this.brushScale.domain(this.axis.extremes);
             const domain = this.brushScale.domain();
 
             const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
@@ -269,7 +243,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         if (this.currentTransform === event.transform) {
           return;
         }
-        const origin = this.brushScale.copy().domain(this.zoomAxis.extremes);
+        const origin = this.brushScale.copy().domain(this.axis.extremes);
 
         let domain =
           this.config.zoom?.type === ZoomType.y
@@ -278,7 +252,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
         const message = new ZoomMessage({
           event,
-          axis: this.zoomAxis,
+          axis: this.axis,
           brushDomain: domain,
           chartId: this.config.id,
         });
@@ -291,7 +265,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
       this.zoomService.fireZoom({
         event,
-        target: this.zoomAxis,
+        target: this.axis,
       });
 
       this.currentTransform = event.transform;
@@ -318,7 +292,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       });
 
     const emit = (type: string, event: WheelEvent) => {
-      const origin = this.brushScale.copy().domain(this.zoomAxis.extremes);
+      const origin = this.brushScale.copy().domain(this.axis.extremes);
       let transform = zoomIdentity;
       const delta =
         type === 'end'
@@ -354,7 +328,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           transform,
           type,
         },
-        axis: this.zoomAxis,
+        axis: this.axis,
         brushDomain: domain,
         chartId: this.config.id,
       });
@@ -365,7 +339,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           transform,
           type,
         },
-        target: this.zoomAxis,
+        target: this.axis,
       });
 
       this._element.call(this.zoom.transform, transform);
