@@ -574,7 +574,7 @@ export class TableService<T> {
   }
 
   getRowByIndex(rowIndex: number) {
-    return this._displayData.value[rowIndex];
+    return this._displayData?.value[rowIndex];
   }
 
   getRowIndex(row: TableRow<T>) {

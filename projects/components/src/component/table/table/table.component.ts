@@ -401,6 +401,9 @@ export class TableComponent<T>
   }
 
   private getCoordinates(event: Event): ICellEvent | null {
+    if (event.composedPath().indexOf(this._elementRef.nativeElement) < 0) {
+      return null;
+    }
     const cell = this.getEventCell(event);
     if (cell) {
       const rowIndex = parseInt(cell.getAttribute('data-row'), 10);
@@ -417,6 +420,9 @@ export class TableComponent<T>
   }
 
   private getRow(event: Event): TableRow<T> | null {
+    if (event.composedPath().indexOf(this._elementRef.nativeElement) < 0) {
+      return null;
+    }
     const rowElement = this.getEventRow(event);
     if (rowElement) {
       const rowIndex = parseInt(rowElement.getAttribute('data-row'), 10);
