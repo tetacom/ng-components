@@ -112,7 +112,7 @@ export class ArrayUtil {
   }
 
   static findParents(tree: any[], item: any) {
-    if (tree.indexOf(item) >= 0) {
+    if (tree?.indexOf(item) >= 0) {
       return tree;
     }
     if (Array.isArray(tree)) {

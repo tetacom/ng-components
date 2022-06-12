@@ -202,7 +202,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
     } else {
       this.value =
         this.options &&
-        this.options.find((option) => this.getValue(option) === value);
+        this.options?.find((option) => this.getValue(option) === value);
     }
     this._cdr.detectChanges();
   }
