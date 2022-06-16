@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import {CellComponentBase} from '../../base/cell-component-base';
 import {TableColumn} from '../../contract/table-column';
-import {TableRow} from '../../contract/table-row';
 import {TableService} from '../../service/table.service';
 import {ICellCoordinates} from '../../contract/i-cell-coordinates';
 
@@ -23,7 +22,7 @@ export class StringCellComponent<T>
   extends CellComponentBase<T>
   implements OnInit {
   @Input() override column: TableColumn;
-  @Input() override row: TableRow<T>;
+  @Input() override row: T;
   @ViewChild('input', {static: false}) input: ElementRef;
 
   constructor(public override svc: TableService<T>, public override cdr: ChangeDetectorRef) {

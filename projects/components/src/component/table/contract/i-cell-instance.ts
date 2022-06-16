@@ -1,8 +1,7 @@
-import {TableRow} from './table-row';
 import {TableColumn} from './table-column';
 
 export interface ICellInstance<T> {
-  row: TableRow<T>;
+  row: T;
   column: TableColumn;
 }
 

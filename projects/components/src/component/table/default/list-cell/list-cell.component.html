@@ -12,6 +12,6 @@
              [options]="displayFilterOptions"
              [valueRef]="'id'"
              [textRef]="'name'"
-             [ngModel]="row.data[column.name]"
+             [ngModel]="row[column.name]"
              (ngModelChange)="setValue($event)">
 </teta-select>

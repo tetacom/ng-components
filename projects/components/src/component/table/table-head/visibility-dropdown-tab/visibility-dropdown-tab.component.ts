@@ -6,7 +6,6 @@ import {TetaLocalisation} from '../../../../locale/teta-localisation';
 import {TableService} from '../../service/table.service';
 import {TetaConfigService} from '../../../../locale/teta-config.service';
 import {ITreeData} from '../../../../common/contract/i-tree-data';
-import {TableRow} from '../../contract/table-row';
 import {map, takeWhile} from 'rxjs/operators';
 import {ArrayUtil} from '../../../../common/util/array-util';
 
@@ -20,7 +19,7 @@ export class VisibilityDropdownTabComponent<T> implements OnInit {
   @Input() columns: ITreeData[];
   @Input() column: TableColumn;
   @Input() state: FilterState;
-  @Input() data: TableRow<T>[];
+  @Input() data: T[];
   @Input() close: () => void;
 
   locale: Observable<TetaLocalisation>;

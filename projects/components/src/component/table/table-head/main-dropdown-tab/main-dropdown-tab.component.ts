@@ -9,7 +9,6 @@ import {StateUtil} from '../../util/state-util';
 import {FilterState} from '../../../filter/contarct/filter-state';
 import {SortEvent} from '../../contract/sort-event';
 import {ITreeData} from '../../../../common/contract/i-tree-data';
-import {TableRow} from '../../contract/table-row';
 
 @Component({
   selector: 'teta-main-dropdown-tab',
@@ -21,7 +20,7 @@ export class MainDropdownTabComponent<T> implements OnInit {
   @Input() columns: ITreeData[];
   @Input() column: TableColumn;
   @Input() state: FilterState;
-  @Input() data: TableRow<T>[];
+  @Input() data: T[];
   @Input() close: () => void;
 
   locale: Observable<TetaLocalisation>;

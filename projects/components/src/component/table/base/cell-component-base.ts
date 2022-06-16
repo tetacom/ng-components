@@ -6,7 +6,6 @@ import {
   OnInit,
 } from '@angular/core';
 import {TableService} from '../service/table.service';
-import {TableRow} from '../contract/table-row';
 import {takeWhile} from 'rxjs/operators';
 import {ICellCoordinates} from '../contract/i-cell-coordinates';
 import {TableColumn} from '../contract/table-column';
@@ -40,7 +39,7 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   column: TableColumn;
   filterOptions: IIdName<any>[] = [];
   dict: IDictionary<IIdName<any>[]> = {};
-  row: TableRow<T>;
+  row: T;
 
   protected _alive = true;
 
@@ -96,7 +95,7 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       .pipe(takeWhile((_) => this._alive))
       .subscribe((cellValue: ICellValue) => {
         if (this.index === cellValue.row && this.column.name === cellValue.column) {
-          this.row.data[this.column.name] = cellValue.value;
+          this.row[this.column.name] = cellValue.value;
           this.cdr.detectChanges();
         }
       });

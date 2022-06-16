@@ -14,7 +14,6 @@ import { FilterBase } from '../base/filter-base';
 import { FilterComponentBase } from '../base/filter-component-base';
 import { FilterItem } from '../contarct/filter-item';
 import { IIdName } from '../../../common/contract/i-id-name';
-import {TableRow} from '../../table/contract/table-row';
 import {Observable} from 'rxjs';
 import {TetaLocalisation} from '../../../locale/teta-localisation';
 import {TetaConfigService} from '../../../locale/teta-config.service';
@@ -27,7 +26,7 @@ import {TetaConfigService} from '../../../locale/teta-config.service';
 })
 export class DateFilterComponent<T> extends FilterComponentBase<T> implements OnInit {
   @Input() column: FilterItem;
-  @Input() data: TableRow<T>[];
+  @Input() data: T[];
   @Input() filterOptions: IIdName<any>[] = [];
   @Output() filterChanged: EventEmitter<FilterBase> =
     new EventEmitter<FilterBase>();

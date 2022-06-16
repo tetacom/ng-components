@@ -10,7 +10,6 @@ import {TableColumn} from '../contract/table-column';
 import {TableUtil} from '../util/table-util';
 import {TableService} from '../service/table.service';
 import {takeWhile} from 'rxjs/operators';
-import {TableRow} from '../contract/table-row';
 import {ArrayUtil} from '../../../common/util/array-util';
 
 @Component({
@@ -21,7 +20,7 @@ import {ArrayUtil} from '../../../common/util/array-util';
 })
 export class TableHeadGroupComponent<T> implements OnInit, OnDestroy {
   @Input() showHeadCellMenu: boolean;
-  @Input() data: TableRow<T>[];
+  @Input() data: T[];
 
   @Input()
   set column(column: TableColumn) {

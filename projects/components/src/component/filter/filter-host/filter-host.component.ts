@@ -17,7 +17,6 @@ import {FilterComponentBase} from '../base/filter-component-base';
 import {takeWhile} from 'rxjs/operators';
 import {getFilterComponent} from '../contarct/filter-component-map';
 import {IIdName} from '../../../common/contract/i-id-name';
-import {TableRow} from '../../table/contract/table-row';
 
 @Component({
   selector: 'teta-filter-host',
@@ -45,7 +44,7 @@ export class FilterHostComponent<T> implements OnInit, OnDestroy {
   }
 
  @Input()
-  set data(data: TableRow<T>[]) {
+  set data(data: T[]) {
     this._data = data;
     if (this._init) {
       this._componentRef.instance.data = this._data;
@@ -67,7 +66,7 @@ export class FilterHostComponent<T> implements OnInit, OnDestroy {
   private _alive = true;
   private _column: FilterItem;
   private _state: FilterState;
-  private _data: TableRow<T>[];
+  private _data: T[];
   private _filterOptions: IIdName<any>[];
   private _componentRef: ComponentRef<any>;
   private _init: boolean;

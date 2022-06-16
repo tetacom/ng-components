@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {TableRow} from '../contract/table-row';
 import {ICellCoordinates} from '../contract/i-cell-coordinates';
 import {TableColumn} from '../contract/table-column';
 import {FilterState} from '../../filter/contarct/filter-state';
@@ -28,15 +27,13 @@ import {TableColumnStore} from '../contract/table-column-store';
 import {ICellValue} from '../contract/i-cell-value';
 import {ICellEvent} from '../contract/i-cell-event';
 import {ICellInstance, ICellInstanceValue} from '../contract/i-cell-instance';
-import {HeadDropdownTabConfig} from '../contract/head-dropdown-tab';
-import {AggregationType} from '../enum/aggregation-type.enum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TableService<T> {
   columns: Observable<TableColumn[]>;
-  displayData: Observable<TableRow<T>[]>;
+  displayData: Observable<T[]>;
   dict: Observable<IDictionary<IIdName<any>[]>>;
   filterOptions: Observable<IDictionary<IIdName<any>[]>>;
   state: Observable<FilterState>;
@@ -49,16 +46,20 @@ export class TableService<T> {
   valueSet: Observable<ICellValue>;
   stateChanged: Observable<FilterState>;
   filterClear: Observable<TableColumn>;
-  groupToggle: Observable<TableRow<T>>;
-  selectedRows: Observable<TableRow<T>[]>;
-  activeRow: Observable<TableRow<T>>;
+  selectedRows: Observable<T[]>;
+  activeRow: Observable<T>;
   hiddenColumns: Observable<string[]>;
   scrollIndex: Observable<number>;
 
   editType: EditType = EditType.cell;
   editEvent: EditEvent = EditEvent.doubleClick;
-  rowEditable: boolean | ((row: TableRow<T>) => boolean);
-  trackRow: (index: number, row: TableRow<T>) => any = (index: number, row: TableRow<T>) => index;
+  rowEditable: boolean | ((row: T) => boolean);
+  trackRow: (index: number, row: T) => any = (index: number, row: T) => {
+    if (row['id']) {
+      return row['id'];
+    }
+    return index;
+  };
 
   get dragSource() {
     return this._dragSource;
@@ -69,7 +70,7 @@ export class TableService<T> {
   private displayColumns: TableColumn[] = [];
   private _columns: BehaviorSubject<TableColumn[]> = new BehaviorSubject<TableColumn[]>([]);
   private _hiddenColumns = new BehaviorSubject<string[]>([]);
-  private _displayData: BehaviorSubject<TableRow<T>[]> = new BehaviorSubject<TableRow<T>[]>([]);
+  private _displayData: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
   private _dict: BehaviorSubject<IDictionary<IIdName<any>[]>> =
     new BehaviorSubject<IDictionary<IIdName<any>[]>>({});
   private _filterOptions: BehaviorSubject<IDictionary<IIdName<any>[]>> =
@@ -88,9 +89,8 @@ export class TableService<T> {
   private _stateChanged = new Subject<FilterState>();
   private _filterClear = new Subject<TableColumn>();
   private _dragSource: TableColumn;
-  private _groupToggle = new Subject<TableRow<T>>();
-  private _selectedRows = new BehaviorSubject<TableRow<T>[]>([]);
-  private _activeRow = new BehaviorSubject<TableRow<T>>(null);
+  private _selectedRows = new BehaviorSubject<T[]>([]);
+  private _activeRow = new BehaviorSubject<T>(null);
   private _scrollIndex = new Subject<number>();
 
   private _currentEditCell: ICellCoordinates;
@@ -113,7 +113,6 @@ export class TableService<T> {
     this.valueSet = this._valueSet.asObservable();
     this.stateChanged = this._stateChanged.asObservable();
     this.filterClear = this._filterClear.asObservable();
-    this.groupToggle = this._groupToggle.asObservable();
     this.selectedRows = this._selectedRows.asObservable();
     this.activeRow = this._activeRow.asObservable();
     this.hiddenColumns = this._hiddenColumns.asObservable();
@@ -121,7 +120,7 @@ export class TableService<T> {
   }
 
   setData(data: T[]): void {
-    this._displayData.next(data?.map((_) => new TableRow<T>(_)));
+    this._displayData.next(data ? [...data] : []);
   }
 
   setDict(dict: IDictionary<IIdName<any>[]>): void {
@@ -138,8 +137,7 @@ export class TableService<T> {
       'editable',
       'cellComponent',
       'headCellComponent',
-      'headDropdownConfig',
-      'groupByFn',
+      'headDropdownConfig'
     ];
     this.initialColumnsHash = objectHash(this.initialColumns, {
       algorithm: 'sha1',
@@ -416,7 +414,7 @@ export class TableService<T> {
         this._currentEditCell = cellEvent;
       } else {
         if (
-          this.boolOrFuncCallback<TableRow<T>>(this.rowEditable)(
+          this.boolOrFuncCallback<T>(this.rowEditable)(
             this.getRowByIndex(cellEvent?.row)
           )
         ) {
@@ -452,15 +450,15 @@ export class TableService<T> {
     }
   }
 
-  setActiveRow(row: TableRow<T>): void {
+  setActiveRow(row: T): void {
     this._activeRow.next(row);
   }
 
-  selectRows(rows: TableRow<T>[]): void {
+  selectRows(rows: T[]): void {
     this._selectedRows.next(rows);
   }
 
-  selectOrDeselectRow(row: TableRow<T>): void {
+  selectOrDeselectRow(row: T): void {
     if (this._selectedRows.value.indexOf(row) >= 0) {
       this._selectedRows.next(
         this._selectedRows.value.filter((_) => _ !== row)
@@ -470,7 +468,7 @@ export class TableService<T> {
     }
   }
 
-  selectRange(row: TableRow<T>): void {
+  selectRange(row: T): void {
     const index = this._displayData.value.indexOf(row);
     let minIndex = this._selectedRows.value.reduce((prev, curr) => {
       const newIndex = this._displayData.value.indexOf(curr);
@@ -498,14 +496,14 @@ export class TableService<T> {
     this._selectedRows.next([...this._displayData.value.slice(minIndex, maxIndex + 1)]);
   }
 
-  selectRow(row: TableRow<T>): void {
+  selectRow(row: T): void {
     if (this.selectType === SelectType.none) {
       return;
     }
     this._selectedRows.next([...this._selectedRows.value, row]);
   }
 
-  deselectRow(row: TableRow<T>): void {
+  deselectRow(row: T): void {
     if (this.selectType === SelectType.none) {
       return;
     }
@@ -549,10 +547,6 @@ export class TableService<T> {
     return this._hiddenColumns.value.indexOf(column.name) >= 0;
   }
 
-  toggleGroup(row: TableRow<T>): void {
-    this._groupToggle.next(row);
-  }
-
   changeValue(coordinates: ICellCoordinates): void {
     this._valueChanged.next(coordinates);
   }
@@ -577,7 +571,7 @@ export class TableService<T> {
     return this._displayData?.value[rowIndex];
   }
 
-  getRowIndex(row: TableRow<T>) {
+  getRowIndex(row: T) {
     return this._displayData.value.indexOf(row);
   }
 

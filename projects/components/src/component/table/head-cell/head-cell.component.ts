@@ -18,8 +18,7 @@ import {StateUtil} from '../util/state-util';
 import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
 import {Align} from '../../../common/enum/align.enum';
 import {combineLatest, Observable} from 'rxjs';
-import {TableRow} from '../contract/table-row';
-import {HeadDropdownTab, HeadDropdownTabConfig} from '../contract/head-dropdown-tab';
+import {HeadDropdownTab} from '../contract/head-dropdown-tab';
 
 @Component({
   selector: 'teta-head-cell',
@@ -30,7 +29,7 @@ import {HeadDropdownTab, HeadDropdownTabConfig} from '../contract/head-dropdown-
 export class HeadCellComponent<T> implements OnInit, OnDestroy {
   @Input() column: TableColumn;
   @Input() showHeadCellMenu: boolean;
-  @Input() data: TableRow<T>[];
+  @Input() data: T[];
 
   verticalAlign = VerticalAlign;
   align = Align;

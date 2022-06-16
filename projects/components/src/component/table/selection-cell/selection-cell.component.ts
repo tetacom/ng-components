@@ -8,7 +8,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { TableService } from '../service/table.service';
-import { TableRow } from '../contract/table-row';
 import { takeWhile } from 'rxjs/operators';
 
 @Component({
@@ -18,10 +17,10 @@ import { takeWhile } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectionCellComponent<T> implements OnInit, OnDestroy {
-  @Input() row: TableRow<T>;
+  @Input() row: T;
 
   @HostBinding('class.cell') private readonly tableCellClass = true;
-  selectedRows: TableRow<T>[] = [];
+  selectedRows: T[] = [];
 
   private _alive = true;
 

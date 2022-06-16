@@ -13,7 +13,6 @@ import {CellComponent} from './cell/cell.component';
 import {FormsModule} from '@angular/forms';
 import {CheckboxModule} from '../checkbox/checkbox.module';
 import {CellHostComponent} from './cell-host/cell-host.component';
-import {GroupRowComponent} from './default/group-row/group-row.component';
 import {TableHeadGroupComponent} from './table-head-group/table-head-group.component';
 import {HeadCellComponent} from './head-cell/head-cell.component';
 import {DefaultHeadCellComponent} from './default/default-head-cell/default-head-cell.component';
@@ -53,7 +52,6 @@ import { VisibilityDropdownTabComponent } from './table-head/visibility-dropdown
     TableBodyComponent,
     CellComponent,
     CellHostComponent,
-    GroupRowComponent,
     TableHeadGroupComponent,
     HeadCellComponent,
     DefaultHeadCellComponent,
@@ -77,7 +75,6 @@ import { VisibilityDropdownTabComponent } from './table-head/visibility-dropdown
     TableBodyComponent,
     CellComponent,
     CellHostComponent,
-    GroupRowComponent,
     DateTimeCellComponent,
     BooleanCellComponent,
   ],

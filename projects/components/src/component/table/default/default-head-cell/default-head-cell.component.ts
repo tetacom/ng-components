@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import {HeadCellComponentBase} from '../../base/head-cell-component-base';
 import {TableColumn} from '../../contract/table-column';
-import {TableRow} from '../../contract/table-row';
 
 @Component({
   selector: 'teta-default-head-cell',
@@ -19,7 +18,7 @@ export class DefaultHeadCellComponent<T>
   extends HeadCellComponentBase<T>
   implements OnInit {
   private _column: TableColumn;
-  private _data: TableRow<T>[];
+  private _data: T[];
 
   @Input()
   set column(val: TableColumn) {
@@ -32,12 +31,12 @@ export class DefaultHeadCellComponent<T>
   }
 
   @Input()
-  set data(data: TableRow<T>[]) {
+  set data(data: T[]) {
     this._data = data;
     this._cdr.detectChanges();
   }
 
-  get data(): TableRow<T>[] {
+  get data(): T[] {
     return this._data;
   }
 

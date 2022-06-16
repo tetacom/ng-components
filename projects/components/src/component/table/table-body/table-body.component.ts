@@ -1,7 +1,7 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
+  Component, ElementRef,
   HostBinding,
   Input,
   OnDestroy,
@@ -9,9 +9,7 @@ import {
   Type,
   ViewChild,
 } from '@angular/core';
-import {TableRow} from '../contract/table-row';
 import {TableColumn} from '../contract/table-column';
-import {GroupRowComponentBase} from '../base/group-row-component-base';
 import {TableService} from '../service/table.service';
 import {DetailComponentBase} from '../base/detail-component-base';
 import {takeWhile} from 'rxjs/operators';
@@ -33,22 +31,18 @@ import {TetaConfigService} from '../../../locale/teta-config.service';
 })
 export class TableBodyComponent<T> implements OnInit, OnDestroy {
   @Input() virtual: boolean;
-  @Input() activeRow: TableRow<T>;
-  @Input() selectedRows: TableRow<T>[] = [];
+  @Input() activeRow: T;
+  @Input() selectedRows: T[] = [];
   @Input() additionalComponent: Type<DetailComponentBase<T>>;
-  @Input() tree: boolean;
   @Input() aggregate: boolean;
-  @Input() grouping: boolean;
-  @Input() groupRowComponent: Type<GroupRowComponentBase<T>>;
-  @Input() openLevels: number;
   @Input() selectType: SelectType;
-  @Input() rowClass: (row: TableRow<T>, index?: number) => string;
+  @Input() rowClass: (row: T, index?: number) => string;
 
   @ViewChild(CdkVirtualScrollViewport, {static: false}) viewport: CdkVirtualScrollViewport;
 
   @HostBinding('class.table-body') private readonly tableBodyClass = true;
 
-  set data(data: TableRow<T>[]) {
+  set data(data: T[]) {
     this._data = data;
   }
 
@@ -67,7 +61,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
 
   private _columns: TableColumn[] = [];
   private _alive = true;
-  private _data: TableRow<T>[];
+  private _data: T[];
   private _hiddenColumns: string[] = [];
 
   set columns(columns: TableColumn[]) {
@@ -88,26 +82,27 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   locale: Observable<TetaLocalisation>;
 
   constructor(private _svc: TableService<T>,
+              private _elementRef: ElementRef,
               private _config: TetaConfigService,
               private _cdr: ChangeDetectorRef) {
 
   }
 
-  setActiveRow(row: TableRow<T>) {
+  setActiveRow(row: T) {
     this._svc.setActiveRow(row);
   }
 
-  getData = (index, count, success) => {
-    const data = [];
-    if (this.data?.length > 0) {
-      const start = Math.max(0, index);
-      const end = Math.min(index + count - 1, this.data.length - 1);
-      for (let i = start; i <= end; i++) {
-        data.push(this.data[i]);
-      }
-    }
-    return success(data);
-  };
+  // getData = (index, count, success) => {
+  //   const data = [];
+  //   if (this.data?.length > 0) {
+  //     const start = Math.max(0, index);
+  //     const end = Math.min(index + count - 1, this.data.length - 1);
+  //     for (let i = start; i <= end; i++) {
+  //       data.push(this.data[i]);
+  //     }
+  //   }
+  //   return success(data);
+  // };
 
   ngOnInit(): void {
     this.locale = this._config.locale;
@@ -136,10 +131,13 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     });
 
     this._svc.scrollIndex
-      .pipe(takeWhile((_) => this._alive))
-      .subscribe(async (_) => {
+      .pipe(takeWhile(() => this._alive))
+      .subscribe(async (index) => {
         if (this.viewport) {
-          this.viewport.scrollToIndex(_, 'smooth');
+          this.viewport.scrollToIndex(index, 'auto');
+        } else {
+          const row = this._elementRef.nativeElement.querySelector(`.table-row[data-row="${index}"]`) as HTMLElement;
+          row?.scrollIntoView();
         }
         this._cdr.markForCheck();
       });
@@ -187,9 +185,9 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     return '';
   }
 
-  trackRow(index: number, row: TableRow<T>): any {
-    if (row.data['id']) {
-      return row.data['id'];
+  trackRow(index: number, row: T): any {
+    if (row['id']) {
+      return row['id'];
     }
     return index;
   }
@@ -200,7 +198,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
 
   private getSum(columnName) {
     return this.data?.reduce((accum, current) => {
-      const val = parseFloat(current.data[columnName]);
+      const val = parseFloat(current[columnName]);
       return accum + (isNaN(val) ? 0 : val);
     }, 0);
   }
@@ -208,9 +206,9 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   private getMin(columnName) {
     return this.data?.reduce(
       (accum, current) =>
-        accum != null && accum <= current.data[columnName]
+        accum != null && accum <= current[columnName]
           ? accum
-          : current.data[columnName],
+          : current[columnName],
       null
     );
   }
@@ -218,9 +216,9 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   private getMax(columnName) {
     return this.data?.reduce(
       (accum, current) =>
-        accum != null && accum >= current.data[columnName]
+        accum != null && accum >= current[columnName]
           ? accum
-          : current.data[columnName],
+          : current[columnName],
       null
     );
   }

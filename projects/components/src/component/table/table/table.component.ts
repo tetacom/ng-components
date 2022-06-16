@@ -16,15 +16,12 @@ import {
   Type,
   ViewChild,
 } from '@angular/core';
-import {TableRow} from '../contract/table-row';
 import {TableService} from '../service/table.service';
 import {TableColumn} from '../contract/table-column';
 import {FilterState} from '../../filter/contarct/filter-state';
 import {DetailComponentBase} from '../base/detail-component-base';
 import {ICellEvent} from '../contract/i-cell-event';
 import {ICellCoordinates} from '../contract/i-cell-coordinates';
-import {GroupRowComponentBase} from '../base/group-row-component-base';
-import {GroupRowComponent} from '../default/group-row/group-row.component';
 import {filter, takeWhile} from 'rxjs/operators';
 import {EditType} from '../enum/edit-type.enum';
 import {EditEvent} from '../enum/edit-event.enum';
@@ -55,20 +52,20 @@ export class TableComponent<T>
   @Input() cookieName: string;
   @Input() virtual: boolean;
   @Input() detailComponent: Type<DetailComponentBase<T>>;
-  @Input() activeRow: TableRow<T>;
-  @Input() selectedRows: TableRow<T>[];
+  @Input() activeRow: T;
+  @Input() selectedRows: T[];
   @Input() selectType: SelectType = SelectType.mouse;
   @Input() aggregate: boolean;
-  @Input() grouping: boolean;
-  @Input() groupRowComponent: Type<GroupRowComponentBase<T>> =
-    GroupRowComponent;
-  @Input() openLevels: number;
-  @Input() tree: boolean;
-  @Input() trackRow: (index: number, row: TableRow<T>) => any = (index: number, row: TableRow<T>) => index;
+  @Input() trackRow: (index: number, row: T) => any = (index: number, row: T) => {
+    if (row['id']) {
+      return row['id'];
+    }
+    return index;
+  };
   @Input() editType: EditType = EditType.cell;
   @Input() editEvent: EditEvent = EditEvent.doubleClick;
-  @Input() rowEditable: boolean | ((row: TableRow<T>) => boolean);
-  @Input() rowClass: (row: TableRow<T>, index?: number) => string;
+  @Input() rowEditable: boolean | ((row: T) => boolean);
+  @Input() rowClass: (row: T, index?: number) => string;
 
   @Input() set scrollToIndex(index: number) {
     this._svc.scrollToIndex(index);
@@ -81,17 +78,17 @@ export class TableComponent<T>
 
   @Output()
   stateChange: EventEmitter<FilterState> = new EventEmitter<FilterState>();
-  @Output() bodyLeft = new EventEmitter<TableRow<T>>();
-  @Output() activeRowChange: EventEmitter<TableRow<T>> = new EventEmitter();
-  @Output() selectedRowsChange: EventEmitter<TableRow<T>[]> =
+  @Output() bodyLeft = new EventEmitter<T>();
+  @Output() activeRowChange: EventEmitter<T> = new EventEmitter();
+  @Output() selectedRowsChange: EventEmitter<T[]> =
     new EventEmitter();
   @Output() cellClick = new EventEmitter<ICellInstanceEvent<T>>();
   @Output() cellDoubleClick = new EventEmitter<ICellInstanceEvent<T>>();
   @Output() cellFocus = new EventEmitter<ICellInstanceEvent<T>>();
   @Output() cellKeyDown = new EventEmitter<ICellInstanceEvent<T>>();
-  @Output() rowLeft = new EventEmitter<TableRow<T>>();
+  @Output() rowLeft = new EventEmitter<T>();
   @Output() rowEditStart = new EventEmitter<ICellInstance<T>>();
-  @Output() rowEditEnd = new EventEmitter<TableRow<T>>();
+  @Output() rowEditEnd = new EventEmitter<T>();
   @Output() cellEditStart = new EventEmitter<ICellInstance<T>>();
   @Output() cellEditEnd = new EventEmitter<ICellInstance<T>>();
   @Output() valueChange = new EventEmitter<ICellInstance<T>>();
@@ -99,7 +96,7 @@ export class TableComponent<T>
   @ViewChild('contextMenu', {static: true}) menu: ElementRef;
   @HostBinding('class.table') private readonly tableClass = true;
 
-  selectedRowsList: TableRow<T>[];
+  selectedRowsList: T[];
 
   private _alive = true;
   private _bodyElement: HTMLElement;
@@ -136,14 +133,14 @@ export class TableComponent<T>
 
     this._svc.selectedRows
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((items: TableRow<T>[]) => {
+      .subscribe((items: T[]) => {
         this.selectedRowsList = items;
         this.selectedRowsChange.emit(items);
       });
 
     this._svc.activeRow
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((item: TableRow<T>) => this.activeRowChange.emit(item));
+      .subscribe((item: T) => this.activeRowChange.emit(item));
 
     this._svc.valueChanged
       .pipe(takeWhile((_) => this._alive))
@@ -347,7 +344,10 @@ export class TableComponent<T>
     }
     if (changes.hasOwnProperty('data')) {
       this._svc.setData(this.data);
-      this._svc.selectRows([]);
+      this._svc.selectRows(this.data?.filter((row) => {
+        return this.selectedRows?.some((selectedRow) =>
+          this.trackRow(this._svc.getRowIndex(selectedRow), selectedRow) === this.trackRow(this._svc.getRowIndex(row), row));
+      }));
     }
     if (changes.hasOwnProperty('dict')) {
       this._svc.setDict(this.dict);
@@ -419,7 +419,7 @@ export class TableComponent<T>
     return null;
   }
 
-  private getRow(event: Event): TableRow<T> | null {
+  private getRow(event: Event): T | null {
     if (event.composedPath().indexOf(this._elementRef.nativeElement) < 0) {
       return null;
     }

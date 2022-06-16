@@ -9,7 +9,6 @@ import {
 import {HeadCellComponentBase} from '../base/head-cell-component-base';
 import {TableColumn} from '../contract/table-column';
 import {DefaultHeadCellComponent} from '../default/default-head-cell/default-head-cell.component';
-import {TableRow} from '../contract/table-row';
 
 @Component({
   selector: 'teta-head-cell-host',
@@ -19,7 +18,7 @@ import {TableRow} from '../contract/table-row';
 })
 export class HeadCellHostComponent<T> implements OnInit {
   private _column: TableColumn;
-  private _data: TableRow<T>[];
+  private _data: T[];
 
   private componentRef: ComponentRef<HeadCellComponentBase<T>>;
   private init: boolean;
@@ -37,14 +36,14 @@ export class HeadCellHostComponent<T> implements OnInit {
   }
 
   @Input()
-  set data(data: TableRow<T>[]) {
+  set data(data: T[]) {
     this._data = data;
     if (this.init) {
       this.componentRef.instance.data = this._data;
     }
   }
 
-  get data(): TableRow<T>[] {
+  get data(): T[] {
     return this._data;
   }
 
