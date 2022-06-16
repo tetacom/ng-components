@@ -12,7 +12,6 @@ import {
 } from '@angular/core';
 import { CellComponentBase } from '../base/cell-component-base';
 import { TableColumn } from '../contract/table-column';
-import { TableRow } from '../contract/table-row';
 import { getCellComponent } from '../contract/cell-components-map';
 import { IIdName } from '../../../common/contract/i-id-name';
 import { IDictionary } from '../../../common/contract/i-dictionary';
@@ -25,7 +24,7 @@ import { IDictionary } from '../../../common/contract/i-dictionary';
 })
 export class CellHostComponent<T> implements OnInit, OnDestroy, OnChanges {
   @Input() column: TableColumn;
-  @Input() row: TableRow<T>;
+  @Input() row: T;
   @Input() filterOptions: IIdName<any>[];
   @Input() dict: IDictionary<IIdName<any>[]>;
   private _init = false;

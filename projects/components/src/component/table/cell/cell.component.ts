@@ -7,7 +7,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { TableColumn } from '../contract/table-column';
-import { TableRow } from '../contract/table-row';
 import { TableService } from '../service/table.service';
 import { IIdName } from '../../../common/contract/i-id-name';
 import { IDictionary } from '../../../common/contract/i-dictionary';
@@ -22,7 +21,7 @@ export class CellComponent<T> implements OnInit, OnDestroy {
   @Input() column: TableColumn;
   @Input() filterOptions: IIdName<any>[];
   @Input() dict: IDictionary<IIdName<any>[]>;
-  @Input() row: TableRow<T>;
+  @Input() row: T;
   @HostBinding('class.cell') private readonly tableCellClass = true;
 
   private alive = true;

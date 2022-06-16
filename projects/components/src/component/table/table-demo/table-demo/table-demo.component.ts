@@ -8,8 +8,6 @@ import {EditType} from '../../enum/edit-type.enum';
 import {SelectType} from '../../enum/select-type.enum';
 import {EditEvent} from '../../enum/edit-event.enum';
 import {TableService} from '../../service/table.service';
-import {TableRow} from '../../contract/table-row';
-import {ICellEvent} from '../../contract/i-cell-event';
 import {ICellInstance} from '../../contract/i-cell-instance';
 
 @Component({
@@ -26,8 +24,8 @@ export class TableDemoComponent implements OnInit {
   @ViewChild(TemplateRef, {read: TemplateRef, static: true}) dropdownTpl: TemplateRef<any>;
   @ViewChild(TemplateRef, {read: TemplateRef, static: true}) contextMenu: TemplateRef<any>;
   tableService: TableService<any>;
-  activeRow: TableRow<any>;
-  selectedRows: TableRow<any>[];
+  activeRow: any;
+  selectedRows: any[];
   dict: IDictionary<IIdName<any>[]> = {
     ram: [
       {id: 8, name: '8'},
@@ -165,9 +163,9 @@ export class TableDemoComponent implements OnInit {
   addRow() {
   }
 
-  delete(selectedRows: TableRow<any>[]) {
+  delete(selectedRows: any[]) {
     this.data = this.data.filter((row) => {
-      return selectedRows.findIndex(_ => _.data === row) < 0;
+      return selectedRows.findIndex(_ => _ === row) < 0;
     })
   }
 
@@ -192,13 +190,13 @@ export class TableDemoComponent implements OnInit {
     console.log(this.fromClipboard(result, this.tableService.getVisibleColumns()));
   }
 
-  private toClipboardString(rows: TableRow<any>[], columns: TableColumn[]) {
+  private toClipboardString(rows: any[], columns: TableColumn[]) {
     return rows.reduce(
-      (res: string, currentRow: TableRow<any>, i: number) =>
+      (res: string, currentRow: any, i: number) =>
         `${res}${i === 0 ? '' : '\n'}${columns.reduce(
           (columnResult: string, column: TableColumn, j: number) =>
             `${columnResult}${j === 0 ? '' : '\t'}${
-              currentRow.data[column.name] ?? ''
+              currentRow[column.name] ?? ''
             }`,
           ''
         )}`,

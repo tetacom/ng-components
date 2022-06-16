@@ -1,13 +1,13 @@
 <span [style.display]="edit ? 'none' : 'block'"
       class="cell-text"
       [class.cell-text_disabled]="!editable">
-  {{row.data[column.name]}}
+  {{row[column.name]}}
 </span>
 <input #input
        *ngIf="edit"
        type="text"
        class="input row_auto border-radius-0"
        (blur)="setValue()"
-       [ngModel]="row.data[column.name]"
-       (ngModelChange)="row.data[column.name]=$event"/>
+       [ngModel]="row[column.name]"
+       (ngModelChange)="row[column.name]=$event"/>
 

@@ -21,7 +21,7 @@ export class ScrollIntoViewDirective implements OnChanges {
       if (coerceBooleanProperty(this.tetaScrollIntoView)) {
         (this.elementRef.nativeElement as HTMLInputElement).scrollIntoView({
           behavior: 'smooth',
-          block: 'end'
+          block: 'start'
         });
       }
     }

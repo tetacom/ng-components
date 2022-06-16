@@ -12,7 +12,6 @@ import {TableService} from '../service/table.service';
 import {TableColumn} from '../contract/table-column';
 import {FilterState} from '../../filter/contarct/filter-state';
 import {ITreeData} from '../../../common/contract/i-tree-data';
-import {TableRow} from '../contract/table-row';
 import {TetaConfigService} from '../../../locale/teta-config.service';
 import {HeadDropdownTab} from '../contract/head-dropdown-tab';
 
@@ -26,7 +25,7 @@ export class HeadCellDropdownComponent<T> implements OnInit, OnDestroy {
   @Input() columns: ITreeData[];
   @Input() column: TableColumn;
   @Input() state: FilterState;
-  @Input() data: TableRow<T>[];
+  @Input() data: T[];
   @Input() tabTemplates: HeadDropdownTab[];
   @Input() dropDownOpen: boolean;
   @Output() dropDownOpenChange: EventEmitter<boolean> =

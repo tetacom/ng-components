@@ -14,7 +14,6 @@ import {takeWhile} from 'rxjs/operators';
 import {SelectType} from '../enum/select-type.enum';
 import {combineLatest} from 'rxjs';
 import {ArrayUtil} from '../../../common/util/array-util';
-import {TableRow} from '../contract/table-row';
 
 @Component({
   selector: 'teta-table-head',
@@ -57,7 +56,7 @@ export class TableHeadComponent<T> implements OnInit, OnDestroy {
     );
   }
 
-  data: TableRow<T>[];
+  data: T[];
 
   constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {
 

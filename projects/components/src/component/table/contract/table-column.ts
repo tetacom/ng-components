@@ -2,9 +2,7 @@ import {FilterItem} from '../../filter/contarct/filter-item';
 import {FilterType} from '../../filter/enum/filter-type.enum';
 import {StringFilterType} from '../../filter/enum/string-filter-type.enum';
 import {ListFilterType} from '../../filter/enum/list-filter-type.enum';
-import {TableRow} from './table-row';
 import {AggregationType} from '../enum/aggregation-type.enum';
-import {TemplateRef} from '@angular/core';
 import {ICellInstance} from './i-cell-instance';
 import {HeadDropdownTabConfig} from './head-dropdown-tab';
 
@@ -68,18 +66,6 @@ export class TableColumn extends FilterItem {
    */
   headDropdownConfig: HeadDropdownTabConfig;
   /**
-   * Группировать по этому столбцу
-   */
-  groupBy: boolean;
-  /**
-   * Порядок группировки
-   */
-  groupingOrder = 0;
-  /**
-   *
-   */
-  groupByFn: ((row: TableRow<any>) => string) | undefined;
-  /**
    * Дочерние колонки
    */
   override columns: TableColumn[];
@@ -141,9 +127,6 @@ export class TableColumn extends FilterItem {
     headCellComponent?: any;
     headDropdownConfig?: HeadDropdownTabConfig;
     filterComponent?: any;
-    groupBy?: boolean;
-    groupingOrder?: number;
-    groupByFn?: (row: TableRow<any>) => string;
     columns?: any[];
     aggregate?: AggregationType;
     defaultValue?: any;
@@ -163,9 +146,6 @@ export class TableColumn extends FilterItem {
     this.unitId = options?.unitId;
     this.data = options?.data;
     this.editable = options?.editable ?? true;
-    this.groupBy = options?.groupBy ?? false;
-    this.groupingOrder = options?.groupingOrder ?? 0;
-    this.groupByFn = options?.groupByFn;
     this.headCellComponent = options?.headCellComponent;
     this.headDropdownConfig = options?.headDropdownConfig;
     this.cellComponent = options?.cellComponent;

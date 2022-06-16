@@ -16,7 +16,6 @@ export * from './cell-host/cell-host.component';
 export * from './default/date-cell/date-cell.component';
 export * from './default/boolean-cell/boolean-cell.component';
 export * from './default/date-time-cell/date-time-cell.component';
-export * from './default/group-row/group-row.component';
 export * from './default/list-cell/list-cell.component';
 export * from './default/numeric-cell/numeric-cell.component';
 export * from './default/string-cell/string-cell.component';

@@ -26,35 +26,17 @@
        [style.flex-grow]="totalFlex"
        [style.flex-basis.px]="totalWidth"
        [style.min-width.px]="totalWidth">
-    <ng-container *ngIf="!grouping">
-      <div class="table-row_locked"
-           *ngIf="locked.length > 0"
-           [style.flex-grow]="lockedFlex"
-           [style.flex-basis.px]="lockedWidth"
-           [style.min-width.px]="lockedWidth"
-           [style.zIndex]="row === activeRow ? 1 : 'unset'">
-        <teta-selection-cell *ngIf="selectType === selectTypeEnum.checkBox && locked.length"
-                             [row]="row"
-                             style="width: 28px;"></teta-selection-cell>
-        <teta-cell
-          *ngFor="let column of locked; let colIndex = index; trackBy: trackColumns;"
-          [attr.data-row]="rowIndex"
-          [attr.data-column]="column.name"
-          [column]="column"
-          [filterOptions]="dict?dict[column.name]:[]"
-          [dict]="dict"
-          [row]="row"
-          [ngClass]="column.cellClass"
-          [attr.tabindex]="0"
-          [style.flex-grow]="column.flex"
-          [style.flex-basis.px]="column.width"
-        ></teta-cell>
-      </div>
-      <teta-selection-cell *ngIf="selectType === selectTypeEnum.checkBox && locked.length < 1"
+    <div class="table-row_locked"
+         *ngIf="locked.length > 0"
+         [style.flex-grow]="lockedFlex"
+         [style.flex-basis.px]="lockedWidth"
+         [style.min-width.px]="lockedWidth"
+         [style.zIndex]="row === activeRow ? 1 : 'unset'">
+      <teta-selection-cell *ngIf="selectType === selectTypeEnum.checkBox && locked.length"
                            [row]="row"
                            style="width: 28px;"></teta-selection-cell>
       <teta-cell
-        *ngFor="let column of unlocked; let colIndex = index; trackBy: trackColumns;"
+        *ngFor="let column of locked; let colIndex = index; trackBy: trackColumns;"
         [attr.data-row]="rowIndex"
         [attr.data-column]="column.name"
         [column]="column"
@@ -66,9 +48,23 @@
         [style.flex-grow]="column.flex"
         [style.flex-basis.px]="column.width"
       ></teta-cell>
-    </ng-container>
-    <ng-container *ngIf="grouping">
-    </ng-container>
+    </div>
+    <teta-selection-cell *ngIf="selectType === selectTypeEnum.checkBox && locked.length < 1"
+                         [row]="row"
+                         style="width: 28px;"></teta-selection-cell>
+    <teta-cell
+      *ngFor="let column of unlocked; let colIndex = index; trackBy: trackColumns;"
+      [attr.data-row]="rowIndex"
+      [attr.data-column]="column.name"
+      [column]="column"
+      [filterOptions]="dict?dict[column.name]:[]"
+      [dict]="dict"
+      [row]="row"
+      [ngClass]="column.cellClass"
+      [attr.tabindex]="0"
+      [style.flex-grow]="column.flex"
+      [style.flex-basis.px]="column.width"
+    ></teta-cell>
   </div>
 </ng-template>
 

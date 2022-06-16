@@ -1,6 +1,5 @@
 import {Component, HostBinding} from '@angular/core';
 import {TableColumn} from '../contract/table-column';
-import {TableRow} from '../contract/table-row';
 
 @Component({
   template: ''
@@ -10,5 +9,5 @@ export abstract class HeadCellComponentBase<T> {
   @HostBinding('class.table-head__cell__component')
 
   abstract column: TableColumn;
-  abstract data: TableRow<T>[];
+  abstract data: T[];
 }

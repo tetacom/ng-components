@@ -7,7 +7,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import {TableColumn} from '../../contract/table-column';
-import {TableRow} from '../../contract/table-row';
 import {TableService} from '../../service/table.service';
 import {CellComponentBase} from '../../base/cell-component-base';
 import {SelectComponent} from '../../../select/select/select.component';
@@ -25,7 +24,7 @@ export class ListCellComponent<T>
   extends CellComponentBase<T>
   implements OnInit {
   @Input() override column: TableColumn;
-  @Input() override row: TableRow<T>;
+  @Input() override row: T;
   @Input() override filterOptions: IIdName<any>[] = [];
 
   get value() {
@@ -34,7 +33,7 @@ export class ListCellComponent<T>
 
   get displayFilterOptions(): IIdName<any>[] {
     if (this.column?.parentName?.length > 0) {
-      const parentValue = this.row.data[this.column.parentName];
+      const parentValue = this.row[this.column.parentName];
       if (parentValue) {
         return this.filterOptions.filter(_ => _.parentId === parentValue);
       }
@@ -55,7 +54,7 @@ export class ListCellComponent<T>
 
   setValue(value: any): void {
     // if(this.c)
-    this.row.data[this.column.name] = value;
+    this.row[this.column.name] = value;
     this.valueChanged();
   }
 
@@ -85,7 +84,7 @@ export class ListCellComponent<T>
       return '';
     }
     const item = this.filterOptions.find(
-      (option) => option.id === this.row.data[this.column.name]
+      (option) => option.id === this.row[this.column.name]
     );
     if (item === null || item === undefined) {
       return '';

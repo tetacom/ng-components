@@ -10,7 +10,6 @@ import {
 import {CellComponentBase} from '../../base/cell-component-base';
 import {TableService} from '../../service/table.service';
 import {TableColumn} from '../../contract/table-column';
-import {TableRow} from '../../contract/table-row';
 import {ICellCoordinates} from '../../contract/i-cell-coordinates';
 
 @Component({
@@ -23,7 +22,7 @@ export class NumericCellComponent<T>
   extends CellComponentBase<T>
   implements OnInit {
   @Input() override column: TableColumn;
-  @Input() override row: TableRow<T>;
+  @Input() override row: T;
   @ViewChild('input', {static: false}) input: ElementRef;
 
   constructor(
