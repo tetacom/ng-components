@@ -18,6 +18,7 @@ import {DefaultHeadCellComponent} from '../default/default-head-cell/default-hea
 })
 export class HeadCellHostComponent<T> implements OnInit {
   private _column: TableColumn;
+  private _columns: TableColumn[];
   private _data: T[];
 
   private componentRef: ComponentRef<HeadCellComponentBase<T>>;
@@ -33,6 +34,18 @@ export class HeadCellHostComponent<T> implements OnInit {
 
   get column(): TableColumn {
     return this._column;
+  }
+
+  @Input()
+  set columns(columns: TableColumn[]) {
+    this._columns = columns;
+    if (this.init) {
+      this.componentRef.instance.columns = this._columns;
+    }
+  }
+
+  get columns(): TableColumn[] {
+    return this._columns;
   }
 
   @Input()
@@ -59,6 +72,7 @@ export class HeadCellHostComponent<T> implements OnInit {
     this.componentRef =
       this.viewContainerRef.createComponent<HeadCellComponentBase<T>>(this.column.headCellComponent);
     this.componentRef.instance.column = this.column;
+    this.componentRef.instance.columns = this.columns;
     this.componentRef.instance.data = this.data;
     this.init = true;
   }

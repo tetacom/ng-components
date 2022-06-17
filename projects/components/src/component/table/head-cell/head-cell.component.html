@@ -9,7 +9,7 @@
                  class="column column_auto justify-content-center">
     <div tetaDropdownHead class="table-head__cell__wrapper"
          [ngClass]="column.headCellClass">
-      <teta-head-cell-host [column]="column" [data]="data"></teta-head-cell-host>
+      <teta-head-cell-host [column]="column" [columns]="columns | async" [data]="data"></teta-head-cell-host>
       <teta-icon *ngIf="iconName | async as icon"
                  [palette]="'text'"
                  [name]="icon"></teta-icon>

@@ -9,5 +9,6 @@ export abstract class HeadCellComponentBase<T> {
   @HostBinding('class.table-head__cell__component')
 
   abstract column: TableColumn;
+  abstract columns: TableColumn[];
   abstract data: T[];
 }

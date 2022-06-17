@@ -18,6 +18,7 @@ export class DefaultHeadCellComponent<T>
   extends HeadCellComponentBase<T>
   implements OnInit {
   private _column: TableColumn;
+  private _columns: TableColumn[];
   private _data: T[];
 
   @Input()
@@ -28,6 +29,16 @@ export class DefaultHeadCellComponent<T>
 
   get column(): TableColumn {
     return this._column;
+  }
+
+  @Input()
+  set columns(val: TableColumn[]) {
+    this._columns = val;
+    this._cdr.detectChanges();
+  }
+
+  get columns(): TableColumn[] {
+    return this._columns;
   }
 
   @Input()
