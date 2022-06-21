@@ -12,7 +12,6 @@ import {
 import {ChartService} from '../service/chart.service';
 import {IChartConfig} from '../model/i-chart-config';
 import {BasePoint} from '../model/base-point';
-import {Series} from '../model/series';
 import {ZoomService} from '../service/zoom.service';
 import {ScaleService} from '../service/scale.service';
 import {BrushService} from '../service/brush.service';
@@ -32,7 +31,6 @@ import {TooltipTracking} from '../model/enum/tooltip-tracking';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartComponent implements OnInit, OnChanges, OnDestroy {
-  legendSeries: Array<Series<BasePoint>>;
   hasSeriesData: Observable<boolean>;
   svcConfig: Observable<IChartConfig>;
   @Output()

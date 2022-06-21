@@ -5,7 +5,7 @@ import { getTextWidth } from '../../utils/public-api';
 import { IBuilder } from '../../../model/i-builder';
 
 export class AxisSizeBuilder implements IBuilder<Axis, number> {
-  private titlePadding = 8;
+  private titlePadding = 10;
   private basePadding = 16;
   private backupRatio = 0.58;
 
@@ -17,13 +17,17 @@ export class AxisSizeBuilder implements IBuilder<Axis, number> {
 
       finalPadding += settings.options.title ? this.titlePadding : 0;
 
+      const scale = settings.defaultScale();
+      const ticks = scale().domain(settings.extremes).ticks();
+
       const maxElementLengthIndex = maxIndex(
-        settings.tickValues,
+        ticks,
         (_) => formatter(_).length
       );
 
+
       finalPadding += getTextWidth(
-        formatter(settings.tickValues[maxElementLengthIndex]),
+        formatter(ticks[maxElementLengthIndex]),
         this.backupRatio
       );
     }

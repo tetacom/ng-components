@@ -10,9 +10,8 @@ import {
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from '../service/chart.service';
 import {
-  animationFrameScheduler, asapScheduler,
+  animationFrameScheduler,
   combineLatest,
-  debounce,
   map,
   Observable,
   shareReplay,
@@ -24,9 +23,8 @@ import {AxisOrientation} from '../model/enum/axis-orientation';
 import {ScaleService} from '../service/scale.service';
 import {ZoomService} from '../service/zoom.service';
 import {BrushType} from '../model/enum/brush-type';
-import {debounceTime, throttleTime} from 'rxjs/operators';
+import {throttleTime} from 'rxjs/operators';
 import {ZoomType} from "../model/enum/zoom-type";
-import {tetaZoneFull} from '@tetacom/ng-components';
 
 type Opposite = boolean;
 
@@ -83,7 +81,8 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     this.xAxisMap = this._scaleService.xAxisMap;
 
     this.yScaleMap = this._scaleService.yScaleMap.pipe(
-      tetaZoneFull(this._zone),
+      throttleTime(0, animationFrameScheduler, {trailing: true}),
+      tap(() => this._cdr.detectChanges()),
       shareReplay({
         bufferSize: 1,
         refCount: true,
@@ -91,7 +90,8 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     );
 
     this.xScaleMap = this._scaleService.xScaleMap.pipe(
-      tetaZoneFull(this._zone),
+      throttleTime(0, animationFrameScheduler, {trailing: true}),
+      tap(() => this._cdr.detectChanges()),
       shareReplay({
         bufferSize: 1,
         refCount: true,
@@ -120,6 +120,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       this.yAxisMap,
     ]).pipe(
       withLatestFrom(this.config),
+      throttleTime(0, animationFrameScheduler, {trailing: true}),
       map(
         (
           data: [[DOMRect, Map<number, any>, Map<number, any>], IChartConfig]
@@ -159,8 +160,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
               config.bounds?.bottom,
           };
         }
-      ),
-      tetaZoneFull(this._zone),
+      )
     );
   }
 

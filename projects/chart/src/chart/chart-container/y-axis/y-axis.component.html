@@ -5,7 +5,7 @@
   </svg:g>
 
   <svg:g class="label-axis font-caption" [attr.transform]="getLabelTransform()">
-    <text dy="-8px" text-anchor="middle" dominant-baseline="middle">{{ axis.options.title }}</text>
+    <text [attr.dy]="axis.options.opposite ? '-4px' : '4px'" text-anchor="middle" [attr.dominant-baseline]="axis.options.opposite ? 'auto' : 'hanging'">{{ axis.options.title }}</text>
   </svg:g>
 </ng-container>
 
