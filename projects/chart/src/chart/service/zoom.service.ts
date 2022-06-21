@@ -40,13 +40,12 @@ export class ZoomService {
 
     const hash = objectHash.sha1({index: axisIndex, orientation: axisOrientation});
 
-
     if (!this.zoomHashMap.has(hash)) {
       return;
     }
 
     const currentAxis = this.axisHashMap.get(hash);
-    const currentScale = this.scaleHashMap.get(hash)?.copy();
+    const currentScale = this.scaleHashMap.get(hash);
     const currentElement = this.elementHashMap.get(hash);
     const currentZoom = this.zoomHashMap.get(hash);
 

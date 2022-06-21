@@ -50,10 +50,8 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
   zoomType = ZoomType
 
-  private filterPositionMap = new Map<
-    Opposite,
-    (axis: Axis) => (_: Axis) => boolean
-  >()
+  private filterPositionMap = new Map<Opposite,
+    (axis: Axis) => (_: Axis) => boolean>()
     .set(
       true,
       (axis) => (_: Axis) =>
@@ -82,7 +80,11 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
     this.yScaleMap = this._scaleService.yScaleMap.pipe(
       throttleTime(0, animationFrameScheduler, {trailing: true}),
-      tap(() => this._cdr.detectChanges()),
+      tap(() => {
+        setTimeout(() => {
+          this._cdr.detectChanges();
+        })
+      }),
       shareReplay({
         bufferSize: 1,
         refCount: true,
@@ -91,7 +93,10 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
     this.xScaleMap = this._scaleService.xScaleMap.pipe(
       throttleTime(0, animationFrameScheduler, {trailing: true}),
-      tap(() => this._cdr.detectChanges()),
+      tap(() =>
+        setTimeout(() => {
+          this._cdr.detectChanges();
+        })),
       shareReplay({
         bufferSize: 1,
         refCount: true,
@@ -119,8 +124,8 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       this.xAxisMap,
       this.yAxisMap,
     ]).pipe(
-      withLatestFrom(this.config),
       throttleTime(0, animationFrameScheduler, {trailing: true}),
+      withLatestFrom(this.config),
       map(
         (
           data: [[DOMRect, Map<number, any>, Map<number, any>], IChartConfig]
@@ -160,7 +165,11 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
               config.bounds?.bottom,
           };
         }
-      )
+      ),
+      tap(() =>
+        setTimeout(() => {
+          this._cdr.detectChanges();
+        })),
     );
   }
 
