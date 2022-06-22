@@ -18,6 +18,8 @@ import {DOCUMENT} from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResizePanelComponent implements OnInit, OnDestroy {
+  @Input() size = 8;
+
   @Input()
   set direction(val: 'vertical' | 'horizontal') {
     this._direction = val;

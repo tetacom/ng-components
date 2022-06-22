@@ -87,7 +87,7 @@ export class DragDirective<T> implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.instance = new DragInstance({
-      container: this._container.instance,
+      container: this._container?.instance,
       data: this.data
     });
     this._dragService.dropTarget.pipe(takeWhile(() => this._alive))

@@ -18,13 +18,12 @@
     }
 
     &_left, &_right, &_vertical {
-      width: 8px;
       height: 100%;
       top: 0;
     }
 
     &_left {
-      left: -8px;
+      transform: translateX(-100%);
     }
 
     &_right {
@@ -32,13 +31,12 @@
     }
 
     &_top, &_bottom {
-      height: 8px;
       width: 100%;
       left: 0;
     }
 
     &_top {
-      top: -8px;
+      transform: translateY(-100%);
     }
 
     &_bottom {

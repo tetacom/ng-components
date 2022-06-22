@@ -10,11 +10,11 @@ export class TableColumn extends FilterItem {
   /**
    * Ширина
    */
-  width = 150;
+  width = 80;
   /**
    * Коэффициент растяжения ячейки
    */
-  flex = 0;
+  flex = 1;
   /**
    * Стобец закреплен
    */
@@ -135,8 +135,8 @@ export class TableColumn extends FilterItem {
     required?: boolean;
   }) {
     super(options);
-    this.width = options?.width ?? 150;
-    this.flex = options?.flex ?? 0;
+    this.width = options?.width ?? 80;
+    this.flex = options?.flex ?? 1;
     this.headCellClass = options?.headCellClass ?? [];
     this.cellClass = options?.cellClass ?? [];
     this.locked = options?.locked ?? false;
