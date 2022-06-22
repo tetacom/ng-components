@@ -3308,10 +3308,10 @@
     regenerator-runtime "^0.13.7"
     resolve-from "^5.0.0"
 
-"@tetacom/ng-components@^1.0.41":
-  version "1.0.41"
-  resolved "https://registry.yarnpkg.com/@tetacom/ng-components/-/ng-components-1.0.41.tgz#3434a4cc761c64534a8059ac7ff5a56175cfc3f4"
-  integrity sha512-YcWCFhfjbqkJoX4KDdk/arSDrXTXHXxbvouWKhkg9V4WJWack4G472q3NGH3X2wyleM8pBqP60QhvMuoPZUeEw==
+"@tetacom/ng-components@^1.0.44":
+  version "1.0.44"
+  resolved "https://registry.yarnpkg.com/@tetacom/ng-components/-/ng-components-1.0.44.tgz#f8a90bf35e725c31be313887eb16614694ef232a"
+  integrity sha512-CsQUpTPADupZWEGuR+TSgzVaw2xP2yk1N77CAVvq7tO3hT7VhFOqRqZrGmpDWXcgddMmsxdagw8TlvowdCGHVw==
   dependencies:
     tslib "^2.3.0"
 
