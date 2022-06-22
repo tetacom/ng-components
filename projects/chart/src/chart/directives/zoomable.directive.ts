@@ -18,11 +18,12 @@ import {AxisOrientation} from '../model/enum/axis-orientation';
 import {BrushMessage, IBroadcastMessage, ZoomMessage,} from '../model/i-broadcast-message';
 import {BrushType} from '../model/enum/brush-type';
 import {BroadcastService} from '../service/broadcast.service';
-import {debounceTime, tap} from 'rxjs/operators';
-import {combineLatest, filter, takeWhile} from 'rxjs';
+import {debounceTime, tap, throttleTime} from 'rxjs/operators';
+import {animationFrameScheduler, filter, takeWhile} from 'rxjs';
 import {ChartService} from '../service/chart.service';
 import {ZoomBehaviorType} from '../model/enum/zoom-behavior-type';
 import objectHash from 'object-hash';
+import {tetaZoneFull} from "@tetacom/ng-components";
 
 @Directive({
   selector: '[tetaZoomable]',
@@ -127,19 +128,14 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     }
 
     // Subscribe to zoom events
-    this.broadcastService
-      .subscribeToZoom(this.config?.zoom.syncChannel)
+    this.broadcastService.subscribeToZoom(this.config?.zoom.syncChannel)
       .pipe(
         takeWhile((_) => this.alive),
         tap((m: IBroadcastMessage<ZoomMessage>) => {
-          // Sync fake axis and index axis 0
-
           if (
             this.axis.index === m.message?.axis?.index && this.axis.orientation === m.message?.axis?.orientation
           ) {
             const currentZoom = d3.zoomTransform(this._element.node());
-
-
 
             if(currentZoom !== m.message.event.transform) {
               this._element.call(
@@ -163,7 +159,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           );
         }),
         tap((m: IBroadcastMessage<ZoomMessage>) => {
-          if (this.config.id !== m.message.chartId) {
+          if (this.config.id !== m.message?.chartId) {
             this._element.call(
               this.zoom.transform,
               m.message.event.transform,
@@ -240,7 +236,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
 
   zoomed = (event: D3ZoomEvent<any, any>) => {
-
     if (event.sourceEvent) {
       if (Object.keys(event.sourceEvent).length !== 0) {
         if (this.currentTransform === event.transform) {

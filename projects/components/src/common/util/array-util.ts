@@ -68,7 +68,8 @@ export class ArrayUtil {
     array: any[],
     filter: (item: any) => boolean,
     children: string = 'children',
-    keepChildren: boolean = true
+    keepChildren: boolean = true,
+    fullscanChildren: boolean = false
   ): any {
     const result = [];
     if (array && array.length) {
@@ -78,6 +79,9 @@ export class ArrayUtil {
           result.push(resultItem);
           if (!keepChildren) {
             resultItem[children] = [];
+            if (fullscanChildren) {
+             continue;
+            }
             break;
           }
         } else if (item[children] && item[children].length > 0) {
@@ -86,7 +90,8 @@ export class ArrayUtil {
             item[children],
             filter,
             children,
-            keepChildren
+            keepChildren,
+            fullscanChildren
           );
           if (found?.length > 0) {
             resultItem[children] = found;
@@ -94,6 +99,7 @@ export class ArrayUtil {
           }
         }
       }
+
     }
     return result;
   }

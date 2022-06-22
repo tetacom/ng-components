@@ -9,7 +9,7 @@ import {
   of,
   shareReplay,
   Subject,
-  take,
+  take, takeLast, tap,
   withLatestFrom,
 } from 'rxjs';
 import {IChartEvent} from '../model/i-chart-event';
@@ -56,6 +56,8 @@ export class ChartService {
   private annotationEvent$ = new Subject<IChartEvent<Annotation>>();
   private annotationMove$ = new Subject<IChartEvent<Annotation>>();
 
+  private static _hiddenSeriesPostfix = 'hidden_series';
+
   constructor() {
     this.id = of((Date.now() + Math.random()).toString(36));
 
@@ -63,14 +65,15 @@ export class ChartService {
       withLatestFrom(this.id),
       map(this.setDefaults),
       map(this.setPreparationData),
+      map(this.restoreLocalStorage),
       shareReplay({
         bufferSize: 1,
         refCount: true,
       })
     );
 
-    this.size = this.size$.asObservable();
 
+    this.size = this.size$.asObservable();
     this.pointerMove = this.pointerMove$.asObservable();
     this.tooltips = this.tooltips$.asObservable();
     this.plotBandEvent = this.plotBandEvent$.asObservable();
@@ -125,7 +128,7 @@ export class ChartService {
 
   public async toggleVisibilitySeries(seriesIndex: Array<number | string>, visible?: boolean) {
 
-    if(seriesIndex?.length === 0) {
+    if (seriesIndex?.length === 0) {
       return;
     }
 
@@ -134,18 +137,20 @@ export class ChartService {
     seriesIndex.forEach((serieIndex) => {
       const currentSerieIndex = currentConfig.series.findIndex((_) => _.id === serieIndex);
 
-      if(currentSerieIndex === -1) {
+      if (currentSerieIndex === -1) {
         return;
       }
       currentConfig.series[currentSerieIndex].visible = visible !== undefined ? visible : !currentConfig.series[currentSerieIndex].visible;
 
       const seriesLinkCount = currentConfig.series.filter((_) => _.yAxisIndex === currentConfig.series[currentSerieIndex].yAxisIndex && _.visible === true).length
       currentConfig.yAxis[currentConfig.series[currentSerieIndex].yAxisIndex].visible = seriesLinkCount !== 0;
-
     })
 
-
-    this.config$.next(currentConfig);
+    try {
+      this.saveCookie(currentConfig);
+    } finally {
+      this.config$.next(currentConfig);
+    }
   }
 
   public emitMoveAnnotation(event: IChartEvent<Annotation>) {
@@ -176,7 +181,30 @@ export class ChartService {
     this.chartContextMenu$.next(event);
   }
 
+  private saveCookie(config: IChartConfig) {
+    if(!config.name) return;
+    const hiddenSeries = config.series?.filter((_) => !_.visible).map((_) => _.id);
+    localStorage.setItem(`${config.name}_${ChartService._hiddenSeriesPostfix}`, JSON.stringify(hiddenSeries))
+  }
+
+  private restoreLocalStorage(config: IChartConfig): IChartConfig {
+    if(!config.name) return config;
+
+    const hiddenSeries = localStorage.getItem(`${config.name}_${ChartService._hiddenSeriesPostfix}`);
+    if (hiddenSeries) {
+      const json = JSON.parse(hiddenSeries) as Array<string | number>;
+      config.series = config.series.map((serie) => {
+        serie.visible = !json.includes(serie.id);
+        return serie;
+      });
+      return config
+    }
+
+    return config
+  }
+
   private setDefaults(data: [IChartConfig, string]): IChartConfig {
+
     let [config, id] = data;
 
     const defaultConfig = (defaultConfig) => {

@@ -5,6 +5,7 @@ import {TooltipTracking} from '../model/enum/tooltip-tracking';
 import {ZoomBehaviorType} from "../model/enum/zoom-behavior-type";
 
 export const defaultChartConfig = (): IChartConfig => ({
+  name: null,
   zoom: {
     enable: true,
     type: ZoomType.x,

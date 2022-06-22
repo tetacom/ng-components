@@ -176,7 +176,6 @@ export class BrushService {
                 m.message.event.sourceEvent instanceof TouchEvent)
             );
           }),
-          throttleTime(0, animationFrameScheduler, { trailing: true }),
           tap((m: IBroadcastMessage<ZoomMessage>) => {
             const {
               message: { brushDomain },

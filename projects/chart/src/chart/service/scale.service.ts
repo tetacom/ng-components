@@ -9,6 +9,7 @@ import {combineLatest, map, Observable, shareReplay, withLatestFrom,} from 'rxjs
 import {IChartEvent} from '../model/i-chart-event';
 import {ZoomService} from './zoom.service';
 import {ScaleType} from '../model/enum/scale-type';
+import {debounceTime} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root',
@@ -178,6 +179,7 @@ export class ScaleService {
           const [[size, config, zoom], yAxes, xAxes] = data;
 
           const map = new Map<number, any>();
+
 
           const top = [...xAxes.values()]
             .filter((_) => _.options?.visible && _.options?.opposite)

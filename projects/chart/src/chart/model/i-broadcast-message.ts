@@ -8,7 +8,7 @@ export type TransformStyle = {
 }
 
 export class ZoomMessage {
-  event: D3ZoomEvent<any, any> | any;
+  event?: D3ZoomEvent<any, any> | any;
   axis?: Axis;
   brushDomain?: number[];
   chartId: string;

@@ -43,11 +43,9 @@ export class YAxisComponent implements OnInit, AfterViewInit {
   getLabelTransform() {
     return `translate(${
       this.axis.options.opposite
-        ? this.axis.selfSize - 24
-        : -this.axis.selfSize + 24
-    }, ${this.size.height / 2}) rotate(${
-      this.axis.options.opposite ? '90' : '-90'
-    })`;
+        ? this.axis.selfSize
+        : -this.axis.selfSize
+    }, ${this.size.height / 2}) rotate(-90)`;
   }
 
 }

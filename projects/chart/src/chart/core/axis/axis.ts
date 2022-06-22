@@ -16,7 +16,6 @@ export class Axis {
   private _selfSize: number;
   private _ticksValues: number[];
   private _options: AxisOptions;
-  private _isFake: boolean;
   private _originDomain: Array<any> = [];
 
   private defaultFormatters = new Map<ScaleType, any>()
@@ -26,6 +25,14 @@ export class Axis {
     .set(ScaleType.symlog, d3.format('~s'))
     .set(ScaleType.pow, d3.format('~s'))
     .set(ScaleType.sqrt, d3.format('~s'));
+
+  private defaultScales = new Map<ScaleType, any>()
+    .set(ScaleType.linear, d3.scaleLinear)
+    .set(ScaleType.log, d3.scaleLog)
+    .set(ScaleType.symlog, d3.scaleSymlog)
+    .set(ScaleType.pow, d3.scalePow)
+    .set(ScaleType.sqrt, d3.scaleSqrt)
+    .set(ScaleType.time, d3.scaleTime);
 
   constructor(config: IChartConfig) {
     this.chartConfig = config;
@@ -38,16 +45,12 @@ export class Axis {
    * @param {IChartConfig} config
    * Chart config
    * @param {number} index
-   * Index axis
-   * @param {boolean} isFake
-   * @return {Axis}
    * New generated axis
    */
   public static createAxis(
     orientation: AxisOrientation,
     config: IChartConfig,
-    index: number,
-    isFake = false
+    index: number
   ): Axis {
     const axis = new Axis(config);
     axis.setLocate(orientation);
@@ -57,8 +60,6 @@ export class Axis {
     axis.setExtremes();
     axis.setTicksValues();
     axis.setSelfSize();
-
-    axis._isFake = isFake;
 
     return axis;
   }
@@ -144,15 +145,15 @@ export class Axis {
     return this._options;
   }
 
-  get isFake(): boolean {
-    return this._isFake;
-  }
-
   get originDomain(): Array<any> {
     return this._originDomain
   }
 
   public defaultFormatter() {
     return this.defaultFormatters.get(this.options.scaleType.type);
+  }
+
+  public defaultScale() {
+    return this.defaultScales.get(this.options.scaleType.type);
   }
 }
