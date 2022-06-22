@@ -1,12 +1,17 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AutoPositionDirective} from './auto-position.directive';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    AutoPositionDirective
+  ],
+  exports: [
+    AutoPositionDirective
+  ],
   imports: [
     CommonModule
   ]
 })
-export class AutoPositionModule { }
+export class AutoPositionModule {
+}

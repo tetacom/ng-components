@@ -33,6 +33,19 @@ export class PositionUtil {
         (containerPosition.left + containerPosition.right) / 2 -
         elementWidth / 2;
     }
+    if (align === Align.outerAuto) {
+      align = Align.outerRight;
+      if (window.innerWidth < containerPosition.right + elementWidth) {
+        align = Align.outerLeft;
+      }
+    }
+    if (align === Align.outerLeft) {
+      rect.left = containerPosition.left - elementWidth + margin;
+    }
+    if (align === Align.outerRight) {
+      rect.left = containerPosition.right - margin;
+    }
+
     if (align === Align.fitWidth) {
       rect.left = containerPosition.left + margin;
       rect.right = window.innerWidth - containerPosition.right + margin;
@@ -54,11 +67,28 @@ export class PositionUtil {
         verticalAlign = VerticalAlign.top;
       }
     }
+    if (verticalAlign === VerticalAlign.innerAuto) {
+      if (
+        containerPosition.bottom +
+        (elementPosition.bottom - elementPosition.top) <=
+        window.innerHeight
+      ) {
+        verticalAlign = VerticalAlign.innerBottom;
+      } else {
+        verticalAlign = VerticalAlign.innerTop;
+      }
+    }
     if (verticalAlign === VerticalAlign.top) {
       rect.top = containerPosition.top - elementHeight - verticalMargin;
     }
     if (verticalAlign === VerticalAlign.bottom) {
       rect.top = containerPosition.bottom + verticalMargin;
+    }
+    if (verticalAlign === VerticalAlign.innerTop) {
+      rect.top = containerPosition.bottom - elementHeight - verticalMargin;
+    }
+    if (verticalAlign === VerticalAlign.innerBottom) {
+      rect.top = containerPosition.top + verticalMargin;
     }
     if (verticalAlign === VerticalAlign.center) {
       rect.top =

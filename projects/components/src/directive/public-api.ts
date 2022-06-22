@@ -1,3 +1,4 @@
+export * from './auto-position/public-api';
 export * from './click-outside/public-api';
 export * from './context-menu/public-api';
 export * from './disable-control/public-api';

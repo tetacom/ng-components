@@ -5,4 +5,7 @@ export enum Align {
   auto,
   fitWidth,
   minWidth,
+  outerLeft,
+  outerRight,
+  outerAuto
 }

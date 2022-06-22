@@ -1,2 +1,2 @@
 export * from './auto-position.module';
-export * from './click-outside.directive';
+export * from './auto-position.directive';
