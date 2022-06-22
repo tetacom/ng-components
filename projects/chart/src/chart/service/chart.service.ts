@@ -193,10 +193,21 @@ export class ChartService {
     const hiddenSeries = localStorage.getItem(`${config.name}_${ChartService._hiddenSeriesPostfix}`);
     if (hiddenSeries) {
       const json = JSON.parse(hiddenSeries) as Array<string | number>;
-      config.series = config.series.map((serie) => {
+      config.series = config.series.map((serie, index) => {
         serie.visible = !json.includes(serie.id);
+
+        const currentSerieIndex = config.series.findIndex((_) => _.id === serie.id);
+
+        if (currentSerieIndex !== -1) {
+          const seriesLinkCount = config.series.filter((_) => _.yAxisIndex === config.series[currentSerieIndex].yAxisIndex && _.visible === true).length
+          config.yAxis[config.series[currentSerieIndex].yAxisIndex].visible = seriesLinkCount !== 0;
+        }
+
+
         return serie;
       });
+
+
       return config
     }
 
