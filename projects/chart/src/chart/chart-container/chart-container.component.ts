@@ -13,7 +13,7 @@ import {
   animationFrameScheduler,
   combineLatest,
   map,
-  Observable,
+  Observable, observeOn,
   shareReplay,
   tap,
   withLatestFrom,
@@ -24,7 +24,8 @@ import {ScaleService} from '../service/scale.service';
 import {ZoomService} from '../service/zoom.service';
 import {BrushType} from '../model/enum/brush-type';
 import {throttleTime} from 'rxjs/operators';
-import {ZoomType} from "../model/enum/zoom-type";
+import {ZoomType} from '../model/enum/zoom-type';
+import {tetaZoneFull} from '@tetacom/ng-components';
 
 type Opposite = boolean;
 
@@ -48,7 +49,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
   private _observer: ResizeObserver;
 
-  zoomType = ZoomType
+  zoomType = ZoomType;
 
   private filterPositionMap = new Map<Opposite,
     (axis: Axis) => (_: Axis) => boolean>()
@@ -79,12 +80,13 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     this.xAxisMap = this._scaleService.xAxisMap;
 
     this.yScaleMap = this._scaleService.yScaleMap.pipe(
-      throttleTime(0, animationFrameScheduler, {trailing: true}),
-      tap(() => {
-        setTimeout(() => {
-          this._cdr.detectChanges();
-        })
-      }),
+      observeOn(animationFrameScheduler),
+      // tap(() => {
+      //   setTimeout(() => {
+      //     this._cdr.detectChanges();
+      //   });
+      // }),
+      tetaZoneFull(this._zone),
       shareReplay({
         bufferSize: 1,
         refCount: true,
@@ -92,11 +94,12 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     );
 
     this.xScaleMap = this._scaleService.xScaleMap.pipe(
-      throttleTime(0, animationFrameScheduler, {trailing: true}),
-      tap(() =>
-        setTimeout(() => {
-          this._cdr.detectChanges();
-        })),
+      observeOn(animationFrameScheduler),
+      // tap(() =>
+      //   setTimeout(() => {
+      //     this._cdr.detectChanges();
+      //   })),
+      tetaZoneFull(this._zone),
       shareReplay({
         bufferSize: 1,
         refCount: true,
@@ -124,7 +127,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       this.xAxisMap,
       this.yAxisMap,
     ]).pipe(
-      throttleTime(0, animationFrameScheduler, {trailing: true}),
+      observeOn(animationFrameScheduler),
       withLatestFrom(this.config),
       map(
         (
@@ -166,10 +169,11 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
           };
         }
       ),
-      tap(() =>
-        setTimeout(() => {
-          this._cdr.detectChanges();
-        })),
+      // tap(() =>
+      //   setTimeout(() => {
+      //     this._cdr.detectChanges();
+      //   })),
+      tetaZoneFull(this._zone),
     );
   }
 

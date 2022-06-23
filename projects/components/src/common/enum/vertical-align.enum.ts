@@ -2,5 +2,8 @@ export enum VerticalAlign {
   top,
   bottom,
   center,
-  auto
+  auto,
+  innerTop,
+  innerBottom,
+  innerAuto
 }

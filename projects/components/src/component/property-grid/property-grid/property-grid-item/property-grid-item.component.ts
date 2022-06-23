@@ -74,7 +74,7 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
   constructor(private _transloco: TranslocoService) {}
 
   getDict() {
-    const dict = this.dict[this.column.name];
+    const dict = this.dict ? this.dict[this.column.name] : [];
     if (this.column.parentName?.length > 0) {
       return dict?.filter(
         (dictItem: IIdName<any>) =>
