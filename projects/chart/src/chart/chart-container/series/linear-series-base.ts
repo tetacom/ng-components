@@ -8,7 +8,7 @@ import {ZoomService} from '../../service/zoom.service';
 import * as d3 from 'd3';
 import {DragPointType} from '../../model/enum/drag-point-type';
 import {TooltipTracking} from '../../model/enum/tooltip-tracking';
-import {ClipPointsDirection} from "../../model/enum/clip-points-direction";
+import {ClipPointsDirection} from '../../model/enum/clip-points-direction';
 
 @Component({
   template: '',
@@ -17,7 +17,7 @@ export class LinearSeriesBase<T extends BasePoint>
   extends SeriesBaseComponent<T>
   implements OnInit, AfterViewInit, OnDestroy {
 
-  public defaultClipPointsMapping: Map<ClipPointsDirection, (min: number, max: number) => (point: BasePoint, idx: number, arr: Array<BasePoint>) => {}> = new Map()
+  public defaultClipPointsMapping: Map<ClipPointsDirection, (min: number, max: number) => (point: BasePoint, idx: number, arr: Array<BasePoint>) => {}> = new Map();
 
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
   display: Observable<number>;
@@ -38,34 +38,40 @@ export class LinearSeriesBase<T extends BasePoint>
   }
 
   override ngOnInit(): void {
-
-
     const filterX = (min: number, max: number) => (
       point: BasePoint,
       idx: number,
       arr: Array<BasePoint>
-    ) =>
-      (point.x <= max ||
-        point.x1 <= max ||
-        (arr[idx - 1] && arr[idx - 1].x <= max) ||
-        (arr[idx - 1] && arr[idx - 1].x1 <= max)) &&
-      (point.x >= min ||
-        point.x1 >= min ||
-        (arr[idx + 1] && arr[idx + 1].x >= min) ||
-        (arr[idx + 1] && arr[idx + 1].x1 >= min))
+    ) => {
+      const bigger = min > max ? min : max;
+      const smaller = min > max ? max : min;
+      return (point.x <= bigger ||
+          point.x1 <= bigger ||
+          (arr[idx - 1] && arr[idx - 1].x <= bigger) ||
+          (arr[idx - 1] && arr[idx - 1].x1 <= bigger)) &&
+        (point.x >= smaller ||
+          point.x1 >= smaller ||
+          (arr[idx + 1] && arr[idx + 1].x >= smaller) ||
+          (arr[idx + 1] && arr[idx + 1].x1 >= smaller))
+        ;
+    };
 
     const filterY = (min: number, max: number) => (
       point: BasePoint,
       idx: number,
       arr: Array<BasePoint>
-    ) => (point.y <= max ||
-        point.y1 <= max ||
-        (arr[idx - 1] && arr[idx - 1].y <= max) ||
-        (arr[idx - 1] && arr[idx - 1].y1 <= max)) &&
-      (point.y >= min ||
-        point.y1 >= min ||
-        (arr[idx + 1] && arr[idx + 1].y >= min) ||
-        (arr[idx + 1] && arr[idx + 1].y1 >= min));
+    ) => {
+      const bigger = min > max ? min : max;
+      const smaller = min > max ? max : min;
+      return (point.y <= bigger ||
+          point.y1 <= bigger ||
+          (arr[idx - 1] && arr[idx - 1].y <= bigger) ||
+          (arr[idx - 1] && arr[idx - 1].y1 <= bigger)) &&
+        (point.y >= smaller ||
+          point.y1 >= smaller ||
+          (arr[idx + 1] && arr[idx + 1].y >= smaller) ||
+          (arr[idx + 1] && arr[idx + 1].y1 >= smaller));
+    };
 
     this.defaultClipPointsMapping.set(ClipPointsDirection.x, filterX);
     this.defaultClipPointsMapping.set(ClipPointsDirection.y, filterY);
@@ -107,7 +113,7 @@ export class LinearSeriesBase<T extends BasePoint>
 
         let filteredData = this.series.data;
 
-        if(this.series.clipPointsDirection === ClipPointsDirection.x) {
+        if (this.series.clipPointsDirection === ClipPointsDirection.x) {
           let [min, max] = this.x.domain();
 
           min = min instanceof Date ? min.getTime() : min;
@@ -117,7 +123,7 @@ export class LinearSeriesBase<T extends BasePoint>
         }
 
 
-        if(this.series.clipPointsDirection === ClipPointsDirection.y) {
+        if (this.series.clipPointsDirection === ClipPointsDirection.y) {
           let [min, max] = this.y.domain();
 
           min = min instanceof Date ? min.getTime() : min;

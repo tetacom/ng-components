@@ -18,12 +18,11 @@ import {AxisOrientation} from '../model/enum/axis-orientation';
 import {BrushMessage, IBroadcastMessage, ZoomMessage,} from '../model/i-broadcast-message';
 import {BrushType} from '../model/enum/brush-type';
 import {BroadcastService} from '../service/broadcast.service';
-import {debounceTime, tap, throttleTime} from 'rxjs/operators';
-import {animationFrameScheduler, filter, takeWhile} from 'rxjs';
+import {debounceTime, tap} from 'rxjs/operators';
+import {filter, takeWhile} from 'rxjs';
 import {ChartService} from '../service/chart.service';
 import {ZoomBehaviorType} from '../model/enum/zoom-behavior-type';
 import objectHash from 'object-hash';
-import {tetaZoneFull} from "@tetacom/ng-components";
 
 @Directive({
   selector: '[tetaZoomable]',
@@ -84,7 +83,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
     if (enable) {
       this._element = d3.select(this.elementRef.nativeElement);
-      this.hash = objectHash.sha1({index: this.axis.index, orientation:  this.axis.orientation })
+      this.hash = objectHash.sha1({index: this.axis.index, orientation: this.axis.orientation});
 
       this.zoom = d3.zoom().extent([
         [0, 0],
@@ -102,7 +101,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       this.zoomService.elementHashMap.set(this.hash, this._element);
       this.zoomService.scaleHashMap.set(this.hash, this.scale);
       this.zoomService.zoomHashMap.set(this.hash, this.zoom);
-      this.zoomService.setBroadcastChannel(this.config?.zoom.syncChannel)
+      this.zoomService.setBroadcastChannel(this.config?.zoom.syncChannel);
 
 
       const maxZoom = this.config.zoom?.max
@@ -123,7 +122,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       this._element.call(this.zoom).on('dblclick.zoom', null); // Disable dbclick zoom
 
       if (this.config?.zoom?.zoomBehavior === ZoomBehaviorType.wheel) {
-        this.runWheelZoom()
+        this.runWheelZoom();
       }
     }
 
@@ -137,7 +136,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           ) {
             const currentZoom = d3.zoomTransform(this._element.node());
 
-            if(currentZoom !== m.message.event.transform) {
+            if (currentZoom !== m.message.event.transform) {
               this._element.call(
                 this.zoom.transform,
                 m.message.event.transform
@@ -183,12 +182,11 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel)
         .pipe(
           takeWhile((_) => this.alive),
-          debounceTime(150),
+          debounceTime(100),
           filter((data: IBroadcastMessage<BrushMessage>) =>
             Boolean(data.message.selection)
           ),
           tap((m: IBroadcastMessage<BrushMessage>) => {
-
             const currentTransform = d3.zoomTransform(this._element.node());
 
             if (
@@ -204,18 +202,25 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             this.brushScale.domain(this.axis.originDomain);
             const domain = this.brushScale.domain();
 
-            const scale = (domain[1] - domain[0]) / (s[1] - s[0]);
-
+            const scale = Math.abs(domain[1] - domain[0]) / Math.abs(s[1] - s[0]);
             let transform = zoomIdentity.scale(scale);
 
             if (m.message?.brushType === BrushType.x) {
-              transform = transform.translate(-this.brushScale(s[0]), 0);
+              if (this.config.xAxis[0]?.inverted) {
+                transform = transform.translate(-this.brushScale(s[0]), 0);
+              } else {
+                transform = transform.translate(-this.brushScale(s[1]), 0);
+              }
             }
             if (m.message?.brushType === BrushType.y) {
-              transform = transform.translate(0, -this.brushScale(s[0]));
+              if (this.config.yAxis[0]?.inverted) {
+                transform = transform.translate(0, -this.brushScale(s[0]));
+              } else {
+                transform = transform.translate(0, -this.brushScale(s[1]));
+              }
             }
 
-            if(m.message?.style?.transition) {
+            if (m.message?.style?.transition) {
               this._element.transition().call(this.zoom.transform, transform, null, {});
             } else {
               this._element.call(this.zoom.transform, transform, null, {});
@@ -278,7 +283,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       .filter(
         (event) => {
           return (event.ctrlKey && event.type === 'wheel') ||
-            Boolean(window.TouchEvent && event.type !== 'wheel')
+            Boolean(window.TouchEvent && event.type !== 'wheel');
         }
       )
       .wheelDelta((event) => {
