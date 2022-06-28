@@ -40,7 +40,7 @@ export const singleSelect = () => ({
   },
   props: {
     icon: 'user',
-    options: getOptions(10),
+    options: getOptions(1000),
     align: select(
       'align',
       {
