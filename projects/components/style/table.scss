@@ -130,11 +130,9 @@
           height: 100%;
           display: none;
         }
-
         &:hover &_drag {
           display: block;
         }
-
         &:hover {
           cursor: col-resize;
         }
