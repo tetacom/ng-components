@@ -28,13 +28,17 @@ export class GridlinesComponent implements AfterViewInit {
   constructor(private svc: ScaleService, private chartService: ChartService) {
     this.config = this.chartService.config;
 
-    this.tickYValues = this.svc.yScaleMap.pipe(map((_) => _.get(0).ticks()));
-    this.tickXValues = this.svc.xScaleMap.pipe(map((_) => _.get(0).ticks()));
+    this.tickYValues = this.svc.yScaleMap.pipe(map((_) => {
+      const ratio = this.size.height / 40;
+      return _.get(0).ticks(ratio);
+    }));
+    this.tickXValues = this.svc.xScaleMap.pipe(map((_) => {
+      const ratio = this.size.width / 40;
+      return _.get(0).ticks(ratio);
+    }));
 
     this.y = this.svc.yScaleMap.pipe(map((_) => _.get(0)));
     this.x = this.svc.xScaleMap.pipe(map((_) => _.get(0)));
-
-
   }
 
   ngAfterViewInit() {

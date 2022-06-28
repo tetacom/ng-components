@@ -56,10 +56,13 @@ export class DragDirective<T> implements OnInit, OnDestroy {
   @HostListener('mousedown', ['$event'])
   @HostListener('touchstart', ['$event'])
   mousedown(event) {
+    if(!this.allowDrag) {
+      return;
+    }
     if (event.ctrlKey && this._container?.multiple) {
-      this._dragService.addSelection(this.instance, this._container.instance);
+      this._dragService.addSelection(this.instance, this._container?.instance);
     } else {
-      this._dragService.setSelection(this.instance, this._container.instance);
+      this._dragService.setSelection(this.instance, this._container?.instance);
     }
     this._dragService.setStartPosition({
       x: event.x,
