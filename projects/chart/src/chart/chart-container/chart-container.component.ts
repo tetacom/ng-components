@@ -10,20 +10,20 @@ import {
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from '../service/chart.service';
 import {
-  animationFrameScheduler,
-  combineLatest,
+  animationFrameScheduler, auditTime,
+  combineLatest, combineLatestWith,
   map,
   Observable, observeOn,
   shareReplay,
   tap,
-  withLatestFrom,
+  withLatestFrom, zip,
 } from 'rxjs';
 import {Axis} from '../core/axis/axis';
 import {AxisOrientation} from '../model/enum/axis-orientation';
 import {ScaleService} from '../service/scale.service';
 import {ZoomService} from '../service/zoom.service';
 import {BrushType} from '../model/enum/brush-type';
-import {throttleTime} from 'rxjs/operators';
+import {debounceTime, throttleTime} from 'rxjs/operators';
 import {ZoomType} from '../model/enum/zoom-type';
 import {tetaZoneFull} from '@tetacom/ng-components';
 
@@ -75,17 +75,12 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     private _zone: NgZone
   ) {
     this.config = this._svc.config;
-    this.size = this._svc.size;
+    this.size = this._svc.size
     this.yAxisMap = this._scaleService.yAxisMap;
     this.xAxisMap = this._scaleService.xAxisMap;
 
     this.yScaleMap = this._scaleService.yScaleMap.pipe(
-      observeOn(animationFrameScheduler),
-      // tap(() => {
-      //   setTimeout(() => {
-      //     this._cdr.detectChanges();
-      //   });
-      // }),
+      observeOn(animationFrameScheduler, 10),
       tetaZoneFull(this._zone),
       shareReplay({
         bufferSize: 1,
@@ -94,11 +89,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     );
 
     this.xScaleMap = this._scaleService.xScaleMap.pipe(
-      observeOn(animationFrameScheduler),
-      // tap(() =>
-      //   setTimeout(() => {
-      //     this._cdr.detectChanges();
-      //   })),
+      observeOn(animationFrameScheduler, 10),
       tetaZoneFull(this._zone),
       shareReplay({
         bufferSize: 1,
@@ -122,16 +113,13 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.visibleRect = combineLatest([
-      this.size,
-      this.xAxisMap,
-      this.yAxisMap,
-    ]).pipe(
-      observeOn(animationFrameScheduler),
+    this.visibleRect = this.size.pipe(
+      combineLatestWith(this.xAxisMap, this.yAxisMap)
+    ).pipe(
       withLatestFrom(this.config),
       map(
         (
-          data: [[DOMRect, Map<number, any>, Map<number, any>], IChartConfig]
+          data: [[DOMRect, Map<number, Axis>, Map<number, Axis>], IChartConfig]
         ) => {
           const [[size, x, y], config] = data;
           const yAxesArray = [...y.values()];
@@ -169,15 +157,19 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
           };
         }
       ),
-      // tap(() =>
-      //   setTimeout(() => {
-      //     this._cdr.detectChanges();
-      //   })),
       tetaZoneFull(this._zone),
-    );
+      shareReplay({
+        bufferSize: 1,
+        refCount: true,
+      })
+    )
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+  }
+
+
+  ngAfterViewInit(): void {
     this._observer = new ResizeObserver((entries: ResizeObserverEntry[]) => {
       requestAnimationFrame(() => {
         if (
