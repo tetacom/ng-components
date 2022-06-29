@@ -10,20 +10,20 @@ export type TransformStyle = {
 export class ZoomMessage {
   event?: D3ZoomEvent<any, any> | any;
   axis?: Axis;
-  brushDomain?: number[];
+  domain?: number[];
   chartId: string;
   style?: TransformStyle;
 
   constructor(options?: {
     event: D3ZoomEvent<any, any> | any;
     axis?: Axis;
-    brushDomain?: number[]
+    domain?: number[]
     chartId: string;
     style?: TransformStyle;
   }) {
     this.event = options?.event;
     this.axis = options?.axis;
-    this.brushDomain = options.brushDomain;
+    this.domain = options.domain;
     this.chartId = options?.chartId;
     this.style = options?.style;
   }

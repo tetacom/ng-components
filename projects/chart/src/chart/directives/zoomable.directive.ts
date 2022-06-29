@@ -18,8 +18,8 @@ import {AxisOrientation} from '../model/enum/axis-orientation';
 import {BrushMessage, IBroadcastMessage, ZoomMessage,} from '../model/i-broadcast-message';
 import {BrushType} from '../model/enum/brush-type';
 import {BroadcastService} from '../service/broadcast.service';
-import {combineLatestAll, debounceTime, tap} from 'rxjs/operators';
-import {BehaviorSubject, filter, takeWhile, combineLatest, combineLatestWith} from 'rxjs';
+import {debounceTime, tap} from 'rxjs/operators';
+import {combineLatestWith, filter, takeWhile} from 'rxjs';
 import {ChartService} from '../service/chart.service';
 import {ZoomBehaviorType} from '../model/enum/zoom-behavior-type';
 import objectHash from 'object-hash';
@@ -58,13 +58,10 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     if (this.axis?.options?.zoom || this.config?.zoom?.enable) {
       this.zoomable = this.config?.zoom?.zoomBehavior === ZoomBehaviorType.move && !this.config?.tooltip?.showCrosshair;
       this.crosshair = this.config?.tooltip?.showCrosshair;
-
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-
-
     if (changes.hasOwnProperty('brushScale') || changes.hasOwnProperty('scale') || changes.hasOwnProperty('axis')) {
       if (this.hash) {
         this.zoomService.scaleHashMap.set(this.hash, this.scale);
@@ -160,9 +157,32 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       }),
       tap((m: IBroadcastMessage<ZoomMessage>) => {
         if (this.config.id !== m.message?.chartId) {
+
+          this.brushScale.domain(this.axis.originDomain);
+
+          const scale = Math.abs(this.axis.originDomain[1] - this.axis.originDomain[0]) / Math.abs(m.message.domain[1] - m.message.domain[0]);
+
+          let transform = zoomIdentity.scale(scale);
+
+          if (this.config?.zoom?.type === ZoomType.x) {
+            if (this.config.xAxis[0]?.inverted) {
+              transform = transform.translate(-this.brushScale(m.message.domain[0]), 0);
+            } else {
+              transform = transform.translate(this.brushScale(-m.message.domain[1]), 0);
+            }
+          }
+
+          if (this.config?.zoom?.type === ZoomType.y) {
+            if (this.config.yAxis[0]?.inverted) {
+              transform = transform.translate(0, -this.brushScale(m.message.domain[0]));
+            } else {
+              transform = transform.translate(0, -this.brushScale(m.message.domain[1]));
+            }
+          }
+
           this._element.call(
             this.zoom.transform,
-            m.message.event.transform,
+            transform,
             null,
             {}
           );
@@ -216,6 +236,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
                 transform = transform.translate(-this.brushScale(s[1]), 0);
               }
             }
+
             if (m.message?.brushType === BrushType.y) {
               if (this.config.yAxis[0]?.inverted) {
                 transform = transform.translate(0, -this.brushScale(s[0]));
@@ -262,7 +283,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         const message = new ZoomMessage({
           event,
           axis: this.axis,
-          brushDomain: domain,
+          domain,
           chartId: this.config.id,
         });
 
@@ -338,7 +359,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           type,
         },
         axis: this.axis,
-        brushDomain: domain,
+        domain,
         chartId: this.config.id,
       });
 
