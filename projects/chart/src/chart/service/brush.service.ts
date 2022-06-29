@@ -178,7 +178,7 @@ export class BrushService {
           }),
           tap((m: IBroadcastMessage<ZoomMessage>) => {
             const {
-              message: { brushDomain },
+              message: { domain },
             } = m;
 
             if (
@@ -189,14 +189,14 @@ export class BrushService {
                 config.brush?.type === BrushType.x)
             ) {
               container.call(this.brush.move, [
-                brushScale(brushDomain[0]),
-                brushScale(brushDomain[1]),
+                brushScale(domain[0]),
+                brushScale(domain[1]),
               ]);
 
               if (m.message.event.type === 'end') {
                 const brushMessage = new BrushMessage({
                   event: null,
-                  selection: brushDomain,
+                  selection: domain,
                   brushType: config?.brush?.type ?? BrushType.x,
                   brushScale,
                 });
@@ -207,7 +207,7 @@ export class BrushService {
                 });
               }
 
-              this.selection = brushDomain;
+              this.selection = domain;
             }
           })
         )
