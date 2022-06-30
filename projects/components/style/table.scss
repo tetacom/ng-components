@@ -16,8 +16,8 @@
     display: flex;
     overflow: hidden;
     flex-shrink: 0;
-    background-color: getColorVar('text', '50');
-    color: getColorVar('white', '50');
+    background-color: getColorVar('text', '10');
+    color: getColorVar('text', '90');
     @include getFont($fonts, 'table-header');
 
     &_locked {
