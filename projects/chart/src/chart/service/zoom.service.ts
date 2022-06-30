@@ -26,6 +26,8 @@ export class ZoomService {
       bufferSize: 1,
       refCount: true
     }));
+
+
   }
 
   fireZoom(zoom: IChartEvent<Axis>) {

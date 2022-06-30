@@ -120,6 +120,9 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       this.zoom.on('zoom end', this.zoomed);
       this._element.call(this.zoom).on('dblclick.zoom', null); // Disable dbclick zoom
 
+
+      this.chartService.emitZoomInstance(this.zoomService);
+
       if (this.config?.zoom?.zoomBehavior === ZoomBehaviorType.wheel) {
         this.runWheelZoom();
       }
@@ -208,7 +211,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             const [m] = data;
             return Boolean(m.message.selection)
           }),
-          debounceTime(150),
           tap((data: [IBroadcastMessage<BrushMessage>, DOMRect]) => {
 
             const [m] = data;

@@ -24,6 +24,7 @@ import {BasePoint} from '../model/base-point';
 import {Series} from '../model/series';
 import {Annotation} from '../model/annotation';
 import {ClipPointsDirection} from "../model/enum/clip-points-direction";
+import {ZoomService} from "./zoom.service";
 
 @Injectable({
   providedIn: 'root',
@@ -44,6 +45,8 @@ export class ChartService {
   public annotationContextMenu: Observable<IChartEvent<Annotation>>;
   public chartClick: Observable<IChartEvent<BasePoint>>;
   public chartContextMenu: Observable<IChartEvent<BasePoint>>;
+  public zoomInstance: Observable<ZoomService>;
+
   private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig());
   private size$ = new BehaviorSubject<DOMRect>(new DOMRectReadOnly());
   private pointerMove$ = new Subject<PointerEvent>();
@@ -55,6 +58,8 @@ export class ChartService {
   private chartContextMenu$ = new Subject<IChartEvent<BasePoint>>();
   private annotationEvent$ = new Subject<IChartEvent<Annotation>>();
   private annotationMove$ = new Subject<IChartEvent<Annotation>>();
+  private zoomInstance$ = new Subject<ZoomService>();
+
 
   private static _hiddenSeriesPostfix = 'hidden_series';
 
@@ -95,6 +100,7 @@ export class ChartService {
     this.plotBandContextMenu = this.plotBandEvent$
       .asObservable()
       .pipe(filter((_) => _?.event?.type === 'contextmenu'));
+    this.zoomInstance = this.zoomInstance$.asObservable();
   }
 
   public setConfig(config: IChartConfig) {
@@ -179,6 +185,10 @@ export class ChartService {
 
   public emitChartContextMenu(event: IChartEvent<BasePoint>) {
     this.chartContextMenu$.next(event);
+  }
+
+  public emitZoomInstance(event: ZoomService) {
+    this.zoomInstance$.next(event);
   }
 
   private saveCookie(config: IChartConfig) {
