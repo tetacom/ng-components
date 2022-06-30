@@ -7,5 +7,5 @@ export const defaultAxisConfig: AxisOptions = {
   scaleType: {
     type: ScaleType.linear,
   },
-  niceTicks: true,
+  niceTicks: false,
 };

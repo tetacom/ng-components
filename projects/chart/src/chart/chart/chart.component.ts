@@ -66,6 +66,10 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   @Output()
   annotationMove: EventEmitter<IChartEvent<Annotation>> = new EventEmitter<IChartEvent<Annotation>>();
 
+  @Output()
+  zoomServiceInstance: EventEmitter<ZoomService> = new EventEmitter<ZoomService>();
+
+
   @Input() set config(config: IChartConfig) {
     this.chartService.setConfig(config);
   }
@@ -75,6 +79,7 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   constructor(public chartService: ChartService,
               public zoomService: ZoomService,
               public scaleService: ScaleService) {
+
     this.svcConfig = this.chartService.config;
     this.hasSeriesData = this.svcConfig.pipe(
       map(
@@ -179,6 +184,12 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
         this.annotationMove.emit(_);
       });
 
+    this.chartService.zoomInstance
+      .pipe(
+        takeWhile(() => this._alive))
+      .subscribe((_) => {
+        this.zoomServiceInstance.emit(_);
+      });
 
   }
 
