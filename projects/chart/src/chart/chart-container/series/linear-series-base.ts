@@ -10,6 +10,7 @@ import {DragPointType} from '../../model/enum/drag-point-type';
 import {TooltipTracking} from '../../model/enum/tooltip-tracking';
 import {ClipPointsDirection} from '../../model/enum/clip-points-direction';
 import {Axis} from "../../core/axis/axis";
+import {IScalesMap} from "../../model/i-scales-map";
 
 @Component({
   template: '',
@@ -78,21 +79,18 @@ export class LinearSeriesBase<T extends BasePoint>
     this.defaultClipPointsMapping.set(ClipPointsDirection.y, filterY);
 
     this.transform = this.svc.pointerMove.pipe(
-      withLatestFrom(this.scaleService.xMap, this.scaleService.yMap),
-      map((data: [PointerEvent, Map<number, Axis>, Map<number, Axis>]) => {
-        const [event, x, y] = data;
+      withLatestFrom(this.scaleService.scales),
+      map((data: [PointerEvent, IScalesMap]) => {
+        const [event, {x, y}] = data;
 
         return this.getTransform(event, x.get(this.series.xAxisIndex).scale, y.get(this.series.yAxisIndex).scale);
       }),
       tap(() => setTimeout(() => this.cdr.detectChanges()))
     );
 
-    this.path = combineLatest([
-      this.scaleService.xMap,
-      this.scaleService.yMap,
-    ]).pipe(
-      map((data: [Map<number, Axis>, Map<number, Axis>]) => {
-        const [x, y] = data;
+    this.path = this.scaleService.scales.pipe(
+      map((data) => {
+        const {x, y} = data;
         this.x = x.get(this.series.xAxisIndex).scale;
         this.y = y.get(this.series.yAxisIndex).scale;
 

@@ -28,8 +28,8 @@ export class XAxisComponent implements OnInit {
   private _alive = true;
 
   constructor(private scaleService: ScaleService) {
-    this.x = this.scaleService.xMap.pipe(map((_) => {
-      return _.get(this.axis.index)?.scale
+    this.x = this.scaleService.scales.pipe(map((_) => {
+      return _.x.get(this.axis.index)?.scale
     }))
   }
 

@@ -45,15 +45,12 @@ export class AreaSeriesComponent<T extends BasePoint>
 
   override ngOnInit() {
     super.ngOnInit();
-    this.areaPath = combineLatest([
-      this.scaleService.xMap,
-      this.scaleService.yMap,
-    ]).pipe(
+    this.areaPath = this.scaleService.scales.pipe(
       map(
         (
-          data: [Map<number, Axis>, Map<number, Axis>]
+          data
         ) => {
-          const [x, y] = data;
+          const {x, y} = data;
 
           this.x = x.get(this.series.xAxisIndex).scale;
           this.y = y.get(this.series.yAxisIndex).scale;

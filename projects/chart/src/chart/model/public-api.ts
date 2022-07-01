@@ -14,3 +14,4 @@ export * from './plot-line';
 export * from './series';
 export * from './svg-attributes';
 export * from './annotation';
+export * from './i-scales-map'

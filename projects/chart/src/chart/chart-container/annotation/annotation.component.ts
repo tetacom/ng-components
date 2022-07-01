@@ -48,8 +48,8 @@ export class AnnotationComponent implements OnDestroy {
     private scaleService: ScaleService,
     private cdr: ChangeDetectorRef,
     private chartService: ChartService) {
-    this.x = this.scaleService.xMap.pipe(map((_) => _.get(this.annotation.xAxisIndex ?? 0).scale));
-    this.y = this.scaleService.yMap.pipe(map((_) => _.get(this.annotation.yAxisIndex ?? 0).scale));
+    this.x = this.scaleService.scales.pipe(map((_) => _.x.get(this.annotation.xAxisIndex ?? 0).scale));
+    this.y = this.scaleService.scales.pipe(map((_) => _.y.get(this.annotation.yAxisIndex ?? 0).scale));
     this.drag = d3.drag();
   }
 
