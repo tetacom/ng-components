@@ -56,9 +56,9 @@ export class BarSeriesComponent<T extends BasePoint>
       })
     );
 
-    this.x1 = this.scaleService.xScaleMap.pipe(
+    this.x1 = this.scaleService.xMap.pipe(
       map((_) => {
-        const x = _.get(this.series.xAxisIndex);
+        const x = _.get(this.series.xAxisIndex).scale;
         const range = x.range();
         const domain = this.series.data.map((_) => _.x);
 
@@ -70,12 +70,12 @@ export class BarSeriesComponent<T extends BasePoint>
       })
     );
 
-    this.x = this.scaleService.xScaleMap.pipe(
-      map((_) => _.get(this.series.xAxisIndex))
+    this.x = this.scaleService.xMap.pipe(
+      map((_) => _.get(this.series.xAxisIndex).scale)
     );
 
-    this.y = this.scaleService.yScaleMap.pipe(
-      map((_) => _.get(this.series.yAxisIndex))
+    this.y = this.scaleService.yMap.pipe(
+      map((_) => _.get(this.series.yAxisIndex).scale)
     );
   }
 

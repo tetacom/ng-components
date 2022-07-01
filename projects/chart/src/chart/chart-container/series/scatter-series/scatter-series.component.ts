@@ -18,7 +18,6 @@ export class ScatterSeriesComponent<T extends BasePoint>
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
   display: Observable<number>;
   path: Observable<string>;
-  svgElement: SVGGeometryElement;
   x: Observable<any>;
   y: Observable<any>;
 
@@ -33,8 +32,8 @@ export class ScatterSeriesComponent<T extends BasePoint>
   }
 
   override ngOnInit(): void {
-    this.x = this.scaleService.xScaleMap.pipe(map(_ => _.get(this.series.xAxisIndex)));
-    this.y = this.scaleService.yScaleMap.pipe(map(_ => _.get(this.series.yAxisIndex)));
+    this.x = this.scaleService.xMap.pipe(map(_ => _.get(this.series.xAxisIndex).scale));
+    this.y = this.scaleService.yMap.pipe(map(_ => _.get(this.series.yAxisIndex).scale));
   }
 
   ngAfterViewInit() {

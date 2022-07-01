@@ -18,7 +18,7 @@ export class ZoomService {
   elementHashMap = new Map<string, any>();
   zoomHashMap = new Map<string, ZoomBehavior<any, any>>();
 
-  private zoomed$ = new BehaviorSubject<IChartEvent<Axis>>(null);
+  private zoomed$ = new BehaviorSubject<IChartEvent<Axis>>({});
   private broadcastChannel: string;
 
   constructor() {
@@ -26,8 +26,6 @@ export class ZoomService {
       bufferSize: 1,
       refCount: true
     }));
-
-
   }
 
   fireZoom(zoom: IChartEvent<Axis>) {

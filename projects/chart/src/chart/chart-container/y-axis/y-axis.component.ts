@@ -26,8 +26,8 @@ export class YAxisComponent implements OnInit, AfterViewInit {
   private _alive = true;
 
   constructor(private scaleService: ScaleService) {
-    this.y = this.scaleService.yScaleMap.pipe(map((_) => {
-      return _.get(this.axis.index)
+    this.y = this.scaleService.yMap.pipe(map((_) => {
+      return _.get(this.axis.index)?.scale
     }))
   }
 

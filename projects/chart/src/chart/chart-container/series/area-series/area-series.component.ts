@@ -15,6 +15,7 @@ import {LinearSeriesBase} from '../linear-series-base';
 import {combineLatest, map, Observable} from 'rxjs';
 import * as d3 from 'd3';
 import {ClipPointsDirection} from "../../../model/enum/clip-points-direction";
+import {Axis} from "../../../core/axis/axis";
 
 @Component({
   selector: 'svg:svg[teta-area-series]',
@@ -45,17 +46,17 @@ export class AreaSeriesComponent<T extends BasePoint>
   override ngOnInit() {
     super.ngOnInit();
     this.areaPath = combineLatest([
-      this.scaleService.xScaleMap,
-      this.scaleService.yScaleMap,
+      this.scaleService.xMap,
+      this.scaleService.yMap,
     ]).pipe(
       map(
         (
-          data: [Map<number, any>, Map<number, any>]
+          data: [Map<number, Axis>, Map<number, Axis>]
         ) => {
           const [x, y] = data;
 
-          this.x = x.get(this.series.xAxisIndex);
-          this.y = y.get(this.series.yAxisIndex);
+          this.x = x.get(this.series.xAxisIndex).scale;
+          this.y = y.get(this.series.yAxisIndex).scale;
 
           const area = d3
             .area<BasePoint>()

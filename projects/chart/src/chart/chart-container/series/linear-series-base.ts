@@ -9,6 +9,7 @@ import * as d3 from 'd3';
 import {DragPointType} from '../../model/enum/drag-point-type';
 import {TooltipTracking} from '../../model/enum/tooltip-tracking';
 import {ClipPointsDirection} from '../../model/enum/clip-points-direction';
+import {Axis} from "../../core/axis/axis";
 
 @Component({
   template: '',
@@ -77,23 +78,23 @@ export class LinearSeriesBase<T extends BasePoint>
     this.defaultClipPointsMapping.set(ClipPointsDirection.y, filterY);
 
     this.transform = this.svc.pointerMove.pipe(
-      withLatestFrom(this.scaleService.xScaleMap, this.scaleService.yScaleMap),
-      map((data: [PointerEvent, Map<number, any>, Map<number, any>]) => {
+      withLatestFrom(this.scaleService.xMap, this.scaleService.yMap),
+      map((data: [PointerEvent, Map<number, Axis>, Map<number, Axis>]) => {
         const [event, x, y] = data;
 
-        return this.getTransform(event, x, y);
+        return this.getTransform(event, x.get(this.series.xAxisIndex).scale, y.get(this.series.yAxisIndex).scale);
       }),
       tap(() => setTimeout(() => this.cdr.detectChanges()))
     );
 
     this.path = combineLatest([
-      this.scaleService.xScaleMap,
-      this.scaleService.yScaleMap,
+      this.scaleService.xMap,
+      this.scaleService.yMap,
     ]).pipe(
-      map((data: [Map<number, any>, Map<number, any>]) => {
+      map((data: [Map<number, Axis>, Map<number, Axis>]) => {
         const [x, y] = data;
-        this.x = x.get(this.series.xAxisIndex);
-        this.y = y.get(this.series.yAxisIndex);
+        this.x = x.get(this.series.xAxisIndex).scale;
+        this.y = y.get(this.series.yAxisIndex).scale;
 
         const filter = this.defaultClipPointsMapping.get(this.series.clipPointsDirection);
 
@@ -210,15 +211,14 @@ export class LinearSeriesBase<T extends BasePoint>
 
   getTransform(
     event: any,
-    scaleX: Map<number, any>,
-    scaleY: Map<number, any>
+    scaleX: any,
+    scaleY: any
   ): Pick<BasePoint, 'x' | 'y'> {
     if (event.type === 'mouseleave') {
       return null;
     }
     const mouse = [event?.offsetX, event?.offsetY];
-    const foundX = scaleX.get(this.series.xAxisIndex);
-    const foundY = scaleY.get(this.series.yAxisIndex);
+
     const tooltipTracking = this.config?.tooltip?.tracking;
     const lineIntersection = (
       p0_x,
@@ -258,28 +258,28 @@ export class LinearSeriesBase<T extends BasePoint>
       const bisect = d3.bisector((_: BasePoint) => _.x).right;
       const pointer = mouse[0];
 
-      let x0 = foundX.invert(pointer);
+      let x0 = scaleX.invert(pointer);
       if (x0 instanceof Date) {
         x0 = x0.getTime();
       }
       const rightId = bisect(this.series.data, x0);
-      const range = foundY.range();
+      const range = scaleY.range();
 
       const intersect = lineIntersection(
         pointer,
         range[0],
         pointer,
         range[1],
-        foundX(this.series.data[rightId - 1]?.x),
-        foundY(this.series.data[rightId - 1]?.y),
-        foundX(this.series.data[rightId]?.x),
-        foundY(this.series.data[rightId]?.y)
+        scaleX(this.series.data[rightId - 1]?.x),
+        scaleY(this.series.data[rightId - 1]?.y),
+        scaleX(this.series.data[rightId]?.x),
+        scaleY(this.series.data[rightId]?.y)
       );
-      const x = foundX.invert(intersect.x);
-      const y = foundY.invert(intersect.y);
+      const x = scaleX.invert(intersect.x);
+      const y = scaleY.invert(intersect.y);
       if (x !== null && x !== undefined && !isNaN(x) && y !== null && y !== undefined && !isNaN(y)) {
         this.svc.setTooltip({
-          point: {x: foundX.invert(intersect.x), y: foundY.invert(intersect.y)},
+          point: {x: scaleX.invert(intersect.x), y: scaleY.invert(intersect.y)},
           series: this.series,
         });
       } else {
@@ -298,30 +298,30 @@ export class LinearSeriesBase<T extends BasePoint>
     if (tooltipTracking === TooltipTracking.y) {
       const bisect = d3.bisector((_: BasePoint) => _.y).right;
 
-      let y0 = foundY.invert(mouse[1]);
+      let y0 = scaleY.invert(mouse[1]);
       if (y0 instanceof Date) {
         y0 = y0.getTime();
       }
       const rightId = bisect(this.series.data, y0);
-      const range = foundX.range();
+      const range = scaleX.range();
 
       const intersect = lineIntersection(
         range[0],
         mouse[1],
         range[1],
         mouse[1],
-        foundX(this.series.data[rightId - 1]?.x),
-        foundY(this.series.data[rightId - 1]?.y),
-        foundX(this.series.data[rightId]?.x),
-        foundY(this.series.data[rightId]?.y)
+        scaleX(this.series.data[rightId - 1]?.x),
+        scaleY(this.series.data[rightId - 1]?.y),
+        scaleX(this.series.data[rightId]?.x),
+        scaleY(this.series.data[rightId]?.y)
       );
 
-      const x = foundX.invert(intersect.x);
-      const y = foundY.invert(intersect.y);
+      const x = scaleX.invert(intersect.x);
+      const y = scaleY.invert(intersect.y);
 
       if (x !== null && x !== undefined && !isNaN(x) && y !== null && y !== undefined && !isNaN(y)) {
         this.svc.setTooltip({
-          point: {x: foundX.invert(intersect.x), y: foundY.invert(intersect.y)},
+          point: {x: scaleX.invert(intersect.x), y: scaleY.invert(intersect.y)},
           series: this.series,
         });
       } else {
