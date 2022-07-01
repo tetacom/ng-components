@@ -1,18 +1,17 @@
 <ng-container *ngIf="{
   size: size | async,
   config: config | async,
-  yMap: yMap | async,
-  xMap: xMap | async,
+  scales: scales | async,
   visibleRect: visibleRect | async,
   brushScale: brushScale | async
 } as data" xmlns:svg="http://www.w3.org/1999/html">
   <teta-tooltip *ngIf="data.config?.tooltip?.enable"
                 [size]="data.size"
                 [config]="data.config"></teta-tooltip>
-  <ng-container *ngIf="data.visibleRect?.width > 0 && data.visibleRect?.height > 0 && data.xMap.size === data.config?.xAxis?.length && data.yMap.size === data.config?.yAxis?.length">
+  <ng-container *ngIf="data.visibleRect?.width > 0 && data.visibleRect?.height > 0 && data.scales.x && data.scales.y">
     <svg height="100%" width="100%" class="position-absolute">
       <g class="y-axis-container">
-        <ng-container *ngFor="let item of data.yMap | keyvalue; trackBy: identify">
+        <ng-container *ngFor="let item of data.scales.y | keyvalue; trackBy: identify">
           <ng-container *ngIf="item.value.options.visible">
             <g
               teta-y-axis
@@ -23,7 +22,7 @@
               tetaZoomable
               fill-opacity="0"
               [brushScale]="data.brushScale"
-              [scale]="data.yMap.get(item.key).scale"
+              [scale]="data.scales.y.get(item.key).scale"
               [axis]="item.value"
               [config]="data.config"
               [size]="data.visibleRect"
@@ -37,8 +36,8 @@
         </ng-container>
       </g>
       <g class="x-axis-container">
-        <ng-container *ngFor="let item of data.xMap | keyvalue; trackBy: identify">
-          <ng-container *ngIf="item.value.options.visible && data.xMap.size === data.config?.xAxis?.length && data.yMap.size === data.config?.yAxis?.length">
+        <ng-container *ngFor="let item of data.scales.x | keyvalue; trackBy: identify">
+          <ng-container *ngIf="item.value.options.visible && data.scales.x && data.scales.y">
             <g
               teta-x-axis
               [axis]="item.value"
@@ -48,7 +47,7 @@
               tetaZoomable
               fill-opacity="0"
               [brushScale]="data.brushScale"
-              [scale]="data.xMap.get(item.key).scale"
+              [scale]="data.scales.x.get(item.key).scale"
               [axis]="item.value"
               [config]="data.config"
               [size]="data.visibleRect"
@@ -62,7 +61,7 @@
       </g>
     </svg>
   </ng-container>
-  <ng-container *ngIf="data.visibleRect?.width > 0 && data.visibleRect?.height > 0 && data.xMap.size === data.config?.xAxis?.length && data.yMap.size === data.config?.yAxis?.length">
+  <ng-container *ngIf="data.visibleRect?.width > 0 && data.visibleRect?.height > 0 && data.scales.x && data.scales.y">
     <svg
       tetaBrushable
       tetaZoomable
@@ -71,13 +70,13 @@
       [brushScale]="data.brushScale"
       [scale]="data.brushScale"
       [config]="data.config"
-      [axis]="data.config?.zoom?.type === zoomType.x ? data.xMap.get(0) : data.yMap.get(0)"
+      [axis]="data.config?.zoom?.type === zoomType.x ? data.scales.x.get(0) : data.scales.y.get(0)"
       [attr.width]="data.visibleRect.width"
       [attr.height]="data.visibleRect.height"
       [attr.viewBox]="'0 0 ' + data.visibleRect.width + ' ' + data.visibleRect.height"
       [style.transform]="'translate('+ data.visibleRect.x +'px, '+ data.visibleRect.y +'px)'"
-      (contextmenu)="contextMenu($event, data.xMap, data.yMap)"
-      (click)="click($event, data.xMap, data.yMap)"
+      (contextmenu)="contextMenu($event, data.scales.x, data.scales.y)"
+      (click)="click($event, data.scales.x, data.scales.y)"
       (mouseleave)="mouseLeave($event)"
       (mousemove)="mouseMove($event)">
 
@@ -90,36 +89,36 @@
         <ng-container *ngFor="let axis of data.config.xAxis; let i = index">
           <g teta-plot-band *ngFor="let plotBand of axis.plotBands"
              [plotBand]="plotBand"
-             [scale]="data.xMap.get(i).scale"
+             [scale]="data.scales.x.get(i).scale"
              [size]="data.size"
-             [axis]="data.xMap.get(i)"></g>
+             [axis]="data.scales.x.get(i)"></g>
         </ng-container>
       </g>
       <g class="y-axis-plotband-container">
         <ng-container *ngFor="let axis of data.config.yAxis; let i = index">
           <g teta-plot-band *ngFor="let plotBand of axis.plotBands"
              [plotBand]="plotBand"
-             [scale]="data.yMap.get(i).scale"
+             [scale]="data.scales.y.get(i).scale"
              [size]="data.size"
-             [axis]="data.yMap.get(i)"></g>
+             [axis]="data.scales.y.get(i)"></g>
         </ng-container>
       </g>
       <g class="x-axis-plotline-container">
         <ng-container *ngFor="let axis of data.config.xAxis; let i = index">
           <g teta-plot-line *ngFor="let plotLine of axis.plotLines"
              [plotLine]="plotLine"
-             [scale]="data.xMap.get(i).scale"
+             [scale]="data.scales.x.get(i).scale"
              [size]="data.size"
-             [axis]="data.xMap.get(i)"></g>
+             [axis]="data.scales.x.get(i)"></g>
         </ng-container>
       </g>
       <g class="y-axis-plotline-container">
         <ng-container *ngFor="let axis of data.config.yAxis; let i = index">
           <g teta-plot-line *ngFor="let plotLine of axis.plotLines"
              [plotLine]="plotLine"
-             [scale]="data.yMap.get(i).scale"
+             [scale]="data.scales.y.get(i).scale"
              [size]="data.size"
-             [axis]="data.yMap.get(i)"></g>
+             [axis]="data.scales.x.get(i)"></g>
         </ng-container>
       </g>
       <g class="series-container">

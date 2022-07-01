@@ -25,6 +25,7 @@ import {ZoomService} from '../service/zoom.service';
 import {BrushType} from '../model/enum/brush-type';
 import {ZoomType} from '../model/enum/zoom-type';
 import {tetaZoneFull} from '@tetacom/ng-components';
+import {IScalesMap} from "../model/i-scales-map";
 
 type Opposite = boolean;
 
@@ -36,8 +37,7 @@ type Opposite = boolean;
 })
 export class ChartContainerComponent implements OnInit, OnDestroy {
   config: Observable<IChartConfig>;
-  yMap: Observable<Map<number, Axis>>;
-  xMap: Observable<Map<number, Axis>>;
+  scales: Observable<IScalesMap>;
   size: Observable<DOMRect>;
   visibleRect: Observable<any>;
   brushScale: Observable<any>;
@@ -70,7 +70,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     this.config = this._svc.config;
     this.size = this._svc.size
 
-    this.yMap = this._scaleService.yMap.pipe(
+    this.scales = this._scaleService.scales.pipe(
       observeOn(animationFrameScheduler),
       tetaZoneFull(this._zone),
       shareReplay({
@@ -79,22 +79,10 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.xMap = this._scaleService.xMap.pipe(
-      observeOn(animationFrameScheduler),
-      tetaZoneFull(this._zone),
-      shareReplay({
-        bufferSize: 1,
-        refCount: true,
-      })
-    );
-
-    this.brushScale = combineLatest([
-      this._scaleService.xMap,
-      this._scaleService.yMap,
-    ]).pipe(
+    this.brushScale = this._scaleService.scales.pipe(
       withLatestFrom(this.config),
-      map((data: [[Map<number, Axis>, Map<number, Axis>], IChartConfig]) => {
-        const [[x, y], config] = data;
+      map((data: [IScalesMap, IChartConfig]) => {
+        const [{x, y}, config] = data;
 
         return config.brush?.type === BrushType.x || config?.zoom?.type === ZoomType.x ? x.get(0).scale : y.get(0).scale;
       }),
@@ -105,16 +93,16 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     );
 
     this.visibleRect = this.size.pipe(
-      combineLatestWith(this.xMap, this.yMap)
+      combineLatestWith(this.scales)
     ).pipe(
       withLatestFrom(this.config),
       map(
         (
-          data: [[DOMRect, Map<number, Axis>, Map<number, Axis>], IChartConfig]
+          data: [[DOMRect, IScalesMap], IChartConfig]
         ) => {
-          const [[size, x, y], config] = data;
-          const yAxesArray = [...y.values()];
-          const xAxesArray = [...x.values()];
+          const [[size, {x, y}], config] = data;
+          const yAxesArray = Array.from(y.values());
+          const xAxesArray = Array.from(x.values());
           const left = yAxesArray
             .filter((_) => _.options.opposite !== true && _.options.visible)
             .reduce(this.sumSize, 0);
@@ -184,12 +172,12 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
   private sumSize = (acc, curr) => acc + curr.selfSize;
 
   getTranslate(axis?: Axis, size?: DOMRect): Observable<string> {
-    return combineLatest([this.xMap, this.yMap]).pipe(
+    return this.scales.pipe(
       withLatestFrom(this.config),
-      map((data: [[Map<number, Axis>, Map<number, Axis>], IChartConfig]) => {
-        const [[x, y], config] = data;
-        const xAxesArray = [...x.values()];
-        const yAxesArray = [...y.values()];
+      map((data: [IScalesMap, IChartConfig]) => {
+        const [{x, y}, config] = data;
+        const xAxesArray = Array.from(x.values());
+        const yAxesArray = Array.from(y.values());
 
         const oppositeFilter = this.filterPositionMap.get(true);
         const nonOppositeFilter = this.filterPositionMap.get(false);

@@ -22,6 +22,7 @@ import {IPointMove} from '../model/i-point-move';
 import {map, Observable, takeWhile, withLatestFrom} from 'rxjs';
 import {Annotation} from '../model/annotation';
 import {TooltipTracking} from '../model/enum/tooltip-tracking';
+import {IScalesMap} from "../model/i-scales-map";
 
 @Component({
   selector: 'teta-svg-chart',
@@ -95,15 +96,15 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
     this.chartService.pointerMove
       .pipe(
         takeWhile(() => this._alive),
-        withLatestFrom(this.scaleService.xScaleMap, this.scaleService.yScaleMap, this.chartService.config)
+        withLatestFrom(this.scaleService.scales, this.chartService.config)
       )
-      .subscribe((data: [PointerEvent, Map<number, any>, Map<number, any>, IChartConfig]) => {
-        const [event, x, y, config] = data;
+      .subscribe((data: [PointerEvent, IScalesMap, IChartConfig]) => {
+        const [event, {x, y}, config] = data;
         const tooltipTracking = config?.tooltip?.tracking;
         if (tooltipTracking === TooltipTracking.y) {
           const result = new Map<number, number>();
           y.forEach((value, key) => {
-            result.set(key, value.invert(event.offsetY));
+            result.set(key, value.scale.invert(event.offsetY));
           });
           this.pointerMove.emit({
             event: event,
@@ -112,7 +113,7 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
         } else {
           const result = new Map<number, number>();
           x.forEach((value, key) => {
-            result.set(key, value.invert(event.offsetX));
+            result.set(key, value.scale.invert(event.offsetX));
           });
           this.pointerMove.emit({
             event: event,

@@ -33,14 +33,11 @@ export class BrushableDirective implements OnInit, AfterViewInit {
     }
 
     if(this.config?.brush?.enable) {
-
       this.brushService.applyBrush(
         this.element,
         this.config,
         this.brushScale
       );
     }
-
-
   }
 }
