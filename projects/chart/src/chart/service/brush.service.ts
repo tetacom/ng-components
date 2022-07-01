@@ -9,7 +9,7 @@ import {
   IBroadcastMessage,
   ZoomMessage,
 } from '../model/i-broadcast-message';
-import { throttleTime } from 'rxjs/operators';
+import {debounceTime, throttleTime} from 'rxjs/operators';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 
 @Injectable({
@@ -193,21 +193,27 @@ export class BrushService {
                 brushScale(domain[1]),
               ]);
 
-              if (m.message.event.type === 'end') {
-                const brushMessage = new BrushMessage({
-                  event: null,
-                  selection: domain,
-                  brushType: config?.brush?.type ?? BrushType.x,
-                  brushScale,
-                });
-
-                this.broadcastService.broadcastBrush({
-                  channel: config?.zoom?.syncChannel,
-                  message: brushMessage,
-                });
-              }
-
               this.selection = domain;
+            }
+          }),
+          debounceTime(30),
+          tap((m: IBroadcastMessage<ZoomMessage>) => {
+            const {
+              message: { domain },
+            } = m;
+
+            if (m.message.event.type === 'zoom') {
+              const brushMessage = new BrushMessage({
+                event: null,
+                selection: domain,
+                brushType: config?.brush?.type ?? BrushType.x,
+                brushScale,
+              });
+
+              this.broadcastService.broadcastBrush({
+                channel: config?.zoom?.syncChannel,
+                message: brushMessage,
+              });
             }
           })
         )

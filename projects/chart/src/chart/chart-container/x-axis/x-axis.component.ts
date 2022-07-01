@@ -19,7 +19,7 @@ import {ScaleService} from "../../service/scale.service";
   styleUrls: ['./x-axis.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
+export class XAxisComponent implements OnInit {
   x: Observable<any>;
 
   @Input() axis: Axis;
@@ -28,8 +28,8 @@ export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
   private _alive = true;
 
   constructor(private scaleService: ScaleService) {
-    this.x = this.scaleService.xScaleMap.pipe(map((_) => {
-      return _.get(this.axis.index)
+    this.x = this.scaleService.xMap.pipe(map((_) => {
+      return _.get(this.axis.index)?.scale
     }))
   }
 
@@ -45,29 +45,4 @@ export class XAxisComponent implements OnInit, OnDestroy, AfterViewInit {
     this._alive = false;
   }
 
-  ngAfterViewInit() {
-    // this.draw();
-  }
-
-  private draw() {
-    // if (!this.node || !this.axis) {
-    //   return;
-    // }
-    //
-    // const axis = this.axis.options.opposite
-    //   ? d3
-    //       .axisTop(this.scale)
-    //       .tickFormat(
-    //         this.axis.options.tickFormat ?? this.axis.defaultFormatter()
-    //       )
-    //   : d3
-    //       .axisBottom(this.scale)
-    //       .tickFormat(
-    //         this.axis.options.tickFormat ?? this.axis.defaultFormatter()
-    //       );
-    //
-    // d3.select(this.node.nativeElement)
-    //   .call(axis)
-    //   .call((_) => _.select('.domain').remove());
-  }
 }

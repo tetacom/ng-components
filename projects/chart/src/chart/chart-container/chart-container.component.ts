@@ -10,7 +10,7 @@ import {
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from '../service/chart.service';
 import {
-  animationFrameScheduler, auditTime,
+  animationFrameScheduler,
   combineLatest, combineLatestWith,
   map,
   Observable, observeOn,
@@ -23,7 +23,6 @@ import {AxisOrientation} from '../model/enum/axis-orientation';
 import {ScaleService} from '../service/scale.service';
 import {ZoomService} from '../service/zoom.service';
 import {BrushType} from '../model/enum/brush-type';
-import {debounceTime, throttleTime} from 'rxjs/operators';
 import {ZoomType} from '../model/enum/zoom-type';
 import {tetaZoneFull} from '@tetacom/ng-components';
 
@@ -37,20 +36,14 @@ type Opposite = boolean;
 })
 export class ChartContainerComponent implements OnInit, OnDestroy {
   config: Observable<IChartConfig>;
-
-  yAxisMap: Observable<Map<number, Axis>>;
-  xAxisMap: Observable<Map<number, Axis>>;
-  yScaleMap: Observable<Map<number, any>>;
-  xScaleMap: Observable<Map<number, any>>;
+  yMap: Observable<Map<number, Axis>>;
+  xMap: Observable<Map<number, Axis>>;
   size: Observable<DOMRect>;
   visibleRect: Observable<any>;
-
   brushScale: Observable<any>;
-
-  private _observer: ResizeObserver;
-
   zoomType = ZoomType;
 
+  private _observer: ResizeObserver;
   private filterPositionMap = new Map<Opposite,
     (axis: Axis) => (_: Axis) => boolean>()
     .set(
@@ -76,11 +69,9 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
   ) {
     this.config = this._svc.config;
     this.size = this._svc.size
-    this.yAxisMap = this._scaleService.yAxisMap;
-    this.xAxisMap = this._scaleService.xAxisMap;
 
-    this.yScaleMap = this._scaleService.yScaleMap.pipe(
-      observeOn(animationFrameScheduler, 10),
+    this.yMap = this._scaleService.yMap.pipe(
+      observeOn(animationFrameScheduler),
       tetaZoneFull(this._zone),
       shareReplay({
         bufferSize: 1,
@@ -88,8 +79,8 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.xScaleMap = this._scaleService.xScaleMap.pipe(
-      observeOn(animationFrameScheduler, 10),
+    this.xMap = this._scaleService.xMap.pipe(
+      observeOn(animationFrameScheduler),
       tetaZoneFull(this._zone),
       shareReplay({
         bufferSize: 1,
@@ -98,14 +89,14 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     );
 
     this.brushScale = combineLatest([
-      this._scaleService.xScaleMap,
-      this._scaleService.yScaleMap,
+      this._scaleService.xMap,
+      this._scaleService.yMap,
     ]).pipe(
       withLatestFrom(this.config),
-      map((data: [[Map<number, any>, Map<number, any>], IChartConfig]) => {
+      map((data: [[Map<number, Axis>, Map<number, Axis>], IChartConfig]) => {
         const [[x, y], config] = data;
 
-        return config.brush?.type === BrushType.x || config?.zoom?.type === ZoomType.x ? x.get(0) : y.get(0);
+        return config.brush?.type === BrushType.x || config?.zoom?.type === ZoomType.x ? x.get(0).scale : y.get(0).scale;
       }),
       shareReplay({
         bufferSize: 1,
@@ -114,7 +105,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     );
 
     this.visibleRect = this.size.pipe(
-      combineLatestWith(this.xAxisMap, this.yAxisMap)
+      combineLatestWith(this.xMap, this.yMap)
     ).pipe(
       withLatestFrom(this.config),
       map(
@@ -193,7 +184,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
   private sumSize = (acc, curr) => acc + curr.selfSize;
 
   getTranslate(axis?: Axis, size?: DOMRect): Observable<string> {
-    return combineLatest([this.xAxisMap, this.yAxisMap]).pipe(
+    return combineLatest([this.xMap, this.yMap]).pipe(
       withLatestFrom(this.config),
       map((data: [[Map<number, Axis>, Map<number, Axis>], IChartConfig]) => {
         const [[x, y], config] = data;

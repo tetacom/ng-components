@@ -18,6 +18,8 @@ export class Axis {
   private _options: AxisOptions;
   private _originDomain: Array<any> = [];
 
+  private _scale: any;
+
   private defaultFormatters = new Map<ScaleType, any>()
     .set(ScaleType.linear, d3.format(',.5~r'))
     .set(ScaleType.time, d3.timeFormat('%d.%m.%Y'))
@@ -104,6 +106,10 @@ export class Axis {
     this._originDomain = domain;
   }
 
+  public setScale(scale: any) {
+    this._scale = scale;
+  }
+
   private setSelfSize(): void {
     this._selfSize = new AxisSizeBuilder().build(this);
   }
@@ -119,6 +125,10 @@ export class Axis {
         : this.chartConfig.yAxis[this.index];
 
     this._options = options;
+  }
+
+  get scale(): any {
+    return this._scale;
   }
 
   get extremes(): Array<number> {
@@ -156,4 +166,6 @@ export class Axis {
   public defaultScale() {
     return this.defaultScales.get(this.options.scaleType.type);
   }
+
+
 }
