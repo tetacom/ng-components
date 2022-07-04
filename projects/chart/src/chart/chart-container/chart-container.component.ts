@@ -11,12 +11,11 @@ import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from '../service/chart.service';
 import {
   animationFrameScheduler,
-  combineLatest, combineLatestWith,
+  combineLatestWith,
   map,
   Observable, observeOn,
   shareReplay,
-  tap,
-  withLatestFrom, zip,
+  withLatestFrom,
 } from 'rxjs';
 import {Axis} from '../core/axis/axis';
 import {AxisOrientation} from '../model/enum/axis-orientation';
@@ -25,7 +24,7 @@ import {ZoomService} from '../service/zoom.service';
 import {BrushType} from '../model/enum/brush-type';
 import {ZoomType} from '../model/enum/zoom-type';
 import {tetaZoneFull} from '@tetacom/ng-components';
-import {IScalesMap} from "../model/i-scales-map";
+import {IScalesMap} from '../model/i-scales-map';
 
 type Opposite = boolean;
 
@@ -68,7 +67,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     private _zone: NgZone
   ) {
     this.config = this._svc.config;
-    this.size = this._svc.size
+    this.size = this._svc.size;
 
     this.scales = this._scaleService.scales.pipe(
       observeOn(animationFrameScheduler),
@@ -141,7 +140,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
         bufferSize: 1,
         refCount: true,
       })
-    )
+    );
   }
 
   ngOnInit() {

@@ -85,7 +85,7 @@
       }
 
       &:hover, &_active {
-        background: getColorVar('text', 60);
+        background: getColorVar('text', 20);
       }
 
       &:hover &__menu, &__menu_open {
