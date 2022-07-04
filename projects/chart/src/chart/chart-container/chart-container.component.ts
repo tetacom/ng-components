@@ -241,11 +241,11 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
   click(
     event: PointerEvent,
-    xScales: Map<number, any>,
-    yScales: Map<number, any>
+    xScales: Map<number, Axis>,
+    yScales: Map<number, Axis>
   ) {
-    const x = xScales.get(0);
-    const y = yScales.get(0);
+    const x = xScales.get(0).scale;
+    const y = yScales.get(0).scale;
     this._svc.emitChartClick({
       event: event,
       target: {
@@ -257,11 +257,11 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
   contextMenu(
     event: MouseEvent,
-    xScales: Map<number, any>,
-    yScales: Map<number, any>
+    xScales: Map<number, Axis>,
+    yScales: Map<number, Axis>
   ) {
-    const x = xScales.get(0);
-    const y = yScales.get(0);
+    const x = xScales.get(0).scale;
+    const y = yScales.get(0).scale;
     this._svc.emitChartContextMenu({
       event: event,
       target: {
