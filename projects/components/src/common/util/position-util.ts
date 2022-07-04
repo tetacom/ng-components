@@ -22,6 +22,12 @@ export class PositionUtil {
     const elementHeight = elementPosition.bottom - elementPosition.top;
     const containerWidth = containerPosition.right - containerPosition.left;
     const containerHeight = containerPosition.bottom - containerPosition.top;
+    if (align === Align.auto) {
+      align = Align.left;
+      if (window.innerWidth < containerPosition.left + elementWidth) {
+        align = Align.right;
+      }
+    }
     if (align === Align.left) {
       rect.left = containerPosition.left + margin;
     }
