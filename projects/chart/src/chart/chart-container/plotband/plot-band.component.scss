@@ -11,3 +11,9 @@
 :host .y-grabber.resizeable {
   cursor: row-resize;
 }
+:host:hover .grabber {
+  opacity: 0.1;
+}
+.grabber {
+  opacity: 0;
+}

@@ -7,17 +7,14 @@ import {
   HostListener,
   Input, OnDestroy
 } from '@angular/core';
-
 import * as d3 from 'd3';
 import {PlotBand} from '../../model/plot-band';
 import {ScaleService} from '../../service/scale.service';
-
 import {Axis} from '../../core/axis/axis';
 import {ZoomService} from '../../service/zoom.service';
 import {AxisOrientation} from '../../model/enum/axis-orientation';
 import {IChartEvent} from '../../model/i-chart-event';
 import {ChartService} from '../../service/chart.service';
-import {map, Observable} from "rxjs";
 
 @Component({
   selector: '[teta-plot-band]',
@@ -42,8 +39,6 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private element: ElementRef
   ) {
-
-
   }
 
   @HostListener('click', ['$event']) click(event: MouseEvent) {
@@ -122,51 +117,51 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
       .on(
         'start drag end',
         (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
-            if (event?.type === 'start') {
-              const {grabber} = event?.sourceEvent?.target?.dataset;
-              grabberKey = grabber;
+          if (event?.type === 'start') {
+            const {grabber} = event?.sourceEvent?.target?.dataset;
+            grabberKey = grabber;
+          }
+
+          const min = Math.min(...this.scale.domain());
+          const max = Math.max(...this.scale.domain());
+
+          const minValue = d.min ?? min;
+          const maxValue = d.max ?? max;
+
+          d[grabberKey] = this.scale.invert(
+            event[AxisOrientation[this.axis.orientation]]
+          );
+
+          if (grabberKey === 'from') {
+            const borderMin = d.from <= minValue;
+
+            if (d.from >= d.to) {
+              d.from = d.to;
             }
 
-            const min = Math.min(...this.scale.domain());
-            const max = Math.max(...this.scale.domain());
+            if (borderMin) {
+              d.from = minValue;
+            }
+          }
 
-            const minValue = d.min ?? min;
-            const maxValue = d.max ?? max;
+          if (grabberKey === 'to') {
+            const borderMax = d.to >= maxValue;
 
-            d[grabberKey] = this.scale.invert(
-              event[AxisOrientation[this.axis.orientation]]
-            );
-
-            if (grabberKey === 'from') {
-              const borderMin = d.from <= minValue;
-
-              if (d.from >= d.to) {
-                d.from = d.to;
-              }
-
-              if (borderMin) {
-                d.from = minValue;
-              }
+            if (borderMax) {
+              d.to = maxValue;
             }
 
-            if (grabberKey === 'to') {
-              const borderMax = d.to >= maxValue;
-
-              if (borderMax) {
-                d.to = maxValue;
-              }
-
-              if (d.to <= d.from) {
-                d.to = d.from;
-              }
+            if (d.to <= d.from) {
+              d.to = d.from;
             }
+          }
 
-            this.emit({
-              event,
-              target: d,
-            });
+          this.emit({
+            event,
+            target: d,
+          });
 
-            this.cdr.detectChanges();
+          this.cdr.detectChanges();
         }
       );
 

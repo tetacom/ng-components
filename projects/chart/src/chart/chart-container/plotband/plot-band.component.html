@@ -13,7 +13,7 @@
   *ngIf="axis.orientation === orientation.x"
   text-anchor="middle"
   dominant-baseline="central"
-  class="label font-title-2 fill-text-70"
+  class="label font-body-3 fill-text-70"
   [attr.x]="getTextCenter()"
   [attr.transform]="'rotate(-90, '+ getTextCenter() +',' + height / 2 + ')'"
   [attr.y]="height / 2">{{plotBand.label}}
@@ -22,7 +22,7 @@
 <svg:text
   *ngIf="axis.orientation === orientation.y"
   text-anchor="middle"
-  class="label font-title-2 fill-text-70"
+  class="label font-body-3 fill-text-70"
   dominant-baseline="central"
   [attr.x]="getTextCenter()"
   [attr.y]="width / 2">{{plotBand.label}}
@@ -30,7 +30,7 @@
 
 <svg:line class="display-grabber"
           *ngIf="plotBand.showGrabbers && plotBand.resizable"
-          [attr.stroke]="plotBand.style?.grabbers?.stroke || 'red'"
+          [attr.stroke]="plotBand.style?.grabbers?.stroke || 'var(--color-text-50)'"
           [attr.stroke-width]="plotBand.style?.grabbers?.strokeWidth || 4"
           [attr.stroke-dasharray]="plotBand.style?.grabbers?.strokeDasharray"
           [attr.x1]="axis.orientation === orientation.x ? from : 0"
@@ -42,7 +42,7 @@
 
 <svg:line class="display-grabber"
           *ngIf="plotBand.showGrabbers && plotBand.resizable"
-          [attr.stroke]="plotBand.style?.grabbers?.stroke || 'red'"
+          [attr.stroke]="plotBand.style?.grabbers?.stroke || 'var(--color-text-50)'"
           [attr.stroke-width]="plotBand.style?.grabbers?.strokeWidth || 4"
           [attr.stroke-dasharray]="plotBand.style?.grabbers?.strokeDasharray"
           [attr.x1]="axis.orientation === orientation.x ? to : 0"
@@ -57,24 +57,23 @@
           [class.x-grabber]="axis.orientation === orientation.x"
           [class.y-grabber]="axis.orientation === orientation.y"
           [class.resizeable]="plotBand?.resizable"
-          [attr.stroke]="'red'"
+          [attr.stroke]="plotBand.style?.grabbers?.stroke || 'var(--color-text-50)'"
           [attr.stroke-width]="8"
-          opacity="0"
+          [style.transform]="axis.orientation === orientation.x ? 'translateX(2px)' : 'translateY(2px)'"
           [attr.x1]="axis.orientation === orientation.x ? from : 0"
           [attr.x2]="axis.orientation === orientation.x ? from : width"
           [attr.data-grabber]="'from'"
           [attr.y1]="axis.orientation === orientation.x ? 0 : from"
           [attr.y2]="axis.orientation === orientation.x ? height : from">
 </svg:line>
-
 <svg:line class="grabber"
           *ngIf="plotBand.resizable"
           [class.x-grabber]="axis.orientation === orientation.x"
           [class.y-grabber]="axis.orientation === orientation.y"
           [class.resizeable]="plotBand?.resizable"
-          [attr.stroke]="'red'"
+          [attr.stroke]="plotBand.style?.grabbers?.stroke || 'var(--color-text-50)'"
           [attr.stroke-width]="8"
-          opacity="0"
+          [style.transform]="axis.orientation === orientation.x ? 'translateX(-2px)' : 'translateY(-2px)'"
           [attr.x1]="axis.orientation === orientation.x ? to : 0"
           [attr.x2]="axis.orientation === orientation.x ? to : width"
           [attr.data-grabber]="'to'"
