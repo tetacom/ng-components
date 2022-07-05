@@ -110,6 +110,7 @@ export class OnlyNumberDirective {
     if (this.tetaOnlyNumber === false) {
       return;
     }
+    console.log('validateValue');
     value = value.replace(',', '.').trim();
     let regex: string = this._integerUnsigned;
     if (!this.allowDecimals && !this.allowSign) {
@@ -170,6 +171,6 @@ export class OnlyNumberDirective {
       value = '0.0';
     }
     const valid: boolean = new RegExp(regex).test(value.toString());
-    this._control.control.setValue(valid ? value : this._previousValue ?? 0);
+    this._control.control.setValue(valid ? parseFloat(value) : parseFloat(this._previousValue) ?? 0);
   }
 }

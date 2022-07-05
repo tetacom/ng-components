@@ -10,4 +10,4 @@
        class="input row_auto border-radius-0"
        (blur)="setValue()"
        [ngModel]="row[column.name]"
-       (ngModelChange)="row[column.name]=$event;"/>
+       (ngModelChange)="applyValue($event)"/>

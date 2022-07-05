@@ -29,6 +29,7 @@ import {SelectType} from '../enum/select-type.enum';
 import {IIdName} from '../../../common/contract/i-id-name';
 import {IDictionary} from '../../../common/contract/i-dictionary';
 import {ICellInstance, ICellInstanceEvent} from '../contract/i-cell-instance';
+import {FilterType} from '../../filter/enum/filter-type.enum';
 
 @Component({
   selector: 'teta-table',
@@ -214,9 +215,12 @@ export class TableComponent<T>
 
   @HostListener('keydown', ['$event'])
   keydown(event: KeyboardEvent) {
-    if (event.ctrlKey && event.code === 'KeyA') {
-      event.preventDefault();
-      this._svc.selectAll();
+    console.log('AAAA');
+    if (event.ctrlKey) {
+      if (event.code === 'KeyA') {
+        event.preventDefault();
+        this._svc.selectAll();
+      }
       return;
     }
     if (event.key === 'Escape') {
@@ -247,16 +251,20 @@ export class TableComponent<T>
       }
     }
     if (coordinates) {
+      console.log('coordinates', coordinates);
       this.cellKeyDown.emit({
         ...this._svc.getCellInstance(coordinates),
         event
       });
       if (event.key && (event.key.length === 1 || event.key === 'Delete')) {
-        this.startEditRowOrCell({
-          row: coordinates.row,
-          column: coordinates.column,
-          event: event
-        });
+        const column = this._svc.getColumnByName(coordinates.column);
+        if(column.filterType !== FilterType.number || isFinite(event.key as any)) {
+          this.startEditRowOrCell({
+            row: coordinates.row,
+            column: coordinates.column,
+            event: event
+          });
+        }
       }
       if (event.key === 'Tab' && this._svc.currentEditCell) {
         event.preventDefault();
