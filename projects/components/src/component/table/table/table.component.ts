@@ -215,7 +215,6 @@ export class TableComponent<T>
 
   @HostListener('keydown', ['$event'])
   keydown(event: KeyboardEvent) {
-    console.log('AAAA');
     if (event.ctrlKey) {
       if (event.code === 'KeyA') {
         event.preventDefault();
@@ -251,7 +250,6 @@ export class TableComponent<T>
       }
     }
     if (coordinates) {
-      console.log('coordinates', coordinates);
       this.cellKeyDown.emit({
         ...this._svc.getCellInstance(coordinates),
         event
