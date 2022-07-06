@@ -4,7 +4,9 @@
     [showHeadCellMenu]="showHeadCellMenu"></teta-table-head>
   <div class="column column_auto position-relative">
     <teta-table-body
+      (contextmenu)="setContextMenuRow($event)"
       [tetaContextMenu]="contextMenu"
+      [data]="contextMenuRow"
       [open]="contextMenuOpen"
       (openChange)="setContextMenuOpen($event)"
       [aggregate]="aggregate"

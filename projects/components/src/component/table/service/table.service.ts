@@ -575,6 +575,18 @@ export class TableService<T> {
     return this._displayData.value.indexOf(row);
   }
 
+  getEventCell(event: Event): HTMLElement | null {
+    return event.composedPath().find((target: HTMLElement) => {
+      return target.tagName?.toLowerCase() === 'teta-cell';
+    }) as HTMLElement;
+  }
+
+  getEventRow(event: Event): HTMLElement | null {
+    return event.composedPath().find((target: HTMLElement) => {
+      return target?.getAttribute && target?.getAttribute('data-row');
+    }) as HTMLElement;
+  }
+
   getNextEditableCell(coords: ICellCoordinates): ICellCoordinates {
     const nextCell = this.getNextCell(coords);
     if (!nextCell) {

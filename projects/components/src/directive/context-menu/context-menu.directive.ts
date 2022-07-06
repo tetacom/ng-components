@@ -19,8 +19,6 @@ import {DomUtil} from '../../common/util/dom-util';
 import {PositionUtil} from '../../common/util/position-util';
 import {DynamicContentBaseDirective} from '../dynamic-content-base.directive';
 import {ClickService} from '../../common/service/click.service';
-import {merge} from 'rxjs';
-import {filter, takeWhile, tap} from 'rxjs/operators';
 import {AutoCloseIgnoreCase} from '../../common/contract/auto-close-ignore-case';
 
 @Directive({

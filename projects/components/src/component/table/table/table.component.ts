@@ -98,7 +98,7 @@ export class TableComponent<T>
   @HostBinding('class.table') private readonly tableClass = true;
 
   selectedRowsList: T[];
-
+  contextMenuRow: T;
   private _alive = true;
   private _bodyElement: HTMLElement;
   private _headElement: HTMLElement;
@@ -256,7 +256,7 @@ export class TableComponent<T>
       });
       if (event.key && (event.key.length === 1 || event.key === 'Delete')) {
         const column = this._svc.getColumnByName(coordinates.column);
-        if(column.filterType !== FilterType.number || isFinite(event.key as any)) {
+        if (column.filterType !== FilterType.number || isFinite(event.key as any)) {
           this.startEditRowOrCell({
             row: coordinates.row,
             column: coordinates.column,
@@ -372,6 +372,16 @@ export class TableComponent<T>
     this.contextMenuOpenChange.emit(this.contextMenuOpen);
   }
 
+  setContextMenuRow(event: MouseEvent) {
+    const rowElement = this._svc.getEventRow(event);
+    if (rowElement) {
+      const rowIndex = parseInt(rowElement.getAttribute('data-row'), 10);
+      if (rowIndex >= 0) {
+        this.contextMenuRow = this._svc.getRowByIndex(rowIndex);
+      }
+    }
+  }
+
   private startEditRowOrCell(coordinates: ICellEvent): void {
     if (this.editType === EditType.row) {
       this._svc.startEditRow(coordinates);
@@ -379,18 +389,6 @@ export class TableComponent<T>
     if (this.editType === EditType.cell) {
       this._svc.startEditCell(coordinates);
     }
-  }
-
-  private getEventCell(event: Event): HTMLElement | null {
-    return event.composedPath().find((target: HTMLElement) => {
-      return target.tagName?.toLowerCase() === 'teta-cell';
-    }) as HTMLElement;
-  }
-
-  private getEventRow(event: Event): HTMLElement | null {
-    return event.composedPath().find((target: HTMLElement) => {
-      return target?.getAttribute && target?.getAttribute('data-row');
-    }) as HTMLElement;
   }
 
   private getCellElement(coordinates: ICellCoordinates): HTMLElement | null {
@@ -410,7 +408,7 @@ export class TableComponent<T>
     if (event.composedPath().indexOf(this._elementRef.nativeElement) < 0) {
       return null;
     }
-    const cell = this.getEventCell(event);
+    const cell = this._svc.getEventCell(event);
     if (cell) {
       const rowIndex = parseInt(cell.getAttribute('data-row'), 10);
       const columnName = cell.getAttribute('data-column');
@@ -429,7 +427,7 @@ export class TableComponent<T>
     if (event.composedPath().indexOf(this._elementRef.nativeElement) < 0) {
       return null;
     }
-    const rowElement = this.getEventRow(event);
+    const rowElement = this._svc.getEventRow(event);
     if (rowElement) {
       const rowIndex = parseInt(rowElement.getAttribute('data-row'), 10);
       if (rowIndex >= 0) {

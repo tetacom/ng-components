@@ -88,21 +88,11 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
 
   }
 
-  setActiveRow(row: T) {
-    this._svc.setActiveRow(row);
+  setActiveRow(row: T, event: MouseEvent) {
+    if (!event.shiftKey && !event.ctrlKey) {
+      this._svc.setActiveRow(row);
+    }
   }
-
-  // getData = (index, count, success) => {
-  //   const data = [];
-  //   if (this.data?.length > 0) {
-  //     const start = Math.max(0, index);
-  //     const end = Math.min(index + count - 1, this.data.length - 1);
-  //     for (let i = start; i <= end; i++) {
-  //       data.push(this.data[i]);
-  //     }
-  //   }
-  //   return success(data);
-  // };
 
   ngOnInit(): void {
     this.locale = this._config.locale;
