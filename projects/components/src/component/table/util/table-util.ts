@@ -18,14 +18,14 @@ export class TableUtil {
   }
 
   static getData<T>(data: T[], state: FilterState): T[] {
-    let result: T[] = data;
+    let result: T[] = [...data];
     result = TableUtil.filterData(result, state);
     result = TableUtil.sortData(result, state);
     return result;
   }
 
   static sortData<T>(data: T[], state: FilterState): T[] {
-    let result: T[] = data;
+    let result: T[] = [...data];
     const func = (sortParam: SortParam) => {
       result = TableUtil.sort(result, sortParam);
     };
@@ -36,7 +36,7 @@ export class TableUtil {
   }
 
   static filterData<T>(data: T[], state: FilterState): T[] {
-    let result: T[] = data;
+    let result: T[] = [...data];
     if (state?.stringFilters?.length) {
       const stringFilter = (filter: StringFilter) => {
         result = TableUtil.filterString(result, filter);
