@@ -6,6 +6,7 @@
     <teta-table-body
       (contextmenu)="setContextMenuRow($event)"
       [tetaContextMenu]="contextMenu"
+      [appendToBody]="true"
       [data]="contextMenuRow"
       [open]="contextMenuOpen"
       (openChange)="setContextMenuOpen($event)"
