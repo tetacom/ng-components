@@ -189,21 +189,21 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
         const oppositeTranslateY = oppositeOffsetY.reduce(
           (acc, curr) => acc + curr.selfSize,
-          0
+          config.bounds?.top
         );
         const nonOppisteTranslateY = nonOppositeOffsetY.reduce(
           (acc, curr) => acc + curr.selfSize,
-          0
+          config.bounds?.left
         );
 
         const oppositeTranslateX = oppositeOffsetX.reduce(
           (acc, curr) => acc + curr.selfSize,
-          0
+          config.bounds?.right
         );
 
         const nonOppisteTranslateX = nonOppositeOffsetX.reduce(
           (acc, curr) => acc + curr.selfSize,
-          0
+          config.bounds?.bottom
         );
 
         const left = yAxesArray
