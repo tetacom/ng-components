@@ -17,6 +17,7 @@ import {DragDropService} from './drag-drop.service';
 import {DropTarget} from './model/drop-target';
 import {filter, takeWhile} from 'rxjs/operators';
 import {DropEvent} from './model/drop-event';
+import {DragSelection} from './model/drag-selection';
 
 @Directive({
   selector: '[tetaDrag]',
@@ -35,6 +36,8 @@ export class DragDirective<T> implements OnInit, OnDestroy {
   @HostBinding('class.teta_droppable_item')
   @Input() allowDrop = true;
 
+  @Input() allowDropPredicate: (data: DragSelection<T>, target: T) => boolean;
+
   @Output() tetaDragEnter = new EventEmitter<DragInstance<T>>();
   @Output() tetaDrop = new EventEmitter<DropEvent<T>>();
 
@@ -48,7 +51,7 @@ export class DragDirective<T> implements OnInit, OnDestroy {
 
   @HostBinding('class.teta-drop-target')
   get isDropTarget() {
-    return this.dropTarget === this.instance;
+    return this.dropTarget === this.instance && this.allowDrop;
   }
 
   private _alive = true;
@@ -74,7 +77,9 @@ export class DragDirective<T> implements OnInit, OnDestroy {
   mouseenter(event: MouseEvent) {
     if (this.allowDrop) {
       event.stopPropagation();
-      this._dragService.setDropTarget(this.instance);
+      if(this.allowDropPredicate === undefined || this.allowDropPredicate(this._dragService.selection, this.data)) {
+        this._dragService.setDropTarget(this.instance);
+      }
     }
   }
 
