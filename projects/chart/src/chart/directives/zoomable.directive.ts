@@ -169,9 +169,9 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
           if (this.config?.zoom?.type === ZoomType.x) {
             if (this.config.xAxis[0]?.inverted) {
-              transform = transform.translate(-this.brushScale(m.message.domain[0]), 0);
-            } else {
               transform = transform.translate(this.brushScale(-m.message.domain[1]), 0);
+            } else {
+              transform = transform.translate(-this.brushScale(m.message.domain[0]), 0);
             }
           }
 
