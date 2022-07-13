@@ -13,7 +13,7 @@ export class AxisSizeBuilder implements IBuilder<Axis, number> {
     let finalPadding = this.basePadding;
 
     if (settings.orientation === AxisOrientation.y) {
-      const formatter = settings.defaultFormatter();
+      const formatter = settings.options.tickFormat || settings.defaultFormatter();
 
       finalPadding += settings.options.title ? this.titlePadding : 0;
 
