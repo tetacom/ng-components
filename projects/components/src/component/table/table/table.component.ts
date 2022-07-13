@@ -30,6 +30,8 @@ import {IIdName} from '../../../common/contract/i-id-name';
 import {IDictionary} from '../../../common/contract/i-dictionary';
 import {ICellInstance, ICellInstanceEvent} from '../contract/i-cell-instance';
 import {FilterType} from '../../filter/enum/filter-type.enum';
+import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
+import {Align} from '../../../common/enum/align.enum';
 
 @Component({
   selector: 'teta-table',
@@ -99,6 +101,8 @@ export class TableComponent<T>
 
   selectedRowsList: T[];
   contextMenuRow: T;
+  verticalAlign = VerticalAlign;
+  align = Align;
   private _alive = true;
   private _bodyElement: HTMLElement;
   private _headElement: HTMLElement;
