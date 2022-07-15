@@ -2,14 +2,16 @@
   <teta-table-head
     [selectType]="selectType"
     [showHeadCellMenu]="showHeadCellMenu"></teta-table-head>
-  <div class="column column_auto position-relative">
+  <div class="column column_auto position-relative"
+       [tetaContextMenu]="contextMenu"
+       [verticalAlign]="verticalAlign.auto"
+       [align]="align.auto"
+       [appendToBody]="true"
+       [data]="contextMenuRow"
+       [open]="contextMenuOpen"
+       (openChange)="setContextMenuOpen($event)">
     <teta-table-body
       (contextmenu)="setContextMenuRow($event)"
-      [tetaContextMenu]="contextMenu"
-      [appendToBody]="true"
-      [data]="contextMenuRow"
-      [open]="contextMenuOpen"
-      (openChange)="setContextMenuOpen($event)"
       [aggregate]="aggregate"
       [virtual]="virtual"
       [activeRow]="activeRow"

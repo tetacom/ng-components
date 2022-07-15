@@ -26,7 +26,7 @@ export class DragDropService<T> {
   private _previewRef: EmbeddedViewRef<any>;
   private dropped$ = new Subject<DropEvent<T>>();
 
-  constructor(@Inject(DOCUMENT) private _document: any,
+  constructor(@Inject(DOCUMENT) private _document: Document,
               private _rendererFactory: RendererFactory2) {
     this._renderer = this._rendererFactory.createRenderer(null, null);
     this.dropTarget = this.dropTarget$.asObservable();
@@ -122,11 +122,13 @@ export class DragDropService<T> {
     this.dragProcess = {
       selection: this.selection
     };
+    this._document.body.style.cursor = 'copy';
     this._preview = this.createPreview();
   }
 
   stopProcess() {
     this.destroyPreview();
+    this._document.body.style.cursor = 'default';
     this.dragProcess = null;
     this.startPosition = null;
   }

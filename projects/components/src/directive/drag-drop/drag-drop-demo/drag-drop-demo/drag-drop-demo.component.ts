@@ -63,4 +63,9 @@ export class DragDropDemoComponent implements OnInit {
   log(data) {
     console.log(data);
   }
+
+  allowDropPredicate(selection, data) {
+    console.log(selection, data);
+    return data.id % 2 === 0;
+  }
 }
