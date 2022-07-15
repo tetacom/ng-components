@@ -96,6 +96,11 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         ]);
       }
 
+
+      if(this.config.zoom?.wheelDelta) {
+        this.zoom.wheelDelta(this.config.zoom?.wheelDelta)
+      }
+
       this.zoomService.axisHashMap.set(this.hash, this.axis);
       this.zoomService.elementHashMap.set(this.hash, this._element);
       this.zoomService.scaleHashMap.set(this.hash, this.scale);
