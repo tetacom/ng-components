@@ -189,7 +189,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
         const oppositeTranslateY = oppositeOffsetY.reduce(
           (acc, curr) => acc + curr.selfSize,
-          config.bounds?.top
+          config.bounds?.right
         );
         const nonOppisteTranslateY = nonOppositeOffsetY.reduce(
           (acc, curr) => acc + curr.selfSize,
@@ -198,7 +198,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
         const oppositeTranslateX = oppositeOffsetX.reduce(
           (acc, curr) => acc + curr.selfSize,
-          config.bounds?.right
+          config.bounds?.top
         );
 
         const nonOppisteTranslateX = nonOppositeOffsetX.reduce(
