@@ -53,6 +53,7 @@ export const iconsList = [
   'equal',
   'export',
   'eye',
+  'eyeCrossed',
   'filter',
   'filterClear',
   'filterSortDown',
