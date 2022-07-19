@@ -1,0 +1,429 @@
+<!-- SVG Sprite -->
+<svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" width="0"
+     height="0" class="hidden">
+  <!-- SVG Sprite -->
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="icon1">
+    <g clip-path="url(#clip0)">
+      <rect width="16" height="16" fill="#E38C36"></rect>
+      <rect width="5" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect y="4" width="5" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect y="8" width="5" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect y="12" width="5" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="15" y="1" width="1" height="1" transform="rotate(180 15 1)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="15" y="5" width="1" height="1" transform="rotate(180 15 5)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="15" y="9" width="1" height="1" transform="rotate(180 15 9)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="15" y="13" width="1" height="1" transform="rotate(180 15 13)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="13" y="1" width="5" height="1" transform="rotate(180 13 1)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="13" y="5" width="5" height="1" transform="rotate(180 13 5)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="13" y="9" width="5" height="1" transform="rotate(180 13 9)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="13" y="13" width="5" height="1" transform="rotate(180 13 13)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect width="1" height="1" transform="matrix(-1 0 0 1 7 0)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect width="1" height="1" transform="matrix(-1 0 0 1 7 4)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect width="1" height="1" transform="matrix(-1 0 0 1 7 8)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect width="1" height="1" transform="matrix(-1 0 0 1 7 12)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="4" y="2" width="5" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="4" y="6" width="5" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="4" y="10" width="5" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="4" y="14" width="5" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect width="1" height="1" transform="matrix(-1 0 0 1 11 2)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect width="1" height="1" transform="matrix(-1 0 0 1 11 6)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect width="1" height="1" transform="matrix(-1 0 0 1 11 10)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect width="1" height="1" transform="matrix(-1 0 0 1 11 14)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect width="4" height="1" transform="matrix(-1 0 0 1 16 2)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect width="4" height="1" transform="matrix(-1 0 0 1 16 6)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect width="4" height="1" transform="matrix(-1 0 0 1 16 10)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect width="4" height="1" transform="matrix(-1 0 0 1 16 14)" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="2" y="2" width="1" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="2" y="6" width="1" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="2" y="10" width="1" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect x="2" y="14" width="1" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect y="2" width="1" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect y="6" width="1" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect y="10" width="1" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+      <rect y="14" width="1" height="1" fill="#600C00" fill-opacity="0.5"></rect>
+    </g>
+    <defs>
+      <clipPath>
+        <rect width="16" height="16" fill="white"></rect>
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="icon2">
+    <g clip-path="url(#clip0)">
+      <rect width="16" height="16" fill="#BEBDBE"></rect>
+      <rect x="1" width="6" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="1" y="4" width="6" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="1" y="8" width="6" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="1" y="12" width="6" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="9" width="6" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="9" y="4" width="6" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="9" y="8" width="6" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="9" y="12" width="6" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="5" y="2" width="6" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="5" y="6" width="6" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="5" y="10" width="6" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="5" y="14" width="6" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="13" y="2" width="7" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="13" y="6" width="7" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="13" y="10" width="7" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect x="13" y="14" width="7" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect y="2" width="3" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect y="6" width="3" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect y="10" width="3" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+      <rect y="14" width="3" height="1" fill="#1D1C1D" fill-opacity="0.5"></rect>
+    </g>
+    <defs>
+      <clipPath>
+        <rect width="16" height="16" fill="white"></rect>
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="icon3">
+    <g clip-path="url(#clip0)">
+      <rect width="16" height="16" fill="#B0DEF5"></rect>
+      <path d="M0 2H4V3H0V2Z" fill="#191719" fill-opacity="0.6"></path>
+      <path d="M8 2H12V3H8V2Z" fill="#191719" fill-opacity="0.6"></path>
+      <rect x="4" y="6" width="4" height="1" fill="#191719" fill-opacity="0.6"></rect>
+      <rect x="12" y="6" width="4" height="1" fill="#191719" fill-opacity="0.6"></rect>
+      <rect y="10" width="4" height="1" fill="#191719" fill-opacity="0.6"></rect>
+      <rect x="8" y="10" width="4" height="1" fill="#191719" fill-opacity="0.6"></rect>
+      <rect x="12" y="14" width="4" height="1" fill="#191719" fill-opacity="0.6"></rect>
+      <rect width="4" height="1" transform="matrix(-1 0 0 1 8 14)" fill="#191719" fill-opacity="0.6"></rect>
+    </g>
+    <defs>
+      <clipPath>
+        <rect width="16" height="16" fill="white"></rect>
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="icon4">
+    <g clip-path="url(#clip0)">
+      <rect width="16" height="16" fill="#9CB8AA"></rect>
+      <path d="M0 2H4V3H0V2Z" fill="#191719" fill-opacity="0.5"></path>
+      <path d="M8 2H12V3H8V2Z" fill="#191719" fill-opacity="0.5"></path>
+      <rect x="4" y="6" width="4" height="1" fill="#191719" fill-opacity="0.5"></rect>
+      <rect x="12" y="6" width="4" height="1" fill="#191719" fill-opacity="0.5"></rect>
+      <rect y="10" width="4" height="1" fill="#191719" fill-opacity="0.5"></rect>
+      <rect x="8" y="10" width="4" height="1" fill="#191719" fill-opacity="0.5"></rect>
+      <rect x="12" y="14" width="4" height="1" fill="#191719" fill-opacity="0.5"></rect>
+      <rect width="4" height="1" transform="matrix(-1 0 0 1 8 14)" fill="#191719" fill-opacity="0.5"></rect>
+    </g>
+    <defs>
+      <clipPath>
+        <rect width="16" height="16" fill="white"></rect>
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="icon5">
+    <g clip-path="url(#clip0)">
+      <rect width="16" height="16" fill="#797E82"></rect>
+      <path d="M0 2H4V3H0V2Z" fill="#191719" fill-opacity="0.6"></path>
+      <path d="M8 2H12V3H8V2Z" fill="#191719" fill-opacity="0.6"></path>
+      <rect x="4" y="6" width="4" height="1" fill="#191719" fill-opacity="0.6"></rect>
+      <rect x="12" y="6" width="4" height="1" fill="#191719" fill-opacity="0.6"></rect>
+      <rect y="10" width="4" height="1" fill="#191719" fill-opacity="0.6"></rect>
+      <rect x="8" y="10" width="4" height="1" fill="#191719" fill-opacity="0.6"></rect>
+      <rect x="12" y="14" width="4" height="1" fill="#191719" fill-opacity="0.6"></rect>
+      <rect width="4" height="1" transform="matrix(-1 0 0 1 8 14)" fill="#191719" fill-opacity="0.6"></rect>
+    </g>
+    <defs>
+      <clipPath>
+        <rect width="16" height="16" fill="white"></rect>
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="icon6">
+    <g clip-path="url(#clip0)">
+      <rect width="16" height="16" fill="#D4B19D"></rect>
+      <rect y="1" width="16" height="1" fill="#976659" fill-opacity="0.6"></rect>
+      <rect y="5" width="16" height="1" fill="#976659" fill-opacity="0.6"></rect>
+      <rect x="1.40918" y="5.4256" width="1" height="4.68398" transform="rotate(30 1.40918 5.4256)" fill="#976659"
+            fill-opacity="0.6"></rect>
+      <rect x="5.15283" y="13.3691" width="1" height="4.2186" transform="rotate(30 5.15283 13.3691)" fill="#976659"
+            fill-opacity="0.6"></rect>
+      <rect x="9.53296" y="5.21106" width="1" height="4.93174" transform="rotate(30 9.53296 5.21106)" fill="#976659"
+            fill-opacity="0.6"></rect>
+      <path d="M17.5361 5.21106L18.4022 5.71106L15.9363 9.98207L15.0703 9.48207L17.5361 5.21106Z" fill="#976659"
+            fill-opacity="0.6"></path>
+      <rect x="13.0149" y="13.6081" width="1" height="4.25711" transform="rotate(30 13.0149 13.6081)" fill="#976659"
+            fill-opacity="0.6"></rect>
+      <rect x="7.31714" y="1.08496" width="1" height="5" transform="rotate(30 7.31714 1.08496)" fill="#976659"
+            fill-opacity="0.6"></rect>
+      <rect x="15.3171" y="1.08496" width="1" height="5" transform="rotate(30 15.3171 1.08496)" fill="#976659"
+            fill-opacity="0.6"></rect>
+      <rect x="11.3171" y="9.08496" width="1" height="5" transform="rotate(30 11.3171 9.08496)" fill="#976659"
+            fill-opacity="0.6"></rect>
+      <rect x="13.3171" y="-2.91504" width="1" height="5" transform="rotate(30 13.3171 -2.91504)" fill="#976659"
+            fill-opacity="0.6"></rect>
+      <rect x="3.51733" y="9.2381" width="1" height="4.90049" transform="rotate(30 3.51733 9.2381)" fill="#976659"
+            fill-opacity="0.6"></rect>
+      <path d="M5.28857 -2.82861L6.1546 -2.32861L3.70435 1.91534L2.83833 1.41534L5.28857 -2.82861Z" fill="#976659"
+            fill-opacity="0.6"></path>
+      <rect y="9" width="16" height="1" fill="#976659" fill-opacity="0.6"></rect>
+      <rect y="13" width="16" height="1" fill="#976659" fill-opacity="0.6"></rect>
+    </g>
+    <defs>
+      <clipPath>
+        <rect width="16" height="16" fill="white"></rect>
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="icon7">
+    <g clip-path="url(#clip0)">
+      <rect width="16" height="16" fill="#CFCFC5"></rect>
+      <path d="M0 2H4V3H0V2Z" fill="#191719" fill-opacity="0.5"></path>
+      <path d="M8 2H12V3H8V2Z" fill="#191719" fill-opacity="0.5"></path>
+      <rect x="4" y="6" width="4" height="1" fill="#191719" fill-opacity="0.5"></rect>
+      <rect x="12" y="6" width="4" height="1" fill="#191719" fill-opacity="0.5"></rect>
+      <rect y="10" width="4" height="1" fill="#191719" fill-opacity="0.5"></rect>
+      <rect x="8" y="10" width="4" height="1" fill="#191719" fill-opacity="0.5"></rect>
+      <rect x="12" y="14" width="4" height="1" fill="#191719" fill-opacity="0.5"></rect>
+      <rect width="4" height="1" transform="matrix(-1 0 0 1 8 14)" fill="#191719" fill-opacity="0.5"></rect>
+    </g>
+    <defs>
+      <clipPath>
+        <rect width="16" height="16" fill="white"></rect>
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="icon8">
+    <g clip-path="url(#clip0)">
+      <rect width="16" height="16" fill="#FFEFD5"></rect>
+      <rect y="2" width="16" height="1" fill="#797979" fill-opacity="0.6"></rect>
+      <rect y="6" width="16" height="1" fill="#797979" fill-opacity="0.6"></rect>
+      <rect x="3" y="7" width="1" height="4" fill="#797979" fill-opacity="0.6"></rect>
+      <rect x="3" y="15" width="1" height="3" fill="#797979" fill-opacity="0.6"></rect>
+      <rect x="3" y="-1" width="1" height="3" fill="#797979" fill-opacity="0.6"></rect>
+      <rect x="11" y="7" width="1" height="4" fill="#797979" fill-opacity="0.6"></rect>
+      <rect x="11" y="15" width="1" height="3" fill="#797979" fill-opacity="0.6"></rect>
+      <rect x="11" y="-1" width="1" height="3" fill="#797979" fill-opacity="0.6"></rect>
+      <rect x="7" y="2" width="1" height="5" fill="#797979" fill-opacity="0.6"></rect>
+      <rect x="15" y="2" width="1" height="5" fill="#797979" fill-opacity="0.6"></rect>
+      <rect x="15" y="10" width="1" height="5" fill="#797979" fill-opacity="0.6"></rect>
+      <rect x="7" y="11" width="1" height="4" fill="#797979" fill-opacity="0.6"></rect>
+      <rect y="10" width="16" height="1" fill="#797979" fill-opacity="0.6"></rect>
+      <rect y="14" width="16" height="1" fill="#797979" fill-opacity="0.6"></rect>
+    </g>
+    <defs>
+      <clipPath>
+        <rect width="16" height="16" fill="white"></rect>
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="icon9">
+    <g clip-path="url(#clip0)">
+      <rect width="16" height="16" fill="#914F2F"></rect>
+      <rect y="1" width="16" height="1" fill="#361F19" fill-opacity="0.5"></rect>
+      <rect y="5" width="16" height="1" fill="#361F19" fill-opacity="0.5"></rect>
+      <rect x="1.40918" y="5.4256" width="1" height="4.68398" transform="rotate(30 1.40918 5.4256)" fill="#361F19"
+            fill-opacity="0.5"></rect>
+      <rect x="5.15283" y="13.3691" width="1" height="4.2186" transform="rotate(30 5.15283 13.3691)" fill="#361F19"
+            fill-opacity="0.5"></rect>
+      <rect x="9.53296" y="5.21106" width="1" height="4.93174" transform="rotate(30 9.53296 5.21106)" fill="#361F19"
+            fill-opacity="0.5"></rect>
+      <path d="M17.5361 5.21106L18.4022 5.71106L15.9363 9.98207L15.0703 9.48207L17.5361 5.21106Z" fill="#361F19"
+            fill-opacity="0.5"></path>
+      <rect x="13.0149" y="13.6081" width="1" height="4.25711" transform="rotate(30 13.0149 13.6081)" fill="#361F19"
+            fill-opacity="0.5"></rect>
+      <rect x="7.31714" y="1.08496" width="1" height="5" transform="rotate(30 7.31714 1.08496)" fill="#361F19"
+            fill-opacity="0.5"></rect>
+      <rect x="15.3171" y="1.08496" width="1" height="5" transform="rotate(30 15.3171 1.08496)" fill="#361F19"
+            fill-opacity="0.5"></rect>
+      <rect x="11.3171" y="9.08496" width="1" height="5" transform="rotate(30 11.3171 9.08496)" fill="#361F19"
+            fill-opacity="0.5"></rect>
+      <rect x="13.3171" y="-2.91504" width="1" height="5" transform="rotate(30 13.3171 -2.91504)" fill="#361F19"
+            fill-opacity="0.5"></rect>
+      <rect x="3.51733" y="9.2381" width="1" height="4.90049" transform="rotate(30 3.51733 9.2381)" fill="#361F19"
+            fill-opacity="0.5"></rect>
+      <path d="M5.28864 -2.82861L6.15466 -2.32861L3.70442 1.91534L2.83839 1.41534L5.28864 -2.82861Z" fill="#361F19"
+            fill-opacity="0.5"></path>
+      <rect y="9" width="16" height="1" fill="#361F19" fill-opacity="0.5"></rect>
+      <rect y="13" width="16" height="1" fill="#361F19" fill-opacity="0.5"></rect>
+    </g>
+    <defs>
+      <clipPath>
+        <rect width="16" height="16" fill="white"></rect>
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="icon10">
+    <rect width="16" height="16" fill="#FFF487"></rect>
+    <rect width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect y="4" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect y="8" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect y="12" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="4" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="4" y="4" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="4" y="8" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="4" y="12" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="12" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="12" y="4" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="12" y="8" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="12" y="12" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect width="1" height="1" transform="matrix(-1 0 0 1 9 0)" fill="#504400" fill-opacity="0.6"></rect>
+    <rect width="1" height="1" transform="matrix(-1 0 0 1 9 4)" fill="#504400" fill-opacity="0.6"></rect>
+    <rect width="1" height="1" transform="matrix(-1 0 0 1 9 8)" fill="#504400" fill-opacity="0.6"></rect>
+    <rect width="1" height="1" transform="matrix(-1 0 0 1 9 12)" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="10" y="2" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="10" y="6" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="10" y="10" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="10" y="14" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect width="1" height="1" transform="matrix(-1 0 0 1 15 2)" fill="#504400" fill-opacity="0.6"></rect>
+    <rect width="1" height="1" transform="matrix(-1 0 0 1 15 6)" fill="#504400" fill-opacity="0.6"></rect>
+    <rect width="1" height="1" transform="matrix(-1 0 0 1 15 10)" fill="#504400" fill-opacity="0.6"></rect>
+    <rect width="1" height="1" transform="matrix(-1 0 0 1 15 14)" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="6" y="2" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="6" y="6" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="6" y="10" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="6" y="14" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="2" y="2" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="2" y="6" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="2" y="10" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+    <rect x="2" y="14" width="1" height="1" fill="#504400" fill-opacity="0.6"></rect>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="icon11">
+    <g clip-path="url(#clip0)">
+      <rect width="16" height="16" fill="#526B56"></rect>
+      <path
+        d="M5.94797 3.06923C5.65383 3.06923 5.32917 3.15641 4.97399 3.33077C4.62435 3.5 4.29969 3.72308 4 4V2.83846C4.55498 2.27949 5.23205 2 6.03122 2C6.4086 2 6.75269 2.0359 7.06348 2.10769C7.37981 2.17949 7.78495 2.31282 8.27888 2.50769C8.64516 2.65128 8.96427 2.75897 9.23621 2.83077C9.50815 2.89744 9.77454 2.93077 10.0354 2.93077C10.3351 2.93077 10.6625 2.84872 11.0177 2.68462C11.3729 2.52051 11.7003 2.29231 12 2V3.15385C11.4339 3.71795 10.7569 4 9.96878 4C9.5692 4 9.19459 3.95897 8.84495 3.87692C8.49532 3.78974 8.12071 3.6641 7.72112 3.5C7.30489 3.3359 6.9719 3.22308 6.72216 3.16154C6.47242 3.1 6.21436 3.06923 5.94797 3.06923Z"
+        fill="#D1D1D1" fill-opacity="0.6"></path>
+      <path
+        d="M-2.05203 7.06923C-2.34617 7.06923 -2.67083 7.15641 -3.02601 7.33077C-3.37565 7.5 -3.70031 7.72308 -4 8V6.83846C-3.44502 6.27949 -2.76795 6 -1.96878 6C-1.5914 6 -1.24731 6.0359 -0.936524 6.10769C-0.620187 6.17949 -0.215054 6.31282 0.278876 6.50769C0.645161 6.65128 0.964273 6.75897 1.23621 6.83077C1.50815 6.89744 1.77454 6.93077 2.03538 6.93077C2.33507 6.93077 2.6625 6.84872 3.01769 6.68462C3.37288 6.52051 3.70031 6.29231 4 6V7.15385C3.43392 7.71795 2.75685 8 1.96878 8C1.5692 8 1.19459 7.95897 0.844953 7.87692C0.495317 7.78974 0.120708 7.6641 -0.278876 7.5C-0.695109 7.3359 -1.0281 7.22308 -1.27784 7.16154C-1.52758 7.1 -1.78564 7.06923 -2.05203 7.06923Z"
+        fill="#D1D1D1" fill-opacity="0.6"></path>
+      <path
+        d="M5.94797 11.0692C5.65383 11.0692 5.32917 11.1564 4.97399 11.3308C4.62435 11.5 4.29969 11.7231 4 12V10.8385C4.55498 10.2795 5.23205 10 6.03122 10C6.4086 10 6.75269 10.0359 7.06348 10.1077C7.37981 10.1795 7.78495 10.3128 8.27888 10.5077C8.64516 10.6513 8.96427 10.759 9.23621 10.8308C9.50815 10.8974 9.77454 10.9308 10.0354 10.9308C10.3351 10.9308 10.6625 10.8487 11.0177 10.6846C11.3729 10.5205 11.7003 10.2923 12 10V11.1538C11.4339 11.7179 10.7569 12 9.96878 12C9.5692 12 9.19459 11.959 8.84495 11.8769C8.49532 11.7897 8.12071 11.6641 7.72112 11.5C7.30489 11.3359 6.9719 11.2231 6.72216 11.1615C6.47242 11.1 6.21436 11.0692 5.94797 11.0692Z"
+        fill="#D1D1D1" fill-opacity="0.6"></path>
+      <path
+        d="M-2.05203 15.0692C-2.34617 15.0692 -2.67083 15.1564 -3.02601 15.3308C-3.37565 15.5 -3.70031 15.7231 -4 16V14.8385C-3.44502 14.2795 -2.76795 14 -1.96878 14C-1.5914 14 -1.24731 14.0359 -0.936524 14.1077C-0.620187 14.1795 -0.215054 14.3128 0.278876 14.5077C0.645161 14.6513 0.964273 14.759 1.23621 14.8308C1.50815 14.8974 1.77454 14.9308 2.03538 14.9308C2.33507 14.9308 2.6625 14.8487 3.01769 14.6846C3.37288 14.5205 3.70031 14.2923 4 14V15.1538C3.43392 15.7179 2.75685 16 1.96878 16C1.5692 16 1.19459 15.959 0.844953 15.8769C0.495317 15.7897 0.120708 15.6641 -0.278876 15.5C-0.695109 15.3359 -1.0281 15.2231 -1.27784 15.1615C-1.52758 15.1 -1.78564 15.0692 -2.05203 15.0692Z"
+        fill="#D1D1D1" fill-opacity="0.6"></path>
+      <path
+        d="M13.948 15.0692C13.6538 15.0692 13.3292 15.1564 12.974 15.3308C12.6243 15.5 12.2997 15.7231 12 16V14.8385C12.555 14.2795 13.232 14 14.0312 14C14.4086 14 14.7527 14.0359 15.0635 14.1077C15.3798 14.1795 15.7849 14.3128 16.2789 14.5077C16.6452 14.6513 16.9643 14.759 17.2362 14.8308C17.5082 14.8974 17.7745 14.9308 18.0354 14.9308C18.3351 14.9308 18.6625 14.8487 19.0177 14.6846C19.3729 14.5205 19.7003 14.2923 20 14V15.1538C19.4339 15.7179 18.7569 16 17.9688 16C17.5692 16 17.1946 15.959 16.845 15.8769C16.4953 15.7897 16.1207 15.6641 15.7211 15.5C15.3049 15.3359 14.9719 15.2231 14.7222 15.1615C14.4724 15.1 14.2144 15.0692 13.948 15.0692Z"
+        fill="#D1D1D1" fill-opacity="0.6"></path>
+      <path
+        d="M13.948 7.06923C13.6538 7.06923 13.3292 7.15641 12.974 7.33077C12.6243 7.5 12.2997 7.72308 12 8V6.83846C12.555 6.27949 13.232 6 14.0312 6C14.4086 6 14.7527 6.0359 15.0635 6.10769C15.3798 6.17949 15.7849 6.31282 16.2789 6.50769C16.6452 6.65128 16.9643 6.75897 17.2362 6.83077C17.5082 6.89744 17.7745 6.93077 18.0354 6.93077C18.3351 6.93077 18.6625 6.84872 19.0177 6.68462C19.3729 6.52051 19.7003 6.29231 20 6V7.15385C19.4339 7.71795 18.7569 8 17.9688 8C17.5692 8 17.1946 7.95897 16.845 7.87692C16.4953 7.78974 16.1207 7.6641 15.7211 7.5C15.3049 7.3359 14.9719 7.22308 14.7222 7.16154C14.4724 7.1 14.2144 7.06923 13.948 7.06923Z"
+        fill="#D1D1D1" fill-opacity="0.6"></path>
+    </g>
+    <defs>
+      <clipPath>
+        <rect width="16" height="16" fill="white"></rect>
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="icon12">
+    <g clip-path="url(#clip0)">
+      <rect width="16" height="16" fill="white"></rect>
+      <rect x="0.5" y="1.5" width="5" height="5" fill="#EDB1BD" stroke="#EDB1BD"></rect>
+      <rect x="4.5" y="9.5" width="5" height="5" fill="#EDB1BD" stroke="#EDB1BD"></rect>
+      <rect x="-3.5" y="9.5" width="5" height="5" fill="#EDB1BD" stroke="#EDB1BD"></rect>
+      <rect x="8.5" y="1.5" width="5" height="5" fill="#EDB1BD" stroke="#EDB1BD"></rect>
+      <rect x="12.5" y="9.5" width="5" height="5" fill="#EDB1BD" stroke="#EDB1BD"></rect>
+    </g>
+    <defs>
+      <clipPath>
+        <rect width="16" height="16" fill="white"></rect>
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="icon13">
+    <g clip-path="url(#clip0)">
+      <rect width="16" height="16" fill="white"></rect>
+      <rect y="2" width="16" height="1" fill="#9C9C9C" fill-opacity="0.6"></rect>
+      <rect y="6" width="16" height="1" fill="#9C9C9C" fill-opacity="0.6"></rect>
+      <rect x="3" y="7" width="1" height="4" fill="#9C9C9C" fill-opacity="0.6"></rect>
+      <rect x="3" y="15" width="1" height="3" fill="#9C9C9C" fill-opacity="0.6"></rect>
+      <rect x="3" y="-1" width="1" height="3" fill="#9C9C9C" fill-opacity="0.6"></rect>
+      <rect x="11" y="7" width="1" height="4" fill="#9C9C9C" fill-opacity="0.6"></rect>
+      <rect x="11" y="15" width="1" height="3" fill="#9C9C9C" fill-opacity="0.6"></rect>
+      <rect x="11" y="-1" width="1" height="3" fill="#9C9C9C" fill-opacity="0.6"></rect>
+      <rect x="7" y="2" width="1" height="5" fill="#9C9C9C" fill-opacity="0.6"></rect>
+      <rect x="15" y="2" width="1" height="5" fill="#9C9C9C" fill-opacity="0.6"></rect>
+      <rect x="15" y="10" width="1" height="5" fill="#9C9C9C" fill-opacity="0.6"></rect>
+      <rect x="7" y="11" width="1" height="4" fill="#9C9C9C" fill-opacity="0.6"></rect>
+      <rect y="10" width="16" height="1" fill="#9C9C9C" fill-opacity="0.6"></rect>
+      <rect y="14" width="16" height="1" fill="#9C9C9C" fill-opacity="0.6"></rect>
+    </g>
+    <defs>
+      <clipPath>
+        <rect width="16" height="16" fill="white"></rect>
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="icon14">
+    <g clip-path="url(#clip0)">
+      <rect width="16" height="16" fill="white"></rect>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M4 1H0V2H2V3H6V2H4V1Z" fill="#4A4A4A" fill-opacity="0.5"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M5 9H1V10H3V11H7V10H5V9Z" fill="#4A4A4A"
+            fill-opacity="0.5"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 5H4V6H6V7H10V6H8V5Z" fill="#4A4A4A" fill-opacity="0.5"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M9 13H5V14H7V15H11V14H9V13Z" fill="#4A4A4A"
+            fill-opacity="0.5"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M0 5H-4V6H-2V7H2V6H0V5Z" fill="#4A4A4A"
+            fill-opacity="0.5"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M1 13H-3V14H-1V15H3V14H1V13Z" fill="#4A4A4A"
+            fill-opacity="0.5"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M12 1H8V2H10V3H14V2H12V1Z" fill="#4A4A4A"
+            fill-opacity="0.5"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M13 9H9V10H11V11H15V10H13V9Z" fill="#4A4A4A"
+            fill-opacity="0.5"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M16 5H12V6H14V7H18V6H16V5Z" fill="#4A4A4A"
+            fill-opacity="0.5"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M17 13H13V14H15V15H19V14H17V13Z" fill="#4A4A4A"
+            fill-opacity="0.5"></path>
+    </g>
+    <defs>
+      <clipPath>
+        <rect width="16" height="16" fill="white"></rect>
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" id="intersect">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M1.29539 8H0V6.70446L6.70446 0H8V1.29539L1.29539 8ZM8 6.70446V8H6.70446L8 6.70446ZM1.29539 0L0 1.29539V0H1.29539Z" fill="#474747"/>
+  </symbol>
+  <defs>
+    <pattern id="patternicon1" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <use width="16" height="16" xlink:href="#icon1"></use>
+    </pattern>
+    <pattern id="patternicon2" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <use width="16" height="16" xlink:href="#icon2"></use>
+    </pattern>
+    <pattern id="patternicon3" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <use width="16" height="16" xlink:href="#icon3"></use>
+    </pattern>
+    <pattern id="patternicon4" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <use width="16" height="16" xlink:href="#icon4"></use>
+    </pattern>
+    <pattern id="patternicon5" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <use width="16" height="16" xlink:href="#icon5"></use>
+    </pattern>
+    <pattern id="patternicon6" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <use width="16" height="16" xlink:href="#icon6"></use>
+    </pattern>
+    <pattern id="patternicon7" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <use width="16" height="16" xlink:href="#icon7"></use>
+    </pattern>
+    <pattern id="patternicon8" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <use width="16" height="16" xlink:href="#icon8"></use>
+    </pattern>
+    <pattern id="patternicon9" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <use width="16" height="16" xlink:href="#icon9"></use>
+    </pattern>
+    <pattern id="patternicon10" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <use width="16" height="16" xlink:href="#icon10"></use>
+    </pattern>
+    <pattern id="patternicon11" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <use width="16" height="16" xlink:href="#icon11"></use>
+    </pattern>
+    <pattern id="patternicon12" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <use width="16" height="16" xlink:href="#icon12"></use>
+    </pattern>
+    <pattern id="patternicon13" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <use width="16" height="16" xlink:href="#icon13"></use>
+    </pattern>
+    <pattern id="patternicon14" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <use width="16" height="16" xlink:href="#icon14"></use>
+    </pattern>
+    <pattern id="patternintersect" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+      <use width="8" height="8" xlink:href="#intersect"></use>
+    </pattern>
+  </defs>
+</svg>
