@@ -5,7 +5,7 @@
 </span>
 <input #input
        *ngIf="edit"
-       tetaOnlyNumber
+       [tetaOnlyNumber]="true"
        type="text"
        class="input row_auto border-radius-0"
        (blur)="setValue()"

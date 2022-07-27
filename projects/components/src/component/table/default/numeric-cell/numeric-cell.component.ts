@@ -33,7 +33,7 @@ export class NumericCellComponent<T>
   }
 
   applyValue(value) {
-    this.row[this.column.name] = parseFloat(value);
+    this.row[this.column.name] = value;
   }
 
   setValue(): void {
