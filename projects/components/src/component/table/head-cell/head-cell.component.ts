@@ -156,14 +156,6 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
     this._alive = false;
   }
 
-  // autosizeColumn() {
-  //   this._svc.autosizeColumn(this.column, this._elementRef.nativeElement);
-  // }
-  //
-  // autosizeAllColumns() {
-  //   this._svc.autosizeAllColumns(this._elementRef.nativeElement);
-  // }
-
   resizeStart(event: MouseEvent): void {
     const rect = this._elementRef.nativeElement.getBoundingClientRect();
     this._startPosition = rect.x;
@@ -172,9 +164,10 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
 
   resizeProcess(event: MouseEvent): void {
     if (this._startPosition && event.pageX > 0) {
+      const position = this._startPosition;
       requestAnimationFrame(() => {
         this._svc.resizeColumn(
-          new ColumnResizeEvent(this.column, event.pageX - this._startPosition)
+          new ColumnResizeEvent(this.column, event.pageX - position)
         );
         this._app.tick();
       });

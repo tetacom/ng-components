@@ -40,6 +40,9 @@
     opacity: 0.3;
   }
 
+  &:focus {
+    box-shadow: 0 0 0 4px var(--color-primary-10);
+  }
 }
 
 @each $paletteName in $palettes {
