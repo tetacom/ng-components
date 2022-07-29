@@ -5,18 +5,18 @@ import {formatNumber} from '../util/number-helper';
   name: 'tetaNumber'
 })
 export class NumberPipe implements PipeTransform {
-  transform(value: number,
+  transform(value: number | string,
             decimalLength: number = 2,
             chunkDelimiter: string = '',
             decimalDelimiter: string = '.',
             chunkLength: number = 3): string {
-    if (value === null || value === undefined) {
+    if (value === null || value === undefined || value === '') {
       return '';
     }
-    if (value !== value / 1) {
+    if (typeof value === 'string' && isNaN(parseFloat(value))) {
       return value.toString();
     }
-    value /= 1;
+    value = Number(value);
     return formatNumber(value,
       decimalLength,
       chunkDelimiter,
