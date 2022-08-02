@@ -158,36 +158,39 @@ export class TableComponent<T>
     event: MouseEvent
   ) {
     const coordinates = this.getCoordinates(event);
-    if (coordinates) {
-      this.cellClick.emit({
-        ...this._svc.getCellInstance(coordinates),
-        event
-      });
-      if (this.editEvent === EditEvent.click) {
-        this.startEditRowOrCell(coordinates);
-      } else {
-        if (this._svc.currentEditCell && (coordinates.row !== this._svc.currentEditCell.row || coordinates.column !== this._svc.currentEditCell.column)) {
-          this.startEditRowOrCell(null);
+    const row = this.getRow(event);
+    const eventIsOnRow = this.eventIsOnRow(event);
+    setTimeout(() => {
+      if (coordinates) {
+        this.cellClick.emit({
+          ...this._svc.getCellInstance(coordinates),
+          event
+        });
+        if (this.editEvent === EditEvent.click) {
+          this.startEditRowOrCell(coordinates);
+        } else {
+          if (this._svc.currentEditCell && (coordinates.row !== this._svc.currentEditCell.row || coordinates.column !== this._svc.currentEditCell.column)) {
+            this.startEditRowOrCell(null);
+          }
         }
       }
-    }
-    const row = this.getRow(event);
-    if (row) {
-      if (event.ctrlKey) {
-        this._svc.selectOrDeselectRow(row);
-      } else if (event.shiftKey) {
-        this._svc.selectRange(row);
-      } else {
-        this._svc.selectRows([row]);
+      if (row) {
+        if (event.ctrlKey) {
+          this._svc.selectOrDeselectRow(row);
+        } else if (event.shiftKey) {
+          this._svc.selectRange(row);
+        } else {
+          this._svc.selectRows([row]);
+        }
       }
-    }
-    if (!this.eventIsOnRow(event) && !event.defaultPrevented) {
-      if (this.editType === EditType.row) {
-        this._svc.startEditRow(null);
-      } else {
-        this._svc.startEditCell(null);
+      if (!eventIsOnRow && !event.defaultPrevented) {
+        if (this.editType === EditType.row) {
+          this._svc.startEditRow(null);
+        } else {
+          this._svc.startEditCell(null);
+        }
       }
-    }
+    });
   }
 
   @HostListener('focusin', ['$event']) focusIn(event: any) {
@@ -207,13 +210,15 @@ export class TableComponent<T>
   dblclick(event: MouseEvent) {
     const coordinates = this.getCoordinates(event);
     if (coordinates) {
-      this.cellDoubleClick.emit({
-        ...this._svc.getCellInstance(coordinates),
-        event
+      setTimeout(() => {
+        this.cellDoubleClick.emit({
+          ...this._svc.getCellInstance(coordinates),
+          event
+        });
+        if (this.editEvent === EditEvent.doubleClick) {
+          this.startEditRowOrCell(coordinates);
+        }
       });
-      if (this.editEvent === EditEvent.doubleClick) {
-        this.startEditRowOrCell(coordinates);
-      }
     }
   }
 
