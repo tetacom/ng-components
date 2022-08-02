@@ -1,5 +1,5 @@
-<ng-container *ngIf="x | async as scale">
-  <svg:g text-anchor="middle" *ngFor="let tick of scale.ticks()" [attr.transform]="'translate('+ scale(tick) +', 0)'">
+<ng-container *ngIf="{x: x | async, ticks: ticks | async} as data">
+  <svg:g text-anchor="middle" *ngFor="let tick of data.ticks" [attr.transform]="'translate('+ data.x(tick) +', 0)'">
     <text fill="var(--color-text-70)" [attr.dy]="axis.options.opposite ? '-0.71em' : '0.71em'" [attr.y]="axis.options.opposite ? 0 : 9">{{ this.axis.options.tickFormat ? this.axis.options.tickFormat(tick) : this.axis.defaultFormatter()(tick) }}</text>
     <line stroke="var(--color-text-30)" [attr.y2]="axis.options.opposite ? -6 : 6"></line>
   </svg:g>

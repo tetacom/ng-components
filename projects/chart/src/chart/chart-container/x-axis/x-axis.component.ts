@@ -10,8 +10,12 @@ import {
 } from '@angular/core';
 import { Axis } from '../../core/axis/axis';
 
-import {map, Observable} from "rxjs";
+import {lastValueFrom, map, Observable, take, withLatestFrom} from "rxjs";
 import {ScaleService} from "../../service/scale.service";
+import {getTextWidth} from "../../core/utils/get-text-width";
+import * as d3 from 'd3';
+import {ChartService} from "../../service/chart.service";
+import {IChartConfig} from "../../model/i-chart-config";
 
 @Component({
   selector: '[teta-x-axis]',
@@ -21,16 +25,27 @@ import {ScaleService} from "../../service/scale.service";
 })
 export class XAxisComponent implements OnInit {
   x: Observable<any>;
+  ticks: Observable<any[]>
 
   @Input() axis: Axis;
   @Input() size: DOMRect;
 
   private _alive = true;
 
-  constructor(private scaleService: ScaleService) {
+  constructor(private scaleService: ScaleService, private _svc: ChartService) {
     this.x = this.scaleService.scales.pipe(map((_) => {
       return _.x.get(this.axis.index)?.scale
     }))
+
+
+    this.ticks = this.x.pipe(
+      withLatestFrom(this._svc.size),
+      map((_: [any, DOMRect]) => {
+        const [x, size] = _;
+        const maxSymbolLength = parseInt(d3.max(x.ticks().map((_) => getTextWidth(this.axis.options.tickFormat ? this.axis.options.tickFormat(_) : this.axis.defaultFormatter()(_)))), 10);
+        return x.ticks(size.width / (maxSymbolLength*2.5))
+      })
+    )
   }
 
   getLabelTransform() {
