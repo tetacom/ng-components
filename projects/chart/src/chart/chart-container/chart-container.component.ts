@@ -83,7 +83,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       map((data: [IScalesMap, IChartConfig]) => {
         const [{x, y}, config] = data;
 
-        return config.brush?.type === BrushType.x || config?.zoom?.type === ZoomType.x ? x.get(0).scale : y.get(0).scale;
+        return config.brush?.type === BrushType.x || config?.zoom?.type === ZoomType.x ? x.get(0)?.scale : y.get(0)?.scale;
       }),
       shareReplay({
         bufferSize: 1,
