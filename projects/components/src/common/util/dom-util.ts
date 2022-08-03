@@ -13,4 +13,8 @@ export class DomUtil {
     }
     return null;
   }
+
+  public static isOverflown(element: HTMLElement) {
+    return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+  }
 }

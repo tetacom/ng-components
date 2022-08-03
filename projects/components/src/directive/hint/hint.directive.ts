@@ -34,6 +34,7 @@ export class HintDirective
   @Input() override align: Align = Align.center;
   @Input() override verticalAlign: VerticalAlign = VerticalAlign.top;
   @Input() delay = 300;
+  @Input() overflownOnly = false;
 
   get _dynamicContent() {
     return this.tetaHint;
@@ -105,7 +106,7 @@ export class HintDirective
   }
 
   private createHint(): void {
-    if (!this._dynamicContent) {
+    if (!this._dynamicContent || (this.overflownOnly && !DomUtil.isOverflown(this._elementRef.nativeElement))) {
       return;
     }
     this._componentRef = this.createContentRef();

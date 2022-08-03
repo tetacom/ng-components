@@ -2,7 +2,11 @@
      [class.row_6]="horizontal"
      [class.text-field_required]="required"
      *ngIf="label?.length > 0">
-  {{label}}
+  <span class="overflow-hidden text-overflow-ellipsis"
+        [tetaHint]="label"
+        [overflownOnly]="true">
+    {{label}}
+  </span>
 </div>
 <div class="input-container" [class.row_6]="horizontal">
   <ng-content></ng-content>
