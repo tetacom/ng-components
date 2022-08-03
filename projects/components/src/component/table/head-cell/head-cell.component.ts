@@ -90,7 +90,7 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
   ) {
   }
 
-  @HostListener('dragstart', ['$event']) dragstart(event: DragEvent): void {
+  dragstart(event: DragEvent): void {
     if (event && event.dataTransfer) {
       event.dataTransfer.setData('text', 'move');
     }

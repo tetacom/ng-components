@@ -1,4 +1,4 @@
-<div draggable="true" class="row row_auto">
+<div class="row row_auto">
   <teta-dropdown [autoCloseIgnore]="['enter', 'inside']"
                  [verticalAlign]="verticalAlign.bottom"
                  [appendToBody]="false"
@@ -7,7 +7,10 @@
                  (click)="$event.preventDefault()"
                  [class.table-head__cell__menu_open]="dropDownOpen"
                  class="column column_auto justify-content-center">
-    <div tetaDropdownHead class="table-head__cell__wrapper"
+    <div tetaDropdownHead
+         draggable="true"
+         class="table-head__cell__wrapper"
+         (dragstart)="dragstart($event)"
          [ngClass]="column.headCellClass">
       <teta-head-cell-host [column]="column" [columns]="columns | async" [data]="data"></teta-head-cell-host>
       <teta-icon *ngIf="iconName | async as icon"

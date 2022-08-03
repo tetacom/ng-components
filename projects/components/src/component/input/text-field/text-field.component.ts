@@ -36,11 +36,6 @@ export class TextFieldComponent implements ControlValueAccessor {
   invalid: boolean;
   @ViewChild('input', {static: false}) input: ElementRef;
 
-  // @HostBinding('attr.tabindex')
-  // private get tabindex() {
-  //   return this.disabled ? null : 0;
-  // }
-
   @HostBinding('class.text-field')
   private readonly textField = true;
   value = '';
@@ -54,13 +49,6 @@ export class TextFieldComponent implements ControlValueAccessor {
     }
     this.input.nativeElement.focus();
   }
-  //
-  // @HostListener('focus') focus() {
-  //   if (this.disabled) {
-  //     return;
-  //   }
-  //   this.input.nativeElement.focus();
-  // }
 
   keyPress(event: KeyboardEvent) {
     if (event.key === 'Enter' || event.keyCode === 13) {
