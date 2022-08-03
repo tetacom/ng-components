@@ -3,6 +3,7 @@
             [align]="align.left"
             [formGroup]="formGroup"
             [horizontal]="horizontal"
+            [required]="column.required"
             *ngIf="column.editable || !hideNonEditable">
   <ng-container [ngSwitch]="column.filterType">
     <teta-select class="row_auto"
