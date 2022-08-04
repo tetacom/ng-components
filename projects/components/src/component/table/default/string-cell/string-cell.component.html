@@ -1,6 +1,7 @@
 <span [style.display]="edit ? 'none' : 'block'"
       class="cell-text"
       [tetaHint]="row[column.name]"
+      [align]="align.auto"
       [appendToBody]="true"
       [overflownOnly]="true"
       [class.cell-text_disabled]="!editable">

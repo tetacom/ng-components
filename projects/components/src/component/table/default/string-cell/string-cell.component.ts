@@ -11,6 +11,7 @@ import {CellComponentBase} from '../../base/cell-component-base';
 import {TableColumn} from '../../contract/table-column';
 import {TableService} from '../../service/table.service';
 import {ICellCoordinates} from '../../contract/i-cell-coordinates';
+import {Align} from '../../../../common/enum/align.enum';
 
 @Component({
   selector: 'teta-string-cell',
@@ -21,6 +22,7 @@ import {ICellCoordinates} from '../../contract/i-cell-coordinates';
 export class StringCellComponent<T>
   extends CellComponentBase<T>
   implements OnInit {
+  align = Align;
   @Input() override column: TableColumn;
   @Input() override row: T;
   @ViewChild('input', {static: false}) input: ElementRef;
