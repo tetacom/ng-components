@@ -1,5 +1,4 @@
 import {
-  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -13,10 +12,10 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { ITreeData } from '../../../common/contract/i-tree-data';
-import { TreeService } from '../tree.service';
-import { TetaTemplateDirective } from '../../../directive/teta-template/teta-template.directive';
-import { filter, takeWhile } from 'rxjs/operators';
+import {ITreeData} from '../../../common/contract/i-tree-data';
+import {TreeService} from '../tree.service';
+import {TetaTemplateDirective} from '../../../directive/teta-template/teta-template.directive';
+import {filter, takeWhile} from 'rxjs/operators';
 
 @Component({
   selector: 'teta-tree',
@@ -25,15 +24,20 @@ import { filter, takeWhile } from 'rxjs/operators';
   providers: [TreeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TreeComponent
-  implements OnInit, AfterContentInit, OnChanges, OnDestroy
-{
-  @Input() data: ITreeData[];
-  @Output() service: EventEmitter<TreeService> =
-    new EventEmitter<TreeService>();
-  @Input() class;
+export class TreeComponent implements OnInit, OnChanges, OnDestroy {
+  @Input()
+  set data(data: ITreeData[]) {
+    this._data = data;
+  }
+
+  get data() {
+    return this._data;
+  }
+
   @Input() padding = 8;
   @Input() childNodeName = 'children';
+  @Input() virtual: boolean;
+  @Input() height = 28;
 
   @Input()
   set openItems(items: ITreeData[]) {
@@ -41,18 +45,16 @@ export class TreeComponent
     this._service.setOpenItems(items);
   }
 
-  get noChildMode(): boolean {
-    const hasChildren = this.data.find(
-      (_) => _[this.childNodeName]?.length > 0
-    );
-    return !hasChildren;
-  }
-
+  @Output() service: EventEmitter<TreeService> =
+    new EventEmitter<TreeService>();
   @Output() openItemsChange = new EventEmitter();
 
-  @ContentChild(TetaTemplateDirective, { static: true })
+  @ContentChild(TetaTemplateDirective, {static: true})
   template: TetaTemplateDirective;
+  childPadding: boolean;
+  displayData: ITreeData[];
 
+  private _data: ITreeData[];
   private _openItems: ITreeData[];
   private _alive = true;
 
@@ -62,7 +64,10 @@ export class TreeComponent
         takeWhile((_) => this._alive),
         filter((_) => this._openItems !== _)
       )
-      .subscribe((_) => this.openItemsChange.emit(_));
+      .subscribe((_) => {
+        this._openItems = _;
+        this.openItemsChange.emit(_);
+      });
   }
 
   @Input()
@@ -70,23 +75,50 @@ export class TreeComponent
     this._service.compareItems = func;
   }
 
-  @HostBinding('class')
-  private get getClass(): string {
-    const result = [this.class, 'tree'];
-    return result.join(' ');
+  get compareItems() {
+    return this._service.compareItems;
   }
+
+  @HostBinding('class.tree') private readonly treeClass = true;
 
   ngOnInit(): void {
     this.service.emit(this._service);
   }
 
-  ngAfterContentInit(): void {}
-
   ngOnChanges(changes: SimpleChanges): void {
+    this.displayData = this.getDisplayData(this._data, 0);
+    this.childPadding = this.hasChildren(this._data);
     this._cdr.detectChanges();
   }
 
   ngOnDestroy() {
     this._alive = false;
+  }
+
+  trackRow = (index: number, item: ITreeData): any => {
+    if (this.compareItems) {
+      return this.compareItems(item);
+    }
+    return index;
+  };
+
+
+  private hasChildren(data: ITreeData[]): boolean {
+    return data.some(
+      (_) => _[this.childNodeName]?.length > 0
+    );
+  }
+
+  private getDisplayData(data: ITreeData[], level: number) {
+    const result: ITreeData[] = [];
+    data?.forEach((item: ITreeData) => {
+      item['level'] = level;
+      result.push(item);
+      if (item[this.childNodeName]?.length > 0
+        && this._openItems?.find((openItem) => this.compareItems(openItem) === this.compareItems(item))) {
+        result.push(...this.getDisplayData(item[this.childNodeName], level + 1));
+      }
+    });
+    return result;
   }
 }

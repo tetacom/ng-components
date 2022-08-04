@@ -1,8 +1,22 @@
-<ng-container *ngFor="let item of data">
-  <teta-tree-item [item]="item"
-                  [depth]="0"
+<cdk-virtual-scroll-viewport *ngIf="virtual; else default"
+                             class="table-body-container"
+                             [itemSize]="height">
+  <teta-tree-item *cdkVirtualFor="let item of displayData;templateCacheSize: 0; trackBy: trackRow;"
+                  [item]="item"
+                  [style.height.px]="height"
+                  [depth]="item['level']"
                   [padding]="padding"
                   [childNodeName]="childNodeName"
-                  [noChildMode]="noChildMode"
+                  [childPadding]="childPadding"
                   [template]="template?.template"></teta-tree-item>
-</ng-container>
+</cdk-virtual-scroll-viewport>
+<ng-template #default>
+  <teta-tree-item *ngFor="let item of displayData"
+                  [item]="item"
+                  [style.height.px]="height"
+                  [depth]="item['level']"
+                  [padding]="padding"
+                  [childNodeName]="childNodeName"
+                  [childPadding]="childPadding"
+                  [template]="template?.template"></teta-tree-item>
+</ng-template>

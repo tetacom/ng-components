@@ -2,8 +2,11 @@
 @import "util/font-util.scss";
 
 .tree {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  min-height: 0;
+  min-width: 0;
   @include getFont($fonts, 'body-3');
 
   &__item-container {

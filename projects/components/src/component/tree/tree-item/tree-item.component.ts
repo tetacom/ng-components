@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   HostBinding,
-  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -11,10 +10,10 @@ import {
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
-import { ITreeData } from '../../../common/contract/i-tree-data';
-import { TreeService } from '../tree.service';
-import { takeWhile } from 'rxjs/operators';
-import { animate, style, transition, trigger } from '@angular/animations';
+import {ITreeData} from '../../../common/contract/i-tree-data';
+import {TreeService} from '../tree.service';
+import {takeWhile} from 'rxjs/operators';
+import {animate, style, transition, trigger} from '@angular/animations';
 
 /**
  * TODO: Lazy загрузка дочерних элементов, Output onExpand, шаблон для иконки expand
@@ -25,12 +24,12 @@ import { animate, style, transition, trigger } from '@angular/animations';
   styleUrls: ['./tree-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
-    trigger('children', [
+    trigger('treeItemInstance', [
       transition('void => *', [
-        style({ opacity: '0' }),
-        animate(200, style({ opacity: '1' })),
+        style({opacity: '0'}),
+        animate(200, style({opacity: '1'})),
       ]),
-      transition('* => void', [animate(200, style({ opacity: '0' }))]),
+      transition('* => void', [animate(200, style({opacity: '0'}))]),
     ]),
   ],
 })
@@ -40,7 +39,7 @@ export class TreeItemComponent implements OnInit, OnChanges, OnDestroy {
   @Input() padding = 16;
   @Input() childNodeName = 'children';
   @Input() template: TemplateRef<any>;
-  @Input() noChildMode: boolean;
+  @Input() childPadding: boolean;
 
   @HostBinding('class.tree__item-container') private readonly treeItemClass =
     true;
@@ -48,15 +47,17 @@ export class TreeItemComponent implements OnInit, OnChanges, OnDestroy {
   itemIsOpen = false;
 
   private _alive = true;
+  @HostBinding('@treeItemInstance') private readonly treeItemInstance = true;
 
   get computedDepth(): number {
     return (
       this.depth +
-      (this.item[this.childNodeName]?.length > 0 ? 0 : this.noChildMode ? 1 : 2)
+      (this.item[this.childNodeName]?.length > 0 ? 0 : this.childPadding ? 2 : 1)
     );
   }
 
-  constructor(public service: TreeService, private _cdr: ChangeDetectorRef) {}
+  constructor(public service: TreeService, private _cdr: ChangeDetectorRef) {
+  }
 
   openItem() {
     this.service.openItem(this.item);
@@ -76,7 +77,8 @@ export class TreeItemComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnChanges(changes: SimpleChanges): void {
+  }
 
   ngOnDestroy(): void {
     this._alive = false;
