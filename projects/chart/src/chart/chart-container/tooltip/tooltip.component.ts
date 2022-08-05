@@ -2,9 +2,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
   NgZone,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import {filter, map, Observable, tap} from 'rxjs';
 import {ChartService} from '../../service/chart.service';
@@ -14,6 +16,8 @@ import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {IChartConfig} from '../../model/i-chart-config';
 import {Series} from '../../model/series';
 import * as d3 from 'd3';
+import {Align, PositionUtil, VerticalAlign} from '@tetacom/ng-components';
+
 @Component({
   selector: 'teta-tooltip',
   templateUrl: './tooltip.component.html',
@@ -24,25 +28,28 @@ export class TooltipComponent implements OnInit {
   @Input() size: DOMRect;
   @Input() config: IChartConfig;
 
+  @ViewChild('tooltip', {static: false, read: ElementRef}) tooltip: ElementRef;
+
   position: Observable<{
-    left: string;
-    top: string;
-    bottom: string;
-    right: string;
+    left?: number;
+    top?: number;
+    bottom?: number;
+    right?: number;
   }>;
 
   displayTooltips: Observable<SafeHtml>;
   display: Observable<number>;
-  tooltips: Observable<IDisplayTooltip[]>
+  tooltips: Observable<IDisplayTooltip[]>;
 
   constructor(
     private svc: ChartService,
     private cdr: ChangeDetectorRef,
     private zoomService: ZoomService,
     private sanitizer: DomSanitizer,
-    private _zone: NgZone
+    private _zone: NgZone,
+    private _elementRef: ElementRef
   ) {
-    this.tooltips = this.svc.tooltips.pipe(map((_) => [..._.values()]))
+    this.tooltips = this.svc.tooltips.pipe(map((_) => [..._.values()]));
   }
 
   ngOnInit(): void {
@@ -78,8 +85,8 @@ export class TooltipComponent implements OnInit {
         html += `<div class="display-flex align-center"><span class="margin-right-1" style="${indicatorStyle}"></span>
           <span class="font-title-3">${_.series.name}
             <span class="font-body-3">
-              x: ${(_.point.x as any) instanceof Date ? format(_.point.x as any) :  _.point.x?.toFixed(2)}
-              y: ${(_.point.y as any) instanceof Date ? format(_.point.y as any) :  _.point.y?.toFixed(2)}
+              x: ${(_.point.x as any) instanceof Date ? format(_.point.x as any) : _.point.x?.toFixed(2)}
+              y: ${(_.point.y as any) instanceof Date ? format(_.point.y as any) : _.point.y?.toFixed(2)}
             </span>
           </span></div>`;
       });
@@ -104,36 +111,31 @@ export class TooltipComponent implements OnInit {
   }
 
   private getPosition(event: PointerEvent) {
-    const centerX = this.size.width / 2;
-    const centerY = this.size.height / 2;
-
-    const padding = this.config?.tooltip?.padding;
-
-    const scene = {
-      left: event.pageX > centerX ? 'initial' : `${event.pageX + padding.x}px`,
-      top: event.pageY > centerY ? 'initial' : `${event.pageY + padding.y}px`,
-      bottom:
-        event.pageY > centerY
-          ? `${window.innerHeight - event.pageY + padding.y}px`
-          : 'initial',
-      right:
-        event.pageX > centerX
-          ? `${window.innerWidth - event.pageX + padding.x}px`
-          : 'initial',
-    };
-
-    return scene;
+    if (!this.tooltip) {
+      return null;
+    }
+    return PositionUtil.getPosition(
+      {
+        top: event.pageY,
+        bottom: event.pageY,
+        left: event.pageX,
+        right: event.pageX,
+      },
+      this.tooltip?.nativeElement?.getBoundingClientRect(),
+      Align.auto,
+      VerticalAlign.top,
+      12
+    );
   }
 
 
   format(input: number | Date): string {
-
-    if(input instanceof Date) {
+    if (input instanceof Date) {
       const format = d3.timeFormat('%d.%m.%Y');
       return format(input);
     }
 
-    const format = d3.format(',.5~r')
-    return format(input)
+    const format = d3.format(',.5~r');
+    return format(input);
   }
 }
