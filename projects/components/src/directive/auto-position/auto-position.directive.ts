@@ -1,24 +1,35 @@
-import {AfterViewInit, Directive, ElementRef, HostBinding, Input} from '@angular/core';
+import {AfterViewInit, Directive, ElementRef, HostBinding, Input, NgZone, OnDestroy} from '@angular/core';
 import {Align} from '../../common/enum/align.enum';
 import {VerticalAlign} from '../../common/enum/vertical-align.enum';
 import {IRect} from '../../common/contract/i-rect';
 import {DomUtil} from '../../common/util/dom-util';
 import {PositionUtil} from '../../common/util/position-util';
+import {takeUntil} from 'rxjs';
+import {takeWhile} from 'rxjs/operators';
 
 @Directive({
   selector: '[tetaAutoPosition]'
 })
-export class AutoPositionDirective implements AfterViewInit {
+export class AutoPositionDirective implements AfterViewInit, OnDestroy {
   @Input() align: Align;
   @Input() verticalAlign: VerticalAlign;
 
   @HostBinding('style.position') fixed = 'fixed';
 
-  constructor(private _elementRef: ElementRef) {
+  private _alive = true;
+
+  constructor(private _elementRef: ElementRef, private _zone: NgZone) {
   }
 
   ngAfterViewInit() {
     this.setPosition();
+    this._zone.onStable.pipe(takeWhile(() => this._alive)).subscribe(() => {
+      this.setPosition();
+    });
+  }
+
+  ngOnDestroy() {
+    this._alive = false;
   }
 
   private setPosition(): void {
