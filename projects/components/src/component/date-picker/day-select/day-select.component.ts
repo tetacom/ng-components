@@ -14,7 +14,7 @@ import {DayModel} from '../model/day-model';
 import {DatePeriod} from '../model/date-period';
 import {takeWhile, tap, withLatestFrom} from 'rxjs/operators';
 import {DatePickerUtil} from '../util/date-picker-util';
-import {fromEvent} from 'rxjs';
+import {fromEvent, Subject} from 'rxjs';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {DateUtil} from '../../../util/date-util';
 import {TetaLocalisation} from '../../../locale/teta-localisation';
@@ -39,8 +39,26 @@ export class DaySelectComponent
   @Input() disabledDates: Date[];
   @Input() disabledPeriods: DatePeriod[];
   @Input() disabledDays: number[];
-  @Input() minDate: Date;
-  @Input() maxDate: Date;
+
+  @Input() set minDate(d: Date) {
+    this._minDate = d;
+
+    if(this._currentValue) {
+      this.createDays();
+    }
+
+    this._cdr.markForCheck();
+  };
+
+  @Input() set maxDate(d: Date) {
+    this._maxDate = d;
+
+    if(this._currentValue) {
+      this.createDays();
+    }
+
+    this._cdr.markForCheck();
+  };
   @Input() disabled: boolean;
 
   @Output() dateSelected = new EventEmitter<Date>();
@@ -52,6 +70,9 @@ export class DaySelectComponent
   value: Date;
 
   _currentValue: Date;
+  private _minDate: Date;
+  private _maxDate: Date;
+
 
   set currentValue(val: Date) {
     if (
@@ -189,8 +210,8 @@ export class DaySelectComponent
     this.days = DatePickerUtil.getPickerDays(
       this.currentValue,
       this.firstDayOfWeek,
-      this.minDate,
-      this.maxDate,
+      this._minDate,
+      this._maxDate,
       this.disabledDates,
       this.disabledDays,
       this.disabledPeriods

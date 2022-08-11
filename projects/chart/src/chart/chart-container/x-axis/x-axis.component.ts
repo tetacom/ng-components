@@ -8,7 +8,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Axis } from '../../core/axis/axis';
+import {Axis} from '../../core/axis/axis';
 
 import {lastValueFrom, map, Observable, take, withLatestFrom} from "rxjs";
 import {ScaleService} from "../../service/scale.service";
@@ -42,8 +42,9 @@ export class XAxisComponent implements OnInit {
       withLatestFrom(this._svc.size),
       map((_: [any, DOMRect]) => {
         const [x, size] = _;
-        const maxSymbolLength = parseInt(d3.max(x.ticks().map((_) => getTextWidth(this.axis.options.tickFormat ? this.axis.options.tickFormat(_) : this.axis.defaultFormatter()(_)))), 10);
-        return x.ticks(size.width / (maxSymbolLength*2.5))
+
+        const tickSize = x.ticks().map((_) => getTextWidth(this.axis.options.tickFormat ? this.axis.options.tickFormat(_) : this.axis.defaultFormatter()(_), 0.45, 11))
+        return x.ticks(size.width / parseInt(d3.max(tickSize), 10) / 2)
       })
     )
   }
@@ -54,7 +55,8 @@ export class XAxisComponent implements OnInit {
     }, ${this.axis.options.opposite ? -32 : 32})`;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngOnDestroy(): void {
     this._alive = false;
