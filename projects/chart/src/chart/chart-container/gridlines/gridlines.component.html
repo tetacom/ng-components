@@ -5,7 +5,7 @@
   y: y | async,
   config: config | async
 } as data">
-  <ng-container *ngIf="data.config.gridLines?.showY !== false">
+  <ng-container *ngIf="data.y && data.config.gridLines?.showY !== false">
     <ng-container *ngFor="let tick of data.yValues">
       <svg:line [attr.x1]="0"
                 [attr.y1]="data.y(tick)"
@@ -14,7 +14,7 @@
     </ng-container>
   </ng-container>
 
-  <ng-container *ngIf="data.config.gridLines?.showX !== false">
+  <ng-container *ngIf="data.x && data.config.gridLines?.showX !== false">
     <ng-container *ngFor="let tick of data.xValues">
       <svg:line [attr.x1]="data.x(tick)"
                 [attr.y1]="0"

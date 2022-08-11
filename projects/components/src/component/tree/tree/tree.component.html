@@ -11,7 +11,7 @@
                   [template]="template?.template"></teta-tree-item>
 </cdk-virtual-scroll-viewport>
 <ng-template #default>
-  <teta-tree-item *ngFor="let item of displayData"
+  <teta-tree-item *ngFor="let item of displayData; trackBy: trackRow"
                   [item]="item"
                   [style.height.px]="height"
                   [depth]="item['level']"
