@@ -30,15 +30,15 @@ export class GridlinesComponent implements AfterViewInit {
 
     this.tickYValues = this.svc.scales.pipe(map((_) => {
       const ratio = this.size.height / 40;
-      return _.y.get(0).scale.ticks(ratio);
+      return _.y.get(0)?.scale.ticks(ratio);
     }));
     this.tickXValues = this.svc.scales.pipe(map((_) => {
       const ratio = this.size.width / 40;
-      return _.x.get(0).scale.ticks(ratio);
+      return _.x.get(0)?.scale.ticks(ratio);
     }));
 
-    this.y = this.svc.scales.pipe(map((_) => _.y.get(0).scale));
-    this.x = this.svc.scales.pipe(map((_) => _.x.get(0).scale));
+    this.y = this.svc.scales.pipe(map((_) => _.y.get(0)?.scale));
+    this.x = this.svc.scales.pipe(map((_) => _.x.get(0)?.scale));
   }
 
   ngAfterViewInit() {

@@ -66,6 +66,8 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
       )
       .subscribe((_) => {
         this._openItems = _;
+        this.displayData = this.getDisplayData(this._data, 0);
+
         this.openItemsChange.emit(_);
       });
   }
@@ -88,7 +90,7 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     this.displayData = this.getDisplayData(this._data, 0);
     this.childPadding = this.hasChildren(this._data);
-    this._cdr.detectChanges();
+    //this._cdr.detectChanges();
   }
 
   ngOnDestroy() {
