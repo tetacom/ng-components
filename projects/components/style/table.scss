@@ -222,7 +222,7 @@
     padding: 0 8px;
     overflow: hidden;
     text-overflow: ellipsis;
-    user-select: contain;
+    user-select: none;
 
     &_numeric {
       text-align: right;

@@ -263,7 +263,7 @@ export class DatePickerComponent
     if (this.isScrollIgnored()) {
       return false;
     }
-    this.currentValue = DatePickerUtil.scrollMonth(
+    this.currentValue = DatePickerUtil.scrollYear(
       e.deltaY,
       this.internalValue
     );
