@@ -1,7 +1,11 @@
 <ng-container *ngFor="let serie of series" class="padding-bottom-4">
   <div *ngIf="serie?.showInLegend !== false">
     <div class="legend-item cursor-pointer" (click)="click(serie)">
-      <div class="legend-icon-form" [style.height.px]="getHeight(serie)" [style.background-color]="serie.visible ? serie.color : 'var(--color-text-30)'"></div>
+      <div class="legend-icon-form"
+           [style.height.px]="getHeight(serie)"
+           [style.border-top-color]="serie.visible ? serie.color : 'var(--color-text-30)'"
+           [style.border-top-style]="serie.style?.strokeDasharray ? 'dashed' : 'solid'"
+           [style.border-width.px]="serie.style?.strokeDasharray ? 1 : 2"></div>
       <div class="legend-label" style="user-select: none" [style.text-decoration]="serie.visible ? 'none' : 'line-through'">{{ serie.name }}</div>
     </div>
   </div>
