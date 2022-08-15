@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import {BasePoint} from '../../../model/base-point';
 import {SeriesBaseComponent} from '../../../base/series-base.component';
-import {map, Observable} from 'rxjs';
+import {filter, map, Observable} from 'rxjs';
 import {ChartService} from '../../../service/chart.service';
 import {ScaleService} from '../../../service/scale.service';
 import {ZoomService} from '../../../service/zoom.service';
@@ -43,16 +43,16 @@ export class BlockSeriesComponent<T extends BasePoint>
   }
 
   override ngOnInit(): void {
-    const defaultVisiblePixels = 0;
 
     this.x = this.scaleService.scales.pipe(
-      map((_) => _.x.get(this.series.xAxisIndex).scale)
+      map((_) => _.x.get(this.series.xAxisIndex)?.scale)
     );
     this.y = this.scaleService.scales.pipe(
-      map((_) => _.y.get(this.series.yAxisIndex).scale)
+      map((_) => _.y.get(this.series.yAxisIndex)?.scale)
     );
 
     this.displayPoints = this.y.pipe(
+      filter((y) => y),
       map((y) => {
         return this.series.data.filter((point, index, arr) => {
           const [min, max] = y.domain();

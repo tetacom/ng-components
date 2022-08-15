@@ -11,7 +11,7 @@ import {BasePoint} from '../../../model/base-point';
 import {ChartService} from '../../../service/chart.service';
 import {ScaleService} from '../../../service/scale.service';
 import {ZoomService} from '../../../service/zoom.service';
-import {map, Observable} from 'rxjs';
+import {filter, map, Observable} from 'rxjs';
 import {FillType} from '../../../model/enum/fill-type';
 
 @Component({
@@ -49,6 +49,7 @@ export class BlockAreaSeriesComponent<T extends BasePoint>
     );
 
     this.displayPoints = this.y.pipe(
+      filter((y) => y),
       map((y) => {
         return this.series.data.filter((point, index, arr) => {
           const [min, max] = y.domain();
