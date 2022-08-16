@@ -5,17 +5,19 @@ import {
   ContentChild,
   EventEmitter,
   HostBinding,
-  Input,
+  Input, NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
+  SimpleChanges, ViewChild,
 } from '@angular/core';
 import {ITreeData} from '../../../common/contract/i-tree-data';
 import {TreeService} from '../tree.service';
 import {TetaTemplateDirective} from '../../../directive/teta-template/teta-template.directive';
 import {filter, takeWhile} from 'rxjs/operators';
+import {CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
+import {combineLatest} from "rxjs";
 
 @Component({
   selector: 'teta-tree',
@@ -49,6 +51,8 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
     new EventEmitter<TreeService>();
   @Output() openItemsChange = new EventEmitter();
 
+  @ViewChild(CdkVirtualScrollViewport, {static: false}) virtualScroll: CdkVirtualScrollViewport;
+
   @ContentChild(TetaTemplateDirective, {static: true})
   template: TetaTemplateDirective;
   childPadding: boolean;
@@ -58,16 +62,15 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
   private _openItems: ITreeData[];
   private _alive = true;
 
-  constructor(private _service: TreeService, private _cdr: ChangeDetectorRef) {
-    this._service.openItems
+  constructor(private _service: TreeService, private _cdr: ChangeDetectorRef, private _zone: NgZone) {
+   this._service.openItems
       .pipe(
         takeWhile((_) => this._alive),
         filter((_) => this._openItems !== _)
       )
-      .subscribe((_) => {
+      .subscribe((_: ITreeData[]) => {
         this._openItems = _;
         this.displayData = this.getDisplayData(this._data, 0);
-
         this.openItemsChange.emit(_);
       });
   }
@@ -90,11 +93,23 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     this.displayData = this.getDisplayData(this._data, 0);
     this.childPadding = this.hasChildren(this._data);
-    //this._cdr.detectChanges();
   }
 
   ngOnDestroy() {
     this._alive = false;
+  }
+
+  ngAfterViewInit() {
+    this._service.scrollToIndex.pipe(
+      takeWhile(() => this._alive)
+    ).subscribe((index) => {
+
+      this._zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.virtualScroll.scrollToIndex(index, 'smooth')
+        })
+      })
+    })
   }
 
   trackRow = (index: number, item: ITreeData): any => {
