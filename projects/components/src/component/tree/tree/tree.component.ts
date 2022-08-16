@@ -106,7 +106,7 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
 
 
   private hasChildren(data: ITreeData[]): boolean {
-    return data.some(
+    return data?.some(
       (_) => _[this.childNodeName]?.length > 0
     );
   }
