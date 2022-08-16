@@ -7,10 +7,11 @@ import { FormsModule } from '@angular/forms';
 import { OnlyNumberModule } from '../../directive/only-number/only-number.module';
 import { FormGroupTitleComponent } from './form-group-title/form-group-title.component';
 import {HintModule} from '../../directive/hint/hint.module';
+import { ColorInputComponent } from './color-input/color-input.component';
 
 @NgModule({
-  declarations: [InputComponent, TextFieldComponent, FormGroupTitleComponent],
-  exports: [InputComponent, TextFieldComponent, FormGroupTitleComponent],
+  declarations: [InputComponent, TextFieldComponent, FormGroupTitleComponent, ColorInputComponent],
+  exports: [InputComponent, TextFieldComponent, FormGroupTitleComponent, ColorInputComponent],
   imports: [CommonModule, IconModule, FormsModule, OnlyNumberModule, HintModule],
 })
 export class InputModule {}

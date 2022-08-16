@@ -106,7 +106,7 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
 
       this._zone.runOutsideAngular(() => {
         setTimeout(() => {
-          this.virtualScroll.scrollToIndex(index, 'smooth')
+          this.virtualScroll?.scrollToIndex(index, 'smooth')
         })
       })
     })
