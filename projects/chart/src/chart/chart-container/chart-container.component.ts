@@ -244,8 +244,8 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     xScales: Map<number, Axis>,
     yScales: Map<number, Axis>
   ) {
-    const x = xScales.get(0).scale;
-    const y = yScales.get(0).scale;
+    const x = xScales.get(0)?.scale;
+    const y = yScales.get(0)?.scale;
     this._svc.emitChartClick({
       event: event,
       target: {
@@ -260,8 +260,8 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     xScales: Map<number, Axis>,
     yScales: Map<number, Axis>
   ) {
-    const x = xScales.get(0).scale;
-    const y = yScales.get(0).scale;
+    const x = xScales.get(0)?.scale;
+    const y = yScales.get(0)?.scale;
     this._svc.emitChartContextMenu({
       event: event,
       target: {

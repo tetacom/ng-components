@@ -52,8 +52,12 @@ export class AreaSeriesComponent<T extends BasePoint>
         ) => {
           const {x, y} = data;
 
-          this.x = x.get(this.series.xAxisIndex).scale;
-          this.y = y.get(this.series.yAxisIndex).scale;
+          this.x = x.get(this.series.xAxisIndex)?.scale;
+          this.y = y.get(this.series.yAxisIndex)?.scale;
+
+          if(!this.x || !this.y) {
+            return ''
+          }
 
           const area = d3
             .area<BasePoint>()

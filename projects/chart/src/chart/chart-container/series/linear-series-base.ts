@@ -1,7 +1,7 @@
 import {BasePoint} from '../../model/base-point';
 import {SeriesBaseComponent} from '../../base/series-base.component';
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
-import {combineLatest, map, Observable, tap, withLatestFrom} from 'rxjs';
+import {combineLatest, filter, map, Observable, tap, withLatestFrom} from 'rxjs';
 import {ChartService} from '../../service/chart.service';
 import {ScaleService} from '../../service/scale.service';
 import {ZoomService} from '../../service/zoom.service';
@@ -91,8 +91,12 @@ export class LinearSeriesBase<T extends BasePoint>
     this.path = this.scaleService.scales.pipe(
       map((data) => {
         const {x, y} = data;
-        this.x = x.get(this.series.xAxisIndex).scale;
-        this.y = y.get(this.series.yAxisIndex).scale;
+        this.x = x.get(this.series.xAxisIndex)?.scale;
+        this.y = y.get(this.series.yAxisIndex)?.scale;
+
+        if(!this.x || !this.y) {
+          return ''
+        }
 
         const filter = this.defaultClipPointsMapping.get(this.series.clipPointsDirection);
 
