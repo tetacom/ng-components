@@ -1,0 +1,14 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+}
+input[type=color] {
+  height: 12px;
+  width: 12px;
+  padding: 0;
+  border: 0;
+  &::-webkit-color-swatch, &::-webkit-color-swatch-wrapper {
+    border: 0;
+    padding: 0;
+  }
+}
