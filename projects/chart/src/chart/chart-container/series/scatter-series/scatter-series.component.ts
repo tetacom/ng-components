@@ -32,8 +32,8 @@ export class ScatterSeriesComponent<T extends BasePoint>
   }
 
   override ngOnInit(): void {
-    this.x = this.scaleService.scales.pipe(map(_ => _.x.get(this.series.xAxisIndex).scale));
-    this.y = this.scaleService.scales.pipe(map(_ => _.y.get(this.series.yAxisIndex).scale));
+    this.x = this.scaleService.scales.pipe(map(_ => _.x.get(this.series.xAxisIndex)?.scale));
+    this.y = this.scaleService.scales.pipe(map(_ => _.y.get(this.series.yAxisIndex)?.scale));
   }
 
   ngAfterViewInit() {
