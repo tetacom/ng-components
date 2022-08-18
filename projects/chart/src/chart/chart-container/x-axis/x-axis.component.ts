@@ -44,7 +44,7 @@ export class XAxisComponent implements OnInit {
         const [x, size] = _;
 
         const tickSize = x.ticks().map((_) => getTextWidth(this.axis.options.tickFormat ? this.axis.options.tickFormat(_) : this.axis.defaultFormatter()(_), 0.45, 11))
-        return x.ticks(size.width / parseInt(d3.max(tickSize), 10) / 2)
+        return x.ticks(size.width / parseInt(d3.max(tickSize), 10) / 3)
       })
     )
   }
