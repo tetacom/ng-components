@@ -13,7 +13,7 @@
   *ngIf="axis.orientation === orientation.x"
   text-anchor="middle"
   dominant-baseline="central"
-  class="label font-body-3 fill-text-70"
+  class="label font-caption fill-text-90"
   [attr.x]="getTextCenter()"
   [attr.transform]="'rotate(-90, '+ getTextCenter() +',' + height / 2 + ')'"
   [attr.y]="height / 2">{{plotBand.label}}
@@ -22,7 +22,7 @@
 <svg:text
   *ngIf="axis.orientation === orientation.y"
   text-anchor="middle"
-  class="label font-body-3 fill-text-70"
+  class="label font-caption fill-text-90"
   dominant-baseline="central"
   [attr.x]="getTextCenter()"
   [attr.y]="width / 2">{{plotBand.label}}
