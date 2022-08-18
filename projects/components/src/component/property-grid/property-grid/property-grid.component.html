@@ -7,7 +7,7 @@
                              [horizontal]="horizontal"
                              (controlValueChange)="onControlValueChange($event)"
                              [hideNonEditable]="hideNonEditable"></teta-property-grid-item>
-    <teta-property-grid-group *ngIf="column.columns?.length > 0"
+    <teta-property-grid-group *ngIf="column.columns?.length > 0 && (column.editable || !hideNonEditable)"
                               [dict]="dict"
                               [column]="column"
                               [formGroup]="formGroup"
