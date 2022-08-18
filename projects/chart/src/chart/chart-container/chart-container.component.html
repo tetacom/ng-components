@@ -122,7 +122,7 @@
         </ng-container>
       </g>
       <g class="series-container">
-        <ng-container *ngFor="let series of data.config.series">
+        <ng-container *ngFor="let series of data.config.series; trackBy: trackSerie">
           <g teta-series-host
              *ngIf="series.visible"
              [config]="data.config"
