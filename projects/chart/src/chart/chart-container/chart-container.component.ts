@@ -25,6 +25,8 @@ import {BrushType} from '../model/enum/brush-type';
 import {ZoomType} from '../model/enum/zoom-type';
 import {tetaZoneFull} from '@tetacom/ng-components';
 import {IScalesMap} from '../model/i-scales-map';
+import {Series} from "../model/series";
+import {BasePoint} from "../model/base-point";
 
 type Opposite = boolean;
 
@@ -277,5 +279,9 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
   mouseLeave(event) {
     this._svc.setPointerMove(event);
+  }
+
+  trackSerie(index, item: Series<BasePoint>) {
+    return item.name?.length ? item.name : index
   }
 }
