@@ -1,21 +1,15 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
-  OnDestroy,
   OnInit,
 } from '@angular/core';
 import {Axis} from '../../core/axis/axis';
-
-import {lastValueFrom, map, Observable, take, withLatestFrom} from "rxjs";
+import { map, Observable, withLatestFrom} from "rxjs";
 import {ScaleService} from "../../service/scale.service";
 import {getTextWidth} from "../../core/utils/get-text-width";
 import * as d3 from 'd3';
 import {ChartService} from "../../service/chart.service";
-import {IChartConfig} from "../../model/i-chart-config";
 
 @Component({
   selector: '[teta-x-axis]',
