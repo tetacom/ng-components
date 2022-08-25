@@ -5,7 +5,7 @@ import {Axis} from '../core/axis/axis';
 import {AxisOrientation} from '../model/enum/axis-orientation';
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from './chart.service';
-import {combineLatest, map, Observable, shareReplay, withLatestFrom,} from 'rxjs';
+import {combineLatest, filter, map, Observable, shareReplay, withLatestFrom,} from 'rxjs';
 import {IChartEvent} from '../model/i-chart-event';
 import {ZoomService} from './zoom.service';
 import {ScaleType} from '../model/enum/scale-type';
@@ -35,7 +35,9 @@ export class ScaleService {
   ) {
 
     this.scales = combineLatest([
-      this.chartService.size,
+      this.chartService.size.pipe(
+        filter((rect) => rect.width > 0 && rect.height > 0)
+      ),
       this.chartService.config,
       this.zoomService.zoomed,
     ]).pipe(
