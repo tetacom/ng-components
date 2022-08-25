@@ -17,9 +17,20 @@ export const onlyNumber = () => ({
     data: 123,
     log: (name, value) => {
       action(name)(value);
+      console.log(name, value);
     },
   },
   template: `<div class="bg-panel-50 padding-10 margin-10">
+                On blur
+                <input tetaOnlyNumber
+                        class="input"
+                        [ngModel]="data"
+                        (ngModelChange)="data=$event;log('tetaOnlyNumber', $event)"
+                        [ngModelOptions]="{updateOn: 'blur'}"/>
+                <div>{{data}}</div>
+              </div>
+              <div class="bg-panel-50 padding-10 margin-10">
+                Standart
                 <input tetaOnlyNumber
                         class="input"
                         [ngModel]="data"
