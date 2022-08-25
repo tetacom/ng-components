@@ -50,7 +50,6 @@ export class ScaleService {
       this.chartService.config,
       this.zoomService.zoomed,
     ]).pipe(
-      debounceTime(0),
       map((data: [DOMRectReadOnly, IChartConfig, IChartEvent<Axis>]) => {
 
         const [size, config, zoom] = data;
