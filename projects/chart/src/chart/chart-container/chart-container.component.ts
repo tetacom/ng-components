@@ -72,6 +72,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     this.size = this._svc.size;
 
     this.scales = this._scaleService.scales.pipe(
+      observeOn(animationFrameScheduler),
       tetaZoneFull(this._zone),
       shareReplay({
         bufferSize: 1,
