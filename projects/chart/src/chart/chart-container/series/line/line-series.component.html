@@ -15,10 +15,10 @@
   >
   </svg:circle>
 </ng-container>
-<ng-container *ngIf="getMarkers() as markers">
+<ng-container *ngIf="markers as draggablePoints">
   <svg:circle
     class="marker"
-    *ngFor="let point of markers"
+    *ngFor="let point of draggablePoints"
     [class.draggable-marker]="point?.marker?.draggable"
     [attr.r]="point.marker.style?.radius ?? 5"
     [attr.fill]="point.marker.style?.fill ?? 'transparent'"

@@ -1,6 +1,15 @@
 import {BasePoint} from '../../model/base-point';
 import {SeriesBaseComponent} from '../../base/series-base.component';
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef, Input,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  SimpleChanges
+} from '@angular/core';
 import {combineLatest, filter, map, Observable, tap, withLatestFrom} from 'rxjs';
 import {ChartService} from '../../service/chart.service';
 import {ScaleService} from '../../service/scale.service';
@@ -9,15 +18,15 @@ import * as d3 from 'd3';
 import {DragPointType} from '../../model/enum/drag-point-type';
 import {TooltipTracking} from '../../model/enum/tooltip-tracking';
 import {ClipPointsDirection} from '../../model/enum/clip-points-direction';
-import {Axis} from "../../core/axis/axis";
 import {IScalesMap} from "../../model/i-scales-map";
+import {Series} from "../../model/series";
 
 @Component({
   template: '',
 })
 export class LinearSeriesBase<T extends BasePoint>
   extends SeriesBaseComponent<T>
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, OnDestroy {
 
   public defaultClipPointsMapping: Map<ClipPointsDirection, (min: number, max: number) => (point: BasePoint, idx: number, arr: Array<BasePoint>) => {}> = new Map();
 
@@ -27,7 +36,21 @@ export class LinearSeriesBase<T extends BasePoint>
   svgElement: SVGGeometryElement;
   x: any;
   y: any;
-  markers: any;
+  markers: BasePoint[];
+  markerListeners: any;
+
+  private __series: Series<T>;
+
+  @Input()
+  override set series(series: Series<T>) {
+    this.__series = series;
+
+    this.markers = this.__series.data?.filter((_) => _?.marker);
+  }
+
+  override get series() {
+    return this.__series
+  }
 
   constructor(
     protected override svc: ChartService,
@@ -136,12 +159,19 @@ export class LinearSeriesBase<T extends BasePoint>
         }
 
         return line(filteredData);
+      }),
+      tap(() => {
+        setTimeout(() => {
+          if(this.markers?.length > 0) {
+            this.addDragEvents();
+          }
+        })
       })
     );
   }
 
   ngOnDestroy() {
-    this.markers?.on('start drag end', null);
+    this.markerListeners?.on('start drag end', null);
     this.svc.setTooltip({
       point: null,
       series: this.series,
@@ -149,6 +179,11 @@ export class LinearSeriesBase<T extends BasePoint>
   }
 
   ngAfterViewInit() {
+
+  }
+
+  addDragEvents() {
+    this.markerListeners?.on('start drag end', null);
     const drag = (node, event: d3.D3DragEvent<any, any, any>, d: BasePoint) => {
       if (
         d.marker?.dragType === DragPointType.x ||
@@ -174,14 +209,15 @@ export class LinearSeriesBase<T extends BasePoint>
 
       this.cdr.detectChanges();
     };
-    this.markers = d3
+
+    this.markerListeners = d3
       .drag()
       .subject(function (event, d: BasePoint) {
         const node = d3.select(this);
         return {x: node.attr('cx'), y: node.attr('cy')};
       });
     const dragMarkers =
-      this.markers.on(
+      this.markerListeners.on(
         'start drag end',
         function (event: d3.D3DragEvent<any, any, any>, d: BasePoint) {
           const node = d3.select(this);
@@ -205,10 +241,6 @@ export class LinearSeriesBase<T extends BasePoint>
       .select(this.element.nativeElement)
       .select('.line')
       .node() as SVGGeometryElement;
-  }
-
-  getMarkers() {
-    return this.series.data?.filter((_) => _?.marker);
   }
 
   getTransform(
