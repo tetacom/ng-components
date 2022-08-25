@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef, OnDestroy,
+  ElementRef, NgZone, OnDestroy,
   OnInit,
 } from '@angular/core';
 import {BasePoint} from '../../../model/base-point';
@@ -25,7 +25,7 @@ import {Axis} from "../../../core/axis/axis";
 })
 export class AreaSeriesComponent<T extends BasePoint>
   extends LinearSeriesBase<T>
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, OnDestroy {
   areaPath: Observable<string>;
 
   fillDirection = FillDirection;

@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef, OnDestroy,
+  ElementRef, NgZone, OnDestroy,
   OnInit,
 } from '@angular/core';
 import {ChartService} from '../../../service/chart.service';
@@ -20,14 +20,14 @@ import {LinearSeriesBase} from '../linear-series-base';
 })
 export class LineSeriesComponent<T extends BasePoint>
   extends LinearSeriesBase<T>
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, OnDestroy {
 
   constructor(
     protected override svc: ChartService,
     protected override cdr: ChangeDetectorRef,
     protected override scaleService: ScaleService,
     protected override zoomService: ZoomService,
-    protected override element: ElementRef
+    protected override element: ElementRef,
   ) {
     super(svc, cdr, scaleService, zoomService, element);
   }

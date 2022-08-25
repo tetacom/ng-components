@@ -125,8 +125,12 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       this.zoom.on('zoom end', this.zoomed);
       this._element.call(this.zoom).on('dblclick.zoom', null); // Disable dbclick zoom
 
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.chartService.emitZoomInstance(this.zoomService);
+        })
+      })
 
-      this.chartService.emitZoomInstance(this.zoomService);
 
       if (this.config?.zoom?.zoomBehavior === ZoomBehaviorType.wheel) {
         this.runWheelZoom();
@@ -220,6 +224,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
             const [m] = data;
             const currentTransform = d3.zoomTransform(this._element.node());
+
+
             if (
               !m.message.event &&
               this.currentSelection &&
@@ -232,11 +238,16 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
             this.brushScale.domain(this.axis.originDomain);
             const domain = this.brushScale.domain();
+            const range = this.brushScale.range();
 
             const scale = Math.abs(domain[1] - domain[0]) / Math.abs(s[1] - s[0]);
             let transform = zoomIdentity.scale(scale);
 
             if (m.message?.brushType === BrushType.x) {
+
+              this.brushScale.range([range[0],this.size.width])
+
+
               if (this.config.xAxis[0]?.inverted) {
                 transform = transform.translate(-this.brushScale(s[0]), 0);
               } else {
@@ -245,6 +256,9 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             }
 
             if (m.message?.brushType === BrushType.y) {
+
+              this.brushScale.range([range[0],this.size.height])
+
               if (this.config.yAxis[0]?.inverted) {
                 transform = transform.translate(0, -this.brushScale(s[0]));
               } else {

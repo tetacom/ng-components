@@ -10,11 +10,11 @@ import {
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from '../service/chart.service';
 import {
-  animationFrameScheduler,
+  animationFrameScheduler, combineLatest,
   combineLatestWith,
   map,
   Observable, observeOn,
-  shareReplay,
+  shareReplay, tap,
   withLatestFrom,
 } from 'rxjs';
 import {Axis} from '../core/axis/axis';
@@ -72,7 +72,6 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     this.size = this._svc.size;
 
     this.scales = this._scaleService.scales.pipe(
-      observeOn(animationFrameScheduler),
       tetaZoneFull(this._zone),
       shareReplay({
         bufferSize: 1,
@@ -93,56 +92,56 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.visibleRect = this.size.pipe(
-      combineLatestWith(this.scales)
-    ).pipe(
-      withLatestFrom(this.config),
-      map(
-        (
-          data: [[DOMRect, IScalesMap], IChartConfig]
-        ) => {
-          const [[size, {x, y}], config] = data;
-          const yAxesArray = Array.from(y.values());
-          const xAxesArray = Array.from(x.values());
-          const left = yAxesArray
-            .filter((_) => _.options.opposite !== true && _.options.visible)
-            .reduce(this.sumSize, 0);
 
-          const right = yAxesArray
-            .filter((_) => _.options.opposite && _.options.visible)
-            .reduce(this.sumSize, 0);
+    this.visibleRect = combineLatest([this.size, this.scales])
+      .pipe(
+        withLatestFrom(this.config),
+        map(
+          (
+            data: [[DOMRect, IScalesMap], IChartConfig]
+          ) => {
+            const [[size, {x, y}], config] = data;
+            const yAxesArray = Array.from(y.values());
+            const xAxesArray = Array.from(x.values());
+            const left = yAxesArray
+              .filter((_) => _.options.opposite !== true && _.options.visible)
+              .reduce(this.sumSize, 0);
 
-          const bottom = xAxesArray
-            .filter((_) => _.options.opposite !== true && _.options.visible)
-            .reduce(this.sumSize, 0);
+            const right = yAxesArray
+              .filter((_) => _.options.opposite && _.options.visible)
+              .reduce(this.sumSize, 0);
 
-          const top = xAxesArray
-            .filter((_) => _.options.opposite && _.options.visible)
-            .reduce(this.sumSize, 0);
-          return {
-            x: left + config.bounds?.left,
-            y: top + config.bounds?.top,
-            width:
-              size.width -
-              left -
-              right -
-              config.bounds?.left -
-              config.bounds?.right,
-            height:
-              size.height -
-              top -
-              bottom -
-              config.bounds?.top -
-              config.bounds?.bottom,
-          };
-        }
-      ),
-      tetaZoneFull(this._zone),
-      shareReplay({
-        bufferSize: 1,
-        refCount: true,
-      })
-    );
+            const bottom = xAxesArray
+              .filter((_) => _.options.opposite !== true && _.options.visible)
+              .reduce(this.sumSize, 0);
+
+            const top = xAxesArray
+              .filter((_) => _.options.opposite && _.options.visible)
+              .reduce(this.sumSize, 0);
+            return {
+              x: left + config.bounds?.left,
+              y: top + config.bounds?.top,
+              width:
+                size.width -
+                left -
+                right -
+                config.bounds?.left -
+                config.bounds?.right,
+              height:
+                size.height -
+                top -
+                bottom -
+                config.bounds?.top -
+                config.bounds?.bottom,
+            };
+          }
+        ),
+        tetaZoneFull(this._zone),
+        shareReplay({
+          bufferSize: 1,
+          refCount: true,
+        })
+      );
   }
 
   ngOnInit() {

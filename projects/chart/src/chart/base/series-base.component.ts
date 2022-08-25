@@ -2,7 +2,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Input,
+  Input, NgZone,
   OnInit,
 } from '@angular/core';
 import {ChartService} from '../service/chart.service';
@@ -42,7 +42,8 @@ export class SeriesBaseComponent<T extends BasePoint> implements OnInit {
     protected cdr: ChangeDetectorRef,
     protected scaleService: ScaleService,
     protected zoomService: ZoomService,
-    protected element: ElementRef
+    protected element: ElementRef,
+    protected zone?: NgZone
   ) {
   }
 
