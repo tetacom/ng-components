@@ -6,21 +6,15 @@ import {AxisOrientation} from '../model/enum/axis-orientation';
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from './chart.service';
 import {
-  animationFrameScheduler,
   combineLatest,
-  filter,
   map,
   Observable,
-  observeOn,
   shareReplay,
-  withLatestFrom,
-  zip,
 } from 'rxjs';
 import {IChartEvent} from '../model/i-chart-event';
 import {ZoomService} from './zoom.service';
 import {ScaleType} from '../model/enum/scale-type';
 import {IScalesMap} from "../model/i-scales-map";
-import {debounceTime, throttleTime} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root',

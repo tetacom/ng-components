@@ -94,14 +94,13 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     );
 
 
-    this.visibleRect = combineLatest([this.size, this.scales])
+    this.visibleRect = combineLatest([this.size, this.scales, this.config])
       .pipe(
-        withLatestFrom(this.config),
         map(
           (
-            data: [[DOMRect, IScalesMap], IChartConfig]
+            data: [DOMRect, IScalesMap, IChartConfig]
           ) => {
-            const [[size, {x, y}], config] = data;
+            const [size, {x, y}, config] = data;
             const yAxesArray = Array.from(y.values());
             const xAxesArray = Array.from(x.values());
             const left = yAxesArray
