@@ -1,17 +1,18 @@
-import { Series } from './series';
-import { BasePoint } from './base-point';
-import { AxisOptions } from './axis-options';
-import { ZoomType } from './enum/zoom-type';
-import { TooltipOptions } from './tooltip-options';
-import { ChartBounds } from './chart-bounds';
-import { BrushType } from './enum/brush-type';
-import { Annotation } from './annotation';
-import {ZoomBehaviorType} from "./enum/zoom-behavior-type";
+import {Series} from './series';
+import {BasePoint} from './base-point';
+import {AxisOptions} from './axis-options';
+import {ZoomType} from './enum/zoom-type';
+import {TooltipOptions} from './tooltip-options';
+import {ChartBounds} from './chart-bounds';
+import {BrushType} from './enum/brush-type';
+import {Annotation} from './annotation';
+import {ZoomBehaviorType} from './enum/zoom-behavior-type';
 
 export interface IChartConfig {
   name?: string;
   id?: string;
   series?: Series<BasePoint>[];
+  noDataText?: 'No data',
   zoom?: {
     enable: boolean;
     type: ZoomType;

@@ -11,6 +11,11 @@
 </ng-container>
 <ng-template #noData>
   <div class="column column_auto justify-content-center">
-    <span class="font-body-3 color-text-40" style="overflow: hidden; text-overflow: ellipsis; text-align: center; white-space: nowrap">Данные отсутствуют</span>
+    <span class="font-body-3 color-text-40 overflow-hidden text-overflow-ellipsis nowrap text-align-center">
+      <div #ref><ng-content></ng-content></div>
+      <span *ngIf="!ref.hasChildNodes()">
+        No data
+      </span>
+    </span>
   </div>
 </ng-template>
