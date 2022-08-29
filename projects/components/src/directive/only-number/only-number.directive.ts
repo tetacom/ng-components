@@ -169,7 +169,12 @@ export class OnlyNumberDirective {
     if (value === '-0.0') {
       value = '0.0';
     }
+    if (value === null || value === undefined || value === '') {
+      return;
+    }
     const valid: boolean = new RegExp(regex).test(value.toString());
-    this._control.control.setValue(valid ? parseFloat(value) : parseFloat(this._previousValue) ?? 0);
+    if (value.toString() !== parseFloat(value).toString()) {
+      this._control.control.patchValue(parseFloat(value));
+    }
   }
 }
