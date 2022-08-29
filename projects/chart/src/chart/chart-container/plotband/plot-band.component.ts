@@ -204,7 +204,11 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
     );
   }
 
-  getTextCenter = () => this.scale((this.plotBand.from + this.plotBand.to) / 2);
+  getTextPosition = () => {
+    const [min, max] = this.scale.domain();
+    const position = ((this.plotBand.from <= min ? min : this.plotBand.from) + (this.plotBand.to >= max ? max : this.plotBand.to)) / 2;
+    return this.scale(position);
+  }
 
   getFill(d: PlotBand): string {
     if (d.style?.plotBand?.patternImage) {
