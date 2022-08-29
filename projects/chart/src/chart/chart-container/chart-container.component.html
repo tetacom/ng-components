@@ -90,7 +90,7 @@
           <g teta-plot-band *ngFor="let plotBand of axis.plotBands"
              [plotBand]="plotBand"
              [scale]="data.scales.x.get(i).scale"
-             [size]="data.size"
+             [size]="data.visibleRect"
              [axis]="data.scales.x.get(i)"></g>
         </ng-container>
       </g>
@@ -99,7 +99,7 @@
           <g teta-plot-band *ngFor="let plotBand of axis.plotBands"
              [plotBand]="plotBand"
              [scale]="data.scales.y.get(i).scale"
-             [size]="data.size"
+             [size]="data.visibleRect"
              [axis]="data.scales.y.get(i)"></g>
         </ng-container>
       </g>
