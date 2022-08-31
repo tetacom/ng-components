@@ -21,8 +21,9 @@ import {BlockAreaSeriesComponent} from './chart-container/series/block-area-seri
 import {AreaSeriesComponent} from './chart-container/series/area-series/area-series.component';
 import {AnnotationComponent} from './chart-container/annotation/annotation.component';
 import {LinearSeriesBase} from './chart-container/series/linear-series-base';
-import { CrosshairComponent } from './chart-container/crosshair/crosshair.component';
+import {CrosshairComponent} from './chart-container/crosshair/crosshair.component';
 import {LetModule} from '@tetacom/ng-components';
+import {DraggablePointDirective} from './directives/draggable-point.directive';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import {LetModule} from '@tetacom/ng-components';
     BlockAreaSeriesComponent,
     AnnotationComponent,
     CrosshairComponent,
+    DraggablePointDirective,
   ],
   exports: [
     ChartComponent,

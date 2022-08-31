@@ -1,9 +1,9 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef, NgZone, OnDestroy,
+  ElementRef,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import {ChartService} from '../../../service/chart.service';
@@ -31,4 +31,64 @@ export class LineSeriesComponent<T extends BasePoint>
   ) {
     super(svc, cdr, scaleService, zoomService, element);
   }
+
+  private start: { x: number, y: number };
+  private labelStart: { dx: number, dy: number };
+
+  moveStart(event, point) {
+    this.start = {x: point.x, y: point.y};
+  }
+
+  moveEnd(event, point) {
+    point.x = this.x.invert(this.x(this.start.x) + event.deltaX);
+    point.y = this.y.invert(this.y(this.start.y) + event.deltaY);
+    this._update.next();
+    this.svc.emitPoint({
+      target: event
+    });
+  }
+
+  moveProcess(event, point) {
+    point.x = this.x.invert(this.x(this.start.x) + event.deltaX);
+    point.y = this.y.invert(this.y(this.start.y) + event.deltaY);
+    this._update.next();
+    this.svc.emitPoint({
+      target: event
+    });
+  }
+
+  startLabel(event, label) {
+    this.labelStart = {dx: label.dx, dy: label.dy};
+  }
+
+  moveLabel(event, label) {
+    label.dx = this.labelStart.dx + event.deltaX;
+    label.dy = this.labelStart.dy + event.deltaY;
+  }
+
+  allowDrag = (point: BasePoint) => {
+    return (newPoint) => {
+      if (point.marker.minX !== null && point.marker.minX !== undefined) {
+        if (this.x.invert(this.x(this.start.x) + newPoint.deltaX) < point.marker.minX) {
+          return false;
+        }
+      }
+      if (point.marker.maxX !== null && point.marker.maxX !== undefined) {
+        if (this.x.invert(this.x(this.start.x) + newPoint.deltaX) > point.marker.minX) {
+          return false;
+        }
+      }
+      if (point.marker.minY !== null && point.marker.minY !== undefined) {
+        if (this.y.invert(this.y(this.start.y) + newPoint.deltaY) < point.marker.minY) {
+          return false;
+        }
+      }
+      if (point.marker.maxY !== null && point.marker.maxY !== undefined) {
+        if (this.y.invert(this.y(this.start.y) + newPoint.deltaY) > point.marker.maxY) {
+          return false;
+        }
+      }
+      return true;
+    };
+  };
 }

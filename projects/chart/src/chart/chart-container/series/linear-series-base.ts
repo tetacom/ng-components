@@ -1,16 +1,14 @@
 import {BasePoint} from '../../model/base-point';
 import {SeriesBaseComponent} from '../../base/series-base.component';
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
-  ElementRef, Input,
-  NgZone,
+  ElementRef,
+  Input,
   OnDestroy,
   OnInit,
-  SimpleChanges
 } from '@angular/core';
-import {combineLatest, filter, map, Observable, tap, withLatestFrom} from 'rxjs';
+import {BehaviorSubject, combineLatest, filter, map, Observable, tap, withLatestFrom} from 'rxjs';
 import {ChartService} from '../../service/chart.service';
 import {ScaleService} from '../../service/scale.service';
 import {ZoomService} from '../../service/zoom.service';
@@ -18,8 +16,8 @@ import * as d3 from 'd3';
 import {DragPointType} from '../../model/enum/drag-point-type';
 import {TooltipTracking} from '../../model/enum/tooltip-tracking';
 import {ClipPointsDirection} from '../../model/enum/clip-points-direction';
-import {IScalesMap} from "../../model/i-scales-map";
-import {Series} from "../../model/series";
+import {IScalesMap} from '../../model/i-scales-map';
+import {Series} from '../../model/series';
 
 @Component({
   template: '',
@@ -40,6 +38,7 @@ export class LinearSeriesBase<T extends BasePoint>
   markerListeners: any;
 
   private __series: Series<T>;
+  protected _update = new BehaviorSubject<void>(null);
 
   @Input()
   override set series(series: Series<T>) {
@@ -49,7 +48,7 @@ export class LinearSeriesBase<T extends BasePoint>
   }
 
   override get series() {
-    return this.__series
+    return this.__series;
   }
 
   constructor(
@@ -111,14 +110,15 @@ export class LinearSeriesBase<T extends BasePoint>
       tap(() => setTimeout(() => this.cdr.detectChanges()))
     );
 
-    this.path = this.scaleService.scales.pipe(
-      map((data) => {
+    this.path = combineLatest([this.scaleService.scales, this._update]).pipe(
+      map(([data]) => {
+        // console.log(data);
         const {x, y} = data;
         this.x = x.get(this.series.xAxisIndex)?.scale;
         this.y = y.get(this.series.yAxisIndex)?.scale;
 
-        if(!this.x || !this.y) {
-          return ''
+        if (!this.x || !this.y) {
+          return '';
         }
 
         const filter = this.defaultClipPointsMapping.get(this.series.clipPointsDirection);
@@ -160,18 +160,19 @@ export class LinearSeriesBase<T extends BasePoint>
 
         return line(filteredData);
       }),
-      tap(() => {
+      tap((_) => {
+        // console.log(_)
         setTimeout(() => {
-          if(this.markers?.length > 0) {
-            this.addDragEvents();
+          if (this.markers?.length > 0) {
+            // this.addDragEvents();
           }
-        })
+        });
       })
     );
   }
 
   ngOnDestroy() {
-    this.markerListeners?.on('start drag end', null);
+    // this.markerListeners?.on('start drag end', null);
     this.svc.setTooltip({
       point: null,
       series: this.series,
@@ -183,64 +184,64 @@ export class LinearSeriesBase<T extends BasePoint>
   }
 
   addDragEvents() {
-    this.markerListeners?.on('start drag end', null);
-    const drag = (node, event: d3.D3DragEvent<any, any, any>, d: BasePoint) => {
-      if (
-        d.marker?.dragType === DragPointType.x ||
-        d.marker?.dragType === DragPointType.xy
-      ) {
-        d.x = this.x.invert(event.x);
-      }
+    // this.markerListeners?.on('start drag end', null);
+    // const drag = (node, event: d3.D3DragEvent<any, any, any>, d: BasePoint) => {
+    //   if (
+    //     d.marker?.dragType === DragPointType.x ||
+    //     d.marker?.dragType === DragPointType.xy
+    //   ) {
+    //     d.x = this.x.invert(event.x);
+    //   }
+    //
+    //   if (
+    //     d.marker?.dragType === DragPointType.y ||
+    //     d.marker?.dragType === DragPointType.xy
+    //   ) {
+    //     d.y = this.y.invert(event.y);
+    //   }
+    //
+    //   this.svc.emitPoint({
+    //     target: {
+    //       series: this.series,
+    //       point: d,
+    //     },
+    //     event,
+    //   });
+    //
+    //   this.cdr.detectChanges();
+    // };
 
-      if (
-        d.marker?.dragType === DragPointType.y ||
-        d.marker?.dragType === DragPointType.xy
-      ) {
-        d.y = this.y.invert(event.y);
-      }
-
-      this.svc.emitPoint({
-        target: {
-          series: this.series,
-          point: d,
-        },
-        event,
-      });
-
-      this.cdr.detectChanges();
-    };
-
-    this.markerListeners = d3
-      .drag()
-      .subject(function (event, d: BasePoint) {
-        const node = d3.select(this);
-        return {x: node.attr('cx'), y: node.attr('cy')};
-      });
-    const dragMarkers =
-      this.markerListeners.on(
-        'start drag end',
-        function (event: d3.D3DragEvent<any, any, any>, d: BasePoint) {
-          const node = d3.select(this);
-
-          drag(node, event, d);
-        }
-      );
-
-    const draggableMarkers = this.series.data?.filter(
-      (_) => _?.marker && _?.marker?.draggable
-    );
-
-    const element = d3
-      .select(this.element.nativeElement)
-      .selectAll('.draggable-marker')
-      .data(draggableMarkers);
-
-    element.call(dragMarkers as any);
-
-    this.svgElement = d3
-      .select(this.element.nativeElement)
-      .select('.line')
-      .node() as SVGGeometryElement;
+    // this.markerListeners = d3
+    //   .drag()
+    //   .subject(function (event, d: BasePoint) {
+    //     const node = d3.select(this);
+    //     return {x: node.attr('cx'), y: node.attr('cy')};
+    //   });
+    // const dragMarkers =
+    //   this.markerListeners.on(
+    //     'start drag end',
+    //     function (event: d3.D3DragEvent<any, any, any>, d: BasePoint) {
+    //       const node = d3.select(this);
+    //
+    //       drag(node, event, d);
+    //     }
+    //   );
+    //
+    // const draggableMarkers = this.series.data?.filter(
+    //   (_) => _?.marker && _?.marker?.draggable
+    // );
+    //
+    // const element = d3
+    //   .select(this.element.nativeElement)
+    //   .selectAll('.draggable-marker')
+    //   .data(draggableMarkers);
+    //
+    // element.call(dragMarkers as any);
+    //
+    // this.svgElement = d3
+    //   .select(this.element.nativeElement)
+    //   .select('.line')
+    //   .node() as SVGGeometryElement;
   }
 
   getTransform(
