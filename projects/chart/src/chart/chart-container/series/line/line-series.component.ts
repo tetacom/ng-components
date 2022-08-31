@@ -90,7 +90,7 @@ export class LineSeriesComponent<T extends BasePoint>
         }
       }
       if (point.marker.maxX !== null && point.marker.maxX !== undefined) {
-        if (this.x.invert(this.x(this.start.x) + newPoint.deltaX) > point.marker.minX) {
+        if (this.x.invert(this.x(this.start.x) + newPoint.deltaX) > point.marker.maxX) {
           return false;
         }
       }

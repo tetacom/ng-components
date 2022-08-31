@@ -72,7 +72,7 @@ export const createDragSeries = (size: number): Series<BasePoint> => {
         const point: BasePoint = {
           x: index,
           y: faker.datatype.number({min: 0, max: 200}),
-          marker: {
+          marker: index % 33 === 0 ? {
             draggable: true,
             style: {
               strokeWidth: 10,
@@ -82,7 +82,7 @@ export const createDragSeries = (size: number): Series<BasePoint> => {
               draggable: false,
               text: 'index'
             }
-          }
+          } : null
         };
 
         return point;

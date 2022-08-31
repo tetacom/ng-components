@@ -72,6 +72,9 @@ $themes: (
     ),
     'backdrop': (
       '50': rgba(144, 148, 153, 0.4)
+    ),
+    'link': (
+      '50': #005ab6
     )
   ),
   'dark': (
@@ -147,9 +150,12 @@ $themes: (
     ),
     'backdrop': (
       '50': rgba(144, 148, 153, 0.4)
+    ),
+    'link': (
+      '50': #79c6ff
     )
   )
 );
 
-$palettes: 'primary', 'text', 'red', 'green', 'yellow', 'background', 'white', 'backdrop', 'black';
+$palettes: 'primary', 'text', 'red', 'green', 'yellow', 'background', 'white', 'backdrop', 'black', 'link';
 $grades: '90', '80', '70', '60', '50', '40', '30', '20', '10', '5', '0';

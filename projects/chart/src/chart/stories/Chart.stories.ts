@@ -69,7 +69,7 @@ export const draggableChart = () => ({
   },
 
   props: {
-    config: createDragChart(4)
+    config: createDragChart(400)
   },
   template: `
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']"

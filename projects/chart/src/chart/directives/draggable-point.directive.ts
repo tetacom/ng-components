@@ -80,6 +80,7 @@ export class DraggablePointDirective {
         deltaX,
         deltaY
       })) {
+        this.startPosition = null;
         return;
       }
       if (this.transformCache) {
