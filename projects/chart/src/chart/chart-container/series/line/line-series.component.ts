@@ -43,8 +43,16 @@ export class LineSeriesComponent<T extends BasePoint>
     point.x = this.x.invert(this.x(this.start.x) + event.deltaX);
     point.y = this.y.invert(this.y(this.start.y) + event.deltaY);
     this._update.next();
+    const emitEvent = {
+      type: 'end',
+      sourceEvent: event
+    };
     this.svc.emitPoint({
-      target: event
+      target: {
+        series: this.series,
+        point: point,
+      },
+      event: emitEvent,
     });
   }
 
@@ -52,8 +60,16 @@ export class LineSeriesComponent<T extends BasePoint>
     point.x = this.x.invert(this.x(this.start.x) + event.deltaX);
     point.y = this.y.invert(this.y(this.start.y) + event.deltaY);
     this._update.next();
+    const emitEvent = {
+      type: 'drag',
+      sourceEvent: event
+    };
     this.svc.emitPoint({
-      target: event
+      target: {
+        series: this.series,
+        point: point,
+      },
+      event: emitEvent,
     });
   }
 
