@@ -205,7 +205,11 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
   }
 
   getTextPosition = () => {
-    const [min, max] = this.scale.domain();
+    let [min, max] = this.scale.domain();
+
+    min = min instanceof Date ? min.getTime() : min;
+    max = max instanceof Date ? max.getTime() : max;
+
     const position = ((this.plotBand.from <= min ? min : this.plotBand.from) + (this.plotBand.to >= max ? max : this.plotBand.to)) / 2;
     return this.scale(position);
   }

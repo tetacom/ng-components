@@ -31,11 +31,9 @@ export class LinearSeriesBase<T extends BasePoint>
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
   display: Observable<number>;
   path: Observable<string>;
-  svgElement: SVGGeometryElement;
   x: any;
   y: any;
   markers: BasePoint[];
-  markerListeners: any;
 
   private __series: Series<T>;
   protected _update = new BehaviorSubject<void>(null);
@@ -44,7 +42,7 @@ export class LinearSeriesBase<T extends BasePoint>
   override set series(series: Series<T>) {
     this.__series = series;
 
-    this.markers = this.__series.data?.filter((_) => _?.marker);
+    this.markers = this.__series.data?.filter((_) => _?.marker && _?.x !== undefined && _?.y !== undefined);
   }
 
   override get series() {
@@ -112,7 +110,6 @@ export class LinearSeriesBase<T extends BasePoint>
 
     this.path = combineLatest([this.scaleService.scales, this._update]).pipe(
       map(([data]) => {
-        // console.log(data);
         const {x, y} = data;
         this.x = x.get(this.series.xAxisIndex)?.scale;
         this.y = y.get(this.series.yAxisIndex)?.scale;
@@ -304,7 +301,7 @@ export class LinearSeriesBase<T extends BasePoint>
         pointer,
         range[0],
         pointer,
-        range[1],
+        Number.MAX_SAFE_INTEGER,
         scaleX(this.series.data[rightId - 1]?.x),
         scaleY(this.series.data[rightId - 1]?.y),
         scaleX(this.series.data[rightId]?.x),
@@ -343,7 +340,7 @@ export class LinearSeriesBase<T extends BasePoint>
       const intersect = lineIntersection(
         range[0],
         mouse[1],
-        range[1],
+        Number.MAX_SAFE_INTEGER,
         mouse[1],
         scaleX(this.series.data[rightId - 1]?.x),
         scaleY(this.series.data[rightId - 1]?.y),
