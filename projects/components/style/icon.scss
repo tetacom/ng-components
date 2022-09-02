@@ -4,6 +4,10 @@
   display: inline-flex;
   height: 16px;
   width: 16px;
+  svg {
+    width: 16px;
+    height: 16px;
+  }
   @each $paletteName in $palettes {
     &.icon-#{$paletteName} {
       fill: getColorVar($paletteName, '70');
