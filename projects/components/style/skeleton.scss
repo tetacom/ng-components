@@ -1,0 +1,19 @@
+@import "util/color-util.scss";
+
+.skeleton-pulse {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(-90deg, var(--color-text-5) 0%, var(--color-background-50) 50%, var(--color-text-5) 100%);
+  background-size: 400% 400%;
+  animation: pulse 1.2s ease-in-out infinite;
+
+  @keyframes pulse {
+    0% {
+      background-position: 0% 0%
+    }
+    100% {
+      background-position: -135% 0%
+    }
+  }
+
+}
