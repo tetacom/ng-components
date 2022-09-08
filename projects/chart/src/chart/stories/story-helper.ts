@@ -10,6 +10,7 @@ import {ChartBounds} from '../model/chart-bounds';
 import {BrushType} from '../model/enum/brush-type';
 import {ZoomType} from '../model/enum/zoom-type';
 import * as faker from 'faker';
+import {DragPointType} from '../model/enum/drag-point-type';
 
 const randomColor = randomInt(0, cssColorNames.length - 1);
 
@@ -74,6 +75,7 @@ export const createDragSeries = (size: number): Series<BasePoint> => {
           y: faker.datatype.number({min: 0, max: 200}),
           marker: index % 33 === 0 ? {
             draggable: true,
+            dragType: DragPointType.xy,
             style: {
               strokeWidth: 10,
               fill: 'red'
