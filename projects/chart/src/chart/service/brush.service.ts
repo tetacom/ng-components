@@ -168,21 +168,21 @@ export class BrushService {
       this.broadcastSubscribtion = this.broadcastService
         .subscribeToZoom(config?.zoom?.syncChannel)
         .pipe(
-          filter((m: IBroadcastMessage<ZoomMessage>) => {
-            return (
-              m.message.event.sourceEvent instanceof MouseEvent ||
-              m.message.event.sourceEvent instanceof WheelEvent ||
-              (window.TouchEvent &&
-                m.message.event.sourceEvent instanceof TouchEvent)
-            );
-          }),
+          // filter((m: IBroadcastMessage<ZoomMessage>) => {
+          //   return (
+          //     m.message.event.sourceEvent instanceof MouseEvent ||
+          //     m.message.event.sourceEvent instanceof WheelEvent ||
+          //     (window.TouchEvent &&
+          //       m.message.event.sourceEvent instanceof TouchEvent)
+          //   );
+          // }),
           tap((m: IBroadcastMessage<ZoomMessage>) => {
             const {
               message: { domain },
             } = m;
 
             if (
-              (m.message?.axis.index === 0 &&
+              (m.message?.axis.axisIndex === 0 &&
                 m.message?.axis.orientation === AxisOrientation.y &&
                 config.brush?.type === BrushType.y) ||
               (m.message?.axis.orientation === AxisOrientation.x &&
@@ -202,19 +202,19 @@ export class BrushService {
               message: { domain },
             } = m;
 
-            if (m.message.event.type === 'zoom') {
-              const brushMessage = new BrushMessage({
-                event: null,
-                selection: domain,
-                brushType: config?.brush?.type ?? BrushType.x,
-                brushScale,
-              });
-
-              this.broadcastService.broadcastBrush({
-                channel: config?.zoom?.syncChannel,
-                message: brushMessage,
-              });
-            }
+            // if (m.message.event.type === 'zoom') {
+            //   const brushMessage = new BrushMessage({
+            //     event: null,
+            //     selection: domain,
+            //     brushType: config?.brush?.type ?? BrushType.x,
+            //     brushScale,
+            //   });
+            //
+            //   this.broadcastService.broadcastBrush({
+            //     channel: config?.zoom?.syncChannel,
+            //     message: brushMessage,
+            //   });
+            // }
           })
         )
         .subscribe();

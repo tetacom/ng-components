@@ -1,27 +1,28 @@
-import {D3BrushEvent, D3ZoomEvent} from 'd3';
-import {Axis} from '../core/axis/axis';
+import {D3BrushEvent} from 'd3';
 import {BrushType} from './enum/brush-type';
-
+import {AxisOrientation} from './enum/axis-orientation';
 
 export type TransformStyle = {
   transition?: boolean;
 }
 
+export type TargetAxis = {
+  axisIndex: number,
+  orientation: AxisOrientation
+}
+
 export class ZoomMessage {
-  event?: D3ZoomEvent<any, any> | any;
-  axis?: Axis;
-  domain?: number[];
+  axis: TargetAxis;
+  domain?: [number, number];
   chartId: string;
   style?: TransformStyle;
 
   constructor(options?: {
-    event: D3ZoomEvent<any, any> | any;
-    axis?: Axis;
-    domain?: number[]
+    axis?: TargetAxis;
+    domain?: [number, number]
     chartId: string;
     style?: TransformStyle;
   }) {
-    this.event = options?.event;
     this.axis = options?.axis;
     this.domain = options.domain;
     this.chartId = options?.chartId;
@@ -34,7 +35,7 @@ export class BrushMessage {
   brushType: BrushType;
   selection: number[];
   brushScale?: any;
-  style?: TransformStyle
+  style?: TransformStyle;
 
   constructor(options?: {
     event: D3BrushEvent<any> | null;

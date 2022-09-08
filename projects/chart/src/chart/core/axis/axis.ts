@@ -1,12 +1,12 @@
-import { IChartConfig } from '../../model/i-chart-config';
-import { AxisOrientation } from '../../model/enum/axis-orientation';
-import { Series } from '../../model/series';
-import { BasePoint } from '../../model/base-point';
+import {IChartConfig} from '../../model/i-chart-config';
+import {AxisOrientation} from '../../model/enum/axis-orientation';
+import {Series} from '../../model/series';
+import {BasePoint} from '../../model/base-point';
 import * as d3 from 'd3';
-import { AxisOptions } from '../../model/axis-options';
-import { AxisSizeBuilder, ExtremesBuilder } from './builders/public-api';
-import { generateTicks } from '../utils/public-api';
-import { ScaleType } from '../../model/enum/scale-type';
+import {AxisOptions} from '../../model/axis-options';
+import {AxisSizeBuilder, ExtremesBuilder} from './builders/public-api';
+import {generateTicks} from '../utils/public-api';
+import {ScaleType} from '../../model/enum/scale-type';
 
 export class Axis {
   private chartConfig: IChartConfig;
@@ -16,7 +16,7 @@ export class Axis {
   private _selfSize: number;
   private _ticksValues: number[];
   private _options: AxisOptions;
-  private _originDomain: Array<any> = [];
+  private _originDomain: [number, number] = [0, 0];
 
   private _scale: any;
 
@@ -92,7 +92,7 @@ export class Axis {
     const linkedFilter = (serie: Series<BasePoint>) =>
       serie[
         this._orientation === AxisOrientation.y ? 'yAxisIndex' : 'xAxisIndex'
-      ] === this._index;
+        ] === this._index;
 
     return this.chartConfig?.series.filter(linkedFilter);
   }
@@ -102,7 +102,7 @@ export class Axis {
     this._extremes = builder.build(this);
   }
 
-  public setOriginDomain(domain: Array<any>) {
+  public setOriginDomain(domain: [number, number]) {
     this._originDomain = domain;
   }
 
@@ -155,8 +155,8 @@ export class Axis {
     return this._options;
   }
 
-  get originDomain(): Array<any> {
-    return this._originDomain
+  get originDomain(): [number, number] {
+    return this._originDomain;
   }
 
   public defaultFormatter() {

@@ -79,62 +79,58 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       return;
     }
 
+    this._element = d3.select(this.elementRef.nativeElement);
+    this.hash = objectHash.sha1({index: this.axis.index, orientation: this.axis.orientation});
 
-    if (enable) {
-      this._element = d3.select(this.elementRef.nativeElement);
-      this.hash = objectHash.sha1({index: this.axis.index, orientation: this.axis.orientation});
+    this.zoom = d3.zoom().extent([
+      [0, 0],
+      [this.size.width, this.size.height],
+    ]);
 
-      this.zoom = d3.zoom().extent([
+    if (this.config.zoom?.limitTranslateByData) {
+      this.zoom.translateExtent([
         [0, 0],
         [this.size.width, this.size.height],
       ]);
+    }
 
-      if (this.config.zoom?.limitTranslateByData) {
-        this.zoom.translateExtent([
-          [0, 0],
-          [this.size.width, this.size.height],
-        ]);
-      }
+    if (this.config.zoom?.wheelDelta) {
+      this.zoom.wheelDelta(this.config.zoom?.wheelDelta);
+    }
 
-
-      if(this.config.zoom?.wheelDelta) {
-        this.zoom.wheelDelta(this.config.zoom?.wheelDelta)
-      }
-
-      this.zoomService.axisHashMap.set(this.hash, this.axis);
-      this.zoomService.elementHashMap.set(this.hash, this._element);
-      this.zoomService.scaleHashMap.set(this.hash, this.scale);
-      this.zoomService.zoomHashMap.set(this.hash, this.zoom);
-      this.zoomService.setBroadcastChannel(this.config?.zoom.syncChannel);
+    this.zoomService.axisHashMap.set(this.hash, this.axis);
+    this.zoomService.elementHashMap.set(this.hash, this._element);
+    this.zoomService.scaleHashMap.set(this.hash, this.scale);
+    this.zoomService.zoomHashMap.set(this.hash, this.zoom);
+    this.zoomService.setBroadcastChannel(this.config?.zoom.syncChannel);
 
 
-      const maxZoom = this.config.zoom?.max
-        ? (this.axis.extremes[1] - this.axis.extremes[0]) /
-        this.config.zoom?.max
-        : this.config.zoom?.limitZoomByData
-          ? 1
-          : 0;
+    const maxZoom = this.config.zoom?.max
+      ? (this.axis.extremes[1] - this.axis.extremes[0]) /
+      this.config.zoom?.max
+      : this.config.zoom?.limitZoomByData
+        ? 1
+        : 0;
 
-      const minZoom = this.config.zoom?.min
-        ? (this.axis.extremes[1] - this.axis.extremes[0]) /
-        this.config.zoom?.min
-        : Infinity;
+    const minZoom = this.config.zoom?.min
+      ? (this.axis.extremes[1] - this.axis.extremes[0]) /
+      this.config.zoom?.min
+      : Infinity;
 
-      this.zoom.scaleExtent([maxZoom, minZoom]);
+    this.zoom.scaleExtent([maxZoom, minZoom]);
 
-      this.zoom.on('zoom end', this.zoomed);
-      this._element.call(this.zoom).on('dblclick.zoom', null); // Disable dbclick zoom
+    this.zoom.on('zoom end', this.zoomed);
+    this._element.call(this.zoom).on('dblclick.zoom', null); // Disable dbclick zoom
 
-      this.zone.runOutsideAngular(() => {
-        setTimeout(() => {
-          this.chartService.emitZoomInstance(this.zoomService);
-        })
-      })
+    // this.zone.runOutsideAngular(() => {
+    //   setTimeout(() => {
+    //     this.chartService.emitZoomInstance(this.zoomService);
+    //   });
+    // });
 
 
-      if (this.config?.zoom?.zoomBehavior === ZoomBehaviorType.wheel) {
-        this.runWheelZoom();
-      }
+    if (this.config?.zoom?.zoomBehavior === ZoomBehaviorType.wheel) {
+      this.runWheelZoom();
     }
 
     // Subscribe to zoom events
@@ -142,28 +138,30 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       takeWhile((_) => this.alive),
       tap((m: IBroadcastMessage<ZoomMessage>) => {
         if (
-          this.axis.index === m.message?.axis?.index && this.axis.orientation === m.message?.axis?.orientation
+          this.axis.index === m.message?.axis?.axisIndex && this.axis.orientation === m.message?.axis?.orientation
         ) {
           const currentZoom = d3.zoomTransform(this._element.node());
 
-          if (currentZoom !== m.message.event.transform && this.config.id === m.message?.chartId) {
+          const axisScale = this.axis.scale?.copy().domain(this.axis.originDomain);
+          const transform = this.getD3Transform(m.message.domain, this.axis.originDomain, axisScale, m.message.axis.orientation);
+          if (this.config.id === m.message?.chartId && currentZoom !== transform) {
             this._element.call(
               this.zoom.transform,
-              m.message.event.transform
+              transform
             );
           }
         }
       }),
-      filter(
-        (m: IBroadcastMessage<ZoomMessage>) =>
-          m.message.event.sourceEvent instanceof MouseEvent ||
-          m.message.event.sourceEvent instanceof WheelEvent ||
-          (window.TouchEvent &&
-            m.message.event.sourceEvent instanceof TouchEvent)
-      ),
+      // filter(
+      //   (m: IBroadcastMessage<ZoomMessage>) =>
+      //     m.message.event.sourceEvent instanceof MouseEvent ||
+      //     m.message.event.sourceEvent instanceof WheelEvent ||
+      //     (window.TouchEvent &&
+      //       m.message.event.sourceEvent instanceof TouchEvent)
+      // ),
       filter((m: IBroadcastMessage<ZoomMessage>) => {
         return (
-          this.axis.index === m.message?.axis?.index &&
+          this.axis.index === m.message?.axis?.axisIndex &&
           this.axis.orientation === m.message?.axis?.orientation
         );
       }),
@@ -212,70 +210,70 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         this.axis.orientation === AxisOrientation.y)
     ) {
 
-      this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel)
-        .pipe(
-          combineLatestWith(this.chartService.size),
-          takeWhile((_) => this.alive),
-          filter((data: [IBroadcastMessage<BrushMessage>, DOMRect]) => {
-            const [m] = data;
-            return Boolean(m.message.selection)
-          }),
-          tap((data: [IBroadcastMessage<BrushMessage>, DOMRect]) => {
-
-            const [m] = data;
-            const currentTransform = d3.zoomTransform(this._element.node());
-
-
-            if (
-              !m.message.event &&
-              this.currentSelection &&
-              currentTransform.k !== 1
-            ) {
-              return;
-            }
-
-            const s = m.message.selection;
-
-            this.brushScale.domain(this.axis.originDomain);
-            const domain = this.brushScale.domain();
-            const range = this.brushScale.range();
-
-            const scale = Math.abs(domain[1] - domain[0]) / Math.abs(s[1] - s[0]);
-            let transform = zoomIdentity.scale(scale);
-
-            if (m.message?.brushType === BrushType.x) {
-
-              this.brushScale.range([range[0],this.size.width])
-
-
-              if (this.config.xAxis[0]?.inverted) {
-                transform = transform.translate(-this.brushScale(s[0]), 0);
-              } else {
-                transform = transform.translate(-this.brushScale(s[1]), 0);
-              }
-            }
-
-            if (m.message?.brushType === BrushType.y) {
-
-              this.brushScale.range([range[0],this.size.height])
-
-              if (this.config.yAxis[0]?.inverted) {
-                transform = transform.translate(0, -this.brushScale(s[0]));
-              } else {
-                transform = transform.translate(0, -this.brushScale(s[1]));
-              }
-            }
-
-            if (m.message?.style?.transition) {
-              this._element.transition().call(this.zoom.transform, transform, null, {});
-            } else {
-              this._element.call(this.zoom.transform, transform, null, {});
-            }
-
-            this.currentSelection = m.message.selection;
-          })
-        )
-        .subscribe();
+      // this.broadcastService.subscribeToBrush(this.config?.zoom.syncChannel)
+      //   .pipe(
+      //     combineLatestWith(this.chartService.size),
+      //     takeWhile((_) => this.alive),
+      //     filter((data: [IBroadcastMessage<BrushMessage>, DOMRect]) => {
+      //       const [m] = data;
+      //       return Boolean(m.message.selection);
+      //     }),
+      //     tap((data: [IBroadcastMessage<BrushMessage>, DOMRect]) => {
+      //
+      //       const [m] = data;
+      //       const currentTransform = d3.zoomTransform(this._element.node());
+      //
+      //
+      //       if (
+      //         !m.message.event &&
+      //         this.currentSelection &&
+      //         currentTransform.k !== 1
+      //       ) {
+      //         return;
+      //       }
+      //
+      //       const s = m.message.selection;
+      //
+      //       this.brushScale.domain(this.axis.originDomain);
+      //       const domain = this.brushScale.domain();
+      //       const range = this.brushScale.range();
+      //
+      //       const scale = Math.abs(domain[1] - domain[0]) / Math.abs(s[1] - s[0]);
+      //       let transform = zoomIdentity.scale(scale);
+      //
+      //       if (m.message?.brushType === BrushType.x) {
+      //
+      //         this.brushScale.range([range[0], this.size.width]);
+      //
+      //
+      //         if (this.config.xAxis[0]?.inverted) {
+      //           transform = transform.translate(-this.brushScale(s[0]), 0);
+      //         } else {
+      //           transform = transform.translate(-this.brushScale(s[1]), 0);
+      //         }
+      //       }
+      //
+      //       if (m.message?.brushType === BrushType.y) {
+      //
+      //         this.brushScale.range([range[0], this.size.height]);
+      //
+      //         if (this.config.yAxis[0]?.inverted) {
+      //           transform = transform.translate(0, -this.brushScale(s[0]));
+      //         } else {
+      //           transform = transform.translate(0, -this.brushScale(s[1]));
+      //         }
+      //       }
+      //
+      //       if (m.message?.style?.transition) {
+      //         this._element.transition().call(this.zoom.transform, transform, null, {});
+      //       } else {
+      //         this._element.call(this.zoom.transform, transform, null, {});
+      //       }
+      //
+      //       this.currentSelection = m.message.selection;
+      //     })
+      //   )
+      //   .subscribe();
     }
   }
 
@@ -287,6 +285,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
 
   zoomed = (event: D3ZoomEvent<any, any>) => {
+    console.log('zoomed', event);
     if (event.sourceEvent) {
       if (Object.keys(event.sourceEvent).length !== 0) {
 
@@ -302,16 +301,25 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             : event.transform.rescaleX(origin).domain();
 
         const message = new ZoomMessage({
-          event,
-          axis: this.axis,
+          axis: {
+            axisIndex: this.axis.index,
+            orientation: this.axis.orientation
+          },
           domain,
           chartId: this.config.id,
         });
 
-        this.broadcastService.broadcastZoom({
-          channel: this.config?.zoom?.syncChannel,
-          message,
-        });
+        if (event.sourceEvent instanceof MouseEvent ||
+          event.sourceEvent instanceof WheelEvent ||
+          (window.TouchEvent &&
+            event.sourceEvent instanceof TouchEvent)
+        ) {
+          console.log('broadcastZoom');
+          this.broadcastService.broadcastZoom({
+            channel: this.config?.zoom?.syncChannel,
+            message,
+          });
+        }
       }
 
       this.zoomService.fireZoom({
@@ -374,12 +382,15 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           : transform.rescaleX(origin).domain();
 
       const message = new ZoomMessage({
-        event: {
-          sourceEvent: event,
-          transform,
-          type,
+        // event: {
+        //   sourceEvent: event,
+        //   transform,
+        //   type,
+        // },
+        axis: {
+          axisIndex: this.axis.index,
+          orientation: this.axis.orientation
         },
-        axis: this.axis,
         domain,
         chartId: this.config.id,
       });
@@ -422,6 +433,26 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         }, 50);
       });
     });
+  }
 
+  private getD3Transform(domain: [number, number], originalDomain: [number, number], scale, orientation) {
+    const zoomScale = Math.abs(originalDomain[1] - originalDomain[0]) / Math.abs(domain[1] - domain[0]);
+    let transform = zoomIdentity.scale(zoomScale);
+    if (orientation === AxisOrientation.x) {
+      if (this.axis.options?.inverted) {
+        transform = transform.translate(-scale(domain[0]), 0);
+      } else {
+        transform = transform.translate(-scale(domain[1]), 0);
+      }
+    }
+
+    if (orientation === AxisOrientation.y) {
+      if (this.axis.options?.inverted) {
+        transform = transform.translate(0, -scale(domain[0]));
+      } else {
+        transform = transform.translate(0, -scale(domain[1]));
+      }
+    }
+    return transform;
   }
 }

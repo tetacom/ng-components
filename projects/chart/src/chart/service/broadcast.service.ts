@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BrushMessage, IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';
-import {filter, map, Observable, ReplaySubject, shareReplay, Subject} from 'rxjs';
+import {filter, Observable, ReplaySubject, shareReplay} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BroadcastService {
-  private zoomEmitter: Subject<IBroadcastMessage<ZoomMessage>>;
+  private zoomEmitter: ReplaySubject<IBroadcastMessage<ZoomMessage>>;
   private brushEmitter: ReplaySubject<IBroadcastMessage<BrushMessage>>;
 
   constructor() {
-    this.zoomEmitter = new Subject<IBroadcastMessage<ZoomMessage>>();
-    this.brushEmitter = new ReplaySubject<IBroadcastMessage<BrushMessage>>(1)
+    this.zoomEmitter = new ReplaySubject<IBroadcastMessage<ZoomMessage>>(1);
+    this.brushEmitter = new ReplaySubject<IBroadcastMessage<BrushMessage>>(1);
   }
 
   broadcastZoom(value: IBroadcastMessage<ZoomMessage>) {

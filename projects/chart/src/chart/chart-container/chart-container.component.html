@@ -63,7 +63,6 @@
   </ng-container>
   <ng-container *ngIf="data.size?.height > 0 && data.size?.width > 0 && data.scales?.x.size === data.config.xAxis.length && data.scales?.y.size === data.config.yAxis.length">
     <svg
-      tetaBrushable
       tetaZoomable
       class="position-absolute"
       [size]="data.visibleRect"
