@@ -99,13 +99,13 @@ export const createChart = (size: number, inverted = true): IChartConfig => {
       tracking: TooltipTracking.y,
     },
     bounds: new ChartBounds({
-      top: 50
+      // top: 50
     }),
     xAxis: [
       {
         min: 0,
         max: 5000,
-        visible: false,
+        visible: true,
         inverted: true,
         niceTicks: false,
         plotLines: [
@@ -118,7 +118,7 @@ export const createChart = (size: number, inverted = true): IChartConfig => {
     ],
     yAxis: [
       {
-        visible: false,
+        visible: true,
       },
     ],
     brush: {
@@ -160,7 +160,7 @@ export const createChart2 = (size: number): IChartConfig => {
       to: faker.datatype.number({min: 650, max: 700}),
     },
     zoom: {
-      enable: false,
+      enable: true,
       type: ZoomType.y,
       syncChannel: 'channelA',
     },
@@ -174,11 +174,11 @@ export const createChart2 = (size: number): IChartConfig => {
 export const createDragChart = (size: number): IChartConfig => {
   return {
     name: '123123123132',
+    inverted: true,
     tooltip: {
       tracking: TooltipTracking.y,
     },
     bounds: new ChartBounds({
-      top: 50
     }),
     xAxis: [
       {
@@ -191,7 +191,7 @@ export const createDragChart = (size: number): IChartConfig => {
     ],
     zoom: {
       enable: true,
-      type: ZoomType.x
+      type: ZoomType.y
     },
     legend: {
       enable: false,

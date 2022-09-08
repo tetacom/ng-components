@@ -182,7 +182,7 @@ export class BrushService {
             } = m;
 
             if (
-              (m.message?.axis.axisIndex === 0 &&
+              (m.message?.axis.index === 0 &&
                 m.message?.axis.orientation === AxisOrientation.y &&
                 config.brush?.type === BrushType.y) ||
               (m.message?.axis.orientation === AxisOrientation.x &&

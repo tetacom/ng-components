@@ -73,6 +73,7 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() set config(config: IChartConfig) {
     this.chartService.setConfig(config);
+    this.zoomService.setBroadcastChannel(config?.zoom?.syncChannel);
   }
 
   private _alive = true;
@@ -80,7 +81,7 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   constructor(public chartService: ChartService,
               public zoomService: ZoomService,
               public scaleService: ScaleService) {
-
+    this.zoomServiceInstance.emit(this.zoomService);
     this.svcConfig = this.chartService.config;
     this.hasSeriesData = this.svcConfig.pipe(
       map(

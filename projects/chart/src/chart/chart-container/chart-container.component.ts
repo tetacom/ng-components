@@ -241,7 +241,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
   }
 
   click(
-    event: PointerEvent,
+    event: MouseEvent,
     xScales: Map<number, Axis>,
     yScales: Map<number, Axis>
   ) {

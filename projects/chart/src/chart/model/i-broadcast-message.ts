@@ -1,28 +1,32 @@
 import {D3BrushEvent} from 'd3';
 import {BrushType} from './enum/brush-type';
 import {AxisOrientation} from './enum/axis-orientation';
+import {ElementRef} from '@angular/core';
 
 export type TransformStyle = {
   transition?: boolean;
 }
 
 export type TargetAxis = {
-  axisIndex: number,
+  index: number,
   orientation: AxisOrientation
 }
 
 export class ZoomMessage {
+  element?: ElementRef;
   axis: TargetAxis;
   domain?: [number, number];
   chartId: string;
   style?: TransformStyle;
 
   constructor(options?: {
+    element?: ElementRef;
     axis?: TargetAxis;
     domain?: [number, number]
     chartId: string;
     style?: TransformStyle;
   }) {
+    this.element = options?.element;
     this.axis = options?.axis;
     this.domain = options.domain;
     this.chartId = options?.chartId;

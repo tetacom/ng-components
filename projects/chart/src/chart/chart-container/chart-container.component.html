@@ -2,8 +2,7 @@
   size: size | async,
   config: config | async,
   scales: scales | async,
-  visibleRect: visibleRect | async,
-  brushScale: brushScale | async
+  visibleRect: visibleRect | async
 } as data" xmlns:svg="http://www.w3.org/1999/html">
   <teta-tooltip *ngIf="data.config?.tooltip?.enable"
                 [size]="data.size"
@@ -12,7 +11,7 @@
     <svg height="100%" width="100%" class="position-absolute">
       <g class="y-axis-container">
         <ng-container *ngFor="let item of data.scales.y | keyvalue; trackBy: identify">
-          <ng-container *ngIf="item.value.options.visible">
+          <ng-container *ngIf="item.value.options.visible && data.scales.x.size > 0 && data.scales.y.size > 0">
             <g
               teta-y-axis
               [axis]="item.value"
@@ -21,8 +20,6 @@
             <rect
               tetaZoomable
               fill-opacity="0"
-              [brushScale]="data.brushScale"
-              [scale]="data.scales.y.get(item.key).scale"
               [axis]="item.value"
               [config]="data.config"
               [size]="data.visibleRect"
@@ -46,8 +43,6 @@
             <rect
               tetaZoomable
               fill-opacity="0"
-              [brushScale]="data.brushScale"
-              [scale]="data.scales.x.get(item.key).scale"
               [axis]="item.value"
               [config]="data.config"
               [size]="data.visibleRect"
@@ -66,8 +61,6 @@
       tetaZoomable
       class="position-absolute"
       [size]="data.visibleRect"
-      [brushScale]="data.brushScale"
-      [scale]="data.brushScale"
       [config]="data.config"
       [axis]="data.config?.zoom?.type === zoomType.x ? data.scales.x.get(0) : data.scales.y.get(0)"
       [attr.width]="data.visibleRect.width"
