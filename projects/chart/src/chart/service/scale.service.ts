@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import * as d3 from 'd3';
-import {D3ZoomEvent, zoomIdentity, ZoomTransform} from 'd3';
+import {ZoomTransform} from 'd3';
 import {Axis} from '../core/axis/axis';
 import {AxisOrientation} from '../model/enum/axis-orientation';
 import {IChartConfig} from '../model/i-chart-config';
@@ -40,7 +40,6 @@ export class ScaleService {
       this.zoomService.zoomed,
     ]).pipe(
       map((data: [DOMRectReadOnly, IChartConfig, ZoomMessage]) => {
-
         const [size, config, zoom] = data;
 
         const xAxisMap = new Map<number, Axis>();
@@ -101,7 +100,7 @@ export class ScaleService {
           }
         });
 
-        if (zoom) {
+        if (zoom && zoom.domain) {
           if (zoom.axis?.orientation === AxisOrientation.x) {
             if (xAxisMap.has(zoom.axis.index)) {
               const x = xAxisMap.get(zoom.axis.index);
@@ -170,7 +169,7 @@ export class ScaleService {
           }
         });
 
-        if (zoom) {
+        if (zoom && zoom.domain) {
           if (zoom.axis?.orientation === AxisOrientation.y) {
             if (yAxisMap.has(zoom.axis.index)) {
               const y = yAxisMap.get(zoom.axis.index);

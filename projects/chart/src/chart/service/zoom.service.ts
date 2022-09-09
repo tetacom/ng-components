@@ -1,28 +1,22 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, shareReplay,} from 'rxjs';
-import {Axis} from '../core/axis/axis';
-import {IChartEvent} from '../model/i-chart-event';
-import {ZoomBehavior, zoomIdentity} from 'd3';
+import {combineLatest, BehaviorSubject, Observable, shareReplay, Subscription, filter,} from 'rxjs';
 import {AxisOrientation} from '../model/enum/axis-orientation';
-import {ScaleType} from '../model/enum/scale-type';
-import objectHash from 'object-hash';
+import {Injectable, OnDestroy} from '@angular/core';
 import {ZoomMessage} from '../model/i-broadcast-message';
+import {zoomIdentity} from 'd3';
+import {BroadcastService} from './broadcast.service';
+import {ChartService} from './chart.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ZoomService {
-  broadcastSubscription = [];
+export class ZoomService implements OnDestroy {
   zoomed: Observable<ZoomMessage>;
-  // axisHashMap = new Map<string, Axis>();
-  // scaleHashMap = new Map<string, any>();
-  // elementHashMap = new Map<string, any>();
-  // zoomHashMap = new Map<string, ZoomBehavior<any, any>>();
 
   private zoomed$ = new BehaviorSubject<ZoomMessage>(null);
   private broadcastChannel: string;
+  private broadcastSub: Subscription;
 
-  constructor() {
+  constructor(private _broadcast: BroadcastService, private _chart: ChartService) {
     this.zoomed = this.zoomed$.asObservable().pipe(shareReplay({
       bufferSize: 1,
       refCount: true
@@ -33,66 +27,29 @@ export class ZoomService {
     this.zoomed$.next(zoom);
   }
 
+  broadcastZoom(zoom: ZoomMessage) {
+    if (this.broadcastChannel?.length) {
+      this._broadcast.broadcastZoom({
+        channel: this.broadcastChannel,
+        message: zoom
+      });
+    }
+  }
+
   setBroadcastChannel(channel: string) {
+    if (this.broadcastSub) {
+      this.broadcastSub?.unsubscribe();
+    }
     this.broadcastChannel = channel;
-  }
-
-  setZoom(from: number, to: number, axisIndex = 0, axisOrientation = AxisOrientation.x) {
-    //
-    // const hash = objectHash.sha1({index: axisIndex, orientation: axisOrientation});
-    //
-    // if (!this.zoomHashMap.has(hash)) {
-    //   return;
-    // }
-    //
-    // const currentAxis = this.axisHashMap.get(hash);
-    // const currentScale = this.scaleHashMap.get(hash);
-    // const currentElement = this.elementHashMap.get(hash);
-    // const currentZoom = this.zoomHashMap.get(hash);
-    //
-    // currentScale.domain(currentAxis.originDomain)
-    //
-    // if (axisOrientation === AxisOrientation.x) {
-    //   if (currentAxis.options.scaleType.type === ScaleType.log) {
-    //     currentScale.domain(currentAxis.options.inverted ? [...currentAxis.originDomain].reverse() : currentAxis.originDomain)
-    //   }
-    // }
-    //
-    // if (axisOrientation === AxisOrientation.y) {
-    //   if (currentAxis.options.scaleType.type === ScaleType.log) {
-    //     currentScale.domain(currentAxis.options.inverted ? currentAxis.originDomain : [...currentAxis.originDomain].reverse())
-    //   }
-    // }
-    //
-    // const delta = Math.abs(currentScale(to) - currentScale(from));
-    // const scale = currentScale.range()[1] / delta;
-    //
-    // let transform = zoomIdentity.scale(scale);
-    //
-    // if (currentAxis.orientation === AxisOrientation.x) {
-    //   if (currentAxis.options.scaleType.type === ScaleType.log) {
-    //     currentScale.domain(currentAxis.options.inverted ? [...currentScale.domain()].reverse() : currentScale.domain())
-    //   }
-    //   transform = transform.translate(-currentScale(from), 0);
-    // }
-    //
-    // if (currentAxis.orientation === AxisOrientation.y) {
-    //   if (currentAxis.options.scaleType.type === ScaleType.log) {
-    //     currentScale.domain(currentAxis.options.inverted ? currentScale.domain() : [...currentScale.domain()].reverse())
-    //   }
-    //   transform = transform.translate(0, -currentScale(from));
-    // }
-    // currentElement.transition().call(currentZoom.transform, transform, null, new MouseEvent('setZoom'))
-  }
-
-  resetZoom(axisIndex = 0, axisOrientation = AxisOrientation.x) {
-    // const hash = objectHash.sha1({index: axisIndex, orientation: axisOrientation});
-    // if (!this.zoomHashMap.has(hash)) {
-    //   return;
-    // }
-    // const currentElement = this.elementHashMap.get(hash);
-    // const currentZoom = this.zoomHashMap.get(hash);
-    // currentElement.transition().call(currentZoom.transform, zoomIdentity, null, new MouseEvent('resetZoom'));
+    if (this.broadcastChannel?.length) {
+      this.broadcastSub = combineLatest([this._broadcast.subscribeToZoom(this.broadcastChannel), this._chart.config])
+        .pipe(filter(([zoom, config]) => {
+          return zoom.message?.chartId !== config.id;
+        }))
+        .subscribe(([zoom, config]) => {
+          this.fireZoom(zoom.message);
+        });
+    }
   }
 
   getD3Transform(targetDomain: [number, number],
@@ -118,5 +75,9 @@ export class ZoomService {
       }
     }
     return transform;
+  }
+
+  ngOnDestroy() {
+    this.broadcastSub?.unsubscribe();
   }
 }

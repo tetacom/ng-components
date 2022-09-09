@@ -25,6 +25,7 @@ import {Series} from '../model/series';
 import {Annotation} from '../model/annotation';
 import {ClipPointsDirection} from "../model/enum/clip-points-direction";
 import {ZoomService} from "./zoom.service";
+import {BrushService} from './brush.service';
 
 @Injectable({
   providedIn: 'root',
@@ -45,10 +46,11 @@ export class ChartService {
   public annotationContextMenu: Observable<IChartEvent<Annotation>>;
   public chartClick: Observable<IChartEvent<BasePoint>>;
   public chartContextMenu: Observable<IChartEvent<BasePoint>>;
-  public zoomInstance: Observable<ZoomService>;
+  // public zoomInstance: Observable<ZoomService>;
+  // public brushInstance: Observable<BrushService>;
 
   private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig());
-  private size$ = new BehaviorSubject<DOMRect>(new DOMRectReadOnly());
+  private size$ = new BehaviorSubject<DOMRect>(null);
   private pointerMove$ = new Subject<PointerEvent>();
   private tooltips$ = new BehaviorSubject<Map<Series<BasePoint>, IDisplayTooltip>>(new Map());
   private plotBandEvent$ = new Subject<IChartEvent<PlotBand>>();
@@ -58,7 +60,8 @@ export class ChartService {
   private chartContextMenu$ = new Subject<IChartEvent<BasePoint>>();
   private annotationEvent$ = new Subject<IChartEvent<Annotation>>();
   private annotationMove$ = new Subject<IChartEvent<Annotation>>();
-  private zoomInstance$ = new Subject<ZoomService>();
+  // private zoomInstance$ = new Subject<ZoomService>();
+  // private brushInstance$ = new Subject<BrushService>();
 
 
   private static _hiddenSeriesPostfix = 'hidden_series';
@@ -78,7 +81,7 @@ export class ChartService {
     );
 
 
-    this.size = this.size$.asObservable();
+    this.size = this.size$.asObservable().pipe(filter((size) => size != null));
     this.pointerMove = this.pointerMove$.asObservable();
     this.tooltips = this.tooltips$.asObservable();
     this.plotBandEvent = this.plotBandEvent$.asObservable();
@@ -100,7 +103,8 @@ export class ChartService {
     this.plotBandContextMenu = this.plotBandEvent$
       .asObservable()
       .pipe(filter((_) => _?.event?.type === 'contextmenu'));
-    this.zoomInstance = this.zoomInstance$.asObservable();
+    // this.zoomInstance = this.zoomInstance$.asObservable();
+    // this.brushInstance = this.brushInstance$.asObservable();
   }
 
   public setConfig(config: IChartConfig) {
@@ -187,9 +191,13 @@ export class ChartService {
     this.chartContextMenu$.next(event);
   }
 
-  public emitZoomInstance(event: ZoomService) {
-    this.zoomInstance$.next(event);
-  }
+  // public emitZoomInstance(event: ZoomService) {
+  //   this.zoomInstance$.next(event);
+  // }
+  //
+  // public emitZoomInstance(event: ZoomService) {
+  //   this.zoomInstance$.next(event);
+  // }
 
   private saveCookie(config: IChartConfig) {
     if(!config.name) return;
@@ -235,7 +243,7 @@ export class ChartService {
     };
 
     config = Object.assign({}, defaultChartConfig(), config);
-    config.id = id;
+    config.id = config.id ?? id;
 
     config.xAxis = config.xAxis.map(defaultConfig(defaultAxisConfig));
     config.yAxis = config.yAxis.map(defaultConfig(defaultAxisConfig));

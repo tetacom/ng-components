@@ -11,6 +11,7 @@ import {BrushType} from '../model/enum/brush-type';
 import {ZoomType} from '../model/enum/zoom-type';
 import * as faker from 'faker';
 import {DragPointType} from '../model/enum/drag-point-type';
+import {ZoomBehaviorType} from '../model/enum/zoom-behavior-type';
 
 const randomColor = randomInt(0, cssColorNames.length - 1);
 
@@ -128,44 +129,10 @@ export const createChart = (size: number, inverted = true): IChartConfig => {
       enable: true,
       type: ZoomType.y,
       syncChannel: 'channelA',
+      zoomBehavior: ZoomBehaviorType.wheel
     },
     legend: {
       enable: false,
-    },
-    series: createSeries(size),
-  };
-};
-
-export const createChart2 = (size: number): IChartConfig => {
-  return {
-    name: 'sdfgsfgd',
-    inverted: true,
-    tooltip: {
-      tracking: TooltipTracking.x,
-    },
-    xAxis: [
-      {
-        visible: true,
-        inverted: true,
-        min: 0,
-        max: faker.datatype.number({min: 5000, max: 6000}),
-      },
-    ],
-    yAxis: [{}],
-    brush: {
-      enable: true,
-      type: BrushType.y,
-      max: 100,
-      from: faker.datatype.number({min: 500, max: 600}),
-      to: faker.datatype.number({min: 650, max: 700}),
-    },
-    zoom: {
-      enable: true,
-      type: ZoomType.y,
-      syncChannel: 'channelA',
-    },
-    legend: {
-      enable: true,
     },
     series: createSeries(size),
   };

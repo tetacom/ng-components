@@ -1,5 +1,3 @@
-import {D3BrushEvent} from 'd3';
-import {BrushType} from './enum/brush-type';
 import {AxisOrientation} from './enum/axis-orientation';
 import {ElementRef} from '@angular/core';
 
@@ -13,6 +11,7 @@ export type TargetAxis = {
 }
 
 export class ZoomMessage {
+  eventType: 'start' | 'zoom' | 'end' | string;
   element?: ElementRef;
   axis: TargetAxis;
   domain?: [number, number];
@@ -20,12 +19,14 @@ export class ZoomMessage {
   style?: TransformStyle;
 
   constructor(options?: {
+    eventType: 'start' | 'zoom' | 'end' | string;
     element?: ElementRef;
     axis?: TargetAxis;
     domain?: [number, number]
     chartId: string;
     style?: TransformStyle;
   }) {
+    this.eventType = options?.eventType;
     this.element = options?.element;
     this.axis = options?.axis;
     this.domain = options.domain;
@@ -35,24 +36,15 @@ export class ZoomMessage {
 }
 
 export class BrushMessage {
-  event: D3BrushEvent<any> | null;
-  brushType: BrushType;
-  selection: number[];
-  brushScale?: any;
-  style?: TransformStyle;
+  chartId: string;
+  selection: [number, number];
 
   constructor(options?: {
-    event: D3BrushEvent<any> | null;
-    brushType: BrushType;
-    selection: number[];
-    brushScale?: any;
-    style?: TransformStyle
+    chartId: string;
+    selection: [number, number];
   }) {
-    this.event = options?.event;
-    this.brushType = options?.brushType;
+    this.chartId = options?.chartId;
     this.selection = options?.selection;
-    this.brushScale = options?.brushScale;
-    this.style = options?.style;
   }
 }
 
