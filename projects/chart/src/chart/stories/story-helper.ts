@@ -11,6 +11,7 @@ import {BrushType} from '../model/enum/brush-type';
 import {ZoomType} from '../model/enum/zoom-type';
 import * as faker from 'faker';
 import {DragPointType} from '../model/enum/drag-point-type';
+import {ZoomBehaviorType} from '../model/enum/zoom-behavior-type';
 
 const randomColor = randomInt(0, cssColorNames.length - 1);
 
@@ -99,13 +100,13 @@ export const createChart = (size: number, inverted = true): IChartConfig => {
       tracking: TooltipTracking.y,
     },
     bounds: new ChartBounds({
-      top: 50
+      // top: 50
     }),
     xAxis: [
       {
         min: 0,
         max: 5000,
-        visible: false,
+        visible: true,
         inverted: true,
         niceTicks: false,
         plotLines: [
@@ -118,54 +119,20 @@ export const createChart = (size: number, inverted = true): IChartConfig => {
     ],
     yAxis: [
       {
-        visible: false,
-      },
-    ],
-    brush: {
-      type: BrushType.y,
-    },
-    zoom: {
-      enable: true,
-      type: ZoomType.y,
-      syncChannel: 'channelA',
-    },
-    legend: {
-      enable: false,
-    },
-    series: createSeries(size),
-  };
-};
-
-export const createChart2 = (size: number): IChartConfig => {
-  return {
-    name: 'sdfgsfgd',
-    inverted: true,
-    tooltip: {
-      tracking: TooltipTracking.x,
-    },
-    xAxis: [
-      {
         visible: true,
-        inverted: true,
-        min: 0,
-        max: faker.datatype.number({min: 5000, max: 6000}),
       },
     ],
-    yAxis: [{}],
     brush: {
-      enable: true,
       type: BrushType.y,
-      max: 100,
-      from: faker.datatype.number({min: 500, max: 600}),
-      to: faker.datatype.number({min: 650, max: 700}),
     },
     zoom: {
-      enable: false,
+      enable: true,
       type: ZoomType.y,
       syncChannel: 'channelA',
+      zoomBehavior: ZoomBehaviorType.wheel
     },
     legend: {
-      enable: true,
+      enable: false,
     },
     series: createSeries(size),
   };
@@ -174,11 +141,11 @@ export const createChart2 = (size: number): IChartConfig => {
 export const createDragChart = (size: number): IChartConfig => {
   return {
     name: '123123123132',
+    inverted: true,
     tooltip: {
       tracking: TooltipTracking.y,
     },
     bounds: new ChartBounds({
-      top: 50
     }),
     xAxis: [
       {
@@ -191,7 +158,7 @@ export const createDragChart = (size: number): IChartConfig => {
     ],
     zoom: {
       enable: true,
-      type: ZoomType.x
+      type: ZoomType.y
     },
     legend: {
       enable: false,

@@ -1,26 +1,21 @@
 import {Injectable} from '@angular/core';
 import * as d3 from 'd3';
-import {D3ZoomEvent, ZoomTransform} from 'd3';
+import {ZoomTransform} from 'd3';
 import {Axis} from '../core/axis/axis';
 import {AxisOrientation} from '../model/enum/axis-orientation';
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from './chart.service';
-import {
-  combineLatest,
-  map,
-  Observable,
-  shareReplay,
-} from 'rxjs';
-import {IChartEvent} from '../model/i-chart-event';
+import {combineLatest, map, Observable, shareReplay,} from 'rxjs';
 import {ZoomService} from './zoom.service';
 import {ScaleType} from '../model/enum/scale-type';
-import {IScalesMap} from "../model/i-scales-map";
+import {IScalesMap} from '../model/i-scales-map';
+import {ZoomMessage} from '../model/i-broadcast-message';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ScaleService {
-  public scales: Observable<IScalesMap>
+  public scales: Observable<IScalesMap>;
 
   private transformCacheX = new Map<number, ZoomTransform>();
   private transformCacheY = new Map<number, ZoomTransform>();
@@ -44,8 +39,7 @@ export class ScaleService {
       this.chartService.config,
       this.zoomService.zoomed,
     ]).pipe(
-      map((data: [DOMRectReadOnly, IChartConfig, IChartEvent<Axis>]) => {
-
+      map((data: [DOMRectReadOnly, IChartConfig, ZoomMessage]) => {
         const [size, config, zoom] = data;
 
         const xAxisMap = new Map<number, Axis>();
@@ -88,7 +82,7 @@ export class ScaleService {
           }
 
           if (axis.options.scaleType.type === ScaleType.log) {
-            scale.base(axis.options.scaleType.base)
+            scale.base(axis.options.scaleType.base);
           }
 
           axis.setScale(scale);
@@ -97,8 +91,8 @@ export class ScaleService {
 
           const hasCache = this.transformCacheX.has(axis.index);
           const shouldRestore =
-            zoom?.target?.orientation !== AxisOrientation.x ||
-            zoom.target?.index !== axis.index;
+            zoom?.axis?.orientation !== AxisOrientation.x ||
+            zoom.axis?.index !== axis.index;
 
           if (hasCache && shouldRestore) {
             const restoredTransform = this.transformCacheX.get(axis.index);
@@ -106,18 +100,14 @@ export class ScaleService {
           }
         });
 
-        if (zoom) {
-          const event = zoom.event as D3ZoomEvent<any, any>;
-
-          if (zoom.target?.orientation === AxisOrientation.x) {
-
-            if (xAxisMap.has(zoom.target.index)) {
-              const x = xAxisMap.get(zoom.target.index);
-              const rescaled = event.transform.rescaleX(x.scale);
+        if (zoom && zoom.domain) {
+          if (zoom.axis?.orientation === AxisOrientation.x) {
+            if (xAxisMap.has(zoom.axis.index)) {
+              const x = xAxisMap.get(zoom.axis.index);
+              const transform = this.zoomService.getD3Transform(zoom.domain, x.originDomain, x.scale, AxisOrientation.x, x.options.inverted);
+              const rescaled = transform.rescaleX(x.scale.copy());
               x.setScale(rescaled);
-
-              const axis = xAxisMap.get(zoom.target.index);
-              this.transformCacheX.set(axis.index, event.transform);
+              this.transformCacheX.set(x.index, transform);
             }
           }
         }
@@ -161,7 +151,7 @@ export class ScaleService {
           }
 
           if (axis.options.scaleType.type === ScaleType.log) {
-            scale.base(axis.options.scaleType.base)
+            scale.base(axis.options.scaleType.base);
           }
 
           axis.setScale(scale);
@@ -170,8 +160,8 @@ export class ScaleService {
           const hasCache = this.transformCacheY.has(axis.index);
 
           const shouldRestore =
-            zoom?.target?.orientation !== AxisOrientation.y ||
-            zoom.target?.index !== axis.index;
+            zoom?.axis?.orientation !== AxisOrientation.y ||
+            zoom.axis?.index !== axis.index;
 
           if (hasCache && shouldRestore) {
             const restoredTransform = this.transformCacheY.get(axis.index);
@@ -179,32 +169,31 @@ export class ScaleService {
           }
         });
 
-        if (zoom) {
-          const event = zoom.event as D3ZoomEvent<any, any>;
-
-          if (zoom.target?.orientation === AxisOrientation.y) {
-
-            if (yAxisMap.has(zoom.target.index)) {
-              const y = yAxisMap.get(zoom.target.index);
-
-              const rescaled = event.transform.rescaleY(y.scale);
+        if (zoom && zoom.domain) {
+          if (zoom.axis?.orientation === AxisOrientation.y) {
+            if (yAxisMap.has(zoom.axis.index)) {
+              const y = yAxisMap.get(zoom.axis.index);
+              const transform = this.zoomService.getD3Transform(zoom.domain,
+                y.originDomain,
+                y.scale,
+                AxisOrientation.y,
+                y.options.inverted
+              );
+              const rescaled = transform.rescaleY(y.scale.copy());
               y.setScale(rescaled);
-
-              const axis = yAxisMap.get(zoom.target.index);
-              this.transformCacheY.set(axis.index, event.transform);
+              this.transformCacheY.set(y.index, transform);
             }
           }
         }
-
         return {
           x: xAxisMap,
           y: yAxisMap
-        }
+        };
       }),
       shareReplay({
         bufferSize: 1,
         refCount: true,
       })
-    )
+    );
   }
 }

@@ -22,7 +22,7 @@ import {IPointMove} from '../model/i-point-move';
 import {map, Observable, takeWhile, withLatestFrom} from 'rxjs';
 import {Annotation} from '../model/annotation';
 import {TooltipTracking} from '../model/enum/tooltip-tracking';
-import {IScalesMap} from "../model/i-scales-map";
+import {IScalesMap} from '../model/i-scales-map';
 
 @Component({
   selector: 'teta-svg-chart',
@@ -70,17 +70,20 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   @Output()
   zoomServiceInstance: EventEmitter<ZoomService> = new EventEmitter<ZoomService>();
 
+  @Output()
+  brushServiceInstance: EventEmitter<BrushService> = new EventEmitter<BrushService>();
 
   @Input() set config(config: IChartConfig) {
     this.chartService.setConfig(config);
+    this.zoomService.setBroadcastChannel(config?.zoom?.syncChannel);
   }
 
   private _alive = true;
 
   constructor(public chartService: ChartService,
               public zoomService: ZoomService,
+              public brushService: BrushService,
               public scaleService: ScaleService) {
-
     this.svcConfig = this.chartService.config;
     this.hasSeriesData = this.svcConfig.pipe(
       map(
@@ -93,6 +96,9 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.zoomServiceInstance.emit(this.zoomService);
+    this.brushServiceInstance.emit(this.brushService);
+
     this.chartService.pointerMove
       .pipe(
         takeWhile(() => this._alive),
@@ -184,14 +190,6 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe((_) => {
         this.annotationMove.emit(_);
       });
-
-    this.chartService.zoomInstance
-      .pipe(
-        takeWhile(() => this._alive))
-      .subscribe((_) => {
-        this.zoomServiceInstance.emit(_);
-      });
-
   }
 
   ngAfterViewInit() {
@@ -199,8 +197,5 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this._alive = false;
-    this.zoomService.broadcastSubscription?.forEach((sub) => {
-      sub.unsubscribe();
-    });
   }
 }

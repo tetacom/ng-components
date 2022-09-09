@@ -5,7 +5,7 @@ import {ChartModule} from '../chart.module';
 import {IconModule} from '../../../../components/src/component/icon/icon.module';
 import {ButtonModule} from '../../../../components/src/component/button/button.module';
 import {AxisOrientation} from '../model/enum/axis-orientation';
-import {createChart, createChart2, createDragChart} from './story-helper';
+import {createChart, createDragChart} from './story-helper';
 
 export default {
   title: 'Component/Chart',
@@ -23,31 +23,26 @@ export const basicChart = () => ({
 
   props: {
     config: createChart(200),
-    config2: createChart2(200),
     createChart: createChart,
-    createChart2: createChart2,
     setZoom: function () {
       this.storyComponentElementRef.zoomService.setZoom(1500, 2000, 0, AxisOrientation.y);
     },
   },
   template: `
 
-      <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']" class="font-body-3 padding-3 bg-background-0" style="width: 100%; height: 100vh">
+      <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']"
+            class="font-body-3 padding-3 bg-background-0"
+            style="width: 100%; height: 100vh">
         <button teta-button
           [palette]="'primary'"
-          (click)="config=createChart(500); config2=createChart2(200)">
+          (click)="config=createChart(500);">
           Create new Data
-        </button>
-        <button teta-button
-          [palette]="'primary'"
-          (click)="config2=createChart2(200)">
-          Update brush chart
         </button>
         <button teta-button
           [palette]="'primary'"
           (click)="config=createChart(0); config2=createChart(0)">
           Create empty data
-       config </button>
+          config </button>
         <button teta-button
           [palette]="'primary'"
           (click)="setZoom()">Set zoom</button>

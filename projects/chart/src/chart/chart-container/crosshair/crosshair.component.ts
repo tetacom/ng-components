@@ -21,8 +21,6 @@ export class CrosshairComponent implements OnInit {
       map((event: PointerEvent) => {
         const composedPath = event.composedPath() as HTMLElement[];
         const classes = composedPath.map((_) => _.classList?.contains('crosshair')).filter((_) => _)
-        console.log(classes)
-
 
         return {
           x: event.type === 'mouseleave' ? -9999 : event.offsetX,
