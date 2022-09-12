@@ -42,7 +42,8 @@ export class LinearSeriesBase<T extends BasePoint>
   override set series(series: Series<T>) {
     this.__series = series;
 
-    this.markers = this.__series.data?.filter((_) => _?.marker && _?.x !== undefined && _?.y !== undefined);
+    this.markers = this.__series.data?.filter((_) =>
+      _?.marker && _?.x !== undefined && _?.y !== undefined && _?.x !== null && _?.y !== null);
   }
 
   override get series() {
