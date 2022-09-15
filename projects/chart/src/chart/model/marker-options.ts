@@ -3,7 +3,7 @@ import {SvgAttributes} from './svg-attributes';
 
 export interface DragObjectOptions {
   draggable?: boolean;
-  dragType: DragPointType;
+  dragType?: DragPointType;
   minX?: number;
   minY?: number;
   maxX?: number;

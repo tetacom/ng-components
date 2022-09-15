@@ -36,5 +36,6 @@ export const onlyNumber = () => ({
                         [ngModel]="data"
                         (ngModelChange)="data=$event;log('tetaOnlyNumber', $event)"/>
                 <div>{{data}}</div>
-              </div>`,
+              </div>
+              <input class="input"/>`,
 });
