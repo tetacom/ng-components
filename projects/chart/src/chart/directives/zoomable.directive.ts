@@ -102,11 +102,11 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     if (this.config.zoom?.limitTranslateByData) {
 
       const min = this.config?.zoom?.minTranslate ? this.axis.scale(this.config?.zoom?.minTranslate) : 0;
-      const max = (this.config?.zoom?.maxTranslate ? this.axis.scale(this.config?.zoom?.maxTranslate) - this.size.height : 0);
+      const max = (this.config?.zoom?.maxTranslate ? this.axis.scale(this.config?.zoom?.maxTranslate) - this.axis.orientation === AxisOrientation.x ? this.size.width : this.size.height : 0);
 
       this.zoom.translateExtent([
-        [0, min],
-        [this.size.width, max],
+        [min, min],
+        [max, max],
       ]);
     }
     if (this.config.zoom?.wheelDelta) {
