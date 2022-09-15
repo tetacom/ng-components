@@ -23,7 +23,9 @@ export interface IChartConfig {
     limitTranslateByData?: boolean;
     limitZoomByData?: boolean;
     zoomBehavior?: ZoomBehaviorType,
-    wheelDelta?: (event: WheelEvent) => number
+    wheelDelta?: (event: WheelEvent) => number,
+    minTranslate?: number;
+    maxTranslate?: number;
   };
   brush?: {
     enable?: boolean;
