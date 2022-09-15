@@ -19,9 +19,6 @@ export class CrosshairComponent implements OnInit {
   ngOnInit(): void {
     this.transform = this.chartService.pointerMove.pipe(
       map((event: PointerEvent) => {
-        const composedPath = event.composedPath() as HTMLElement[];
-        const classes = composedPath.map((_) => _.classList?.contains('crosshair')).filter((_) => _)
-
         return {
           x: event.type === 'mouseleave' ? -9999 : event.offsetX,
           y: event.type === 'mouseleave' ? -9999 : event.offsetY
