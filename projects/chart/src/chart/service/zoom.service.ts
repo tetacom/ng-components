@@ -57,7 +57,7 @@ export class ZoomService implements OnDestroy {
                  scale,
                  orientation: AxisOrientation,
                  inverted: boolean) {
-    const zoomScale = Math.abs(originalDomain[1] - originalDomain[0]) / Math.abs(targetDomain[1] - targetDomain[0]);
+    const zoomScale = Math.abs(scale(originalDomain[1]) - scale(originalDomain[0])) / Math.abs(scale(targetDomain[1]) - scale(targetDomain[0]));
     let transform = zoomIdentity.scale(zoomScale);
     if (orientation === AxisOrientation.x) {
       if (!!inverted) {

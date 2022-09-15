@@ -123,7 +123,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     this.zoom.scaleExtent([maxZoom, minZoom]);
 
     this.zoom.on('zoom end', this.zoomed);
-    this._element.call(this.zoom).on('dblclick.zoom', null); // Disable dbclick zoom
+    this._element.call(this.zoom).on('dblclick.zoom', null);
 
     if (this.config?.zoom?.zoomBehavior === ZoomBehaviorType.wheel) {
       this.runWheelTranslate();
