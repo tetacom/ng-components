@@ -1,15 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
+  Input, OnChanges, OnDestroy,
   OnInit, SimpleChange, SimpleChanges,
 } from '@angular/core';
 import {Axis} from '../../core/axis/axis';
-import {combineLatest, map, Observable, Subject, withLatestFrom} from "rxjs";
-import {ScaleService} from "../../service/scale.service";
-import {getTextWidth} from "../../core/utils/get-text-width";
+import {BehaviorSubject, combineLatest, map, Observable, Subject, withLatestFrom} from 'rxjs';
+import {ScaleService} from '../../service/scale.service';
+import {getTextWidth} from '../../core/utils/get-text-width';
 import * as d3 from 'd3';
-import {ChartService} from "../../service/chart.service";
+import {ChartService} from '../../service/chart.service';
 
 @Component({
   selector: '[teta-x-axis]',
@@ -17,20 +17,20 @@ import {ChartService} from "../../service/chart.service";
   styleUrls: ['./x-axis.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class XAxisComponent implements OnInit {
+export class XAxisComponent implements OnInit, OnChanges, OnDestroy {
   x: Observable<any>;
-  ticks: Observable<any[]>
+  ticks: Observable<any[]>;
 
   @Input() axis: Axis;
   @Input() size: DOMRect;
 
-  private update$ = new Subject<void>();
+  private update$ = new BehaviorSubject<void>(null);
   private _alive = true;
 
   constructor(private scaleService: ScaleService, private _svc: ChartService) {
     this.x = this.scaleService.scales.pipe(map((_) => {
-      return _.x.get(this.axis.index)?.scale
-    }))
+      return _.x.get(this.axis.index)?.scale;
+    }));
 
 
     this.ticks = combineLatest([this.x, this.update$]).pipe(
@@ -38,10 +38,10 @@ export class XAxisComponent implements OnInit {
       map((_: [[any, void], DOMRect]) => {
         const [[x], size] = _;
 
-        const tickSize = x.ticks().map((_) => getTextWidth(this.axis.options.tickFormat ? this.axis.options.tickFormat(_) : this.axis.defaultFormatter()(_), 0.45, 11))
-        return x.ticks(size.width / parseInt(d3.max(tickSize), 10) / 10)
+        const tickSize = x.ticks().map((_) => getTextWidth(this.axis.options.tickFormat ? this.axis.options.tickFormat(_) : this.axis.defaultFormatter()(_), 0.45, 11));
+        return x.ticks(size.width / parseInt(d3.max(tickSize), 10) / 10);
       })
-    )
+    );
   }
 
   getLabelTransform() {
@@ -58,7 +58,7 @@ export class XAxisComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.hasOwnProperty('axis')) {
+    if (changes.hasOwnProperty('axis')) {
       this.update$.next();
     }
   }

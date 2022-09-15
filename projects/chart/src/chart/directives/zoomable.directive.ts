@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  Directive,
-  ElementRef,
-  HostBinding,
-  Input,
-  NgZone,
-  OnDestroy,
-} from '@angular/core';
+import {AfterViewInit, Directive, ElementRef, HostBinding, Input, NgZone, OnDestroy,} from '@angular/core';
 import {ZoomService} from '../service/zoom.service';
 import {IChartConfig} from '../model/i-chart-config';
 import {Axis} from '../core/axis/axis';
@@ -99,16 +91,26 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       [0, 0],
       [this.size.width, this.size.height],
     ]);
-    if (this.config.zoom?.limitTranslateByData) {
 
-      const min = this.config?.zoom?.minTranslate ? this.axis.scale(this.config?.zoom?.minTranslate) : 0;
-      const max = (this.config?.zoom?.maxTranslate ? this.axis.scale(this.config?.zoom?.maxTranslate) - this.axis.orientation === AxisOrientation.x ? this.size.width : this.size.height : 0);
-
+    const min = this.config?.zoom?.minTranslate
+      ? this.axis.scale(this.config?.zoom?.minTranslate)
+      : -Infinity;
+    const max = (this.config?.zoom?.maxTranslate
+      ? this.axis.scale(this.config?.zoom?.maxTranslate) - (this.axis.orientation === AxisOrientation.x ? this.size.width : this.size.height)
+      : Infinity);
+    if (this.axis.orientation === AxisOrientation.x && this.config.zoom.type === ZoomType.x) {
       this.zoom.translateExtent([
-        [min, min],
-        [max, max],
+        [min, -Infinity],
+        [max, Infinity],
       ]);
     }
+    if (this.axis.orientation === AxisOrientation.y && this.config.zoom.type === ZoomType.y) {
+      this.zoom.translateExtent([
+        [-Infinity, min],
+        [Infinity, max],
+      ]);
+    }
+
     if (this.config.zoom?.wheelDelta) {
       this.zoom.wheelDelta(this.config.zoom?.wheelDelta);
     }
