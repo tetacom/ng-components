@@ -100,9 +100,13 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       [this.size.width, this.size.height],
     ]);
     if (this.config.zoom?.limitTranslateByData) {
+
+      const min = this.config?.zoom?.minTranslate ? this.axis.scale(this.config?.zoom?.minTranslate) : 0;
+      const max = (this.config?.zoom?.maxTranslate ? this.axis.scale(this.config?.zoom?.maxTranslate) - this.size.height : 0);
+
       this.zoom.translateExtent([
-        [0, 0],
-        [this.size.width, this.size.height],
+        [0, min],
+        [this.size.width, max],
       ]);
     }
     if (this.config.zoom?.wheelDelta) {
@@ -139,6 +143,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           this.axis.orientation === AxisOrientation.y
             ? event.transform.rescaleY(origin).domain()
             : event.transform.rescaleX(origin).domain();
+
         const message = new ZoomMessage({
           eventType: event.type,
           axis: {
@@ -149,6 +154,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           domain: domain,
           chartId: this.config.id
         });
+
         this.zoomService.fireZoom(message);
         this.zoomService.broadcastZoom(message);
       }
