@@ -1,5 +1,6 @@
 export enum ClipPointsDirection {
   x,
-  y
+  y,
+  none
 }
 

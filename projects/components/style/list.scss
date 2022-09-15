@@ -12,6 +12,7 @@
   position: relative;
 
   &-item {
+    overflow: hidden;
     min-height: 28px;
     display: inline-flex;
     align-items: center;
