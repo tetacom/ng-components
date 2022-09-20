@@ -163,8 +163,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
     if(!event.sourceEvent) return;
 
-    console.log(event);
-
     const origin = this.axis.scale.copy().domain(this.axis.originDomain);
 
     let domain =
