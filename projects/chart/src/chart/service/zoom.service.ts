@@ -9,12 +9,11 @@ import {ChartService} from './chart.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ZoomService implements OnDestroy {
+export class ZoomService {
   zoomed: Observable<ZoomMessage>;
 
   private zoomed$ = new BehaviorSubject<ZoomMessage>(null);
   private broadcastChannel: string;
-  private broadcastSub: Subscription;
 
   constructor(private _broadcast: BroadcastService, private _chart: ChartService) {
     this.zoomed = this.zoomed$.asObservable().pipe(shareReplay({
@@ -37,19 +36,7 @@ export class ZoomService implements OnDestroy {
   }
 
   setBroadcastChannel(channel: string) {
-    if (this.broadcastSub) {
-      this.broadcastSub?.unsubscribe();
-    }
     this.broadcastChannel = channel;
-    if (this.broadcastChannel?.length) {
-      this.broadcastSub = combineLatest([this._broadcast.subscribeToZoom(this.broadcastChannel), this._chart.config])
-        .pipe(filter(([zoom, config]) => {
-          return zoom.message?.chartId !== config.id;
-        }))
-        .subscribe(([zoom, config]) => {
-          this.fireZoom(zoom.message);
-        });
-    }
   }
 
   getD3Transform(targetDomain: [number, number],
@@ -74,10 +61,8 @@ export class ZoomService implements OnDestroy {
         transform = transform.translate(0, -scale(Math.max(...targetDomain)));
       }
     }
-    return transform;
-  }
 
-  ngOnDestroy() {
-    this.broadcastSub?.unsubscribe();
+
+    return transform;
   }
 }

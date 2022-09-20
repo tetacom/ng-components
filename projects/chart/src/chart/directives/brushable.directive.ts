@@ -59,6 +59,13 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
   }
 
   ngAfterViewInit() {
+    if (this.config?.brush?.enable) {
+      const brushMessage = new BrushMessage({
+        chartId: this.config.id,
+        selection: [this.config.brush?.from, this.config.brush?.to],
+      });
+      this.brushService.setBrush(brushMessage);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -189,8 +196,7 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
             this.brush.move,
             this.selection
               ? this.selection.map(brushScale)
-              : domain.map(brushScale),
-            {}
+              : domain.map(brushScale)
           );
         }, 0);
       });
