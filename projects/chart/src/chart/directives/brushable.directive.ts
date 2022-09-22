@@ -189,8 +189,7 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
             this.brush.move,
             this.selection
               ? this.selection.map(brushScale)
-              : domain.map(brushScale),
-            {}
+              : domain.map(brushScale)
           );
         }, 0);
       });
