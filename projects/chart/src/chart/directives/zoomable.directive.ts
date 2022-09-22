@@ -100,6 +100,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         [max, Infinity],
       ]);
     }
+    
     if (this.axis.orientation === AxisOrientation.y && this.config.zoom.type === ZoomType.y) {
       this.zoom.translateExtent([
         [-Infinity, min],
