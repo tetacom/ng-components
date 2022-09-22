@@ -69,11 +69,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           transform =
             this.zoomService.getD3Transform(zoomed.domain, this.axis.originDomain, scale, this.axis.orientation, this.axis.options.inverted);
         }
-        if (zoomed.style?.transition) {
-          this._element.transition().call(this.zoom.transform, transform);
-        } else {
-          this._element.call(this.zoom.transform, transform);
-        }
+        this._element.call(this.zoom.transform, transform);
         this.currentTransform = transform;
       }
     });
