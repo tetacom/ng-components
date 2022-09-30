@@ -5,5 +5,5 @@ export enum ScaleType {
   pow,
   sqrt,
   time,
-  category,
+  band
 }

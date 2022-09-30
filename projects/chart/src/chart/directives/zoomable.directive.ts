@@ -10,6 +10,7 @@ import {ZoomMessage,} from '../model/i-broadcast-message';
 import {takeWhile} from 'rxjs';
 import {ChartService} from '../service/chart.service';
 import {ZoomBehaviorType} from '../model/enum/zoom-behavior-type';
+import {ScaleType} from "../model/enum/scale-type";
 
 @Directive({
   selector: '[tetaZoomable]',
@@ -111,19 +112,26 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     if (this.config.zoom?.wheelDelta) {
       this.zoom.wheelDelta(this.config.zoom?.wheelDelta);
     }
-    const maxZoom = this.config.zoom?.max
-      ? (this.axis.extremes[1] - this.axis.extremes[0]) /
-      this.config.zoom?.max
-      : this.config.zoom?.limitZoomByData
-        ? 1
-        : 0;
 
-    const minZoom = this.config.zoom?.min
-      ? (this.axis.extremes[1] - this.axis.extremes[0]) /
-      this.config.zoom?.min
-      : Infinity;
+    if(this.axis.options.scaleType.type === ScaleType.band) {
 
-    this.zoom.scaleExtent([maxZoom, minZoom]);
+      const extremes = this.axis.extremes as number[];
+
+      const maxZoom = this.config.zoom?.max
+        ? (extremes[1] - extremes[0]) /
+        this.config.zoom?.max
+        : this.config.zoom?.limitZoomByData
+          ? 1
+          : 0;
+
+      const minZoom = this.config.zoom?.min
+        ? (extremes[1] - extremes[0]) /
+        this.config.zoom?.min
+        : Infinity;
+
+      this.zoom.scaleExtent([maxZoom, minZoom]);
+    }
+
 
     this.zoom.on('zoom end', this.zoomed);
     this._element.call(this.zoom).on('dblclick.zoom', null);
@@ -159,7 +167,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       }
       this.currentTransform = event.transform;
     }
-  }; 
+  };
 
   private runWheelTranslate() {
     let type: 'start' | 'zoom' | 'end' = 'start';

@@ -24,6 +24,7 @@ import {LinearSeriesBase} from './chart-container/series/linear-series-base';
 import {CrosshairComponent} from './chart-container/crosshair/crosshair.component';
 import {LetModule} from '@tetacom/ng-components';
 import {DraggablePointDirective} from './directives/draggable-point.directive';
+import { BandseriesComponent } from './stories/bandseries/bandseries.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {DraggablePointDirective} from './directives/draggable-point.directive';
     AnnotationComponent,
     CrosshairComponent,
     DraggablePointDirective,
+    BandseriesComponent,
   ],
   exports: [
     ChartComponent,
