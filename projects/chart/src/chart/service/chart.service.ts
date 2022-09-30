@@ -9,7 +9,7 @@ import {
   of,
   shareReplay,
   Subject,
-  take, takeLast, tap,
+  take,
   withLatestFrom,
 } from 'rxjs';
 import {IChartEvent} from '../model/i-chart-event';
@@ -24,8 +24,6 @@ import {BasePoint} from '../model/base-point';
 import {Series} from '../model/series';
 import {Annotation} from '../model/annotation';
 import {ClipPointsDirection} from "../model/enum/clip-points-direction";
-import {ZoomService} from "./zoom.service";
-import {BrushService} from './brush.service';
 
 @Injectable({
   providedIn: 'root',
@@ -46,8 +44,6 @@ export class ChartService {
   public annotationContextMenu: Observable<IChartEvent<Annotation>>;
   public chartClick: Observable<IChartEvent<BasePoint>>;
   public chartContextMenu: Observable<IChartEvent<BasePoint>>;
-  // public zoomInstance: Observable<ZoomService>;
-  // public brushInstance: Observable<BrushService>;
 
   private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig());
   private size$ = new BehaviorSubject<DOMRect>(null);
@@ -60,8 +56,6 @@ export class ChartService {
   private chartContextMenu$ = new Subject<IChartEvent<BasePoint>>();
   private annotationEvent$ = new Subject<IChartEvent<Annotation>>();
   private annotationMove$ = new Subject<IChartEvent<Annotation>>();
-  // private zoomInstance$ = new Subject<ZoomService>();
-  // private brushInstance$ = new Subject<BrushService>();
 
 
   private static _hiddenSeriesPostfix = 'hidden_series';

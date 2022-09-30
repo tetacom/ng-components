@@ -5,14 +5,13 @@ import {BasePoint} from '../../model/base-point';
 import * as d3 from 'd3';
 import {AxisOptions} from '../../model/axis-options';
 import {AxisSizeBuilder, ExtremesBuilder} from './builders/public-api';
-import {generateTicks} from '../utils/public-api';
 import {ScaleType} from '../../model/enum/scale-type';
 
 export class Axis {
   private chartConfig: IChartConfig;
   private _orientation: AxisOrientation;
   private _index: number;
-  private _extremes: [number, number] = [0, 0];
+  private _extremes: number[] | string[] = [0, 0];
   private _selfSize: number;
   private _ticksValues: number[];
   private _options: AxisOptions;
@@ -26,7 +25,10 @@ export class Axis {
     .set(ScaleType.log, d3.format('~s'))
     .set(ScaleType.symlog, d3.format('~s'))
     .set(ScaleType.pow, d3.format('~s'))
-    .set(ScaleType.sqrt, d3.format('~s'));
+    .set(ScaleType.sqrt, d3.format('~s'))
+    .set(ScaleType.band, (_) => {return _})
+
+
 
   private defaultScales = new Map<ScaleType, any>()
     .set(ScaleType.linear, d3.scaleLinear)
@@ -34,7 +36,8 @@ export class Axis {
     .set(ScaleType.symlog, d3.scaleSymlog)
     .set(ScaleType.pow, d3.scalePow)
     .set(ScaleType.sqrt, d3.scaleSqrt)
-    .set(ScaleType.time, d3.scaleTime);
+    .set(ScaleType.time, d3.scaleTime)
+    .set(ScaleType.band, d3.scaleBand);
 
   constructor(config: IChartConfig) {
     this.chartConfig = config;
@@ -108,6 +111,12 @@ export class Axis {
 
   public setScale(scale: any) {
     this._scale = scale;
+
+    if(this.options.scaleType.type === ScaleType.band) {
+      this._scale.ticks = () => {
+        return this._scale.domain()
+      }
+    }
   }
 
   private setSelfSize(): void {
@@ -115,7 +124,7 @@ export class Axis {
   }
 
   private setTicksValues(): void {
-    this._ticksValues = generateTicks(this._extremes);
+    //this._ticksValues = generateTicks(this._extremes);
   }
 
   private setOptions(): void {
@@ -131,7 +140,7 @@ export class Axis {
     return this._scale;
   }
 
-  get extremes(): Array<number> {
+  get extremes(): Array<number | string> {
     return this._extremes;
   }
 

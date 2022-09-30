@@ -23,11 +23,11 @@ export class ScaleService {
   private scaleMapping = new Map<ScaleType, any>()
     .set(ScaleType.linear, d3.scaleLinear)
     .set(ScaleType.time, d3.scaleTime)
-    .set(ScaleType.category, d3.scaleOrdinal)
     .set(ScaleType.log, d3.scaleLog)
     .set(ScaleType.symlog, d3.scaleSymlog)
     .set(ScaleType.pow, d3.scalePow)
-    .set(ScaleType.sqrt, d3.scaleSqrt);
+    .set(ScaleType.sqrt, d3.scaleSqrt)
+    .set(ScaleType.band, d3.scaleBand)
 
   constructor(
     private chartService: ChartService,
@@ -83,6 +83,12 @@ export class ScaleService {
 
           if (axis.options.scaleType.type === ScaleType.log) {
             scale.base(axis.options.scaleType.base);
+          }
+
+          if(axis.options.scaleType.type === ScaleType.band) {
+            scale.paddingInner(0.1);
+            scale.paddingOuter(0.1);
+            scale.align(0.1)
           }
 
           axis.setScale(scale);
@@ -146,12 +152,19 @@ export class ScaleService {
             .domain(domain)
             .range([config.bounds.top, finalHeight]);
 
+
           if (axis.options.niceTicks) {
             scale.nice();
           }
 
           if (axis.options.scaleType.type === ScaleType.log) {
             scale.base(axis.options.scaleType.base);
+          }
+
+          if(axis.options.scaleType.type === ScaleType.band) {
+            scale.paddingInner(0.1);
+            scale.paddingOuter(0.1);
+            scale.align(0.1)
           }
 
           axis.setScale(scale);

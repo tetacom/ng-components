@@ -5,7 +5,7 @@ import {ChartModule} from '../chart.module';
 import {IconModule} from '../../../../components/src/component/icon/icon.module';
 import {ButtonModule} from '../../../../components/src/component/button/button.module';
 import {AxisOrientation} from '../model/enum/axis-orientation';
-import {createChart, createDragChart} from './story-helper';
+import {createBandChart, createChart, createDragChart} from './story-helper';
 
 export default {
   title: 'Component/Chart',
@@ -75,5 +75,25 @@ export const draggableChart = () => ({
         </div>
       </div>`,
 });
+
+
+export const bandChart = () => ({
+  moduleMetadata: {
+    imports: [ChartModule, IconModule, ButtonModule],
+  },
+
+  props: {
+    config: createBandChart(50)
+  },
+  template: `
+      <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']"
+            class="font-body-3 padding-3 bg-background-0"
+            style="width: 100%; height: 100vh">
+        <div class="row row_auto gap" style="height: 100%; width: 100%">
+            <teta-svg-chart [config]="config" class="bg-background-50 row_6 border border-text-50"></teta-svg-chart>
+        </div>
+      </div>`,
+});
+
 
 

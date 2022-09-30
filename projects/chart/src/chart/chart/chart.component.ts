@@ -23,6 +23,7 @@ import {map, Observable, takeWhile, withLatestFrom} from 'rxjs';
 import {Annotation} from '../model/annotation';
 import {TooltipTracking} from '../model/enum/tooltip-tracking';
 import {IScalesMap} from '../model/i-scales-map';
+import {ScaleType} from "../model/enum/scale-type";
 
 @Component({
   selector: 'teta-svg-chart',
@@ -110,6 +111,9 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
         if (tooltipTracking === TooltipTracking.y) {
           const result = new Map<number, number>();
           y.forEach((value, key) => {
+            if(value.options.scaleType.type === ScaleType.band){
+              return;
+            }
             result.set(key, value.scale.invert(event.offsetY));
           });
           this.pointerMove.emit({
@@ -119,6 +123,9 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
         } else {
           const result = new Map<number, number>();
           x.forEach((value, key) => {
+            if(value.options.scaleType.type === ScaleType.band){
+              return;
+            }
             result.set(key, value.scale.invert(event.offsetX));
           });
           this.pointerMove.emit({
