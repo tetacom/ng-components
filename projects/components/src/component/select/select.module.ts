@@ -9,7 +9,7 @@ import {FormsModule} from '@angular/forms';
 import {IconModule} from '../icon/icon.module';
 import {HighlightModule} from '../../directive/highlight/highlight.module';
 import {InputModule} from '../input/input.module';
-import {LetModule} from "@tetacom/ng-components";
+import {LetModule} from "../../directive/let/let.module";
 
 @NgModule({
   declarations: [SelectComponent, SelectOptionDirective, SelectValueDirective],
