@@ -15,6 +15,9 @@ import {AutoCloseIgnoreCase} from '../../../common/contract/auto-close-ignore-ca
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {SelectOptionDirective} from '../select-option.directive';
 import {SelectValueDirective} from '../select-value.directive';
+import {TetaConfigService} from "../../../locale/teta-config.service";
+import {Observable} from "rxjs";
+import {TetaLocalisation} from "../../../locale/teta-localisation";
 
 @Component({
   selector: 'teta-select',
@@ -73,6 +76,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
 
   value: any | any[];
   searchText: string;
+  locale: Observable<TetaLocalisation>;
 
   get visibleOptions(): any[] {
     if (!this.searchText) {
@@ -88,8 +92,10 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
 
   constructor(
     private _cdr: ChangeDetectorRef,
-    private _elementRef: ElementRef
+    private _elementRef: ElementRef,
+    private _config: TetaConfigService
   ) {
+    this.locale = this._config.locale
   }
 
   clear() {

@@ -5,6 +5,7 @@
                [(open)]="open"
                [appendToBody]="appendToBody"
                [disabled]="disabled"
+               *tetaLet="locale | async as loc"
                class="row row_auto">
   <div tetaDropdownHead
        class="row row_auto select-head"
@@ -19,12 +20,13 @@
     </div>
     <teta-icon [name]="'arrowDownSmall'"></teta-icon>
   </div>
-  <div *ngIf="options?.length" tetaDropdownContent class="select-list scrollable row_auto" (click)="$event.preventDefault()">
+  <div *ngIf="options?.length" tetaDropdownContent class="select-list scrollable row_auto"
+       (click)="$event.preventDefault()">
     <ng-container *ngIf="searchRef">
       <div class="select-search">
         <teta-text-field [ngModel]="searchText"
                          (ngModelChange)="search($event)"
-                         [placeholder]="'Поиск'"
+                         [placeholder]="loc.search"
                          [leftIconName]="'search'"></teta-text-field>
       </div>
       <div class="list-divider"></div>
@@ -33,7 +35,7 @@
       <div class="list-item list-item_interactive"
            (click)="clear()"
            [class.list-item_active]="value==null">
-        Не выбрано
+        {{loc.notSelected}}
       </div>
       <div class="list-divider"></div>
     </ng-container>

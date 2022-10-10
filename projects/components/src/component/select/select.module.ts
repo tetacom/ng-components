@@ -9,18 +9,20 @@ import {FormsModule} from '@angular/forms';
 import {IconModule} from '../icon/icon.module';
 import {HighlightModule} from '../../directive/highlight/highlight.module';
 import {InputModule} from '../input/input.module';
+import {LetModule} from "@tetacom/ng-components";
 
 @NgModule({
   declarations: [SelectComponent, SelectOptionDirective, SelectValueDirective],
   exports: [SelectComponent, SelectOptionDirective, SelectValueDirective],
-  imports: [
-    DropdownModule,
-    CommonModule,
-    ScrollingModule,
-    FormsModule,
-    IconModule,
-    HighlightModule,
-    InputModule,
-  ],
+    imports: [
+        DropdownModule,
+        CommonModule,
+        ScrollingModule,
+        FormsModule,
+        IconModule,
+        HighlightModule,
+        InputModule,
+        LetModule,
+    ],
 })
 export class SelectModule {}
