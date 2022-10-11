@@ -39,8 +39,8 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
 
   @Input() set options(options: any[]) {
     this._options = options;
-    if (this.value) {
-      this.getSelectedValue(this.getValue(this.value));
+    if (this._internalValue !== null && this._internalValue !== undefined && this.options) {
+      this.getSelectedValue(this._internalValue);
     }
   }
 
@@ -102,6 +102,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   }
 
   private _options: any | any[];
+  private _internalValue: any;
 
   constructor(
     private _cdr: ChangeDetectorRef,
@@ -135,10 +136,12 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
       } else {
         this.value = [...this.value, option];
       }
-      this.onChange(this.value.map((_) => this.getValue(_)));
+      this._internalValue = this.value.map((_) => this.getValue(_))
+      this.onChange(this._internalValue);
     } else {
       this.value = option;
-      this.onChange(this.getValue(this.value));
+      this._internalValue = this.getValue(this.value);
+      this.onChange(this._internalValue);
       this.open = false;
     }
     this._cdr.markForCheck();
@@ -156,7 +159,8 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   removeItemClick(option: any, event: MouseEvent): void {
     event.stopPropagation();
     this.removeItem(option);
-    this.onChange(this.value.map((_) => this.getValue(_)));
+    this._internalValue = this.value.map((_) => this.getValue(_))
+    this.onChange(this._internalValue);
   }
 
   removeItem(option: any): void {
@@ -211,6 +215,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: any | any[]): void {
+    this._internalValue = value;
     this.getSelectedValue(value)
     this._cdr.detectChanges();
   }
