@@ -36,7 +36,18 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   @HostBinding('class.select_multiple')
   @Input()
   multiple: boolean;
-  @Input() options: any[];
+
+  @Input() set options(options: any[]) {
+    this._options = options;
+    if (this.value) {
+      this.getSelectedValue(this.getValue(this.value));
+    }
+  }
+
+  get options() {
+    return this._options;
+  }
+
   @Input() invalid: boolean;
   @Input() align: Align = Align.minWidth;
   @Input() verticalAlign: VerticalAlign = VerticalAlign.bottom;
@@ -89,6 +100,8 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
           .indexOf(this.searchText.toLowerCase()) >= 0
     );
   }
+
+  private _options: any | any[];
 
   constructor(
     private _cdr: ChangeDetectorRef,
@@ -198,18 +211,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: any | any[]): void {
-    if (this.multiple) {
-      this.value =
-        value && this.options
-          ? this.options.filter(
-            (option) => value.indexOf(this.getValue(option)) > -1
-          )
-          : [];
-    } else {
-      this.value =
-        this.options &&
-        this.options?.find((option) => this.getValue(option) === value);
-    }
+    this.getSelectedValue(value)
     this._cdr.detectChanges();
   }
 
@@ -232,6 +234,18 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
     this._cdr.markForCheck();
   }
 
-  private getSelectedValue() {
+  private getSelectedValue(value: any | any[]) {
+    if (this.multiple) {
+      this.value =
+        value && this.options
+          ? this.options.filter(
+            (option) => value.indexOf(this.getValue(option)) > -1
+          )
+          : [];
+    } else {
+      this.value =
+        this.options &&
+        this.options?.find((option) => this.getValue(option) === value);
+    }
   }
 }
