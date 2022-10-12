@@ -6,15 +6,15 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { TableColumn } from '../../../table/contract/table-column';
-import { IDictionary } from '../../../../common/contract/i-dictionary';
-import { IIdName } from '../../../../common/contract/i-id-name';
-import { FilterType } from '../../../filter/enum/filter-type.enum';
-import { UntypedFormGroup } from '@angular/forms';
-import { FormsUtil } from '../../../../util/forms-util';
-import { TranslocoService } from '@ngneat/transloco';
-import { filter, takeWhile } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import {TableColumn} from '../../../table/contract/table-column';
+import {IDictionary} from '../../../../common/contract/i-dictionary';
+import {IIdName} from '../../../../common/contract/i-id-name';
+import {FilterType} from '../../../filter/enum/filter-type.enum';
+import {UntypedFormGroup} from '@angular/forms';
+import {FormsUtil} from '../../../../util/forms-util';
+import {TranslocoService} from '@ngneat/transloco';
+import {filter, takeWhile} from 'rxjs/operators';
+import {Subscription} from 'rxjs';
 import {Align} from '../../../../common/enum/align.enum';
 
 @Component({
@@ -71,7 +71,8 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
 
   private _alive = true;
 
-  constructor(private _transloco: TranslocoService) {}
+  constructor(private _transloco: TranslocoService) {
+  }
 
   getDict() {
     const dict = this.dict ? this.dict[this.column.name] : [];
@@ -113,7 +114,8 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngOnDestroy() {
     this._alive = false;

@@ -78,6 +78,7 @@ export class FormsUtil {
     const validators = [];
     if (column.required) {
       validators.push(Validators.required);
+      validators.push(FormsUtil.validatorNotEmpty);
     }
     if (column.minValue != null) {
       validators.push(Validators.min(column.minValue));
@@ -86,5 +87,12 @@ export class FormsUtil {
       validators.push(Validators.max(column.maxValue));
     }
     return validators;
+  }
+
+  static validatorNotEmpty(control: AbstractControl) : ValidationErrors | null {
+    if((control.value as string)?.trim()?.length <= 0){
+      return {required: true}
+    }
+    return null;
   }
 }
