@@ -755,7 +755,7 @@ export class TableService<T> {
 
   private setColumnAutoWidth(column: TableColumn, table: HTMLElement) {
     const cells = table.querySelectorAll(
-      `teta-cell[data-column=${column.name}] .cell-text`
+      `teta-cell[data-column="${column.name}"] .cell-text`
     );
     let maxWidth = 0;
     cells.forEach((cell) => {
