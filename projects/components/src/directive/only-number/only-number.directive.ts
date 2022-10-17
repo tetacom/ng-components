@@ -173,7 +173,12 @@ export class OnlyNumberDirective {
       return;
     }
     const valid: boolean = new RegExp(regex).test(value.toString());
-    if (valid && value.toString() !== this._control.control.value.toString()) {
+
+    // if (valid && value.toString() !== this._control.control.value.toString()) {
+    //   console.log(value, parseFloat(value));
+    //   this._control.control.patchValue(parseFloat(value));
+    // }
+    if (valid) {
       this._control.control.patchValue(parseFloat(value));
     }
   }
