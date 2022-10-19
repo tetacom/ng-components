@@ -15,9 +15,10 @@
                [childNodeName]="'columns'"
                [compareItems]="compareItems">
       <ng-template tetaTemplate let-item>
-        <div class="tree__item">
+        <div class="tree__item" style="align-items: unset">
           <teta-tree-item-toggle [item]="item" *ngIf="item.columns?.length > 0"></teta-tree-item-toggle>
           <teta-checkbox
+            style="flex-grow: 1;"
             [ngModel]="!columnIsHidden(item)"
             (ngModelChange)="setColumnVisibility(item, $event)"
             (click)="$event.stopPropagation()"
