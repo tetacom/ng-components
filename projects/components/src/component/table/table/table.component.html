@@ -1,8 +1,10 @@
 <div class="column column_auto">
   <teta-table-head
+    style="z-index: 1"
     [selectType]="selectType"
     [showHeadCellMenu]="showHeadCellMenu"></teta-table-head>
   <div class="column column_auto position-relative"
+       style="z-index: 0"
        [tetaContextMenu]="contextMenu"
        [verticalAlign]="verticalAlign.auto"
        [align]="align.auto"
