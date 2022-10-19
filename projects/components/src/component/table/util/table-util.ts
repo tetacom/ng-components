@@ -89,10 +89,10 @@ export class TableUtil {
       const item = row as any;
       return (filter.value.lessThan === null || filter.value.lessThan === undefined
           ? true
-          : filter.value.lessThan.getTime() >= item[filter.field].getTime()) &&
+          : filter.value.lessThan?.getTime() >= item[filter.field]?.getTime()) &&
         (filter.value.greaterThan === null || filter.value.greaterThan === undefined
           ? true
-          : filter.value.greaterThan.getTime() <= item[filter.field].getTime());
+          : filter.value.greaterThan?.getTime() <= item[filter.field]?.getTime());
     };
     return data.filter(filterDate);
   }
