@@ -2,13 +2,13 @@
   <teta-input [label]="loc.from">
     <teta-date-picker style="width: 110px"
                       [ngModel]="filter.value?.greaterThan"
-                      [appendToBody]="true"
+                      [appendToBody]="false"
                       (ngModelChange)="filter.value.greaterThan=$event"></teta-date-picker>
   </teta-input>
   <teta-input [label]="loc.to">
     <teta-date-picker style="width: 110px"
                       [ngModel]="filter.value?.lessThan"
-                      [appendToBody]="true"
+                      [appendToBody]="false"
                       (ngModelChange)="filter.value.lessThan=$event"></teta-date-picker>
   </teta-input>
 </div>
