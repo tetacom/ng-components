@@ -464,6 +464,10 @@
       <path fill-rule="evenodd" clip-rule="evenodd"
             d="M7.99996 14.7071L5.64641 12.3535L6.35352 11.6464L7.99996 13.2929L9.64641 11.6464L10.3535 12.3535L7.99996 14.7071Z"></path>
     </symbol>
+    <symbol width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" id="monitoring">
+      <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M14 3V2H2V3L6.375 3V4.83333V5.15827L6.67193 5.29024L9.92651 6.73672L4.73927 9.90669L3.92651 10.4034L4.79693 10.7902L8.625 12.4916V14H9.625V12.1667V11.8417L9.32807 11.7098L6.07349 10.2633L11.2607 7.09331L12.0735 6.59662L11.2031 6.20976L7.375 4.5084V3L14 3Z"/>
+    </symbol>
     <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="monitoringDepth">
       <path fill-rule="evenodd" clip-rule="evenodd"
             d="M4 3H12V6H13V3V2H12H4H3V3V9V10V12V13H4H8V12.5V12H4V10H8H9V9H4V3ZM6 5H10V7H6V5ZM5 4H6H10H11V5V7V8H10H6H5V7V5V4Z"></path>
@@ -720,6 +724,19 @@
       <path fill-rule="evenodd" clip-rule="evenodd" d="M6 10H3V13H6V10ZM2 9V14H7V9H2Z"></path>
       <path fill-rule="evenodd" clip-rule="evenodd" d="M13 3H10V6H13V3ZM9 2V7H14V2H9Z"></path>
       <path fill-rule="evenodd" clip-rule="evenodd" d="M13 10H10V13H13V10ZM9 9V14H14V9H9Z"></path>
+    </symbol>
+    <symbol width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" id="timePeriod">
+      <path
+        d="M9.39186 12.3919C8.68138 12.7796 7.86643 13 7 13C4.23858 13 2 10.7614 2 8C2 5.23858 4.23858 3 7 3C7.86643 3 8.68138 3.22038 9.39186 3.60814L10.1237 2.87627C9.21384 2.32035 8.14433 2 7 2C3.68629 2 1 4.68629 1 8C1 11.3137 3.68629 14 7 14C8.14433 14 9.21384 13.6796 10.1237 13.1237L9.39186 12.3919Z"
+      />
+      <path d="M6.5 5V8C6.5 8.18939 6.607 8.36252 6.77639 8.44721L8.97639 9.54721L9.42361 8.65279L7.5 7.69098V5H6.5Z"
+      />
+      <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M13 14.0011L15.6475 11.3536L14.9404 10.6465L13.5 12.0869V7.50003H12.5V12.0869L11.0596 10.6465L10.3525 11.3536L13 14.0011Z"
+      />
+      <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M12.9999 2.02161L10.3751 4.64647L11.0822 5.35356L12.4999 3.93584L12.4999 9.00003L13.4999 9.00002L13.4999 3.9358L14.9177 5.35357L15.6248 4.64646L12.9999 2.02161Z"
+      />
     </symbol>
     <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="timeOut">
       <path d="M3 2H13V3H3V2Z"></path>

@@ -64,12 +64,7 @@ export class DateUtil {
       return '';
     }
     const month = dat.getMonth() + 1;
-    return `${prependZero(dat.getDate(), 2)}.
-    ${prependZero(month, 2)}.
-    ${dat.getFullYear()}
-    ${prependZero(dat.getHours(), 2)}:
-    ${prependZero(dat.getMinutes(), 2)}:
-    ${prependZero(dat.getSeconds(), 2)}`;
+    return `${prependZero(dat.getDate(), 2)}.${prependZero(month, 2)}.${dat.getFullYear()} ${prependZero(dat.getHours(), 2)}:${prependZero(dat.getMinutes(), 2)}:${prependZero(dat.getSeconds(), 2)}`;
   }
 
   /**
