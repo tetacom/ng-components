@@ -38,13 +38,16 @@ export class ZoomMessage {
 export class BrushMessage {
   chartId: string;
   selection: [number, number];
+  mode: 'drag' | 'space' | 'handle' | 'center' | 'init';
 
   constructor(options?: {
     chartId: string;
     selection: [number, number];
+    mode: 'drag' | 'space' | 'handle' | 'center' | 'init';
   }) {
     this.chartId = options?.chartId;
     this.selection = options?.selection;
+    this.mode = options?.mode;
   }
 }
 

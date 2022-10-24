@@ -63,6 +63,7 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
       const brushMessage = new BrushMessage({
         chartId: this.config.id,
         selection: [this.config?.brush?.from, this.config?.brush?.to],
+        mode: 'init'
       });
       this.brushService.setBrush(brushMessage);
     }
@@ -173,6 +174,7 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
           const brushMessage = new BrushMessage({
             chartId: this.config.id,
             selection: [brushScale.invert(from), brushScale.invert(to)],
+            mode: _.mode
           });
           this.brushService.setBrush(brushMessage);
         }
@@ -196,7 +198,8 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
             this.brush.move,
             this.selection
               ? this.selection.map(brushScale)
-              : domain.map(brushScale)
+              : domain.map(brushScale),
+            {}
           );
         }, 0);
       });
