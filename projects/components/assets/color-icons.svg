@@ -401,7 +401,7 @@
       </linearGradient>
     </defs>
   </symbol>
-  <symbol width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" id="layers">
+  <symbol width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" id="layersColor">
     <path fill-rule="evenodd" clip-rule="evenodd" d="M15 6.94078L7.99997 10.4408L1 6.9408V8.05884L7.77637 11.447L7.99997 11.5588L8.22358 11.447L15 8.05881V6.94078ZM15 9.94078L7.99997 13.4408L1 9.9408V11.0588L7.77637 14.447L7.99997 14.5588L8.22358 14.447L15 11.0588V9.94078ZM1.87178 5.45761L1 5.01624V5.01027L1.87038 4.56616L7.77272 1.55444L7.99998 1.43848L8.22723 1.55444L14.1218 4.56225L14.9968 5.00878L14.1208 5.45347L8.2263 8.44565L8.00027 8.56039L7.77413 8.44589L1.87178 5.45761ZM3.20113 5.00979L7.99968 7.43923L12.7922 5.00646L7.99997 2.56114L3.20113 5.00979Z" fill="#F6B520"/>
   </symbol>
 
@@ -808,7 +808,7 @@
   <use xlink:href="#improveColor"></use>
 </svg>
 <svg class="icon">
-  <use xlink:href="#layers"></use>
+  <use xlink:href="#layersColor"></use>
 </svg>
 <svg class="icon">
   <use xlink:href="#lineColor"></use>
