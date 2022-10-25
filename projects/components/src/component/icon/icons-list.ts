@@ -193,7 +193,7 @@ export const coloredIconsList = [
   'handbagAddColor',
   'improveColor',
   'handbagColor',
-  'layers',
+  'layersColor',
   'lineColor',
   'lineDashedColor',
   'liquidAddColor',
