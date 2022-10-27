@@ -48,6 +48,12 @@ export interface IChartConfig {
     enable?: boolean;
     showX?: boolean;
     showY?: boolean;
+    x?: {
+      ticksCount?: number
+    },
+    y?: {
+      ticksCount?: number
+    }
   };
   width?: number;
   height?: number;
