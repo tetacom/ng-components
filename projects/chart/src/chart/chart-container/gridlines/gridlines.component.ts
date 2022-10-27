@@ -5,9 +5,11 @@ import {
 } from '@angular/core';
 
 import {ScaleService} from "../../service/scale.service";
-import {map, Observable} from "rxjs";
+import {map, Observable, withLatestFrom} from "rxjs";
 import {IChartConfig} from "../../model/i-chart-config";
 import {ChartService} from "../../service/chart.service";
+import {generateTicks} from "../../core/utils/generate-ticks";
+import {IScalesMap} from "../../model/i-scales-map";
 
 @Component({
   selector: '[teta-gridlines]',
@@ -28,14 +30,21 @@ export class GridlinesComponent implements AfterViewInit {
   constructor(private svc: ScaleService, private chartService: ChartService) {
     this.config = this.chartService.config;
 
-    this.tickYValues = this.svc.scales.pipe(map((_) => {
-      const ratio = this.size.height / 40;
-      return _.y.get(0)?.scale.ticks(ratio);
-    }));
-    this.tickXValues = this.svc.scales.pipe(map((_) => {
-      const ratio = this.size.width / 40;
-      return _.x.get(0)?.scale.ticks(ratio);
-    }));
+    this.tickYValues = this.svc.scales.pipe(
+      withLatestFrom(this.config),
+      map((_: [IScalesMap, IChartConfig]) => {
+        const [scales, config] = _;
+        const ratio = this.size.height / 40;
+        return config.gridLines?.y?.ticksCount != null ? generateTicks(scales.y.get(0).scale.domain(), config.gridLines?.y?.ticksCount) : scales.y.get(0)?.scale.ticks(ratio);
+      }));
+
+    this.tickXValues = this.svc.scales.pipe(
+      withLatestFrom(this.config),
+      map((_: [IScalesMap, IChartConfig]) => {
+        const [scales, config] = _;
+        const ratio = this.size.width / 40;
+        return config.gridLines?.x?.ticksCount != null ? generateTicks(scales.x.get(0).originDomain, config.gridLines?.x?.ticksCount) : scales.x.get(0)?.scale.ticks(ratio);
+      }));
 
     this.y = this.svc.scales.pipe(map((_) => _.y.get(0)?.scale));
     this.x = this.svc.scales.pipe(map((_) => _.x.get(0)?.scale));

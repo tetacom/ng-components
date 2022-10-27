@@ -50,7 +50,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    this.zoom?.on('start zoom end', null);
+    this.zoom?.on('zoom end', null);
     this._element?.on('wheel', null);
     this.alive = false;
   }
@@ -89,23 +89,23 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       [this.size.width, this.size.height],
     ]);
 
-    const min = this.config?.zoom?.minTranslate
+    const min = this.config?.zoom?.minTranslate != null
       ? this.axis.scale(this.config?.zoom?.minTranslate)
       : -Infinity;
-    const max = (this.config?.zoom?.maxTranslate
-      ? this.axis.scale(this.config?.zoom?.maxTranslate) - (this.axis.orientation === AxisOrientation.x ? this.size.width : this.size.height)
+    const max = (this.config?.zoom?.maxTranslate != null
+      ? this.axis.scale(this.config?.zoom?.maxTranslate)
       : Infinity);
     if (this.axis.orientation === AxisOrientation.x && this.config.zoom.type === ZoomType.x) {
       this.zoom.translateExtent([
-        [min, -Infinity],
-        [max, Infinity],
+        [Math.min(min, max), -Infinity],
+        [Math.max(min, max), Infinity],
       ]);
     }
 
     if (this.axis.orientation === AxisOrientation.y && this.config.zoom.type === ZoomType.y) {
       this.zoom.translateExtent([
-        [-Infinity, min],
-        [Infinity, max],
+        [-Infinity, Math.min(min, max)],
+        [Infinity, Math.max(min, max)],
       ]);
     }
 
@@ -113,7 +113,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       this.zoom.wheelDelta(this.config.zoom?.wheelDelta);
     }
 
-    if(this.axis.options.scaleType.type === ScaleType.band) {
+    if(this.axis.options.scaleType.type !== ScaleType.band) {
 
       const extremes = this.axis.extremes as number[];
 
@@ -133,7 +133,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     }
 
 
-    this.zoom.on('zoom end', this.zoomed);
+    this.zoom.on('start zoom end', this.zoomed);
     this._element.call(this.zoom).on('dblclick.zoom', null);
 
     if (this.config?.zoom?.zoomBehavior === ZoomBehaviorType.wheel) {
@@ -145,8 +145,11 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     if (event.sourceEvent) {
       if (Object.keys(event.sourceEvent).length !== 0) {
         const origin = this.axis.scale.copy().domain(this.axis.originDomain);
+        if(this.axis.options.scaleType.type === ScaleType.band) {
+          return
+        }
 
-        let domain =
+        const domain =
           this.axis.orientation === AxisOrientation.y
             ? event.transform.rescaleY(origin).domain()
             : event.transform.rescaleX(origin).domain();
@@ -158,7 +161,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             orientation: this.axis.orientation,
           },
           element: this.elementRef,
-          domain: domain,
+          domain,
           chartId: this.config.id
         });
 
@@ -219,6 +222,16 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           ? transform.rescaleY(origin).domain()
           : transform.rescaleX(origin).domain();
 
+      const extent = this.axis.options?.inverted ? domain : [...domain].reverse();
+
+      if(extent[0] <= this.config.zoom?.minTranslate) {
+        return;
+      }
+
+      if(extent[1] >= this.config.zoom?.maxTranslate) {
+        return;
+      }
+
       const message = new ZoomMessage({
         eventType: type,
         element: this.elementRef,
@@ -229,6 +242,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         domain,
         chartId: this.config.id,
       });
+
       this._element?.call(this.zoom.transform, transform);
       this.zoomService.fireZoom(message);
       this.zoomService.broadcastZoom(message);
@@ -236,6 +250,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     };
 
     this._element.on('wheel', (event: WheelEvent) => {
+
+
       event.preventDefault();
       if (event.ctrlKey) {
         return;
