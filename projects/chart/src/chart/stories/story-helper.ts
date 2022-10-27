@@ -135,7 +135,7 @@ export const createChart = (size: number, inverted = true): IChartConfig => {
         min: 0,
         max: 5000,
         visible: true,
-        inverted: true,
+        inverted: false,
         niceTicks: false,
         plotLines: [
           {
@@ -157,7 +157,11 @@ export const createChart = (size: number, inverted = true): IChartConfig => {
       enable: true,
       type: ZoomType.y,
       syncChannel: 'channelA',
-      zoomBehavior: ZoomBehaviorType.wheel
+      zoomBehavior: ZoomBehaviorType.wheel,
+      min: 100,
+      max: 5000,
+      minTranslate: 0,
+      maxTranslate: 7000
     },
     legend: {
       enable: false,
