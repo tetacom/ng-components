@@ -68,7 +68,12 @@ export class PlotlineComponent implements OnInit, OnDestroy {
           d.value = this.scale.invert(
             event[AxisOrientation[this.axis.orientation]]
           );
-
+          if (d.max !== null && d.max !== undefined && d.value >= d.max) {
+            d.value = d.max;
+          }
+          if (d.min !== null && d.min !== undefined && d.value <= d.min) {
+            d.value = d.min;
+          }
           this.emit({
             event,
             target: d,
