@@ -30,7 +30,7 @@
          [style.flex-grow]="lockedFlex"
          [style.flex-basis.px]="lockedWidth"
          [style.min-width.px]="lockedWidth"
-         [style.zIndex]="row === activeRow ? 1 : 'unset'">
+         [style.zIndex]="row === activeRow ? 2 : 1">
       <teta-selection-cell *ngIf="selectType === selectTypeEnum.checkBox && locked.length"
                            [row]="row"
                            style="width: 28px;"></teta-selection-cell>
@@ -72,19 +72,20 @@
     <div class="table-row"
          *ngIf="aggregate"
          [class.table-row_virtual]="virtual"
-         [style.flex-grow]="virtual ? totalFlex : ''"
-         [style.flex-basis.px]="virtual ? totalWidth : ''"
-         [style.min-width.px]="virtual ? totalWidth : ''">
+         [style.flex-grow]="totalFlex"
+         [style.flex-basis.px]="totalWidth"
+         [style.min-width.px]="totalWidth">
       <div class="table-row_locked"
            *ngIf="locked.length > 0"
            [style.flex-grow]="lockedFlex"
            [style.flex-basis.px]="lockedWidth"
            [style.min-width.px]="lockedWidth">
         <div class="cell align-center justify-content-center"
-             style="width: 28px;">
+             style="width: 28px;"
+             *ngIf="selectType === selectTypeEnum.checkBox && locked.length < 1">
           <teta-icon [name]="'sumColor'"></teta-icon>
         </div>
-        <div class="cell cell-component justify-content-end"
+        <div class="cell cell-component"
              *ngFor="let column of locked; let colIndex = index; trackBy: trackColumns;"
              [attr.data-column]="column.name"
              [ngClass]="column.cellClass"
@@ -102,7 +103,7 @@
            *ngIf="selectType === selectTypeEnum.checkBox && locked.length < 1">
         <teta-icon [name]="'sumColor'"></teta-icon>
       </div>
-      <div class="cell cell-component justify-content-end"
+      <div class="cell cell-component"
            *ngFor="let column of unlocked; let colIndex = index; trackBy: trackColumns;"
            [attr.data-column]="column.name"
            [ngClass]="column.cellClass"
