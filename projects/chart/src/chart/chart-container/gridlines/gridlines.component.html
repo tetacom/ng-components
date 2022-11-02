@@ -8,17 +8,17 @@
   <ng-container *ngIf="data.y && data.config.gridLines?.showY !== false">
     <ng-container *ngFor="let tick of data.yValues">
       <svg:line [attr.x1]="0"
-                [attr.y1]="data.y(tick)"
+                [attr.y1]="data.y(tick) || 1"
                 [attr.x2]="size?.width"
-                [attr.y2]="data.y(tick)"></svg:line>
+                [attr.y2]="data.y(tick) || 1"></svg:line>
     </ng-container>
   </ng-container>
 
   <ng-container *ngIf="data.x && data.config.gridLines?.showX !== false">
     <ng-container *ngFor="let tick of data.xValues">
-      <svg:line [attr.x1]="data.x(tick)"
+      <svg:line [attr.x1]="data.x(tick) || 1"
                 [attr.y1]="0"
-                [attr.x2]="data.x(tick)"
+                [attr.x2]="data.x(tick) || 1"
                 [attr.y2]="size?.height"></svg:line>
     </ng-container>
   </ng-container>
