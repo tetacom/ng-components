@@ -404,6 +404,10 @@ export class TableService<T> {
     }
   }
 
+  getColumnParent(column: TableColumn) {
+    return this.findParentColumn(column, this.displayColumns);
+  }
+
   startEditRow(cellEvent: ICellEvent): void {
     if (this._currentEditCell?.row !== cellEvent?.row) {
       if (this._currentEditCell != null) {
@@ -737,6 +741,26 @@ export class TableService<T> {
       const col = columns[i];
       if (col.columns && col.columns.length) {
         const result = this.findParent(column, col.columns);
+        if (result !== null && result !== undefined) {
+          return result;
+        }
+      }
+    }
+    return null;
+  }
+
+  private findParentColumn(
+    column: TableColumn,
+    columns: TableColumn[]
+  ): TableColumn | null {
+    const found = columns.find((x) => x.columns.indexOf(column) >= 0);
+    if (found !== null && found !== undefined) {
+      return found;
+    }
+    for (let i = 0, l = columns.length; i < l; i++) {
+      const col = columns[i];
+      if (col.columns && col.columns.length) {
+        const result = this.findParentColumn(column, col.columns);
         if (result !== null && result !== undefined) {
           return result;
         }

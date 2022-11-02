@@ -40,6 +40,10 @@ export class MainDropdownTabComponent<T> implements OnInit {
     return StateUtil.isColumnFiltered(this.state, this.column);
   }
 
+  get parent() {
+    return this._svc.getColumnParent(this.column);
+  }
+
   pinColumn() {
     this._svc.pinColumn(this.column);
   }

@@ -1,8 +1,11 @@
 <div class="list column_auto" *ngIf="locale | async as loc">
-  <div class="list-item list-item_interactive" (click)="pinColumn()">
-    {{column.locked ? loc.unpin : loc.pin}}
-  </div>
-  <div class="list-divider"></div>
+  <ng-container *ngIf="!parent">
+    <div class="list-item list-item_interactive"
+         (click)="pinColumn()">
+      {{column.locked ? loc.unpin : loc.pin}}
+    </div>
+    <div class="list-divider"></div>
+  </ng-container>
   <ng-container *ngIf="column.sortable">
     <div class="list-item list-item_interactive"
          (click)="sortAsc($event)">
