@@ -139,6 +139,7 @@ export const iconsList = [
   'tick',
   'tiles',
   'timePeriod',
+  'trackPeriod',
   'timeOut',
   'txt',
   'undo',
