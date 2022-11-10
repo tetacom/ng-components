@@ -28,6 +28,7 @@ export class DropdownDirective extends DropdownBase implements OnInit, OnDestroy
 
   ngOnDestroy(): void {
     this.closeDropdown();
+    this.removeScrollListener();
     this._alive = false;
   }
 

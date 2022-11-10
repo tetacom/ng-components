@@ -91,6 +91,7 @@ export class DropdownBase {
           });
         }
       });
+    this.addScrollListener();
   }
 
   @HostListener('click', ['$event']) click(event: MouseEvent): void {
@@ -142,6 +143,20 @@ export class DropdownBase {
       (event.code === 'Enter' && this.autoCloseIgnore.indexOf('enter') < 0)
     ) {
       this.closeDropdown();
+    }
+  }
+
+  protected addScrollListener() {
+    window.addEventListener('scroll', this.scrollListener, true)
+  }
+
+  protected removeScrollListener() {
+    window.removeEventListener('scroll', this.scrollListener, true)
+  }
+
+  private scrollListener = () => {
+    if (this.open && this._head?.nativeElement && this._body) {
+      this.setPosition(this._head.nativeElement, this._body);
     }
   }
 

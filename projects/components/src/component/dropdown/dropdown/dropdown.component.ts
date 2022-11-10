@@ -37,6 +37,7 @@ export class DropdownComponent
 
   ngOnDestroy(): void {
     this.closeDropdown();
+    this.removeScrollListener();
     this._alive = false;
   }
 }
