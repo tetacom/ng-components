@@ -9,6 +9,7 @@ export const defaultChartConfig = (): IChartConfig => ({
   zoom: {
     enable: true,
     type: ZoomType.x,
+    syncType: ZoomType.xy,
     zoomBehavior: ZoomBehaviorType.move
   },
   bounds: new ChartBounds({

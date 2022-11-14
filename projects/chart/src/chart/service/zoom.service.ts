@@ -1,10 +1,12 @@
-import {combineLatest, BehaviorSubject, Observable, shareReplay, Subscription, filter,} from 'rxjs';
+import {BehaviorSubject, combineLatest, filter, Observable, shareReplay, Subscription,} from 'rxjs';
 import {AxisOrientation} from '../model/enum/axis-orientation';
 import {Injectable, OnDestroy} from '@angular/core';
-import {ZoomMessage} from '../model/i-broadcast-message';
+import {IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';
 import {zoomIdentity} from 'd3';
 import {BroadcastService} from './broadcast.service';
 import {ChartService} from './chart.service';
+import {IChartConfig} from "../model/i-chart-config";
+import {ZoomType} from "../model/enum/zoom-type";
 
 @Injectable({
   providedIn: 'root',
@@ -42,9 +44,15 @@ export class ZoomService implements OnDestroy {
     }
     this.broadcastChannel = channel;
     if (this.broadcastChannel?.length) {
-      this.broadcastSub = combineLatest([this._broadcast.subscribeToZoom(this.broadcastChannel), this._chart.config])
-        .pipe(filter(([zoom, config]) => {
-          return zoom.message?.chartId !== config.id;
+      this.broadcastSub = combineLatest(
+        [this._broadcast.subscribeToZoom(this.broadcastChannel), this._chart.config]
+      )
+        .pipe(filter(([zoom, config]: [IBroadcastMessage<ZoomMessage>, IChartConfig]) => {
+          return zoom.message?.chartId !== config.id && (
+            config.zoom.syncType === ZoomType.xy ||
+            (zoom.message.axis.orientation === AxisOrientation.y && config.zoom.syncType === ZoomType.y) ||
+            (zoom.message.axis.orientation === AxisOrientation.x && config.zoom.syncType === ZoomType.x)
+          );
         }))
         .subscribe(([zoom, config]) => {
           this.fireZoom(zoom.message);

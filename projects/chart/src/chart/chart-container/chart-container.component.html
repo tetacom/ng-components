@@ -7,11 +7,19 @@
   <teta-tooltip *ngIf="data.config?.tooltip?.enable"
                 [size]="data.size"
                 [config]="data.config"></teta-tooltip>
-  <ng-container *ngIf="data.size?.height > 0 && data.size?.width > 0 && data.scales?.x.size === data.config.xAxis.length && data.scales?.y.size === data.config.yAxis.length">
+  <ng-container *ngIf="data.size?.height > 0
+                      && data.size?.width > 0
+                      && data.visibleRect?.height > 0
+                      && data.visibleRect?.width > 0
+                      && data.scales?.x.size === data.config.xAxis.length
+                      && data.scales?.y.size === data.config.yAxis.length">
     <svg height="100%" width="100%" class="position-absolute">
       <g class="y-axis-container">
         <ng-container *ngFor="let item of data.scales.y | keyvalue; trackBy: identify">
-          <ng-container *ngIf="item.value.options.visible && data.scales.x.size > 0 && data.scales.y.size > 0">
+          <ng-container *ngIf="item.value.selfSize > 0
+                                && item.value.options.visible
+                                && data.scales.x.size > 0
+                                && data.scales.y.size > 0">
             <g
               teta-y-axis
               [axis]="item.value"
@@ -56,7 +64,13 @@
       </g>
     </svg>
   </ng-container>
-  <ng-container *ngIf="data.size?.height > 0 && data.size?.width > 0 && data.scales?.x.size === data.config.xAxis.length && data.scales?.y.size === data.config.yAxis.length">
+  <ng-container
+    *ngIf="data.size?.height > 0
+          && data.size?.width > 0
+          && data.visibleRect?.height > 0
+          && data.visibleRect?.width > 0
+          && data.scales?.x.size === data.config.xAxis.length
+          && data.scales?.y.size === data.config.yAxis.length">
     <svg
       tetaZoomable
       tetaBrushable
