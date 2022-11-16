@@ -33,7 +33,8 @@ export class TableHeadGroupComponent<T> implements OnInit, OnDestroy {
 
   @HostBinding('style.flex-grow') get flexGrow() {
     if (this.column?.columns?.length > 0) {
-      const flat = ArrayUtil.flatten(this.column?.columns, 'columns', true);
+      const flat = ArrayUtil.flatten(this.column?.columns, 'columns', true)
+        .filter((_) => this._hiddenColumns.indexOf(_.name) < 0);
       return flat?.reduce((prev, curr) => prev + curr.flex, 0);
     }
     return this.column.flex;
@@ -43,7 +44,8 @@ export class TableHeadGroupComponent<T> implements OnInit, OnDestroy {
   @HostBinding('style.flex-basis.px')
   get flexBasis() {
     if (this.column?.columns?.length > 0) {
-      const flat = ArrayUtil.flatten(this.column?.columns, 'columns', true);
+      const flat = ArrayUtil.flatten(this.column?.columns, 'columns', true)
+        .filter((_) => this._hiddenColumns.indexOf(_.name) < 0);
       return flat?.reduce((prev, curr) => prev + curr.width, 0);
     }
     return this.column.width;
