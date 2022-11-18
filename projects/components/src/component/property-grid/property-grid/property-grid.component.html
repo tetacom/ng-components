@@ -3,11 +3,13 @@
     <teta-property-grid-item *ngIf="column.columns?.length < 1 && (column.editable || !hideNonEditable)"
                              [dict]="dict"
                              [column]="column"
+                             [id]="column.name"
                              [formGroup]="formGroup"
                              [horizontal]="horizontal"
                              (controlValueChange)="onControlValueChange($event)"
                              [hideNonEditable]="hideNonEditable"></teta-property-grid-item>
     <teta-property-grid-group *ngIf="column.columns?.length > 0 && (column.editable || !hideNonEditable)"
+                              [id]="column.name"
                               [dict]="dict"
                               [column]="column"
                               [formGroup]="formGroup"
