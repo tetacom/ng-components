@@ -2,6 +2,7 @@
 <ng-container *ngFor="let col of column.columns">
   <ng-container *ngIf="col.columns?.length < 1">
     <teta-property-grid-item *ngIf="column.editable || !hideNonEditable"
+                             [id]="column.name"
                              [dict]="dict"
                              [column]="col"
                              [hideNonEditable]="hideNonEditable"
@@ -10,7 +11,8 @@
                              [formGroup]="formGroup"></teta-property-grid-item>
   </ng-container>
   <ng-container *ngIf="col.columns?.length > 0">
-    <teta-property-grid-group [dict]="dict"
+    <teta-property-grid-group [id]="column.name"
+                              [dict]="dict"
                               [column]="col"
                               [hideNonEditable]="hideNonEditable"
                               [horizontal]="horizontal"
