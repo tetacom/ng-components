@@ -27,6 +27,7 @@ export interface IChartConfig {
     wheelDelta?: (event: WheelEvent) => number,
     minTranslate?: number;
     maxTranslate?: number;
+    wheelFilter?: (event: WheelEvent) => boolean
   };
   brush?: {
     enable?: boolean;
