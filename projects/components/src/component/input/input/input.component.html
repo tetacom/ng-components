@@ -4,6 +4,7 @@
      *ngIf="label?.length > 0">
   <span class="overflow-hidden text-overflow-ellipsis"
         [tetaHint]="hint ?? label"
+        [align]="align.left"
         [overflownOnly]="true">
     {{label}}
   </span>

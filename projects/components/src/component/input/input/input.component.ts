@@ -5,6 +5,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+import {Align} from "../../../common/enum/align.enum";
 
 @Component({
   selector: 'teta-input',
@@ -27,6 +28,8 @@ export class InputComponent implements OnInit {
   get column() {
     return !this.horizontal;
   }
+
+  align = Align;
 
   constructor() {}
 
