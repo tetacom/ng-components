@@ -3,7 +3,7 @@
      [class.text-field_required]="required"
      *ngIf="label?.length > 0">
   <span class="overflow-hidden text-overflow-ellipsis"
-        [tetaHint]="label"
+        [tetaHint]="hint ?? label"
         [overflownOnly]="true">
     {{label}}
   </span>

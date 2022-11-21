@@ -14,6 +14,7 @@ import {
 })
 export class InputComponent implements OnInit {
   @Input() label: string;
+  @Input() hint: string;
 
   @Input()
   @HostBinding('class.row')
