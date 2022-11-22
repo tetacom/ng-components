@@ -113,6 +113,10 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       this.zoom.wheelDelta(this.config.zoom?.wheelDelta);
     }
 
+    if(this.config?.zoom?.wheelFilter) {
+      this.zoom.filter(this.config?.zoom?.wheelFilter)
+    }
+
     if(this.axis.options.scaleType.type !== ScaleType.band) {
 
       const extremes = this.axis.extremes as number[];
