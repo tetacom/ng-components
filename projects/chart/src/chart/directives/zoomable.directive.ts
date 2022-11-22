@@ -146,7 +146,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   }
 
   zoomed = (event: D3ZoomEvent<any, any>) => {
-    this.zoomService.fireSourceEvent(event.sourceEvent);
     if (event.sourceEvent) {
       if (Object.keys(event.sourceEvent).length !== 0) {
         const origin = this.axis.scale.copy().domain(this.axis.originDomain);

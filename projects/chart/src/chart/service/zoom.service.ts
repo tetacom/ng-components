@@ -13,10 +13,8 @@ import {ZoomType} from "../model/enum/zoom-type";
 })
 export class ZoomService implements OnDestroy {
   zoomed: Observable<ZoomMessage>;
-  sourceEvent: Observable<any>
 
   private zoomed$ = new BehaviorSubject<ZoomMessage>(null);
-  private sourceEvent$ = new BehaviorSubject<any>(null);
   private broadcastChannel: string;
   private broadcastSub: Subscription;
 
@@ -25,16 +23,10 @@ export class ZoomService implements OnDestroy {
       bufferSize: 1,
       refCount: true
     }));
-
-    this.sourceEvent = this.sourceEvent$.asObservable();
   }
 
   fireZoom(zoom: ZoomMessage) {
     this.zoomed$.next(zoom);
-  }
-
-  fireSourceEvent(event: any) {
-    this.sourceEvent$.next(event);
   }
 
   broadcastZoom(zoom: ZoomMessage) {
