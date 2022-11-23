@@ -382,6 +382,7 @@ export class TableComponent<T>
   }
 
   setContextMenuRow(event: MouseEvent) {
+    this.contextMenuRow = null;
     const rowElement = this._svc.getEventRow(event);
     if (rowElement) {
       const rowIndex = parseInt(rowElement.getAttribute('data-row'), 10);
