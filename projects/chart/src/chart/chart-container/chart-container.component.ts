@@ -10,11 +10,10 @@ import {
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from '../service/chart.service';
 import {
-  animationFrameScheduler, combineLatest,
-  combineLatestWith,
+  combineLatest,
   map,
-  Observable, observeOn,
-  shareReplay, tap,
+  Observable,
+  shareReplay,
   withLatestFrom,
 } from 'rxjs';
 import {Axis} from '../core/axis/axis';
@@ -72,7 +71,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     this.size = this._svc.size;
 
     this.scales = this._scaleService.scales.pipe(
-      observeOn(animationFrameScheduler),
+      // observeOn(animationFrameScheduler),
       tetaZoneFull(this._zone),
       shareReplay({
         bufferSize: 1,
@@ -146,7 +145,6 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
   }
-
 
   ngAfterViewInit(): void {
     this._observer = new ResizeObserver((entries: ResizeObserverEntry[]) => {

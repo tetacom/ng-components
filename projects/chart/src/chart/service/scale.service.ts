@@ -85,7 +85,7 @@ export class ScaleService {
             scale.base(axis.options.scaleType.base);
           }
 
-          if(axis.options.scaleType.type === ScaleType.band) {
+          if (axis.options.scaleType.type === ScaleType.band) {
             scale.paddingInner(0.1);
             scale.paddingOuter(0.1);
             scale.align(0.1)
@@ -161,7 +161,7 @@ export class ScaleService {
             scale.base(axis.options.scaleType.base);
           }
 
-          if(axis.options.scaleType.type === ScaleType.band) {
+          if (axis.options.scaleType.type === ScaleType.band) {
             scale.paddingInner(0.1);
             scale.paddingOuter(0.1);
             scale.align(0.1)
