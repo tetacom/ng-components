@@ -58,6 +58,7 @@ export const iconsList = [
   'eyeCrossed',
   'eye',
   'filter',
+  'filterApplied',
   'filterClear',
   'filterSortDown',
   'filterSortUp',
@@ -81,7 +82,9 @@ export const iconsList = [
   'link',
   'list',
   'lock',
+  'magicWand',
   'map',
+  'mapCard',
   'mask0_5465_18169',
   'menu',
   'miniFrac',
@@ -158,6 +161,7 @@ export const iconsList = [
   'xls',
   'xyz',
   'y',
+  'zoom'
 ];
 
 export const coloredIconsList = [
