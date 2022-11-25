@@ -22,6 +22,7 @@ export class MainDropdownTabComponent<T> implements OnInit {
   @Input() state: FilterState;
   @Input() data: T[];
   @Input() close: () => void;
+  @Input() headCellElementRef: ElementRef;
 
   locale: Observable<TetaLocalisation>;
 
@@ -89,11 +90,11 @@ export class MainDropdownTabComponent<T> implements OnInit {
   }
 
   autosizeColumn() {
-    this._svc.autosizeColumn(this.column, this._elementRef.nativeElement);
+    this._svc.autosizeColumn(this.column, this.headCellElementRef.nativeElement);
   }
 
   autosizeAllColumns() {
-    this._svc.autosizeAllColumns(this._elementRef.nativeElement);
+    this._svc.autosizeAllColumns(this.headCellElementRef.nativeElement);
   }
 
 

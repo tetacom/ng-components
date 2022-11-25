@@ -71,6 +71,10 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
     ];
   }
 
+  get elementRef() {
+    return this._elementRef;
+  }
+
   get tabTemplates() {
     if (this.column?.headDropdownConfig && this.column.headDropdownConfig.tabs?.length > 0) {
       if (this.column.headDropdownConfig.strategy === 'replace') {

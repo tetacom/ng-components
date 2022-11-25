@@ -44,7 +44,10 @@
 </div>
 <ng-template #mainTemplate let-column="column" let-columns="columns" let-data="data" let-state="state"
              let-close="close">
-  <teta-main-dropdown-tab [column]="column" [state]="state" [close]="close"></teta-main-dropdown-tab>
+  <teta-main-dropdown-tab [column]="column"
+                          [state]="state"
+                          [close]="close"
+                          [headCellElementRef]="elementRef"></teta-main-dropdown-tab>
 </ng-template>
 <ng-template #filterTemplate let-column="column" let-columns="columns" let-data="data" let-state="state"
              let-close="close">
