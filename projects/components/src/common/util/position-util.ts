@@ -111,10 +111,10 @@ export class PositionUtil {
     if (rect.top < 0) {
       rect.top = 0;
     }
-    if (verticalAlign === VerticalAlign.bottom || verticalAlign === VerticalAlign.center) {
+    if (verticalAlign === VerticalAlign.bottom || verticalAlign === VerticalAlign.center || verticalAlign === VerticalAlign.innerBottom) {
       rect.maxHeight = window.innerHeight - rect.top;
     }
-    if (verticalAlign === VerticalAlign.top) {
+    if (verticalAlign === VerticalAlign.top || verticalAlign === VerticalAlign.innerTop) {
       rect.maxHeight = containerPosition.top;
     }
     rect.left = rect.left - transformedParentRect.left;
