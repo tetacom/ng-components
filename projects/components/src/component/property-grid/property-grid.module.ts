@@ -16,6 +16,7 @@ import {InputModule} from '../input/input.module';
 import {ToggleModule} from '../toggle/toggle.module';
 import {TRANSLOCO_SCOPE, TranslocoModule} from '@ngneat/transloco';
 import {HintModule} from '../../directive/hint/hint.module';
+import {ExpandCardModule} from "../expand-card/expand-card.module";
 
 @NgModule({
   declarations: [
@@ -28,19 +29,20 @@ import {HintModule} from '../../directive/hint/hint.module';
     PropertyGridItemComponent,
   ],
   exports: [PropertyGridComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    NumberPipeModule,
-    DatePickerModule,
-    SelectModule,
-    OnlyNumberModule,
-    InputModule,
-    ToggleModule,
-    ReactiveFormsModule,
-    TranslocoModule,
-    HintModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        NumberPipeModule,
+        DatePickerModule,
+        SelectModule,
+        OnlyNumberModule,
+        InputModule,
+        ToggleModule,
+        ReactiveFormsModule,
+        TranslocoModule,
+        HintModule,
+        ExpandCardModule,
+    ],
   providers: [
     {
       provide: TRANSLOCO_SCOPE,

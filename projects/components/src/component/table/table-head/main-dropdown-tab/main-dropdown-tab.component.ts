@@ -97,7 +97,6 @@ export class MainDropdownTabComponent<T> implements OnInit {
     this._svc.autosizeAllColumns(this.headCellElementRef.nativeElement);
   }
 
-
   ngOnInit(): void {
   }
 }
