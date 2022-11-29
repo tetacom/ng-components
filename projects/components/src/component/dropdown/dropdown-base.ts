@@ -24,7 +24,7 @@ import {takeWhile, throttleTime} from 'rxjs/operators';
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class DropdownBase {
   @Input() align: Align = Align.left;
-  @Input() verticalAlign: VerticalAlign = VerticalAlign.bottom;
+  @Input() verticalAlign: VerticalAlign = VerticalAlign.auto;
   @Input() appendToBody: boolean;
   @Input() disabled: boolean;
   @Input() backdrop = false;

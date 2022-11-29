@@ -25,7 +25,7 @@ export abstract class DynamicContentBaseDirective implements OnInit, OnDestroy {
   @Input() data: any;
   @Input() className: string | string[];
   @Input() align: Align = Align.left;
-  @Input() verticalAlign: VerticalAlign = VerticalAlign.bottom;
+  @Input() verticalAlign: VerticalAlign = VerticalAlign.auto;
   @Input() appendToBody: boolean;
 
   @Input() set open(open: boolean) {

@@ -4,7 +4,6 @@ import {VerticalAlign} from '../../common/enum/vertical-align.enum';
 import {IRect} from '../../common/contract/i-rect';
 import {DomUtil} from '../../common/util/dom-util';
 import {PositionUtil} from '../../common/util/position-util';
-import {takeUntil} from 'rxjs';
 import {takeWhile} from 'rxjs/operators';
 
 @Directive({
@@ -12,7 +11,7 @@ import {takeWhile} from 'rxjs/operators';
 })
 export class AutoPositionDirective implements AfterViewInit, OnDestroy {
   @Input() align: Align;
-  @Input() verticalAlign: VerticalAlign;
+  @Input() verticalAlign: VerticalAlign = VerticalAlign.auto;
 
   @HostBinding('style.position') fixed = 'fixed';
 

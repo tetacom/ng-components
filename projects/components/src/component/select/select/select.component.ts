@@ -50,7 +50,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
 
   @Input() invalid: boolean;
   @Input() align: Align = Align.minWidth;
-  @Input() verticalAlign: VerticalAlign = VerticalAlign.bottom;
+  @Input() verticalAlign: VerticalAlign = VerticalAlign.auto;
   @Input() autoClose = true;
   @Input() autoCloseIgnore: Array<AutoCloseIgnoreCase> = ['inside'];
   @Input() disabled: boolean;
