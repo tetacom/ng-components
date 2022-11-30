@@ -14,7 +14,7 @@ export const enLocale: TetaLocalisation = {
   clearAllFilters: 'Clear all filters',
   autosizeColumn: 'Autosize column',
   autosizeAll: 'Autosize all columns',
-  resetColumnsSize: 'Reset columns size',
+  resetColumnsSize: 'Reset columns settings',
   from: 'From',
   to: 'To',
   all: 'All',

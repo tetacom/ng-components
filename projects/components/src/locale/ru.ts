@@ -14,7 +14,7 @@ export const ruLocale: TetaLocalisation = {
   clearAllFilters: 'Очистить все фильтры',
   autosizeColumn: 'Авторазмер колонки',
   autosizeAll: 'Авторазмер всех колонок',
-  resetColumnsSize: 'Восстановить размер колонок',
+  resetColumnsSize: 'Сбросить настройки колонок',
   from: 'От',
   to: 'До',
   all: 'Все',
