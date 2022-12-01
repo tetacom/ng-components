@@ -26,19 +26,14 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
   @Input() column: TableColumn;
   @Input() hideNonEditable: boolean;
   @Input() dict: IDictionary<IIdName<any>[]>;
-
+  @Input() decimalPart: number;
   @Input()
   set formGroup(form: UntypedFormGroup) {
     this._formGroup = form;
     this._formSub?.unsubscribe();
     this._formSub = this._formGroup?.controls[this.column.name]?.valueChanges
       .pipe(
-        takeWhile(() => this._alive),
-        filter(
-          (_) =>
-            this.column.filterType !== FilterType.string &&
-            this.column.filterType !== FilterType.number
-        )
+        takeWhile(() => this._alive)
       )
       .subscribe((_) => {
         this.controlValueChange.emit({

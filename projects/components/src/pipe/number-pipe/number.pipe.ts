@@ -16,6 +16,9 @@ export class NumberPipe implements PipeTransform {
     if (typeof value === 'string' && isNaN(parseFloat(value))) {
       return value.toString();
     }
+    if (decimalLength === null) {
+      return value.toString();
+    }
     value = Number(value);
     return formatNumber(value,
       decimalLength,

@@ -31,11 +31,12 @@ export class TextFieldComponent implements ControlValueAccessor {
   @Input()
   disabled = false;
   @Input() onlyNumber = false;
+  @Input() decimalPart: number;
   @HostBinding('class.text-field_invalid')
   @Input()
   invalid: boolean;
   @ViewChild('input', {static: false}) input: ElementRef;
-
+  inputFocused: boolean;
   @HostBinding('class.text-field')
   private readonly textField = true;
   value = '';

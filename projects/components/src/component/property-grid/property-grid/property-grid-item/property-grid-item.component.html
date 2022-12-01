@@ -28,7 +28,8 @@
     </teta-toggle>
     <teta-text-field class="row_auto"
                      *ngSwitchDefault
-                     (focusout)="valueChange()"
+
+                     [decimalPart]="column.filterType === filterTypeEnum.number ? decimalPart : null"
                      [onlyNumber]="column.filterType === filterTypeEnum.number"
                      [placeholder]="column.caption"
                      [invalid]="controlIsInvalid(column.name)"

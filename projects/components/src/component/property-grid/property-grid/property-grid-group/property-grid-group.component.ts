@@ -22,7 +22,7 @@ export class PropertyGridGroupComponent<T> implements OnInit {
   @Input() formGroup: UntypedFormGroup;
   @Input() horizontal: boolean;
   @Output() controlValueChange = new EventEmitter<IIdName<any>>();
-
+  @Input() decimalPart: number;
   constructor() {}
 
   ngOnInit(): void {}

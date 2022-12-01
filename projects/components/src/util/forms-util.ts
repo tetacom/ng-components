@@ -1,12 +1,7 @@
-import {
-  AbstractControl,
-  UntypedFormControl,
-  UntypedFormGroup,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
+import {AbstractControl, UntypedFormControl, UntypedFormGroup, ValidationErrors, Validators,} from '@angular/forms';
 import {TableColumn} from '../component/table/contract/table-column';
 import {ArrayUtil} from '../common/util/array-util';
+import {FilterType} from "../component/filter/enum/filter-type.enum";
 
 export class FormsUtil {
   static validateAllFormFields(formGroup: UntypedFormGroup) {
@@ -67,7 +62,10 @@ export class FormsUtil {
           value: dataItem ? dataItem[column.name] : undefined,
           disabled: !column.editable,
         },
-        FormsUtil.getValidators(column)
+        {
+          validators: FormsUtil.getValidators(column),
+          updateOn: column.filterType === FilterType.number || column.filterType === FilterType.string ? 'blur' : 'change'
+        }
       );
       form.registerControl(column.name, control);
     });
@@ -89,8 +87,8 @@ export class FormsUtil {
     return validators;
   }
 
-  static validatorNotEmpty(control: AbstractControl) : ValidationErrors | null {
-    if(control?.value?.toString()?.trim()?.length <= 0){
+  static validatorNotEmpty(control: AbstractControl): ValidationErrors | null {
+    if (control?.value?.toString()?.trim()?.length <= 0) {
       return {required: true}
     }
     return null;

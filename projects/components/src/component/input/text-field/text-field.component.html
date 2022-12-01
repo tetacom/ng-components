@@ -1,12 +1,13 @@
 <teta-icon *ngIf="leftIconName" [name]="leftIconName"></teta-icon>
 <input
   #input
-  [ngModel]="value"
+  [ngModel]="value | tetaNumber : inputFocused ? null : decimalPart"
   [tetaOnlyNumber]="onlyNumber"
   (ngModelChange)="value = $event; onChange($event);"
   [placeholder]="placeholder"
   [disabled]="disabled"
-  (blur)="emitBlur()"
+  (focus)='inputFocused = true'
+  (blur)="inputFocused = false;emitBlur()"
   (keydown)="keyPress($event)"
   autocomplete="off"
   type="text"

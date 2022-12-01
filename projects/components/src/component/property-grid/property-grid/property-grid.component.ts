@@ -25,6 +25,7 @@ export class PropertyGridComponent<T> implements OnInit, OnDestroy {
   @Input() dict: IDictionary<IIdName<any>[]>;
   @Input() formGroup: UntypedFormGroup;
   @Input() horizontal: boolean;
+  @Input() decimalPart: number;
 
   @Output() controlValueChange = new EventEmitter<IIdName<any>>();
 
