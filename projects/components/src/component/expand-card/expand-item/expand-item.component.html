@@ -1,0 +1,12 @@
+<div class="row align-center gap color-text-50 height-6">
+  <div class="font-overline form-group-title-text">
+    <ng-content select="head"></ng-content>
+  </div>
+  <div class="form-group-title-line"></div>
+  <button teta-button (click)="setOpen()" [palette]="'text'" [view]="'ghost'" [square]="true">
+    <teta-icon [name]="open ? 'arrowUpKey' : 'arrowDownKey'"></teta-icon>
+  </button>
+</div>
+<div class="content" *ngIf="open">
+  <ng-content></ng-content>
+</div>

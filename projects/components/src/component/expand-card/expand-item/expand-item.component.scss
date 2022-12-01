@@ -1,0 +1,20 @@
+:host {
+  animation: append-animate .5s linear;
+  transition: order 5s ease-in;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.content {
+  animation: append-animate .5s linear;
+}
+
+@keyframes append-animate {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

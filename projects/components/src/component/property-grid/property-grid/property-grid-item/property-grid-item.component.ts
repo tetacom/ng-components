@@ -31,7 +31,7 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
   set formGroup(form: UntypedFormGroup) {
     this._formGroup = form;
     this._formSub?.unsubscribe();
-    this._formSub = this._formGroup.controls[this.column.name].valueChanges
+    this._formSub = this._formGroup?.controls[this.column.name]?.valueChanges
       .pipe(
         takeWhile(() => this._alive),
         filter(
@@ -80,7 +80,7 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
       return dict?.filter(
         (dictItem: IIdName<any>) =>
           dictItem.parentId ===
-          this.formGroup.getRawValue()[this.column.parentName]
+          this.formGroup?.getRawValue()[this.column.parentName]
       );
     }
     return dict;
@@ -91,7 +91,7 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
   }
 
   getError(column: TableColumn): string {
-    const control = this.formGroup.get(column.name);
+    const control = this.formGroup?.get(column.name);
     if (control?.hasError('required')) {
       return this._transloco.translate('errors.field_is_required');
     }
@@ -109,7 +109,7 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
 
   valueChange() {
     this.controlValueChange.emit({
-      id: this.formGroup.controls[this.column.name].value,
+      id: this.formGroup?.controls[this.column.name]?.value,
       name: this.column.name,
     });
   }

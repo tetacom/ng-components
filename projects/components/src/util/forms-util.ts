@@ -90,7 +90,7 @@ export class FormsUtil {
   }
 
   static validatorNotEmpty(control: AbstractControl) : ValidationErrors | null {
-    if(control.value?.toString()?.trim()?.length <= 0){
+    if(control?.value?.toString()?.trim()?.length <= 0){
       return {required: true}
     }
     return null;

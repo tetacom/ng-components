@@ -155,8 +155,8 @@ export class DropdownBase {
   }
 
   private scrollListener = () => {
-    if (this.open && this._head?.nativeElement && this._body) {
-      this.setPosition(this._head.nativeElement, this._body);
+    if (this.open) {
+      this.closeDropdown();
     }
   }
 
@@ -169,6 +169,7 @@ export class DropdownBase {
         this._renderer.removeChild(this._document.body, this._backdrop);
       }
       this.openChange.emit(this.open);
+      this._cdr.detectChanges();
     }
   }
 

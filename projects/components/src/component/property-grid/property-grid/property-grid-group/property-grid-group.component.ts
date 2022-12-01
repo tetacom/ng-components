@@ -1,7 +1,6 @@
 import {
   Component,
   EventEmitter,
-  HostBinding,
   Input,
   OnInit,
   Output,
@@ -17,7 +16,6 @@ import { UntypedFormGroup } from '@angular/forms';
   styleUrls: ['./property-grid-group.component.scss'],
 })
 export class PropertyGridGroupComponent<T> implements OnInit {
-  // @HostBinding('class.form-container') formClass = true;
   @Input() column: TableColumn;
   @Input() hideNonEditable: boolean;
   @Input() dict: IDictionary<IIdName<any>[]>;

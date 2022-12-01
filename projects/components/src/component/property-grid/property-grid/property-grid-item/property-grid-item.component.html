@@ -4,7 +4,8 @@
             [horizontal]="horizontal"
             [required]="column.required"
             *ngIf="column.editable || !hideNonEditable">
-  <ng-container [ngSwitch]="column.filterType">
+  <ng-container [ngSwitch]="column.filterType"
+                *ngIf="formGroup?.get(column.name)">
     <teta-select class="row_auto"
                  *ngSwitchCase="filterTypeEnum.list"
                  [searchRef]="getDict()?.length > 10 ? 'name' : ''"
@@ -22,7 +23,9 @@
                       [invalid]="controlIsInvalid(column.name)"
                       [formControlName]="column.name"></teta-date-picker>
     <teta-toggle *ngSwitchCase="filterTypeEnum.boolean"
-                 [formControlName]="column.name">{{column.caption}}</teta-toggle>
+                 [formControlName]="column.name">
+      {{column.caption}}
+    </teta-toggle>
     <teta-text-field class="row_auto"
                      *ngSwitchDefault
                      (focusout)="valueChange()"

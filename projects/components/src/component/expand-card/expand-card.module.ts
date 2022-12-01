@@ -5,14 +5,17 @@ import {ToolbarModule} from '../toolbar/toolbar.module';
 import {ButtonModule} from '../button/button.module';
 import {IconModule} from '../icon/icon.module';
 import {DelimiterModule} from '../delimiter/delimiter.module';
+import {ExpandItemComponent} from './expand-item/expand-item.component';
 
 
 @NgModule({
   declarations: [
-    ExpandCardComponent
+    ExpandCardComponent,
+    ExpandItemComponent
   ],
   exports: [
-    ExpandCardComponent
+    ExpandCardComponent,
+    ExpandItemComponent
   ],
   imports: [
     CommonModule,
