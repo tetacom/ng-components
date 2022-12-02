@@ -5,11 +5,12 @@ import {Axis} from '../core/axis/axis';
 import {AxisOrientation} from '../model/enum/axis-orientation';
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from './chart.service';
-import {combineLatest, map, Observable, shareReplay,} from 'rxjs';
+import {combineLatest, map, Observable, shareReplay, take, withLatestFrom,} from 'rxjs';
 import {ZoomService} from './zoom.service';
 import {ScaleType} from '../model/enum/scale-type';
 import {IScalesMap} from '../model/i-scales-map';
 import {ZoomMessage} from '../model/i-broadcast-message';
+import {ZoomType} from "../model/enum/zoom-type";
 
 @Injectable({
   providedIn: 'root',
@@ -208,5 +209,49 @@ export class ScaleService {
         refCount: true,
       })
     );
+  }
+
+  resetZoom() {
+    this.chartService.config.pipe(
+      take(1),
+      withLatestFrom(this.scales)
+    ).subscribe(([config, scales]: [IChartConfig, IScalesMap]) => {
+      config.xAxis.forEach((axis, index) => {
+        const scale = scales?.x?.get(index)?.originDomain;
+        if (scale) {
+          const msg = new ZoomMessage({
+            eventType: "end",
+            axis: {
+              index,
+              orientation: AxisOrientation.x
+            },
+            domain: scale,
+            chartId: config.id
+          });
+          this.zoomService.fireZoom(msg);
+          if (config.zoom.syncChannel && config.zoom.syncType === ZoomType.x) {
+            this.zoomService.broadcastZoom(msg);
+          }
+        }
+      })
+      config.yAxis.forEach((axis, index) => {
+        const scale = scales?.y?.get(index)?.originDomain;
+        if (scale) {
+          const msg = new ZoomMessage({
+            eventType: "end",
+            axis: {
+              index,
+              orientation: AxisOrientation.y
+            },
+            domain: scale,
+            chartId: config.id
+          });
+          this.zoomService.fireZoom(msg);
+          if (config.zoom.syncChannel && config.zoom.syncType === ZoomType.y) {
+            this.zoomService.broadcastZoom(msg);
+          }
+        }
+      })
+    })
   }
 }

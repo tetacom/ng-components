@@ -24,8 +24,9 @@ export const basicChart = () => ({
   props: {
     config: createChart(200),
     createChart: createChart,
-    setZoom: function () {
-      this.storyComponentElementRef.zoomService.setZoom(1500, 2000, 0, AxisOrientation.y);
+    setZoom: function (chart) {
+      console.log(chart);
+      chart.scaleService.resetZoom();
     },
   },
   template: `
@@ -45,10 +46,10 @@ export const basicChart = () => ({
           config </button>
         <button teta-button
           [palette]="'primary'"
-          (click)="setZoom()">Set zoom</button>
+          (click)="setZoom(chart)">Set zoom</button>
 
         <div class="row row_auto gap" style="height: 100%; width: 100%">
-            <teta-svg-chart [config]="config" class="bg-background-50 row_6 border border-text-50"></teta-svg-chart>
+            <teta-svg-chart #chart [config]="config" class="bg-background-50 row_6 border border-text-50"></teta-svg-chart>
 
         </div>
 

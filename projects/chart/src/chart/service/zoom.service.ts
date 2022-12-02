@@ -1,4 +1,4 @@
-import {BehaviorSubject, combineLatest, filter, Observable, shareReplay, Subscription,} from 'rxjs';
+import {BehaviorSubject, combineLatest, filter, Observable, shareReplay, Subscription, take,} from 'rxjs';
 import {AxisOrientation} from '../model/enum/axis-orientation';
 import {Injectable, OnDestroy} from '@angular/core';
 import {IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';
@@ -18,7 +18,8 @@ export class ZoomService implements OnDestroy {
   private broadcastChannel: string;
   private broadcastSub: Subscription;
 
-  constructor(private _broadcast: BroadcastService, private _chart: ChartService) {
+  constructor(private _broadcast: BroadcastService,
+              private _chart: ChartService) {
     this.zoomed = this.zoomed$.asObservable().pipe(shareReplay({
       bufferSize: 1,
       refCount: true
