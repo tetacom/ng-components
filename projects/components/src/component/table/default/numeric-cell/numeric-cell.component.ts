@@ -34,7 +34,6 @@ export class NumericCellComponent<T>
 
   applyValue(value) {
     console.log('applyValue', value)
-
     this.row[this.column.name] = value;
   }
 

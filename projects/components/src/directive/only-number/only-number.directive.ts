@@ -99,8 +99,13 @@ export class OnlyNumberDirective {
       return;
     } else {
       if (e.key === ',' && originalValue.indexOf('.') < 0) {
-        this._elementRef.nativeElement.value =
-          `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`;
+        // this._elementRef.nativeElement.value =
+        //   `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`;
+        this._control.control.patchValue(
+          `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`);
+        if (this._elementRef.nativeElement.setSelectionRange) {
+          this._elementRef.nativeElement.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
+        }
       }
       e.preventDefault();
     }
