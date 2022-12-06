@@ -44,7 +44,3 @@
     box-shadow: 0 0 0 4px var(--color-primary-10);
   }
 }
-
-@each $paletteName in $palettes {
-  @include generateButtonForPalette($paletteName);
-}
