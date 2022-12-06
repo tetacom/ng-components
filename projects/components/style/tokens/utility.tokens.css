@@ -1,0 +1,864 @@
+.color-global-link {
+  color: var(--color-global-link);
+}
+
+.bg-global-link {
+  background-color: var(--color-global-link);
+}
+
+.border-global-link {
+  border-color: var(--color-global-link);
+}
+
+.fill-global-link {
+  fill: var(--color-global-link);
+}
+
+.color-global-white {
+  color: var(--color-global-white);
+}
+
+.bg-global-white {
+  background-color: var(--color-global-white);
+}
+
+.border-global-white {
+  border-color: var(--color-global-white);
+}
+
+.fill-global-white {
+  fill: var(--color-global-white);
+}
+
+.color-global-bgcard {
+  color: var(--color-global-bgcard);
+}
+
+.bg-global-bgcard {
+  background-color: var(--color-global-bgcard);
+}
+
+.border-global-bgcard {
+  border-color: var(--color-global-bgcard);
+}
+
+.fill-global-bgcard {
+  fill: var(--color-global-bgcard);
+}
+
+.color-global-bgmain {
+  color: var(--color-global-bgmain);
+}
+
+.bg-global-bgmain {
+  background-color: var(--color-global-bgmain);
+}
+
+.border-global-bgmain {
+  border-color: var(--color-global-bgmain);
+}
+
+.fill-global-bgmain {
+  fill: var(--color-global-bgmain);
+}
+
+.color-text-5 {
+  color: var(--color-text-5);
+}
+
+.bg-text-5 {
+  background-color: var(--color-text-5);
+}
+
+.border-text-5 {
+  border-color: var(--color-text-5);
+}
+
+.fill-text-5 {
+  fill: var(--color-text-5);
+}
+
+.color-text-10 {
+  color: var(--color-text-10);
+}
+
+.bg-text-10 {
+  background-color: var(--color-text-10);
+}
+
+.border-text-10 {
+  border-color: var(--color-text-10);
+}
+
+.fill-text-10 {
+  fill: var(--color-text-10);
+}
+
+.color-text-20 {
+  color: var(--color-text-20);
+}
+
+.bg-text-20 {
+  background-color: var(--color-text-20);
+}
+
+.border-text-20 {
+  border-color: var(--color-text-20);
+}
+
+.fill-text-20 {
+  fill: var(--color-text-20);
+}
+
+.color-text-30 {
+  color: var(--color-text-30);
+}
+
+.bg-text-30 {
+  background-color: var(--color-text-30);
+}
+
+.border-text-30 {
+  border-color: var(--color-text-30);
+}
+
+.fill-text-30 {
+  fill: var(--color-text-30);
+}
+
+.color-text-40 {
+  color: var(--color-text-40);
+}
+
+.bg-text-40 {
+  background-color: var(--color-text-40);
+}
+
+.border-text-40 {
+  border-color: var(--color-text-40);
+}
+
+.fill-text-40 {
+  fill: var(--color-text-40);
+}
+
+.color-text-50 {
+  color: var(--color-text-50);
+}
+
+.bg-text-50 {
+  background-color: var(--color-text-50);
+}
+
+.border-text-50 {
+  border-color: var(--color-text-50);
+}
+
+.fill-text-50 {
+  fill: var(--color-text-50);
+}
+
+.color-text-60 {
+  color: var(--color-text-60);
+}
+
+.bg-text-60 {
+  background-color: var(--color-text-60);
+}
+
+.border-text-60 {
+  border-color: var(--color-text-60);
+}
+
+.fill-text-60 {
+  fill: var(--color-text-60);
+}
+
+.color-text-70 {
+  color: var(--color-text-70);
+}
+
+.bg-text-70 {
+  background-color: var(--color-text-70);
+}
+
+.border-text-70 {
+  border-color: var(--color-text-70);
+}
+
+.fill-text-70 {
+  fill: var(--color-text-70);
+}
+
+.color-text-80 {
+  color: var(--color-text-80);
+}
+
+.bg-text-80 {
+  background-color: var(--color-text-80);
+}
+
+.border-text-80 {
+  border-color: var(--color-text-80);
+}
+
+.fill-text-80 {
+  fill: var(--color-text-80);
+}
+
+.color-text-90 {
+  color: var(--color-text-90);
+}
+
+.bg-text-90 {
+  background-color: var(--color-text-90);
+}
+
+.border-text-90 {
+  border-color: var(--color-text-90);
+}
+
+.fill-text-90 {
+  fill: var(--color-text-90);
+}
+
+.color-primary-5 {
+  color: var(--color-primary-5);
+}
+
+.bg-primary-5 {
+  background-color: var(--color-primary-5);
+}
+
+.border-primary-5 {
+  border-color: var(--color-primary-5);
+}
+
+.fill-primary-5 {
+  fill: var(--color-primary-5);
+}
+
+.color-primary-10 {
+  color: var(--color-primary-10);
+}
+
+.bg-primary-10 {
+  background-color: var(--color-primary-10);
+}
+
+.border-primary-10 {
+  border-color: var(--color-primary-10);
+}
+
+.fill-primary-10 {
+  fill: var(--color-primary-10);
+}
+
+.color-primary-20 {
+  color: var(--color-primary-20);
+}
+
+.bg-primary-20 {
+  background-color: var(--color-primary-20);
+}
+
+.border-primary-20 {
+  border-color: var(--color-primary-20);
+}
+
+.fill-primary-20 {
+  fill: var(--color-primary-20);
+}
+
+.color-primary-30 {
+  color: var(--color-primary-30);
+}
+
+.bg-primary-30 {
+  background-color: var(--color-primary-30);
+}
+
+.border-primary-30 {
+  border-color: var(--color-primary-30);
+}
+
+.fill-primary-30 {
+  fill: var(--color-primary-30);
+}
+
+.color-primary-40 {
+  color: var(--color-primary-40);
+}
+
+.bg-primary-40 {
+  background-color: var(--color-primary-40);
+}
+
+.border-primary-40 {
+  border-color: var(--color-primary-40);
+}
+
+.fill-primary-40 {
+  fill: var(--color-primary-40);
+}
+
+.color-primary-50 {
+  color: var(--color-primary-50);
+}
+
+.bg-primary-50 {
+  background-color: var(--color-primary-50);
+}
+
+.border-primary-50 {
+  border-color: var(--color-primary-50);
+}
+
+.fill-primary-50 {
+  fill: var(--color-primary-50);
+}
+
+.color-primary-60 {
+  color: var(--color-primary-60);
+}
+
+.bg-primary-60 {
+  background-color: var(--color-primary-60);
+}
+
+.border-primary-60 {
+  border-color: var(--color-primary-60);
+}
+
+.fill-primary-60 {
+  fill: var(--color-primary-60);
+}
+
+.color-primary-70 {
+  color: var(--color-primary-70);
+}
+
+.bg-primary-70 {
+  background-color: var(--color-primary-70);
+}
+
+.border-primary-70 {
+  border-color: var(--color-primary-70);
+}
+
+.fill-primary-70 {
+  fill: var(--color-primary-70);
+}
+
+.color-primary-80 {
+  color: var(--color-primary-80);
+}
+
+.bg-primary-80 {
+  background-color: var(--color-primary-80);
+}
+
+.border-primary-80 {
+  border-color: var(--color-primary-80);
+}
+
+.fill-primary-80 {
+  fill: var(--color-primary-80);
+}
+
+.color-primary-90 {
+  color: var(--color-primary-90);
+}
+
+.bg-primary-90 {
+  background-color: var(--color-primary-90);
+}
+
+.border-primary-90 {
+  border-color: var(--color-primary-90);
+}
+
+.fill-primary-90 {
+  fill: var(--color-primary-90);
+}
+
+.color-green-5 {
+  color: var(--color-green-5);
+}
+
+.bg-green-5 {
+  background-color: var(--color-green-5);
+}
+
+.border-green-5 {
+  border-color: var(--color-green-5);
+}
+
+.fill-green-5 {
+  fill: var(--color-green-5);
+}
+
+.color-green-10 {
+  color: var(--color-green-10);
+}
+
+.bg-green-10 {
+  background-color: var(--color-green-10);
+}
+
+.border-green-10 {
+  border-color: var(--color-green-10);
+}
+
+.fill-green-10 {
+  fill: var(--color-green-10);
+}
+
+.color-green-20 {
+  color: var(--color-green-20);
+}
+
+.bg-green-20 {
+  background-color: var(--color-green-20);
+}
+
+.border-green-20 {
+  border-color: var(--color-green-20);
+}
+
+.fill-green-20 {
+  fill: var(--color-green-20);
+}
+
+.color-green-30 {
+  color: var(--color-green-30);
+}
+
+.bg-green-30 {
+  background-color: var(--color-green-30);
+}
+
+.border-green-30 {
+  border-color: var(--color-green-30);
+}
+
+.fill-green-30 {
+  fill: var(--color-green-30);
+}
+
+.color-green-40 {
+  color: var(--color-green-40);
+}
+
+.bg-green-40 {
+  background-color: var(--color-green-40);
+}
+
+.border-green-40 {
+  border-color: var(--color-green-40);
+}
+
+.fill-green-40 {
+  fill: var(--color-green-40);
+}
+
+.color-green-50 {
+  color: var(--color-green-50);
+}
+
+.bg-green-50 {
+  background-color: var(--color-green-50);
+}
+
+.border-green-50 {
+  border-color: var(--color-green-50);
+}
+
+.fill-green-50 {
+  fill: var(--color-green-50);
+}
+
+.color-green-60 {
+  color: var(--color-green-60);
+}
+
+.bg-green-60 {
+  background-color: var(--color-green-60);
+}
+
+.border-green-60 {
+  border-color: var(--color-green-60);
+}
+
+.fill-green-60 {
+  fill: var(--color-green-60);
+}
+
+.color-green-70 {
+  color: var(--color-green-70);
+}
+
+.bg-green-70 {
+  background-color: var(--color-green-70);
+}
+
+.border-green-70 {
+  border-color: var(--color-green-70);
+}
+
+.fill-green-70 {
+  fill: var(--color-green-70);
+}
+
+.color-green-80 {
+  color: var(--color-green-80);
+}
+
+.bg-green-80 {
+  background-color: var(--color-green-80);
+}
+
+.border-green-80 {
+  border-color: var(--color-green-80);
+}
+
+.fill-green-80 {
+  fill: var(--color-green-80);
+}
+
+.color-green-90 {
+  color: var(--color-green-90);
+}
+
+.bg-green-90 {
+  background-color: var(--color-green-90);
+}
+
+.border-green-90 {
+  border-color: var(--color-green-90);
+}
+
+.fill-green-90 {
+  fill: var(--color-green-90);
+}
+
+.color-red-5 {
+  color: var(--color-red-5);
+}
+
+.bg-red-5 {
+  background-color: var(--color-red-5);
+}
+
+.border-red-5 {
+  border-color: var(--color-red-5);
+}
+
+.fill-red-5 {
+  fill: var(--color-red-5);
+}
+
+.color-red-10 {
+  color: var(--color-red-10);
+}
+
+.bg-red-10 {
+  background-color: var(--color-red-10);
+}
+
+.border-red-10 {
+  border-color: var(--color-red-10);
+}
+
+.fill-red-10 {
+  fill: var(--color-red-10);
+}
+
+.color-red-20 {
+  color: var(--color-red-20);
+}
+
+.bg-red-20 {
+  background-color: var(--color-red-20);
+}
+
+.border-red-20 {
+  border-color: var(--color-red-20);
+}
+
+.fill-red-20 {
+  fill: var(--color-red-20);
+}
+
+.color-red-30 {
+  color: var(--color-red-30);
+}
+
+.bg-red-30 {
+  background-color: var(--color-red-30);
+}
+
+.border-red-30 {
+  border-color: var(--color-red-30);
+}
+
+.fill-red-30 {
+  fill: var(--color-red-30);
+}
+
+.color-red-40 {
+  color: var(--color-red-40);
+}
+
+.bg-red-40 {
+  background-color: var(--color-red-40);
+}
+
+.border-red-40 {
+  border-color: var(--color-red-40);
+}
+
+.fill-red-40 {
+  fill: var(--color-red-40);
+}
+
+.color-red-50 {
+  color: var(--color-red-50);
+}
+
+.bg-red-50 {
+  background-color: var(--color-red-50);
+}
+
+.border-red-50 {
+  border-color: var(--color-red-50);
+}
+
+.fill-red-50 {
+  fill: var(--color-red-50);
+}
+
+.color-red-60 {
+  color: var(--color-red-60);
+}
+
+.bg-red-60 {
+  background-color: var(--color-red-60);
+}
+
+.border-red-60 {
+  border-color: var(--color-red-60);
+}
+
+.fill-red-60 {
+  fill: var(--color-red-60);
+}
+
+.color-red-70 {
+  color: var(--color-red-70);
+}
+
+.bg-red-70 {
+  background-color: var(--color-red-70);
+}
+
+.border-red-70 {
+  border-color: var(--color-red-70);
+}
+
+.fill-red-70 {
+  fill: var(--color-red-70);
+}
+
+.color-red-80 {
+  color: var(--color-red-80);
+}
+
+.bg-red-80 {
+  background-color: var(--color-red-80);
+}
+
+.border-red-80 {
+  border-color: var(--color-red-80);
+}
+
+.fill-red-80 {
+  fill: var(--color-red-80);
+}
+
+.color-red-90 {
+  color: var(--color-red-90);
+}
+
+.bg-red-90 {
+  background-color: var(--color-red-90);
+}
+
+.border-red-90 {
+  border-color: var(--color-red-90);
+}
+
+.fill-red-90 {
+  fill: var(--color-red-90);
+}
+
+.color-yellow-5 {
+  color: var(--color-yellow-5);
+}
+
+.bg-yellow-5 {
+  background-color: var(--color-yellow-5);
+}
+
+.border-yellow-5 {
+  border-color: var(--color-yellow-5);
+}
+
+.fill-yellow-5 {
+  fill: var(--color-yellow-5);
+}
+
+.color-yellow-10 {
+  color: var(--color-yellow-10);
+}
+
+.bg-yellow-10 {
+  background-color: var(--color-yellow-10);
+}
+
+.border-yellow-10 {
+  border-color: var(--color-yellow-10);
+}
+
+.fill-yellow-10 {
+  fill: var(--color-yellow-10);
+}
+
+.color-yellow-20 {
+  color: var(--color-yellow-20);
+}
+
+.bg-yellow-20 {
+  background-color: var(--color-yellow-20);
+}
+
+.border-yellow-20 {
+  border-color: var(--color-yellow-20);
+}
+
+.fill-yellow-20 {
+  fill: var(--color-yellow-20);
+}
+
+.color-yellow-30 {
+  color: var(--color-yellow-30);
+}
+
+.bg-yellow-30 {
+  background-color: var(--color-yellow-30);
+}
+
+.border-yellow-30 {
+  border-color: var(--color-yellow-30);
+}
+
+.fill-yellow-30 {
+  fill: var(--color-yellow-30);
+}
+
+.color-yellow-40 {
+  color: var(--color-yellow-40);
+}
+
+.bg-yellow-40 {
+  background-color: var(--color-yellow-40);
+}
+
+.border-yellow-40 {
+  border-color: var(--color-yellow-40);
+}
+
+.fill-yellow-40 {
+  fill: var(--color-yellow-40);
+}
+
+.color-yellow-50 {
+  color: var(--color-yellow-50);
+}
+
+.bg-yellow-50 {
+  background-color: var(--color-yellow-50);
+}
+
+.border-yellow-50 {
+  border-color: var(--color-yellow-50);
+}
+
+.fill-yellow-50 {
+  fill: var(--color-yellow-50);
+}
+
+.color-yellow-60 {
+  color: var(--color-yellow-60);
+}
+
+.bg-yellow-60 {
+  background-color: var(--color-yellow-60);
+}
+
+.border-yellow-60 {
+  border-color: var(--color-yellow-60);
+}
+
+.fill-yellow-60 {
+  fill: var(--color-yellow-60);
+}
+
+.color-yellow-70 {
+  color: var(--color-yellow-70);
+}
+
+.bg-yellow-70 {
+  background-color: var(--color-yellow-70);
+}
+
+.border-yellow-70 {
+  border-color: var(--color-yellow-70);
+}
+
+.fill-yellow-70 {
+  fill: var(--color-yellow-70);
+}
+
+.color-yellow-80 {
+  color: var(--color-yellow-80);
+}
+
+.bg-yellow-80 {
+  background-color: var(--color-yellow-80);
+}
+
+.border-yellow-80 {
+  border-color: var(--color-yellow-80);
+}
+
+.fill-yellow-80 {
+  fill: var(--color-yellow-80);
+}
+
+.color-yellow-90 {
+  color: var(--color-yellow-90);
+}
+
+.bg-yellow-90 {
+  background-color: var(--color-yellow-90);
+}
+
+.border-yellow-90 {
+  border-color: var(--color-yellow-90);
+}
+
+.fill-yellow-90 {
+  fill: var(--color-yellow-90);
+}
+

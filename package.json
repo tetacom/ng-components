@@ -11,7 +11,9 @@
     "sb": "yarn docs:json && start-storybook -p 6006",
     "build-storybook": "yarn docs:json && build-storybook -o dist/storybook",
     "semantic-release": "semantic-release",
-    "components:sr": "cd dist/components semantic-release -e semantic-release-monorepo"
+    "components:sr": "cd dist/components semantic-release -e semantic-release-monorepo",
+    "tokens:prepare": "node prepare-tokens.js",
+    "tokens:build": "node build-tokens.js"
   },
   "private": true,
   "dependencies": {
@@ -34,7 +36,9 @@
     "style-dictionary": "^3.7.1",
     "three": "^0.139.2",
     "tslib": "^2.3.0",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "minimist": "^1.2.7",
+    "style-dictionary": "^3.7.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.0.2",
