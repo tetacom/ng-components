@@ -34,7 +34,9 @@
     "rxjs": "^7.5.5",
     "three": "^0.139.2",
     "tslib": "^2.3.0",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "minimist": "^1.2.7",
+    "style-dictionary": "^3.7.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.0.2",
