@@ -43,6 +43,8 @@ jobs:
           commit-message: "fix: design tokens updated"
           title: "🪁 Design tokens updated"
           body: "Design tokens have been updated via Figma and need to be reviewed."
+          add-paths: |
+            projects/components/style/tokens/*.css
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           BRANCH_NAME: 'main'
