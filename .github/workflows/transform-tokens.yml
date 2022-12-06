@@ -30,7 +30,7 @@ jobs:
           node-version: 16.x
       # We now run npm i to install all dependencies and run the "transfrom" script that is defined in the package.json (change this if you need to)
       - name: Install Dependencies & Prepare to Build
-        run: 'npm i -g minimist style-dictionary'
+        run: 'npm i --force'
       - name: Preapre Tokens
         run: 'npm run tokens:prepare'
       - name: Build Tokens
