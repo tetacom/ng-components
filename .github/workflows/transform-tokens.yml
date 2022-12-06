@@ -1,0 +1,48 @@
+name: Transform tokens send from Figma
+# this triggers the action when a post to "https://api.github.com/repos/:username/:repo/dispatches" comes in
+on:
+  repository_dispatch:
+    types: update-tokens
+jobs:
+  build:
+    # the name for the entire job
+    name: Transform Figma design tokens for specific platforms
+    # we run this on ubuntu, leave this alone, if you don't have a good reason to change it
+    runs-on: ubuntu-latest
+    steps:
+      # this lets us work in the actual repository
+      - uses: actions/checkout@v3
+      - name: mkdir "figma-tokens" directory
+        run: 'mkdir -p figma-tokens'
+      - name: create json from request body
+        id: create-json
+        uses: jsdaniell/create-json@v1.2.1
+        with:
+          # it uses the figma filename that was send as then filename parameter
+          name: 'tokens.json'
+          # it uses the json string that was send as the tokens parameter
+          json: ${{ github.event.client_payload.tokens }}
+          dir: 'figma-tokens'
+      # we now initialize node to run amazon style dictionary to compile the tokens
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      # We now run npm i to install all dependencies and run the "transfrom" script that is defined in the package.json (change this if you need to)
+      - name: Install Dependencies & Prepare to Build
+        run: 'npm i && npm run tokens:prepare'
+      - name: Build Tokens
+        run: 'npm run tokens:build -- --theme baselight,basedark,purpledark,purplelight'
+      # We now create a pull request
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "fix: design tokens updated"
+          title: "🪁 Design tokens updated"
+          body: "Design tokens have been updated via Figma and need to be reviewed."
+          with:
+            add-paths: |
+              projects/style/tokens/*.css
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          BRANCH_NAME: 'design-tokens'
