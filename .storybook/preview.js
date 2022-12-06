@@ -20,7 +20,7 @@ export const parameters = {
   },
   docs: { inlineStories: true },
   themeSwitcher: {
-    themes: ["baselight", "basedark", "purplelight", "purpledark"],
+    themes: ["basedark", "baselight", "purplelight", "purpledark"],
     dataAttribute: "theme",
   },
 };
