@@ -769,7 +769,7 @@ export class TableService<T> {
     return null;
   }
 
-  private getTableElement(element: HTMLElement) {
+  getTableElement(element: HTMLElement) {
     return element.closest('teta-table');
   }
 

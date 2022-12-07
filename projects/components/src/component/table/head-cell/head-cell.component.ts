@@ -1,6 +1,6 @@
 import {
   ApplicationRef,
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ElementRef, HostBinding,
   HostListener,
@@ -39,7 +39,7 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
   sortParam: Observable<SortParam>;
   iconName: Observable<string>;
   @HostBinding('class.table-head__cell_active')
-  dropDownOpen: boolean;
+  dropDownOpen = false;
   showDrag: 'left' | 'right' | null = null;
   private rect: any;
 
@@ -87,10 +87,13 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
     return this.defaultTemplates;
   }
 
+  private observer: IntersectionObserver;
+
   constructor(
     private _svc: TableService<T>,
     private _app: ApplicationRef,
-    private _elementRef: ElementRef
+    private _elementRef: ElementRef,
+    private _cdr: ChangeDetectorRef
   ) {
   }
 
@@ -154,10 +157,25 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
         return '';
       })
     );
+
+    this.observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting && this.dropDownOpen) {
+          this.dropDownOpen = false;
+          this._cdr.detectChanges();
+        }
+      });
+    }, {
+      root: this._svc.getTableElement(this._elementRef.nativeElement),
+      threshold: [1]
+    });
+    this.observer.observe(this._elementRef.nativeElement);
   }
 
   ngOnDestroy(): void {
     this._alive = false;
+    this.observer.unobserve(this._elementRef.nativeElement);
+    this.observer.disconnect();
   }
 
   resizeStart(event: MouseEvent): void {
