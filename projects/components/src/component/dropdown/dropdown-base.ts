@@ -154,8 +154,8 @@ export class DropdownBase {
     window.removeEventListener('scroll', this.scrollListener, true)
   }
 
-  private scrollListener = () => {
-    if (this.open) {
+  private scrollListener = (event) => {
+    if (this.open && !this._body.contains(event.target) && this._body !== event.target) {
       this.closeDropdown();
     }
   }
