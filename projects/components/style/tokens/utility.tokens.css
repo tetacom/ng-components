@@ -285,22 +285,6 @@
                         fill: var(--color-global-white);
                         }
 
-.color-global-bgcard {
-                        color: var(--color-global-bgcard);
-                        }
-
-.bg-global-bgcard {
-                        background-color: var(--color-global-bgcard);
-                        }
-
-.border-global-bgcard {
-                        border-color: var(--color-global-bgcard);
-                        }
-
-.fill-global-bgcard {
-                        fill: var(--color-global-bgcard);
-                        }
-
 .color-global-bgmain {
                         color: var(--color-global-bgmain);
                         }
@@ -315,6 +299,22 @@
 
 .fill-global-bgmain {
                         fill: var(--color-global-bgmain);
+                        }
+
+.color-global-bgcard {
+                        color: var(--color-global-bgcard);
+                        }
+
+.bg-global-bgcard {
+                        background-color: var(--color-global-bgcard);
+                        }
+
+.border-global-bgcard {
+                        border-color: var(--color-global-bgcard);
+                        }
+
+.fill-global-bgcard {
+                        fill: var(--color-global-bgcard);
                         }
 
 .color-text-5 {

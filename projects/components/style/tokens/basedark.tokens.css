@@ -1,8 +1,8 @@
 html[data-theme='basedark'] {
         --color-global-link: #79c6ff;
   --color-global-white: #ffffff;
-  --color-global-bgcard: #1e1e1e;
   --color-global-bgmain: #161616;
+  --color-global-bgcard: #1e1e1e;
   --color-text-5: rgba(255, 255, 255, 0.06);
   --color-text-10: rgba(255, 255, 255, 0.1);
   --color-text-20: rgba(255, 255, 255, 0.24);

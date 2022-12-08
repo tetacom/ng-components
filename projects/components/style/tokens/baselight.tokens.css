@@ -1,8 +1,8 @@
 html[data-theme='baselight'] {
         --color-global-link: #005ab6;
   --color-global-white: #ffffff;
-  --color-global-bgcard: #ffffff;
   --color-global-bgmain: #f4f5f7;
+  --color-global-bgcard: #ffffff;
   --color-text-5: rgba(0, 0, 0, 0.04);
   --color-text-10: rgba(0, 0, 0, 0.1);
   --color-text-20: rgba(0, 0, 0, 0.16);
