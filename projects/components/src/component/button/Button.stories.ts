@@ -24,7 +24,7 @@ export const buttons = () => ({
     rightIcon: boolean('rightIcon', true),
     disabled: boolean('disabled', false),
   },
-  template: `<div class="row" [tetaIconSprite]="'assets/icons.svg'"  style="grid-gap: 12px">
+  template: `<div class="row bg-global-bgcard padding-3" [tetaIconSprite]="'assets/icons.svg'"  style="grid-gap: 12px">
   <div *ngFor="let palette of palettes" class="column" style="grid-gap: 8px">
     <div class="font-body-3">
       Default

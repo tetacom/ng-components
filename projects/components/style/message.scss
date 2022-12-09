@@ -8,7 +8,7 @@
   margin: 8px;
   border: solid 0;
   border-radius: 4px;
-  color: getColorVar('white', '50');
+  color: var(--color-global-white);
   width: 240px;
   @each $paletteName in $palettes {
     &-#{$paletteName} {

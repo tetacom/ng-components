@@ -15394,6 +15394,11 @@ storybook-addon-themes@^6.1.0:
     global "^4.4.0"
     memoizerific "^1.11.3"
 
+storybook-theme-css-vars@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/storybook-theme-css-vars/-/storybook-theme-css-vars-0.0.5.tgz#81945d773e52a03b622c917dfe0fdcb9033096c9"
+  integrity sha512-T+OWvNoAOsVhIXI7VKLvZFp/aIctTbiJUddwH/jHW5BzCgOtw7kmQdznIeRdIBwV8y6u5Sm3ynkJATvhl13IwA==
+
 stream-browserify@^2.0.1:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/stream-browserify/-/stream-browserify-2.0.2.tgz#87521d38a44aa7ee91ce1cd2a47df0cb49dd660b"

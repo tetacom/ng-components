@@ -7,8 +7,8 @@
   padding: 12px;
   white-space: nowrap;
   z-index: 1;
-  background-color: getColorVar('white', '50');
-  color: getColorVar('text', '50');
+  background-color: var(--color-global-white);
+  color: var(--color-text-50);
 
   &::before, &::after {
     position: absolute;
@@ -25,7 +25,7 @@
       transform: translate(-50%, 0);
       border-left: 12px solid transparent;
       border-right: 12px solid transparent;
-      border-top: 12px solid getColorVar('white', '50');
+      border-top: 12px solid var(--color-global-white);
     }
 
     &::after {
@@ -34,7 +34,7 @@
       transform: translate(-50%, 0);
       border-left: 12px solid transparent;
       border-right: 12px solid transparent;
-      border-top: 12px solid getColorVar('white', '50');
+      border-top: 12px solid var(--color-global-white);
     }
   }
 
@@ -45,7 +45,7 @@
       transform: translate(-50%, 0);
       border-left: 12px solid transparent;
       border-right: 12px solid transparent;
-      border-bottom: 12px solid getColorVar('white', '50');
+      border-bottom: 12px solid var(--color-global-white);
     }
 
     &::after {
@@ -54,7 +54,7 @@
       transform: translate(-50%, 0);
       border-left: 12px solid transparent;
       border-right: 12px solid transparent;
-      border-bottom: 12px solid getColorVar('white', '50');
+      border-bottom: 12px solid var(--color-global-white);
     }
   }
 }

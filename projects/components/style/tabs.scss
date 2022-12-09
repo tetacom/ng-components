@@ -17,30 +17,30 @@
       padding: 0 20px;
       white-space: nowrap;
       @include getFont($fonts, 'body-3');
-      color: getColorVar('text', '40');
-      fill: getColorVar('text', '40');
+      color: var(--color-text-40);
+      fill: var(--color-text-40);
 
       &_disabled, &[disabled] {
-        color: getColorVar('text', '20');
-        fill: getColorVar('text', '20');
+        color: var(--color-text-20);
+        fill: var(--color-text-20);
       }
 
       &:hover:not([disabled]):not(&_disabled) {
         cursor: pointer;
-        color: getColorVar('text', '70');
-        fill: getColorVar('text', '70');
+        color: var(--color-text-70);
+        fill: var(--color-text-70);
       }
 
       &_active {
         position: relative;
-        color: getColorVar('text', '90');
-        fill: getColorVar('text', '70');
+        color: var(--color-text-90);
+        fill: var(--color-text-70);
 
         &::after {
           content: '';
           position: absolute;
           height: 2px;
-          background-color: getColorVar('primary', '50');
+          background-color: var(--color-primary-50);
           border: solid 0 transparent;
           left: 0;
           right: 0;

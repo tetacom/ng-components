@@ -4,9 +4,9 @@
   height: 24px;
   border: solid transparent 0;
   border-radius: 12px;
-  background: getColorVar('text', '10');
-  fill: getColorVar('text', '50');
-  color: getColorVar('text', '90');
+  background: var(--color-text-10);
+  fill: var(--color-text-50);
+  color: var(--color-text-90);
   margin-right: 4px;
   margin-top: 4px;
   display: inline-flex;

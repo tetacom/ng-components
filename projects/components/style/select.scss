@@ -12,16 +12,16 @@
   }
 
   &_disabled &-head {
-    background-color: getColorVar('text', 5);
+    background-color: var(--color-text-5);
     border: 0;
-    color: getColorVar('text', 40);
+    color: var(--color-text-40);
   }
 
   &-head {
-    background-color: getColorVar('background', '50');
-    border: solid 1px getColorVar('text', '20');
-    color: getColorVar('text', '90');
-    fill: getColorVar('text', '40');
+    background-color: var(--color-global-bgcard);
+    border: solid 1px var(--color-text-20);
+    color: var(--color-text-90);
+    fill: var(--color-text-40);
     border-radius: 4px;
     align-items: center;
     white-space: nowrap;
@@ -31,7 +31,7 @@
     overflow: hidden;
 
     &_invalid {
-      border-color: getColorVar('red', '50');
+      border-color: var(--color-red-50);
     }
   }
 
@@ -40,14 +40,14 @@
   &:hover:not(&_disabled) {
     #{$p}-head {
       cursor: pointer;
-      border-color: getColorVar('text', '40');
+      border-color: var(--color-text-40);
     }
   }
 
   &-chip-field {
     margin-top: 8px;
     padding: 4px 12px 0 12px;
-    border-top: solid 1px getColorVar('text', 10);
+    border-top: solid 1px var(--color-text-10);
   }
 
   &-table &-head {
@@ -69,7 +69,7 @@
   }
 
   &:focus:not(&_disabled) &-head, &_open &-head {
-    border-color: getColorVar('primary', '50');
+    border-color: var(--color-primary-50);
   }
 
   &-search {
@@ -97,7 +97,7 @@
       white-space: nowrap;
 
       .icon {
-        fill: getColorVar('primary', 50) !important;
+        fill: var(--color-primary-50) !important;
       }
 
       &_active {

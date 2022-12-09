@@ -19,10 +19,11 @@ export const radioButton = () => ({
     imports: [RadioModule, FormsModule, IconModule],
   },
   template: `<div class="padding-4 bg-panel-50" [tetaIconSprite]="'assets/icons.svg'">
-    <teta-radio [(ngModel)]="aaa">
+    <teta-radio [ngModel]="3">
       <teta-radio-button [value]="1">1</teta-radio-button>
       <teta-radio-button [value]="2">2</teta-radio-button>
-      <teta-radio-button [value]="3" [disabled]="true">4</teta-radio-button>
+      <teta-radio-button [value]="3" [disabled]="true">3</teta-radio-button>
+      <teta-radio-button [disabled]="true">4</teta-radio-button>
     </teta-radio>
   </div>`,
 });

@@ -6,7 +6,7 @@
 }
 
 body {
-  color: getColorVar('text', '90');
+  color: var(--color-text-90);
 }
 
 .app {
@@ -134,5 +134,5 @@ body {
   border: solid 0;
   border-radius: 4px;
   overflow: hidden;
-  background: getColorVar('background', 50);
+  background: var(--color-global-bgcard)
 }

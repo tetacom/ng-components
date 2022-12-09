@@ -6,11 +6,11 @@
   grid-gap: 8px;
 
   &__tick {
-    background: getColorVar('background', '50');
-    border: solid 1px getColorVar('text', '20');
-    border-radius: 2px;
-    height: 14px;
-    width: 14px;
+    background: var(--color-global-bgcard);
+    border: solid 1px var(--color-text-20);
+    border-radius: 4px;
+    height: 16px;
+    width: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -18,8 +18,8 @@
     &_active {
       border: solid 0;
       border-radius: 2px;
-      background: getColorVar('primary', '50');
-      fill: getColorVar('white', '50');
+      background: var(--color-primary-50);
+      fill: var(--color-global-white);
     }
   }
 
@@ -28,7 +28,7 @@
   }
 
   &:hover &__tick {
-    border-color: getColorVar('text', '50');
+    border-color: var(--color-text-50);
   }
 
   @each $paletteName in $palettes {

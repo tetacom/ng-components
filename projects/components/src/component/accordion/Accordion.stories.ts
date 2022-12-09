@@ -17,17 +17,17 @@ export const basicAccordion = () => ({
   moduleMetadata: {
     imports: [AccordionModule, IconModule]
   },
-  template: `<div [tetaIconSprite]="'assets/icons.svg'" class="font-body-3 padding-3 bg-panel-50">
-      <teta-accordion class="bg-white-50">
+  template: `<div [tetaIconSprite]="'assets/icons.svg'" class="font-body-3 padding-3 bg-global-bgcard">
+      <teta-accordion>
         <teta-accordion-item>
           <teta-accordion-head>
             Heading 1
           </teta-accordion-head>
           <ng-template tetaAccordionContent>
-            <div class="padding-v-3 padding-h-5">I am the content 1</div>
+            <div class="padding-v-3 padding-h-2">I am the content 1</div>
           </ng-template>
         </teta-accordion-item>
-        <teta-accordion-item [disabled]="true">
+        <teta-accordion-item>
           <teta-accordion-head>
             Heading 2 (disabled)
           </teta-accordion-head>

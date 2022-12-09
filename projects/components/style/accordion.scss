@@ -4,29 +4,36 @@
 .accordion {
   display: flex;
   flex-direction: column;
-
+  gap: 8px;
+  
   &-item {
     display: flex;
     flex-direction: column;
-    min-height: 40px;
+    min-height: 52px;
+    border-radius: 8px;
+    background: var(--color-global-bgcard);
 
     &_active {
       flex-grow: 0;
+      background: var(--color-text-10);
     }
   }
 
   &-head {
     display: flex;
     align-items: center;
-    height: 40px;
-    padding: 0 8px;
-    grid-gap: 8px;
+    height: 52px;
+    padding: 0 12px;
     flex-shrink: 0;
-    border-bottom: solid 1px getColorVar('text', '5');
+    //border-bottom: solid 1px var(--color-text-5);
+    justify-content: space-between;
     @include getFont($fonts, 'title-3');
+    border-radius: 8px;
+
 
     &:hover:not(&_disabled) {
       cursor: pointer;
+      background: var(--color-text-5);
     }
     &_open {
       border: none;
@@ -42,6 +49,6 @@
     display: flex;
     flex-grow: 1;
     min-height: 0;
-    border-bottom: solid 1px getColorVar('text', '5');
+    //border-bottom: solid 1px var(--color-text-5);
   }
 }
