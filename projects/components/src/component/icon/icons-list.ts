@@ -44,6 +44,7 @@ export const iconsList = [
   'deleteSelected',
   'detach',
   'doc',
+  'docAndLiquid',
   'document',
   'documentAdd',
   'documentAnalyze',
