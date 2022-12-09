@@ -1,7 +1,7 @@
 <teta-icon *ngIf="leftIconName" [name]="leftIconName"></teta-icon>
 <input
   #input
-  [ngModel]="value | tetaNumber : inputFocused ? null : decimalPart"
+  [ngModel]="value | tetaNumber : (inputFocused || !onlyNumber) ? null : decimalPart"
   [tetaOnlyNumber]="onlyNumber"
   (ngModelChange)="value = $event; onChange($event);"
   [placeholder]="placeholder"

@@ -90,6 +90,7 @@
       <path fill-rule="evenodd" clip-rule="evenodd"
             d="M2 4V6H3V4H7V6H8V4H12V6H13V4H14V3H13V1H12V3H8V1H7V3H3V1H2V3H1V4H2ZM2 14V7H13V14H2ZM3 13V8H7V13H3ZM8 13V8H12V13H8Z"></path>
     </symbol>
+
     <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="back">
       <path fill-rule="evenodd" clip-rule="evenodd"
             d="M3.91421 6.35355L6.56066 9L5.85355 9.70711L2.35355 6.20711L2 5.85355L2.35355 5.5L5.85355 2L6.56066 2.70711L3.91421 5.35355H7.70711C11.2832 5.35355 14.2071 8.27741 14.2071 11.8536L14.2071 13.3536H13.2071L13.2071 11.8536C13.2071 8.8297 10.731 6.35355 7.70711 6.35355H3.91421Z"></path>
@@ -221,6 +222,10 @@
     <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="doc">
       <path fill-rule="evenodd" clip-rule="evenodd"
             d="M11.0039 0.90979V1.49998V3H14.5H15V3.5V12.5V13H14.5H11.0039V14.5V15.0902L10.4217 14.9932L1.41784 13.4932L1 13.4236V13V2.99998V2.57638L1.41784 2.50678L10.4217 1.00678L11.0039 0.90979ZM2 3.42357V12.5764L10.0039 13.9098V2.09017L2 3.42357ZM11.01 4V12H14V4H11.01ZM2.9533 6.22936L3.86611 10.7707H5.28039L5.99995 7.63897L6.66413 10.7707H8.07386L9.04701 6.22936H8.02431L7.37041 9.28084L6.72324 6.22936H5.29778L4.59132 9.30403L3.9733 6.22936H2.9533Z"></path>
+    </symbol>
+    <symbol viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" id="docAndLiquid">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M1 1H6.70711L11 5.29289V6H6V2H2L2 12H7V13H1L1 1ZM7 2.70711L9.2929 5H7V2.70711Z" fill-opacity="0.87"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M12.5 8V11L15 15H7L9.5 11V8H9V7H13V8H12.5ZM10.3667 11.5H11.6333L13.1958 14H8.80425L10.3667 11.5ZM11.5 8V10.5H10.5V8H11.5Z" fill-opacity="0.87"/>
     </symbol>
     <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="document">
       <path fill-rule="evenodd" clip-rule="evenodd"
