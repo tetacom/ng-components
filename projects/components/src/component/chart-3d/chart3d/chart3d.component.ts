@@ -81,6 +81,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this._alive = false;
+    this.removeResizeObserver();
   }
 
   private init() {
@@ -236,6 +237,10 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this._obs.observe(this._elementRef.nativeElement);
+  }
+  private removeResizeObserver() {
+    this._obs.unobserve(this._elementRef.nativeElement);
+    this._obs.disconnect();
   }
 
   private makeSprite(text: string, opts?: { fontSize?: number }): THREE.Sprite {

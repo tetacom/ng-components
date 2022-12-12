@@ -63,6 +63,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   private _alive = true;
   private _data: T[];
   private _hiddenColumns: string[] = [];
+  private _obs: ResizeObserver;
 
   set columns(columns: TableColumn[]) {
     this._columns = columns;
@@ -138,10 +139,12 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
         this.activeRow = _;
         this._cdr.markForCheck();
       });
+    this.addResizeObserver();
   }
 
   ngOnDestroy(): void {
     this._alive = false;
+    this.removeResizeObserver()
   }
 
   getAggregateValue(column: TableColumn): number {
@@ -184,6 +187,19 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
 
   trackColumns(index: number, column: TableColumn): any {
     return column.name;
+  }
+
+  private addResizeObserver() {
+    this._obs = new ResizeObserver((_) => {
+      this.viewport?.checkViewportSize();
+    });
+
+    this._obs.observe(this._elementRef.nativeElement);
+  }
+
+  private removeResizeObserver() {
+    this._obs.unobserve(this._elementRef.nativeElement);
+    this._obs.disconnect();
   }
 
   private getSum(columnName) {
