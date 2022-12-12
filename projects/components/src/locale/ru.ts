@@ -24,6 +24,8 @@ export const ruLocale: TetaLocalisation = {
   avg: 'Средн',
   search: 'Поиск',
   notSelected: 'Не выбрано',
+  yes: 'Да',
+  no: 'Нет',
   months: [
     'Январь',
     'Февраль',

@@ -22,6 +22,8 @@ export interface TetaLocalisation {
   avg: string;
   search: string;
   notSelected: string;
+  yes: string;
+  no: string;
   months: [
     string,
     string,

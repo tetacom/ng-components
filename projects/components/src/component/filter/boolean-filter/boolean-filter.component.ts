@@ -7,12 +7,15 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FilterComponentBase } from '../base/filter-component-base';
-import { FilterItem } from '../contarct/filter-item';
-import { IIdName } from '../../../common/contract/i-id-name';
-import { FilterBase } from '../base/filter-base';
-import { FilterState } from '../contarct/filter-state';
-import { BooleanFilter } from '../contarct/boolean-filter';
+import {FilterComponentBase} from '../base/filter-component-base';
+import {FilterItem} from '../contarct/filter-item';
+import {IIdName} from '../../../common/contract/i-id-name';
+import {FilterBase} from '../base/filter-base';
+import {FilterState} from '../contarct/filter-state';
+import {BooleanFilter} from '../contarct/boolean-filter';
+import {TetaConfigService} from "../../../locale/teta-config.service";
+import {Observable} from "rxjs";
+import {TetaLocalisation} from "../../../locale/teta-localisation";
 
 @Component({
   selector: 'teta-boolean-filter',
@@ -22,8 +25,7 @@ import { BooleanFilter } from '../contarct/boolean-filter';
 })
 export class BooleanFilterComponent<T>
   extends FilterComponentBase<T>
-  implements OnInit
-{
+  implements OnInit {
   @Input() column: FilterItem;
   @Input() data: T[];
   @Input() filterOptions: IIdName<any>[] = [];
@@ -44,11 +46,15 @@ export class BooleanFilterComponent<T>
     return this.state$;
   }
 
-  constructor(private changeDetector: ChangeDetectorRef) {
+  locale: Observable<TetaLocalisation>;
+
+  constructor(private changeDetector: ChangeDetectorRef, private _config: TetaConfigService) {
     super();
+    this.locale = this._config.locale;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   setFilter() {
     this.filterChanged.emit(this.filter);
