@@ -9,6 +9,7 @@
     grid-gap: 4px;
     display: inline-flex;
     align-items: center;
+    @include getFont($fonts, 'body-3');
 
     &_disabled {
       filter: grayscale(50%);
