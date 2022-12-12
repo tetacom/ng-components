@@ -78,7 +78,7 @@
   }
 
   &:hover:not([disabled]):not(&_disabled):not(:focus-within) {
-    border-color: var(--color-text-40);
+    border-color: var(--color-text-30);
   }
 
   .close-icon {
