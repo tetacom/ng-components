@@ -1,18 +1,29 @@
 @import "util/shadow-util.scss";
 
 .message {
+  position: relative;
   box-shadow: var(--shadow-2);
   display: inline-flex;
   flex-direction: column;
   padding: 8px;
   margin: 8px;
   border: solid 0;
-  border-radius: 8px 0px 0px 8px;
-  color: var(--color-global-white);
+  border-radius: 4px;
   width: 320px;
+  background: var(--color-global-bgcard);
+  color: var(--color-text-90);
+
   @each $paletteName in $palettes {
-    &-#{$paletteName} {
-      background-color: getColorVar($paletteName, '50');
+    &-#{$paletteName}::before {
+      background: getColorVar($paletteName, '50');
+      content: " ";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
     }
   }
 }
