@@ -35,8 +35,9 @@ $fonts: (
   h-5: (
     font-size:28px,
     font-family:"Inter",
-    font-weight:600,
+    font-weight:500,
     font-style:normal,
+    line-height: 34px,
     letter-spacing:0.15px,
     text-decoration:none
   ),
@@ -51,18 +52,18 @@ $fonts: (
   title-1: (
     font-size:16px,
     font-family:"Inter",
-    font-weight:600,
+    font-weight:500,
     font-style:normal,
     line-height:24px,
     letter-spacing:0.0015em,
     text-decoration:none
   ),
   title-2: (
-    font-size:13px,
+    font-size:14px,
     font-family:"Inter",
-    font-weight:600,
+    font-weight:500,
     font-style:normal,
-    line-height:16px,
+    line-height:20px,
     text-decoration:none
   ),
   title-3: (
@@ -84,7 +85,7 @@ $fonts: (
   body-2: (
     font-size:14px,
     font-family:"Inter",
-    font-weight:normal,
+    font-weight:500,
     font-style:normal,
     line-height:16px,
     text-decoration:none

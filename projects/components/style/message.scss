@@ -1,15 +1,15 @@
 @import "util/shadow-util.scss";
 
 .message {
-  @include shadow(5);
+  box-shadow: var(--shadow-2);
   display: inline-flex;
   flex-direction: column;
   padding: 8px;
   margin: 8px;
   border: solid 0;
-  border-radius: 4px;
+  border-radius: 8px 0px 0px 8px;
   color: var(--color-global-white);
-  width: 240px;
+  width: 320px;
   @each $paletteName in $palettes {
     &-#{$paletteName} {
       background-color: getColorVar($paletteName, '50');

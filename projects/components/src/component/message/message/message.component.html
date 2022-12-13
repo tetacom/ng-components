@@ -1,5 +1,5 @@
 <div class="row align-center justify-content-between">
-  <div class="font-title-3 padding-left-1">
+  <div class="font-title-2 padding-left-4">
     {{message.title}}
   </div>
   <button teta-button
@@ -10,7 +10,7 @@
     <teta-icon [name]="'closeBig'"></teta-icon>
   </button>
 </div>
-<div class="font-body-3 padding-v-1" *ngIf="!message.template && message.text">
+<div class="font-body-3 padding-v-2 padding-left-4" *ngIf="!message.template && message.text">
   {{message.text}}
 </div>
 <ng-container *ngIf="message.template">
