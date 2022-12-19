@@ -164,6 +164,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this._observer.unobserve(this._elementRef.nativeElement);
     this._observer.disconnect();
   }
 
