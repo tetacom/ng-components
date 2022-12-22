@@ -144,16 +144,22 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
       });
 
     this.chartService.plotBandEvent
-      .pipe(takeWhile(() => this._alive))
+      .pipe(
+        takeWhile(() => this._alive)
+      )
       .subscribe((_) => {
         this.plotBandsMove.emit(_);
       });
 
-    this.chartService.plotLineMove.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+    this.chartService.plotLineMove.pipe(
+      takeWhile(() => this._alive)
+    ).subscribe((_) => {
       this.plotLinesMove.emit(_);
     });
 
-    this.chartService.pointMove.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+    this.chartService.pointMove.pipe(
+      takeWhile(() => this._alive)
+    ).subscribe((_) => {
       this.pointMove.emit(_);
     });
 

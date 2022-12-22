@@ -1,3 +1,4 @@
+@import "util/font-util.scss";
 @import "util/color-util.scss";
 
 .radio {
@@ -9,6 +10,7 @@
     grid-gap: 4px;
     display: inline-flex;
     align-items: center;
+    @include getFont($fonts, 'body-3');
 
 
     &_disabled {

@@ -24,6 +24,8 @@ export const enLocale: TetaLocalisation = {
   avg: 'Avg',
   search: 'Search',
   notSelected: 'Not selected',
+  yes: 'Yes',
+  no: 'No',
   months: [
     'January',
     'February',
