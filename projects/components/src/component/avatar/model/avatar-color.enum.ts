@@ -1,0 +1,20 @@
+export enum AvatarColorEnum {
+  vibrant,
+  nebula,
+  gorgonzola,
+  lagoon,
+  lime,
+  pumpkin,
+  vanity,
+  navy,
+  turquoise,
+  greyish,
+  heart,
+  gloomy,
+  rockman,
+  hair,
+  cerise,
+  iris,
+  caribbean,
+  poisonous
+}

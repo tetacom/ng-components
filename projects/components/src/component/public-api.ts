@@ -1,6 +1,9 @@
 /* accordion */
 export * from './accordion/public-api';
 
+/* avatar */
+export * from './avatar/public-api';
+
 /* button */
 export * from './button/public-api';
 

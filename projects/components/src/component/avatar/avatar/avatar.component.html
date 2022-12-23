@@ -1,0 +1,16 @@
+<div [class]="avatar">
+  <img *ngIf="photo;else withoutPhoto" [src]="photo" alt=""/>
+  <ng-template #withoutPhoto>
+    <div   [style.background-color]="colorMap.get(id%17)||colorMap.get(0)"
+           class="column align-center justify-content-center position-relative">
+      <ng-container *ngIf="name;else withoutName">
+        <p>{{name}}</p>
+      </ng-container>
+      <ng-template #withoutName>
+        <teta-icon class="width-10 height-10" style="fill: white;width:{{size}}px; height:{{size}}px" name="photoCamera"></teta-icon>
+      </ng-template>
+      <div  class="position-absolute" style="width: 100%;z-index:1;height: 100%; background: linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0) 100%);'"></div>
+    </div>
+  </ng-template>
+
+</div>
