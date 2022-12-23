@@ -3,7 +3,6 @@ import {withKnobs} from '@storybook/addon-knobs';
 import {IconModule} from '../icon/icon.module';
 import {AvatarComponent} from "./avatar/avatar.component";
 import {AvatarModule} from "./avatar.module";
-import avatar from './assets/avatar.png'
 
 export default {
   title: 'Component/Avatar',
@@ -21,13 +20,13 @@ export const basicAvatar = () => ({
 
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="font-body-3 padding-3 bg-global-bgcard row gap-20">
              <div class="column gap-12 align-center">
-                <teta-avatar photo="${avatar}" [id]="1" [name]="'AA'" [size]="24" [type]="'circle'"></teta-avatar>
-                <teta-avatar photo="${avatar}" [id]="1" [name]="'AA'" [size]="28" [type]="'circle'"></teta-avatar>
-                <teta-avatar photo="${avatar}" [id]="1" [name]="'AA'" [size]="32" [type]="'circle'"></teta-avatar>
-                <teta-avatar photo="${avatar}" [id]="1" [name]="'AA'" [size]="44" [type]="'circle'"></teta-avatar>
-                <teta-avatar photo="${avatar}" [id]="1" [name]="'AA'" [size]="64" [type]="'circle'"></teta-avatar>
-                <teta-avatar photo="${avatar}" [id]="1" [name]="'AA'" [size]="128" [type]="'circle'"></teta-avatar>
-                <teta-avatar photo="${avatar}" [id]="1" [name]="'AA'" [size]="200" [type]="'circle'"></teta-avatar>
+                <teta-avatar photo="https://cdn.vox-cdn.com/thumbor/WR9hE8wvdM4hfHysXitls9_bCZI=/0x0:1192x795/1400x1400/filters:focal(596x398:597x399)/cdn.vox-cdn.com/uploads/chorus_asset/file/22312759/rickroll_4k.jpg" [id]="1" [name]="'AA'" [size]="24" [type]="'circle'"></teta-avatar>
+                <teta-avatar photo="https://cdn.vox-cdn.com/thumbor/WR9hE8wvdM4hfHysXitls9_bCZI=/0x0:1192x795/1400x1400/filters:focal(596x398:597x399)/cdn.vox-cdn.com/uploads/chorus_asset/file/22312759/rickroll_4k.jpg" [id]="1" [name]="'AA'" [size]="28" [type]="'circle'"></teta-avatar>
+                <teta-avatar photo="https://cdn.vox-cdn.com/thumbor/WR9hE8wvdM4hfHysXitls9_bCZI=/0x0:1192x795/1400x1400/filters:focal(596x398:597x399)/cdn.vox-cdn.com/uploads/chorus_asset/file/22312759/rickroll_4k.jpg" [id]="1" [name]="'AA'" [size]="32" [type]="'circle'"></teta-avatar>
+                <teta-avatar photo="https://cdn.vox-cdn.com/thumbor/WR9hE8wvdM4hfHysXitls9_bCZI=/0x0:1192x795/1400x1400/filters:focal(596x398:597x399)/cdn.vox-cdn.com/uploads/chorus_asset/file/22312759/rickroll_4k.jpg" [id]="1" [name]="'AA'" [size]="44" [type]="'circle'"></teta-avatar>
+                <teta-avatar photo="https://cdn.vox-cdn.com/thumbor/WR9hE8wvdM4hfHysXitls9_bCZI=/0x0:1192x795/1400x1400/filters:focal(596x398:597x399)/cdn.vox-cdn.com/uploads/chorus_asset/file/22312759/rickroll_4k.jpg" [id]="1" [name]="'AA'" [size]="64" [type]="'circle'"></teta-avatar>
+                <teta-avatar photo="https://cdn.vox-cdn.com/thumbor/WR9hE8wvdM4hfHysXitls9_bCZI=/0x0:1192x795/1400x1400/filters:focal(596x398:597x399)/cdn.vox-cdn.com/uploads/chorus_asset/file/22312759/rickroll_4k.jpg" [id]="1" [name]="'AA'" [size]="128" [type]="'circle'"></teta-avatar>
+                <teta-avatar photo="https://cdn.vox-cdn.com/thumbor/WR9hE8wvdM4hfHysXitls9_bCZI=/0x0:1192x795/1400x1400/filters:focal(596x398:597x399)/cdn.vox-cdn.com/uploads/chorus_asset/file/22312759/rickroll_4k.jpg" [id]="1" [name]="'AA'" [size]="200" [type]="'circle'"></teta-avatar>
              </div>
             <div class="column gap-12 align-center">
                 <teta-avatar [id]="1" [name]="'AA'"  [size]="24" [type]="'circle'"></teta-avatar>
