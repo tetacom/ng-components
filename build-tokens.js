@@ -50,8 +50,8 @@ StyleDictionary.registerFormat({
   formatter: function (dictionary, config) {
     return `${this.selector} {
       ${dictionary.allProperties
-        .map((prop) => `  --${prop.name}: ${prop.value};`)
-        .join("\n")}
+      .map((prop) => `  --${prop.name}: ${prop.value};`)
+      .join("\n")}
     }`;
   },
 });
@@ -63,7 +63,7 @@ StyleDictionary.registerTransform({
     return prop.attributes.category === "shadow";
   },
   transformer: (token) => {
-    const { offsetX, offsetY, radius, spread, color } = token.original.value;
+    const {offsetX, offsetY, radius, spread, color} = token.original.value;
     return `${offsetX}px ${offsetY}px ${radius}px ${spread}px ${color}`;
   },
 });
@@ -75,7 +75,7 @@ StyleDictionary.registerTransform({
     return prop.attributes.category === "radius";
   },
   transformer: (token) => {
-    const { topLeft } = token.original.value;
+    const {topLeft} = token.original.value;
     return `${topLeft}px`;
   },
 });
@@ -86,7 +86,7 @@ StyleDictionary.registerTransform({
     return prop.attributes.category === "spacing";
   },
   transformer: (token) => {
-    const { right } = token.original.value;
+    const {right} = token.original.value;
     return `${right}px`;
   },
 });
@@ -145,7 +145,7 @@ StyleDictionary.registerFormat({
                         background-color:var(--color-${palette}-50);
                         transition: background 0.8s;
                         }\n\n.button_primary.${utilityClass}:hover {
-                        background: var(--color-${palette}-60) radial-gradient(circle, transparent 1%, var(--color-${palette}-60) 1%) center/15000%;
+                        background: var(--color-${palette}-60);
                         }\n\n.button_primary.${utilityClass}:active {
                         background-color: var(--color-${palette}-70);
                         background-size: 100%;
@@ -158,7 +158,7 @@ StyleDictionary.registerFormat({
                         transition: background 0.8s;
                         background-color: transparent;
                         }\n\n.button_ghost.${utilityClass}:hover {
-                        background: var(--color-${palette}-5) radial-gradient(circle, transparent 1%, var(--color-${palette}-5) 1%) center/15000%;
+                        background: var(--color-${palette}-5);
                         }\n\n.button_ghost.${utilityClass}:active {
                         background-color: var(--color-${palette}-10);
                         background-size: 100%;
@@ -173,14 +173,24 @@ StyleDictionary.registerFormat({
                         border-width: 1px;
                         transition: background 0.8s;
                         }\n\n.button_outline.${utilityClass}:hover {
-                        background: var(--color-${palette}-5) radial-gradient(circle, transparent 1%, var(--color-${palette}-5) 1%) center/15000%;
+                        background: var(--color-${palette}-5);
                         }\n\n.button_outline.${utilityClass}:active {
                         background-color: var(--color-${palette}-10);
                         background-size: 100%;
                         transition: background 0s;
                         }\n\n`; // outline
     });
-
+    ['avatar', 'accordion', 'badge', 'button', 'chip', 'file', 'hint', 'input', 'select', 'switch', 'tag', 'toast', 'toggle', 'toolbar', 'tooltip'].forEach((component) => {
+      output += `.${component}_brick {
+          border-radius:0;
+        }\n\n`;
+      output += `.${component}_circle{
+          border-radius:100px;
+          }\n\n`;
+      output += `.${component}_rounded {
+          border-radius:4px;
+          }\n\n`;
+    })
     dictionary.allProperties.forEach(function (prop) {
       if (prop.path.indexOf("chart") > 0) {
         return;

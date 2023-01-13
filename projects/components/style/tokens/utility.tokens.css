@@ -4,7 +4,7 @@
                         }
 
 .button_primary.button-primary:hover {
-                        background: var(--color-primary-60) radial-gradient(circle, transparent 1%, var(--color-primary-60) 1%) center/15000%;
+                        background: var(--color-primary-60);
                         }
 
 .button_primary.button-primary:active {
@@ -21,7 +21,7 @@
                         }
 
 .button_ghost.button-primary:hover {
-                        background: var(--color-primary-5) radial-gradient(circle, transparent 1%, var(--color-primary-5) 1%) center/15000%;
+                        background: var(--color-primary-5);
                         }
 
 .button_ghost.button-primary:active {
@@ -40,7 +40,7 @@
                         }
 
 .button_outline.button-primary:hover {
-                        background: var(--color-primary-5) radial-gradient(circle, transparent 1%, var(--color-primary-5) 1%) center/15000%;
+                        background: var(--color-primary-5);
                         }
 
 .button_outline.button-primary:active {
@@ -55,7 +55,7 @@
                         }
 
 .button_primary.button-text:hover {
-                        background: var(--color-text-60) radial-gradient(circle, transparent 1%, var(--color-text-60) 1%) center/15000%;
+                        background: var(--color-text-60);
                         }
 
 .button_primary.button-text:active {
@@ -72,7 +72,7 @@
                         }
 
 .button_ghost.button-text:hover {
-                        background: var(--color-text-5) radial-gradient(circle, transparent 1%, var(--color-text-5) 1%) center/15000%;
+                        background: var(--color-text-5);
                         }
 
 .button_ghost.button-text:active {
@@ -91,7 +91,7 @@
                         }
 
 .button_outline.button-text:hover {
-                        background: var(--color-text-5) radial-gradient(circle, transparent 1%, var(--color-text-5) 1%) center/15000%;
+                        background: var(--color-text-5);
                         }
 
 .button_outline.button-text:active {
@@ -106,7 +106,7 @@
                         }
 
 .button_primary.button-red:hover {
-                        background: var(--color-red-60) radial-gradient(circle, transparent 1%, var(--color-red-60) 1%) center/15000%;
+                        background: var(--color-red-60);
                         }
 
 .button_primary.button-red:active {
@@ -123,7 +123,7 @@
                         }
 
 .button_ghost.button-red:hover {
-                        background: var(--color-red-5) radial-gradient(circle, transparent 1%, var(--color-red-5) 1%) center/15000%;
+                        background: var(--color-red-5);
                         }
 
 .button_ghost.button-red:active {
@@ -142,7 +142,7 @@
                         }
 
 .button_outline.button-red:hover {
-                        background: var(--color-red-5) radial-gradient(circle, transparent 1%, var(--color-red-5) 1%) center/15000%;
+                        background: var(--color-red-5);
                         }
 
 .button_outline.button-red:active {
@@ -157,7 +157,7 @@
                         }
 
 .button_primary.button-green:hover {
-                        background: var(--color-green-60) radial-gradient(circle, transparent 1%, var(--color-green-60) 1%) center/15000%;
+                        background: var(--color-green-60);
                         }
 
 .button_primary.button-green:active {
@@ -174,7 +174,7 @@
                         }
 
 .button_ghost.button-green:hover {
-                        background: var(--color-green-5) radial-gradient(circle, transparent 1%, var(--color-green-5) 1%) center/15000%;
+                        background: var(--color-green-5);
                         }
 
 .button_ghost.button-green:active {
@@ -193,7 +193,7 @@
                         }
 
 .button_outline.button-green:hover {
-                        background: var(--color-green-5) radial-gradient(circle, transparent 1%, var(--color-green-5) 1%) center/15000%;
+                        background: var(--color-green-5);
                         }
 
 .button_outline.button-green:active {
@@ -208,7 +208,7 @@
                         }
 
 .button_primary.button-yellow:hover {
-                        background: var(--color-yellow-60) radial-gradient(circle, transparent 1%, var(--color-yellow-60) 1%) center/15000%;
+                        background: var(--color-yellow-60);
                         }
 
 .button_primary.button-yellow:active {
@@ -225,7 +225,7 @@
                         }
 
 .button_ghost.button-yellow:hover {
-                        background: var(--color-yellow-5) radial-gradient(circle, transparent 1%, var(--color-yellow-5) 1%) center/15000%;
+                        background: var(--color-yellow-5);
                         }
 
 .button_ghost.button-yellow:active {
@@ -244,7 +244,7 @@
                         }
 
 .button_outline.button-yellow:hover {
-                        background: var(--color-yellow-5) radial-gradient(circle, transparent 1%, var(--color-yellow-5) 1%) center/15000%;
+                        background: var(--color-yellow-5);
                         }
 
 .button_outline.button-yellow:active {
@@ -252,6 +252,186 @@
                         background-size: 100%;
                         transition: background 0s;
                         }
+
+.avatar_brick {
+          border-radius:0;
+        }
+
+.avatar_circle{
+          border-radius:100px;
+          }
+
+.avatar_rounded {
+          border-radius:4px;
+          }
+
+.accordion_brick {
+          border-radius:0;
+        }
+
+.accordion_circle{
+          border-radius:100px;
+          }
+
+.accordion_rounded {
+          border-radius:4px;
+          }
+
+.badge_brick {
+          border-radius:0;
+        }
+
+.badge_circle{
+          border-radius:100px;
+          }
+
+.badge_rounded {
+          border-radius:4px;
+          }
+
+.button_brick {
+          border-radius:0;
+        }
+
+.button_circle{
+          border-radius:100px;
+          }
+
+.button_rounded {
+          border-radius:4px;
+          }
+
+.chip_brick {
+          border-radius:0;
+        }
+
+.chip_circle{
+          border-radius:100px;
+          }
+
+.chip_rounded {
+          border-radius:4px;
+          }
+
+.file_brick {
+          border-radius:0;
+        }
+
+.file_circle{
+          border-radius:100px;
+          }
+
+.file_rounded {
+          border-radius:4px;
+          }
+
+.hint_brick {
+          border-radius:0;
+        }
+
+.hint_circle{
+          border-radius:100px;
+          }
+
+.hint_rounded {
+          border-radius:4px;
+          }
+
+.input_brick {
+          border-radius:0;
+        }
+
+.input_circle{
+          border-radius:100px;
+          }
+
+.input_rounded {
+          border-radius:4px;
+          }
+
+.select_brick {
+          border-radius:0;
+        }
+
+.select_circle{
+          border-radius:100px;
+          }
+
+.select_rounded {
+          border-radius:4px;
+          }
+
+.switch_brick {
+          border-radius:0;
+        }
+
+.switch_circle{
+          border-radius:100px;
+          }
+
+.switch_rounded {
+          border-radius:4px;
+          }
+
+.tag_brick {
+          border-radius:0;
+        }
+
+.tag_circle{
+          border-radius:100px;
+          }
+
+.tag_rounded {
+          border-radius:4px;
+          }
+
+.toast_brick {
+          border-radius:0;
+        }
+
+.toast_circle{
+          border-radius:100px;
+          }
+
+.toast_rounded {
+          border-radius:4px;
+          }
+
+.toggle_brick {
+          border-radius:0;
+        }
+
+.toggle_circle{
+          border-radius:100px;
+          }
+
+.toggle_rounded {
+          border-radius:4px;
+          }
+
+.toolbar_brick {
+          border-radius:0;
+        }
+
+.toolbar_circle{
+          border-radius:100px;
+          }
+
+.toolbar_rounded {
+          border-radius:4px;
+          }
+
+.tooltip_brick {
+          border-radius:0;
+        }
+
+.tooltip_circle{
+          border-radius:100px;
+          }
+
+.tooltip_rounded {
+          border-radius:4px;
+          }
 
 .color-global-link {
                         color: var(--color-global-link);
@@ -285,6 +465,22 @@
                         fill: var(--color-global-white);
                         }
 
+.color-global-bgmain {
+                        color: var(--color-global-bgmain);
+                        }
+
+.bg-global-bgmain {
+                        background-color: var(--color-global-bgmain);
+                        }
+
+.border-global-bgmain {
+                        border-color: var(--color-global-bgmain);
+                        }
+
+.fill-global-bgmain {
+                        fill: var(--color-global-bgmain);
+                        }
+
 .color-global-bgcard {
                         color: var(--color-global-bgcard);
                         }
@@ -301,20 +497,20 @@
                         fill: var(--color-global-bgcard);
                         }
 
-.color-global-bgmain {
-                        color: var(--color-global-bgmain);
+.color-global-staticprimary {
+                        color: var(--color-global-staticprimary);
                         }
 
-.bg-global-bgmain {
-                        background-color: var(--color-global-bgmain);
+.bg-global-staticprimary {
+                        background-color: var(--color-global-staticprimary);
                         }
 
-.border-global-bgmain {
-                        border-color: var(--color-global-bgmain);
+.border-global-staticprimary {
+                        border-color: var(--color-global-staticprimary);
                         }
 
-.fill-global-bgmain {
-                        fill: var(--color-global-bgmain);
+.fill-global-staticprimary {
+                        fill: var(--color-global-staticprimary);
                         }
 
 .color-text-5 {

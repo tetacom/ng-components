@@ -1,9 +1,10 @@
 html[data-theme='baselight'] {
         --color-global-link: #005ab6;
   --color-global-white: #ffffff;
-  --color-global-bgcard: #ffffff;
   --color-global-bgmain: #f4f5f7;
-  --color-text-5: rgba(0, 0, 0, 0.04);
+  --color-global-bgcard: #ffffff;
+  --color-global-staticprimary: #263077;
+  --color-text-5: rgba(0, 0, 0, 0.05);
   --color-text-10: rgba(0, 0, 0, 0.1);
   --color-text-20: rgba(0, 0, 0, 0.16);
   --color-text-30: rgba(0, 0, 0, 0.28);
@@ -19,10 +20,10 @@ html[data-theme='baselight'] {
   --color-primary-30: #579fff;
   --color-primary-40: #3789f4;
   --color-primary-50: #2173df;
-  --color-primary-60: #2569d3;
-  --color-primary-70: #285fc8;
-  --color-primary-80: #2b57bc;
-  --color-primary-90: #2346a8;
+  --color-primary-60: #2461c8;
+  --color-primary-70: #26449e;
+  --color-primary-80: #26398a;
+  --color-primary-90: #263077;
   --color-green-5: #e6f4f0;
   --color-green-10: #bbe0d3;
   --color-green-20: #90cbb5;
