@@ -5,6 +5,12 @@
   align-items: center;
   grid-gap: 8px;
 
+  &_disabled {
+    cursor: default!important;
+    fill: var(--color-text-5)!important;
+    color: var(--color-text-50)!important;
+  }
+
   &__tick {
     background: var(--color-global-bgcard);
     border: solid 1px var(--color-text-20);
@@ -14,22 +20,29 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15) inset;
+
     &_active {
       border: solid 0;
-      border-radius: 2px;
+      border-radius: 4px;
       background: var(--color-primary-50);
       fill: var(--color-global-white);
     }
   }
 
-  &:hover {
+  &:hover:not(&_disabled) {
     cursor: pointer;
   }
 
-  &:hover &__tick {
-    border-color: var(--color-text-50);
+
+  &:hover:not(&_disabled) &__tick {
+    background: var(--color-text-5);
+    border-color: var(--color-text-30);
+
+    &_active {
+      background: var(--color-primary-60);
+    }
   }
+
 
   @each $paletteName in $palettes {
     &.checkbox-#{$paletteName} {
