@@ -1,0 +1,9 @@
+<div class="divider" style="width: 100%">
+  <div class="bg-text-20" style="height: 1px"></div>
+  <div class="divider-content padding-h-2" *ngIf="!template; else templateOutlet">{{ label }}</div>
+  <div class="bg-text-20" style="height: 1px"></div>
+</div>
+
+<ng-template #templateOutlet>
+  <ng-container *ngTemplateOutlet="template"></ng-container>
+</ng-template>
