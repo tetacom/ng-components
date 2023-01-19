@@ -83,11 +83,15 @@
 
   .close-icon {
     display: none;
-    position: absolute;
     right: 4px;
+
+    &:hover {
+      cursor: pointer;
+      display: flex;
+    }
   }
 
-  &:hover:not([disabled]):not(&_disabled), &:focus-within {
+  &:focus-within {
     .close-icon {
       display: flex;
     }

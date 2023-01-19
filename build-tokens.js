@@ -180,7 +180,7 @@ StyleDictionary.registerFormat({
                         transition: background 0s;
                         }\n\n`; // outline
     });
-    ['avatar', 'accordion', 'badge', 'button', 'chip', 'file', 'hint', 'input', 'select', 'switch', 'tag', 'toast', 'toggle', 'toolbar', 'tooltip'].forEach((component) => {
+    ['avatar', 'accordion', 'badge', 'button', 'chip', 'file', 'datepicker', 'hint', 'list_item', 'navigation', 'input', 'select', 'switch', 'tag', 'toast', 'toggle', 'tooltip'].forEach((component) => {
       output += `.${component}_brick {
           border-radius:0;
         }\n\n`;
@@ -188,7 +188,7 @@ StyleDictionary.registerFormat({
           border-radius:100px;
           }\n\n`;
       output += `.${component}_rounded {
-          border-radius:4px;
+          border-radius:8px;
           }\n\n`;
     })
     dictionary.allProperties.forEach(function (prop) {

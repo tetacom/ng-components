@@ -20,8 +20,9 @@
     &:hover {
       cursor: pointer;
     }
+
     &:hover:not(&_active) {
-      background: var(--color-text-10);
+      background: var(--color-text-5);
     }
 
     &_active {
