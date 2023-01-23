@@ -1,11 +1,11 @@
-import { Meta } from '@storybook/angular/types-6-0';
-import { number, select, withKnobs } from '@storybook/addon-knobs';
-import { ButtonModule } from '../../component/button/button.module';
-import { PopupContentComponent } from '../../component/dynamic-component/popup-content/popup-content.component';
-import { IconModule } from '../../component/icon/icon.module';
-import { Align } from '../../common/enum/align.enum';
-import { VerticalAlign } from '../../common/enum/vertical-align.enum';
-import { HintModule } from './hint.module';
+import {Meta} from '@storybook/angular/types-6-0';
+import {number, select, withKnobs} from '@storybook/addon-knobs';
+import {ButtonModule} from '../../component/button/button.module';
+import {PopupContentComponent} from '../../component/dynamic-component/popup-content/popup-content.component';
+import {IconModule} from '../../component/icon/icon.module';
+import {Align} from '../../common/enum/align.enum';
+import {VerticalAlign} from '../../common/enum/vertical-align.enum';
+import {HintModule} from './hint.module';
 
 export default {
   title: 'Directive/Hint',
@@ -50,6 +50,7 @@ export const fromString = () => ({
                      [palette]="'primary'"
                      [tetaHint]="'You can get it now, right?'"
                      [align]="align"
+                     viewType="rounded"
                      [verticalAlign]="verticalAlign"
                      [delay]="delay"
                      [className]="'one'">

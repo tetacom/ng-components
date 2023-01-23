@@ -20,60 +20,26 @@ $sizes: (
   '200':200
 );
 
-.avatar{
+.avatar {
   font-style: normal;
   font-weight: 600;
   line-height: 16px;
 }
+
 @each $sizeName, $size in $sizes {
-  .avatar_rounded-size-#{$sizeName} {
+  .avatar-size-#{$sizeName} {
     height: #{$size}px;
     width: #{$size}px;
-    border-radius: 8px;
     font-size: map-get($font-sizes, $sizeName);
-    img{
-      height: #{$size}px;
-      width: #{$size}px;
-      border-radius: 8px;
-    }
-    div{
-      height: #{$size}px;
-      width: #{$size}px;
-      border-radius: 8px;
-    }
-  }
 
-  .avatar_brick-size-#{$sizeName} {
-    height: #{$size}px;
-    width: #{$size}px;
-    border-radius: 0;
-    font-size: map-get($font-sizes, $sizeName);
-    img{
+    img {
       height: #{$size}px;
       width: #{$size}px;
-      border-radius: 0;
     }
-    div{
-      height: #{$size}px;
-      width: #{$size}px;
-      border-radius: 0;
-    }
-  }
 
-  .avatar_circle-size-#{$sizeName} {
-    height: #{$size}px;
-    width: #{$size}px;
-    border-radius: #{$size}px;
-    font-size: map-get($font-sizes, $sizeName);
-    img{
+    div {
       height: #{$size}px;
       width: #{$size}px;
-      border-radius: #{$size}px;
-    }
-    div{
-      height: #{$size}px;
-      width: #{$size}px;
-      border-radius: #{$size}px;
     }
   }
 }

@@ -19,7 +19,7 @@ export const basicAccordion = () => ({
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="font-body-3 padding-3 bg-global-bgcard">
       <teta-accordion>
-        <teta-accordion-item>
+        <teta-accordion-item [viewType]="'rounded'">
           <teta-accordion-head>
             Heading 1
           </teta-accordion-head>
@@ -35,7 +35,7 @@ export const basicAccordion = () => ({
             <div class="padding-v-3 padding-h-5">I am the content 2</div>
           </ng-template>
         </teta-accordion-item>
-        <teta-accordion-item>
+        <teta-accordion-item [viewType]="'brick'">
           <teta-accordion-head>
             Heading 3
           </teta-accordion-head>

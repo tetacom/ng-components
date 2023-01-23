@@ -36,20 +36,20 @@ export const buttons = () => ({
         <div class="row gap-20">
             <div *ngFor="let palette of palettes;let i=index" class="column" style="grid-gap: 20px">
             <p class="font-body-3">{{types[i]}}</p>
-                <button teta-button [disabled]="disabled" [size]="size" [type]="types[i]" [palette]="palette">
+                <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette">
                   <teta-icon *ngIf="leftIcon" [name]="'addCircle'"></teta-icon>
                   {{text}}
                   <teta-icon *ngIf="rightIcon" [name]="'user'"></teta-icon>
                 </button>
-                <button teta-button [disabled]="disabled" [size]="size" [type]="types[i]" [palette]="palette" [square]="true">
+                <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette" [square]="true">
                   <teta-icon *ngIf="leftIcon" [name]="'addCircle'"></teta-icon>
                 </button>
-                <button teta-button [disabled]="disabled" [size]="size" [type]="types[i]" [palette]="palette" [view]="'outline'">
+                <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette" [view]="'outline'">
                   <teta-icon *ngIf="leftIcon" [name]="'addCircle'"></teta-icon>
                   {{text}}
                   <teta-icon *ngIf="rightIcon" [name]="'user'"></teta-icon>
                 </button>
-                <button teta-button [disabled]="disabled" [size]="size" [type]="types[i]" [palette]="palette" [view]="'ghost'">
+                <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette" [view]="'ghost'">
                   <teta-icon *ngIf="leftIcon" [name]="'addCircle'"></teta-icon>
                   {{text}}
                   <teta-icon *ngIf="rightIcon" [name]="'user'"></teta-icon>

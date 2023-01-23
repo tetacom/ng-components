@@ -9,8 +9,9 @@ import {
   OnInit,
   Optional,
 } from '@angular/core';
-import { AccordionContentDirective } from '../accordion-content.directive';
-import { AccordionComponent } from '../accordion/accordion.component';
+import {AccordionContentDirective} from '../accordion-content.directive';
+import {AccordionComponent} from '../accordion/accordion.component';
+import {viewType} from "../../../common/model/view-type.model";
 
 @Component({
   selector: 'teta-accordion-item',
@@ -19,16 +20,22 @@ import { AccordionComponent } from '../accordion/accordion.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccordionItemComponent implements OnInit {
-  @ContentChild(AccordionContentDirective, { static: false })
+
+  @ContentChild(AccordionContentDirective, {static: false})
   content: AccordionContentDirective;
 
   @HostBinding('class.accordion-item_active')
   @Input()
   open: boolean;
   @Input() disabled: boolean;
-
+  @Input() viewType: viewType = 'rounded'
   @HostBinding('class.accordion-item') private readonly accordionItemClass =
     true;
+
+  @HostBinding(`class`)
+  get class() {
+    return `accordion_${this.viewType}`
+  }
 
   private readonly accordion$: AccordionComponent;
 
@@ -44,5 +51,6 @@ export class AccordionItemComponent implements OnInit {
     this.cdr$.detectChanges();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }

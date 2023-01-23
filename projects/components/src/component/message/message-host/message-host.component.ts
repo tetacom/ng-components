@@ -9,11 +9,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { MessageService } from '../message.service';
-import { Message } from '../model/message';
-import { Align } from '../../../common/enum/align.enum';
-import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
-import { takeWhile } from 'rxjs/operators';
+import {MessageService} from '../message.service';
+import {Message} from '../model/message';
+import {Align} from '../../../common/enum/align.enum';
+import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
+import {takeWhile} from 'rxjs/operators';
 
 @Component({
   selector: 'teta-message-host',
@@ -54,7 +54,8 @@ export class MessageHostComponent implements OnInit, OnDestroy {
 
   private _alive = true;
 
-  constructor(private _svc: MessageService, private _cdr: ChangeDetectorRef) {}
+  constructor(private _svc: MessageService, private _cdr: ChangeDetectorRef) {
+  }
 
   ngOnInit() {
     this._svc.message

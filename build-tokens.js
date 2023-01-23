@@ -1,6 +1,8 @@
 const StyleDictionary = require("style-dictionary");
 const tokensJson = require(__dirname + "/figma-tokens/tokens.json");
-
+const getButtonsClasses = require("./tokens-factory/button.js");
+const getRadiusClasses = require("./tokens-factory/border-radius.js");
+const getColorsClasses = require("./tokens-factory/colors");
 // Look for args passed on the command line
 const args = require("minimist")(process.argv.slice(2));
 const themes = args.theme ? args.theme.split(",") : ["baselight", "basedark"];
@@ -79,6 +81,7 @@ StyleDictionary.registerTransform({
     return `${topLeft}px`;
   },
 });
+
 StyleDictionary.registerTransform({
   name: "css/spacing",
   type: "value",
@@ -100,32 +103,6 @@ StyleDictionary.registerTransformGroup({
   ]),
 });
 
-const utilities = [
-  {
-    name: "color",
-    tokenType: "color",
-    CSSprop: "color",
-  },
-  {
-    name: "bg",
-    tokenType: "color",
-    CSSprop: "background-color",
-  },
-  {
-    name: "border",
-    tokenType: "color",
-    CSSprop: "border-color",
-  },
-  {
-    name: "fill",
-    tokenType: "color",
-    CSSprop: "fill",
-  },
-  {
-    name: "button",
-    tokenType: "color",
-  },
-];
 
 StyleDictionary.registerFilter({
   name: "utilityToken",
@@ -138,77 +115,7 @@ StyleDictionary.registerFormat({
   name: "utility",
   formatter: function (dictionary, platform) {
     let output = "";
-
-    ["primary", "text", "red", "green", "yellow"].forEach((palette) => {
-      const utilityClass = "button" + "-" + palette;
-      output += `.button_primary.${utilityClass} {
-                        background-color:var(--color-${palette}-50);
-                        transition: background 0.8s;
-                        }\n\n.button_primary.${utilityClass}:hover {
-                        background: var(--color-${palette}-60);
-                        }\n\n.button_primary.${utilityClass}:active {
-                        background-color: var(--color-${palette}-70);
-                        background-size: 100%;
-                        transition: background 0s;
-                        }\n\n`; // primary
-
-      output += `.button_ghost.${utilityClass} {
-                        color: var(--color-${palette}-90);
-                        fill: var(--color-${palette}-90);
-                        transition: background 0.8s;
-                        background-color: transparent;
-                        }\n\n.button_ghost.${utilityClass}:hover {
-                        background: var(--color-${palette}-5);
-                        }\n\n.button_ghost.${utilityClass}:active {
-                        background-color: var(--color-${palette}-10);
-                        background-size: 100%;
-                        transition: background 0s;
-                        }\n\n`; // ghost
-
-      output += `.button_outline.${utilityClass} {
-                        color: var(--color-${palette}-50);
-                        fill: var(--color-${palette}-50);
-                        border-color: var(--color-${palette}-50);
-                        border-style: solid;
-                        border-width: 1px;
-                        transition: background 0.8s;
-                        }\n\n.button_outline.${utilityClass}:hover {
-                        background: var(--color-${palette}-5);
-                        }\n\n.button_outline.${utilityClass}:active {
-                        background-color: var(--color-${palette}-10);
-                        background-size: 100%;
-                        transition: background 0s;
-                        }\n\n`; // outline
-    });
-    ['avatar', 'accordion', 'badge', 'button', 'chip', 'file', 'datepicker', 'hint', 'list_item', 'navigation', 'input', 'select', 'switch', 'tag', 'toast', 'toggle', 'tooltip'].forEach((component) => {
-      output += `.${component}_brick {
-          border-radius:0;
-        }\n\n`;
-      output += `.${component}_circle{
-          border-radius:100px;
-          }\n\n`;
-      output += `.${component}_rounded {
-          border-radius:8px;
-          }\n\n`;
-    })
-    dictionary.allProperties.forEach(function (prop) {
-      if (prop.path.indexOf("chart") > 0) {
-        return;
-      }
-
-      const tokenType = prop.path.slice(0, 1)[0];
-
-      utilities.forEach(function (utility) {
-        if (tokenType === utility.tokenType && utility.name !== "button") {
-          const utilityClass =
-            utility.name + "-" + prop.path[1] + "-" + prop.path[2];
-          output += `.${utilityClass} {
-                        ${utility.CSSprop}: var(--color-${prop.path[1]}-${prop.path[2]});
-                        }\n\n`;
-        }
-      });
-    });
-
+    output += getButtonsClasses() + getRadiusClasses(dictionary) + getColorsClasses(dictionary);
     return output;
   },
 });
@@ -228,15 +135,18 @@ for (const theme of themes) {
     getStyleDictionaryThemeConfig(theme)
   );
 
-  const utilityColors = {
+  const utilityProperties = {
     color: {
       ...tokensJson.color[theme],
     },
+    radius: {
+      ...tokensJson.radius
+    }
   };
 
   const StyleDictionaryUtility = StyleDictionary.extend({
     log: "warn",
-    properties: utilityColors,
+    properties: utilityProperties,
     platforms: {
       css: {
         transformGroup: "css",
@@ -253,7 +163,7 @@ for (const theme of themes) {
 
   // BUILD ALL THE PLATFORMS
 
-  if (Object.keys(utilityColors.color)?.length > 1) {
+  if (Object.keys(utilityProperties.color)?.length > 1) {
     StyleDictionaryUtility.buildAllPlatforms();
   }
 

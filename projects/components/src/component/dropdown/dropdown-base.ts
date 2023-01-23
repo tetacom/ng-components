@@ -19,6 +19,7 @@ import {DropdownContentDirective} from './dropdown-content.directive';
 import {AutoCloseIgnoreCase} from '../../common/contract/auto-close-ignore-case';
 import {IRect} from '../../common/contract/i-rect';
 import {takeWhile, throttleTime} from 'rxjs/operators';
+import {viewType} from '../../common/model/view-type.model';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
@@ -29,6 +30,7 @@ export class DropdownBase {
   @Input() disabled: boolean;
   @Input() backdrop = false;
   @Input() className: string | string[];
+  @Input() viewType: viewType = 'rounded';
 
   @Input()
   set open(val: boolean) {
@@ -183,6 +185,7 @@ export class DropdownBase {
     const content = this._content.nativeElement;
     const container = (this._body = this._body || renderer.createElement('div'));
     renderer.addClass(container, 'dropdown');
+    renderer.addClass(container, 'dropdown_' + this.viewType);
     if (this.backdrop) {
       this._backdrop = renderer.createElement('div');
       renderer.addClass(this._backdrop, 'dropdown-backdrop');

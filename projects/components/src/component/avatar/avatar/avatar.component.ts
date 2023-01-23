@@ -11,12 +11,12 @@ export class AvatarComponent implements OnInit {
   @Input() photo?: string | ArrayBuffer;
   @Input() name?: string;
   @Input() id?: number = 0;
-  @Input() type?: 'circle' | 'rounded' | 'brick' = 'circle';
+  @Input() viewType?: 'circle' | 'rounded' | 'brick' = 'circle';
   @Input() size?: '24' | '28' | '32' | '44' | '64' | '128' | '200' = '28';
 
   @HostBinding('class') get avatar() {
     let avatar = 'avatar ';
-    avatar += 'avatar_' + this.type + '-size-' + this.size;
+    avatar += 'avatar-size-' + this.size;
     return avatar;
   }
 

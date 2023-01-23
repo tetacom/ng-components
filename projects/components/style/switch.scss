@@ -4,7 +4,6 @@
 .switch {
   display: inline-flex;
   border: solid 0;
-  border-radius: 4px;
   height: 28px;
   @include getFont($fonts, 'button-2');
   background: var(--color-global-bgcard);
@@ -27,10 +26,10 @@
 
     &_active {
       border: solid 0;
-      border-radius: 4px;
       background: var(--color-primary-50);
       fill: var(--color-global-white);
       color: var(--color-global-white);
     }
   }
 }
+

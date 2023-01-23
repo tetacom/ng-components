@@ -253,8 +253,93 @@
                         transition: background 0s;
                         }
 
+.button_brick {
+          border-radius:0px;
+        }
+
+.button_circle{
+          border-radius:24px;
+          }
+
+.button_rounded {
+          border-radius:8px;
+          }
+
+.input_brick {
+          border-radius:0px;
+        }
+
+.input_circle{
+          border-radius:24px;
+          }
+
+.input_rounded {
+          border-radius:8px;
+          }
+
+.select_brick {
+          border-radius:0px;
+        }
+
+.select_circle{
+          border-radius:24px;
+          }
+
+.select_rounded {
+          border-radius:8px;
+          }
+
+.message_brick {
+          border-top-right-radius:0px;
+          border-bottom-right-radius:0px;
+        }
+
+.message_circle{
+          border-radius:100px;
+
+          }
+
+          .message_circle:before{
+            border-top-left-radius: 100px;
+            border-bottom-left-radius: 100px;
+          }
+          
+
+.message_rounded {
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+          border-top-right-radius:8px;
+          border-bottom-right-radius:8px;
+          }
+
+          .message_rounded:before{
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+          }
+
+.switch_brick {
+          border-radius:0px;
+        }
+
+.switch_circle{
+          border-radius:24px;
+          }
+
+          .switch_circle .switch-button{
+            border-radius:24px;
+          }
+          
+
+.switch_rounded {
+          border-radius:8px;
+          }
+
+          .switch_rounded .switch-button{
+            border-radius:8px;
+          }
+
 .avatar_brick {
-          border-radius:0;
+          border-radius:0px;
         }
 
 .avatar_circle{
@@ -262,11 +347,11 @@
           }
 
 .avatar_rounded {
-          border-radius:4px;
+          border-radius:8px;
           }
 
 .accordion_brick {
-          border-radius:0;
+          border-radius:0px;
         }
 
 .accordion_circle{
@@ -274,11 +359,11 @@
           }
 
 .accordion_rounded {
-          border-radius:4px;
+          border-radius:8px;
           }
 
 .badge_brick {
-          border-radius:0;
+          border-radius:0px;
         }
 
 .badge_circle{
@@ -286,23 +371,11 @@
           }
 
 .badge_rounded {
-          border-radius:4px;
-          }
-
-.button_brick {
-          border-radius:0;
-        }
-
-.button_circle{
-          border-radius:100px;
-          }
-
-.button_rounded {
-          border-radius:4px;
+          border-radius:8px;
           }
 
 .chip_brick {
-          border-radius:0;
+          border-radius:0px;
         }
 
 .chip_circle{
@@ -310,11 +383,11 @@
           }
 
 .chip_rounded {
-          border-radius:4px;
+          border-radius:8px;
           }
 
 .file_brick {
-          border-radius:0;
+          border-radius:0px;
         }
 
 .file_circle{
@@ -322,11 +395,23 @@
           }
 
 .file_rounded {
-          border-radius:4px;
+          border-radius:8px;
+          }
+
+.datepicker_brick {
+          border-radius:0px;
+        }
+
+.datepicker_circle{
+          border-radius:100px;
+          }
+
+.datepicker_rounded {
+          border-radius:8px;
           }
 
 .hint_brick {
-          border-radius:0;
+          border-radius:0px;
         }
 
 .hint_circle{
@@ -334,35 +419,35 @@
           }
 
 .hint_rounded {
-          border-radius:4px;
+          border-radius:8px;
           }
 
-.input_brick {
-          border-radius:0;
+.dropdown_brick {
+          border-radius:0px;
         }
 
-.input_circle{
+.dropdown_circle{
           border-radius:100px;
           }
 
-.input_rounded {
-          border-radius:4px;
+.dropdown_rounded {
+          border-radius:8px;
           }
 
-.select_brick {
-          border-radius:0;
+.navigation_brick {
+          border-radius:0px;
         }
 
-.select_circle{
+.navigation_circle{
           border-radius:100px;
           }
 
-.select_rounded {
-          border-radius:4px;
+.navigation_rounded {
+          border-radius:8px;
           }
 
 .switch_brick {
-          border-radius:0;
+          border-radius:0px;
         }
 
 .switch_circle{
@@ -370,11 +455,11 @@
           }
 
 .switch_rounded {
-          border-radius:4px;
+          border-radius:8px;
           }
 
 .tag_brick {
-          border-radius:0;
+          border-radius:0px;
         }
 
 .tag_circle{
@@ -382,23 +467,11 @@
           }
 
 .tag_rounded {
-          border-radius:4px;
-          }
-
-.toast_brick {
-          border-radius:0;
-        }
-
-.toast_circle{
-          border-radius:100px;
-          }
-
-.toast_rounded {
-          border-radius:4px;
+          border-radius:8px;
           }
 
 .toggle_brick {
-          border-radius:0;
+          border-radius:0px;
         }
 
 .toggle_circle{
@@ -406,23 +479,11 @@
           }
 
 .toggle_rounded {
-          border-radius:4px;
-          }
-
-.toolbar_brick {
-          border-radius:0;
-        }
-
-.toolbar_circle{
-          border-radius:100px;
-          }
-
-.toolbar_rounded {
-          border-radius:4px;
+          border-radius:8px;
           }
 
 .tooltip_brick {
-          border-radius:0;
+          border-radius:0px;
         }
 
 .tooltip_circle{
@@ -430,7 +491,7 @@
           }
 
 .tooltip_rounded {
-          border-radius:4px;
+          border-radius:8px;
           }
 
 .color-global-link {

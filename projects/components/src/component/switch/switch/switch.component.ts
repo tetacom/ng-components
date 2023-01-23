@@ -4,12 +4,14 @@ import {
   Component,
   forwardRef,
   HostBinding,
+  Input,
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { SwitchService } from '../switch.service';
-import { filter, takeWhile } from 'rxjs/operators';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {SwitchService} from '../switch.service';
+import {filter, takeWhile} from 'rxjs/operators';
+import {viewType} from "../../../common/model/view-type.model";
 
 export const SWITCH_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -25,9 +27,14 @@ export const SWITCH_CONTROL_VALUE_ACCESSOR: any = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SwitchComponent
-  implements OnInit, OnDestroy, ControlValueAccessor
-{
+  implements OnInit, OnDestroy, ControlValueAccessor {
+  @Input() viewType: viewType = 'rounded'
   @HostBinding('class.switch') switchClass = true;
+
+  @HostBinding('class')
+  get class() {
+    return `switch_` + this.viewType
+  }
 
   private _alive = true;
   private _value: any;
@@ -50,9 +57,11 @@ export class SwitchComponent
     this.cdr.markForCheck();
   }
 
-  onChange(_: any) {}
+  onChange(_: any) {
+  }
 
-  onTouched() {}
+  onTouched() {
+  }
 
   registerOnChange(fn: (_: any) => void): void {
     this.onChange = fn;
@@ -62,7 +71,8 @@ export class SwitchComponent
     this.onTouched = fn;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngOnDestroy(): void {
     this._alive = false;

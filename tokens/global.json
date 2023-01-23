@@ -1413,10 +1413,10 @@
       "type": "custom-radius",
       "value": {
         "smoothing": 0,
-        "topLeft": 24,
-        "topRight": 24,
-        "bottomLeft": 24,
-        "bottomRight": 24
+        "topLeft": 100,
+        "topRight": 100,
+        "bottomLeft": 100,
+        "bottomRight": 100
       },
       "extensions": {
         "org.lukasoppermann.figmaDesignTokens": {
