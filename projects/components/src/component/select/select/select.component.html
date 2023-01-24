@@ -12,9 +12,10 @@
        [class.select-head_invalid]="invalid">
     <div class="row_auto flex align-center">
       <teta-icon *ngIf="icon" [name]="icon" class="margin-right-1"></teta-icon>
-      <span class="placeholder" *ngIf="(value == null || value?.length === 0) && placeholder">
-          {{placeholder}}
-        </span>
+      <span class="color-text-40"
+            *ngIf="(value == null || value?.length === 0) && (placeholder || loc.notSelected)">
+        {{placeholder || loc.notSelected}}
+      </span>
       <ng-container
         *ngTemplateOutlet="valueDirective ? valueDirective.template : valueDefault; context: {$implicit: value, value: value}"></ng-container>
     </div>
