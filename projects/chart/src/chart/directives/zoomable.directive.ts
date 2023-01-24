@@ -113,14 +113,12 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       this.zoom.wheelDelta(this.config.zoom?.wheelDelta);
     }
 
-    if(this.config?.zoom?.wheelFilter) {
+    if (this.config?.zoom?.wheelFilter) {
       this.zoom.filter(this.config?.zoom?.wheelFilter)
     }
 
-    if(this.axis.options.scaleType.type !== ScaleType.band) {
-
+    if (this.axis.options.scaleType.type !== ScaleType.band) {
       const extremes = this.axis.extremes as number[];
-
       const maxZoom = this.config.zoom?.max
         ? (extremes[1] - extremes[0]) /
         this.config.zoom?.max
@@ -149,7 +147,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     if (event.sourceEvent) {
       if (Object.keys(event.sourceEvent).length !== 0) {
         const origin = this.axis.scale.copy().domain(this.axis.originDomain);
-        if(this.axis.options.scaleType.type === ScaleType.band) {
+        if (this.axis.options.scaleType.type === ScaleType.band) {
           return
         }
 
@@ -157,7 +155,11 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           this.axis.orientation === AxisOrientation.y
             ? event.transform.rescaleY(origin).domain()
             : event.transform.rescaleX(origin).domain();
-
+        if (domain[0] === null || domain[0] === undefined
+          || domain[1] === null || domain[1] === undefined
+          || Math.abs(domain[0] - domain[1]) < 0.000001) {
+          return;
+        }
         const message = new ZoomMessage({
           eventType: event.type,
           axis: {
@@ -168,7 +170,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           domain,
           chartId: this.config.id
         });
-
         this.zoomService.fireZoom(message);
         this.zoomService.broadcastZoom(message);
       }
@@ -228,11 +229,11 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
       const extent = this.axis.options?.inverted ? domain : [...domain].reverse();
 
-      if(extent[0] <= this.config.zoom?.minTranslate) {
+      if (extent[0] <= this.config.zoom?.minTranslate) {
         return;
       }
 
-      if(extent[1] >= this.config.zoom?.maxTranslate) {
+      if (extent[1] >= this.config.zoom?.maxTranslate) {
         return;
       }
 
