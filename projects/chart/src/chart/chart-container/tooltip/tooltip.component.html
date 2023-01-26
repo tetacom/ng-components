@@ -5,6 +5,7 @@
          [style.position]="'fixed'"
          *ngIf="t.length > 0"
          [style.opacity]="display | async"
+         [hidden]="!p"
          style="pointer-events: none; min-width: 200px;"
          [style.left.px]="p?.left"
          [style.top.px]="p?.top"

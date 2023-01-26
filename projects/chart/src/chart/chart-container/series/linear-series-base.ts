@@ -8,12 +8,11 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import {BehaviorSubject, combineLatest, filter, map, Observable, tap, withLatestFrom} from 'rxjs';
+import {BehaviorSubject, combineLatest, map, Observable, tap, withLatestFrom} from 'rxjs';
 import {ChartService} from '../../service/chart.service';
 import {ScaleService} from '../../service/scale.service';
 import {ZoomService} from '../../service/zoom.service';
 import * as d3 from 'd3';
-import {DragPointType} from '../../model/enum/drag-point-type';
 import {TooltipTracking} from '../../model/enum/tooltip-tracking';
 import {ClipPointsDirection} from '../../model/enum/clip-points-direction';
 import {IScalesMap} from '../../model/i-scales-map';
@@ -226,7 +225,6 @@ export class LinearSeriesBase<T extends BasePoint>
       }
       const rightId = bisect(this.series.data, x0);
       const range = scaleY.range();
-
       const intersect = lineIntersection(
         pointer,
         range[0],
