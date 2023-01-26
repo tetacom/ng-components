@@ -65,6 +65,9 @@ export class TableComponent<T>
     }
     return index;
   };
+  @Input() trackColumns: (index: number, column: TableColumn) => any = (index: number, column: TableColumn) => {
+    return column.name;
+  };
   @Input() editType: EditType = EditType.cell;
   @Input() editEvent: EditEvent = EditEvent.doubleClick;
   @Input() rowEditable: boolean | ((row: T) => boolean);
