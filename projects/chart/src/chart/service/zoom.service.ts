@@ -1,4 +1,4 @@
-import {BehaviorSubject, combineLatest, filter, Observable, shareReplay, Subscription, take,} from 'rxjs';
+import {BehaviorSubject, combineLatest, filter, Observable, shareReplay, Subscription} from 'rxjs';
 import {AxisOrientation} from '../model/enum/axis-orientation';
 import {Injectable, OnDestroy} from '@angular/core';
 import {IBroadcastMessage, ZoomMessage} from '../model/i-broadcast-message';

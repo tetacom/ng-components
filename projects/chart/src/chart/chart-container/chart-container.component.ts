@@ -10,9 +10,10 @@ import {
 import {IChartConfig} from '../model/i-chart-config';
 import {ChartService} from '../service/chart.service';
 import {
+  animationFrameScheduler,
   combineLatest,
   map,
-  Observable,
+  Observable, observeOn,
   shareReplay,
   withLatestFrom,
 } from 'rxjs';
@@ -71,7 +72,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     this.size = this._svc.size;
 
     this.scales = this._scaleService.scales.pipe(
-      // observeOn(animationFrameScheduler),
+      observeOn(animationFrameScheduler),
       tetaZoneFull(this._zone),
       shareReplay({
         bufferSize: 1,

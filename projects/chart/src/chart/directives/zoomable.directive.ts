@@ -1,4 +1,13 @@
-import {AfterViewInit, Directive, ElementRef, HostBinding, Input, NgZone, OnDestroy,} from '@angular/core';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
+  NgZone,
+  OnDestroy,
+} from '@angular/core';
 import {ZoomService} from '../service/zoom.service';
 import {IChartConfig} from '../model/i-chart-config';
 import {Axis} from '../core/axis/axis';
@@ -27,6 +36,18 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   private zoom: ZoomBehavior<any, any>;
   private alive = true;
 
+  @HostListener('mouseenter') mouseenter() {
+    // this.initZoomListeners();
+    this.zoom?.on('start zoom end', this.zoomed);
+    this._element?.call(this.zoom).on('dblclick.zoom', null);
+
+  }
+
+  @HostListener('mouseleave') mouseleave() {
+    this.zoom?.on('start zoom end', null);
+    this._element?.on('wheel', null);
+  }
+
   private currentTransform = zoomIdentity;
 
   constructor(
@@ -50,7 +71,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    this.zoom?.on('zoom end', null);
+    this.zoom?.on('start zoom end', null);
     this._element?.on('wheel', null);
     this.alive = false;
   }
@@ -135,8 +156,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     }
 
 
-    this.zoom.on('start zoom end', this.zoomed);
-    this._element.call(this.zoom).on('dblclick.zoom', null);
+    // this.zoom.on('start zoom end', this.zoomed);
+    // this._element.call(this.zoom).on('dblclick.zoom', null);
 
     if (this.config?.zoom?.zoomBehavior === ZoomBehaviorType.wheel) {
       this.runWheelTranslate();
@@ -144,7 +165,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   }
 
   zoomed = (event: D3ZoomEvent<any, any>) => {
-    if (event.sourceEvent) {
+    if (event.sourceEvent && (this.elementRef.nativeElement === event.sourceEvent.target || this.elementRef.nativeElement.contains(event.sourceEvent.target))) {
       if (Object.keys(event.sourceEvent).length !== 0) {
         const origin = this.axis.scale.copy().domain(this.axis.originDomain);
         if (this.axis.options.scaleType.type === ScaleType.band) {
