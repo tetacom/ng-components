@@ -105,6 +105,9 @@ export class PositionUtil {
     if (rect.left < 0) {
       rect.left = 0;
     }
+    if (rect.left + elementWidth > window.innerWidth) {
+      rect.left = window.innerWidth - elementWidth;
+    }
     if (rect.top + elementHeight > window.innerHeight || rect.bottom < 0) {
       rect.bottom = 0;
     }
@@ -117,10 +120,18 @@ export class PositionUtil {
     if (verticalAlign === VerticalAlign.top || verticalAlign === VerticalAlign.innerTop) {
       rect.maxHeight = containerPosition.top;
     }
-    rect.left = rect.left - transformedParentRect.left;
-    rect.right = rect.right - transformedParentRect.left;
-    rect.top = rect.top - transformedParentRect.top;
-    rect.bottom = rect.bottom ? rect.bottom - transformedParentRect.bottom : rect.bottom;
+    if (!isNaN(rect.left)) {
+      rect.left = rect.left - transformedParentRect.left;
+    }
+    if (!isNaN(rect.right)) {
+      rect.right = rect.right - transformedParentRect.left;
+    }
+    if (!isNaN(rect.top)) {
+      rect.top = rect.top - transformedParentRect.top;
+    }
+    if (!isNaN(rect.bottom)) {
+      rect.bottom = rect.bottom ? rect.bottom - transformedParentRect.bottom : rect.bottom;
+    }
     return rect;
   }
 

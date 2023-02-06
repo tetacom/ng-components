@@ -787,6 +787,14 @@ export class TableService<T> {
         maxWidth = cell.scrollWidth;
       }
     });
+    const aggCells = table.querySelectorAll(
+      `.aggregate-cell[data-column="${column.name}"] .cell-text`
+    );
+    aggCells?.forEach((cell) => {
+      if (cell.scrollWidth > maxWidth) {
+        maxWidth = cell.scrollWidth;
+      }
+    });
     column.flex = 0;
     column.width = maxWidth + 20;
   }

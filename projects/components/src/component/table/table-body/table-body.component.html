@@ -85,7 +85,7 @@
              *ngIf="selectType === selectTypeEnum.checkBox && locked.length < 1">
           <teta-icon [name]="'sumColor'"></teta-icon>
         </div>
-        <div class="cell cell-component"
+        <div class="cell cell-component aggregate-cell"
              *ngFor="let column of locked; let colIndex = index; trackBy: trackColumns;"
              [attr.data-column]="column.name"
              [ngClass]="column.cellClass"
@@ -103,7 +103,7 @@
            *ngIf="selectType === selectTypeEnum.checkBox && locked.length < 1">
         <teta-icon [name]="'sumColor'"></teta-icon>
       </div>
-      <div class="cell cell-component"
+      <div class="cell cell-component aggregate-cell"
            *ngFor="let column of unlocked; let colIndex = index; trackBy: trackColumns;"
            [attr.data-column]="column.name"
            [ngClass]="column.cellClass"
