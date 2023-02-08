@@ -37,10 +37,15 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   private alive = true;
 
   @HostListener('mouseenter') mouseenter() {
-    // this.initZoomListeners();
+
+
     this.zoom?.on('start zoom end', this.zoomed);
     this._element?.call(this.zoom).on('dblclick.zoom', null);
 
+    // Run wheel event listener
+    if (this.config?.zoom?.zoomBehavior === ZoomBehaviorType.wheel) {
+      this.runWheelTranslate();
+    }
   }
 
   @HostListener('mouseleave') mouseleave() {
@@ -258,6 +263,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         return;
       }
 
+
+
       const message = new ZoomMessage({
         eventType: type,
         element: this.elementRef,
@@ -276,9 +283,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     };
 
     this._element.on('wheel', (event: WheelEvent) => {
-
-
       event.preventDefault();
+
       if (event.ctrlKey) {
         return;
       }
