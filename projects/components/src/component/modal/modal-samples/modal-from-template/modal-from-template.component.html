@@ -13,12 +13,12 @@
       </div>
     </div>
     <teta-toolbar [palette]="'panel'">
-      <button teta-button
+      <button type="button" teta-button
               [palette]="'primary'"
               (click)="modal.close({reason: closeReason.exit })">
         Отменить
       </button>
-      <button teta-button
+      <button type="button" teta-button
               [palette]="'primary'"
               (click)="modal.close({reason: closeReason.resolve })">
         Создать
@@ -26,6 +26,6 @@
     </teta-toolbar>
   </div>
 </ng-template>
-<button teta-button [palette]="'primary'" (click)="create(content)">
+<button type="button" teta-button [palette]="'primary'" (click)="create(content)">
   Create modal
 </button>

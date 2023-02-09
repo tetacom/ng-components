@@ -31,7 +31,8 @@
     </teta-tree>
   </div>
   <teta-toolbar class="justify-content-end">
-    <button teta-button
+    <button type="button"
+            teta-button
             [disabled]="allColumnsVisible() === false"
             [palette]="'primary'"
             (click)="setColumnsVisibility()">

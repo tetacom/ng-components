@@ -12,11 +12,11 @@
     </div>
   </div>
   <teta-toolbar [palette]="'panel'">
-    <button teta-button [palette]="'primary'"
+    <button type="button" teta-button [palette]="'primary'"
             (click)="modal.close({reason: closeReason.exit })">
       Отменить
     </button>
-    <button teta-button [palette]="'primary'"
+    <button type="button" teta-button [palette]="'primary'"
             (click)="modal.close({reason: closeReason.resolve })">
       Создать
     </button>

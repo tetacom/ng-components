@@ -19,6 +19,7 @@
     <div class="row align-center justify-content-between">
       <div>
         <button teta-button
+                type="button"
                 [palette]="'text'"
                 [view]="displayMode===datePickerModeEnum.month ? 'primary' : 'ghost'"
                 (click)="setMode(datePickerModeEnum.month)"
@@ -26,6 +27,7 @@
           {{locale.months[_currentMonth || today.getMonth()]}}
         </button>
         <button teta-button
+                type="button"
                 class="margin-left-2"
                 [palette]="'text'"
                 [view]="displayMode===datePickerModeEnum.year ? 'primary' : 'ghost'"
@@ -35,6 +37,7 @@
         </button>
       </div>
       <button teta-button
+              type="button"
               [palette]="'text'"
               [view]="'ghost'"
               (click)="setToday()">
