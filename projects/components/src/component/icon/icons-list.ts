@@ -224,3 +224,11 @@ export const coloredIconsList = [
   'wellConstructionColor',
   'wellGroupColor',
 ];
+export const fileIconsList = [
+  'csv',
+  'doc',
+  'las',
+  'pdf',
+  'txt',
+  'xls'
+];
