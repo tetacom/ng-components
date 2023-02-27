@@ -1,0 +1,17 @@
+<teta-dropdown [(open)]="open" [viewType]="viewType" [disabled]="disabled" [verticalAlign]="verticalAlign" [align]="align">
+  <div tetaDropdownHead
+       [class]="'datepicker-head font-body-3 gap-8 datepicker_'+viewType"
+       [ngClass]="{'datepicker-head_invalid':invalid,'datepicker-head_disabled':disabled}">
+    <div class="row_auto nowrap" *ngIf="{selectedDate:selectedDate|async}as data">
+      {{data.selectedDate | date : 'dd.MM.yyyy'}}
+    </div>
+    <teta-icon [name]="'calendar'"></teta-icon>
+  </div>
+  <div tetaDropdownContent>
+    <ng-container *ngIf="open">
+      <teta-calendar [max]="max" [min]="min" (setDate)="changeSelectedDate($event)" [selectedDate]="selectedDate|async"
+                     [viewType]="viewType" [locale]="locale"></teta-calendar>
+    </ng-container>
+
+  </div>
+</teta-dropdown>

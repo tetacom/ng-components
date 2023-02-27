@@ -1,0 +1,19 @@
+<div class="column">
+  <div class="font-title-3 padding-v-4 padding-h-3">
+    <p>{{yearPickerDictionary.get(locale)}}</p>
+  </div>
+  <div class="datepicker-year overflow-y-auto">
+    <div *ngFor="let y of years" class="font-button-2" (click)="pickYear(y.id)">
+      <div [ngClass]="{'datepicker-year_item_active':y.isSelected}"
+           [class]="'datepicker-year_item column align-center justify-content-center datepicker_'+viewType">
+        <div *ngIf=" y.isSelected===true" tetaScrollToSelectedYear>
+          <span>{{y.id}}</span>
+        </div>
+        <div *ngIf="!y.isSelected">
+          <span>{{y.id}} </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

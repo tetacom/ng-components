@@ -1,0 +1,13 @@
+<div class="datepicker-week font-caption">
+  <p class="datepicker-day" *ngFor="let day of daysOfWeek">
+    {{day}}
+  </p>
+</div>
+<div class="datepicker-picker color-text-90 font-body-3">
+  <ng-container *ngFor="let day of calendar">
+    <div [class]="'datepicker-date font-body-3 datepicker_'+viewType" (click)="pickDate(day)"
+         [ngClass]="{'datepicker-date_active':day.selected,'datepicker-date_disabled':day.disabled,'color-text-30':day.disabled||!day.isCurrentMonth}">
+      <teta-day-item [day]="day"></teta-day-item>
+    </div>
+  </ng-container>
+</div>

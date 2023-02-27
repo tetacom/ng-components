@@ -1,4 +1,4 @@
- {
+{
   "name": "teta-components",
   "version": "0.0.0",
   "scripts": {
@@ -30,6 +30,7 @@
     "@tetacom/ng-components": "^1.0.71",
     "d3": "^7.1.1",
     "html-to-image": "^1.9.0",
+    "luxon": "^3.2.1",
     "minimist": "^1.2.7",
     "object-hash": "^2.2.0",
     "rxjs": "^7.5.5",
