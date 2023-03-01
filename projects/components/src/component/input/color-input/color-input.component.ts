@@ -67,16 +67,16 @@ export class ColorInputComponent implements ControlValueAccessor {
   }
 
   getHexColor(color: string) {
-    if (color?.startsWith('rgb')) {
+    if (color && color.startsWith('rgb')) {
       const value = color.substring(
         color.indexOf('(') + 1,
         color.lastIndexOf(')')
       );
       const colorArray = value.split(',');
-      return `#${parseInt(colorArray[0], 10).toString(16)}${parseInt(
-        colorArray[1],
-        10
-      ).toString(16)}${parseInt(colorArray[2], 10).toString(16)}`;
+      color = `#${
+        ('00' + parseInt(colorArray[0], 10).toString(16)).slice(-2)}${
+        ('00' + parseInt(colorArray[1], 10).toString(16)).slice(-2)}${
+        ('00' + parseInt(colorArray[2], 10).toString(16)).slice(-2)}`;
     }
     return color;
   }
