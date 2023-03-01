@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Info} from "luxon";
 import { viewType } from 'projects/components/src/common/model/view-type.model';
-import {DayModel} from "../../../../date-picker/model/day-model";
+import {DayModel} from "../../../model/day-model";
 
 @Component({
   selector: 'teta-day-picker',

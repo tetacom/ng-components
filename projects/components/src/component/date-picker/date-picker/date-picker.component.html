@@ -1,85 +1,18 @@
-<teta-dropdown
-  class="row row_auto"
-  [disabled]="disabled"
-  [open]="open"
-  [autoCloseIgnore]="['esc', 'inside']"
-  (openChange)="openPicker($event)"
-  [align]="align"
-  [verticalAlign]="verticalAlign"
-  [appendToBody]="appendToBody"
-  [backdrop]="backdrop">
+<teta-dropdown [appendToBody]="appendToBody" [backdrop]="backdrop" [(open)]="open" [viewType]="viewType"
+               [disabled]="disabled" [verticalAlign]="verticalAlign" [align]="align" [autoCloseIgnore]="['esc', 'inside']">
   <div tetaDropdownHead
-       class="datepicker-head font-body-3"
-       [class.datepicker-head_disabled]="disabled"
-       [class.datepicker-head_invalid]="invalid">
-    <div class="row_auto nowrap">
-      {{currentValue !== null && currentValue !== undefined ? (currentValue | date : format) : ''}}
+       [class]="'datepicker-head font-body-3 gap-8 datepicker_'+viewType"
+       [ngClass]="{'datepicker-head_invalid':invalid,'datepicker-head_disabled':disabled}">
+    <div class="row_auto nowrap" *ngIf="{selectedDate:selectedDate|async}as data">
+      {{data.selectedDate | date : 'dd.MM.yyyy'}}
     </div>
     <teta-icon [name]="'calendar'"></teta-icon>
   </div>
   <div tetaDropdownContent class="scrollable" (click)="$event.preventDefault()">
-    <div class="padding-3">
-      <div class="row align-center justify-content-center">
-        <div>
-          <button teta-button
-                  [palette]="'text'"
-                  [view]="displayMode===datePickerModeEnum.month ? 'primary' : 'ghost'"
-                  (click)="setMode(datePickerModeEnum.month)"
-                  (wheel)="scrollMonth($event);">
-            {{locale.months[internalValue?.getMonth()]}}
-          </button>
-          <button teta-button
-                  class="margin-left-2"
-                  [palette]="'text'"
-                  [view]="displayMode===datePickerModeEnum.year ? 'primary' : 'ghost'"
-                  (click)="setMode(datePickerModeEnum.year)"
-                  (wheel)="scrollYear($event);">
-            {{internalValue?.getFullYear()}}
-          </button>
-        </div>
-      </div>
-      <div class="datepicker-content">
-        <teta-year-select
-          *ngIf="displayMode === datePickerModeEnum.year"
-          [currentYear]="internalValue?.getFullYear()"
-          [today]="today"
-          [minDate]="minDate"
-          [maxDate]="maxDate"
-          (yearSelected)="setYear($event)">
-        </teta-year-select>
-        <teta-month-select
-          *ngIf="displayMode === datePickerModeEnum.month"
-          [currentMonth]="internalValue?.getMonth()"
-          [currentYear]="internalValue?.getFullYear()"
-          [locale]="locale"
-          [minDate]="minDate"
-          [maxDate]="maxDate"
-          (monthSelected)="setMonth($event)">
-        </teta-month-select>
-        <teta-day-select
-          *ngIf="displayMode === datePickerModeEnum.date"
-          [ngModel]="currentValue"
-          (ngModelChange)="applyValue($event)"
-          (dateSelected)="setDate($event)"
-          (yearSelected)="setYear($event)"
-          (monthSelected)="setMonth($event)"
-          [minDate]="minDate"
-          [maxDate]="maxDate"
-          [firstDayOfWeek]="firstDayOfWeek"
-          [disabledDays]="disabledDays"
-          [disabledDates]="disabledDates"
-          [disabledPeriods]="disabledPeriods"></teta-day-select>
-      </div>
-    </div>
-    <div *ngIf="showTime" class="datepicker-time padding-v-1 border-top border-text-10 font-body-3 color-text-90">
-      <teta-time-part-control [max]="23" [ngModel]="internalValue?.getHours()"
-                              (ngModelChange)="setHour($event)"></teta-time-part-control>
-      :
-      <teta-time-part-control [ngModel]="internalValue?.getMinutes()"
-                              (ngModelChange)="setMinute($event)"></teta-time-part-control>
-      :
-      <teta-time-part-control [ngModel]="internalValue?.getSeconds()"
-                              (ngModelChange)="setSecond($event)"></teta-time-part-control>
-    </div>
+    <ng-container>
+      <teta-calendar [open]="open" [max]="max" [min]="min" (setDate)="changeSelectedDate($event)" [selectedDate]="selectedDate|async"
+                     [viewType]="viewType" [locale]="locale"></teta-calendar>
+    </ng-container>
+
   </div>
 </teta-dropdown>

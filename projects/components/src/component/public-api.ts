@@ -10,9 +10,6 @@ export * from './button/public-api';
 /* checkbox */
 export * from './checkbox/public-api';
 
-/* d-picker */
-export * from './d-picker/public-api';
-
 /* datepicker */
 export * from './date-picker/public-api';
 

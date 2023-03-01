@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DPickerComponent } from './d-picker.component';
+import { MonthPickerComponent } from './month-picker.component';
 
-describe('DPickerComponent', () => {
-  let component: DPickerComponent;
-  let fixture: ComponentFixture<DPickerComponent>;
+describe('MonthPickerComponent', () => {
+  let component: MonthPickerComponent;
+  let fixture: ComponentFixture<MonthPickerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DPickerComponent ]
+      declarations: [ MonthPickerComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DPickerComponent);
+    fixture = TestBed.createComponent(MonthPickerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

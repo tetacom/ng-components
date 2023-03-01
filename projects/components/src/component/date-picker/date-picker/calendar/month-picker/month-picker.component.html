@@ -14,14 +14,14 @@
       <teta-icon name="arrowRightKey"></teta-icon>
     </teta-button>
   </div>
-  <div class="datepicker-month font-button-2"
+  <div class="datepicker-month font-body-3 color-text-90"
        style="width: 100%">
     <div *ngFor="let month of months" (click)="pickMonth(month.id)">
       <div [ngClass]="{'datepicker-month_item_active':month.isSelected}"
            [class]="'datepicker-month_item column align-center justify-content-center datepicker_'+viewType">
-         <span>
+         <p>
             {{month.name}}
-          </span>
+          </p>
       </div>
     </div>
   </div>

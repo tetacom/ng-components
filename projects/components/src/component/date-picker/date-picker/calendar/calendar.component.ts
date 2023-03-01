@@ -9,11 +9,9 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import {ControlValueAccessor} from "@angular/forms";
 import {BehaviorSubject, combineLatest, map, ReplaySubject, takeWhile} from "rxjs";
 import {DateTime, Info, Interval} from "luxon";
-import {DayModel} from '../../../date-picker/model/day-model';
-import {PickerTouchService} from "../../../date-picker/service/picker-touch.service";
+import {DayModel} from '../../model/day-model';
 import {viewType} from "../../../../common/model/view-type.model";
 import {MinMaxDateModel} from "../../model/min-max-date.model";
 
@@ -24,9 +22,10 @@ import {MinMaxDateModel} from "../../model/min-max-date.model";
   styleUrls: ['./calendar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CalendarComponent implements ControlValueAccessor, OnChanges, OnDestroy {
+export class CalendarComponent implements OnChanges, OnDestroy {
   @Input() selectedDate: Date | string | number = new Date();
   @Input() locale: string;
+  @Input() open: boolean;
   @Input() viewType: viewType;
   @Input() min: Date | string | number;
   @Input() max: Date | string | number;
@@ -38,7 +37,7 @@ export class CalendarComponent implements ControlValueAccessor, OnChanges, OnDes
   public calendar: DayModel[] = []
   private _alive = true;
 
-  constructor(private _cdr: ChangeDetectorRef, private _pickerTouchService: PickerTouchService) {
+  constructor(private _cdr: ChangeDetectorRef) {
     combineLatest([this.currentYear, this.currentMonth, this.minMax]).pipe(
       takeWhile(() => this._alive),
       map(([year, month, minMax]) => this.generateCalendar(DateTime.fromJSDate(new Date(this.selectedDate)), year, month, minMax))
@@ -57,12 +56,12 @@ export class CalendarComponent implements ControlValueAccessor, OnChanges, OnDes
 
   selectMonth(month: number) {
     this.currentMonth.next(month)
-    this.selectedPicker.next("day")
+    this.selectPicker("day")
   }
 
   selectYear(year: number) {
     this.setYear(year)
-    this.selectedPicker.next("day")
+    this.selectPicker("day")
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -71,9 +70,11 @@ export class CalendarComponent implements ControlValueAccessor, OnChanges, OnDes
     this.currentYear.next(new Date(date).getFullYear())
     this.minMax.next({min: this.min, max: this.max})
   }
-  setYear(year: number){
+
+  setYear(year: number) {
     this.currentYear.next(year)
   }
+
   changeMonth(month: number, year: number) {
     if (month > 12) {
       this.currentMonth.next(1)
@@ -103,7 +104,7 @@ export class CalendarComponent implements ControlValueAccessor, OnChanges, OnDes
       .splitBy({day: 1}).map(d => d.start)
     return calendar.map((d) => {
       const matchesMinDate = DateTime.fromJSDate(new Date(minMax.min)).startOf('day').toJSDate() <= new Date(d.toJSDate()) || minMax.min === null;
-      const matchesMaxDate = new Date(d.toJSDate()) <  DateTime.fromJSDate(new Date(minMax.max)).endOf('day').toJSDate() || minMax.max === null;
+      const matchesMaxDate = new Date(d.toJSDate()) < DateTime.fromJSDate(new Date(minMax.max)).endOf('day').toJSDate() || minMax.max === null;
       return new DayModel({
         date: new Date(d.toJSDate()),
         isCurrentMonth: month === d.month,
@@ -111,16 +112,6 @@ export class CalendarComponent implements ControlValueAccessor, OnChanges, OnDes
         selected: d.toJSDate().getFullYear() === selectedDate.toJSDate().getFullYear() && d.toJSDate().getMonth() === selectedDate.toJSDate().getMonth() && d.toJSDate().getDate() === selectedDate.toJSDate().getDate()
       })
     })
-
-  }
-
-  registerOnChange(fn: any): void {
-  }
-
-  registerOnTouched(fn: any): void {
-  }
-
-  writeValue(val: Date | string): void {
 
   }
 
