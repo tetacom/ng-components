@@ -36,9 +36,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   private zoom: ZoomBehavior<any, any>;
   private alive = true;
 
-  @HostListener('mouseenter') mouseenter() {
-
-
+  @HostListener('mouseenter')
+  mouseenter() {
     this.zoom?.on('start zoom end', this.zoomed);
     this._element?.call(this.zoom).on('dblclick.zoom', null);
     // Run wheel event listener
@@ -47,7 +46,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     }
   }
 
-  @HostListener('mouseleave') mouseleave() {
+  @HostListener('mouseleave')
+  mouseleave() {
     this.zoom?.on('start zoom end', null);
     this._element?.on('wheel', null);
   }
@@ -105,9 +105,11 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     const enable =
       (this.axis?.options?.zoom && this.axis?.options.visible !== false) ||
       this.config?.zoom?.enable;
+
     if (!enable) {
       return;
     }
+
     this._element = d3.select(this.elementRef.nativeElement);
     this.zoom = d3.zoom().extent([
       [0, 0],
@@ -159,10 +161,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       this.zoom.scaleExtent([maxZoom, minZoom]);
     }
 
-
-    // this.zoom.on('start zoom end', this.zoomed);
-    // this._element.call(this.zoom).on('dblclick.zoom', null);
-
     if (this.config?.zoom?.zoomBehavior === ZoomBehaviorType.wheel) {
       this.runWheelTranslate();
     }
@@ -205,6 +203,10 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   private runWheelTranslate() {
     let type: 'start' | 'zoom' | 'end' = 'start';
     let wheeling;
+
+    // For touch events
+    this.zoom.on('start zoom end', this.zoomed);
+    this._element?.call(this.zoom);
 
     this.zoom
       .filter(
