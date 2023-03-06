@@ -30,7 +30,7 @@
     </div>
   </ng-container>
   <ng-container *ngIf="data.selectedPicker==='month'">
-    <teta-month-picker [currentYear]="data.currentYear" (changeYear)="setYear($event)"
+    <teta-month-picker [localeMoths]="localeMonths" [currentYear]="data.currentYear" (changeYear)="setYear($event)"
                        [selectedMonth]="data.currentMonth" [viewType]="viewType" [locale]="locale"
                        (selectMonth)="selectMonth($event)"></teta-month-picker>
   </ng-container>

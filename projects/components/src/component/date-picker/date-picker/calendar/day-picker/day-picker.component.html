@@ -1,5 +1,5 @@
 <div class="datepicker-week font-caption">
-  <p class="datepicker-day" *ngFor="let day of daysOfWeek">
+  <p class="datepicker-day" *ngFor="let day of daysOfWeek.get(locale)">
     {{day}}
   </p>
 </div>

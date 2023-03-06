@@ -1,5 +1,4 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Info} from "luxon";
 import {IIdName} from "../../../../../common/contract/i-id-name";
 import {viewType} from "../../../../../common/model/view-type.model";
 
@@ -14,6 +13,7 @@ export class MonthPickerComponent implements OnInit {
   @Input() selectedMonth: number = 1;
   @Input() viewType: viewType;
   @Input() currentYear: number;
+  @Input() localeMoths:Map<string,string[]>
   @Output() selectMonth: EventEmitter<number> = new EventEmitter<number>()
   @Output() changeYear: EventEmitter<number> = new EventEmitter<number>()
   public months: IIdName<any>[] = [];
@@ -29,16 +29,12 @@ export class MonthPickerComponent implements OnInit {
     this.changeYear.emit(year)
   }
 
-  capitalizeFirstLetter(word: string) {
-    return word.charAt(0).toUpperCase() + word.slice(1)
-  }
-
   ngOnInit(): void {
-    this.months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((m) => {
+    this.months = this.localeMoths.get(this.locale).map((m,i) => {
       return {
-        id: m,
-        name: this.capitalizeFirstLetter(Info.months('long', {locale: this.locale})[m - 1]),
-        isSelected: this.selectedMonth === m
+        id: i,
+        name: m,
+        isSelected: this.selectedMonth === i
       }
     })
   }

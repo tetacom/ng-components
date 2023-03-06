@@ -10,10 +10,10 @@ import {
   SimpleChanges
 } from '@angular/core';
 import {BehaviorSubject, combineLatest, map, ReplaySubject, takeWhile} from "rxjs";
-import {DateTime, Info, Interval} from "luxon";
 import {DayModel} from '../../model/day-model';
 import {viewType} from "../../../../common/model/view-type.model";
 import {MinMaxDateModel} from "../../model/min-max-date.model";
+import dayjs, {Dayjs} from "dayjs";
 
 
 @Component({
@@ -35,15 +35,41 @@ export class CalendarComponent implements OnChanges, OnDestroy {
   public currentYear: ReplaySubject<number> = new ReplaySubject<number>(1)
   public selectedPicker: BehaviorSubject<'day' | 'month' | 'year'> = new BehaviorSubject<"day" | "month" | "year">('day')
   public calendar: DayModel[] = []
+  public localeMonths = new Map().set('ru', ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'])
+    .set('en', ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
+
   private _alive = true;
 
-  constructor(private _cdr: ChangeDetectorRef) {
+  constructor(private _cdr: ChangeDetectorRef
+  ) {
+    dayjs().locale('ru', {weekStart: 1});
     combineLatest([this.currentYear, this.currentMonth, this.minMax]).pipe(
       takeWhile(() => this._alive),
-      map(([year, month, minMax]) => this.generateCalendar(DateTime.fromJSDate(new Date(this.selectedDate)), year, month, minMax))
+      map(([year, month, minMax]) => {
+        return this.generateCalendar(dayjs(new Date(this.selectedDate)).locale(this.locale), year, month, minMax)
+      })
     ).subscribe((_) => {
       this.calendar = _;
     })
+  }
+
+  generateCalendar(selectedDate: Dayjs, year: number, month: number, minMax: MinMaxDateModel): DayModel[] {
+
+    const calendarStartDay = selectedDate.set("year", year).set("month", month).set("date", 1).startOf('week');
+    const calendar = new Array(42).fill(1).map((v, i) => {
+      return calendarStartDay.add(i, 'day')
+    });
+    return calendar.map((d) => {
+      const matchesMinDate = dayjs(new Date(minMax.min)).startOf('date').toDate() <= new Date(d.toDate()) || minMax.min === null;
+      const matchesMaxDate = new Date(d.toDate()) < dayjs(new Date(minMax.max)).endOf('date').toDate() || minMax.max === null;
+      return new DayModel({
+        date: new Date(d.toDate()),
+        isCurrentMonth: month === d.month(),
+        disabled: !matchesMinDate || !matchesMaxDate,
+        selected: d.toDate().getFullYear() === new Date(this.selectedDate).getFullYear() && d.toDate().getMonth() === selectedDate.toDate().getMonth() && d.toDate().getDate() === selectedDate.toDate().getDate()
+      })
+    })
+
   }
 
   ngOnDestroy(): void {
@@ -66,7 +92,7 @@ export class CalendarComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     let date = new Date(this.selectedDate);
-    this.currentMonth.next(new Date(date).getMonth() + 1)
+    this.currentMonth.next(new Date(date).getMonth())
     this.currentYear.next(new Date(date).getFullYear())
     this.minMax.next({min: this.min, max: this.max})
   }
@@ -76,11 +102,11 @@ export class CalendarComponent implements OnChanges, OnDestroy {
   }
 
   changeMonth(month: number, year: number) {
-    if (month > 12) {
-      this.currentMonth.next(1)
+    if (month > 11) {
+      this.currentMonth.next(0)
       this.currentYear.next(year + 1)
-    } else if (month < 1) {
-      this.currentMonth.next(12);
+    } else if (month < 0) {
+      this.currentMonth.next(11);
       this.currentYear.next(year - 1)
     } else {
       this.currentMonth.next(month);
@@ -89,31 +115,12 @@ export class CalendarComponent implements OnChanges, OnDestroy {
   }
 
   getMothName(month: number) {
-    return Info.months('long', {locale: this.locale})[month - 1]
+    return this.localeMonths.get(this.locale)[month]
   }
 
   selectDate(date: Date) {
+    console.log(date)
     this.setDate.emit(date);
   }
-
-  generateCalendar(selectedDate: DateTime, year: number, month: number, minMax: MinMaxDateModel): DayModel[] {
-    const calendarStartDay = selectedDate.set({day: 1, year, month}).startOf("week");
-    const calendar = Interval.fromDateTimes(
-      calendarStartDay,
-      calendarStartDay.plus({day: 42}))
-      .splitBy({day: 1}).map(d => d.start)
-    return calendar.map((d) => {
-      const matchesMinDate = DateTime.fromJSDate(new Date(minMax.min)).startOf('day').toJSDate() <= new Date(d.toJSDate()) || minMax.min === null;
-      const matchesMaxDate = new Date(d.toJSDate()) < DateTime.fromJSDate(new Date(minMax.max)).endOf('day').toJSDate() || minMax.max === null;
-      return new DayModel({
-        date: new Date(d.toJSDate()),
-        isCurrentMonth: month === d.month,
-        disabled: !matchesMinDate || !matchesMaxDate,
-        selected: d.toJSDate().getFullYear() === selectedDate.toJSDate().getFullYear() && d.toJSDate().getMonth() === selectedDate.toJSDate().getMonth() && d.toJSDate().getDate() === selectedDate.toJSDate().getDate()
-      })
-    })
-
-  }
-
 
 }
