@@ -7,10 +7,10 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { TableColumn } from '../../table/contract/table-column';
-import { IDictionary } from '../../../common/contract/i-dictionary';
-import { IIdName } from '../../../common/contract/i-id-name';
-import { UntypedFormGroup } from '@angular/forms';
+import {TableColumn} from '../../table/contract/table-column';
+import {IDictionary} from '../../../common/contract/i-dictionary';
+import {IIdName} from '../../../common/contract/i-id-name';
+import {UntypedFormGroup} from '@angular/forms';
 
 @Component({
   selector: 'teta-property-grid',
@@ -31,7 +31,8 @@ export class PropertyGridComponent<T> implements OnInit, OnDestroy {
 
   private _alive = true;
 
-  constructor() {}
+  constructor() {
+  }
 
   onControlValueChange(event: IIdName<any>) {
     const affected = this.columns.filter((_) => _.parentName === event.name);
@@ -51,10 +52,15 @@ export class PropertyGridComponent<T> implements OnInit, OnDestroy {
     this.controlValueChange.emit(event);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngOnDestroy() {
     this._alive = false;
+  }
+
+  trackColumns(index: number, column: TableColumn): any {
+    return column.name;
   }
 
   private getDictValue(value: any, name: string) {

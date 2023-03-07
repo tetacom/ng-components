@@ -3,7 +3,7 @@
     {{column.caption}}
   </span>
   <div class="form-container">
-    <ng-container *ngFor="let col of column.columns">
+    <ng-container *ngFor="let col of column.columns; trackBy: trackColumns">
       <ng-container *ngIf="col.columns?.length < 1">
         <teta-property-grid-item *ngIf="column.editable || !hideNonEditable"
                                  [id]="col.name"

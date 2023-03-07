@@ -1,5 +1,5 @@
 <ng-container *ngIf="columns?.length">
-  <ng-container *ngFor="let column of columns">
+  <ng-container *ngFor="let column of columns; trackBy: trackColumns">
     <teta-property-grid-item *ngIf="column.columns?.length < 1 && (column.editable || !hideNonEditable)"
                              [dict]="dict"
                              [column]="column"
