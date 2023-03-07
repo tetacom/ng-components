@@ -39,7 +39,7 @@ export class ListFilterComponent<T> extends FilterComponentBase<T> implements On
   get visibleOptions() {
     return this.filterOptions?.filter(
       (option: IIdName<any>) => {
-        return option.name?.toString().indexOf(this.search) >= 0;
+        return option.name?.toLowerCase().toString().indexOf(this.search?.toLowerCase()) >= 0;
       }
     );
   }
