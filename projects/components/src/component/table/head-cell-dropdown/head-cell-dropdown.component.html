@@ -1,4 +1,4 @@
-<teta-tabs class="column_auto">
+<teta-tabs class="column_auto" *ngIf="dropDownOpen">
   <ng-container *ngFor="let tab of tabTemplates; trackBy: trackIndex">
     <teta-tab *ngIf="tab.showTab(column)">
       <ng-template tetaTabTitle>
