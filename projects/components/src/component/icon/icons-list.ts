@@ -230,5 +230,8 @@ export const fileIconsList = [
   'las',
   'pdf',
   'txt',
-  'xls'
+  'xls',
+  'png',
+  'jpeg',
+  'jpg',
 ];
