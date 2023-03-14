@@ -226,6 +226,7 @@ export const coloredIconsList = [
 ];
 export const fileIconsList = [
   'csv',
+  'docx',
   'doc',
   'las',
   'pdf',

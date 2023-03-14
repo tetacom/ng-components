@@ -7,5 +7,6 @@ import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconFileComponent {
-  @Input() extension: 'csv' | 'doc' | 'pdf' | 'txt' | 'las' | 'xls' | 'jpeg' | 'jpg' | 'png';
+  @Input() extension: 'csv' | 'doc' | 'docx' | 'pdf' | 'txt' | 'las' | 'xls' | 'jpeg' | 'jpg' | 'png';
 }
+
