@@ -1,18 +1,31 @@
-<teta-dropdown [appendToBody]="appendToBody" [backdrop]="backdrop" [(open)]="open" [viewType]="viewType"
-               [disabled]="disabled" [verticalAlign]="verticalAlign" [align]="align" [autoCloseIgnore]="['esc', 'inside']">
-  <div tetaDropdownHead
-       [class]="'datepicker-head font-body-3 gap-8 datepicker_'+viewType"
-       [ngClass]="{'datepicker-head_invalid':invalid,'datepicker-head_disabled':disabled}">
-    <div class="row_auto nowrap" *ngIf="{selectedDate:selectedDate|async}as data">
-      {{data.selectedDate | date : 'dd.MM.yyyy'}}
+<div [tetaClickOutside]="true" (clickOutside)="onBlur()">
+  <teta-dropdown *ngIf="{selectedDate:selectedDate|async}as data" [appendToBody]="appendToBody" [backdrop]="backdrop"
+                 [(open)]="open" [viewType]="viewType"
+                 [disabled]="disabled" [verticalAlign]="verticalAlign" [align]="align"
+                 [autoCloseIgnore]="['esc', 'inside','enter']">
+    <div tetaDropdownHead
+         [class]="'datepicker-head font-body-3 gap-8 datepicker_'+viewType"
+         [ngClass]="{'datepicker-head_invalid':invalid,'datepicker-head_disabled':disabled}">
+      <teta-input class="row row_auto flex cursor-pointer">
+        <div [class]="'row_auto row datepicker_'+viewType">
+          <div class="row position-relative font-body-3 align-center" [formGroup]="form">
+            <input #input style="z-index: 1" class="border-0 color-text-90" (keydown)="checkEnter($event)" [formControlName]="'inputText'"
+                   [maskito]="maskitoOptions">
+            <div (click)="input.focus()" *ngIf="data.selectedDate" class="position-absolute color-text-10"
+                 style="top:-0.3px;cursor: text;user-select: none">{{placeholder}}</div>
+          </div>
+          <teta-icon [name]="'calendar'"></teta-icon>
+        </div>
+      </teta-input>
     </div>
-    <teta-icon [name]="'calendar'"></teta-icon>
-  </div>
-  <div tetaDropdownContent class="scrollable" (click)="$event.preventDefault()">
-    <ng-container>
-      <teta-calendar [open]="open" [max]="max" [min]="min" (setDate)="changeSelectedDate($event)" [selectedDate]="selectedDate|async"
-                     [viewType]="viewType" [locale]="locale"></teta-calendar>
-    </ng-container>
+    <div tetaDropdownContent class="scrollable" (click)="$event.preventDefault()" >
+      <ng-container *ngIf="open">
+        <teta-calendar [isDateNull]="date===null" [open]="open" [max]="max" [min]="min" (setDate)="changeSelectedDate($event)"
+                       [selectedDate]="data.selectedDate"
+                       [viewType]="viewType" [locale]="locale"></teta-calendar>
+      </ng-container>
 
-  </div>
-</teta-dropdown>
+    </div>
+  </teta-dropdown>
+
+</div>

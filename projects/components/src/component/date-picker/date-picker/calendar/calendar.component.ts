@@ -28,6 +28,7 @@ export class CalendarComponent implements OnChanges, OnDestroy {
   @Input() open: boolean;
   @Input() viewType: viewType;
   @Input() min: Date | string | number;
+  @Input() isDateNull: boolean;
   @Input() max: Date | string | number;
   @Output() setDate: EventEmitter<Date> = new EventEmitter<Date>();
   public currentMonth: ReplaySubject<number> = new ReplaySubject<number>(1)
@@ -54,7 +55,6 @@ export class CalendarComponent implements OnChanges, OnDestroy {
   }
 
   generateCalendar(selectedDate: Dayjs, year: number, month: number, minMax: MinMaxDateModel): DayModel[] {
-
     const calendarStartDay = selectedDate.set("year", year).set("month", month).set("date", 1).startOf('week');
     const calendar = new Array(42).fill(1).map((v, i) => {
       return calendarStartDay.add(i, 'day')
@@ -66,7 +66,7 @@ export class CalendarComponent implements OnChanges, OnDestroy {
         date: new Date(d.toDate()),
         isCurrentMonth: month === d.month(),
         disabled: !matchesMinDate || !matchesMaxDate,
-        selected: d.toDate().getFullYear() === new Date(this.selectedDate).getFullYear() && d.toDate().getMonth() === selectedDate.toDate().getMonth() && d.toDate().getDate() === selectedDate.toDate().getDate()
+        selected: d.toDate().getFullYear() === new Date(this.selectedDate).getFullYear() && !this.isDateNull && d.toDate().getMonth() === selectedDate.toDate().getMonth() && d.toDate().getDate() === selectedDate.toDate().getDate()
       })
     })
 
@@ -119,7 +119,6 @@ export class CalendarComponent implements OnChanges, OnDestroy {
   }
 
   selectDate(date: Date) {
-    console.log(date)
     this.setDate.emit(date);
   }
 

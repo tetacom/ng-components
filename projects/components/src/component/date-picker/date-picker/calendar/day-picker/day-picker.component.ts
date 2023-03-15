@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {viewType} from 'projects/components/src/common/model/view-type.model';
 import {DayModel} from "../../../model/day-model";
 

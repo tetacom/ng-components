@@ -16,12 +16,12 @@
     flex-grow: 1;
     align-items: center;
     height: 28px;
-    border: solid 1px var(--color-text-10);
+    border: solid 1px var(--color-global-bgcard);
     background: var(--color-global-bgcard);
     color: var(--color-text-90);
     fill: var(--color-text-90);
     padding: 0 8px;
-    transition: border-color 0.4s;
+    transition: border-color 0.4s, background-color 0.4s;
     min-width: 0;
 
     &_disabled {
@@ -30,9 +30,17 @@
       color: var(--color-text-40);
     }
 
-    &:hover:not(&_disabled) {
-      border-color: var(--color-text-40);
+    &:focus-within {
+      border-color: var(--color-primary-50);
+    }
+
+    &:hover:not(&_disabled):not(:focus-within) {
+      background-color: var(--color-text-10);
       cursor: pointer;
+    }
+
+    &:active:not(&_disabled) {
+      border-color: var(--color-primary-50);
     }
 
     &_invalid {
@@ -58,8 +66,9 @@
     display: grid;
     align-items: center;
     grid-template-columns: 1fr 1fr 1fr;
-    padding:0 12px;
+    padding: 0 12px;
     column-gap: 4px;
+
     &_item {
       transition: background 0.4s;
       min-height: 32px;
@@ -87,6 +96,7 @@
     &_item {
       transition: background 0.4s;
       min-height: 32px;
+
       &:hover:not(&_disabled):not(&_active) {
         cursor: pointer;
         background-color: var(--color-text-5);

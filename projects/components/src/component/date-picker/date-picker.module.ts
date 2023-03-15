@@ -7,12 +7,15 @@ import {DatePickerComponent} from "./date-picker/date-picker.component";
 import {DropdownModule} from "../dropdown/dropdown.module";
 import {ButtonModule} from "../button/button.module";
 import {IconModule} from "../icon/icon.module";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {InputModule} from "../input/input.module";
 import {MonthPickerComponent} from './date-picker/calendar/month-picker/month-picker.component';
 import {YearPickerComponent} from './date-picker/calendar/year-picker/year-picker.component';
 import {ScrollToSelectedYearDirective} from './date-picker/calendar/year-picker/scroll-to-selected-year.directive';
-import {ScrollIntoViewModule} from "@tetacom/ng-components";
+import { ScrollIntoViewModule} from "@tetacom/ng-components";
+import {MaskitoModule} from "@maskito/angular";
+import {ClickOutsideModule} from "../../directive/click-outside/click-outside.module";
+
 
 
 @NgModule({
@@ -29,8 +32,8 @@ import {ScrollIntoViewModule} from "@tetacom/ng-components";
   imports: [
     CommonModule,
     DropdownModule,
-    ButtonModule, FormsModule,
-    IconModule, InputModule, ScrollIntoViewModule,
+    ButtonModule, FormsModule, MaskitoModule,
+    IconModule, InputModule, ScrollIntoViewModule, ClickOutsideModule, ReactiveFormsModule,
   ],
   exports: [DatePickerComponent, CalendarComponent]
 })
