@@ -265,19 +265,7 @@
           border-radius:8px;
           }
 
-.input_brick {
-          border-radius:0px;
-        }
-
-.input_circle{
-          border-radius:24px;
-          }
-
-.input_rounded {
-          border-radius:8px;
-          }
-
-.select_brick {
+.select_brick  {
           border-radius:0px;
         }
 
@@ -286,6 +274,18 @@
           }
 
 .select_rounded {
+          border-radius:8px;
+          }
+
+.input_brick > *:first-child{
+          border-radius:0px;
+        }
+
+.input_circle > *:first-child {
+          border-radius:24px;
+          }
+
+.input_rounded > *:first-child {
           border-radius:8px;
           }
 
@@ -467,18 +467,6 @@
           }
 
 .tag_rounded {
-          border-radius:8px;
-          }
-
-.toggle_brick {
-          border-radius:0px;
-        }
-
-.toggle_circle{
-          border-radius:100px;
-          }
-
-.toggle_rounded {
           border-radius:8px;
           }
 

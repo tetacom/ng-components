@@ -26,7 +26,7 @@
       justify-content: center;
       border-radius: 8px;
       background: var(--color-global-bgcard);
-      border: 1px solid var(--color-text-60)
+      border: 1px solid var(--color-primary-50)
     }
 
     &-icon:has(&-small-icon) {
@@ -61,7 +61,8 @@
     }
 
     &:hover:not(&_disabled) &-icon {
-      background: var(--color-text-5);
+      background: var(--color-primary-5);
+      border-color: var(--color-primary-60);
     }
 
     &:hover:not(&_disabled) &-icon:has(&-small-icon) {
