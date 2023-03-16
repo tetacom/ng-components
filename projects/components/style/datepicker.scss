@@ -16,8 +16,9 @@
     flex-grow: 1;
     align-items: center;
     height: 28px;
-    border: solid 1px var(--color-global-bgcard);
-    background: var(--color-global-bgcard);
+    border: solid 1px var(--color-text-5);
+    background: var(--color-text-5);
+    background-clip: padding-box;
     color: var(--color-text-90);
     fill: var(--color-text-90);
     padding: 0 8px;
