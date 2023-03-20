@@ -5,8 +5,9 @@
   display: inline-flex;
   border: solid 0;
   height: 28px;
+  padding: 2px;
   @include getFont($fonts, 'button-2');
-  background: var(--color-global-bgcard);
+  background: var(--color-text-5);
   color: var(--color-text-90);
   fill: var(--color-text-90);
 
@@ -20,15 +21,19 @@
       cursor: pointer;
     }
 
-    &:hover:not(&_active) {
+    &:active:not(&_active) {
+      background: var(--color-text-10);
+    }
+
+    &:hover:not(&_active):not(&:active) {
       background: var(--color-text-5);
     }
 
     &_active {
       border: solid 0;
-      background: var(--color-primary-50);
-      fill: var(--color-global-white);
-      color: var(--color-global-white);
+      background: var(--color-global-bgcard);
+      fill: var(--color-text-90);
+      color: var(--color-text-90);
     }
   }
 }

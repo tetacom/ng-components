@@ -23,11 +23,12 @@ export const switchSample = () => ({
     model: 'item 1',
     palette: select('palette', ['primary', 'grey', 'red', 'white'], 'grey'),
     values: ['item 1', 'item 2', 'item 3'],
+    viewType: select('viewType', ['circle', 'rounded', 'brick'], 'rounded'),
     log: (name, value) => {
       action(name)(value);
     },
   },
-  template: `<teta-switch viewType="circle" [tetaIconSprite]="'assets/icons.svg'"
+  template: `<teta-switch [viewType]="viewType" [tetaIconSprite]="'assets/icons.svg'"
                           [ngModel]="model"
                           (ngModelChange)="log('switch', $event)">
   <teta-switch-button *ngFor="let val of values" [value]="val">
