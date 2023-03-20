@@ -5,7 +5,7 @@
   padding: 8px 0;
   display: inline-flex;
   flex-direction: column;
-  border-radius: 4px;
+  border-radius: 8px;
   color: var(--color-text-90);
   background-color: var(--color-global-bgcard);
   @include getFont($fonts, 'body-3');
@@ -39,6 +39,9 @@
       &:hover:not(&_disabled) {
         background-color: var(--color-text-5);
         cursor: pointer;
+      }
+      &:active:not(&_disabled) {
+        background-color: var(--color-text-10);
       }
     }
 

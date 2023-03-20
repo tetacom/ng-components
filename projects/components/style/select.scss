@@ -18,16 +18,16 @@
   }
 
   &-head {
-    background-color: var(--color-global-bgcard);
-    border: solid 1px var(--color-text-20);
+    background-color: var(--color-text-5);
+    border: solid 1px var(--color-text-5);
     color: var(--color-text-90);
     fill: var(--color-text-40);
-    border-radius: 4px;
     align-items: center;
+    background-clip: padding-box;
     white-space: nowrap;
     padding: 0 8px;
     @include getFont($fonts, 'body-3');
-    transition: border-color 0.4s;
+    transition: border-color 0.4s, background-color 0.4s;
     overflow: hidden;
 
     &_invalid {
@@ -40,7 +40,8 @@
   &:hover:not(&_disabled) {
     #{$p}-head {
       cursor: pointer;
-      border-color: var(--color-text-40);
+      background-color: var(--color-text-10);
+      border-color: var(--color-text-10);
     }
   }
 
@@ -76,29 +77,30 @@
     display: inline-flex;
     align-items: center;
     flex: 1;
-    padding-bottom: 4px;
+    padding-bottom: 8px;
 
     teta-text-field {
       border: none;
     }
   }
-
-  &-list {
+  &-body {
     margin-top: 2px;
+    padding: 8px 0;
+    @include getFont($fonts, 'body-3');
+    display: inline-flex;
+    flex-direction: column;
+  }
+  &-list {
     padding: 8px 0;
     display: inline-flex;
     flex-direction: column;
     //border-radius: 2px;
     //background-color: getColorVar('background', '50');
-    @include getFont($fonts, 'body-3');
+
 
     &-item {
-      padding: 0 8px 0 32px;
+      padding: 0 8px 0 8px;
       white-space: nowrap;
-
-      .icon {
-        fill: var(--color-primary-50) !important;
-      }
 
       &_active {
         padding: 0 8px 0 8px;
