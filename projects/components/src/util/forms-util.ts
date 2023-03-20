@@ -5,6 +5,7 @@ import {FilterType} from "../component/filter/enum/filter-type.enum";
 
 export class FormsUtil {
   static validateAllFormFields(formGroup: UntypedFormGroup) {
+    formGroup.updateValueAndValidity();
     Object.keys(formGroup.controls).forEach((field) => {
       const control = formGroup.get(field);
       if (control instanceof UntypedFormControl) {
