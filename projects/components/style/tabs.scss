@@ -14,10 +14,10 @@
     &-item {
       display: flex;
       align-items: center;
-      padding: 0 20px;
+      padding: 0 16px;
       white-space: nowrap;
-      @include getFont($fonts, 'body-3');
-      color: var(--color-text-40);
+      @include getFont($fonts, 'button-2');
+      color: var(--color-text-60);
       fill: var(--color-text-40);
 
       &_disabled, &[disabled] {
