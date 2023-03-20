@@ -148,7 +148,10 @@ export class TableComponent<T>
 
     this._svc.activeRow
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((item: T) => this.activeRowChange.emit(item));
+      .subscribe((item: T) => {
+        this.activeRow = item;
+        this.activeRowChange.emit(item)
+      });
 
     this._svc.valueChanged
       .pipe(takeWhile((_) => this._alive))

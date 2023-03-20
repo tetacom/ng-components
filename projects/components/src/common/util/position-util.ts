@@ -102,11 +102,11 @@ export class PositionUtil {
         elementHeight / 2;
     }
 
-    if (rect.left < 0) {
-      rect.left = 0;
-    }
     if (rect.left + elementWidth > window.innerWidth) {
       rect.left = window.innerWidth - elementWidth;
+    }
+    if (rect.left < 0) {
+      rect.left = 0;
     }
     if (rect.top + elementHeight > window.innerHeight || rect.bottom < 0) {
       rect.bottom = 0;
