@@ -1,0 +1,33 @@
+@import "./util/font-util.scss";
+
+.tag{
+  padding: 2px 10px;
+  @include getFont($fonts, 'caption');
+  border-color: var(--color-text-5);
+  border-radius: 14px;
+  border-style: solid;
+  border-width: 1px;
+  fill: var(--color-text-50);
+  color: var(--color-text-90);
+  transition: border-color 0.4s, background-color 0.4s;
+  &_filled {
+    background-color: var(--color-text-5);
+    border-color: transparent;
+    &:hover:not(:active){
+      background-color: var(--color-text-10);
+      fill: var(--color-text-60);
+    }
+    &:active{
+      background-color: var(--color-text-20);
+      fill: var(--color-text-70);
+    }
+  }
+  &:hover:not(:active):not(&_filled){
+    border-color: var(--color-text-10);
+    fill: var(--color-text-60);
+  }
+  &:active:not(&_filled){
+    border-color: var(--color-text-20);
+    fill: var(--color-text-70);
+  }
+}
