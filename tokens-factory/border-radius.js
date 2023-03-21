@@ -14,20 +14,27 @@ module.exports = (dictionary) => {
   output += `.button_rounded {
           border-radius:${a.find((_) => _.name === 'radius-btn-round').value.topLeft + 'px'};
           }\n\n`;
-
-  //inputs
-  ['input', 'select'].forEach((component) => {
-    output += `.${component}_brick {
+  //select
+  output += `.select_brick  {
           border-radius:${a.find((_) => _.name === 'radius-field-brick').value.topLeft + 'px'};
         }\n\n`;
-    output += `.${component}_circle{
+  output += `.select_circle{
           border-radius:${a.find((_) => _.name === 'radius-field-circle').value.topLeft + 'px'};
           }\n\n`;
-    output += `.${component}_rounded {
+  output += `.select_rounded {
           border-radius:${a.find((_) => _.name === 'radius-field-round').value.topLeft + 'px'};
           }\n\n`;
 
-  });
+  //input
+    output += `.input_brick > *:first-child{
+          border-radius:${a.find((_) => _.name === 'radius-field-brick').value.topLeft + 'px'};
+        }\n\n`;
+    output += `.input_circle > *:first-child {
+          border-radius:${a.find((_) => _.name === 'radius-field-circle').value.topLeft + 'px'};
+          }\n\n`;
+    output += `.input_rounded > *:first-child {
+          border-radius:${a.find((_) => _.name === 'radius-field-round').value.topLeft + 'px'};
+          }\n\n`;
   //message
   output += `.message_brick {
           border-top-right-radius:${a.find((_) => _.name === 'radius-base-brick').value.topLeft + 'px'};

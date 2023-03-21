@@ -49,8 +49,8 @@
         &#{$button}-#{$paletteName} {
           background: getColorVar($paletteName, '50');
 
-          &:hover:not(.toggle_disabled) {
-            background: getColorVar($paletteName, '40');
+          &:hover:not(.toggle_disabled):not(:active) {
+            background: getColorVar($paletteName, '60');
           }
 
           &:active {

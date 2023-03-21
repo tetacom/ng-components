@@ -6,6 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import {Align} from "../../../common/enum/align.enum";
+import {viewType} from "../../../common/model/view-type.model";
 
 @Component({
   selector: 'teta-input',
@@ -16,6 +17,7 @@ import {Align} from "../../../common/enum/align.enum";
 export class InputComponent implements OnInit {
   @Input() label: string;
   @Input() hint: string;
+  @Input() viewType:viewType='rounded'
 
   @Input()
   @HostBinding('class.row')
