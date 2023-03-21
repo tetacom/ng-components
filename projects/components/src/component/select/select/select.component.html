@@ -78,8 +78,8 @@
       </ng-container>
       <div class="row row_auto select-chip-field flex-wrap" *ngIf="multiple && value?.length">
         <div *ngFor="let item of value" class="chip">
-          <teta-icon [name]="'closeCircle'" (click)="removeItemClick(item, $event)"></teta-icon>
           {{getText(item)}}
+          <teta-icon [name]="'closeCircle'" (click)="removeItemClick(item, $event)"></teta-icon>
         </div>
       </div>
 
