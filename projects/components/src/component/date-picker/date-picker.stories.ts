@@ -21,8 +21,8 @@ export const datepicker = () => ({
   },
   props: {
     date: new Date(),
-    min: date('min', new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 2)),
-    max: date('max', new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 5)),
+    min: date('min', new Date(new Date().getFullYear() - 3, new Date().getMonth(), new Date().getDate())),
+    max: date('max', new Date(new Date().getFullYear() + 3, new Date().getMonth(), new Date().getDate())),
     allowNull: boolean('allowNull', false),
     showTime: false,
     viewType: select('viewType', ['rounded', 'brick', 'circle'], 'rounded')
@@ -36,8 +36,8 @@ export const datepickerWithTime = () => ({
   },
   props: {
     date: new Date(),
-    min: date('min', new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 2)),
-    max: date('max', new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 5)),
+    min: date('min', new Date(new Date().getFullYear() - 3, new Date().getMonth(), new Date().getDate())),
+    max: date('max', new Date(new Date().getFullYear() + 3, new Date().getMonth(), new Date().getDate())),
     allowNull: boolean('allowNull', false),
     showTime: true,
     viewType: select('viewType', ['rounded', 'brick', 'circle'], 'rounded')

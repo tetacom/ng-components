@@ -8,7 +8,7 @@ import {
   OnInit,
   Output, ViewChild
 } from '@angular/core';
-import {ReplaySubject, tap} from "rxjs";
+import {ReplaySubject} from "rxjs";
 import {viewType} from "../../../common/model/view-type.model";
 import {ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {Align} from "../../../common/enum/align.enum";
@@ -16,7 +16,6 @@ import {VerticalAlign} from "../../../common/enum/vertical-align.enum";
 import {MaskitoOptions} from "@maskito/core";
 import {maskitoDateOptionsGenerator, maskitoDateTimeOptionsGenerator} from '@maskito/kit';
 import {DatePipe} from "@angular/common";
-import {takeWhile} from "rxjs/operators";
 import dayjs from "dayjs";
 
 export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
@@ -34,7 +33,7 @@ export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
 
 })
 
-export class DatePickerComponent implements OnInit, ControlValueAccessor, OnDestroy {
+export class DatePickerComponent implements OnInit, ControlValueAccessor {
   @Input() date: Date | string | number;
   @Input() locale: string = 'ru';
   @Input() showTime: boolean = false;
@@ -54,18 +53,14 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor, OnDest
   public selectedDate: ReplaySubject<Date | string | number> = new ReplaySubject<Date | string | number>(1)
   public placeholder = ''
   public mask: string = '';
-  public form = this._fb.group({
-    inputText: [this.checkNull()]
-  })
+  public inputText = this.checkNull();
   public maskitoOptions: MaskitoOptions;
-  private _alive = true;
 
   constructor(private _elementRef: ElementRef, private _cdr: ChangeDetectorRef, private _fb: FormBuilder, private datePipe: DatePipe) {
-    this.form.get('inputText').valueChanges.pipe(takeWhile(() => this._alive), tap((v) => {
-      this.changePlaceholder(v)
-    })).subscribe()
   }
-
+   changeInput(v){
+     this.changePlaceholder(v)
+   }
   changePlaceholder(value: string) {
     let val = this.mask.split('');
     for (let i = 0; value.length > i; i++) {
@@ -104,22 +99,22 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor, OnDest
 
   setDate(date: string | Date | number) {
     if (!date && this.allowNull) {
-      this.form.get('inputText').setValue('')
+      this.inputText=''
       this.changePlaceholder('')
       this.selectedDate.next(new Date(this.min || new Date()))
     } else {
-      this.form.get('inputText').setValue(this.getLocaleString(date))
+      this.inputText=this.getLocaleString(date)
       this.changePlaceholder(this.getLocaleString(date))
       this.selectedDate.next(date)
     }
   }
 
   onBlur() {
-    if (this.allowNull && this.form.get('inputText').value.trim() === '') {
+    if (this.allowNull && this.inputText.trim() === '') {
       this.setDate(null)
       this.emitValue(null)
     } else {
-      const val = this.form.get('inputText').value.split(',');
+      const val = this.inputText.split(',');
       const {day, year, month} = this.getDateFromStr(val[0]);
       const {mins, hours} = this.getTimeFromStr(val[1]);
       if (day && year && month) {
@@ -137,7 +132,7 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor, OnDest
 
   checkEnter(e) {
     if (e.key === "Enter") {
-      this.form.get('inputText').setValue(e.target.value)
+      this.inputText=e.target.value;
       this.onBlur()
     }
     this.open = true;
@@ -228,11 +223,6 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor, OnDest
     this.setDate(new Date(this.date))
     this.prepareInput()
   }
-
-  ngOnDestroy(): void {
-    this._alive = false
-  }
-
 
   onChange(date: Date) {
   }
