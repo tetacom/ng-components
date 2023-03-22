@@ -13,12 +13,8 @@
   display: inline-flex;
   align-items: center;
   padding: 4px 4px 4px 10px;
-
+  gap: 8px;
   &:hover {
     cursor: pointer;
-  }
-
-  teta-icon {
-    margin-left: 6px;
   }
 }
