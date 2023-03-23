@@ -1,6 +1,7 @@
 @import "./util/font-util.scss";
 
 .tag{
+  display: inline-flex;
   padding: 2px 2px 2px 10px;
   @include getFont($fonts, 'caption');
   border-color: var(--color-text-5);
