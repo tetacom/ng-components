@@ -1,10 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {PropertyGridComponent} from './property-grid/property-grid.component';
-import {NumericItemDefaultComponent} from './default/numeric-item-default/numeric-item-default.component';
-import {DateItemDefaultComponent} from './default/date-item-default/date-item-default.component';
-import {ListItemDefaultComponent} from './default/list-item-default/list-item-default.component';
-import {StringItemDefaultComponent} from './default/string-item-default/string-item-default.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NumberPipeModule} from '../../pipe/number-pipe/number-pipe.module';
 import {DatePickerModule} from '../date-picker/date-picker.module';
@@ -17,32 +13,30 @@ import {ToggleModule} from '../toggle/toggle.module';
 import {TRANSLOCO_SCOPE, TranslocoModule} from '@ngneat/transloco';
 import {HintModule} from '../../directive/hint/hint.module';
 import {ExpandCardModule} from "../expand-card/expand-card.module";
+import {PropertyGridItemDescriptionDirective} from './property-grid/property-grid-item-description.directive';
 
 @NgModule({
   declarations: [
     PropertyGridComponent,
-    NumericItemDefaultComponent,
-    DateItemDefaultComponent,
-    ListItemDefaultComponent,
-    StringItemDefaultComponent,
     PropertyGridGroupComponent,
     PropertyGridItemComponent,
+    PropertyGridItemDescriptionDirective,
   ],
-  exports: [PropertyGridComponent],
-    imports: [
-        CommonModule,
-        FormsModule,
-        NumberPipeModule,
-        DatePickerModule,
-        SelectModule,
-        OnlyNumberModule,
-        InputModule,
-        ToggleModule,
-        ReactiveFormsModule,
-        TranslocoModule,
-        HintModule,
-        ExpandCardModule,
-    ],
+  exports: [PropertyGridComponent, PropertyGridItemDescriptionDirective],
+  imports: [
+    CommonModule,
+    FormsModule,
+    NumberPipeModule,
+    DatePickerModule,
+    SelectModule,
+    OnlyNumberModule,
+    InputModule,
+    ToggleModule,
+    ReactiveFormsModule,
+    TranslocoModule,
+    HintModule,
+    ExpandCardModule,
+  ],
   providers: [
     {
       provide: TRANSLOCO_SCOPE,
