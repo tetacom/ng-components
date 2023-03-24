@@ -27,13 +27,24 @@ export class PropertyGridComponent<T> implements OnInit, OnDestroy, AfterViewIni
   @Input() hideNonEditable: boolean;
   @Input() columns: TableColumn[];
   @Input() dict: IDictionary<IIdName<any>[]>;
-  @Input() item: T;
+  @Input() set item(item: T) {
+    this._item = item;
+    if(this.formGroup) {
+      this.formGroup.patchValue(item, {
+        emitEvent: false
+      });
+    }
+  }
+  get item() {
+    return this._item;
+  }
   @Input() horizontal: boolean;
   @Input() decimalPart: number;
 
   @Output() controlValueChange = new EventEmitter<IIdName<any>>();
 
   private _alive = true;
+  private _item: T;
 
   get formGroup(): FormGroup {
     if (this._formGroup instanceof FormGroup) {
