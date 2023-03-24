@@ -77,9 +77,9 @@
         </cdk-virtual-scroll-viewport>
       </ng-container>
       <div class="row row_auto select-chip-field flex-wrap" *ngIf="multiple && value?.length">
-        <div *ngFor="let item of value" class="chip">
+        <div *ngFor="let item of value" class="tag">
           {{getText(item)}}
-          <teta-icon [name]="'closeCircle'" (click)="removeItemClick(item, $event)"></teta-icon>
+          <teta-icon class="cursor-pointer" [name]="'closeCircle'" (click)="removeItemClick(item, $event)"></teta-icon>
         </div>
       </div>
 
