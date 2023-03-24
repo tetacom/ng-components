@@ -5,7 +5,7 @@
   <span class="overflow-hidden text-overflow-ellipsis"
         [tetaHint]="hint ?? label"
         [align]="align.left"
-        [overflownOnly]="true">
+        [overflownOnly]="!hint || hint === label">
     {{label}}
   </span>
 </div>
