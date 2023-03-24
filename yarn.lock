@@ -1895,6 +1895,23 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
+"@maskito/angular@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@maskito/angular/-/angular-0.4.0.tgz#50cf74e5519b167af2cd8872d45680914bf1f296"
+  integrity sha512-wpcXJ2yEtjAHqasJ5mAqDmNTsiMJFRCay14GWZ476GIhXcdGIfv41dV0asbQt0Tl14RNOnaeCokNTKbedxf0wA==
+  dependencies:
+    tslib "^2.3.0"
+
+"@maskito/core@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@maskito/core/-/core-0.4.0.tgz#68226c9dc185d9599a205831e995d91faadb6c53"
+  integrity sha512-txAbxUau4pmSSCrceLVYN0hBN2M3VwJ84MSwVLm7wqk5sJPWNMxUDDQ8t065SWOqEihYqnfKamPuaQXcaQptLQ==
+
+"@maskito/kit@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@maskito/kit/-/kit-0.4.0.tgz#b830127cb96c4daaaa1426dfd3f8a244cef81ddc"
+  integrity sha512-p4RDTbN5KZYPZWSyXqzslSLIj9SYPberS9V3eArHpDxHi/NLdYxtE1qx1L3D0YAVwZ7xMQEo6JMqnwocyENCCQ==
+
 "@mdx-js/mdx@^1.6.22":
   version "1.6.22"
   resolved "https://registry.yarnpkg.com/@mdx-js/mdx/-/mdx-1.6.22.tgz#8a723157bf90e78f17dc0f27995398e6c731f1ba"
@@ -6859,6 +6876,11 @@ dateformat@^3.0.0:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
   integrity sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==
+
+dayjs@^1.11.7:
+  version "1.11.7"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.7.tgz#4b296922642f70999544d1144a2c25730fce63e2"
+  integrity sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0:
   version "2.6.9"

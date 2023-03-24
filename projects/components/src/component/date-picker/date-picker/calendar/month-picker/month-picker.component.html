@@ -1,0 +1,30 @@
+<div class="padding-2 gap-8 column">
+  <div class="row align-center justify-content-between font-button-2">
+    <teta-button [class]="'change-month-button datepicker_'+viewType" [square]="true"
+                 (click)="pickYear(currentYear-1)"
+                 palette="text"
+                 view="ghost">
+      <teta-icon name="arrowLeftKey"></teta-icon>
+    </teta-button>
+    <p>{{currentYear}}</p>
+    <teta-button [square]="true" [class]="'change-month-button datepicker_'+viewType"
+                 (click)="pickYear(currentYear+1)"
+                 palette="text"
+                 view="ghost">
+      <teta-icon name="arrowRightKey"></teta-icon>
+    </teta-button>
+  </div>
+  <div class="datepicker-month font-body-3 color-text-90"
+       style="width: 100%">
+    <div *ngFor="let month of months" (click)="pickMonth(month.id)">
+      <div [ngClass]="{'datepicker-month_item_active':month.isSelected}"
+           [class]="'datepicker-month_item column align-center justify-content-center datepicker_'+viewType">
+         <p>
+            {{month.name}}
+          </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+

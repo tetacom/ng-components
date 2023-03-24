@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component, HostBinding, Input, OnInit} from '@angular/core';
+import { viewType } from 'projects/components/src/common/model/view-type.model';
 import {AvatarColorEnum} from '../model/avatar-color.enum';
 
 @Component({
@@ -11,7 +12,7 @@ export class AvatarComponent implements OnInit {
   @Input() photo?: string | ArrayBuffer;
   @Input() name?: string;
   @Input() id?: number = 0;
-  @Input() viewType?: 'circle' | 'rounded' | 'brick' = 'circle';
+  @Input() viewType?: viewType;
   @Input() size?: '24' | '28' | '32' | '44' | '64' | '128' | '200' = '28';
 
   @HostBinding('class') get avatar() {

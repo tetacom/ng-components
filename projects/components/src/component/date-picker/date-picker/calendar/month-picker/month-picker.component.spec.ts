@@ -1,19 +1,17 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MonthPickerComponent } from './month-picker.component';
 
-describe('ItskMonthPickerComponent', () => {
+describe('MonthPickerComponent', () => {
   let component: MonthPickerComponent;
   let fixture: ComponentFixture<MonthPickerComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ MonthPickerComponent ]
     })
     .compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(MonthPickerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

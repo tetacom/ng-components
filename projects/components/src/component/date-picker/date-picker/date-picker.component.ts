@@ -3,23 +3,20 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  forwardRef,
-  HostBinding,
-  HostListener,
-  Input,
-  OnDestroy,
+  EventEmitter, forwardRef,
+  Input, OnDestroy,
   OnInit,
+  Output, ViewChild
 } from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {takeWhile} from 'rxjs/operators';
-import {DatePeriod} from '../model/date-period';
-import {DatePickerMode} from '../model/date-picker-mode.enum';
-import {DateUtil} from '../../../util/date-util';
-import {DatePickerUtil} from '../util/date-picker-util';
-import {Align} from '../../../common/enum/align.enum';
-import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
-import {TetaLocalisation} from '../../../locale/teta-localisation';
-import {TetaConfigService} from '../../../locale/teta-config.service';
+import {ReplaySubject} from "rxjs";
+import {viewType} from "../../../common/model/view-type.model";
+import {ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {Align} from "../../../common/enum/align.enum";
+import {VerticalAlign} from "../../../common/enum/vertical-align.enum";
+import {MaskitoOptions} from "@maskito/core";
+import {maskitoDateOptionsGenerator, maskitoDateTimeOptionsGenerator} from '@maskito/kit';
+import {DatePipe} from "@angular/common";
+import dayjs from "dayjs";
 
 export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -31,282 +28,221 @@ export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   selector: 'teta-date-picker',
   templateUrl: './date-picker.component.html',
   styleUrls: ['./date-picker.component.scss'],
-  providers: [DATE_PICKER_CONTROL_VALUE_ACCESSOR],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DATE_PICKER_CONTROL_VALUE_ACCESSOR, DatePipe]
+
 })
-export class DatePickerComponent
-  implements ControlValueAccessor, OnInit, OnDestroy {
-  @Input() disabled: boolean;
-  @Input() invalid: boolean;
-  @Input() firstDayOfWeek = 1;
-  @Input() disabledDates: Date[];
-  @Input() disabledPeriods: DatePeriod[];
-  @Input() disabledDays: number[];
-  @Input() minDate: Date;
-  @Input() maxDate: Date;
-  @Input() minYearDate: Date;
-  @Input() maxYearDate: Date;
+
+export class DatePickerComponent implements OnInit, ControlValueAccessor {
+  @Input() date: Date | string | number;
+  @Input() locale: string = 'ru';
+  @Input() showTime: boolean = false;
+  @Input() min: Date | string | number = null;
+  @Input() max: Date | string | number = null;
+  @Input() invalid: boolean = false;
+  @Input() disabled: boolean = false;
   @Input() align: Align = Align.left;
   @Input() verticalAlign: VerticalAlign = VerticalAlign.auto;
+  @Input() viewType: viewType = 'rounded'
   @Input() appendToBody: boolean;
-  @Input() allowNull = true;
   @Input() backdrop: boolean;
+  @Input() allowNull: boolean = false;
+  @ViewChild('input') input: ElementRef;
+  @Output() selectDate: EventEmitter<Date> = new EventEmitter<Date>()
+  public open = false;
+  public selectedDate: ReplaySubject<Date | string | number> = new ReplaySubject<Date | string | number>(1)
+  public placeholder = ''
+  public mask: string = '';
+  public inputText = this.checkNull();
+  public maskitoOptions: MaskitoOptions;
 
-  @HostBinding('class.datepicker-wide')
-  @Input()
-  showTime = false;
-
-  @Input()
-  set format(val: string) {
-    this._format = val;
+  constructor(private _elementRef: ElementRef, private _cdr: ChangeDetectorRef, private _fb: FormBuilder, private datePipe: DatePipe) {
   }
-
-  get format(): string {
-    if (this._format) {
-      return this._format;
+   changeInput(v){
+     this.changePlaceholder(v)
+   }
+  changePlaceholder(value: string) {
+    let val = this.mask.split('');
+    for (let i = 0; value.length > i; i++) {
+      val.splice(i, 1, value[i]);
     }
-    return this.showTime ? 'dd.MM.yyyy HH:mm:ss' : 'dd.MM.yyyy';
+    this.placeholder = val.join('');
+    this._cdr.detectChanges()
   }
 
-  @HostBinding('class.datepicker_open') open: boolean;
-  @HostBinding('class.datepicker') private readonly classDatepicker = true;
-  @HostBinding('tabindex') private readonly tabindex = 0;
-
-  locale: TetaLocalisation;
-  today: Date = new Date();
-
-  datePickerModeEnum = DatePickerMode;
-  displayMode: DatePickerMode = DatePickerMode.date;
-  _format: string;
-
-  _value: Date | null = null;
-  _currentValue: Date;
-
-  private _alive = true;
-
-  get value(): Date | null {
-    return this._value;
-  }
-
-  set value(v: Date | null) {
-    if (v?.getTime() !== this._value?.getTime()) {
-      this._value = v;
-      this.currentValue = this._value;
+  checkNull() {
+    if (this.date && this.allowNull) {
+      return null
     }
+    return this.datePipe.transform(new Date(), 'dd.MM.yyyy, HH:mm')
   }
-
-  get currentValue(): Date {
-    return this._currentValue;
-  }
-
-  set currentValue(date: Date) {
-    this._currentValue = date;
-    this._cdr.markForCheck();
-  }
-
-  get internalValue() {
-    return this.currentValue ?? this.emptyDate();
-  }
-
-  constructor(
-    public localeService: TetaConfigService,
-    private _cdr: ChangeDetectorRef,
-    private _elementRef: ElementRef
-  ) {
-    localeService.locale
-      .pipe(takeWhile((_) => this._alive))
-      .subscribe((locale: TetaLocalisation) => {
-        this.locale = locale;
-      });
-  }
-
-  @HostListener('window:keyup', ['$event']) keyUp(event: KeyboardEvent): void {
-    if (!this.open) {
-      return;
-    }
-    if (event.code === 'Escape') {
-      this.currentValue = this.value;
-      this.open = false;
-    }
-  }
-
-  writeValue(value: any) {
-    this.value = value;
-    this._cdr.markForCheck();
-  }
-
-  onChange = (_: any) => {
-  };
-
-  onTouched = () => {
-  };
-
-  registerOnChange(fn: (_: any) => void): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-    this._cdr.detectChanges();
-  }
-
-  ngOnInit() {
-  }
-
-  ngOnDestroy() {
-    this._alive = false;
-  }
-
-  applyValue(date: Date) {
-    this.setDate(date);
-    this.value = this.currentValue;
-    this.onChange(new Date(this.value));
-    this.open = false;
-  }
-
-  setDate = (day: Date) => {
-    if (day === null || day === undefined) {
-      this.currentValue = null;
-      return;
-    }
-    const dt = this.internalValue;
-    dt.setFullYear(day.getFullYear(), day.getMonth(), day.getDate());
-    this.currentValue = new Date(dt);
-    this._cdr.markForCheck();
-  };
-
-  setYear = (year: number) => {
-    const dt = this.internalValue;
-    dt.setFullYear(year);
-    this.currentValue = new Date(dt);
-    this.setMode(DatePickerMode.date);
-    this._cdr.markForCheck();
-  };
-
-  setMonth = (month: number) => {
-    const dt = this.internalValue;
-    dt.setMonth(month);
-    this.currentValue = new Date(dt);
-    this.setMode(DatePickerMode.date);
-    this._cdr.markForCheck();
-  };
-
-  setHour = (hours: number) => {
-    const dt = this.internalValue;
-    dt.setHours(hours);
-    this.currentValue = new Date(dt);
-    this._cdr.markForCheck();
-  };
-
-  setMinute = (minute: number) => {
-    const dt = this.internalValue;
-    dt.setMinutes(minute);
-    this.currentValue = new Date(dt);
-    this._cdr.markForCheck();
-  };
-
-  setSecond = (seconds: number) => {
-    const dt = this.internalValue;
-    dt.setSeconds(seconds);
-    this.currentValue = new Date(dt);
-    this._cdr.markForCheck();
-  };
-
-  setToday = () => {
-    this.currentValue = this.emptyDate();
-    this._cdr.markForCheck();
-  };
-
-  clearPicker = (event: MouseEvent): void => {
-    this.preventEvent(event);
-    this.value = null;
-    this.onChange(null);
-  };
-
-  isDateInDisabledPeriod = (dat: Date): boolean => {
-    if (!this.disabledPeriods || this.disabledPeriods.length < 1 || !dat) {
-      return false;
-    }
-    return this.disabledPeriods.some(
-      (d: DatePeriod) =>
-        d &&
-        d.start &&
-        d.end &&
-        d.start.getTime() <= dat.getTime() &&
-        d.end.getTime() >= dat.getTime()
-    );
-  };
-
-  isScrollIgnored = (): boolean =>
-    this.displayMode === DatePickerMode.month ||
-    this.displayMode === DatePickerMode.year;
-
-  scrollMonth = (e: any) => {
-    const delta = e?.deltaY ?? e;
-
-    if (e instanceof WheelEvent) {
-      this.preventEvent(e);
-    }
-
-    if (this.isScrollIgnored()) {
-      return false;
-    }
-    this.currentValue = DatePickerUtil.scrollMonth(delta, this.internalValue);
-  };
-
-  scrollYear = (e: any) => {
-    this.preventEvent(e);
-    if (this.isScrollIgnored()) {
-      return false;
-    }
-    this.currentValue = DatePickerUtil.scrollYear(
-      e.deltaY,
-      this.internalValue
-    );
-  };
 
   openPicker = (show: boolean) => {
     if (this.disabled) {
       return;
     }
-    if (!show) {
-      this.setMode(DatePickerMode.date);
-      this.applyValue(this.currentValue);
-    }
     this.open = show;
     this._cdr.markForCheck();
   };
 
-  closePicker = () => {
-    this.openPicker(false);
-    this.onTouched();
-  };
+  changeSelectedDate(date: Date) {
+    this.setDate(date)
+    this.emitValue(date)
+    this.open = false;
+  }
 
-  preventEvent = (event: any) => {
-    event.stopPropagation();
-    event.preventDefault();
-    return false;
-  };
+  emitValue(value: Date) {
+    this.date = value
+    this.selectDate.emit(value)
+    this.onChange(value)
+  }
+
+  setDate(date: string | Date | number) {
+    if (!date && this.allowNull) {
+      this.inputText=''
+      this.changePlaceholder('')
+      this.selectedDate.next(new Date(this.min || new Date()))
+    } else {
+      this.inputText=this.getLocaleString(date)
+      this.changePlaceholder(this.getLocaleString(date))
+      this.selectedDate.next(date)
+    }
+  }
+
+  onBlur() {
+    if (this.allowNull && this.inputText.trim() === '') {
+      this.setDate(null)
+      this.emitValue(null)
+    } else {
+      const val = this.inputText.split(',');
+      const {day, year, month} = this.getDateFromStr(val[0]);
+      const {mins, hours} = this.getTimeFromStr(val[1]);
+      if (day && year && month) {
+        let date = new Date(year, month - 1, day)
+        if (this.showTime) {
+          date = new Date(date.setHours(hours || 0, mins || 0))
+        }
+        this.changeSelectedDate(this.getAvailableDate(this.min, this.max, date))
+      } else {
+        this.setDate(this.date);
+      }
+    }
+
+  }
+
+  checkEnter(e) {
+    if (e.key === "Enter") {
+      this.inputText=e.target.value;
+      this.onBlur()
+    }
+    this.open = true;
+  }
+
+  isAvailableLength(val: string, length: number) {
+    if (val?.length) {
+      return val.length === length
+    }
+    return false
+  }
+
+  getDateFromStr(str: string, separator: string = '.') {
+    const date = str?.split(separator)
+    const day = this.isAvailableLength((date?.[0]), 2) ? Number(date[0]) : null
+    const month = this.isAvailableLength((date?.[1]), 2) ? Number(date[1]) : null
+    const year = this.isAvailableLength((date?.[2]), 4) ? Number(date[2]) : null
+    return {day, month, year}
+  }
+
+  getTimeFromStr(str: string, separator: string = ':') {
+    const time = str?.trim().split(separator)
+    const hours = this.isAvailableLength((time?.[0]), 2) ? Number(time[0]) : null
+    const mins = this.isAvailableLength((time?.[1]), 2) ? Number(time[1]) : null
+    return {hours, mins}
+  }
+
+  prepareInput() {
+    const str = this.getLocaleString(this.date)
+    let option;
+    const setMinMax = () => {
+      if (this.min) {
+        option.min = dayjs(new Date(this.min)).startOf('day')
+      }
+      if (this.max) {
+        option.max = dayjs(new Date(this.max)).endOf('day')
+      }
+    }
+    if (this.showTime) {
+      this.mask = 'dd.mm.yyyy, hh:mm';
+      option = {
+        dateMode: 'dd/mm/yyyy',
+        timeMode: 'HH:MM',
+        dateSeparator: '.',
+      }
+      setMinMax()
+      this.maskitoOptions = maskitoDateTimeOptionsGenerator(option)
+    } else {
+      this.mask = 'dd.mm.yyyy';
+      option = {
+        mode: 'dd/mm/yyyy',
+        separator: '.',
+      }
+      setMinMax()
+      this.maskitoOptions = maskitoDateOptionsGenerator(option)
+    }
+    this.changePlaceholder(str)
+  }
 
   focus() {
     this._elementRef.nativeElement.focus();
   }
 
-  setMode(mode: DatePickerMode) {
-    let result: DatePickerMode;
-    if (mode === this.displayMode || mode === DatePickerMode.date) {
-      result = DatePickerMode.date;
-    } else {
-      result = mode;
-    }
-    this.displayMode = result;
+  getLocaleString(date: Date | number | string) {
+    return new Date(date).toLocaleString([], {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: this.showTime ? '2-digit' : undefined,
+      minute: this.showTime ? '2-digit' : undefined,
+    })
   }
 
-  private emptyDate() {
-    return DateUtil.truncateToDay(new Date());
+  getAvailableDate(min: Date | number | string, max: Date | number | string, date: Date | number | string) {
+    let minDate = dayjs(new Date(min)).startOf("day").toDate()
+    let maxDate = dayjs(new Date(max)).endOf("day").toDate()
+    if (min && minDate.getTime() >= new Date(date).getTime()) {
+      return minDate
+    }
+    if (max && maxDate.getTime() <= new Date(date).getTime()) {
+      return maxDate
+    }
+    return new Date(date)
   }
+
+
+  ngOnInit(): void {
+    this.setDate(new Date(this.date))
+    this.prepareInput()
+  }
+
+  onChange(date: Date) {
+  }
+
+  registerOnChange(fn: (date: Date) => any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+  }
+
+  writeValue(obj: Date | string | number): void {
+    if (obj) {
+      this.date = new Date(obj)
+      this.setDate(new Date(this.date))
+    } else {
+      this.date = null
+    }
+    this.selectedDate.next(new Date(this.min || new Date()))
+  }
+
+
 }

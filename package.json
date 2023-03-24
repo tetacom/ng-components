@@ -1,4 +1,4 @@
- {
+{
   "name": "teta-components",
   "version": "0.0.0",
   "scripts": {
@@ -26,9 +26,13 @@
     "@angular/platform-browser": "^14.0.2",
     "@angular/platform-browser-dynamic": "^14.0.2",
     "@angular/router": "^14.0.2",
+    "@maskito/angular": "^0.4.0",
+    "@maskito/core": "^0.4.0",
+    "@maskito/kit": "^0.4.0",
     "@ngneat/transloco": "^3.1.0",
     "@tetacom/ng-components": "^1.0.71",
     "d3": "^7.1.1",
+    "dayjs": "^1.11.7",
     "html-to-image": "^1.9.0",
     "minimist": "^1.2.7",
     "object-hash": "^2.2.0",

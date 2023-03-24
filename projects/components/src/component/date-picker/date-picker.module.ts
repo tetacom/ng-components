@@ -1,38 +1,41 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { DatePickerComponent } from './date-picker/date-picker.component';
-import { MonthPickerComponent } from './month-picker/month-picker.component';
-import { DropdownModule } from '../dropdown/dropdown.module';
-import { ClickOutsideModule } from '../../directive/click-outside/click-outside.module';
-import { IconModule } from '../icon/icon.module';
-import { DaySelectComponent } from './day-select/day-select.component';
-import { YearSelectComponent } from './year-select/year-select.component';
-import { MonthSelectComponent } from './month-select/month-select.component';
-import { PrependZeroModule } from '../../pipe/prepend-zero/prepend-zero.module';
-import { ButtonModule } from '../button/button.module';
-import { OnlyNumberModule } from '../../directive/only-number/only-number.module';
-import { FormsModule } from '@angular/forms';
-import { TimePartControlComponent } from './time-part-control/time-part-control.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {CalendarComponent} from "./date-picker/calendar/calendar.component";
+import {DayItemComponent} from './date-picker/calendar/day-picker/day-item/day-item.component';
+import {DayPickerComponent} from './date-picker/calendar/day-picker/day-picker.component';
+import {DatePickerComponent} from "./date-picker/date-picker.component";
+import {DropdownModule} from "../dropdown/dropdown.module";
+import {ButtonModule} from "../button/button.module";
+import {IconModule} from "../icon/icon.module";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {InputModule} from "../input/input.module";
+import {MonthPickerComponent} from './date-picker/calendar/month-picker/month-picker.component';
+import {YearPickerComponent} from './date-picker/calendar/year-picker/year-picker.component';
+import {ScrollToSelectedYearDirective} from './date-picker/calendar/year-picker/scroll-to-selected-year.directive';
+import { ScrollIntoViewModule} from "@tetacom/ng-components";
+import {MaskitoModule} from "@maskito/angular";
+import {ClickOutsideModule} from "../../directive/click-outside/click-outside.module";
+
+
 
 @NgModule({
   declarations: [
+    CalendarComponent,
+    DayPickerComponent,
     DatePickerComponent,
+    DayItemComponent,
     MonthPickerComponent,
-    DaySelectComponent,
-    YearSelectComponent,
-    MonthSelectComponent,
-    TimePartControlComponent,
+    ScrollToSelectedYearDirective,
+    YearPickerComponent,
+    ScrollToSelectedYearDirective,
   ],
-  exports: [DatePickerComponent, MonthPickerComponent],
   imports: [
     CommonModule,
     DropdownModule,
-    ClickOutsideModule,
-    FormsModule,
-    IconModule,
-    PrependZeroModule,
-    ButtonModule,
-    OnlyNumberModule,
+    ButtonModule, FormsModule, MaskitoModule,
+    IconModule, InputModule, ScrollIntoViewModule, ClickOutsideModule, ReactiveFormsModule,
   ],
+  exports: [DatePickerComponent, CalendarComponent]
 })
-export class DatePickerModule {}
+export class DatePickerModule {
+}
