@@ -1,6 +1,9 @@
 /* accordion */
 export * from './accordion/public-api';
 
+/* autocomplete */
+export * from './autocomplete/public-api';
+
 /* button */
 export * from './button/public-api';
 

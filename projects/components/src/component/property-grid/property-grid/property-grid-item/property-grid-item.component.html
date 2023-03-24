@@ -4,37 +4,42 @@
             [horizontal]="horizontal"
             [required]="column.required"
             *ngIf="column.editable || !hideNonEditable">
-  <ng-container [ngSwitch]="column.filterType"
-                *ngIf="formGroup?.get(column.name)">
-    <teta-select class="row_auto"
-                 *ngSwitchCase="filterTypeEnum.list"
-                 [searchRef]="getDict()?.length > 10 ? 'name' : ''"
-                 [allowNull]="!column.required"
-                 [appendToBody]="true"
-                 [invalid]="controlIsInvalid(column.name)"
-                 [formControlName]="column.name"
-                 [options]="getDict()"
-                 [valueRef]="'id'"
-                 [textRef]="'name'"
-                 [multiple]="false"></teta-select>
-    <teta-date-picker *ngSwitchCase="filterTypeEnum.date"
-                      class="row_auto"
-                      [appendToBody]="true"
-                      [invalid]="controlIsInvalid(column.name)"
-                      [formControlName]="column.name"></teta-date-picker>
-    <teta-toggle *ngSwitchCase="filterTypeEnum.boolean"
-                 [formControlName]="column.name">
-      {{column.caption}}
-    </teta-toggle>
-    <teta-text-field class="row_auto"
-                     *ngSwitchDefault
-
-                     [decimalPart]="column.filterType === filterTypeEnum.number ? decimalPart : null"
-                     [onlyNumber]="column.filterType === filterTypeEnum.number"
-                     [placeholder]="column.caption"
-                     [invalid]="controlIsInvalid(column.name)"
-                     [formControlName]="column.name"></teta-text-field>
+  <ng-container *ngIf="template; else default">
+    <ng-container *ngTemplateOutlet="template.template;context: {$implicit: formGroup?.get(column.name)}"></ng-container>
   </ng-container>
+  <ng-template #default>
+    <ng-container [ngSwitch]="column.filterType"
+                  *ngIf="formGroup?.get(column.name)">
+      <teta-select class="row_auto"
+                   *ngSwitchCase="filterTypeEnum.list"
+                   [searchRef]="getDict()?.length > 10 ? 'name' : ''"
+                   [allowNull]="!column.required"
+                   [appendToBody]="true"
+                   [invalid]="controlIsInvalid(column.name)"
+                   [formControlName]="column.name"
+                   [options]="getDict()"
+                   [valueRef]="'id'"
+                   [textRef]="'name'"
+                   [multiple]="false"></teta-select>
+      <teta-date-picker *ngSwitchCase="filterTypeEnum.date"
+                        class="row_auto"
+                        [appendToBody]="true"
+                        [invalid]="controlIsInvalid(column.name)"
+                        [formControlName]="column.name"></teta-date-picker>
+      <teta-toggle *ngSwitchCase="filterTypeEnum.boolean"
+                   [formControlName]="column.name">
+        {{column.caption}}
+      </teta-toggle>
+      <teta-text-field class="row_auto"
+                       *ngSwitchDefault
+
+                       [decimalPart]="column.filterType === filterTypeEnum.number ? decimalPart : null"
+                       [onlyNumber]="column.filterType === filterTypeEnum.number"
+                       [placeholder]="column.caption"
+                       [invalid]="controlIsInvalid(column.name)"
+                       [formControlName]="column.name"></teta-text-field>
+    </ng-container>
+  </ng-template>
   <div *ngIf="controlIsInvalid(column.name)"
        ngProjectAs="message"
        class="color-red-50">

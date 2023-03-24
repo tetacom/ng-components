@@ -1,7 +1,15 @@
-import {AbstractControl, UntypedFormControl, UntypedFormGroup, ValidationErrors, Validators,} from '@angular/forms';
+import {
+  AbstractControl,
+  ControlContainer, NgForm, NgModelGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import {TableColumn} from '../component/table/contract/table-column';
 import {ArrayUtil} from '../common/util/array-util';
 import {FilterType} from "../component/filter/enum/filter-type.enum";
+import {Optional, Provider} from "@angular/core";
 
 export class FormsUtil {
   static validateAllFormFields(formGroup: UntypedFormGroup) {
@@ -58,19 +66,22 @@ export class FormsUtil {
     const form = new UntypedFormGroup({});
     const flat = ArrayUtil.flatten(columns, 'columns');
     flat.forEach((column: TableColumn) => {
-      const control = new UntypedFormControl(
-        {
-          value: dataItem ? dataItem[column.name] : undefined,
-          disabled: !column.editable,
-        },
-        {
-          validators: FormsUtil.getValidators(column),
-          updateOn: column.filterType === FilterType.number || column.filterType === FilterType.string ? 'blur' : 'change'
-        }
-      );
+      const control = FormsUtil.initControlFromColumn(column, dataItem);
       form.registerControl(column.name, control);
     });
     return form;
+  }
+
+  static initControlFromColumn(column: TableColumn, dataItem: any) {
+    return new UntypedFormControl(
+      {
+        value: dataItem ? dataItem[column.name] : undefined,
+        disabled: !column.editable,
+      },
+      {
+        validators: FormsUtil.getValidators(column),
+        updateOn: column.filterType === FilterType.number || column.filterType === FilterType.string ? 'blur' : 'change'
+      });
   }
 
   static getValidators(column: TableColumn) {
@@ -93,5 +104,18 @@ export class FormsUtil {
       return {required: true}
     }
     return null;
+  }
+
+  static formProvider: Provider = {
+    provide: ControlContainer,
+    useFactory: FormsUtil.formFactory,
+    deps: [
+      [new Optional(), NgForm],
+      [new Optional(), NgModelGroup],
+    ],
+  };
+
+  static formFactory(ngForm: NgForm, ngModelGroup: NgModelGroup) {
+    return ngModelGroup || ngForm || null;
   }
 }
