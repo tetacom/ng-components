@@ -64,6 +64,8 @@ export class PositionUtil {
 
     if (verticalAlign === VerticalAlign.auto) {
       if (
+        containerPosition.bottom <=
+        window.innerHeight / 2 ||
         containerPosition.bottom +
         (elementPosition.bottom - elementPosition.top) <=
         window.innerHeight
@@ -75,6 +77,8 @@ export class PositionUtil {
     }
     if (verticalAlign === VerticalAlign.innerAuto) {
       if (
+        containerPosition.bottom <=
+        window.innerHeight / 2 ||
         containerPosition.bottom +
         (elementPosition.bottom - elementPosition.top) <=
         window.innerHeight
