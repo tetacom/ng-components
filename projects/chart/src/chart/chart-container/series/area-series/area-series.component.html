@@ -16,7 +16,7 @@
   [attr.d]="areaPath | async"
   [attr.stroke-width]="0"
   [attr.fill-opacity]="series.style?.fillOpacity"
-  [attr.fill]="series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : series.style.fill ?? series.color">
+  [attr.fill]="series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : series.style?.fill ?? series.color">
 </svg:path>
 <svg:path
   class="area"
