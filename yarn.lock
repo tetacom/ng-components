@@ -1895,22 +1895,22 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@maskito/angular@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@maskito/angular/-/angular-0.4.0.tgz#50cf74e5519b167af2cd8872d45680914bf1f296"
-  integrity sha512-wpcXJ2yEtjAHqasJ5mAqDmNTsiMJFRCay14GWZ476GIhXcdGIfv41dV0asbQt0Tl14RNOnaeCokNTKbedxf0wA==
+"@maskito/angular@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@maskito/angular/-/angular-0.8.0.tgz#a044e0b3367b61f50a5f5f2af894ef1dc9e39669"
+  integrity sha512-wbvFK2qjqWnxjmNoNHl2SPrBQcHuVqD9yRYjLCxrbiGIfeOhdC2YdhgbBYOVwWhJVtNXMBST6XvOSaBkwvuEDg==
   dependencies:
     tslib "^2.3.0"
 
-"@maskito/core@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@maskito/core/-/core-0.4.0.tgz#68226c9dc185d9599a205831e995d91faadb6c53"
-  integrity sha512-txAbxUau4pmSSCrceLVYN0hBN2M3VwJ84MSwVLm7wqk5sJPWNMxUDDQ8t065SWOqEihYqnfKamPuaQXcaQptLQ==
+"@maskito/core@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@maskito/core/-/core-0.8.0.tgz#3a30ee77bea73a1ba3cc6687746590d7fc33b1d1"
+  integrity sha512-PXTEqqTZma5d+klud1deAAYf9kdlCEV94FPM2sdoKCndRITZMRhJGmLrfVyQ86k3ZWqOLc8wwUeAunuxoyRSlQ==
 
-"@maskito/kit@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@maskito/kit/-/kit-0.4.0.tgz#b830127cb96c4daaaa1426dfd3f8a244cef81ddc"
-  integrity sha512-p4RDTbN5KZYPZWSyXqzslSLIj9SYPberS9V3eArHpDxHi/NLdYxtE1qx1L3D0YAVwZ7xMQEo6JMqnwocyENCCQ==
+"@maskito/kit@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@maskito/kit/-/kit-0.8.0.tgz#e5739b9d9460f6a5f99b5ef764091ed1988259db"
+  integrity sha512-vfvXlJKiRlT/dgar2FQwVJVmJNi+rnN2goQ4zLxd5xDjA+1vhQ5aNZ50VK12n5vUJJFKwVKAZPXat/hIerapYg==
 
 "@mdx-js/mdx@^1.6.22":
   version "1.6.22"

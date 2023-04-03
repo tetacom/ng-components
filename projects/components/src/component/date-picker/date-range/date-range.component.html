@@ -9,7 +9,8 @@
       <teta-input class="row row_auto flex cursor-pointer">
         <div [class]="'row_auto row datepicker_'+viewType">
           <div class="row position-relative font-body-3 align-center">
-            <input #input style="z-index: 1" class="border-0 color-text-90" (keydown)="checkEnter($event)" [(ngModel)]="inputText" (ngModelChange)="changeInput($event)"
+            <input #input style="z-index: 1" class="border-0 color-text-90" (keydown)="checkEnter($event)"
+                   [(ngModel)]="inputText" (ngModelChange)="changeInput($event)"
                    [maskito]="maskitoOptions">
             <div (click)="input.focus()" *ngIf="data.selectedDate" class="position-absolute color-text-10"
                  style="top:-0.3px;cursor: text;user-select: none">{{placeholder}}</div>
@@ -20,12 +21,16 @@
     </div>
     <div tetaDropdownContent class="scrollable" (click)="$event.preventDefault()">
       <ng-container *ngIf="open">
-        <teta-date-calendar [isDateNull]="date===null" [open]="open" [max]="max" [min]="min"
-                       (setDate)="changeSelectedDate($event)"
-                       [selectedDate]="data.selectedDate"
-                       [viewType]="viewType" [locale]="locale"></teta-date-calendar>
+        <div class="row">
+          <teta-range-calendar [isDateNull]="date===null||(date?.from===null&&date?.to===null)" [open]="open"
+                               [max]="max"
+                               [min]="min"
+                               (setDate)="changeSelectedDate($event,data.selectedDate)"
+                               [selectedDate]="data.selectedDate"
+                               [date]="date"
+                               [viewType]="viewType" [locale]="locale"></teta-range-calendar>
+        </div>
       </ng-container>
-
     </div>
   </teta-dropdown>
 

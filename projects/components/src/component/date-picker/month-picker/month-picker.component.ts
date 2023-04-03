@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IIdName} from "../../../../../common/contract/i-id-name";
-import {viewType} from "../../../../../common/model/view-type.model";
+import {IIdName} from "../../../common/contract/i-id-name";
+import {viewType} from "../../../common/model/view-type.model";
 
 @Component({
   selector: 'teta-month-picker',
