@@ -57,14 +57,10 @@
     border-color: var(--color-primary-50);
   }
 
-  //&-body {
-  //  @include shadow(2);
-  //  background-color: getColorVar('background', '50');
-  //}
-
   &-year {
     max-height: 200px;
     display: grid;
+    width: 248px;
     align-items: center;
     grid-template-columns: 1fr 1fr 1fr;
     padding: 0 12px;
@@ -76,7 +72,11 @@
 
       &:hover:not(&_disabled):not(&_active) {
         cursor: pointer;
-        background-color: var(--color-text-5);
+        background-color: var(--color-primary-5);
+      }
+
+      &_disabled {
+        color: var(--color-text-30);
       }
 
       &_active {
@@ -93,6 +93,10 @@
     display: grid;
     align-items: center;
     grid-template-columns: 1fr 1fr 1fr;
+
+    &-wrapper {
+      width: 248px;
+    }
 
     &_item {
       transition: background 0.4s;
@@ -113,7 +117,6 @@
   }
 
   &-content {
-    width: 240px;
     user-select: none;
     max-height: 268px;
     overflow: hidden;
@@ -137,6 +140,10 @@
     justify-content: center;
   }
 
+  &-arrow_hidden {
+    visibility: hidden;
+  }
+
   &-date {
     height: 32px;
     display: flex;
@@ -144,18 +151,63 @@
     justify-content: center;
     border: solid 0;
 
-    &:hover:not(&_disabled):not(&_active) {
+    &:hover:not(&_disabled):not(&_active):not(&-range_hover) {
       cursor: pointer;
-      background-color: var(--color-text-5);
+      background-color: var(--color-primary-5);
     }
 
-    &_active {
+    &:hover:not(&_disabled):not(&_active) {
+      cursor: pointer;
+      background-color: var(--color-primary-50);
+    }
+
+    &-range {
+      &_active {
+        background-color: var(--color-primary-10);
+      }
+
+      &_active:not(.datepicker-date_active) {
+        background-color: var(--color-primary-10);
+        border-radius: 0;
+      }
+
+      &_hover {
+        background-color: var(--color-primary-5);
+      }
+
+      &_hover:not(.datepicker-date_active) {
+        background-color: var(--color-primary-5);
+        border-radius: 0;
+      }
+
+      &_disabled {
+        visibility: hidden;
+      }
+    }
+
+    &_active:not(.datepicker-date-range_hover) {
       color: var(--color-global-white);
       background-color: var(--color-primary-50);
     }
 
+    &_active-second {
+      cursor: pointer;
+      border-top-left-radius: 0;
+      color: var(--color-global-white);
+      background-color: var(--color-primary-50);
+      border-bottom-left-radius: 0;
+    }
+
+    &_active-first {
+      cursor: pointer;
+      color: var(--color-global-white);
+      background-color: var(--color-primary-50);
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
     &_disabled {
-      color: var(--color-text-10);
+      color: var(--color-text-30);
     }
   }
 
