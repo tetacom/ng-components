@@ -35,9 +35,9 @@
                   text-anchor="middle">{{ point.text }}
         </svg:text>
         <svg:line x1="0" x2="100%" [attr.y1]="data.y(point.y)" [attr.y2]="data.y(point.y)"
-                  [attr.stroke]="point.iconId ? 'var(--color-text-10)' : point.color ?? series.style.stroke ?? series.color"></svg:line>
+                  [attr.stroke]="point.iconId ? 'var(--color-text-10)' : point.color ?? series.style?.stroke ?? series.color"></svg:line>
         <svg:line x1="0" x2="100%" [attr.y1]="data.y(point.y1)" [attr.y2]="data.y(point.y1)"
-                  [attr.stroke]="point.iconId ? 'var(--color-text-10)' : point.color ?? series.style.stroke ?? series.color"></svg:line>
+                  [attr.stroke]="point.iconId ? 'var(--color-text-10)' : point.color ?? series.style?.stroke ?? series.color"></svg:line>
       </svg:g>
     </ng-container>
 
