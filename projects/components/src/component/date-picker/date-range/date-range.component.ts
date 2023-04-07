@@ -34,7 +34,7 @@ export const DATE_Range_CONTROL_VALUE_ACCESSOR: any = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DateRangeComponent extends BasePicker implements OnInit, ControlValueAccessor {
-  @Input() date: DateFromToModel = {from: new Date(), to: new Date()};
+  @Input() date: DateFromToModel = {from: null, to: null};
   @Input() locale: string = 'ru';
   @Input() showTime: boolean = false;
   @Input() min: Date | string | number = null;
@@ -46,7 +46,7 @@ export class DateRangeComponent extends BasePicker implements OnInit, ControlVal
   @Input() viewType: viewType = 'rounded'
   @Input() appendToBody: boolean;
   @Input() backdrop: boolean;
-  @Input() allowNull: boolean = false;
+  @Input() allowNull: boolean =false;
   @ViewChild('input') input: ElementRef;
   @Output() selectDate: EventEmitter<DateFromToModel> = new EventEmitter<DateFromToModel>()
   public mask: string = '';
@@ -79,7 +79,10 @@ export class DateRangeComponent extends BasePicker implements OnInit, ControlVal
   }
 
   prepareInput() {
-    const str = this.getLocaleString(this.date.from) + ' - ' + this.getLocaleString(this.date.to)
+    let str = this.getLocaleString(this.date.from) + ' - ' + this.getLocaleString(this.date.to)
+    if (!this.date?.from) {
+      str = this.allowNull ? '' : this.getLocaleString(new Date()) + ' - ' + this.getLocaleString(new Date())
+    }
     let option: { mode, separator, min?, max?, minLength?, maxLength? } = {
       mode: 'dd/mm/yyyy',
       separator: '.',
@@ -101,7 +104,8 @@ export class DateRangeComponent extends BasePicker implements OnInit, ControlVal
       this.selectedDate.next({from: null, to: null})
       this.emitValue({from: null, to: null})
     } else {
-      const val = this.inputText.split('–');
+
+      const val = this.inputText.replace('–','-').split('-');
       const from = this.getDateFromStr(val[0].trim());
       const to = this.getDateFromStr(val[1]?.trim());
       if (to.day && to.year && to.month) {
@@ -133,6 +137,7 @@ export class DateRangeComponent extends BasePicker implements OnInit, ControlVal
         from: range?.from || null,
         to: range?.to || null
       })
+
     } else {
       this.inputText = this.getLocaleString(range.from) + ' - ' + this.getLocaleString(range.to)
       this.changePlaceholder(this.getLocaleString(range.from) + ' - ' + this.getLocaleString(range.to))
@@ -140,7 +145,7 @@ export class DateRangeComponent extends BasePicker implements OnInit, ControlVal
   }
 
   writeValue(obj: DateFromToModel): void {
-    if (obj) {
+    if (obj?.from) {
       this.date = {
         from: new Date(obj.from),
         to: new Date(obj.to)
@@ -166,14 +171,23 @@ export class DateRangeComponent extends BasePicker implements OnInit, ControlVal
   }
 
   ngOnInit(): void {
-    this.setDate({
-      from: new Date(this.date?.from),
-      to: new Date(this.date?.to)
-    })
+    if (this.date?.from) {
+      this.setDate({
+        from: this.allowNull ? null : new Date(this.date?.from),
+        to: this.allowNull ? null : new Date(this.date?.to)
+      })
+    } else {
+      this.setDate({
+        from: this.allowNull ? null : new Date(),
+        to: this.allowNull ? null : new Date()
+      })
+    }
+
     this.selectedDate.next({
       from: null,
       to: null
     })
+
     this.prepareInput()
   }
 

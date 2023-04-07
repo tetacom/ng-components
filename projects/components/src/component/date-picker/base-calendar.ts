@@ -38,7 +38,7 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
         date: new Date(d.toDate()),
         isCurrentMonth: month === d.month(),
         disabled: !this.isSuitableMinDate(d.toDate(), minMax.min) || !this.isSuitableMaxDate(d.toDate(), minMax.max),
-        selected: this.isSelected(d.toDate(), selectedDate.toDate()) && !this.isDateNull
+        selected: this.isSelected(d.toDate(), selectedDate.toDate())
       })
     })
 
@@ -56,7 +56,7 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
     const isSelectedDate = date.getDate() === selectedDate?.getDate()
     const isSelectedYear = date.getFullYear() === selectedDate?.getFullYear()
     const isSelectedMonth = date.getMonth() === selectedDate?.getMonth()
-    return isSelectedDate && isSelectedMonth && isSelectedYear
+    return isSelectedDate && isSelectedMonth && isSelectedYear && !this.isDateNull
   }
 
   ngOnDestroy(): void {
@@ -82,7 +82,6 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
   }
 
   changeCalendarData(selectedDate: Date | number | string) {
-
     let date = new Date(selectedDate || new Date());
     this.currentMonth.next(new Date(date).getMonth())
     this.currentYear.next(new Date(date).getFullYear())

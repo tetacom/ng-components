@@ -34,7 +34,7 @@ export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
 })
 
 export class DatePickerComponent extends BasePicker implements OnInit, ControlValueAccessor {
-  @Input() date: Date | string | number;
+  @Input() date: Date | string | number = null;
   @Input() locale: string = 'ru';
   @Input() showTime: boolean = false;
   @Input() min: Date | string | number = null;
@@ -58,12 +58,18 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
   }
 
   ngOnInit(): void {
-    this.setDate(new Date(this.date))
+    if (!this.date) {
+      this.setDate(this.allowNull ? null : new Date())
+      this.date=this.allowNull ? null : new Date()
+
+    } else {
+      this.setDate(new Date(this.date))
+    }
     this.prepareInput()
   }
 
   prepareInput() {
-    const str = this.getLocaleString(this.date)
+    const str = this.date? this.getLocaleString(this.date):''
     let option;
     const setMinMax = () => {
       if (this.min) {
@@ -142,9 +148,15 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
       this.date = new Date(obj)
       this.setDate(new Date(this.date))
     } else {
-      this.date = null
-      this.selectedDate.next(new Date(this.min || new Date()))
+      if (this.allowNull) {
+        this.date = null
+        this.selectedDate.next(null)
+      } else {
+        this.date = this.min || new Date()
+        this.selectedDate.next(this.min || new Date())
+      }
     }
+
   }
 
 
