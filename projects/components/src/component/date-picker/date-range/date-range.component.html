@@ -1,12 +1,12 @@
-<div [tetaClickOutside]="true" (clickOutside)="onBlur()">
+<div>
   <teta-dropdown *ngIf="{selectedDate:selectedDate|async}as data" [appendToBody]="appendToBody" [backdrop]="backdrop"
-                 [(open)]="open" [viewType]="viewType"
+                 [(open)]="open" (openChange)="openChange($event)" [viewType]="viewType"
                  [disabled]="disabled" [verticalAlign]="verticalAlign" [align]="align"
                  [autoCloseIgnore]="['esc', 'inside','enter']">
     <div tetaDropdownHead
          [class]="'datepicker-head font-body-3 gap-8 datepicker_'+viewType"
          [ngClass]="{'datepicker-head_invalid':invalid,'datepicker-head_disabled':disabled}">
-      <teta-input class="row row_auto flex cursor-pointer">
+      <teta-input class="row row_auto flex">
         <div [class]="'row_auto row datepicker_'+viewType">
           <div class="row position-relative font-body-3 align-center">
             <input [ngClass]="{'color-text-90':!disabled}" [disabled]="disabled"  #input style="z-index: 1" class="border-0 color-text-90" (keydown)="checkEnter($event)"

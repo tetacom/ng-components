@@ -55,6 +55,11 @@ export abstract class BasePicker {
     this._cdr.detectChanges()
   }
 
+  openChange(e:boolean) {
+    this.onBlur();
+    this.open=e
+  }
+
   checkNull() {
     if (!this.date && this.allowNull) {
       return null

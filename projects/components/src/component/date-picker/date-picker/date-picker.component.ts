@@ -60,7 +60,7 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
   ngOnInit(): void {
     if (!this.date) {
       this.setDate(this.allowNull ? null : new Date())
-      this.date=this.allowNull ? null : new Date()
+      this.date = this.allowNull ? null : new Date()
 
     } else {
       this.setDate(new Date(this.date))
@@ -69,7 +69,7 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
   }
 
   prepareInput() {
-    const str = this.date? this.getLocaleString(this.date):''
+    const str = this.date ? this.getLocaleString(this.date) : ''
     let option;
     const setMinMax = () => {
       if (this.min) {
