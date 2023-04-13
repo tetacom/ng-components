@@ -1,5 +1,4 @@
-<div>
-  <teta-dropdown *ngIf="{selectedDate:selectedDate|async}as data" [appendToBody]="appendToBody" [backdrop]="backdrop"
+<teta-dropdown *ngIf="{selectedDate:selectedDate|async}as data" [appendToBody]="appendToBody" [backdrop]="backdrop"
                  [open]="open" (openChange)="openChange($event)" [viewType]="viewType"
                  [disabled]="disabled" [verticalAlign]="verticalAlign" [align]="align"
                  [autoCloseIgnore]="['esc', 'inside','enter']">
@@ -28,5 +27,3 @@
 
     </div>
   </teta-dropdown>
-
-</div>

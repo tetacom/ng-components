@@ -140,7 +140,7 @@ export abstract class BasePicker {
     let minDate = dayjs(new Date(min)).startOf("day").toDate()
     let maxDate = dayjs(new Date(max)).endOf("day").toDate()
     if (min && minDate.getTime() >= new Date(date).getTime()) {
-      return new Date
+      return new Date()
     }
     if (max && maxDate.getTime() <= new Date(date).getTime()) {
       return maxDate
