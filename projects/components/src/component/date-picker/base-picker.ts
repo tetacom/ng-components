@@ -50,8 +50,14 @@ export abstract class BasePicker {
     for (let i = 0; value.length > i; i++) {
       val.splice(i, 1, value[i]);
     }
+
     this.placeholder = val.join('');
     this._cdr.detectChanges()
+  }
+
+  openChange(e:boolean) {
+    this.onBlur();
+    this.open=e
   }
 
   checkNull() {
@@ -87,6 +93,9 @@ export abstract class BasePicker {
     if (e.key === "Enter") {
       this.inputText=e.target.value;
       this.onBlur()
+    }
+    if(e.key==='-'){
+      e.preventDefault()
     }
     this.open = true;
   }
@@ -131,7 +140,7 @@ export abstract class BasePicker {
     let minDate = dayjs(new Date(min)).startOf("day").toDate()
     let maxDate = dayjs(new Date(max)).endOf("day").toDate()
     if (min && minDate.getTime() >= new Date(date).getTime()) {
-      return minDate
+      return new Date()
     }
     if (max && maxDate.getTime() <= new Date(date).getTime()) {
       return maxDate

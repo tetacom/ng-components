@@ -59,7 +59,7 @@ export class DayPickerComponent {
       if (this.range.to) {
         return this.getClassStaticItem(d)
       } else {
-        if (this.hoveredDate === d.date) {
+        if (this.hoveredDate.getTime() === d.date.getTime()) {
           return this.getClassHoveredItem()
         } else {
           return this.getClassSelectedItem(d)

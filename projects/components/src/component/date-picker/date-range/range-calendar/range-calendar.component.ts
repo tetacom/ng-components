@@ -28,6 +28,7 @@ export class RangeCalendarComponent extends BaseCalendar implements OnChanges, O
   @Input() open: boolean;
   @Input() date: DateFromToModel
   @Input() viewType: viewType;
+  @Input() allowNull: boolean;
   @Input() selectedDate: DateFromToModel;
   @Input() min: Date | string | number;
   @Input() isDateNull: boolean;
@@ -67,8 +68,22 @@ export class RangeCalendarComponent extends BaseCalendar implements OnChanges, O
 
 
   getFromTo() {
-    const dateFrom = this.selectedDate?.from ? new Date(this.selectedDate.from) : new Date(this.date.from)
-    const dateTo = this.selectedDate?.from ? null : new Date(this.date.to)
+    let dateFrom;
+    let dateTo;
+    if (this.selectedDate?.from) {
+      dateFrom = new Date(this.selectedDate.from)
+      dateTo = null
+    } else {
+      if (this.allowNull) {
+        dateFrom = this.date?.from ? new Date(this.date.from) : null
+        dateTo = this.date?.to ? new Date(this.date.to) : null
+      } else {
+        dateFrom = this.date?.from ? new Date(this.date.from) : new Date()
+        dateTo = this.date?.to ? new Date(this.date.to) : new Date()
+      }
+
+    }
+
     return {from: dateFrom, to: dateTo}
   }
 
