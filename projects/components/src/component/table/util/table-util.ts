@@ -100,13 +100,13 @@ export class TableUtil {
   static filterNumber<T>(data: T[], filter: NumericFilter): T[] {
     const filterNumber = (row: T) => {
       const item = row as any;
-      return (filter.value.lessThan === null || filter.value.lessThan === undefined
+      return (filter.value.lessThan === null || filter.value.lessThan === undefined || filter.value.lessThan?.toString() === ''
           ? true
           : filter.value.lessThan >= item[filter.field]) &&
-        (filter.value.greaterThan === null || filter.value.greaterThan === undefined
+        (filter.value.greaterThan === null || filter.value.greaterThan === undefined || filter.value.greaterThan?.toString() === ''
           ? true
           : filter.value.greaterThan <= item[filter.field]) &&
-        (filter.value.equalsTo === null || filter.value.equalsTo === undefined
+        (filter.value.equalsTo === null || filter.value.equalsTo === undefined || filter.value.equalsTo?.toString() === ''
           ? true
           : filter.value.equalsTo === item[filter.field]);
     };
