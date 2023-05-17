@@ -1,11 +1,11 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, ElementRef,
+  Component, ElementRef, EventEmitter,
   HostBinding,
   Input,
   OnDestroy,
-  OnInit,
+  OnInit, Output,
   Type,
   ViewChild,
 } from '@angular/core';
@@ -42,7 +42,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   @ViewChild(CdkVirtualScrollViewport, {static: false}) viewport: CdkVirtualScrollViewport;
 
   @HostBinding('class.table-body') private readonly tableBodyClass = true;
-
+  @Output() scroll = new EventEmitter<Event>();
   set data(data: T[]) {
     this._data = data;
   }

@@ -107,7 +107,6 @@ export class TableComponent<T>
   verticalAlign = VerticalAlign;
   align = Align;
   private _alive = true;
-  private _bodyElement: HTMLElement;
   private _headElement: HTMLElement;
   private _state: FilterState;
 
@@ -331,15 +330,10 @@ export class TableComponent<T>
   ngAfterViewInit(): void {
     this._headElement =
       this._elementRef.nativeElement.querySelector('.table-head');
-    this._bodyElement = this._elementRef.nativeElement.querySelector(
-      '.table-body-container'
-    );
-    this._bodyElement.addEventListener('scroll', this.onScroll);
   }
 
   ngOnDestroy(): void {
     this._alive = false;
-    this._bodyElement.removeEventListener('scroll', this.onScroll);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -453,8 +447,8 @@ export class TableComponent<T>
     return null;
   }
 
-  private onScroll = () => {
-    this._headElement.scrollLeft = this._bodyElement.scrollLeft;
+  onScroll = (event) => {
+    this._headElement.scrollLeft = event.target.scrollLeft;
   };
 
   // private getSelectedText() {
