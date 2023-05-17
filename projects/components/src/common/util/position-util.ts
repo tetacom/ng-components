@@ -64,22 +64,22 @@ export class PositionUtil {
 
     if (verticalAlign === VerticalAlign.auto) {
       if (
-        containerPosition.bottom <=
-        window.innerHeight / 2
+        containerPosition.bottom + elementHeight > window.innerHeight &&
+        containerPosition.bottom >= window.innerHeight / 2
       ) {
-        verticalAlign = VerticalAlign.bottom;
-      } else {
         verticalAlign = VerticalAlign.top;
+      } else {
+        verticalAlign = VerticalAlign.bottom;
       }
     }
     if (verticalAlign === VerticalAlign.innerAuto) {
       if (
-        containerPosition.bottom <=
-        window.innerHeight / 2
+        containerPosition.bottom + elementHeight > window.innerHeight &&
+        containerPosition.bottom >= window.innerHeight / 2
       ) {
-        verticalAlign = VerticalAlign.innerBottom;
-      } else {
         verticalAlign = VerticalAlign.innerTop;
+      } else {
+        verticalAlign = VerticalAlign.innerBottom;
       }
     }
     if (verticalAlign === VerticalAlign.top) {
