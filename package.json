@@ -11,9 +11,7 @@
     "sb": "npm run docs:json && start-storybook -p 6006",
     "build-storybook": "npm run docs:json && build-storybook -o dist/storybook",
     "semantic-release": "semantic-release",
-    "components:sr": "cd dist/components semantic-release -e semantic-release-monorepo",
-    "tokens:prepare": "node prepare-tokens.js",
-    "tokens:build": "node build-tokens.js"
+    "components:sr": "cd dist/components semantic-release -e semantic-release-monorepo"
   },
   "private": true,
   "dependencies": {
