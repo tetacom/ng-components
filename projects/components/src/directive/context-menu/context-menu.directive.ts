@@ -53,6 +53,7 @@ export class ContextMenuDirective
     private _click: ClickService
   ) {
     super(_document, _elementRef, _service, _injector, _zone, _cdr);
+    this.addScrollListener();
   }
 
   @HostListener('contextmenu', ['$event'])
@@ -86,30 +87,33 @@ export class ContextMenuDirective
     }
   }
 
+  protected addScrollListener() {
+    window.addEventListener('scroll', this.scrollListener, true)
+  }
+
+  protected removeScrollListener() {
+    window.removeEventListener('scroll', this.scrollListener, true)
+  }
+
+  private scrollListener = (event) => {
+    if (
+      this._open &&
+      this._componentRef &&
+      !this._componentRef.location.nativeElement.contains(event.target) &&
+      this._componentRef.location.nativeElement !== event.target
+    ) {
+      this.destroyContentRef();
+      this.openChange.emit(false);
+    }
+  }
+
   override ngOnInit() {
     super.ngOnInit();
-    // merge(this._click.click, this._click.contextMenu)
-    //   .pipe(
-    //     takeWhile(() => this._alive),
-    //     filter(() => this._open),
-    //     filter(() => this._componentRef != null),
-    //     filter(
-    //       (event: MouseEvent) =>
-    //         !DomUtil.clickedInside(
-    //           this._componentRef.location.nativeElement,
-    //           event
-    //         ) || this.autoCloseIgnore.indexOf('inside') < 0
-    //     ),
-    //     tap((_) => {
-    //       this.destroyContentRef();
-    //       this.openChange.emit(false);
-    //     })
-    //   )
-    //   .subscribe();
   }
 
   override ngOnDestroy() {
     super.ngOnDestroy();
+    this.removeScrollListener();
   }
 
   protected setPosition() {

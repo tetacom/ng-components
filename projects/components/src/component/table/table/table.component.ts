@@ -65,6 +65,9 @@ export class TableComponent<T>
     }
     return index;
   };
+  @Input() trackColumns: (index: number, column: TableColumn) => any = (index: number, column: TableColumn) => {
+    return column.name;
+  };
   @Input() editType: EditType = EditType.cell;
   @Input() editEvent: EditEvent = EditEvent.doubleClick;
   @Input() rowEditable: boolean | ((row: T) => boolean);
@@ -104,7 +107,6 @@ export class TableComponent<T>
   verticalAlign = VerticalAlign;
   align = Align;
   private _alive = true;
-  private _bodyElement: HTMLElement;
   private _headElement: HTMLElement;
   private _state: FilterState;
 
@@ -145,7 +147,10 @@ export class TableComponent<T>
 
     this._svc.activeRow
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((item: T) => this.activeRowChange.emit(item));
+      .subscribe((item: T) => {
+        this.activeRow = item;
+        this.activeRowChange.emit(item)
+      });
 
     this._svc.valueChanged
       .pipe(takeWhile((_) => this._alive))
@@ -325,15 +330,10 @@ export class TableComponent<T>
   ngAfterViewInit(): void {
     this._headElement =
       this._elementRef.nativeElement.querySelector('.table-head');
-    this._bodyElement = this._elementRef.nativeElement.querySelector(
-      '.table-body-container'
-    );
-    this._bodyElement.addEventListener('scroll', this.onScroll);
   }
 
   ngOnDestroy(): void {
     this._alive = false;
-    this._bodyElement.removeEventListener('scroll', this.onScroll);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -447,8 +447,8 @@ export class TableComponent<T>
     return null;
   }
 
-  private onScroll = () => {
-    this._headElement.scrollLeft = this._bodyElement.scrollLeft;
+  onScroll = (event) => {
+    this._headElement.scrollLeft = event.target.scrollLeft;
   };
 
   // private getSelectedText() {

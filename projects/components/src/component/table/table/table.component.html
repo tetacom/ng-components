@@ -14,17 +14,17 @@
        (openChange)="setContextMenuOpen($event)">
     <teta-table-body
       (contextmenu)="setContextMenuRow($event)"
+      (scroll)="onScroll($event)"
       [aggregate]="aggregate"
       [virtual]="virtual"
       [activeRow]="activeRow"
+      [trackRow]="trackRow"
+      [trackColumns]="trackColumns"
       [selectedRows]="selectedRowsList"
       [additionalComponent]="detailComponent"
       [selectType]="selectType"
-      [rowClass]="rowClass"></teta-table-body>
-    <div class="column column_auto"
-         style="position: absolute; top:0; bottom:0;left:0;right:0;"
-         *ngIf="!data?.length">
+      [rowClass]="rowClass">
       <ng-content></ng-content>
-    </div>
+    </teta-table-body>
   </div>
 </div>

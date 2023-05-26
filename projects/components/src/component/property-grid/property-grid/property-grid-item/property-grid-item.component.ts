@@ -1,50 +1,64 @@
 import {
   Component,
   EventEmitter,
-  Input,
+  Input, OnChanges,
   OnDestroy,
-  OnInit,
-  Output,
+  OnInit, Optional,
+  Output, QueryList, SimpleChanges,
 } from '@angular/core';
 import {TableColumn} from '../../../table/contract/table-column';
 import {IDictionary} from '../../../../common/contract/i-dictionary';
 import {IIdName} from '../../../../common/contract/i-id-name';
 import {FilterType} from '../../../filter/enum/filter-type.enum';
-import {UntypedFormGroup} from '@angular/forms';
+import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
 import {FormsUtil} from '../../../../util/forms-util';
 import {TranslocoService} from '@ngneat/transloco';
-import {filter, takeWhile} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {Align} from '../../../../common/enum/align.enum';
+import {PropertyGridItemDescriptionDirective} from "../property-grid-item-description.directive";
+import {takeWhile} from "rxjs/operators";
 
 @Component({
   selector: 'teta-property-grid-item',
   templateUrl: './property-grid-item.component.html',
   styleUrls: ['./property-grid-item.component.scss'],
+  viewProviders: [FormsUtil.formProvider],
 })
-export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
+export class PropertyGridItemComponent<T> implements OnInit, OnDestroy, OnChanges {
   @Input() column: TableColumn;
   @Input() hideNonEditable: boolean;
   @Input() dict: IDictionary<IIdName<any>[]>;
   @Input() decimalPart: number;
-  @Input()
-  set formGroup(form: UntypedFormGroup) {
-    this._formGroup = form;
-    this._formSub?.unsubscribe();
-    this._formSub = this._formGroup?.controls[this.column.name]?.valueChanges
-      .pipe(
-        takeWhile(() => this._alive)
-      )
-      .subscribe((_) => {
-        this.controlValueChange.emit({
-          id: _,
-          name: this.column.name,
-        });
-      });
+  @Input() item: T;
+  @Input() itemTemplates: QueryList<PropertyGridItemDescriptionDirective>;
+  // @Input()
+  // set formGroup(form: UntypedFormGroup) {
+  //   this._formGroup = form;
+  //   this._formSub?.unsubscribe();
+  //   this._formSub = this._formGroup?.controls[this.column.name]?.valueChanges
+  //     .pipe(
+  //       takeWhile(() => this._alive)
+  //     )
+  //     .subscribe((_) => {
+  //       this.controlValueChange.emit({
+  //         id: _,
+  //         name: this.column.name,
+  //       });
+  //     });
+  // }
+
+  get template() {
+    return this.itemTemplates.find((item) => item.name === this.column.name)
   }
 
-  get formGroup() {
-    return this._formGroup;
+  get formGroup(): FormGroup {
+    if (this._formGroup instanceof FormGroup) {
+      return this._formGroup;
+    }
+    if (this._formGroup instanceof NgForm) {
+      return this._formGroup.form;
+    }
+    return null;
   }
 
   @Input() horizontal: boolean;
@@ -52,7 +66,7 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
   align = Align;
   filterTypeEnum = FilterType;
 
-  private _formGroup: UntypedFormGroup;
+  // private _formGroup: UntypedFormGroup;
   private _formSub: Subscription;
 
   get caption(): string {
@@ -66,7 +80,8 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
 
   private _alive = true;
 
-  constructor(private _transloco: TranslocoService) {
+  constructor(private _transloco: TranslocoService,
+              @Optional() private _formGroup: ControlContainer) {
   }
 
   getDict() {
@@ -102,18 +117,28 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy {
     }
   }
 
-  valueChange() {
-    this.controlValueChange.emit({
-      id: this.formGroup?.controls[this.column.name]?.value,
-      name: this.column.name,
-    });
-  }
-
   ngOnInit(): void {
   }
 
   ngOnDestroy() {
     this._alive = false;
     this._formSub?.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.column && this.item) {
+      this.formGroup.registerControl(this.column.name, FormsUtil.initControlFromColumn(this.column, this.item));
+      this._formSub?.unsubscribe();
+      this._formSub = this.formGroup?.controls[this.column.name]?.valueChanges
+        .pipe(
+          takeWhile(() => this._alive)
+        )
+        .subscribe((_) => {
+          this.controlValueChange.emit({
+            id: _,
+            name: this.column.name,
+          });
+        });
+    }
   }
 }

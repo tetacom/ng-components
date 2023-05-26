@@ -2,18 +2,19 @@ import {
   Directive,
   ElementRef,
   Inject,
-  Input,
+  Input, NgZone,
   OnDestroy,
   Renderer2,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import {DOCUMENT} from '@angular/common';
+import {takeWhile, throttleTime} from "rxjs/operators";
 
 @Directive({
   selector: '[tetaLoader]',
 })
 export class LoaderDirective implements OnDestroy {
   @Input() appendToBody = false;
-  @Input() mask = false; 
+  @Input() mask = false;
 
   @Input()
   set tetaLoader(value: boolean) {
@@ -38,9 +39,19 @@ export class LoaderDirective implements OnDestroy {
   constructor(
     private _elementRef: ElementRef,
     private _renderer: Renderer2,
-    @Inject(DOCUMENT) private _document: any
+    @Inject(DOCUMENT) private _document: any,
+    protected _zone: NgZone,
   ) {
     this._element = this._elementRef.nativeElement;
+    this._zone.onStable
+      .pipe(
+        takeWhile((_) => this._alive)
+      )
+      .subscribe((_) => {
+        if (this._loading && this._loader) {
+          this.setPosition();
+        }
+      });
   }
 
   ngOnDestroy(): void {
@@ -59,7 +70,7 @@ export class LoaderDirective implements OnDestroy {
       this._mask.setAttribute('class', 'loader-mask');
     }
 
-    if(this.mask) {
+    if (this.mask) {
       this._renderer.appendChild(
         this.appendToBody ? this._document.body : this._element,
         this._mask

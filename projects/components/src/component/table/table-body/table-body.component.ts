@@ -1,11 +1,11 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, ElementRef,
+  Component, ElementRef, EventEmitter,
   HostBinding,
   Input,
   OnDestroy,
-  OnInit,
+  OnInit, Output,
   Type,
   ViewChild,
 } from '@angular/core';
@@ -37,11 +37,12 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   @Input() aggregate: boolean;
   @Input() selectType: SelectType;
   @Input() rowClass: (row: T, index?: number) => string;
-
+  @Input() trackRow: (index: number, row: T) => any;
+  @Input() trackColumns: (index: number, column: TableColumn) => any;
   @ViewChild(CdkVirtualScrollViewport, {static: false}) viewport: CdkVirtualScrollViewport;
 
   @HostBinding('class.table-body') private readonly tableBodyClass = true;
-
+  @Output() scroll = new EventEmitter<Event>();
   set data(data: T[]) {
     this._data = data;
   }
@@ -178,16 +179,16 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     return '';
   }
 
-  trackRow(index: number, row: T): any {
-    if (row['id']) {
-      return row['id'];
-    }
-    return index;
-  }
-
-  trackColumns(index: number, column: TableColumn): any {
-    return column.name;
-  }
+  // trackRow(index: number, row: T): any {
+  //   if (row['id']) {
+  //     return row['id'];
+  //   }
+  //   return index;
+  // }
+  //
+  // trackColumns(index: number, column: TableColumn): any {
+  //   return column.name;
+  // }
 
   private addResizeObserver() {
     this._obs = new ResizeObserver((_) => {

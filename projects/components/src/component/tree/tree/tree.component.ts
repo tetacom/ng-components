@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild,
+  ContentChild, ElementRef,
   EventEmitter,
   HostBinding,
   Input, NgZone,
@@ -17,7 +17,6 @@ import {TreeService} from '../tree.service';
 import {TetaTemplateDirective} from '../../../directive/teta-template/teta-template.directive';
 import {filter, takeWhile} from 'rxjs/operators';
 import {CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
-import {combineLatest} from "rxjs";
 
 @Component({
   selector: 'teta-tree',
@@ -51,7 +50,7 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
     new EventEmitter<TreeService>();
   @Output() openItemsChange = new EventEmitter();
 
-  @ViewChild(CdkVirtualScrollViewport, {static: false}) virtualScroll: CdkVirtualScrollViewport;
+  @ViewChild(CdkVirtualScrollViewport, {static: false}) viewport: CdkVirtualScrollViewport;
 
   @ContentChild(TetaTemplateDirective, {static: true})
   template: TetaTemplateDirective;
@@ -61,9 +60,13 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
   private _data: ITreeData[];
   private _openItems: ITreeData[];
   private _alive = true;
+  private _obs: ResizeObserver;
 
-  constructor(private _service: TreeService, private _cdr: ChangeDetectorRef, private _zone: NgZone) {
-   this._service.openItems
+  constructor(private _service: TreeService,
+              private _elementRef: ElementRef,
+              private _cdr: ChangeDetectorRef,
+              private _zone: NgZone) {
+    this._service.openItems
       .pipe(
         takeWhile((_) => this._alive),
         filter((_) => this._openItems !== _)
@@ -72,6 +75,7 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
         this._openItems = _;
         this.displayData = this.getDisplayData(this._data, 0);
         this.openItemsChange.emit(_);
+        this.viewport?.checkViewportSize();
       });
   }
 
@@ -88,15 +92,18 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.service.emit(this._service);
+    this.addResizeObserver();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.displayData = this.getDisplayData(this._data, 0);
     this.childPadding = this.hasChildren(this._data);
+    this.viewport?.checkViewportSize();
   }
 
   ngOnDestroy() {
     this._alive = false;
+    this.removeResizeObserver()
   }
 
   ngAfterViewInit() {
@@ -106,7 +113,7 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
 
       this._zone.runOutsideAngular(() => {
         setTimeout(() => {
-          this.virtualScroll?.scrollToIndex(index, 'smooth')
+          this.viewport?.scrollToIndex(index, 'smooth')
         })
       })
     })
@@ -137,5 +144,18 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
       }
     });
     return result;
+  }
+
+  private addResizeObserver() {
+    this._obs = new ResizeObserver((_) => {
+      this.viewport?.checkViewportSize();
+    });
+
+    this._obs.observe(this._elementRef.nativeElement);
+  }
+
+  private removeResizeObserver() {
+    this._obs.unobserve(this._elementRef.nativeElement);
+    this._obs.disconnect();
   }
 }

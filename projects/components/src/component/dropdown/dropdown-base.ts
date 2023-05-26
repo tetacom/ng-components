@@ -208,6 +208,7 @@ export class DropdownBase {
 
   private setPosition(container: HTMLElement, target: HTMLElement): void {
     const containerPosition = container.getBoundingClientRect();
+    // target.style.maxHeight = null;
     const targetPosition = target.getBoundingClientRect();
 
     const rect: IRect = {

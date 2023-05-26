@@ -3,27 +3,29 @@
     {{column.caption}}
   </span>
   <div class="form-container">
-    <ng-container *ngFor="let col of column.columns">
+    <ng-container *ngFor="let col of column.columns; trackBy: trackColumns">
       <ng-container *ngIf="col.columns?.length < 1">
         <teta-property-grid-item *ngIf="column.editable || !hideNonEditable"
                                  [id]="col.name"
                                  [dict]="dict"
                                  [column]="col"
+                                 [item]="item"
+                                 [itemTemplates]="itemTemplates"
                                  [decimalPart]="decimalPart"
                                  [hideNonEditable]="hideNonEditable"
                                  (controlValueChange)="controlValueChange.emit($event)"
-                                 [horizontal]="horizontal"
-                                 [formGroup]="formGroup"></teta-property-grid-item>
+                                 [horizontal]="horizontal"></teta-property-grid-item>
       </ng-container>
       <ng-container *ngIf="col.columns?.length > 0">
         <teta-property-grid-group [id]="col.name"
                                   [dict]="dict"
                                   [column]="col"
+                                  [item]="item"
+                                  [itemTemplates]="itemTemplates"
                                   [decimalPart]="decimalPart"
                                   [hideNonEditable]="hideNonEditable"
                                   [horizontal]="horizontal"
-                                  (controlValueChange)="controlValueChange.emit($event)"
-                                  [formGroup]="formGroup"></teta-property-grid-group>
+                                  (controlValueChange)="controlValueChange.emit($event)"></teta-property-grid-group>
       </ng-container>
     </ng-container>
   </div>

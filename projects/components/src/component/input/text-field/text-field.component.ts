@@ -53,7 +53,7 @@ export class TextFieldComponent implements ControlValueAccessor {
 
   keyPress(event: KeyboardEvent) {
     if (event.key === 'Enter' || event.keyCode === 13) {
-      this.input.nativeElement.blur();
+      this.emitBlur();
     }
   }
 

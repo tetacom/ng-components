@@ -4,6 +4,9 @@ export * from './accordion/public-api';
 /* avatar */
 export * from './avatar/public-api';
 
+/* autocomplete */
+export * from './autocomplete/public-api';
+
 /* button */
 export * from './button/public-api';
 

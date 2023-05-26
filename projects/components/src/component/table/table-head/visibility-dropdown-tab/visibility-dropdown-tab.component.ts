@@ -1,4 +1,12 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import {TableColumn} from '../../contract/table-column';
 import {FilterState} from '../../../filter/contarct/filter-state';
 import {Observable} from 'rxjs';
@@ -15,7 +23,7 @@ import {ArrayUtil} from '../../../../common/util/array-util';
   styleUrls: ['./visibility-dropdown-tab.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VisibilityDropdownTabComponent<T> implements OnInit {
+export class VisibilityDropdownTabComponent<T> implements OnInit, OnDestroy {
   @Input() columns: ITreeData[];
   @Input() column: TableColumn;
   @Input() state: FilterState;

@@ -64,24 +64,22 @@ export class PositionUtil {
 
     if (verticalAlign === VerticalAlign.auto) {
       if (
-        containerPosition.bottom +
-        (elementPosition.bottom - elementPosition.top) <=
-        window.innerHeight
+        containerPosition.bottom + elementHeight > window.innerHeight &&
+        containerPosition.bottom >= window.innerHeight / 2
       ) {
-        verticalAlign = VerticalAlign.bottom;
-      } else {
         verticalAlign = VerticalAlign.top;
+      } else {
+        verticalAlign = VerticalAlign.bottom;
       }
     }
     if (verticalAlign === VerticalAlign.innerAuto) {
       if (
-        containerPosition.bottom +
-        (elementPosition.bottom - elementPosition.top) <=
-        window.innerHeight
+        containerPosition.bottom + elementHeight > window.innerHeight &&
+        containerPosition.bottom >= window.innerHeight / 2
       ) {
-        verticalAlign = VerticalAlign.innerBottom;
-      } else {
         verticalAlign = VerticalAlign.innerTop;
+      } else {
+        verticalAlign = VerticalAlign.innerBottom;
       }
     }
     if (verticalAlign === VerticalAlign.top) {
@@ -102,6 +100,9 @@ export class PositionUtil {
         elementHeight / 2;
     }
 
+    if (rect.left + elementWidth > window.innerWidth) {
+      rect.left = window.innerWidth - elementWidth;
+    }
     if (rect.left < 0) {
       rect.left = 0;
     }
@@ -117,10 +118,18 @@ export class PositionUtil {
     if (verticalAlign === VerticalAlign.top || verticalAlign === VerticalAlign.innerTop) {
       rect.maxHeight = containerPosition.top;
     }
-    rect.left = rect.left - transformedParentRect.left;
-    rect.right = rect.right - transformedParentRect.left;
-    rect.top = rect.top - transformedParentRect.top;
-    rect.bottom = rect.bottom ? rect.bottom - transformedParentRect.bottom : rect.bottom;
+    if (!isNaN(rect.left)) {
+      rect.left = rect.left - transformedParentRect.left;
+    }
+    if (!isNaN(rect.right)) {
+      rect.right = rect.right - transformedParentRect.left;
+    }
+    if (!isNaN(rect.top)) {
+      rect.top = rect.top - transformedParentRect.top;
+    }
+    if (!isNaN(rect.bottom)) {
+      rect.bottom = rect.bottom ? rect.bottom - transformedParentRect.bottom : rect.bottom;
+    }
     return rect;
   }
 
