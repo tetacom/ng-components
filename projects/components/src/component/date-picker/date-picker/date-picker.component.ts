@@ -17,6 +17,7 @@ import {BasePicker} from "../base-picker";
 import dayjs from "dayjs";
 import {maskitoDateOptionsGenerator, maskitoDateTimeOptionsGenerator} from "@maskito/kit";
 import {ReplaySubject} from 'rxjs';
+import { DatePeriod } from '@tetacom/ng-components';
 
 export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -37,8 +38,8 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
   @Input() date: Date | string | number = null;
   @Input() locale: string = 'ru';
   @Input() showTime: boolean = false;
-  @Input() min: Date | string | number = null;
-  @Input() max: Date | string | number = null;
+  @Input() minDate: Date | string | number = null;
+  @Input() maxDate: Date | string | number = null;
   @Input() invalid: boolean = false;
   @Input() disabled: boolean = false;
   @Input() align: Align = Align.left;
@@ -47,6 +48,14 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
   @Input() appendToBody: boolean;
   @Input() backdrop: boolean;
   @Input() allowNull: boolean = false;
+
+  @Input() firstDayOfWeek = 1;
+  @Input() disabledDates: Date[];
+  @Input() disabledPeriods: DatePeriod[];
+  @Input() disabledDays: number[];
+  @Input() minYearDate: Date;
+  @Input() maxYearDate: Date;
+
   @ViewChild('input') input: ElementRef;
   @Output() selectDate: EventEmitter<Date> = new EventEmitter<Date>()
   public selectedDate: ReplaySubject<Date | string | number> = new ReplaySubject<Date | string | number>(1)
@@ -72,11 +81,11 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
     const str = this.date ? this.getLocaleString(this.date) : ''
     let option;
     const setMinMax = () => {
-      if (this.min) {
-        option.min = dayjs(new Date(this.min)).startOf('day')
+      if (this.minDate) {
+        option.min = dayjs(new Date(this.minDate)).startOf('day')
       }
-      if (this.max) {
-        option.max = dayjs(new Date(this.max)).endOf('day')
+      if (this.maxDate) {
+        option.max = dayjs(new Date(this.maxDate)).endOf('day')
       }
     }
     if (this.showTime) {
@@ -113,7 +122,7 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
         if (this.showTime) {
           date = new Date(date.setHours(hours || 0, mins || 0))
         }
-        this.changeSelectedDate(this.getAvailableDate(this.min, this.max, date))
+        this.changeSelectedDate(this.getAvailableDate(this.minDate, this.maxDate, date))
       } else {
         this.setDate(this.date);
       }
@@ -125,7 +134,7 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
     if (!date && this.allowNull) {
       this.inputText = ''
       this.changePlaceholder('')
-      this.selectedDate.next(new Date(this.min || new Date()))
+      this.selectedDate.next(new Date(this.minDate || new Date()))
     } else {
       this.inputText = this.getLocaleString(date)
       this.changePlaceholder(this.getLocaleString(date))
@@ -152,8 +161,8 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
         this.date = null
         this.selectedDate.next(null)
       } else {
-        this.date = this.min || new Date()
-        this.selectedDate.next(this.min || new Date())
+        this.date = this.minDate || new Date()
+        this.selectedDate.next(this.minDate || new Date())
       }
     }
 

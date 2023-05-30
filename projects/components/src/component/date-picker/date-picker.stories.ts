@@ -27,7 +27,7 @@ export const datepicker = () => ({
     showTime: false,
     viewType: select('viewType', ['rounded', 'brick', 'circle'], 'rounded')
   },
-  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [date]="date" [min]="min" [showTime]="showTime" [max]="max" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
+  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [date]="date" [minDate]="min" [showTime]="showTime" [maxDate]="max" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
 });
 const rangeValue = (date) => {
   console.log(date)
@@ -42,13 +42,13 @@ export const dateRange = () => ({
       to: new Date(new Date().setMonth(new Date().getMonth() + 2)),
     },
     rangeValue,
-    min: date('min', new Date(new Date().getFullYear() - 3, new Date().getMonth(), new Date().getDate())),
-    max: date('max', new Date(new Date().getFullYear() + 3, new Date().getMonth(), new Date().getDate())),
+    minDate: date('min', new Date(new Date().getFullYear() - 3, new Date().getMonth(), new Date().getDate())),
+    maxDate: date('max', new Date(new Date().getFullYear() + 3, new Date().getMonth(), new Date().getDate())),
     allowNull: boolean('allowNull', true),
     showTime: false,
     viewType: select('viewType', ['rounded', 'brick', 'circle'], 'rounded')
   },
-  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-range [ngModel]="data" (ngModelChange)="rangeValue($event)" [min]="min" [showTime]="showTime" [max]="max" [viewType]="viewType" [allowNull]="allowNull"></teta-date-range></div>`,
+  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-range [ngModel]="data" (ngModelChange)="rangeValue($event)" [minDate]="min" [showTime]="showTime" [maxDate]="max" [viewType]="viewType" [allowNull]="allowNull"></teta-date-range></div>`,
 });
 export const datepickerWithTime = () => ({
   moduleMetadata: {
@@ -62,5 +62,5 @@ export const datepickerWithTime = () => ({
     showTime: true,
     viewType: select('viewType', ['rounded', 'brick', 'circle'], 'rounded')
   },
-  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [date]="date" [min]="min" [showTime]="showTime" [max]="max" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
+  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [date]="date" [minDate]="minDate" [showTime]="showTime" [maxDate]="maxDate" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
 });

@@ -23,9 +23,9 @@
     <ng-container *ngIf="open">
       <div class="row">
         <teta-range-calendar [isDateNull]="date===null||(date?.from===null&&date?.to===null)" [open]="open"
-                             [max]="max"
+                             [max]="maxDate"
                              [allowNull]="allowNull"
-                             [min]="min"
+                             [min]="minDate"
                              (setDate)="changeSelectedDate($event,data.selectedDate)"
                              [selectedDate]="data.selectedDate"
                              [date]="date"

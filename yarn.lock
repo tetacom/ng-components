@@ -3332,10 +3332,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@tetacom/themes@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@tetacom/themes/-/themes-0.0.7.tgz#396864579014e0912ba711c12ae8f73a67749820"
-  integrity sha512-FZUuCvEmBtZrtbbuxH2GPPfEWpEBvhkWRDZf1nS2W1W3Z6euVkpHb/k59R8mCbTA6/NuLEadG7Xf7v15nFod6g==
+"@tetacom/themes@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@tetacom/themes/-/themes-0.0.9.tgz#2c29b87c5524ebe13eaae5e96edb51b86b146f01"
+  integrity sha512-3Se3Td8L8rlvdsIKTxn73zLpMqvrU2gw47Uyfx62arp6F+yBmwgQrkT4ADgVAoI9GxJ/mPd6hObNcl3eLYvnqw==
 
 "@tootallnate/once@1":
   version "1.1.2"
