@@ -1,41 +1,15 @@
-@mixin base-radius() {
+// Get classes by token type: 'base', 'btn', 'field'
+
+@mixin getView($tokenType) {
   &_brick {
-    border-radius: var(--radius-base-brick);
+    border-radius: var(--radius-#{$tokenType}-brick);
   }
 
   &_circle {
-    border-radius: var(--radius-base-circle)''
+    border-radius: var(--radius-#{$tokenType}-circle)''
   }
 
   &_rounded {
-    border-radius: var(--radius-base-round);
-  }
-}
-
-@mixin button-radius() {
-  &_brick {
-    border-radius: var(--radius-btn-brick);
-  }
-
-  &_circle {
-    border-radius: var(--radius-btn-circle)
-  }
-
-  &_rounded {
-    border-radius: var(--radius-btn-round);
-  }
-}
-
-@mixin field-radius() {
-  &_brick {
-    border-radius: var(--radius-field-brick);
-  }
-
-  &_circle {
-    border-radius: var(--radius-field-circle)''
-  }
-
-  &_rounded {
-    border-radius: var(--radius-field-round);
+    border-radius: var(--radius-#{$tokenType}-round);
   }
 }

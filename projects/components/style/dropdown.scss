@@ -11,7 +11,7 @@
   background: var(--color-global-bgcard);
   animation: fadeInFromNone 0.5s ease-out;
 
-  @include base-radius;
+  @include getView('base');
 
   &-backdrop {
     position: fixed;

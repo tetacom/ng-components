@@ -9,5 +9,5 @@
   background-color: var(--color-text-10);
   color: var(--color-text-90);
   border: solid 0;
-  @include base-radius;
+  @include getView('base');
 }

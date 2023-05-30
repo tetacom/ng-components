@@ -7,7 +7,7 @@
   height: 28px;
   width: 100%;
 
-  @include field-radius;
+  @include getView('field');
 
   &_multiple {
     min-height: 28px;

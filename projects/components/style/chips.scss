@@ -16,7 +16,7 @@
   align-items: center;
   padding: 4px 4px 4px 10px;
   gap: 8px;
-  @include base-radius;
+  @include getView('base');
   &:hover {
     cursor: pointer;
   }

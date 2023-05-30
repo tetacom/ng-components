@@ -16,7 +16,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
-  @include button-radius;
+  @include getView('btn');
 
   &:hover:not([disabled]) {
     cursor: pointer;

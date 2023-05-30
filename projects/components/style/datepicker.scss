@@ -8,7 +8,7 @@
   width: 110px;
   min-width: 0;
 
-  @include base-radius;
+  @include getView('base');
 
   &-wide {
     width: 170px;

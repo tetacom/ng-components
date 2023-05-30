@@ -12,7 +12,7 @@
     @include getFont($fonts, 'title-3');
   }
 
-  @include base-radius;
+  @include getView('base');
 
   @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
     &-#{$paletteName} {

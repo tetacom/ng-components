@@ -10,7 +10,7 @@
   border-radius: 8px;
   @include getFont($fonts, 'overline');
 
-  @include base-radius;
+  @include getView('base');
 
   @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
     &-#{"" + $paletteName} {

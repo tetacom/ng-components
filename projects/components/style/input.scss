@@ -44,7 +44,7 @@
   min-width: 0;
   transition: border-color 0.4s, background-color 0.4s;
 
-  @include field-radius;
+  @include getView('field');
 
 
   &_invalid {

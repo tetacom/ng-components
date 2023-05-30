@@ -10,7 +10,7 @@
   z-index: 1;
   background-color: var(--color-global-white);
   color: var(--color-text-50);
-  @include base-radius;
+  @include getView('base');
 
   &::before, &::after {
     position: absolute;
