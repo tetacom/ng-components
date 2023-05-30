@@ -1,6 +1,6 @@
 <form #form>
   <teta-property-grid class="scrollable padding-h-3 row_auto"
-                      style="width: 450px"
+                      style="width: 100%"
                       (controlValueChange)="save($event)"
                       [item]="item"
                       [horizontal]="true"
@@ -8,7 +8,7 @@
                       [dict]="dict">
     <ng-template [tetaPropertyGridItemDescription]="'ram'" let-control>
       <input [formControl]="control" class="input" />
-      {{control}}
+
     </ng-template>
   </teta-property-grid>
 </form>

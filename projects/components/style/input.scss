@@ -1,5 +1,6 @@
 @import "util/color-util.scss";
 @import "util/font-util.scss";
+@import "presets/view-types.scss";
 
 .form-container {
   display: flex;
@@ -42,6 +43,10 @@
   width: 100%;
   min-width: 0;
   transition: border-color 0.4s, background-color 0.4s;
+
+  @include field-radius;
+
+
   &_invalid {
     border-color: var(--color-red-50);
   }

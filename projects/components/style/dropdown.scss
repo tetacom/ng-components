@@ -1,5 +1,6 @@
 @import "util/color-util";
 @import "util/shadow-util";
+@import "presets/view-types.scss";
 
 .dropdown {
   border: solid 1px var(--color-text-5);
@@ -9,6 +10,8 @@
   box-shadow: var(--shadow-2);
   background: var(--color-global-bgcard);
   animation: fadeInFromNone 0.5s ease-out;
+
+  @include base-radius;
 
   &-backdrop {
     position: fixed;

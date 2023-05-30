@@ -1,8 +1,5 @@
 @import url('https://rsms.me/inter/inter.css');
-html[data-theme='basedark'],
-html[data-theme='baselight'],
-html[data-theme='purplelight'],
-html[data-theme='purpledark'] body {
+body {
   background-color: var(--color-global-bgmain);
 }
 :root { font-family: 'Inter', sans-serif; }

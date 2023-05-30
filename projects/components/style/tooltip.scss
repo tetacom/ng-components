@@ -1,5 +1,6 @@
 @import "util/shadow-util.scss";
 @import "util/color-util.scss";
+@import "presets/view-types.scss";
 
 .tooltip {
   @include shadow(1);
@@ -9,6 +10,7 @@
   z-index: 1;
   background-color: var(--color-global-white);
   color: var(--color-text-50);
+  @include base-radius;
 
   &::before, &::after {
     position: absolute;

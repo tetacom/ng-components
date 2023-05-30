@@ -10,7 +10,7 @@
     height: 40px;
   }
 
-  @each $paletteName in $palettes {
+  @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
     &.icon-#{$paletteName} {
       fill: getColorVar($paletteName, '70');
     }

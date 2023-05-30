@@ -12,7 +12,7 @@
   background: var(--color-global-bgcard);
   color: var(--color-text-90);
 
-  @each $paletteName in $palettes {
+  @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
     &-#{$paletteName}::before {
       background: getColorVar($paletteName, '50');
       content: " ";

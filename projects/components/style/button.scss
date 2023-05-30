@@ -1,6 +1,7 @@
 @import "./util/color-util.scss";
 @import "./util/font-util.scss";
 @import "./util/button-util.scss";
+@import "presets/view-types.scss";
 
 .button {
   display: inline-flex;
@@ -14,6 +15,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @include button-radius;
 
   &:hover:not([disabled]) {
     cursor: pointer;

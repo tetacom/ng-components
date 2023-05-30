@@ -1,9 +1,10 @@
-@use "node_modules/@tetacom/themes/src/base/presets.scss" as base;
-@use "node_modules/@tetacom/themes/src/tatneft/presets.scss" as tatneft;
+@use '@tetacom/themes/src/tatneft/presets.scss' as tatneft;
+@use '@tetacom/themes/src/base/presets.scss' as base;
+@import "@tetacom/themes/src/global.tokens.css";
+@import "@tetacom/themes/src/util.scss";
 
-$tatneft_theme: map-get(tatneft.$presets, 'themes');
-$base_theme: map-get(base.$presets, 'themes');
-$themes: map-merge($tatneft_theme, $base_theme);
+$themes: map-collect('themes', tatneft.$presets, base.$presets);
+$shadows: map-collect('shadow', tatneft.$presets, base.$presets);
 
-$palettes: 'primary', 'text', 'red', 'green', 'yellow', 'background', 'white', 'backdrop', 'black', 'link';
-$grades: '90', '80', '70', '60', '50', '40', '30', '20', '10', '5', '0';
+@import '@tetacom/themes/src/generate.scss';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');

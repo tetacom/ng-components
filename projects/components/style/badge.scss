@@ -1,5 +1,6 @@
 @import "util/font-util.scss";
 @import "util/color-util.scss";
+@import "presets/view-types.scss";
 
 .badge {
   border-style: solid;
@@ -8,13 +9,16 @@
   padding: 4px 6px;
   border-radius: 8px;
   @include getFont($fonts, 'overline');
-  @each $color-name in $palettes {
-    &-#{$color-name} {
-      border-color: getColorVar($color-name, '50');
-      color: getColorVar($color-name, '50');
+
+  @include base-radius;
+
+  @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
+    &-#{"" + $paletteName} {
+      border-color: getColorVar($paletteName, '50');
+      color: getColorVar($paletteName, '50');
 
       &_filled {
-        background-color: getColorVar($color-name, '50');
+        background-color: getColorVar($paletteName, '50');
         color: white;
         border-color: transparent;
       }

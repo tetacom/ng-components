@@ -9,7 +9,7 @@ module.exports = {
     "@storybook/addon-knobs",
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "storybook-addon-theme-switcher",
+    "storybook-addon-themes"
   ],
   framework: "@storybook/angular",
   core: {

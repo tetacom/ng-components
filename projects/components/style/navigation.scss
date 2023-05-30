@@ -1,5 +1,6 @@
 @import "util/color-util.scss";
 @import "util/font-util.scss";
+@import "presets/view-types.scss";
 
 .navigation {
   &-item {
@@ -11,7 +12,9 @@
     @include getFont($fonts, 'title-3');
   }
 
-  @each $paletteName in $palettes {
+  @include base-radius;
+
+  @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
     &-#{$paletteName} {
       background: getColorVar($paletteName, '50');
     }

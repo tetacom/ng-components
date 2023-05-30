@@ -1,11 +1,14 @@
 @import "util/font-util.scss";
 @import "util/shadow-util.scss";
 @import "util/color-util.scss";
+@import "presets/view-types.scss";
 
 .datepicker {
   display: inline-flex;
   width: 110px;
   min-width: 0;
+
+  @include base-radius;
 
   &-wide {
     width: 170px;

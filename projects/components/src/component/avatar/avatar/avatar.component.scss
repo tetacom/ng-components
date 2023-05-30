@@ -21,6 +21,18 @@ $sizes: (
 );
 
 .avatar {
+  &_brick {
+    border-radius: var(--radius-base-brick);
+  }
+
+  &_circle {
+    border-radius: var(--radius-base-circle)''
+  }
+
+  &_round {
+    border-radius: var(--radius-base-round);
+  }
+
   font-style: normal;
   font-weight: 600;
   line-height: 16px;

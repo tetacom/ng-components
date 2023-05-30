@@ -83,7 +83,6 @@
     "sass-loader": "^12.3.0",
     "semantic-release": "^18.0.0",
     "semantic-release-monorepo": "^7.0.5",
-    "storybook-addon-theme-switcher": "^0.0.5",
     "storybook-addon-themes": "^6.1.0",
     "storybook-theme-css-vars": "^0.0.5",
     "style-loader": "^3.3.1",

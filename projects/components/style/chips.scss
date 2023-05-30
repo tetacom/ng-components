@@ -1,5 +1,7 @@
 @import "util/color-util.scss";
 @import "util/font-util.scss";
+@import "presets/view-types.scss";
+
 .chip {
   height: 28px;
   @include getFont($fonts,'button-2');
@@ -14,6 +16,7 @@
   align-items: center;
   padding: 4px 4px 4px 10px;
   gap: 8px;
+  @include base-radius;
   &:hover {
     cursor: pointer;
   }

@@ -18,10 +18,14 @@ export const parameters = {
       date: /Date$/,
     },
   },
-  docs: { inlineStories: true },
-  themeSwitcher: {
-    themes: ["basedark", "baselight", "purplelight", "purpledark"],
-    dataAttribute: "theme",
+  themes: {
+    default: 'basedark',
+    target: 'html',
+    list: [
+      { name: 'basedark', class: 'basedark', color: '#f0f0f0' },
+      { name: 'baselight', class: 'baselight', color: '#f0f0f0' }
+    ],
   },
+  docs: { inlineStories: true }
 };
 addDecorator(moduleMetadata({ imports: [BrowserAnimationsModule] }));
