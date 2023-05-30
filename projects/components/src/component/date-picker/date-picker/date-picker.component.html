@@ -19,7 +19,7 @@
     </div>
     <div tetaDropdownContent class="scrollable" (click)="$event.preventDefault()">
       <ng-container *ngIf="open">
-        <teta-date-calendar [isDateNull]="date===null" [open]="open" [max]="max" [min]="min"
+        <teta-date-calendar [isDateNull]="date===null" [open]="open" [max]="maxDate" [min]="minDate"
                        (setDate)="changeSelectedDate($event)"
                        [selectedDate]="data.selectedDate"
                        [viewType]="viewType" [locale]="locale"></teta-date-calendar>

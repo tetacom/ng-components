@@ -37,8 +37,8 @@ export class DateRangeComponent extends BasePicker implements OnInit, ControlVal
   @Input() date: DateFromToModel = {from: null, to: null};
   @Input() locale: string = 'ru';
   @Input() showTime: boolean = false;
-  @Input() min: Date | string | number = null;
-  @Input() max: Date | string | number = null;
+  @Input() minDate: Date | string | number = null;
+  @Input() maxDate: Date | string | number = null;
   @Input() invalid: boolean = false;
   @Input() disabled: boolean = false;
   @Input() align: Align = Align.left;
@@ -88,11 +88,11 @@ export class DateRangeComponent extends BasePicker implements OnInit, ControlVal
       separator: '.',
     };
     this.mask = 'dd.mm.yyyy - dd.mm.yyyy';
-    if (this.min) {
-      option.min = dayjs(new Date(this.min)).startOf('day')
+    if (this.minDate) {
+      option.min = dayjs(new Date(this.minDate)).startOf('day')
     }
-    if (this.max) {
-      option.max = dayjs(new Date(this.max)).endOf('day')
+    if (this.maxDate) {
+      option.max = dayjs(new Date(this.maxDate)).endOf('day')
     }
     this.maskitoOptions = maskitoDateRangeOptionsGenerator(option)
     this.changePlaceholder(str)
@@ -109,8 +109,8 @@ export class DateRangeComponent extends BasePicker implements OnInit, ControlVal
       const from = this.getDateFromStr(val[0].trim());
       const to = this.getDateFromStr(val[1]?.trim());
       if (to.day && to.year && to.month) {
-        let fromDate = this.getAvailableDate(this.min, this.max, new Date(from.year, from.month - 1, from.day))
-        let toDate = this.getAvailableDate(this.min, this.max, new Date(to.year, to.month - 1, to.day))
+        let fromDate = this.getAvailableDate(this.minDate, this.maxDate, new Date(from.year, from.month - 1, from.day))
+        let toDate = this.getAvailableDate(this.minDate, this.maxDate, new Date(to.year, to.month - 1, to.day))
         if (fromDate.getTime() > toDate.getTime()) {
           [fromDate, toDate] = [toDate, fromDate]
         }

@@ -13,8 +13,8 @@ export abstract class BasePicker {
   abstract date;
   abstract locale: string
   abstract showTime: boolean
-  abstract min: Date | string | number
-  abstract max: Date | string | number
+  abstract minDate: Date | string | number
+  abstract maxDate: Date | string | number
   abstract invalid: boolean
   abstract disabled: boolean
   abstract align: Align
