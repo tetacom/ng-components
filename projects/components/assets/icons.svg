@@ -679,6 +679,13 @@
       <path
         d="M8.5 11.5C8.5 11.7761 8.27614 12 8 12C7.72386 12 7.5 11.7761 7.5 11.5C7.5 11.2239 7.72386 11 8 11C8.27614 11 8.5 11.2239 8.5 11.5Z"></path>
     </symbol>
+    <symbol width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" id="roadmaps">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5 13.5L11.5 2.5H12.5L14.5 13.5H13.5Z" fill="white" fill-opacity="0.87"/>
+      <path d="M8 2.5V13.5" stroke="white" stroke-opacity="0.87"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M2.5 13.5L4.5 2.5H3.5L1.5 13.5H2.5Z" fill="white" fill-opacity="0.87"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M6.22727 5.5L6.04545 7.5H5.04545L5.22727 5.5H6.22727ZM4.95455 8.5H5.95455L5.77273 10.5H4.77273L4.95455 8.5ZM4.68182 11.5L4.5 13.5H5.5L5.68182 11.5H4.68182ZM6.31818 4.5L6.5 2.5H5.5L5.31818 4.5H6.31818Z" fill="white" fill-opacity="0.87"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M9.77273 5.5L9.95455 7.5H10.9545L10.7727 5.5H9.77273ZM10.2273 10.5L10.0455 8.5H11.0455L11.2273 10.5H10.2273ZM10.3182 11.5L10.5 13.5H11.5L11.3182 11.5H10.3182ZM9.68182 4.5H10.6818L10.5 2.5H9.5L9.68182 4.5Z" fill="white" fill-opacity="0.87"/>
+    </symbol>
     <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="redo">
       <path fill-rule="evenodd" clip-rule="evenodd"
             d="M9.35072 5.72511L10.4745 4.6013H7.72691V4.59666C5.36707 4.59673 3.45406 6.50978 3.45406 8.86963C3.45406 11.2295 5.36713 13.1426 7.72703 13.1426C10.0869 13.1426 12 11.2295 12 8.86963H13C13 11.7818 10.6392 14.1426 7.72703 14.1426C4.81485 14.1426 2.45406 11.7818 2.45406 8.86963C2.45406 5.95745 4.81485 3.59666 7.72703 3.59666V3.6013H10.4745L9.35072 2.47749L10.0578 1.77039L12.0352 3.74775L12.3887 4.1013L12.0352 4.45486L10.0578 6.43222L9.35072 5.72511Z"></path>

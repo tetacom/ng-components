@@ -124,6 +124,7 @@ export const iconsList = [
   'question',
   'redo',
   'rewBack',
+  'roadmaps',
   'rewForward',
   'ring',
   'ringWithCircle',
