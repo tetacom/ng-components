@@ -19,7 +19,7 @@
   flex-direction: column;
   gap: 8px;
 
-  @include getClassesByView('base');
+  @include getView('base');
 
   &-item {
     display: flex;
