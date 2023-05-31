@@ -12,11 +12,11 @@ import {InputModule} from "../input/input.module";
 import {MonthPickerComponent} from './month-picker/month-picker.component';
 import {YearPickerComponent} from './year-picker/year-picker.component';
 import {ScrollToSelectedYearDirective} from './year-picker/scroll-to-selected-year.directive';
-import {ScrollIntoViewModule} from "@tetacom/ng-components";
 import {MaskitoModule} from "@maskito/angular";
 import {ClickOutsideModule} from "../../directive/click-outside/click-outside.module";
 import {DateRangeComponent} from "./date-range/date-range.component";
 import {RangeCalendarComponent} from "./date-range/range-calendar/range-calendar.component";
+import {ScrollIntoViewModule} from "../../directive/scroll-into-view/scroll-into-view.module";
 
 
 @NgModule({

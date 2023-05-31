@@ -1,10 +1,22 @@
-import {ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, SimpleChanges} from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from "@angular/core";
 import {BehaviorSubject, ReplaySubject} from "rxjs";
 import dayjs, {Dayjs} from "dayjs";
 import {viewType} from "../../common/model/view-type.model";
 import {MinMaxDateModel} from "./model/min-max-date.model";
 import {DayModel} from "./model/day-model";
 
+@Component({
+  template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
 export abstract class BaseCalendar implements OnChanges, OnDestroy {
   abstract selectedDate;
   abstract locale: string;

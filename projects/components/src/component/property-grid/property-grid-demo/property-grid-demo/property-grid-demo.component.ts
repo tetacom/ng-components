@@ -2,9 +2,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {TableColumn} from "../../../table/contract/table-column";
 import {FilterType} from "../../../filter/enum/filter-type.enum";
 import * as faker from 'faker';
-import {IDictionary} from "@tetacom/ng-components";
 import {IIdName} from "../../../../common/contract/i-id-name";
 import {NgForm} from "@angular/forms";
+import {IDictionary} from "../../../../common/contract/i-dictionary";
 
 @Component({
   selector: 'teta-property-grid-demo',

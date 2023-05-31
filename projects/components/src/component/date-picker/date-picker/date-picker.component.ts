@@ -17,7 +17,7 @@ import {BasePicker} from "../base-picker";
 import dayjs from "dayjs";
 import {maskitoDateOptionsGenerator, maskitoDateTimeOptionsGenerator} from "@maskito/kit";
 import {ReplaySubject} from 'rxjs';
-import { DatePeriod } from '@tetacom/ng-components';
+import {DatePeriod} from "../model/date-period";
 
 export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,

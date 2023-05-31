@@ -6,12 +6,14 @@ import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    IconFileComponent, IconSpriteDirective],
+    IconFileComponent
+  ],
   exports: [
-    IconFileComponent, IconSpriteDirective
+    IconFileComponent
   ],
   imports: [
-    CommonModule, HttpClientModule
+    CommonModule,
+    HttpClientModule
   ]
 })
 export class IconFileModule {

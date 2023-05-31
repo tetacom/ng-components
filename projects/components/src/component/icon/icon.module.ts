@@ -9,12 +9,10 @@ import {IconFileComponent} from "./icon-file/icon-file.component";
 @NgModule({
   declarations: [
     IconComponent,
-    IconFileComponent,
     IconSpriteDirective
   ],
   exports: [
     IconComponent,
-    IconFileComponent,
     IconSpriteDirective
   ],
   imports: [
