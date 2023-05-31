@@ -19,7 +19,7 @@ export const buttons = () => ({
   },
   props: {
     palettes: ['primary', 'text', 'red', 'yellow', 'green'],
-    types: ['brick', 'circle', 'rounded', 'rounded', 'rounded'],
+    types: ['brick', 'circle', 'rounded', 'rounded', 'rounded'], 
     text: text('text', 'Push me'),
     size: select('size', ['m', 'l'], 'm'),
     leftIcon: boolean('leftIcon', true),
