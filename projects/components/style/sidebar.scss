@@ -3,7 +3,7 @@
 
 .sidebar {
   position: fixed;
-  @include shadow(5);
+  box-shadow: var(--shadow-5);
 
   &-backdrop {
     position: fixed;

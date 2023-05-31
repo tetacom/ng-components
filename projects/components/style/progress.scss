@@ -4,11 +4,11 @@
   width: 100%;
   height: 4px;
   display: flex;
-  background: getColorVar('text', '10');
+  background: var(--color-text-10);
   position: relative;
 
   &-bar {
-    background: getColorVar('primary', '50');
+    background: var(--color-primary-50);
   }
 
   &-slider {
@@ -19,7 +19,7 @@
     margin-left: -6px;
     margin-top: -4px;
     border-radius: 6px;
-    background: getColorVar('primary', '50');
+    background: var(--color-primary-50);
   }
 
   &:hover &-slider, &-slider_visible {

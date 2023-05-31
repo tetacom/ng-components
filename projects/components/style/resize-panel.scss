@@ -10,11 +10,11 @@
     align-items: center;
     justify-content: center;
     position: absolute;
-    fill: getColorVar('text', '20');
+    fill: var(--color-text-20);
     z-index: 10;
 
     &_active, &:hover {
-      fill: getColorVar('text', '90');
+      fill: var(--color-text-90);
     }
 
     &_left, &_right, &_vertical {

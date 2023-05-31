@@ -13,7 +13,7 @@ describe('IconFileComponent', () => {
       .compileComponents();
   });
 
-  beforeEach(() => {
+    beforeEach(() => {
     fixture = TestBed.createComponent(IconFileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

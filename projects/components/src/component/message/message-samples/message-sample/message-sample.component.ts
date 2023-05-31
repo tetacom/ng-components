@@ -1,11 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  TemplateRef,
-} from '@angular/core';
-import { MessageService } from '../../message.service';
-import { Message } from '../../model/message';
+import {ChangeDetectionStrategy, Component, OnInit, TemplateRef,} from '@angular/core';
+import {MessageService} from '../../message.service';
+import {Message} from '../../model/message';
 
 @Component({
   selector: 'teta-message-sample',
@@ -14,7 +9,8 @@ import { Message } from '../../model/message';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MessageSampleComponent implements OnInit {
-  constructor(private _svc: MessageService) {}
+  constructor(private _svc: MessageService) {
+  }
 
   create(
     title: string,
@@ -28,6 +24,7 @@ export class MessageSampleComponent implements OnInit {
       new Message({
         className: [className],
         title,
+        viewType: "brick",
         palette,
         text,
         template,
@@ -36,5 +33,6 @@ export class MessageSampleComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 }

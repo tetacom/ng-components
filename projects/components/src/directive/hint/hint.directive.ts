@@ -19,6 +19,7 @@ import {ArrayUtil} from '../../common/util/array-util';
 import {Align} from '../../common/enum/align.enum';
 import {VerticalAlign} from '../../common/enum/vertical-align.enum';
 import {DomUtil} from '../../common/util/dom-util';
+import {viewType} from "../../common/model/view-type.model";
 import Timeout = NodeJS.Timeout;
 
 @Directive({
@@ -34,6 +35,7 @@ export class HintDirective
   @Input() override align: Align = Align.center;
   @Input() override verticalAlign: VerticalAlign = VerticalAlign.top;
   @Input() delay = 300;
+  @Input() viewType: viewType = 'rounded'
   @Input() overflownOnly = false;
 
   get _dynamicContent() {
@@ -112,7 +114,7 @@ export class HintDirective
     this._componentRef = this.createContentRef();
     this._componentRef.instance.className = [
       ...ArrayUtil.asArray(this.className),
-      'hint',
+      'hint ', 'hint_' + this.viewType
     ];
   }
 

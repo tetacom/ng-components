@@ -1,13 +1,13 @@
 @import "util/shadow-util.scss";
 @import "util/color-util.scss";
-
+@import "presets/view-types.scss";
 .hint {
-  @include shadow(1);
+  box-shadow: var(--shadow-1);
   padding: 4px 8px;
   white-space: nowrap;
   z-index: 3;
-  background-color: getColorVar('text', '10');
-  color: getColorVar('text', '90');
+  background-color: var(--color-text-10);
+  color: var(--color-text-90);
   border: solid 0;
-  border-radius: 2px;
+  @include getView('base');
 }

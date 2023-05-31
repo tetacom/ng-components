@@ -12,9 +12,10 @@
     align-items: center;
     @include getFont($fonts, 'body-3');
 
+
     &_disabled {
       filter: grayscale(50%);
-      color: getColorVar('text', '40');
+      color: var(--color-text-40);
     }
 
     &-icon {
@@ -23,13 +24,21 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border: solid 1px getColorVar('primary', '50');
       border-radius: 8px;
+      background: var(--color-global-bgcard);
+      border: 1px solid var(--color-primary-50)
+    }
+
+    &-icon:has(&-small-icon) {
+      background: var(--color-primary-50);
+      border: 0;
     }
 
     &_disabled &-icon {
-      background-color: getColorVar('text', '5');
-      color: getColorVar('text', '40');
+      background-color: var(--color-text-5);
+      color: var(--color-text-40);
+      border: solid 1px var(--color-text-30);
+
     }
 
     &-small-icon {
@@ -40,11 +49,11 @@
       justify-content: center;
       border: solid 0 transparent;
       border-radius: 4px;
-      background-color: getColorVar('primary', '50');
+      background-color: var(--color-global-white);
     }
 
     &_disabled &-small-icon {
-      background-color: getColorVar('text', '30');
+      background-color: var(--color-text-30);
     }
 
     &:hover:not(&_disabled) {
@@ -52,7 +61,12 @@
     }
 
     &:hover:not(&_disabled) &-icon {
-      background: getColorVar('text', '5');
+      background: var(--color-primary-5);
+      border-color: var(--color-primary-60);
+    }
+
+    &:hover:not(&_disabled) &-icon:has(&-small-icon) {
+      background: var(--color-primary-60);
     }
   }
 }

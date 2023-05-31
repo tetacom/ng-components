@@ -9,7 +9,7 @@ import {
   OnDestroy,
   Output,
 } from '@angular/core';
-import { Message } from '../model/message';
+import {Message} from '../model/message';
 
 @Component({
   selector: 'teta-message',
@@ -32,12 +32,14 @@ export class MessageComponent implements AfterViewInit, OnDestroy {
     if (this.message.palette) {
       result.push(`message-${this.message.palette}`);
     }
+    result.push('message_' + this.message.viewType)
     return result.join(' ');
   }
 
   timeout: any;
 
-  constructor() {}
+  constructor() {
+  }
 
   @HostListener('mouseleave')
   init() {

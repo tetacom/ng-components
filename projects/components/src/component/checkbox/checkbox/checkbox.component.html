@@ -1,6 +1,17 @@
-<div class="checkbox__tick" [class.checkbox__tick_active]="checked != false">
-  <teta-icon [name]="checked ? 'tick' : checked === false ? '' : 'dash'"></teta-icon>
-</div>
-<span class="font-body-3" *ngIf="!noLabel">
-  <ng-content></ng-content>
-</span>
+<ng-container *ngIf="labelPosition==='right'">
+  <div class="checkbox__tick" [class.checkbox__tick_active]="checked != false">
+    <teta-icon [name]="checked ? 'tick' : checked === false ? '' : 'dash'"></teta-icon>
+  </div>
+  <span class="font-body-3" *ngIf="!noLabel">
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </span>
+</ng-container>
+<ng-container *ngIf="labelPosition==='left'">
+  <span class="font-body-3" *ngIf="!noLabel">
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </span>
+  <div class="checkbox__tick" [class.checkbox__tick_active]="checked != false">
+    <teta-icon [name]="checked ? 'tick' : checked === false ? '' : 'dash'"></teta-icon>
+  </div>
+</ng-container>
+<ng-template #content><ng-content></ng-content></ng-template>

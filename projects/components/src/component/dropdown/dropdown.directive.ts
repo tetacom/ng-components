@@ -4,7 +4,8 @@ import {
   Directive,
   ElementRef,
   Inject,
-  NgZone, OnDestroy,
+  NgZone,
+  OnDestroy,
   OnInit,
   Renderer2
 } from '@angular/core';

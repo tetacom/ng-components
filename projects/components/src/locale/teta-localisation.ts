@@ -21,6 +21,8 @@ export interface TetaLocalisation {
   sum: string;
   avg: string;
   search: string;
+  selected:string;
+  notFound:string;
   notSelected: string;
   yes: string;
   no: string;

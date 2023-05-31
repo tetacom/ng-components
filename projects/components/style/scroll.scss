@@ -25,18 +25,18 @@
 
 ::-webkit-scrollbar-track:hover {
   &::-webkit-scrollbar-thumb {
-    background-color: getColorVar('primary', '50');
+    background-color: var(--color-primary-50);
     border: 2px solid transparent;
     //border-radius: 4px;
   }
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: getColorVar('text', '10');
+  background-color: var(--color-text-10);
   //border-radius: 4px;
 
   &:hover {
-    background-color: getColorVar('primary', '50');
+    background-color: var(--color-primary-50);
     border: 2px solid transparent;
     //border-radius: 4px;
   }

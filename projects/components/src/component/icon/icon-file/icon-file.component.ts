@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, HostBinding, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'teta-icon-file',
@@ -6,7 +6,22 @@ import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
   styleUrls: ['./icon-file.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class IconFileComponent {
-  @Input() extension: 'csv' | 'doc' | 'docx' | 'pdf' | 'txt' | 'las' | 'xls' | 'jpeg' | 'jpg' | 'png';
-}
+export class IconFileComponent implements OnInit {
+  @Input() name: string;
+  @Input() class;
 
+  @HostBinding('class')
+  private get getClass(): string {
+    const result = [this.class, 'icon icon-file'];
+    return result.join(' ');
+  }
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  getName(): string {
+    return `#${this.name}`;
+  }
+}

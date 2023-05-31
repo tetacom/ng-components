@@ -1,11 +1,14 @@
 @import "util/font-util.scss";
 @import "util/shadow-util.scss";
 @import "util/color-util.scss";
+@import "presets/view-types.scss";
 
 .datepicker {
   display: inline-flex;
-  width: 150px;
+  width: 110px;
   min-width: 0;
+
+  @include getView('base');
 
   &-wide {
     width: 170px;
@@ -16,28 +19,36 @@
     flex-grow: 1;
     align-items: center;
     height: 28px;
-    border: solid 1px getColorVar('text', '20');
-    background: getColorVar('background', '50');
-    color: getColorVar('text', '90');
-    fill: getColorVar('text', '90');
-    border-radius: 4px;
+    border: solid 1px var(--color-text-5);
+    background: var(--color-text-5);
+    background-clip: padding-box;
+    color: var(--color-text-90);
+    fill: var(--color-text-90);
     padding: 0 8px;
-    transition: border-color 0.4s;
+    transition: border-color 0.4s, background-color 0.4s;
     min-width: 0;
 
     &_disabled {
-      background-color: getColorVar('text', 5);
+      background-color: var(--color-text-5);
       border: 0;
-      color: getColorVar('text', 40);
+      color: var(--color-text-40);
     }
 
-    &:hover:not(&_disabled) {
-      border-color: getColorVar('text', '40');
+    &:focus-within {
+      border-color: var(--color-primary-50);
+    }
+
+    &:hover:not(&_disabled):not(:focus-within) {
+      background-color: var(--color-text-10);
       cursor: pointer;
     }
 
+    &:active:not(&_disabled) {
+      border-color: var(--color-primary-50);
+    }
+
     &_invalid {
-      border-color: getColorVar('red', '50');
+      border-color: var(--color-red-50);
     }
   }
 
@@ -46,16 +57,72 @@
   }
 
   &:focus &-head, &_open &-head {
-    border-color: getColorVar('primary', '50');
+    border-color: var(--color-primary-50);
   }
 
-  //&-body {
-  //  @include shadow(2);
-  //  background-color: getColorVar('background', '50');
-  //}
+  &-year {
+    max-height: 200px;
+    display: grid;
+    width: 248px;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 0 12px;
+    column-gap: 4px;
+
+    &_item {
+      transition: background 0.4s;
+      min-height: 32px;
+
+      &:hover:not(&_disabled):not(&_active) {
+        cursor: pointer;
+        background-color: var(--color-primary-5);
+      }
+
+      &_disabled {
+        color: var(--color-text-30);
+      }
+
+      &_active {
+        color: var(--color-global-white);
+        background-color: var(--color-primary-50);
+      }
+    }
+
+
+  }
+
+  &-month {
+    max-height: 200px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    &-wrapper {
+      width: 248px;
+    }
+
+    &_item {
+      transition: background 0.4s;
+      min-height: 32px;
+
+      &:hover:not(&_disabled):not(&_active) {
+        cursor: pointer;
+        background-color: var(--color-text-5);
+      }
+
+      &_active {
+        color: var(--color-global-white);
+        background-color: var(--color-primary-50);
+      }
+    }
+
+
+  }
 
   &-content {
-    width: 224px;
+    user-select: none;
+    max-height: 268px;
+    overflow: hidden;
   }
 
   &-picker {
@@ -76,26 +143,74 @@
     justify-content: center;
   }
 
+  &-arrow_hidden {
+    visibility: hidden;
+  }
+
   &-date {
     height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     border: solid 0;
-    border-radius: 32px;
+
+    &:hover:not(&_disabled):not(&_active):not(&-range_hover) {
+      cursor: pointer;
+      background-color: var(--color-primary-5);
+    }
 
     &:hover:not(&_disabled):not(&_active) {
       cursor: pointer;
-      background-color: getColorVar('text', '5');
+      background-color: var(--color-primary-50);
     }
 
-    &_active {
-      color: getColorVar('white', '50');
-      background-color: getColorVar('primary', '50');
+    &-range {
+      &_active {
+        background-color: var(--color-primary-10);
+      }
+
+      &_active:not(.datepicker-date_active) {
+        background-color: var(--color-primary-10);
+        border-radius: 0;
+      }
+
+      &_hover {
+        background-color: var(--color-primary-5);
+      }
+
+      &_hover:not(.datepicker-date_active) {
+        background-color: var(--color-primary-5);
+        border-radius: 0;
+      }
+
+      &_disabled {
+        visibility: hidden;
+      }
+    }
+
+    &_active:not(.datepicker-date-range_hover) {
+      color: var(--color-global-white);
+      background-color: var(--color-primary-50);
+    }
+
+    &_active-second {
+      cursor: pointer;
+      border-top-left-radius: 0;
+      color: var(--color-global-white);
+      background-color: var(--color-primary-50);
+      border-bottom-left-radius: 0;
+    }
+
+    &_active-first {
+      cursor: pointer;
+      color: var(--color-global-white);
+      background-color: var(--color-primary-50);
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
     }
 
     &_disabled {
-      color: getColorVar('text', '10');
+      color: var(--color-text-30);
     }
   }
 

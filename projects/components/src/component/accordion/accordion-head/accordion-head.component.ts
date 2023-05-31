@@ -8,7 +8,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { AccordionItemComponent } from '../accordion-item/accordion-item.component';
+import {AccordionItemComponent} from '../accordion-item/accordion-item.component';
 
 @Component({
   selector: 'teta-accordion-head',
@@ -27,7 +27,7 @@ export class AccordionHeadComponent implements OnInit {
   constructor(
     @Host()
     @Inject(AccordionItemComponent)
-    accordionItem: AccordionItemComponent
+      accordionItem: AccordionItemComponent
   ) {
     this.accordionItem$ = accordionItem;
   }
@@ -50,5 +50,6 @@ export class AccordionHeadComponent implements OnInit {
     return this.accordionItem$.disabled;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }

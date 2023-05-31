@@ -5,33 +5,46 @@
   align-items: center;
   grid-gap: 8px;
 
+  &_disabled {
+    cursor: default!important;
+    fill: var(--color-text-5)!important;
+    color: var(--color-text-50)!important;
+  }
+
   &__tick {
-    background: getColorVar('background', '50');
-    border: solid 1px getColorVar('text', '20');
-    border-radius: 2px;
-    height: 14px;
-    width: 14px;
+    background: var(--color-global-bgcard);
+    border: solid 1px var(--color-text-20);
+    border-radius: 4px;
+    height: 16px;
+    width: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15) inset;
+
     &_active {
       border: solid 0;
-      border-radius: 2px;
-      background: getColorVar('primary', '50');
-      fill: getColorVar('white', '50');
+      border-radius: 4px;
+      background: var(--color-primary-50);
+      fill: var(--color-global-white);
     }
   }
 
-  &:hover {
+  &:hover:not(&_disabled) {
     cursor: pointer;
   }
 
-  &:hover &__tick {
-    border-color: getColorVar('text', '50');
+
+  &:hover:not(&_disabled) &__tick {
+    background: var(--color-text-5);
+    border-color: var(--color-text-30);
+
+    &_active {
+      background: var(--color-primary-60);
+    }
   }
 
-  @each $paletteName in $palettes {
+
+  @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
     &.checkbox-#{$paletteName} {
       fill: getColorVar($paletteName, '50');
     }

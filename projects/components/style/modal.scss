@@ -19,8 +19,9 @@
   }
 
   &__container {
-    @include shadow(5);
-    background-color: getColorVar('background', '50');
+    min-width: 300px;
+    box-shadow: var(--shadow-5);;
+    background-color: var(--color-global-bgcard);
     border: solid 0;
     border-radius: 4px;
 

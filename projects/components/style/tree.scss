@@ -20,7 +20,7 @@
     flex-grow: 1;
     align-items: center;
     height: 28px;
-    color: getColorVar('text', '90');
+    color: var(--color-text-90);
     transition: background 0.4s;
     padding: 0 12px;
     min-width: 0;
@@ -40,16 +40,16 @@
 
     &:hover {
       cursor: pointer;
-      background-color: getColorVar('text', '5');
+      background-color: var(--color-text-5);
     }
 
     &_active {
-      background-color: getColorVar('text', '10');
+      background-color: var(--color-text-10);
     }
   }
 
   &__icon {
-    fill: getColorVar('text', '70');
+    fill: var(--color-text-70);
 
     &:hover {
       cursor: pointer;

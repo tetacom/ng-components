@@ -5,9 +5,9 @@
   padding: 8px 0;
   display: inline-flex;
   flex-direction: column;
-  border-radius: 4px;
-  color: getColorVar('text', '90');
-  background-color: getColorVar('background', '50');
+  border-radius: 8px;
+  color: var(--color-text-90);
+  background-color: var(--color-global-bgcard);
   @include getFont($fonts, 'body-3');
   position: relative;
 
@@ -28,7 +28,7 @@
     }
 
     &_disabled {
-      color: getColorVar('text', '20');
+      color: var(--color-text-20);
       pointer-events: none;
     }
 
@@ -37,13 +37,16 @@
       transition: background 0.4s;
 
       &:hover:not(&_disabled) {
-        background-color: getColorVar('text', '5');
+        background-color: var(--color-text-5);
         cursor: pointer;
+      }
+      &:active:not(&_disabled) {
+        background-color: var(--color-text-10);
       }
     }
 
     &_interactive#{&}_active {
-      background-color: getColorVar('text', '10');
+      background-color: var(--color-text-10);
     }
 
     &:hover > .sublist {
@@ -55,11 +58,11 @@
     height: 1px;
     flex-shrink: 0;
     margin: 8px 0;
-    background-color: getColorVar('text', '10');
+    background-color: var(--color-text-10);
   }
 
   &-title {
-    color: getColorVar('text', '50');
+    color: var(--color-text-50);
     @include getFont($fonts, 'overline');
   }
 }

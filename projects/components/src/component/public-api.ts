@@ -1,6 +1,9 @@
 /* accordion */
 export * from './accordion/public-api';
 
+/* avatar */
+export * from './avatar/public-api';
+
 /* autocomplete */
 export * from './autocomplete/public-api';
 
@@ -93,3 +96,5 @@ export * from './chart-3d/public-api';
 
 /* Resize panel */
 export * from './resize-panel/public-api';
+
+export * from './divider/public-api'

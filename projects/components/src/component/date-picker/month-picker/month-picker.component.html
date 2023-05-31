@@ -1,68 +1,30 @@
-<teta-dropdown
-  class="row row_auto"
-  [appendToBody]="appendToBody"
-  [autoCloseIgnore]="['esc', 'inside']"
-  [(open)]="showPicker"
-  [disabled]="disabled">
-  <div tetaDropdownHead
-       (wheel)="scrollMonth($event)"
-       class="datepicker-head font-body-3">
-    <teta-icon [name]="'calendar'" class="margin-right-2"></teta-icon>
-    <div class="row_auto">
-      <ng-container *ngIf="_value !==null && _value!==undefined">
-        {{locale.months[_value.getMonth()]}} {{_value.getFullYear()}}
-      </ng-container>
-    </div>
-    <teta-icon [name]="'closeBig'" (click)="clearPicker()" class="margin-left-2"></teta-icon>
+<div class="padding-h-3 padding-v-2 gap-8 column datepicker-month-wrapper">
+  <div class="row align-center justify-content-between font-button-2">
+    <teta-button [class]="'change-month-button datepicker_'+viewType" [square]="true"
+                 (click)="pickYear(currentYear-1)"
+                 palette="text"
+                 view="ghost">
+      <teta-icon name="arrowLeftKey"></teta-icon>
+    </teta-button>
+    <p>{{currentYear}}</p>
+    <teta-button [square]="true" [class]="'change-month-button datepicker_'+viewType"
+                 (click)="pickYear(currentYear+1)"
+                 palette="text"
+                 view="ghost">
+      <teta-icon name="arrowRightKey"></teta-icon>
+    </teta-button>
   </div>
-  <div tetaDropdownContent class="scrollable padding-3">
-    <div class="row align-center justify-content-between">
-      <div>
-        <button teta-button
-                type="button"
-                [palette]="'text'"
-                [view]="displayMode===datePickerModeEnum.month ? 'primary' : 'ghost'"
-                (click)="setMode(datePickerModeEnum.month)"
-                (wheel)="scrollMonth($event);">
-          {{locale.months[_currentMonth || today.getMonth()]}}
-        </button>
-        <button teta-button
-                type="button"
-                class="margin-left-2"
-                [palette]="'text'"
-                [view]="displayMode===datePickerModeEnum.year ? 'primary' : 'ghost'"
-                (click)="setMode(datePickerModeEnum.year)"
-                (wheel)="scrollYear($event);">
-          {{_currentYear || today.getFullYear()}}
-        </button>
+  <div class="datepicker-month font-body-3 color-text-90"
+       style="width: 100%">
+    <div *ngFor="let month of months" (click)="pickMonth(month.id)">
+      <div [ngClass]="{'datepicker-month_item_active':month.isSelected}"
+           [class]="'datepicker-month_item column align-center justify-content-center datepicker_'+viewType">
+         <p>
+            {{month.name}}
+          </p>
       </div>
-      <button teta-button
-              type="button"
-              [palette]="'text'"
-              [view]="'ghost'"
-              (click)="setToday()">
-        <teta-icon [name]="'calendar'"></teta-icon>
-      </button>
-    </div>
-    <div class="datepicker-content">
-      <teta-year-select
-        *ngIf="displayMode === datePickerModeEnum.year"
-        [currentYear]="_currentYear"
-        [today]="today"
-        [size]="8"
-        [minDate]="minDate"
-        [maxDate]="maxDate"
-        (yearSelected)="setYear($event)">
-      </teta-year-select>
-      <teta-month-select
-        *ngIf="displayMode === datePickerModeEnum.month"
-        [currentMonth]="_currentMonth"
-        [locale]="locale"
-        [currentYear]="_currentYear"
-        [minDate]="minDate"
-        [maxDate]="maxDate"
-        (monthSelected)="setMonth($event)">
-      </teta-month-select>
     </div>
   </div>
-</teta-dropdown>
+</div>
+
+
