@@ -18,8 +18,8 @@ export const buttons = () => ({
     imports: [ButtonModule, IconModule],
   },
   props: {
-    palettes: ['primary', 'text', 'red'],
-    types: ['brick', 'circle', 'rounded'],
+    palettes: ['primary', 'text', 'red', 'yellow', 'green'],
+    types: ['brick', 'circle', 'rounded', 'rounded', 'rounded'],
     text: text('text', 'Push me'),
     size: select('size', ['m', 'l'], 'm'),
     leftIcon: boolean('leftIcon', true),
