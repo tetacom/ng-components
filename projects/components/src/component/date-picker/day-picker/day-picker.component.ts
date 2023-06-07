@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
-import {viewType} from 'projects/components/src/common/model/view-type.model';
 import {DayModel} from "../model/day-model";
 import {DateFromToModel} from "../model/from-to.model";
 import dayjs from "dayjs";
+import {viewType} from "../../../common/model/view-type.model";
 
 @Component({
   selector: 'teta-day-picker',

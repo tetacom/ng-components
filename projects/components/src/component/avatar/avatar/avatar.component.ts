@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, HostBinding, Input, OnInit} from '@angular/core';
-import { viewType } from 'projects/components/src/common/model/view-type.model';
 import {AvatarColorEnum} from '../model/avatar-color.enum';
+import {viewType} from "../../../common/model/view-type.model";
 
 @Component({
   selector: 'teta-avatar',

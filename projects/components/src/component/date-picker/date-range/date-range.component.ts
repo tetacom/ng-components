@@ -11,7 +11,6 @@ import {BasePicker} from "../base-picker";
 import {DatePipe} from "@angular/common";
 import {Align} from "../../../common/enum/align.enum";
 import {VerticalAlign} from "../../../common/enum/vertical-align.enum";
-import {viewType} from 'projects/components/src/common/model/view-type.model';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import dayjs from "dayjs";
 import {
@@ -19,6 +18,7 @@ import {
 } from "@maskito/kit";
 import {ReplaySubject} from "rxjs";
 import {DateFromToModel} from "../model/from-to.model";
+import {viewType} from "../../../common/model/view-type.model";
 
 export const DATE_Range_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,

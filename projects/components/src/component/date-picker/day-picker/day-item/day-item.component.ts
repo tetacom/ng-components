@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component,Input, OnInit} from '@angular/core';
-import {DayModel} from 'projects/components/src/component/date-picker/model/day-model';
+import {DayModel} from "../../model/day-model";
 
 
 @Component({
