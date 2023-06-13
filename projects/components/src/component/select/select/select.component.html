@@ -21,7 +21,9 @@
     </div>
     <teta-icon [name]="'arrowDownSmall'"></teta-icon>
   </div>
-  <div *ngIf="options?.length" tetaDropdownContent class="select-list scrollable row_auto"
+  <div *ngIf="options?.length"
+       tetaDropdownContent
+       class="select-list row_auto"
        (click)="$event.preventDefault()">
     <ng-container *ngIf="searchRef">
       <div class="select-search">
@@ -40,38 +42,43 @@
       </div>
       <div class="list-divider"></div>
     </ng-container>
-    <ng-container *ngIf="!virtual">
-      <div class="list-item list-item_interactive"
-           *ngFor="let option of visibleOptions"
-           [class.select-list-item_active]="itemSelected(option) && multiple"
-           [class.list-item_active]="itemSelected(option)"
-           [class.select-list-item]="multiple"
-           (click)="clickOption(option, $event)">
-        <teta-icon *ngIf="itemSelected(option) && multiple" [name]="'tick'" [palette]="'primary'"></teta-icon>
-        <span [tetaHighlight]="searchText">
+    <teta-scrollable class="select-list padding-0"
+                     direction="column">
+      <ng-container *ngIf="!virtual">
+        <div class="list-item list-item_interactive"
+             *ngFor="let option of visibleOptions"
+             [class.select-list-item_active]="itemSelected(option) && multiple"
+             [class.list-item_active]="itemSelected(option)"
+             [class.select-list-item]="multiple"
+             (click)="clickOption(option, $event)">
+          <teta-icon *ngIf="itemSelected(option) && multiple" [name]="'tick'" [palette]="'primary'"></teta-icon>
+          <span [tetaHighlight]="searchText">
           <ng-container
             *ngTemplateOutlet="optionDirective ? optionDirective.template : optionDefault; context: {$implicit: option, option: option}">
           </ng-container>
         </span>
-      </div>
-    </ng-container>
-    <cdk-virtual-scroll-viewport *ngIf="virtual"
-                                 [itemSize]="40"
-                                 minBufferPx="200"
-                                 maxBufferPx="600">
-      <div class="select-list-item select-list-item_interactive"
-           *cdkVirtualFor="let option of visibleOptions; templateCacheSize: 0;"
-           [class.select-list-item_active]="itemSelected(option)"
-           [tetaHighlight]="searchText"
-           (click)="clickOption(option, $event)">
-        <teta-icon *ngIf="itemSelected(option)" [name]="'tick'" [palette]="'primary'" class="margin-left-2"></teta-icon>
-        <div [tetaHighlight]="searchText">
-          <ng-container
-            *ngTemplateOutlet="optionDirective ? optionDirective.template : optionDefault; context: {$implicit: option, option: option}">
-          </ng-container>
         </div>
-      </div>
-    </cdk-virtual-scroll-viewport>
+      </ng-container>
+      <cdk-virtual-scroll-viewport *ngIf="virtual"
+                                   tetaScrollable
+                                   [itemSize]="40"
+                                   minBufferPx="200"
+                                   maxBufferPx="600">
+        <div class="select-list-item select-list-item_interactive"
+             *cdkVirtualFor="let option of visibleOptions; templateCacheSize: 0;"
+             [class.select-list-item_active]="itemSelected(option)"
+             [tetaHighlight]="searchText"
+             (click)="clickOption(option, $event)">
+          <teta-icon *ngIf="itemSelected(option)" [name]="'tick'" [palette]="'primary'"
+                     class="margin-left-2"></teta-icon>
+          <div [tetaHighlight]="searchText">
+            <ng-container
+              *ngTemplateOutlet="optionDirective ? optionDirective.template : optionDefault; context: {$implicit: option, option: option}">
+            </ng-container>
+          </div>
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </teta-scrollable>
     <div class="row row_auto select-chip-field flex-wrap" *ngIf="multiple && value?.length">
       <div *ngFor="let item of value" class="chip">
         <teta-icon [name]="'closeCircle'" (click)="removeItemClick(item, $event)"></teta-icon>

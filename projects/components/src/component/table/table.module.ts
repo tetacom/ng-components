@@ -39,6 +39,7 @@ import {ContextMenuModule} from '../../directive/context-menu/context-menu.modul
 import { MainDropdownTabComponent } from './table-head/main-dropdown-tab/main-dropdown-tab.component';
 import { FilterDropdownTabComponent } from './table-head/filter-dropdown-tab/filter-dropdown-tab.component';
 import { VisibilityDropdownTabComponent } from './table-head/visibility-dropdown-tab/visibility-dropdown-tab.component';
+import {ScrollableModule} from "../../directive/scrollable/scrollable.module";
 
 @NgModule({
   declarations: [
@@ -98,6 +99,7 @@ import { VisibilityDropdownTabComponent } from './table-head/visibility-dropdown
     ResizeDragModule,
     ScrollingModule,
     ContextMenuModule,
+    ScrollableModule,
   ],
 })
 export class TableModule {

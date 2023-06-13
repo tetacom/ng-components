@@ -1,6 +1,5 @@
 @import "util/color-util.scss";
 @import "util/font-util.scss";
-@import "util/scroll-util.scss";
 
 .table {
   display: flex;
@@ -163,7 +162,6 @@
 
     &-container {
       flex-grow: 1;
-      @include scrollable();
     }
   }
 

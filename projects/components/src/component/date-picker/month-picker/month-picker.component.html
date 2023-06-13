@@ -15,7 +15,7 @@
     </div>
     <teta-icon [name]="'closeBig'" (click)="clearPicker()" class="margin-left-2"></teta-icon>
   </div>
-  <div tetaDropdownContent class="scrollable padding-3">
+  <teta-scrollable tetaDropdownContent class="padding-3">
     <div class="row align-center justify-content-between">
       <div>
         <button teta-button
@@ -64,5 +64,5 @@
         (monthSelected)="setMonth($event)">
       </teta-month-select>
     </div>
-  </div>
+  </teta-scrollable>
 </teta-dropdown>

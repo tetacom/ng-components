@@ -1,5 +1,4 @@
 @import "util/color-util.scss";
-@import "util/scroll-util.scss";
 
 ::-webkit-scrollbar-button {
   width: 4px;
@@ -15,7 +14,6 @@
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-thumb {
   border: 4px solid transparent;
-  //border-radius: 4px;
   background-clip: padding-box;
 }
 
@@ -27,18 +25,15 @@
   &::-webkit-scrollbar-thumb {
     background-color: getColorVar('primary', '50');
     border: 2px solid transparent;
-    //border-radius: 4px;
   }
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: getColorVar('text', '10');
-  //border-radius: 4px;
 
   &:hover {
     background-color: getColorVar('primary', '50');
     border: 2px solid transparent;
-    //border-radius: 4px;
   }
 }
 
@@ -47,14 +42,23 @@
 }
 
 .scrollable {
-  @include scrollable();
-  &:hover::-webkit-scrollbar {
-    display: block;
-    opacity: 1;
+  overflow: hidden;
+  position: relative;
+
+  &_hide_scroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
   }
-  &::-webkit-scrollbar {
-    display: none;
-    opacity: 0;
-    transition: visibility 0s, opacity 0.5s linear;
-  }
+
+  //&:hover::-webkit-scrollbar:horizontal {
+  //  height: 0;
+  //  display: block;
+  //  opacity: 1;
+  //}
+  //
+  //&::-webkit-scrollbar {
+  //  display: none;
+  //  opacity: 0;
+  //  transition: visibility 0s, opacity 0.5s linear;
+  //}
 }

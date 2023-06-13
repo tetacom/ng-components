@@ -10,6 +10,7 @@ import {IconModule} from '../icon/icon.module';
 import {HighlightModule} from '../../directive/highlight/highlight.module';
 import {InputModule} from '../input/input.module';
 import {LetModule} from "../../directive/let/let.module";
+import {ScrollableModule} from "../../directive/scrollable/scrollable.module";
 
 @NgModule({
   declarations: [SelectComponent, SelectOptionDirective, SelectValueDirective],
@@ -23,6 +24,7 @@ import {LetModule} from "../../directive/let/let.module";
         HighlightModule,
         InputModule,
         LetModule,
+        ScrollableModule,
     ],
 })
 export class SelectModule {}

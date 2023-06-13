@@ -13,6 +13,7 @@ import { ButtonModule } from '../button/button.module';
 import { OnlyNumberModule } from '../../directive/only-number/only-number.module';
 import { FormsModule } from '@angular/forms';
 import { TimePartControlComponent } from './time-part-control/time-part-control.component';
+import {ScrollableModule} from "../../directive/scrollable/scrollable.module";
 
 @NgModule({
   declarations: [
@@ -24,15 +25,16 @@ import { TimePartControlComponent } from './time-part-control/time-part-control.
     TimePartControlComponent,
   ],
   exports: [DatePickerComponent, MonthPickerComponent],
-  imports: [
-    CommonModule,
-    DropdownModule,
-    ClickOutsideModule,
-    FormsModule,
-    IconModule,
-    PrependZeroModule,
-    ButtonModule,
-    OnlyNumberModule,
-  ],
+    imports: [
+        CommonModule,
+        DropdownModule,
+        ClickOutsideModule,
+        FormsModule,
+        IconModule,
+        PrependZeroModule,
+        ButtonModule,
+        OnlyNumberModule,
+        ScrollableModule,
+    ],
 })
 export class DatePickerModule {}

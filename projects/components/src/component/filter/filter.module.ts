@@ -13,6 +13,7 @@ import {RadioModule} from '../radio/radio.module';
 import {InputModule} from '../input/input.module';
 import {CheckboxModule} from '../checkbox/checkbox.module';
 import {OnlyNumberModule} from '../../directive/only-number/only-number.module';
+import {ScrollableModule} from "../../directive/scrollable/scrollable.module";
 
 @NgModule({
   declarations: [
@@ -31,16 +32,17 @@ import {OnlyNumberModule} from '../../directive/only-number/only-number.module';
     FilterHostComponent,
     BooleanFilterComponent,
   ],
-  imports: [
-    CommonModule,
-    SelectModule,
-    FormsModule,
-    DatePickerModule,
-    RadioModule,
-    InputModule,
-    CheckboxModule,
-    OnlyNumberModule,
-  ],
+    imports: [
+        CommonModule,
+        SelectModule,
+        FormsModule,
+        DatePickerModule,
+        RadioModule,
+        InputModule,
+        CheckboxModule,
+        OnlyNumberModule,
+        ScrollableModule,
+    ],
 })
 export class FilterModule {
 }

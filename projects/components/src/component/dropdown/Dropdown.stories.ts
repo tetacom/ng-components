@@ -7,6 +7,7 @@ import {DropdownComponent} from './dropdown/dropdown.component';
 import {DropdownModule} from './dropdown.module';
 import {Align} from '../../common/enum/align.enum';
 import {VerticalAlign} from '../../common/enum/vertical-align.enum';
+import {ScrollableModule} from "../../directive/scrollable/scrollable.module";
 
 export default {
   title: 'Component/Dropdown',
@@ -70,7 +71,7 @@ const alignMap = new Map<VerticalAlign, string>().set(
 
 export const dropdownDirective = (args) => ({
   moduleMetadata: {
-    imports: [DropdownModule, ButtonModule, IconModule]
+    imports: [DropdownModule, ButtonModule, IconModule, ScrollableModule]
   },
   props: {
     ...args,
@@ -99,7 +100,7 @@ export const dropdownDirective = (args) => ({
       <button teta-button tetaDropdownHead [palette]="'primary'">
         {{alignMap.get(valign)}}
       </button>
-      <div tetaDropdownContent class="list scrollable" style="width: 200px">
+      <teta-scrollable tetaDropdownContent class="list" style="width: 200px">
         <ng-container *ngFor="let i of [1,2,3]">
           <div class="list-item">
             <teta-icon [name]="'user'" [palette]="'text'" class="margin-right-2"></teta-icon>Jerome Bell
@@ -117,7 +118,7 @@ export const dropdownDirective = (args) => ({
             <teta-icon [name]="'map'" [palette]="'text'" class="margin-right-2"></teta-icon>Marvin McKinney
           </div>
         </ng-container>
-      </div>
+      </teta-scrollable>
     </div>
   </div>`
 });

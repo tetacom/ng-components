@@ -21,7 +21,7 @@
                (click)="clearPicker($event);"
                class="margin-left-1"></teta-icon>
   </div>
-  <div tetaDropdownContent class="scrollable" (click)="$event.preventDefault()">
+  <teta-scrollable tetaDropdownContent (click)="$event.preventDefault()">
     <div class="padding-3">
       <div class="row align-center justify-content-between">
         <div>
@@ -94,5 +94,5 @@
       <teta-time-part-control [ngModel]="internalValue?.getSeconds()"
                               (ngModelChange)="setSecond($event)"></teta-time-part-control>
     </div>
-  </div>
+  </teta-scrollable>
 </teta-dropdown>

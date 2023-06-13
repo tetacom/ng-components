@@ -179,6 +179,10 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     return '';
   }
 
+  emitScroll(event) {
+    this.scroll.emit(event)
+  }
+
   // trackRow(index: number, row: T): any {
   //   if (row['id']) {
   //     return row['id'];

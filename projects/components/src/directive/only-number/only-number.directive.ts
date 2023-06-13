@@ -20,7 +20,7 @@ export class OnlyNumberDirective {
 
   private readonly _minusSign: string = '-';
 
-  constructor(private _elementRef: ElementRef, private _control: NgControl) {
+  constructor(private _elementRef: ElementRef<HTMLInputElement>, private _control: NgControl) {
   }
 
   @HostListener('change', ['$event']) onChange(e: any) {
@@ -28,6 +28,14 @@ export class OnlyNumberDirective {
       return;
     }
     this.validateValue(this._elementRef.nativeElement.value);
+  }
+
+  @HostListener('dblclick', ['$event']) dblclick(e: any) {
+    if (this.tetaOnlyNumber === false) {
+      return;
+    }
+    console.log('dblclick');
+    this._elementRef.nativeElement.select();
   }
 
   @HostListener('paste', ['$event']) onPaste(e: any) {
