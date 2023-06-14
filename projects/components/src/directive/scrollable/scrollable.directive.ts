@@ -1,0 +1,8 @@
+import {Directive, HostBinding} from "@angular/core";
+
+@Directive({
+  selector: '[tetaScrollable]',
+})
+export class ScrollableDirective {
+  @HostBinding('class.scrollable_hide_scroll') private readonly hideScrollClass = true;
+}

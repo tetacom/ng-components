@@ -121,7 +121,9 @@
   "preset": "angular",
   "release": {
     "branches": [
-      "main"
+      "main",
+      "main-fix-old-version"
+      
     ]
   },
   "repository": {

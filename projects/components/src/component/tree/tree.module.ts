@@ -6,10 +6,11 @@ import { TetaTemplateModule } from '../../directive/teta-template/teta-template.
 import { IconModule } from '../icon/icon.module';
 import { TreeItemToggleComponent } from './tree-item-toggle/tree-item-toggle.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import {ScrollableModule} from "../../directive/scrollable/scrollable.module";
 
 @NgModule({
   declarations: [TreeComponent, TreeItemComponent, TreeItemToggleComponent],
   exports: [TreeComponent, TetaTemplateModule, TreeItemToggleComponent],
-  imports: [CommonModule, IconModule, TetaTemplateModule, ScrollingModule],
+    imports: [CommonModule, IconModule, TetaTemplateModule, ScrollingModule, ScrollableModule],
 })
 export class TreeModule {}

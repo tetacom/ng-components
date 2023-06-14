@@ -3,6 +3,7 @@
   height: 0;
   line-height: 0;
 }
+
 .float {
   &__right {
     float: right;
@@ -12,6 +13,7 @@
     float: left;
   }
 }
+
 .position {
   &-relative {
     position: relative;
@@ -25,6 +27,7 @@
     position: fixed;
   }
 }
+
 .display {
   &-block {
     display: flex !important;
@@ -45,6 +48,10 @@
   &-inline {
     display: inline !important;
   }
+
+  &-none {
+    display: none !important;
+  }
 }
 
 .flex {
@@ -62,6 +69,7 @@
     flex-wrap: nowrap !important;
   }
 }
+
 .align {
   &-center {
     align-items: center;
@@ -83,6 +91,7 @@
     align-items: baseline;
   }
 }
+
 .align-self {
   &-center {
     align-self: center;
@@ -104,6 +113,7 @@
     align-self: baseline;
   }
 }
+
 .justify-content {
   &-between {
     justify-content: space-between;
@@ -125,6 +135,7 @@
     justify-content: center;
   }
 }
+
 .justify-self {
   &-center {
     justify-self: center;
@@ -138,9 +149,11 @@
     justify-self: flex-end;
   }
 }
+
 .nowrap {
   white-space: nowrap;
 }
+
 .overflow {
   &-hidden {
     overflow: hidden;
@@ -178,6 +191,7 @@
     overflow-y: scroll;
   }
 }
+
 .text-align {
   &-center {
     text-align: center;
@@ -191,16 +205,19 @@
     text-align: right;
   }
 }
+
 .cursor-pointer {
   &:hover {
     cursor: pointer;
   }
 }
+
 .text-overflow {
   &-ellipsis {
     text-overflow: ellipsis;
   }
 }
+
 .text-decoration {
   &-none {
     text-decoration: none;

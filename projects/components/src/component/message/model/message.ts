@@ -6,7 +6,7 @@ export class Message {
   title: string | null | undefined;
   text: string | null | undefined;
   infinite: boolean;
-  viewType: viewType;
+  viewType?: viewType = "rounded";
   duration = 10000;
   className: string[] | null | undefined;
   palette = 'primary';

@@ -1,0 +1,71 @@
+:host {
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+  display: flex;
+
+  &:hover .scroll-controls {
+    opacity: 1;
+  }
+
+  &.show-scrollbars .scroll-controls {
+    opacity: 1;
+  }
+}
+
+:host::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.scroll-content-wrapper {
+  display: flex;
+  overflow: auto;
+  flex-grow: 1;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+.scroll-content {
+  position: relative;
+  z-index: 0;
+  flex: 1;
+  display: flex;
+  height: auto;
+  min-width: 0;
+}
+
+.scroll-controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s linear;
+}
+
+.scroll-scrollbar {
+  position: absolute;
+  overflow: auto;
+  pointer-events: auto;
+
+  &-vertical {
+    right: 0;
+    top: 0;
+    bottom: 12px;
+    width: 12px;
+  }
+
+  &-horizontal {
+    right: 12px;
+    left: 0;
+    bottom: 0;
+    height: 12px;
+  }
+}

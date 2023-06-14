@@ -8,7 +8,7 @@
     </teta-checkbox>
   </div>
   <div class="list-divider"></div>
-  <div class="padding-v-2 column column_auto scrollable">
+  <teta-scrollable class="padding-v-2 column column_auto">
     <teta-tree [data]="columns"
                [openItems]="openItems"
                (openItemsChange)="openItems = $event"
@@ -29,7 +29,7 @@
         </div>
       </ng-template>
     </teta-tree>
-  </div>
+  </teta-scrollable>
   <teta-toolbar class="justify-content-end">
     <button type="button"
             teta-button
