@@ -23,6 +23,8 @@ export const ruLocale: TetaLocalisation = {
   sum: 'Сумма',
   avg: 'Средн',
   search: 'Поиск',
+  notFound:'Не найдено',
+  selected:'Выбрано',
   notSelected: 'Не выбрано',
   yes: 'Да',
   no: 'Нет',

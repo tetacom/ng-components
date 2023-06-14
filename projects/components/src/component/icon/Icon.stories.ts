@@ -2,7 +2,7 @@ import {Meta} from '@storybook/angular/types-6-0';
 import {select, withKnobs} from '@storybook/addon-knobs';
 import {IconComponent} from './icon/icon.component';
 import {IconModule} from './icon.module';
-import {coloredIconsList, iconsList} from './icons-list';
+import {coloredIconsList, iconsList, fileIconsList} from './icons-list';
 
 export default {
   title: 'Component/Icon',

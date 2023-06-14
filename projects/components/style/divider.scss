@@ -1,0 +1,15 @@
+.divider {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  &-content {
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  div:first-child, div:last-child {
+    flex-grow: 1;
+  }
+}

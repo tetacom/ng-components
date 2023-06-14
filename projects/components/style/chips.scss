@@ -1,23 +1,23 @@
 @import "util/color-util.scss";
+@import "util/font-util.scss";
+@import "presets/view-types.scss";
 
 .chip {
-  height: 24px;
+  height: 28px;
+  @include getFont($fonts,'button-2');
   border: solid transparent 0;
   border-radius: 12px;
-  background: getColorVar('text', '10');
-  fill: getColorVar('text', '50');
-  color: getColorVar('text', '90');
+  background: var(--color-text-10);
+  fill: var(--color-text-50);
+  color: var(--color-text-90);
   margin-right: 4px;
   margin-top: 4px;
   display: inline-flex;
   align-items: center;
-  padding: 4px 8px 4px 6px;
-
+  padding: 4px 4px 4px 10px;
+  gap: 8px;
+  @include getView('base');
   &:hover {
     cursor: pointer;
-  }
-
-  teta-icon {
-    margin-right: 6px;
   }
 }

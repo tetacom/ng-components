@@ -1,42 +1,7 @@
 @use "sass:map";
 @import "./util/color-util.scss";
 
-body {
-  @each $paletteName, $palette in map.get($themes, "default") {
-    @each $paletteColorName, $paletteColor in $palette {
-      --color-#{$paletteName}-#{$paletteColorName}: #{$paletteColor};
-    }
-  }
-}
-
-@each $themeName, $theme in $themes {
-  .theme-#{$themeName} {
-    @each $paletteName, $palette in $theme {
-      @each $paletteColorName, $paletteColor in $palette {
-        --color-#{$paletteName}-#{$paletteColorName}: #{$paletteColor};
-      }
-    }
-  }
-}
-
-
-@each $paletteName, $i in $palettes {
-  @each $gradeName, $j in $grades {
-    .color-#{$paletteName}-#{$gradeName} {
-      color: getColorVar($paletteName, $gradeName);
-    }
-    .bg-#{$paletteName}-#{$gradeName} {
-      background-color: getColorVar($paletteName, $gradeName);
-    }
-    .border-#{$paletteName}-#{$gradeName} {
-      border-color: getColorVar($paletteName, $gradeName);
-    }
-    .fill-#{$paletteName}-#{$gradeName} {
-      fill: getColorVar($paletteName, $gradeName);
-    }
-  }
-}
-
 .bg-transparent {
   background-color: transparent;
 }
+

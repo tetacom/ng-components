@@ -1,10 +1,12 @@
-import { TemplateRef } from '@angular/core';
+import {TemplateRef} from '@angular/core';
+import {viewType} from "../../../common/model/view-type.model";
 
 export class Message {
   name: string | null | undefined;
   title: string | null | undefined;
   text: string | null | undefined;
   infinite: boolean;
+  viewType: viewType;
   duration = 10000;
   className: string[] | null | undefined;
   palette = 'primary';
@@ -16,6 +18,7 @@ export class Message {
     text?: string;
     infinite?: boolean;
     duration?: number;
+    viewType?: viewType;
     palette?: string;
     className?: string[];
     template?: TemplateRef<any>;
@@ -23,6 +26,7 @@ export class Message {
     if (options) {
       this.name = options.name;
       this.title = options.title;
+      this.viewType = options.viewType || 'rounded';
       this.text = options.text;
       this.infinite = options.infinite || false;
       this.className = options.className;

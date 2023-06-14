@@ -6,6 +6,7 @@
   (ngModelChange)="value = $event; onChange($event);"
   [placeholder]="placeholder"
   [disabled]="disabled"
+  [ngClass]="{'color-text-40':disabled}"
   (focus)='inputFocused = true'
   (blur)="inputFocused = false;emitBlur()"
   (keydown)="keyPress($event)"

@@ -1,9 +1,8 @@
 import {Meta} from '@storybook/angular/types-6-0';
 // eslint-disable-next-line id-blacklist
-import {boolean, optionsKnob, select, withKnobs} from '@storybook/addon-knobs';
+import {withKnobs} from '@storybook/addon-knobs';
 import {ButtonModule} from '../button/button.module';
 import {IconModule} from '../icon/icon.module';
-import {DropdownComponent} from './dropdown/dropdown.component';
 import {DropdownModule} from './dropdown.module';
 import {Align} from '../../common/enum/align.enum';
 import {VerticalAlign} from '../../common/enum/vertical-align.enum';
@@ -92,6 +91,7 @@ export const dropdownDirective = (args) => ({
     <div tetaDropdown
           class="margin-right-4"
           *ngFor="let valign of verticalAlign"
+          viewType="rounded"
           [align]="align"
           [verticalAlign]="valign"
           [appendToBody]="appendToBody"
@@ -140,6 +140,7 @@ export const dropdownComponent = (args) => ({
     <teta-dropdown *ngFor="let valign of verticalAlign"
                     [align]="align"
                     [verticalAlign]="valign"
+                     viewType="rounded"
                     [appendToBody]="appendToBody"
                     [autoClose]="autoClose"
                     [autoCloseIgnore]="autoCloseIgnore">

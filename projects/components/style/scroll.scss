@@ -23,16 +23,16 @@
 
 ::-webkit-scrollbar-track:hover {
   &::-webkit-scrollbar-thumb {
-    background-color: getColorVar('primary', '50');
+    background-color: var(--color-primary-50);
     border: 2px solid transparent;
   }
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: getColorVar('text', '10');
+  background-color: var(--color-text-10);
 
   &:hover {
-    background-color: getColorVar('primary', '50');
+    background-color: var(--color-primary-50);
     border: 2px solid transparent;
   }
 }

@@ -61,7 +61,7 @@ export const basicInput = () => ({
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="border border-text-10 padding-3" style="width: 500px;">
   <div class="form-container">
     <div class="form-row">
-      <teta-input [label]="'text-field'">
+      <teta-input [label]="'text-field'" >
         <teta-text-field [leftIconName]="'user'" [placeholder]="'placeholder'"></teta-text-field>
       </teta-input>
       <teta-input [label]="'text-field disabled'">

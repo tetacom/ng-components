@@ -18,6 +18,7 @@ import {SelectValueDirective} from '../select-value.directive';
 import {TetaConfigService} from "../../../locale/teta-config.service";
 import {Observable} from "rxjs";
 import {TetaLocalisation} from "../../../locale/teta-localisation";
+import {viewType} from "../../../common/model/view-type.model";
 
 @Component({
   selector: 'teta-select',
@@ -60,7 +61,8 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   @Input() placeholder: string;
   @Input() appendToBody: boolean;
   @Input() allowNull = true;
-
+  @Input() viewType: viewType = 'rounded';
+  @Input() notFoundText: string;
   @Input() valueRef: ((item: any) => any) | string;
   @Input() textRef: ((item: any) => string) | string;
   @Input() searchRef: string | ((item: any) => string);

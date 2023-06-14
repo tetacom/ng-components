@@ -37,13 +37,26 @@ export const binary = () => ({
       action('log')(value);
     },
   },
-  template: `<teta-checkbox [tetaIconSprite]="'assets/icons.svg'"
+  template: `
+<div class="column gap-8">
+<teta-checkbox [tetaIconSprite]="'assets/icons.svg'"
                             [palette]="palette"
                             [ngModel]="value"
                             (ngModelChange)="setValue($event)"
                             [binary]="true">
               {{text}}
-            </teta-checkbox>`,
+            </teta-checkbox>
+
+            <teta-checkbox [tetaIconSprite]="'assets/icons.svg'"
+                            [palette]="palette"
+                            [disabled] = "true"
+                            [ngModel]="value"
+                            (ngModelChange)="setValue($event)"
+                            [binary]="true">
+              {{text}}
+            </teta-checkbox>
+</div>
+`,
 });
 
 export const list = () => ({

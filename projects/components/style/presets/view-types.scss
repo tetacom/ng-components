@@ -1,0 +1,15 @@
+// Get classes by token type: 'base', 'btn', 'field'
+
+@mixin getView($tokenType) {
+  &_brick {
+    border-radius: var(--radius-#{$tokenType}-brick);
+  }
+
+  &_circle {
+    border-radius: var(--radius-#{$tokenType}-circle)
+  }
+
+  &_rounded {
+    border-radius: var(--radius-#{$tokenType}-round);
+  }
+}

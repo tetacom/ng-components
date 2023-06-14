@@ -1,0 +1,57 @@
+@use "sass:map";
+
+$font-sizes: (
+  '24':11px,
+  '28':11px,
+  '32':11px,
+  '44':14px,
+  '64':16px,
+  '128':28px,
+  '200':35px
+);
+
+$sizes: (
+  '24':24,
+  '28':28,
+  '32':32,
+  '44':44,
+  '64':64,
+  '128':128,
+  '200':200
+);
+
+.avatar {
+  &_brick {
+    border-radius: var(--radius-base-brick);
+  }
+
+  &_circle {
+    border-radius: var(--radius-base-circle)''
+  }
+
+  &_round {
+    border-radius: var(--radius-base-round);
+  }
+
+  font-style: normal;
+  font-weight: 600;
+  line-height: 16px;
+}
+
+@each $sizeName, $size in $sizes {
+  .avatar-size-#{$sizeName} {
+    height: #{$size}px;
+    width: #{$size}px;
+    font-size: map-get($font-sizes, $sizeName);
+
+    img {
+      height: #{$size}px;
+      width: #{$size}px;
+    }
+
+    div {
+      height: #{$size}px;
+      width: #{$size}px;
+    }
+  }
+}
