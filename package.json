@@ -110,8 +110,8 @@
   "release": {
     "branches": [
       "main",
-      "main-fix-old-version"
-      
+      "main-fix-old-version",
+      "update-date-cell"
     ]
   },
   "repository": {
