@@ -34,7 +34,6 @@ export class OnlyNumberDirective {
     if (this.tetaOnlyNumber === false) {
       return;
     }
-    console.log('dblclick');
     this._elementRef.nativeElement.select();
   }
 
