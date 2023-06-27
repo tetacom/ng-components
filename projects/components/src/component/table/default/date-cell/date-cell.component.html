@@ -6,6 +6,7 @@
 <teta-date-picker class="datepicker-table"
                   #input
                   *ngIf="edit"
+                  [allowNull]="!column.required"
                   [appendToBody]="true"
                   [showTime]="false"
                   [ngModel]="row[column.name]"
