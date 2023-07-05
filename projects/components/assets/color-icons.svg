@@ -352,6 +352,22 @@
       </clipPath>
     </defs>
   </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="sideTube">
+    <path d="M13 5C13 7.76142 10.7614 10 8 10C5.23858 10 3 7.76142 3 5" stroke="#E06850"/>
+    <rect x="2" y="1" width="2" height="14" fill="url(#paint0_linear_9947_222327)"/>
+    <defs>
+      <linearGradient id="paint0_linear_9947_222327" x1="2" y1="0" x2="2" y2="16" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#889099"/>
+        <stop offset="1" stop-color="#747B81"/>
+      </linearGradient>
+    </defs>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="sortDownColor">
+    <path d="M9 3H7V10H5L8 13L11 10H9V3Z" fill="#0A7CD6"></path>
+  </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="sortUpColor">
+    <path d="M9 13H7V6H5L8 3L11 6H9V13Z" fill="#0A7CD6"></path>
+  </symbol>
   <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="rigisGroupColor">
     <g clip-path="url(#clip0_3842_17396)">
       <g clip-path="url(#clip1_3842_17396)">

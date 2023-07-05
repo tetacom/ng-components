@@ -207,7 +207,7 @@ export const coloredIconsList = [
   'mapColor',
   'opzAddColor',
   'opzGroupColor',
-  'rigisGroupColor',
+  'sideTube',
   'sortDownColor',
   'sortUpColor',
   'sumAddColor',
