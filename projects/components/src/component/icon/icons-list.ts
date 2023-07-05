@@ -212,6 +212,7 @@ export const coloredIconsList = [
   'opzColor',
   'opzAddColor',
   'opzGroupColor',
+  'sideTube',
   'sortDownColor',
   'sortUpColor',
   'rigisGroupColor',
