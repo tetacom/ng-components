@@ -16,7 +16,7 @@ import { TetaSize } from '../../../common/enum/teta-size.enum';
 export class IconComponent implements OnInit {
   @Input() name: string;
   @Input() size: TetaSize = TetaSize.M;
-  @Input() palette: string;
+  @Input() palette: string = 'text';
 
   @Input() class;
 

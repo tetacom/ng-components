@@ -1,6 +1,6 @@
 <ng-container *tetaLet="position | async as p">
   <ng-container *ngIf="tooltips | async as t">
-    <div class="chart-tooltip color-text-90 bg-background-50 shadow-2"
+    <div class="chart-tooltip color-text-90 bg-global-bgcard shadow-2"
          #tooltip
          [style.position]="'fixed'"
          *ngIf="t.length > 0"

@@ -32,7 +32,7 @@ export const basicChart = () => ({
   template: `
 
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']"
-            class="font-body-3 padding-3 bg-background-0"
+            class="font-body-3 padding-3 bg-global-bgmain"
             style="width: 100%; height: 100vh">
         <button teta-button
           [palette]="'primary'"
@@ -49,7 +49,7 @@ export const basicChart = () => ({
           (click)="setZoom(chart)">Set zoom</button>
 
         <div class="row row_auto gap" style="height: 100%; width: 100%">
-            <teta-svg-chart #chart [config]="config" class="bg-background-50 row_6 border border-text-50"></teta-svg-chart>
+            <teta-svg-chart #chart [config]="config" class="bg-global-bgcard row_6 border border-text-50"></teta-svg-chart>
 
         </div>
 
@@ -69,10 +69,10 @@ export const draggableChart = () => ({
   },
   template: `
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']"
-            class="font-body-3 padding-3 bg-background-0"
+            class="font-body-3 padding-3 bg-global-bgmain"
             style="width: 100%; height: 100vh">
         <div class="row row_auto gap" style="height: 100%; width: 100%">
-            <teta-svg-chart [config]="config" class="bg-background-50 row_6 border border-text-50"></teta-svg-chart>
+            <teta-svg-chart [config]="config" class="bg-global-bgcard row_6 border border-text-50"></teta-svg-chart>
         </div>
       </div>`,
 });
@@ -88,10 +88,10 @@ export const bandChart = () => ({
   },
   template: `
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']"
-            class="font-body-3 padding-3 bg-background-0"
+            class="font-body-3 padding-3 bg-global-bgmain"
             style="width: 100%; height: 100vh">
         <div class="row row_auto gap" style="height: 100%; width: 100%">
-            <teta-svg-chart [config]="config" class="bg-background-50 row_6 border border-text-50"></teta-svg-chart>
+            <teta-svg-chart [config]="config" class="bg-global-bgcard row_6 border border-text-50"></teta-svg-chart>
         </div>
       </div>`,
 });

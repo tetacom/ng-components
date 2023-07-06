@@ -5,7 +5,8 @@
   border-width: 1px;
   @each $dir in $directions {
     &-#{$dir} {
-      border-#{$dir}: solid 1px;
+      border-#{$dir}-style: solid;
+      border-#{$dir}-width: 1px;
     }
   }
   @for $radius from 0 through 12 {

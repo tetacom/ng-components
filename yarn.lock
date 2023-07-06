@@ -1895,22 +1895,22 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@maskito/angular@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@maskito/angular/-/angular-0.8.0.tgz#a044e0b3367b61f50a5f5f2af894ef1dc9e39669"
-  integrity sha512-wbvFK2qjqWnxjmNoNHl2SPrBQcHuVqD9yRYjLCxrbiGIfeOhdC2YdhgbBYOVwWhJVtNXMBST6XvOSaBkwvuEDg==
+"@maskito/angular@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@maskito/angular/-/angular-1.2.0.tgz#e4a415278703106e56638bb94775a71af5dde707"
+  integrity sha512-2YD/MWxESVn5/nckZj4F3GArzxjN3M4V8SHhtxI4c3wtg1m8ewoO8r7o3HYk/4aVLxxR0y2bz6cOWJtawt4KoQ==
   dependencies:
     tslib "^2.3.0"
 
-"@maskito/core@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@maskito/core/-/core-0.8.0.tgz#3a30ee77bea73a1ba3cc6687746590d7fc33b1d1"
-  integrity sha512-PXTEqqTZma5d+klud1deAAYf9kdlCEV94FPM2sdoKCndRITZMRhJGmLrfVyQ86k3ZWqOLc8wwUeAunuxoyRSlQ==
+"@maskito/core@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@maskito/core/-/core-1.2.0.tgz#4b20fe1cfae40d4404ec209cfcd7f463e0160500"
+  integrity sha512-RFSydWYujxbVBbMzQVZ0zR77ROY3MbcuyKFWLomJWw3rDujl65M2ppz5KMeDSogAGkKnqzWudozjmBAQf2DgcA==
 
-"@maskito/kit@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@maskito/kit/-/kit-0.8.0.tgz#e5739b9d9460f6a5f99b5ef764091ed1988259db"
-  integrity sha512-vfvXlJKiRlT/dgar2FQwVJVmJNi+rnN2goQ4zLxd5xDjA+1vhQ5aNZ50VK12n5vUJJFKwVKAZPXat/hIerapYg==
+"@maskito/kit@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@maskito/kit/-/kit-1.2.0.tgz#4f65bbd7faf157cd9c420ccd19ec0c96ed652a60"
+  integrity sha512-sMUZ3vMp3RCAcw+H/TuxyrJDgz6J5TTUCc+2/inTCE1gr33FsmhzLqoi5PaYrD146VcOKdtAxd3NJ1RK/g1ZHw==
 
 "@mdx-js/mdx@^1.6.22":
   version "1.6.22"
@@ -3332,10 +3332,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@tetacom/themes@0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@tetacom/themes/-/themes-0.0.9.tgz#2c29b87c5524ebe13eaae5e96edb51b86b146f01"
-  integrity sha512-3Se3Td8L8rlvdsIKTxn73zLpMqvrU2gw47Uyfx62arp6F+yBmwgQrkT4ADgVAoI9GxJ/mPd6hObNcl3eLYvnqw==
+"@tetacom/themes@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@tetacom/themes/-/themes-0.0.13.tgz#262d98840a47e624d9f5598eb9906280c3517b1b"
+  integrity sha512-8k3sKnXFARzAXnUVs08d/g0E2fRttlAUbQlB3yyhQDxNgkGp4Ayf+yKWboED+HhukD22jgOknehO3ySNlTilOQ==
 
 "@tootallnate/once@1":
   version "1.1.2"
