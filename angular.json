@@ -127,7 +127,6 @@
       "root": ""
     }
   },
-  "defaultProject": "components",
   "cli": {
     "analytics": false
   }
