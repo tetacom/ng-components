@@ -9,5 +9,5 @@ export abstract class FilterComponentBase<T> {
   abstract state: FilterState;
   abstract data: T[];
   abstract filterOptions: IIdName<any>[];
-  abstract filterChanged: EventEmitter<IFilter>;
+  abstract filterChanged: EventEmitter<IFilter<any>>;
 }

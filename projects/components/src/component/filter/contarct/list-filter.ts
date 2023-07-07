@@ -1,8 +1,7 @@
 import {FilterBase} from '../base/filter-base';
 import {ListFilterType} from '../enum/list-filter-type.enum';
 
-export class ListFilter extends FilterBase {
-  override value: any[];
+export class ListFilter extends FilterBase<any[]> {
   type: ListFilterType;
 
   constructor(options?: {

@@ -3,14 +3,12 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Input,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { CellComponentBase } from '../../base/cell-component-base';
-import { TableColumn } from '../../contract/table-column';
-import { TableService } from '../../service/table.service';
-import { ICellCoordinates } from '../../contract/i-cell-coordinates';
+import {CellComponentBase} from '../../base/cell-component-base';
+import {TableService} from '../../service/table.service';
+import {ICellCoordinates} from '../../contract/i-cell-coordinates';
 
 @Component({
   selector: 'teta-boolean-cell',
@@ -20,11 +18,8 @@ import { ICellCoordinates } from '../../contract/i-cell-coordinates';
 })
 export class BooleanCellComponent<T>
   extends CellComponentBase<T>
-  implements OnInit
-{
-  @Input() override column: TableColumn;
-  @Input() override row: T;
-  @ViewChild('input', { static: false }) input: ElementRef;
+  implements OnInit {
+  @ViewChild('input', {static: false}) input: ElementRef;
 
   constructor(public override svc: TableService<T>, public override cdr: ChangeDetectorRef) {
     super(svc, cdr);

@@ -1,10 +1,8 @@
 import {FilterBase} from '../base/filter-base';
 import {StringFilterType} from '../enum/string-filter-type.enum';
 
-export class StringFilter extends FilterBase {
-  override value: string;
+export class StringFilter extends FilterBase<string> {
   type: StringFilterType;
-
 
   constructor(options?: {
     value?: string;

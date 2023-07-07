@@ -3,12 +3,10 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Input,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import {CellComponentBase} from '../../base/cell-component-base';
-import {TableColumn} from '../../contract/table-column';
 import {TableService} from '../../service/table.service';
 import {ICellCoordinates} from '../../contract/i-cell-coordinates';
 import {Align} from '../../../../common/enum/align.enum';
@@ -23,8 +21,6 @@ export class StringCellComponent<T>
   extends CellComponentBase<T>
   implements OnInit {
   align = Align;
-  @Input() override column: TableColumn;
-  @Input() override row: T;
   @ViewChild('input', {static: false}) input: ElementRef;
 
   constructor(public override svc: TableService<T>, public override cdr: ChangeDetectorRef) {

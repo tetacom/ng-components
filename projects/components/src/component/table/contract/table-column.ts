@@ -22,7 +22,7 @@ export class TableColumn extends FilterItem {
   /**
    * Название столбца в строке результатов
    */
-  override name: string;
+  // override name: string = '';
   /**
    * Название столбца родителя
    */
@@ -30,7 +30,7 @@ export class TableColumn extends FilterItem {
   /**
    * Название столбца для заголовка таблицы
    */
-  override caption: string;
+  // override caption: string = '';
   /**
    * Единицы измерения
    */
@@ -68,7 +68,7 @@ export class TableColumn extends FilterItem {
   /**
    * Дочерние колонки
    */
-  override columns: TableColumn[];
+  override columns: TableColumn[] = [];
 
   /**
    * Aggregate type

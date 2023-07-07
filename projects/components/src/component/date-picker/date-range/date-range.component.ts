@@ -46,14 +46,15 @@ export class DateRangeComponent extends BasePicker implements OnInit, ControlVal
   @Input() viewType: viewType = 'rounded'
   @Input() appendToBody: boolean;
   @Input() backdrop: boolean;
-  @Input() allowNull: boolean =false;
+  @Input() allowNull: boolean = false;
   @ViewChild('input') input: ElementRef;
   @Output() selectDate: EventEmitter<DateFromToModel> = new EventEmitter<DateFromToModel>()
   public mask: string = '';
   public selectedDate: ReplaySubject<DateFromToModel> = new ReplaySubject<DateFromToModel>(1)
 
   constructor(override _cdr: ChangeDetectorRef, override _elementRef: ElementRef, override datePipe: DatePipe) {
-    super(_elementRef, _cdr, datePipe)
+    super(_elementRef, _cdr, datePipe);
+    console.log('dateRange', datePipe)
   }
 
   override changeSelectedDate(date: Date, selectedDate: DateFromToModel) {
@@ -105,7 +106,7 @@ export class DateRangeComponent extends BasePicker implements OnInit, ControlVal
       this.emitValue({from: null, to: null})
     } else {
 
-      const val = this.inputText.replace('–','-').split('-');
+      const val = this.inputText.replace('–', '-').split('-');
       const from = this.getDateFromStr(val[0].trim());
       const to = this.getDateFromStr(val[1]?.trim());
       if (to.day && to.year && to.month) {

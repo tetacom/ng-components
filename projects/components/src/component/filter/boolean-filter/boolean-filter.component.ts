@@ -29,8 +29,8 @@ export class BooleanFilterComponent<T>
   @Input() column: FilterItem;
   @Input() data: T[];
   @Input() filterOptions: IIdName<any>[] = [];
-  @Output() filterChanged: EventEmitter<FilterBase> =
-    new EventEmitter<FilterBase>();
+  @Output() filterChanged: EventEmitter<FilterBase<boolean>> =
+    new EventEmitter<FilterBase<boolean>>();
 
   filter: BooleanFilter;
   state$: FilterState;

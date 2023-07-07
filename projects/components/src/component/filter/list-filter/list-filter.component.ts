@@ -28,8 +28,8 @@ export class ListFilterComponent<T> extends FilterComponentBase<T> implements On
   @Input() column: FilterItem;
   @Input() data: T[];
   @Input() filterOptions: IIdName<any>[] = [];
-  @Output() filterChanged: EventEmitter<FilterBase> =
-    new EventEmitter<FilterBase>();
+  @Output() filterChanged: EventEmitter<FilterBase<any[]>> =
+    new EventEmitter<FilterBase<any[]>>();
 
   filter: ListFilter;
   state$: FilterState;

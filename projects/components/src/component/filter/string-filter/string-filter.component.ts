@@ -29,8 +29,8 @@ export class StringFilterComponent<T>
   @Input() column: FilterItem;
   @Input() data: T[];
   @Input() filterOptions: IIdName<any>[] = [];
-  @Output() filterChanged: EventEmitter<FilterBase> =
-    new EventEmitter<FilterBase>();
+  @Output() filterChanged: EventEmitter<FilterBase<string>> =
+    new EventEmitter<FilterBase<string>>();
 
   filter: StringFilter;
   state$: FilterState;

@@ -1,6 +1,5 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild,} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild,} from '@angular/core';
 import {CellComponentBase} from '../../base/cell-component-base';
-import {TableColumn} from '../../contract/table-column';
 import {TableService} from '../../service/table.service';
 import {ICellCoordinates} from '../../contract/i-cell-coordinates';
 import {DatePickerComponent} from '../../../date-picker/date-picker/date-picker.component';
@@ -14,8 +13,6 @@ import {DatePickerComponent} from '../../../date-picker/date-picker/date-picker.
 export class DateTimeCellComponent<T>
   extends CellComponentBase<T>
   implements OnInit {
-  @Input() override column: TableColumn;
-  @Input() override row: T;
 
   @ViewChild('input', {static: false}) input: DatePickerComponent;
 

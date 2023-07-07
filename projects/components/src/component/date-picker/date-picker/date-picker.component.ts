@@ -63,7 +63,7 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
 
 
   constructor(override _elementRef: ElementRef, override _cdr: ChangeDetectorRef, override datePipe: DatePipe) {
-    super(_elementRef, _cdr, datePipe)
+    super(_elementRef, _cdr, datePipe);
   }
 
   ngOnInit(): void {

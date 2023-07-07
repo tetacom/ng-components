@@ -1,8 +1,7 @@
 import {FilterBase} from '../base/filter-base';
 import {NumericFilterValue} from './numeric-filter-value';
 
-export class NumericFilter extends FilterBase {
-  override value: NumericFilterValue;
+export class NumericFilter extends FilterBase<NumericFilterValue> {
   strict: boolean;
 
   constructor(options?: {
@@ -12,9 +11,7 @@ export class NumericFilter extends FilterBase {
     name: string;
   }) {
     super(options);
-    if (options) {
-      this.value = options.value || this.value;
-      this.strict = options.strict || false;
-    }
+    this.value = options?.value || this.value;
+    this.strict = options?.strict || false;
   }
 }

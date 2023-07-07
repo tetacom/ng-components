@@ -28,8 +28,8 @@ export class DateFilterComponent<T> extends FilterComponentBase<T> implements On
   @Input() column: FilterItem;
   @Input() data: T[];
   @Input() filterOptions: IIdName<any>[] = [];
-  @Output() filterChanged: EventEmitter<FilterBase> =
-    new EventEmitter<FilterBase>();
+  @Output() filterChanged: EventEmitter<FilterBase<DateFilterValue>> =
+    new EventEmitter<FilterBase<DateFilterValue>>();
 
   filter: DateFilter;
   state$: FilterState;

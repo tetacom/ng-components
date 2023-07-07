@@ -1,7 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
-  HostBinding,
+  HostBinding, Input,
   OnDestroy,
   OnInit,
 } from '@angular/core';
@@ -36,10 +36,10 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   }
 
   _edit: boolean;
-  column: TableColumn;
-  filterOptions: IIdName<any>[] = [];
+  @Input() column: TableColumn;
+  @Input() filterOptions: IIdName<any>[] = [];
   dict: IDictionary<IIdName<any>[]> = {};
-  row: T;
+  @Input() row: T;
 
   protected _alive = true;
 

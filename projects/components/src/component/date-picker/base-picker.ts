@@ -4,12 +4,12 @@ import {Align} from "../../common/enum/align.enum";
 import {VerticalAlign} from "../../common/enum/vertical-align.enum";
 import {ReplaySubject} from "rxjs";
 import {MaskitoOptions} from "@maskito/core";
-import { viewType } from "../../common/model/view-type.model";
+import {viewType} from "../../common/model/view-type.model";
 import {DatePipe} from "@angular/common";
 import {DateFromToModel} from "./model/from-to.model";
 
 export abstract class BasePicker {
-  abstract mask:string;
+  abstract mask: string;
   abstract date;
   abstract locale: string
   abstract showTime: boolean
@@ -24,14 +24,17 @@ export abstract class BasePicker {
   abstract backdrop: boolean;
   abstract allowNull: boolean
   abstract input: ElementRef;
-  abstract selectDate: EventEmitter<Date|DateFromToModel>
+  abstract selectDate: EventEmitter<Date | DateFromToModel>
   public open = false;
-  abstract selectedDate:ReplaySubject<any>;
+  abstract selectedDate: ReplaySubject<any>;
   public placeholder = ''
-  public inputText = this.checkNull();
+  public inputText: string;
   public maskitoOptions: MaskitoOptions;
 
-  protected constructor(protected _elementRef: ElementRef,protected _cdr:ChangeDetectorRef,protected datePipe: DatePipe) {
+  protected constructor(protected _elementRef: ElementRef,
+                        protected _cdr: ChangeDetectorRef,
+                        protected datePipe: DatePipe) {
+    this.inputText = this.checkNull();
   }
 
   abstract onChange(date: Date);
@@ -45,6 +48,7 @@ export abstract class BasePicker {
   changeInput(v) {
     this.changePlaceholder(v)
   }
+
   changePlaceholder(value: string) {
     let val = this.mask.split('');
     for (let i = 0; value.length > i; i++) {
@@ -55,9 +59,9 @@ export abstract class BasePicker {
     this._cdr.detectChanges()
   }
 
-  openChange(e:boolean) {
+  openChange(e: boolean) {
     this.onBlur();
-    this.open=e
+    this.open = e
   }
 
   checkNull() {
@@ -75,7 +79,7 @@ export abstract class BasePicker {
     this._cdr.markForCheck();
   };
 
-  changeSelectedDate(date,selectedDate?) {
+  changeSelectedDate(date, selectedDate?) {
     this.setDate(date)
     this.emitValue(date)
     this.open = false;
@@ -88,13 +92,12 @@ export abstract class BasePicker {
   }
 
 
-
   checkEnter(e) {
     if (e.key === "Enter") {
-      this.inputText=e.target.value;
+      this.inputText = e.target.value;
       this.onBlur()
     }
-    if(e.key==='-'){
+    if (e.key === '-') {
       e.preventDefault()
     }
     this.open = true;

@@ -1,10 +1,10 @@
 import {IFilter} from '../contarct/i-filter';
 import {StringUtil} from '../../../util/string-util';
 
-export class FilterBase implements IFilter {
+export class FilterBase<T> implements IFilter<T> {
   field: string;
   name: string;
-  value: any;
+  value: T;
 
   constructor(options?: {
     field: string;

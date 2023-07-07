@@ -3,13 +3,11 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Input,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import {CellComponentBase} from '../../base/cell-component-base';
 import {TableService} from '../../service/table.service';
-import {TableColumn} from '../../contract/table-column';
 import {ICellCoordinates} from '../../contract/i-cell-coordinates';
 
 @Component({
@@ -21,8 +19,6 @@ import {ICellCoordinates} from '../../contract/i-cell-coordinates';
 export class NumericCellComponent<T>
   extends CellComponentBase<T>
   implements OnInit {
-  @Input() override column: TableColumn;
-  @Input() override row: T;
   @ViewChild('input', {static: false}) input: ElementRef;
 
   constructor(
@@ -33,7 +29,6 @@ export class NumericCellComponent<T>
   }
 
   applyValue(value) {
-    console.log('applyValue', value)
     this.row[this.column.name] = value;
   }
 

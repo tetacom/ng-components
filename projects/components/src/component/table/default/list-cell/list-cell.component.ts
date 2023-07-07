@@ -2,11 +2,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Input,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {TableColumn} from '../../contract/table-column';
 import {TableService} from '../../service/table.service';
 import {CellComponentBase} from '../../base/cell-component-base';
 import {SelectComponent} from '../../../select/select/select.component';
@@ -23,9 +21,6 @@ import {VerticalAlign} from '../../../../common/enum/vertical-align.enum';
 export class ListCellComponent<T>
   extends CellComponentBase<T>
   implements OnInit {
-  @Input() override column: TableColumn;
-  @Input() override row: T;
-  @Input() override filterOptions: IIdName<any>[] = [];
 
   get value() {
     return this.getValue();
@@ -53,7 +48,6 @@ export class ListCellComponent<T>
   }
 
   setValue(value: any): void {
-    // if(this.c)
     this.row[this.column.name] = value;
     this.valueChanged();
   }

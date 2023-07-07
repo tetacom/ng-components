@@ -61,7 +61,7 @@ export class FilterHostComponent<T> implements OnInit, OnDestroy {
     }
   }
 
-  @Output() filterChanged: EventEmitter<FilterBase> = new EventEmitter();
+  @Output() filterChanged: EventEmitter<FilterBase<any>> = new EventEmitter();
 
   private _alive = true;
   private _column: FilterItem;
@@ -90,7 +90,7 @@ export class FilterHostComponent<T> implements OnInit, OnDestroy {
     this._init = true;
     this._componentRef.instance.filterChanged
       .pipe(takeWhile((_) => this._alive))
-      .subscribe((filter: FilterBase) => {
+      .subscribe((filter: FilterBase<any>) => {
         this.filterChanged.emit(filter);
       });
   }

@@ -1,5 +1,5 @@
-export interface IFilter {
+export interface IFilter<T> {
   name: string;
   field: string;
-  value: any;
+  value: T;
 }
