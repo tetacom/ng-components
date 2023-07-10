@@ -3,7 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter, forwardRef,
+  EventEmitter, forwardRef, HostBinding,
   Input,
   OnInit,
   Output, ViewChild
@@ -33,7 +33,6 @@ export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   providers: [DATE_PICKER_CONTROL_VALUE_ACCESSOR, DatePipe]
 
 })
-
 export class DatePickerComponent extends BasePicker implements OnInit, ControlValueAccessor {
   @Input() date: Date | string | number = null;
   @Input() locale: string = 'ru';
@@ -61,6 +60,8 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
   public selectedDate: ReplaySubject<Date | string | number> = new ReplaySubject<Date | string | number>(1)
   public mask: string = '';
 
+  @HostBinding('class.datepicker') private readonly classDatepicker = true;
+  @HostBinding('tabindex') private readonly tabindex = 0;
 
   constructor(override _elementRef: ElementRef, override _cdr: ChangeDetectorRef, override datePipe: DatePipe) {
     super(_elementRef, _cdr, datePipe);

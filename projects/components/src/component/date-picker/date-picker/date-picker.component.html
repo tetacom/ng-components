@@ -1,29 +1,41 @@
-<teta-dropdown *ngIf="{selectedDate:selectedDate|async}as data" [appendToBody]="appendToBody" [backdrop]="backdrop"
-                 [open]="open" (openChange)="openChange($event)" [viewType]="viewType"
-                 [disabled]="disabled" [verticalAlign]="verticalAlign" [align]="align"
-                 [autoCloseIgnore]="['esc', 'inside','enter']">
-    <div tetaDropdownHead
-         [class]="'datepicker-head font-body-3 gap-8  datepicker_'+viewType"
-         [ngClass]="{'datepicker-head_invalid':invalid,'datepicker-head_disabled':disabled}">
-      <teta-input class="row row_auto flex">
-        <div [class]="'row_auto row datepicker_'+viewType">
-          <div class="row position-relative font-body-3 align-center">
-            <input [ngClass]="{'color-text-90':!disabled}" [disabled]="disabled" #input style="z-index: 1" class="border-0" (keydown)="checkEnter($event)" [(ngModel)]="inputText" (ngModelChange)="changeInput($event)"
-                   [maskito]="maskitoOptions">
-            <div (click)="input.focus()" *ngIf="data.selectedDate||allowNull" class="position-absolute color-text-10"
-                 style="top:-0.3px;cursor: text;user-select: none">{{placeholder}}</div>
-          </div>
-          <teta-icon [name]="'calendar'"></teta-icon>
+<teta-dropdown *ngIf="{selectedDate:selectedDate|async}as data"
+               class="row row_auto"
+               [appendToBody]="appendToBody"
+               [backdrop]="backdrop"
+               [open]="open"
+               (openChange)="openChange($event)"
+               [viewType]="viewType"
+               [disabled]="disabled"
+               [verticalAlign]="verticalAlign"
+               [align]="align"
+               [autoCloseIgnore]="['esc', 'inside','enter']">
+  <div tetaDropdownHead
+       [class]="'datepicker-head font-body-3 gap-8  datepicker_'+viewType"
+       [ngClass]="{'datepicker-head_invalid':invalid,'datepicker-head_disabled':disabled}">
+    <teta-input class="row row_auto flex">
+      <div [class]="'row_auto row datepicker_'+viewType">
+        <div class="row row_auto position-relative font-body-3 align-center">
+          <input [ngClass]="{'color-text-90':!disabled}"
+                 [disabled]="disabled" #input style="z-index: 1"
+                 class="row_auto border-0"
+                 (keydown)="checkEnter($event)"
+                 [(ngModel)]="inputText"
+                 (ngModelChange)="changeInput($event)"
+                 [maskito]="maskitoOptions">
+          <div (click)="input.focus()" *ngIf="data.selectedDate||allowNull" class="position-absolute color-text-10"
+               style="top:-0.3px;cursor: text;user-select: none">{{placeholder}}</div>
         </div>
-      </teta-input>
-    </div>
-    <div tetaDropdownContent class="scrollable" (click)="$event.preventDefault()">
-      <ng-container *ngIf="open">
-        <teta-date-calendar [isDateNull]="date===null" [open]="open" [max]="maxDate" [min]="minDate"
-                       (setDate)="changeSelectedDate($event)"
-                       [selectedDate]="data.selectedDate"
-                       [viewType]="viewType" [locale]="locale"></teta-date-calendar>
-      </ng-container>
+        <teta-icon [name]="'calendar'"></teta-icon>
+      </div>
+    </teta-input>
+  </div>
+  <div tetaDropdownContent class="scrollable" (click)="$event.preventDefault()">
+    <ng-container *ngIf="open">
+      <teta-date-calendar [isDateNull]="date===null" [open]="open" [max]="maxDate" [min]="minDate"
+                          (setDate)="changeSelectedDate($event)"
+                          [selectedDate]="data.selectedDate"
+                          [viewType]="viewType" [locale]="locale"></teta-date-calendar>
+    </ng-container>
 
-    </div>
-  </teta-dropdown>
+  </div>
+</teta-dropdown>

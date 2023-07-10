@@ -97,10 +97,6 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
     this.scaleService.resetZoom();
   }
 
-  // setZoom() {
-  //   this.zoomService.fireZoom()
-  // }
-
   ngOnChanges(changes: SimpleChanges) {
   }
 
