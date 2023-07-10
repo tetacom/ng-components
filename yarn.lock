@@ -3526,10 +3526,10 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
-"@tetacom/ng-components@^1.0.71":
-  version "1.0.151"
-  resolved "https://registry.yarnpkg.com/@tetacom/ng-components/-/ng-components-1.0.151.tgz#9260098ffcad99e2795288a81bd8a65630681f57"
-  integrity sha512-LQ1LzQnPa+1P7WjX0vROgQE9lpIuNQoF7zVO4RCKSQBMFQczYzMWYXkYk5ll6krW3EsI+xh5v8WLVGEYYUa0qg==
+"@tetacom/ng-components@^1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@tetacom/ng-components/-/ng-components-1.1.3.tgz#e9f737a2f9d56d3ffca8961b5606ab65ea9d46bb"
+  integrity sha512-EhjZD6HdyUecvFtSeapDl11s4cG3A/gqAL4hc4mMvSYX3SsS3ooW4cN5p8g2B9TMLn8RHl5lU8UYr4yCkKSVKw==
   dependencies:
     tslib "^2.3.0"
 
