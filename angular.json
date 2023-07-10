@@ -40,7 +40,7 @@
         "storybook": {
           "builder": "@storybook/angular:start-storybook",
           "options": {
-            "styles": ["projects/components/.storybook/sb.scss"],
+            "styles": [".storybook/sb.scss"],
             "assets": [
               {
                 "glob": "**/*",
@@ -48,7 +48,7 @@
                 "output": "/assets/"
               }
             ],
-            "configDir": "projects/components/.storybook",
+            "configDir": ".storybook",
             "browserTarget": "components:build",
             "compodoc": true,
             "compodocArgs": [
@@ -63,7 +63,7 @@
         "build-storybook": {
           "builder": "@storybook/angular:build-storybook",
           "options": {
-            "styles": ["projects/components/.storybook/sb.scss"],
+            "styles": [".storybook/sb.scss"],
             "assets": [
               {
                 "glob": "**/*",
@@ -71,7 +71,7 @@
                 "output": "/assets/"
               }
             ],
-            "configDir": "projects/components/.storybook",
+            "configDir": ".storybook",
             "browserTarget": "components:build",
             "compodoc": true,
             "compodocArgs": [
