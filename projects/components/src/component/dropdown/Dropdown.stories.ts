@@ -1,85 +1,48 @@
-import {Meta} from '@storybook/angular/types-6-0';
 // eslint-disable-next-line id-blacklist
-import {withKnobs} from '@storybook/addon-knobs';
+import {boolean, select, withKnobs} from '@storybook/addon-knobs';
 import {ButtonModule} from '../button/button.module';
 import {IconModule} from '../icon/icon.module';
 import {DropdownModule} from './dropdown.module';
 import {Align} from '../../common/enum/align.enum';
 import {VerticalAlign} from '../../common/enum/vertical-align.enum';
 import {ScrollableModule} from "../../directive/scrollable/scrollable.module";
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Dropdown',
-  decorators: [withKnobs],
-  // component: DropdownComponent,
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   moduleMetadata: {
     imports: [DropdownModule]
-  },
-  argTypes: {
-    align: {
-      defaultValue: Align.right,
-      control: {
-        type: 'select',
-        options: [Align.left, Align.right, Align.center, Align.auto],
-        labels: ['left', 'right', 'center', 'auto'],
-      },
-    },
-    autoCloseIgnore: {
-      defaultValue: [2],
-      options: ['esc', 'enter', 'inside', 'outside'],
-      control: {
-        type: 'check'
-      },
-    },
-    transform: {
-      defaultValue: 0,
-      control: {
-        type: 'radio',
-        options: [0, 1],
-        labels: ['False', 'True']
-      }
-    },
-    autoClose: {
-      defaultValue: 1,
-      control: {
-        type: 'radio',
-        options: [0, 1],
-        labels: ['False', 'True']
-      }
-    },
-    appendToBody: {
-      defaultValue: 0,
-      control: {
-        type: 'radio',
-        options: [0, 1],
-        labels: ['False', 'True']
-      }
-    }
   }
 } as Meta;
-
-const alignMap = new Map<VerticalAlign, string>().set(
-  VerticalAlign.bottom, 'bottom'
-).set(
-  VerticalAlign.top, 'top'
-).set(
-  VerticalAlign.center, 'center'
-).set(
-  VerticalAlign.auto, 'auto'
-);
 
 export const dropdownDirective = (args) => ({
   moduleMetadata: {
     imports: [DropdownModule, ButtonModule, IconModule, ScrollableModule]
   },
   props: {
-    ...args,
+    align: select('align', [Align.left, Align.right, Align.center, Align.auto], Align.right),
     verticalAlign: [
       VerticalAlign.bottom,
       VerticalAlign.top,
       VerticalAlign.center,
-      VerticalAlign.auto],
-    alignMap
+      VerticalAlign.auto,
+      VerticalAlign.innerAuto,
+      VerticalAlign.innerBottom,
+      VerticalAlign.innerTop
+    ],
+    transform: boolean('transform', false),
+    autoClose: boolean('autoClose', true),
+    appendToBody: boolean('appendToBody', true)
   },
   template: `<div class="padding-10 bg-panel-50 row"
                   style="width: 500px;"
@@ -95,8 +58,7 @@ export const dropdownDirective = (args) => ({
           [align]="align"
           [verticalAlign]="valign"
           [appendToBody]="appendToBody"
-          [autoClose]="autoClose"
-          [autoCloseIgnore]="autoCloseIgnore">
+          [autoClose]="autoClose">
       <button teta-button tetaDropdownHead [palette]="'primary'">
         {{alignMap.get(valign)}}
       </button>
@@ -127,12 +89,19 @@ export const dropdownComponent = (args) => ({
     imports: [DropdownModule, ButtonModule, IconModule]
   },
   props: {
-    ...args,
+    align: select('align', [Align.left, Align.right, Align.center, Align.auto], Align.right),
     verticalAlign: [
       VerticalAlign.bottom,
       VerticalAlign.top,
       VerticalAlign.center,
-      VerticalAlign.auto],
+      VerticalAlign.auto,
+      VerticalAlign.innerAuto,
+      VerticalAlign.innerBottom,
+      VerticalAlign.innerTop
+    ],
+    transform: boolean('transform', false),
+    autoClose: boolean('autoClose', true),
+    appendToBody: boolean('appendToBody', true)
   },
   template: `<div class="padding-10 bg-panel-50"
                   [style.transform]="transform ? 'translate(100px, 100px)' : ''"
@@ -142,8 +111,7 @@ export const dropdownComponent = (args) => ({
                     [verticalAlign]="valign"
                      viewType="rounded"
                     [appendToBody]="appendToBody"
-                    [autoClose]="autoClose"
-                    [autoCloseIgnore]="autoCloseIgnore">
+                    [autoClose]="autoClose">
       <button teta-button tetaDropdownHead [palette]="'primary'">
         Click to open
       </button>

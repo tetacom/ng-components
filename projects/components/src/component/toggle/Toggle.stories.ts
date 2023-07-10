@@ -1,14 +1,23 @@
-import { Meta } from '@storybook/angular/types-6-0';
-import { text, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { IconModule } from '../icon/icon.module';
-import { ToggleComponent } from './toggle/toggle.component';
-import { ToggleModule } from './toggle.module';
-import { FormsModule } from '@angular/forms';
+import {text, withKnobs} from '@storybook/addon-knobs';
+import {action} from '@storybook/addon-actions';
+import {IconModule} from '../icon/icon.module';
+import {ToggleComponent} from './toggle/toggle.component';
+import {ToggleModule} from './toggle.module';
+import {FormsModule} from '@angular/forms';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Toggle',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: ToggleComponent,
   moduleMetadata: {
     imports: [ToggleModule, FormsModule],

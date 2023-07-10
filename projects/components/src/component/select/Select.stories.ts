@@ -1,22 +1,31 @@
-import { Meta } from '@storybook/angular/types-6-0';
 import {
   boolean,
   optionsKnob,
   select,
   withKnobs,
 } from '@storybook/addon-knobs';
-import { Align } from '../../common/enum/align.enum';
-import { VerticalAlign } from '../../common/enum/vertical-align.enum';
-import { SelectComponent } from './select/select.component';
-import { SelectModule } from './select.module';
+import {Align} from '../../common/enum/align.enum';
+import {VerticalAlign} from '../../common/enum/vertical-align.enum';
+import {SelectComponent} from './select/select.component';
+import {SelectModule} from './select.module';
 import * as faker from 'faker';
-import { iconsList } from '../icon/icons-list';
-import { IconModule } from '../icon/icon.module';
-import { FormsModule } from '@angular/forms';
+import {iconsList} from '../icon/icons-list';
+import {IconModule} from '../icon/icon.module';
+import {FormsModule} from '@angular/forms';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Select',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: SelectComponent,
   moduleMetadata: {
     imports: [SelectModule, FormsModule],

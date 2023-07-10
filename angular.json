@@ -36,6 +36,52 @@
             "tsConfig": "projects/components/tsconfig.spec.json",
             "karmaConfig": "projects/components/karma.conf.js"
           }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "styles": ["projects/components/.storybook/sb.scss"],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/components/assets",
+                "output": "/assets/"
+              }
+            ],
+            "configDir": "projects/components/.storybook",
+            "browserTarget": "components:build",
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "projects/components"
+            ],
+            "port": 6006
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "styles": ["projects/components/.storybook/sb.scss"],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/components/assets",
+                "output": "/assets/"
+              }
+            ],
+            "configDir": "projects/components/.storybook",
+            "browserTarget": "components:build",
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "projects/components"
+            ],
+            "outputDir": "dist/storybook/components"
+          }
         }
       }
     },
@@ -74,57 +120,6 @@
           }
         }
       }
-    },
-    "storybook": {
-      "builder": "@storybook/angular:start-storybook",
-      "options": {
-        "browserTarget": "angular-cli:build",
-        "port": 6006
-      },
-      "projectType": "",
-      "architect": {
-        "build": {
-          "options": {
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/components/assets",
-                "output": "/assets/"
-              }
-            ],
-            "styles": [
-              ".storybook/sb.scss",
-              "projects/components/style/assembly.scss"
-            ]
-          }
-        }
-      },
-      "root": ""
-    },
-    "build-storybook": {
-      "builder": "@storybook/angular:build-storybook",
-      "options": {
-        "browserTarget": "angular-cli:build"
-      },
-      "projectType": "",
-      "architect": {
-        "build": {
-          "options": {
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/components/assets",
-                "output": "/assets/"
-              }
-            ],
-            "styles": [
-              ".storybook/sb.scss",
-              "projects/components/style/assembly.scss"
-            ]
-          }
-        }
-      },
-      "root": ""
     }
   },
   "cli": {

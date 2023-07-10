@@ -14,5 +14,10 @@
   "exclude": [
     "src/test.ts",
     "**/*.spec.ts"
+  ],
+  "moduleResolution": "node",
+  "lib": [
+    "es2020",
+    "dom"
   ]
 }

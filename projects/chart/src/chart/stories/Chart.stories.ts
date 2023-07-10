@@ -1,15 +1,23 @@
-import {Meta} from '@storybook/angular/types-6-0';
 import {withKnobs} from '@storybook/addon-knobs';
 import {ChartComponent} from '../chart/chart.component';
 import {ChartModule} from '../chart.module';
 import {IconModule} from '../../../../components/src/component/icon/icon.module';
 import {ButtonModule} from '../../../../components/src/component/button/button.module';
-import {AxisOrientation} from '../model/enum/axis-orientation';
 import {createBandChart, createChart, createDragChart} from './story-helper';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Chart',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: ChartComponent,
   moduleMetadata: {
     imports: [ChartModule, IconModule, ButtonModule],

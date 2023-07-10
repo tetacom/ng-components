@@ -1,13 +1,22 @@
-import {Meta} from '@storybook/angular/types-6-0';
 // eslint-disable-next-line id-blacklist
 import {withKnobs} from '@storybook/addon-knobs';
 import {FileUploadAreaComponent} from './file-upload-area/file-upload-area.component';
 import {FileUploadModule} from './file-upload.module';
 import {IconModule} from '../icon/icon.module';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/File',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: FileUploadAreaComponent,
   moduleMetadata: {
     imports: [FileUploadModule]

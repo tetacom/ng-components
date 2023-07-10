@@ -1,10 +1,8 @@
-import {Meta} from '@storybook/angular/types-6-0';
-import {withKnobs} from '@storybook/addon-knobs';
 import {ScrollableModule} from "./scrollable.module";
+import {Meta} from "@storybook/angular";
 
 export default {
-  title: 'Component/Scrollable',
-  decorators: [withKnobs],
+  title: 'Component/Scrollable'
 } as Meta;
 
 export const scrollable = () => ({

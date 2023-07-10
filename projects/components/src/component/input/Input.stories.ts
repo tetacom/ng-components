@@ -1,4 +1,3 @@
-import {Meta} from '@storybook/angular/types-6-0';
 import {withKnobs} from '@storybook/addon-knobs';
 import {IconComponent} from '../icon/icon/icon.component';
 import {IconModule} from '../icon/icon.module';
@@ -11,10 +10,20 @@ import {ToggleModule} from '../toggle/toggle.module';
 import {CheckboxModule} from '../checkbox/checkbox.module';
 import {action} from '@storybook/addon-actions';
 import {SampleInputModule} from './sample-input/sample-input.module';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Input',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: IconComponent,
   moduleMetadata: {
     imports: [IconModule],

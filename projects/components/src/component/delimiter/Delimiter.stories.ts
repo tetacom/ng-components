@@ -1,14 +1,23 @@
-import { Meta } from '@storybook/angular/types-6-0';
 // eslint-disable-next-line id-blacklist
-import { withKnobs } from '@storybook/addon-knobs';
-import { ButtonModule } from '../button/button.module';
-import { IconModule } from '../icon/icon.module';
-import { DelimiterComponent } from './delimiter/delimiter.component';
-import { DelimiterModule } from './delimiter.module';
+import {withKnobs} from '@storybook/addon-knobs';
+import {ButtonModule} from '../button/button.module';
+import {IconModule} from '../icon/icon.module';
+import {DelimiterComponent} from './delimiter/delimiter.component';
+import {DelimiterModule} from './delimiter.module';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Delimiter',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: DelimiterComponent,
   moduleMetadata: {
     imports: [DelimiterModule],

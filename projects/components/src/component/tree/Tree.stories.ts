@@ -1,14 +1,23 @@
-import {Meta} from '@storybook/angular/types-6-0';
 import {withKnobs} from '@storybook/addon-knobs';
 import {TreeComponent} from './tree/tree.component';
 import {TreeModule} from './tree.module';
 import {TetaTemplateModule} from '../../directive/teta-template/teta-template.module';
 import {IconModule} from '../icon/icon.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Tree',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: TreeComponent
 } as Meta;
 

@@ -1,11 +1,20 @@
-import {Meta} from '@storybook/angular/types-6-0';
 import {withKnobs} from '@storybook/addon-knobs';
 import {TabsModule} from './tabs.module';
 import {IconModule} from '../icon/icon.module';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Tabs',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   moduleMetadata: {
     imports: [TabsModule, IconModule]
   },

@@ -1,4 +1,3 @@
-import {Meta} from '@storybook/angular/types-6-0';
 import {select, withKnobs} from '@storybook/addon-knobs';
 import {TableModule} from './table.module';
 import {EditType} from './enum/edit-type.enum';
@@ -6,10 +5,20 @@ import {EditEvent} from './enum/edit-event.enum';
 import {SelectType} from './enum/select-type.enum';
 import {IconModule} from '../icon/icon.module';
 import {TableDemoModule} from './table-demo/table-demo.module';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Table',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   moduleMetadata: {
     imports: [TableModule],
   },

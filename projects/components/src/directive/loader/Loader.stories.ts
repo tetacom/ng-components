@@ -1,7 +1,7 @@
-import {Meta} from '@storybook/angular/types-6-0';
 // eslint-disable-next-line id-blacklist
 import {boolean, withKnobs} from '@storybook/addon-knobs';
 import {LoaderModule} from './loader.module';
+import {Meta} from "@storybook/angular";
 
 export default {
   title: 'Directive/Loader',
@@ -16,6 +16,6 @@ export const sample = () => ({
     show: boolean('show', true)
   },
   template: `<div class="bg-panel-50 padding-10 margin-10" [tetaLoader]="show">
-                
+
               </div>`,
 });

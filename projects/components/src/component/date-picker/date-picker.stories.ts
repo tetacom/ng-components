@@ -1,14 +1,23 @@
-import {Meta} from '@storybook/angular/types-6-0';
 import {boolean, date, select, withKnobs} from '@storybook/addon-knobs';
 import {DatePickerModule} from "./date-picker.module";
 import {DatePickerComponent} from "./date-picker/date-picker.component";
 import {FormsModule} from "@angular/forms";
 import {IconModule} from "../icon/icon.module";
 import {MaskitoModule} from "@maskito/angular";
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Datepicker',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: DatePickerComponent,
   moduleMetadata: {
     imports: [DatePickerModule, FormsModule, MaskitoModule],

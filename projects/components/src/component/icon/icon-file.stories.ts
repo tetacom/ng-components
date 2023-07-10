@@ -1,8 +1,8 @@
-import {Meta} from '@storybook/angular/types-6-0';
 import {select, withKnobs} from '@storybook/addon-knobs';
 import {IconFileComponent} from "./icon-file/icon-file.component";
 import {IconFileModule} from "./icon-file/icon-file.module";
 import {fileIconsList} from './icons-list';
+import {Meta} from "@storybook/angular";
 
 export default {
   title: 'Component/Icon Files',

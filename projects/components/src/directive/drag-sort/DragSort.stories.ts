@@ -1,7 +1,7 @@
-import { Meta } from '@storybook/angular/types-6-0';
-import { withKnobs } from '@storybook/addon-knobs';
-import { DragSortModule } from './drag-sort.module';
+import {withKnobs} from '@storybook/addon-knobs';
+import {DragSortModule} from './drag-sort.module';
 import {DragSortDemoModule} from './drag-sort-demo/drag-sort-demo.module';
+import {Meta} from "@storybook/angular";
 
 export default {
   title: 'Directive/DragSort',
@@ -12,7 +12,6 @@ export const dragSort = () => ({
   moduleMetadata: {
     imports: [DragSortModule, DragSortDemoModule],
   },
-  props: {
-  },
+  props: {},
   template: `<teta-drag-sort-demo></teta-drag-sort-demo>`,
 });

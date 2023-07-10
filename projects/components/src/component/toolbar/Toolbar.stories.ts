@@ -1,13 +1,22 @@
-import { Meta } from '@storybook/angular/types-6-0';
-import { withKnobs } from '@storybook/addon-knobs';
-import { ToolbarComponent } from './toolbar/toolbar.component';
-import { ToolbarModule } from './toolbar.module';
-import { ButtonModule } from '../button/button.module';
-import { IconModule } from '../icon/icon.module';
+import {withKnobs} from '@storybook/addon-knobs';
+import {ToolbarComponent} from './toolbar/toolbar.component';
+import {ToolbarModule} from './toolbar.module';
+import {ButtonModule} from '../button/button.module';
+import {IconModule} from '../icon/icon.module';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Toolbar',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: ToolbarComponent,
   moduleMetadata: {
     imports: [ToolbarModule],

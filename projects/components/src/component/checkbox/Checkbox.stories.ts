@@ -1,31 +1,34 @@
-import { Meta } from '@storybook/angular/types-6-0';
-// eslint-disable-next-line id-blacklist
-import { select, text, withKnobs, boolean } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { CheckboxComponent } from './checkbox/checkbox.component';
-import { CheckboxModule } from './checkbox.module';
+import {select, text, withKnobs, boolean} from '@storybook/addon-knobs';
+import {action} from '@storybook/addon-actions';
+import {CheckboxComponent} from './checkbox/checkbox.component';
+import {CheckboxModule} from './checkbox.module';
 // @ts-ignore
-import mdx from './Checkbox.mdx';
-import { IconModule } from '../icon/icon.module';
-import { FormsModule } from '@angular/forms';
+import {IconModule} from '../icon/icon.module';
+import {FormsModule} from '@angular/forms';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {CommonModule} from "@angular/common";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Checkbox',
-  parameters: {
-    docs: {
-      page: mdx,
-    },
-  },
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: CheckboxComponent,
   moduleMetadata: {
-    imports: [CheckboxModule, FormsModule],
+    imports: [CheckboxModule, IconModule, FormsModule, CommonModule],
   },
 } as Meta;
 
 export const binary = () => ({
   moduleMetadata: {
-    imports: [CheckboxModule, IconModule, FormsModule],
+    imports: [CheckboxModule, IconModule, FormsModule, CommonModule],
   },
   props: {
     type: select('type', ['binary', 'list'], 'binary'),

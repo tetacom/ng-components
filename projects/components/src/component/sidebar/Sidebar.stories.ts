@@ -1,14 +1,23 @@
-import {Meta} from '@storybook/angular/types-6-0';
 import {boolean, withKnobs} from '@storybook/addon-knobs';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import {SidebarModule} from './sidebar.module';
 import {SidebarPosition} from './sidebar-position.enum';
 import {IconModule} from '../icon/icon.module';
 import {ButtonModule} from '../button/button.module';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Sidebar',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: SidebarComponent,
   moduleMetadata: {
     imports: [SidebarModule]

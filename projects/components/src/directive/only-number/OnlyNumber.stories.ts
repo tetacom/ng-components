@@ -1,8 +1,8 @@
-import { Meta } from '@storybook/angular/types-6-0';
-import { withKnobs } from '@storybook/addon-knobs';
-import { OnlyNumberModule } from './only-number.module';
-import { FormsModule } from '@angular/forms';
-import { action } from '@storybook/addon-actions';
+import {withKnobs} from '@storybook/addon-knobs';
+import {OnlyNumberModule} from './only-number.module';
+import {FormsModule} from '@angular/forms';
+import {action} from '@storybook/addon-actions';
+import {Meta} from "@storybook/angular";
 
 export default {
   title: 'Directive/OnlyNumber',

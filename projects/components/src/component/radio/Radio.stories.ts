@@ -1,13 +1,22 @@
-import { Meta } from '@storybook/angular/types-6-0';
-import { withKnobs } from '@storybook/addon-knobs';
-import { RadioComponent } from './radio/radio.component';
-import { RadioModule } from './radio.module';
-import { FormsModule } from '@angular/forms';
-import { IconModule } from '../icon/icon.module';
+import {withKnobs} from '@storybook/addon-knobs';
+import {RadioComponent} from './radio/radio.component';
+import {RadioModule} from './radio.module';
+import {FormsModule} from '@angular/forms';
+import {IconModule} from '../icon/icon.module';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Radio',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: RadioComponent,
   moduleMetadata: {
     imports: [RadioModule],

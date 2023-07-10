@@ -1,14 +1,23 @@
-import {Meta} from '@storybook/angular/types-6-0';
 import {select, withKnobs} from '@storybook/addon-knobs';
 import {IconModule} from '../icon/icon.module';
 import {SwitchComponent} from './switch/switch.component';
 import {SwitchModule} from './switch.module';
 import {action} from '@storybook/addon-actions';
 import {FormsModule} from '@angular/forms';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Switch',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: SwitchComponent,
   moduleMetadata: {
     imports: [SwitchModule, FormsModule, IconModule],

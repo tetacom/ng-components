@@ -1,7 +1,7 @@
-import { Meta } from '@storybook/angular/types-6-0';
 import { withKnobs } from '@storybook/addon-knobs';
 import { ExpandPanelComponent } from './expand-panel/expand-panel.component';
 import { ExpandPanelModule } from './expand-panel.module';
+import {Meta} from "@storybook/angular";
 
 export default {
   title: 'Component/File',

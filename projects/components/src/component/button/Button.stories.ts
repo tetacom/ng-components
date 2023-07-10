@@ -1,12 +1,21 @@
-import {Meta} from '@storybook/angular/types-6-0';
 import {boolean, select, text, withKnobs} from '@storybook/addon-knobs';
 import {ButtonComponent} from './button/button.component';
 import {ButtonModule} from './button.module';
 import {IconModule} from '../icon/icon.module';
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/Button',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: ButtonComponent,
   moduleMetadata: {
     imports: [ButtonModule],
@@ -19,7 +28,7 @@ export const buttons = () => ({
   },
   props: {
     palettes: ['primary', 'text', 'red', 'yellow', 'green'],
-    types: ['brick', 'circle', 'rounded', 'rounded', 'rounded'], 
+    types: ['brick', 'circle', 'rounded', 'rounded', 'rounded'],
     text: text('text', 'Push me'),
     size: select('size', ['m', 'l'], 'm'),
     leftIcon: boolean('leftIcon', true),

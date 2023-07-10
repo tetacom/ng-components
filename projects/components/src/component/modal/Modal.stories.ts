@@ -1,9 +1,9 @@
-import { Meta } from '@storybook/angular/types-6-0';
-import { text, withKnobs } from '@storybook/addon-knobs';
-import { ModalSamplesModule } from './modal-samples/modal-samples.module';
-import { ModalFromComponentComponent } from './modal-samples/modal-from-component/modal-from-component.component';
-import { ModalFromTemplateComponent } from './modal-samples/modal-from-template/modal-from-template.component';
-import { AlertSampleComponent } from './modal-samples/alert-sample/alert-sample.component';
+import {text, withKnobs} from '@storybook/addon-knobs';
+import {ModalSamplesModule} from './modal-samples/modal-samples.module';
+import {ModalFromComponentComponent} from './modal-samples/modal-from-component/modal-from-component.component';
+import {ModalFromTemplateComponent} from './modal-samples/modal-from-template/modal-from-template.component';
+import {AlertSampleComponent} from './modal-samples/alert-sample/alert-sample.component';
+import {Meta} from "@storybook/angular";
 
 export default {
   title: 'Component/Modal',

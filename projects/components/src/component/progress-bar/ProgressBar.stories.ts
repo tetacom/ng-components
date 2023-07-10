@@ -1,8 +1,8 @@
-import { Meta } from '@storybook/angular/types-6-0';
 // eslint-disable-next-line id-blacklist
 import { number, withKnobs } from '@storybook/addon-knobs';
 import { ProgressBarModule } from './progress-bar.module';
 import { FormsModule } from '@angular/forms';
+import {Meta} from "@storybook/angular";
 
 export default {
   title: 'Component/ProgressBar',

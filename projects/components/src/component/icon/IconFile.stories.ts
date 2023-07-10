@@ -1,12 +1,21 @@
-import {Meta} from '@storybook/angular/types-6-0';
 import {withKnobs} from '@storybook/addon-knobs';
 import {IconModule} from './icon.module';
 import {fileIconsList} from './icons-list';
 import {IconFileComponent} from "./icon-file/icon-file.component";
+import {applicationConfig, Meta} from "@storybook/angular";
+import {importProvidersFrom} from "@angular/core";
+import {HttpClientModule} from "@angular/common/http";
 
 export default {
   title: 'Component/FileIcon',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [
+        importProvidersFrom(HttpClientModule)
+      ],
+    }),
+  ],
   component: IconFileComponent,
   moduleMetadata: {
     imports: [IconModule]
