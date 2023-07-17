@@ -3,7 +3,7 @@
 
 .modal {
   &__backdrop {
-    background: getColorVar('backdrop', '50');
+    background: var(--color-text-50);
     z-index: 99;
   }
 

@@ -11,7 +11,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: getColorVar('backdrop', '50');
+    background: var(--color-text-50);
   }
 
   &-left {
