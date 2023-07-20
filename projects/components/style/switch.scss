@@ -10,6 +10,7 @@
   background: var(--color-text-5);
   color: var(--color-text-90);
   fill: var(--color-text-90);
+  @include getView('field');
 
   &-button {
     display: inline-flex;
@@ -21,6 +22,8 @@
       cursor: pointer;
     }
 
+    @include getView('field');
+
     &:active:not(&_active) {
       background: var(--color-text-10);
     }
@@ -31,7 +34,7 @@
 
     &_active {
       border: solid 0;
-      background: var(--color-global-bgcard);
+      background: var(--color-primary-50);
       fill: var(--color-text-90);
       color: var(--color-text-90);
     }

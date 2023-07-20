@@ -55,7 +55,7 @@
               "-e",
               "json",
               "-d",
-              "projects/components"
+              ".storybook/documentation"
             ],
             "port": 6006
           }
@@ -78,7 +78,7 @@
               "-e",
               "json",
               "-d",
-              "projects/components"
+              ".storybook/documentation"
             ],
             "outputDir": "dist/storybook/components"
           }

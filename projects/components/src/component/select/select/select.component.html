@@ -21,10 +21,10 @@
       </div>
       <teta-icon [name]="'arrowDownSmall'"></teta-icon>
     </div>
-    <div *ngIf="options?.length" tetaDropdownContent class="select-body scrollable row_auto margin-h-2"
+    <div *ngIf="options?.length" tetaDropdownContent class="select-body row_auto"
          (click)="$event.preventDefault()">
       <ng-container *ngIf="searchRef">
-        <div class="select-search">
+        <div class="select-search padding-h-2">
           <teta-text-field [ngModel]="searchText"
                            [class]="'select_'+viewType"
                            (ngModelChange)="search($event)"
@@ -34,47 +34,50 @@
       </ng-container>
       <ng-container *ngIf="visibleOptions?.length;else notFound ">
         <ng-container *ngIf="!multiple && allowNull">
-          <div [class]="'list-item list-item_interactive select_'+viewType"
+          <div [class]="'margin-h-2 list-item list-item_interactive select_'+viewType"
                (click)="clear()">
             {{loc.notSelected}}
           </div>
           <div class="list-divider margin-bottom-0"></div>
         </ng-container>
-        <ng-container *ngIf="!virtual">
-          <div class="select-list">
-            <div [class]="'list-item list-item_interactive justify-content-between  select_'+viewType"
-                 *ngFor="let option of visibleOptions"
-                 [class.select-list-item_active]="itemSelected(option) && multiple"
-                 [class.select-list-item]="multiple"
+        <teta-scrollable *ngIf="virtual; else default" class="column column_auto padding-h-2">
+          <cdk-virtual-scroll-viewport tetaScrollable
+                                       [itemSize]="40"
+                                       minBufferPx="200"
+                                       maxBufferPx="600">
+            <div [class]="'select-list-item select-list-item_interactive justify-content-between select_'+viewType"
+                 *cdkVirtualFor="let option of visibleOptions; templateCacheSize: 0;"
+                 [class.select-list-item_active]="itemSelected(option)"
+                 [tetaHighlight]="searchText"
                  (click)="clickOption(option, $event)">
-
-        <span [tetaHighlight]="searchText">
-          <ng-container
-            *ngTemplateOutlet="optionDirective ? optionDirective.template : optionDefault; context: {$implicit: option, option: option}">
-          </ng-container>
-        </span>
-              <teta-icon *ngIf="itemSelected(option) && multiple" [name]="'tick'" [palette]="'text'"></teta-icon>
+              <div [tetaHighlight]="searchText">
+                <ng-container
+                  *ngTemplateOutlet="optionDirective ? optionDirective.template : optionDefault; context: {$implicit: option, option: option}">
+                </ng-container>
+              </div>
+              <teta-icon *ngIf="itemSelected(option)" [name]="'tick'" [palette]="'text'"
+                         class="margin-left-2"></teta-icon>
             </div>
-          </div>
-        </ng-container>
-        <cdk-virtual-scroll-viewport *ngIf="virtual"
-                                     [itemSize]="40"
-                                     minBufferPx="200"
-                                     maxBufferPx="600">
-          <div [class]="'select-list-item select-list-item_interactive justify-content-between select_'+viewType"
-               *cdkVirtualFor="let option of visibleOptions; templateCacheSize: 0;"
-               [class.select-list-item_active]="itemSelected(option)"
-               [tetaHighlight]="searchText"
-               (click)="clickOption(option, $event)">
-            <div [tetaHighlight]="searchText">
-              <ng-container
-                *ngTemplateOutlet="optionDirective ? optionDirective.template : optionDefault; context: {$implicit: option, option: option}">
-              </ng-container>
+          </cdk-virtual-scroll-viewport>
+        </teta-scrollable>
+        <ng-template #default>
+          <teta-scrollable class="column column_auto padding-h-2" [contentClass]="['column', 'column_auto']">
+            <div class="select-list">
+              <div [class]="'list-item list-item_interactive justify-content-between  select_'+viewType"
+                   *ngFor="let option of visibleOptions"
+                   [class.select-list-item_active]="itemSelected(option) && multiple"
+                   [class.select-list-item]="multiple"
+                   (click)="clickOption(option, $event)">
+              <span [tetaHighlight]="searchText">
+                <ng-container
+                  *ngTemplateOutlet="optionDirective ? optionDirective.template : optionDefault; context: {$implicit: option, option: option}">
+                </ng-container>
+              </span>
+                <teta-icon *ngIf="itemSelected(option) && multiple" [name]="'tick'" [palette]="'text'"></teta-icon>
+              </div>
             </div>
-            <teta-icon *ngIf="itemSelected(option)" [name]="'tick'" [palette]="'text'"
-                       class="margin-left-2"></teta-icon>
-          </div>
-        </cdk-virtual-scroll-viewport>
+          </teta-scrollable>
+        </ng-template>
       </ng-container>
       <div class="row row_auto select-chip-field flex-wrap" *ngIf="multiple && value?.length">
         <div *ngFor="let item of value" class="tag">
@@ -82,7 +85,6 @@
           <teta-icon class="cursor-pointer" [name]="'closeCircle'" (click)="removeItemClick(item, $event)"></teta-icon>
         </div>
       </div>
-
     </div>
   </teta-dropdown>
   <ng-template #notFound>

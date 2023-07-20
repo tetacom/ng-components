@@ -1,19 +1,8 @@
 import type {Preview} from "@storybook/angular";
 import {setCompodocJson} from "@storybook/addon-docs/angular";
-import docJson from "../projects/components/documentation.json";
+import docJson from "./documentation/documentation.json";
 
 setCompodocJson(docJson);
-
-// export const decorators = [
-//   withThemeByClassName({
-//     themes: {
-//       light: "baselight",
-//       dark: "basedark",
-//     },
-//     defaultTheme: "basedark",
-//   }),
-// ];
-
 
 const preview: Preview = {
   parameters: {
