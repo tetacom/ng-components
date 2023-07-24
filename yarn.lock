@@ -2168,21 +2168,21 @@
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
 "@maskito/angular@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@maskito/angular/-/angular-1.2.0.tgz#e4a415278703106e56638bb94775a71af5dde707"
-  integrity sha512-2YD/MWxESVn5/nckZj4F3GArzxjN3M4V8SHhtxI4c3wtg1m8ewoO8r7o3HYk/4aVLxxR0y2bz6cOWJtawt4KoQ==
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@maskito/angular/-/angular-1.2.2.tgz#cdde2ec4383d028f44792baba9c201aea22028c1"
+  integrity sha512-Jlkd149cCzyLNDHwiHYjCR6lwSJCOk9FxqoC2/VuOeYH/ZBhfOY0+EFfH01zWMiCMiIH7GPBppWn3+Vz6Pb/Ig==
   dependencies:
     tslib "^2.3.0"
 
 "@maskito/core@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@maskito/core/-/core-1.2.0.tgz#4b20fe1cfae40d4404ec209cfcd7f463e0160500"
-  integrity sha512-RFSydWYujxbVBbMzQVZ0zR77ROY3MbcuyKFWLomJWw3rDujl65M2ppz5KMeDSogAGkKnqzWudozjmBAQf2DgcA==
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@maskito/core/-/core-1.2.2.tgz#c4664bb0c962322cb8236d7f324e580a5dd7b74f"
+  integrity sha512-wnaFEn0Pj8e4ZtODp9UoDCXIvhdn6Te/1cp9/duZbEy7lLWLNWxFHxWxWEpZngv4/3xrmml2/JKVQsxdfT4QJA==
 
 "@maskito/kit@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@maskito/kit/-/kit-1.2.0.tgz#4f65bbd7faf157cd9c420ccd19ec0c96ed652a60"
-  integrity sha512-sMUZ3vMp3RCAcw+H/TuxyrJDgz6J5TTUCc+2/inTCE1gr33FsmhzLqoi5PaYrD146VcOKdtAxd3NJ1RK/g1ZHw==
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@maskito/kit/-/kit-1.2.2.tgz#7de3356450c68a33d17f67d6593c7af00e626d8d"
+  integrity sha512-+1OqEGgWBnLtYG8H7JLi50FMFsI8d3gVGCjchSPLg41Gc+ftlMhe3+uBfdK1UqnHYFL07dofNsOt46/yHq3i7A==
 
 "@mdx-js/react@^2.1.5":
   version "2.3.0"
