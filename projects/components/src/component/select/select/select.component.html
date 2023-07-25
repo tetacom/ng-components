@@ -12,14 +12,14 @@
          [class]="'row row_auto select-head select_'+viewType"
          [class.select-head_invalid]="invalid">
       <div class="row_auto flex align-center">
-        <teta-icon *ngIf="icon" [name]="icon" class="margin-right-1"></teta-icon>
+        <teta-icon *ngIf="icon" [name]="icon" [palette]="'text'" class="margin-right-1"></teta-icon>
         <span class="placeholder" *ngIf="(value == null || value?.length === 0)&&!multiple">
           {{placeholder || loc.notSelected}}
         </span>
         <ng-container
           *ngTemplateOutlet="valueDirective ? valueDirective.template : valueDefault; context: {$implicit: value, value: value}"></ng-container>
       </div>
-      <teta-icon [name]="'arrowDownSmall'"></teta-icon>
+      <teta-icon [name]="'arrowDownSmall'" [palette]="'text'"></teta-icon>
     </div>
     <div *ngIf="options?.length" tetaDropdownContent class="select-body row_auto"
          (click)="$event.preventDefault()">
@@ -82,7 +82,7 @@
       <div class="row row_auto select-chip-field flex-wrap" *ngIf="multiple && value?.length">
         <div *ngFor="let item of value" class="tag">
           {{getText(item)}}
-          <teta-icon class="cursor-pointer" [name]="'closeCircle'" (click)="removeItemClick(item, $event)"></teta-icon>
+          <teta-icon class="cursor-pointer" [palette]="'text'" [name]="'closeCircle'" (click)="removeItemClick(item, $event)"></teta-icon>
         </div>
       </div>
     </div>

@@ -12,7 +12,7 @@
             (click)="changeMonth(data.currentMonth-1,data.currentYear)"
             palette="text"
             view="ghost">
-            <teta-icon name="arrowLeftKey"></teta-icon>
+            <teta-icon name="arrowLeftKey" [palette]="'text'"></teta-icon>
           </teta-button>
           <div class="row gap-4 font-button-2 align-center padding-left-1">
             <p> {{getMothName(data.currentMonth)}}</p>
@@ -22,7 +22,7 @@
           <teta-button [square]="true" [class]="'change-month-button datepicker-arrow_hidden datepicker_'+viewType"
                        palette="text"
                        view="ghost">
-            <teta-icon name="arrowRightKey"></teta-icon>
+            <teta-icon name="arrowRightKey" [palette]="'text'"></teta-icon>
           </teta-button>
         </div>
         <div>
@@ -37,7 +37,7 @@
           <teta-button [square]="true" [class]="'change-month-button datepicker-arrow_hidden datepicker_'+viewType"
                        palette="text"
                        view="ghost">
-            <teta-icon name="arrowLeftKey"></teta-icon>
+            <teta-icon name="arrowLeftKey" [palette]="'text'"></teta-icon>
           </teta-button>
           <div class="row gap-4 font-button-2 align-center padding-left-1">
             <p>{{getMothName(availableMonthYear.availableMonth)}}</p>
@@ -50,7 +50,7 @@
                        (click)="changeMonth(data.currentMonth+1,data.currentYear)"
                        palette="text"
                        view="ghost">
-            <teta-icon name="arrowRightKey"></teta-icon>
+            <teta-icon name="arrowRightKey" [palette]="'text'"></teta-icon>
           </teta-button>
         </div>
         <div>

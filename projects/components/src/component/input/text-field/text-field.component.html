@@ -1,4 +1,4 @@
-<teta-icon *ngIf="leftIconName" [name]="leftIconName"></teta-icon>
+<teta-icon *ngIf="leftIconName" [name]="leftIconName" [palette]="'text'"></teta-icon>
 <input
   #input
   [ngModel]="value | tetaNumber : !onlyNumber ? null : inputFocused ? 1000 : decimalPart"
@@ -17,5 +17,6 @@
   *ngIf="value && !disabled"
   class="close-icon"
   [name]="'closeCircle'"
+  [palette]="'text'"
   (click)="value = ''; onChange('');"
 ></teta-icon>

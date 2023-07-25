@@ -3,7 +3,7 @@
     <teta-tab *ngIf="tab.showTab(column)">
       <ng-template tetaTabTitle>
         <ng-container *ngIf="tab.icon">
-          <teta-icon [name]="tab.icon"></teta-icon>
+          <teta-icon [name]="tab.icon" [palette]="'text'"></teta-icon>
         </ng-container>
       </ng-template>
       <ng-template tetaTabContent>

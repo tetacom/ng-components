@@ -8,7 +8,7 @@
                      (click)="changeMonth(data.currentMonth-1,data.currentYear)"
                      palette="text"
                      view="ghost">
-          <teta-icon name="arrowLeftKey"></teta-icon>
+          <teta-icon name="arrowLeftKey" [palette]="'text'"></teta-icon>
         </teta-button>
         <div class="row gap-4 font-button-2 ">
           <button [class]="'datepicker_'+viewType " teta-button view="ghost" palette="text"
@@ -20,7 +20,7 @@
                      (click)="changeMonth(data.currentMonth+1,data.currentYear)"
                      palette="text"
                      view="ghost">
-          <teta-icon name="arrowRightKey"></teta-icon>
+          <teta-icon name="arrowRightKey" [palette]="'text'"></teta-icon>
         </teta-button>
       </div>
       <div>

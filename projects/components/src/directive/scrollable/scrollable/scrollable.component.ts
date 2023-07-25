@@ -72,14 +72,16 @@ export class ScrollableComponent implements OnInit, OnDestroy {
 
   scrollVertical(event) {
     this._container.nativeElement.scrollTop = event.target.scrollTop;
+    // event.scrollLeft = this._container.nativeElement.scrollLeft;
     // this._elementRef.nativeElement.dispatchEvent(event);
-    this.scroll.emit(event);
+    // this.scroll.emit(event);
   }
 
   scrollHorizontal(event) {
     this._container.nativeElement.scrollLeft = event.target.scrollLeft;
+    // event.scrollTop = this._container.nativeElement.scrollTop;
     // this._elementRef.nativeElement.dispatchEvent(event);
-    this.scroll.emit(event);
+    // this.scroll.emit(event);
   }
 
   ngOnInit(): void {

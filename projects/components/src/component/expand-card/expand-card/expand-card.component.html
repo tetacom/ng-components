@@ -2,12 +2,12 @@
   <ng-content select="head"></ng-content>
   <div class="row gap align-center">
     <button type="button" teta-button (click)="setOpen()" [palette]="'text'" [view]="'ghost'" [square]="true">
-      <teta-icon [name]="open ? 'arrowUpKey' : 'arrowDownKey'"></teta-icon>
+      <teta-icon [name]="open ? 'arrowUpKey' : 'arrowDownKey'" [palette]="'text'"></teta-icon>
     </button>
     <ng-container *ngIf="showCross">
       <teta-delimiter [palette]="'text'" class='height-4'></teta-delimiter>
       <button type="button" teta-button (click)="crossClick.emit($event)" [palette]="'text'" [view]="'ghost'" [square]="true">
-        <teta-icon [name]="'closeBig'"></teta-icon>
+        <teta-icon [name]="'closeBig'" [palette]="'text'"></teta-icon>
       </button>
     </ng-container>
   </div>
