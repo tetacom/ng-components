@@ -111,7 +111,8 @@
              [attr.tabindex]="0"
              [style.flex-grow]="column.flex"
              [style.flex-basis.px]="column.width">
-        <span class="cell-text cell-text_numeric font-title-3">
+        <span class="cell-text cell-text_numeric font-title-3"
+              *ngIf="column.aggregate !== aggregationType.none">
           {{loc[getAggregateText(column)]}}:
           {{getAggregateValue(column) | tetaNumber : 2}}
         </span>
@@ -129,7 +130,8 @@
            [attr.tabindex]="0"
            [style.flex-grow]="column.flex"
            [style.flex-basis.px]="column.width">
-      <span class="cell-text cell-text_numeric font-title-3">
+      <span class="cell-text cell-text_numeric font-title-3"
+            *ngIf="column.aggregate !== aggregationType.none">
         {{loc[getAggregateText(column)]}}:
         {{getAggregateValue(column) | tetaNumber : 2}}
       </span>

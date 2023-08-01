@@ -55,6 +55,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   locked: TableColumn[] = [];
   unlocked: TableColumn[] = [];
   selectTypeEnum = SelectType;
+  aggregationType = AggregationType;
   lockedFlex: number;
   lockedWidth: number;
   totalFlex: number;
