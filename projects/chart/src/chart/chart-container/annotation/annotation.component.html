@@ -29,7 +29,7 @@
       [attr.y]="data.y(annotation.point.y) + (annotation.dy ?? 0) - 10">
       <div
         #annotationNode
-        [style.background-color]="annotation.style?.fill ?? 'var(--color-text-90)'"
+        [style.background-color]="annotation.style?.fill ?? 'var(--color-global-bgmain)'"
         [style.cursor]="annotation?.draggable ? 'move' : 'default'"
         [className]="'padding-h-2 ' + annotation.className ?? ''"
         style="border-radius: 2px; display: inline-block;">
