@@ -31,21 +31,6 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy, OnChange
   @Input() decimalPart: number;
   @Input() item: T;
   @Input() itemTemplates: QueryList<PropertyGridItemDescriptionDirective>;
-  // @Input()
-  // set formGroup(form: UntypedFormGroup) {
-  //   this._formGroup = form;
-  //   this._formSub?.unsubscribe();
-  //   this._formSub = this._formGroup?.controls[this.column.name]?.valueChanges
-  //     .pipe(
-  //       takeWhile(() => this._alive)
-  //     )
-  //     .subscribe((_) => {
-  //       this.controlValueChange.emit({
-  //         id: _,
-  //         name: this.column.name,
-  //       });
-  //     });
-  // }
 
   get template() {
     return this.itemTemplates.find((item) => item.name === this.column.name)
@@ -66,7 +51,6 @@ export class PropertyGridItemComponent<T> implements OnInit, OnDestroy, OnChange
   align = Align;
   filterTypeEnum = FilterType;
 
-  // private _formGroup: UntypedFormGroup;
   private _formSub: Subscription;
 
   get caption(): string {

@@ -46,7 +46,7 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
   @Input() viewType: viewType = 'rounded'
   @Input() appendToBody: boolean;
   @Input() backdrop: boolean;
-  @Input() allowNull: boolean = false;
+  @Input() allowNull: boolean = true;
 
   @Input() firstDayOfWeek = 1;
   @Input() disabledDates: Date[];
