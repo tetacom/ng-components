@@ -347,7 +347,7 @@ export class TableService<T> {
       const tableElement = this.getTableElement(element);
       previous.forEach((item: TableColumn) => {
         const itemCol = tableElement.querySelector(
-          `teta-head-cell[data-column=${item.name}]`
+          `teta-head-cell[data-column="${item.name}"]`
         ) as HTMLElement;
         if (itemCol) {
           item.flex = 0;

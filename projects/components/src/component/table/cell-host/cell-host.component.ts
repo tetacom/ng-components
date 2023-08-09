@@ -10,17 +10,19 @@ import {
   SimpleChanges,
   ViewContainerRef,
 } from '@angular/core';
-import { CellComponentBase } from '../base/cell-component-base';
-import { TableColumn } from '../contract/table-column';
-import { getCellComponent } from '../contract/cell-components-map';
-import { IIdName } from '../../../common/contract/i-id-name';
-import { IDictionary } from '../../../common/contract/i-dictionary';
+import {CellComponentBase} from '../base/cell-component-base';
+import {TableColumn} from '../contract/table-column';
+import {getCellComponent} from '../contract/cell-components-map';
+import {IIdName} from '../../../common/contract/i-id-name';
+import {IDictionary} from '../../../common/contract/i-dictionary';
+import {FormsUtil} from "../../../util/forms-util";
 
 @Component({
   selector: 'teta-cell-host',
   template: '',
   styleUrls: ['./cell-host.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [FormsUtil.formProvider],
 })
 export class CellHostComponent<T> implements OnInit, OnDestroy, OnChanges {
   @Input() column: TableColumn;
@@ -30,7 +32,8 @@ export class CellHostComponent<T> implements OnInit, OnDestroy, OnChanges {
   private _init = false;
   private _componentRef: ComponentRef<any>;
 
-  constructor(private viewContainerRef: ViewContainerRef) {}
+  constructor(private viewContainerRef: ViewContainerRef) {
+  }
 
   ngOnInit(): void {
     if (!CellComponentBase.isPrototypeOf(this.column.cellComponent)) {
@@ -46,7 +49,8 @@ export class CellHostComponent<T> implements OnInit, OnDestroy, OnChanges {
     this._init = true;
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (

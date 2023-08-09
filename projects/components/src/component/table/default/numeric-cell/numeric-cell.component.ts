@@ -9,12 +9,14 @@ import {
 import {CellComponentBase} from '../../base/cell-component-base';
 import {TableService} from '../../service/table.service';
 import {ICellCoordinates} from '../../contract/i-cell-coordinates';
+import {FormsUtil} from "../../../../util/forms-util";
 
 @Component({
   selector: 'teta-numeric-cell',
   templateUrl: './numeric-cell.component.html',
   styleUrls: ['./numeric-cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [FormsUtil.formProvider]
 })
 export class NumericCellComponent<T>
   extends CellComponentBase<T>

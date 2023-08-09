@@ -10,7 +10,7 @@ import {HeadCellHostComponent} from './head-cell-host/head-cell-host.component';
 import {TableHeadComponent} from './table-head/table-head.component';
 import {TableBodyComponent} from './table-body/table-body.component';
 import {CellComponent} from './cell/cell.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CheckboxModule} from '../checkbox/checkbox.module';
 import {CellHostComponent} from './cell-host/cell-host.component';
 import {TableHeadGroupComponent} from './table-head-group/table-head-group.component';
@@ -100,6 +100,7 @@ import {ScrollableModule} from "../../directive/scrollable/scrollable.module";
     ScrollingModule,
     ContextMenuModule,
     ScrollableModule,
+    ReactiveFormsModule,
   ],
 })
 export class TableModule {

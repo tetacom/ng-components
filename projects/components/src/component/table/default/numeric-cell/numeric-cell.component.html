@@ -1,13 +1,13 @@
+<form [formGroup]="formGroup">
 <span [style.display]="edit ? 'none' : 'block'"
       class="cell-text"
       [class.cell-text_disabled]="!editable">
   {{row[column.name] | tetaNumber : 2}}
 </span>
-<input #input
-       *ngIf="edit"
-       [tetaOnlyNumber]="true"
-       type="text"
-       class="input row_auto border-radius-0"
-       (blur)="setValue()"
-       [ngModel]="row[column.name]"
-       (ngModelChange)="applyValue($event)"/>
+  <input #input
+         *ngIf="edit"
+         [tetaOnlyNumber]="true"
+         type="text"
+         class="input row_auto border-radius-0"
+         [formControlName]="column.name"/>
+</form>

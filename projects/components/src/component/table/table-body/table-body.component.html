@@ -36,6 +36,7 @@
 
 <ng-template #bodyTemplate let-row="row" let-rowIndex="rowIndex">
   <div class="table-row"
+       ngForm
        (click)="setActiveRow(row, $event)"
        [attr.data-row]="rowIndex"
        [class.table-row_odd]="rowIndex % 2 === 1"
