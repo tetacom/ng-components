@@ -55,36 +55,26 @@ export const lithotypeChart = () => ({
         },
         {
           type: Series3dType.lithotype,
-          lithotypeId: 1,
-          lithotypeName: 'Гранит',
           data: [
             {
+              lithotypeId: 1,
+              lithotypeName: 'Гранит',
               x: 0,
               y: 0,
               z: 0,
               z1: 100,
             },
-          ],
-        },
-        {
-          type: Series3dType.lithotype,
-          lithotypeId: 2,
-          lithotypeName: 'Глина',
-          data: [
             {
+              lithotypeId: 2,
+              lithotypeName: 'Глина',
               x: 0,
               z: 100,
               y: 0,
               z1: 500,
             },
-          ],
-        },
-        {
-          type: Series3dType.lithotype,
-          lithotypeId: 3,
-          lithotypeName: 'Грунт',
-          data: [
             {
+              lithotypeId: 3,
+              lithotypeName: 'Грунт',
               x: 0,
               z: 500,
               z1: 4000,
@@ -94,11 +84,12 @@ export const lithotypeChart = () => ({
         },
       ],
       zAxis: {
+        min: 0,
         max: 4000,
       },
     },
   },
   template: `<div [tetaIconSprite]="'assets/lithotype-icons.svg'" class="font-body-3 padding-3 column column_auto gap-20 content-block " style="width: 1000px;height: 600px">
-                  <teta-three-chart class="chart" style="width: 100%;height: 100%" [data]="data"></teta-three-chart>
+                  <teta-three-chart [data]="data"></teta-three-chart>
     </div>`,
 });

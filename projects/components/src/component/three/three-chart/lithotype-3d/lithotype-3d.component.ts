@@ -39,7 +39,7 @@ export class Lithotype3dComponent implements OnInit {
           return this.createSVGTexture(
             scales.z(_.z),
             scales.z(_.z1),
-            this.series.lithotypeId
+            _.lithotypeId
           );
         });
       })

@@ -1,7 +1,7 @@
 <ng-container *ngIf="{lithotypes:lithotypes|async,scales:chartService.scales|async}as data">
   <ng-container *ngFor="let mesh of data.lithotypes;let i=index">
     <ngt-primitive *args="[mesh[0]]"></ngt-primitive>
-    <ngts-text [text]="series.lithotypeName"
+    <ngts-text [text]="series.data[i].lithotypeName"
                color="black"
                [fontSize]="2.5"
                [rotation]="[0,Math.PI/2,0]"
