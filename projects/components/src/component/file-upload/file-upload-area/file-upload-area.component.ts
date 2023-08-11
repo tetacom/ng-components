@@ -1,18 +1,20 @@
 import {
   ChangeDetectionStrategy,
-  Component, ContentChild,
+  Component,
+  ContentChild,
   ElementRef,
   EventEmitter,
   HostBinding,
   HostListener,
   Input,
   OnInit,
-  Output, TemplateRef,
+  Output,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
 
 @Component({
-  selector: 'teta-file-upload-area',
+  selector: 'teta-file-upload-area-3d',
   templateUrl: './file-upload-area.component.html',
   styleUrls: ['./file-upload-area.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

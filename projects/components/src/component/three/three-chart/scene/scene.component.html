@@ -1,0 +1,16 @@
+<ng-container *ngIf="{data:data|async} as config">
+  <ngt-scene>
+    <teta-area-3d></teta-area-3d>
+    <ng-container [ngSwitch]="s.type" *ngFor="let s of config.data.series">
+      <ng-template [ngSwitchCase]="SeriesType.line">
+        <teta-line-3d [series]="getTypedLineSeries(s)"></teta-line-3d>
+      </ng-template>
+      <ng-template [ngSwitchCase]="SeriesType.lithotype">
+        <teta-lithotype-3d [series]="getTypedLithotypeSeries(s)"></teta-lithotype-3d>
+      </ng-template>
+    </ng-container>
+    <teta-axes-3d [rotation]="rotation"></teta-axes-3d>
+    <ngts-orbit-controls [minAzimuthAngle]="0" [maxAzimuthAngle]="Math.PI/2" [maxZoom]="15" [minZoom]="4"
+                         (change)="setRotation()"></ngts-orbit-controls>
+  </ngt-scene>
+</ng-container>

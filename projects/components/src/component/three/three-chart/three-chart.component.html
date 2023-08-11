@@ -1,0 +1,11 @@
+<div class="column_auto column justify-content-center align-center" style="height: 100%;width: 100%;">
+  <ngt-canvas *ngIf="data?.series?.length;else noData" [sceneGraph]="scene"
+              [camera]="camera">
+  </ngt-canvas>
+  <ng-template #noData>
+    <p>{{data.noDataText}}</p>
+  </ng-template>
+</div>
+
+
+

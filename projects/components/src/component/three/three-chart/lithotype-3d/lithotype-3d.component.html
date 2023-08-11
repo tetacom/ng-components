@@ -1,0 +1,15 @@
+<ng-container *ngIf="{lithotypes:lithotypes|async,scales:chartService.scales|async}as data">
+  <ng-container *ngFor="let mesh of data.lithotypes;let i=index">
+    <ngt-primitive *args="[mesh[0]]"></ngt-primitive>
+    <ngts-text [text]="series.lithotypeName"
+               color="black"
+               [fontSize]="2.5"
+               [rotation]="[0,Math.PI/2,0]"
+               [position]="[1,50-(data.scales.z(series.data[i].z)+data.scales.z((series.data[i].z1-series.data[i].z)/2)),5]"
+               [textAlign]="'left'"
+               [anchorX]="'center'"
+               [anchorY]="'middle'"></ngts-text>
+    <ngt-primitive *args="[mesh[1]]"></ngt-primitive>
+  </ng-container>
+</ng-container>
+

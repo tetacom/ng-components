@@ -15,6 +15,8 @@
     "@maskito/core": "^1.2.0",
     "@maskito/angular": "^1.2.0",
     "@maskito/kit": "^1.2.0",
+    "angular-three": "^1.10.6",
+    "angular-three-soba": "^1.14.1",
     "dayjs": "^1.11.7"
   },
   "dependencies": {

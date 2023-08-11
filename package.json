@@ -61,6 +61,8 @@
     "@types/three": "^0.139.0",
     "@webcomponents/custom-elements": "^1.5.0",
     "ajv-formats": "^2.1.1",
+    "angular-three": "^1.10.6",
+    "angular-three-soba": "^1.14.1",
     "faker": "^5.5.3",
     "jasmine-core": "~3.10.0",
     "karma": "~6.3.0",
@@ -79,7 +81,8 @@
     "semantic-release-monorepo": "^7.0.5",
     "storybook": "7.0.26",
     "style-loader": "^3.3.3",
-    "typescript": "~4.9.5"
+    "typescript": "~4.9.5",
+    "troika-three-text": "^0.48.0-unicode.3"
   },
   "plugins": [
     [
