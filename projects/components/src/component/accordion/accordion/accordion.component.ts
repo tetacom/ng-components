@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, HostBinding, OnInit,} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'teta-accordion',
@@ -6,12 +6,6 @@ import {ChangeDetectionStrategy, Component, HostBinding, OnInit,} from '@angular
   styleUrls: ['./accordion.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccordionComponent implements OnInit {
+export class AccordionComponent {
   @HostBinding('class.accordion') private readonly accordionClassName = true;
-
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
 }

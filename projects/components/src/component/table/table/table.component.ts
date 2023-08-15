@@ -16,22 +16,23 @@ import {
   Type,
   ViewChild,
 } from '@angular/core';
-import {TableService} from '../service/table.service';
-import {TableColumn} from '../contract/table-column';
-import {FilterState} from '../../filter/contarct/filter-state';
-import {DetailComponentBase} from '../base/detail-component-base';
-import {ICellEvent} from '../contract/i-cell-event';
-import {ICellCoordinates} from '../contract/i-cell-coordinates';
-import {filter, takeWhile} from 'rxjs/operators';
-import {EditType} from '../enum/edit-type.enum';
-import {EditEvent} from '../enum/edit-event.enum';
-import {SelectType} from '../enum/select-type.enum';
-import {IIdName} from '../../../common/contract/i-id-name';
-import {IDictionary} from '../../../common/contract/i-dictionary';
-import {ICellInstance, ICellInstanceEvent} from '../contract/i-cell-instance';
-import {FilterType} from '../../filter/enum/filter-type.enum';
-import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
-import {Align} from '../../../common/enum/align.enum';
+import { filter, takeWhile } from 'rxjs/operators';
+
+import { IDictionary } from '../../../common/contract/i-dictionary';
+import { IIdName } from '../../../common/contract/i-id-name';
+import { Align } from '../../../common/enum/align.enum';
+import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
+import { FilterState } from '../../filter/contarct/filter-state';
+import { FilterType } from '../../filter/enum/filter-type.enum';
+import { DetailComponentBase } from '../base/detail-component-base';
+import { ICellCoordinates } from '../contract/i-cell-coordinates';
+import { ICellEvent } from '../contract/i-cell-event';
+import { ICellInstance, ICellInstanceEvent } from '../contract/i-cell-instance';
+import { TableColumn } from '../contract/table-column';
+import { EditEvent } from '../enum/edit-event.enum';
+import { EditType } from '../enum/edit-type.enum';
+import { SelectType } from '../enum/select-type.enum';
+import { TableService } from '../service/table.service';
 
 @Component({
   selector: 'teta-table',
@@ -41,7 +42,8 @@ import {Align} from '../../../common/enum/align.enum';
   providers: [TableService],
 })
 export class TableComponent<T>
-  implements OnInit, OnDestroy, AfterViewInit, OnChanges {
+  implements OnInit, OnDestroy, AfterViewInit, OnChanges
+{
   @Input() data: T[] = [];
   @Input() columns: TableColumn[] = [];
   @Input() dict: IDictionary<IIdName<any>[]>;
@@ -59,13 +61,19 @@ export class TableComponent<T>
   @Input() selectedRows: T[];
   @Input() selectType: SelectType = SelectType.mouse;
   @Input() aggregate: boolean;
-  @Input() trackRow: (index: number, row: T) => any = (index: number, row: T) => {
+  @Input() trackRow: (index: number, row: T) => any = (
+    index: number,
+    row: T
+  ) => {
     if (row['id']) {
       return row['id'];
     }
     return index;
   };
-  @Input() trackColumns: (index: number, column: TableColumn) => any = (index: number, column: TableColumn) => {
+  @Input() trackColumns: (index: number, column: TableColumn) => any = (
+    index: number,
+    column: TableColumn
+  ) => {
     return column.name;
   };
   @Input() editType: EditType = EditType.cell;
@@ -86,8 +94,7 @@ export class TableComponent<T>
   stateChange: EventEmitter<FilterState> = new EventEmitter<FilterState>();
   @Output() bodyLeft = new EventEmitter<T>();
   @Output() activeRowChange: EventEmitter<T> = new EventEmitter();
-  @Output() selectedRowsChange: EventEmitter<T[]> =
-    new EventEmitter();
+  @Output() selectedRowsChange: EventEmitter<T[]> = new EventEmitter();
   @Output() cellClick = new EventEmitter<ICellInstanceEvent<T>>();
   @Output() cellDoubleClick = new EventEmitter<ICellInstanceEvent<T>>();
   @Output() cellFocus = new EventEmitter<ICellInstanceEvent<T>>();
@@ -99,7 +106,7 @@ export class TableComponent<T>
   @Output() cellEditEnd = new EventEmitter<ICellInstance<T>>();
   @Output() valueChange = new EventEmitter<ICellInstance<T>>();
   @Output() tableService = new EventEmitter<TableService<T>>();
-  @ViewChild('contextMenu', {static: true}) menu: ElementRef;
+  @ViewChild('contextMenu', { static: true }) menu: ElementRef;
   @HostBinding('class.table') private readonly tableClass = true;
 
   selectedRowsList: T[];
@@ -110,50 +117,57 @@ export class TableComponent<T>
   private _headElement: HTMLElement;
   private _state: FilterState;
 
-  constructor(private _svc: TableService<T>, private _elementRef: ElementRef) {
+  constructor(
+    private _svc: TableService<T>,
+    private _elementRef: ElementRef
+  ) {
     this._svc.state
       .pipe(
-        takeWhile((_) => this._alive),
-        filter((state) => state !== this._state)
+        takeWhile(() => this._alive),
+        filter(state => state !== this._state)
       )
       .subscribe((state: FilterState) => this.stateChange.next(state));
 
     this._svc.editCellStart
-      .pipe(takeWhile((_) => this._alive))
-      .subscribe((item: ICellEvent) => this.cellEditStart.emit(this._svc.getCellInstance(item)));
+      .pipe(takeWhile(() => this._alive))
+      .subscribe((item: ICellEvent) =>
+        this.cellEditStart.emit(this._svc.getCellInstance(item))
+      );
 
     this._svc.editCellStop
-      .pipe(takeWhile((_) => this._alive))
-      .subscribe((item: ICellCoordinates) => this.cellEditEnd.emit(this._svc.getCellInstance(item)));
+      .pipe(takeWhile(() => this._alive))
+      .subscribe((item: ICellCoordinates) =>
+        this.cellEditEnd.emit(this._svc.getCellInstance(item))
+      );
 
     this._svc.editRowStart
-      .pipe(takeWhile((_) => this._alive))
+      .pipe(takeWhile(() => this._alive))
       .subscribe((item: ICellEvent) =>
         this.rowEditStart.emit(this._svc.getCellInstance(item))
       );
 
     this._svc.editRowStop
-      .pipe(takeWhile((_) => this._alive))
+      .pipe(takeWhile(() => this._alive))
       .subscribe((item: ICellCoordinates) =>
         this.rowEditEnd.emit(this._svc.getRowByIndex(item?.row))
       );
 
     this._svc.selectedRows
-      .pipe(takeWhile((_) => this._alive))
+      .pipe(takeWhile(() => this._alive))
       .subscribe((items: T[]) => {
         this.selectedRowsList = items;
         this.selectedRowsChange.emit(items);
       });
 
     this._svc.activeRow
-      .pipe(takeWhile((_) => this._alive))
+      .pipe(takeWhile(() => this._alive))
       .subscribe((item: T) => {
         this.activeRow = item;
-        this.activeRowChange.emit(item)
+        this.activeRowChange.emit(item);
       });
 
     this._svc.valueChanged
-      .pipe(takeWhile((_) => this._alive))
+      .pipe(takeWhile(() => this._alive))
       .subscribe((coordinates: ICellCoordinates) => {
         this.valueChange.emit(this._svc.getCellInstance(coordinates));
       });
@@ -169,12 +183,16 @@ export class TableComponent<T>
       if (coordinates) {
         this.cellClick.emit({
           ...this._svc.getCellInstance(coordinates),
-          event
+          event,
         });
         if (this.editEvent === EditEvent.click) {
           this.startEditRowOrCell(coordinates);
         } else {
-          if (this._svc.currentEditCell && (coordinates.row !== this._svc.currentEditCell.row || coordinates.column !== this._svc.currentEditCell.column)) {
+          if (
+            this._svc.currentEditCell &&
+            (coordinates.row !== this._svc.currentEditCell.row ||
+              coordinates.column !== this._svc.currentEditCell.column)
+          ) {
             this.startEditRowOrCell(null);
           }
         }
@@ -198,12 +216,12 @@ export class TableComponent<T>
     });
   }
 
-  @HostListener('focusin', ['$event']) focusIn(event: any) {
+  @HostListener('focusin', ['$event']) focusIn(event: FocusEvent) {
     const coordinates = this.getCoordinates(event);
     if (coordinates) {
       this.cellFocus.emit({
         ...this._svc.getCellInstance(coordinates),
-        event
+        event,
       });
       if (this.editEvent === EditEvent.focus) {
         this.startEditRowOrCell(coordinates);
@@ -218,7 +236,7 @@ export class TableComponent<T>
       setTimeout(() => {
         this.cellDoubleClick.emit({
           ...this._svc.getCellInstance(coordinates),
-          event
+          event,
         });
         if (this.editEvent === EditEvent.doubleClick) {
           this.startEditRowOrCell(coordinates);
@@ -255,7 +273,7 @@ export class TableComponent<T>
             this.startEditRowOrCell({
               row: target.row,
               column: target.column,
-              event: undefined
+              event: undefined,
             });
           } else {
             this._svc.startEditCell(null);
@@ -266,15 +284,18 @@ export class TableComponent<T>
     if (coordinates) {
       this.cellKeyDown.emit({
         ...this._svc.getCellInstance(coordinates),
-        event
+        event,
       });
       if (event.key && (event.key.length === 1 || event.key === 'Delete')) {
         const column = this._svc.getColumnByName(coordinates.column);
-        if (column.filterType !== FilterType.number || isFinite(event.key as any)) {
+        if (
+          column.filterType !== FilterType.number ||
+          isFinite(event.key as any)
+        ) {
           this.startEditRowOrCell({
             row: coordinates.row,
             column: coordinates.column,
-            event: event
+            event: event,
           });
         }
       }
@@ -288,7 +309,7 @@ export class TableComponent<T>
           this.startEditRowOrCell({
             row: target.row,
             column: target.column,
-            event: undefined
+            event: undefined,
           });
         }
       }
@@ -337,41 +358,46 @@ export class TableComponent<T>
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('editType')) {
+    if (Object.prototype.hasOwnProperty.call(changes, 'editType')) {
       this._svc.editType = this.editType;
     }
-    if (changes.hasOwnProperty('selectType')) {
+    if (Object.prototype.hasOwnProperty.call(changes, 'selectType')) {
       this._svc.selectType = this.selectType;
     }
-    if (changes.hasOwnProperty('selectedRows')) {
+    if (Object.prototype.hasOwnProperty.call(changes, 'selectedRows')) {
       this._svc.selectRows(this.selectedRows);
     }
-    if (changes.hasOwnProperty('rowEditable')) {
+    if (Object.prototype.hasOwnProperty.call(changes, 'rowEditable')) {
       this._svc.rowEditable = this.rowEditable;
     }
-    if (changes.hasOwnProperty('cookieName')) {
+    if (Object.prototype.hasOwnProperty.call(changes, 'cookieName')) {
       this._svc.setCookieName(this.cookieName);
     }
-    if (changes.hasOwnProperty('columns')) {
+    if (Object.prototype.hasOwnProperty.call(changes, 'columns')) {
       if (this.columns !== null && this.columns !== undefined) {
         this._svc.setColumns(this.columns);
       }
     }
-    if (changes.hasOwnProperty('data')) {
+    if (Object.prototype.hasOwnProperty.call(changes, 'data')) {
       this._svc.setData(this.data);
-      this._svc.selectRows(this.data?.filter((row) => {
-        return this.selectedRows?.some((selectedRow) =>
-          this.trackRow(this._svc.getRowIndex(selectedRow), selectedRow) === this.trackRow(this._svc.getRowIndex(row), row));
-      }));
+      this._svc.selectRows(
+        this.data?.filter(row => {
+          return this.selectedRows?.some(
+            selectedRow =>
+              this.trackRow(this._svc.getRowIndex(selectedRow), selectedRow) ===
+              this.trackRow(this._svc.getRowIndex(row), row)
+          );
+        })
+      );
     }
-    if (changes.hasOwnProperty('dict')) {
+    if (Object.prototype.hasOwnProperty.call(changes, 'dict')) {
       this._svc.setDict(this.dict);
       this._svc.setFilterOptions(this.dict);
     }
-    if (changes.hasOwnProperty('filterOptions')) {
+    if (Object.prototype.hasOwnProperty.call(changes, 'filterOptions')) {
       this._svc.setFilterOptions(this.filterOptions);
     }
-    if (changes.hasOwnProperty('trackRow')) {
+    if (Object.prototype.hasOwnProperty.call(changes, 'trackRow')) {
       this._svc.trackRow = this.trackRow;
     }
   }
@@ -447,7 +473,7 @@ export class TableComponent<T>
     return null;
   }
 
-  onScroll = (event) => {
+  onScroll = event => {
     this._headElement.scrollLeft = event.target.scrollLeft;
   };
 

@@ -1,12 +1,9 @@
 export class TableRow<T> {
   valid: boolean;
-  row: T;
+  data: T;
 
-  constructor(options?:{
-    valid?: boolean,
-    row: T
-  }) {
+  constructor(options?: { valid?: boolean; data: T }) {
     this.valid = options?.valid;
-    this.row = options?.row
+    this.data = options?.data;
   }
 }
