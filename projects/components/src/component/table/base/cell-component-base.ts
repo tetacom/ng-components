@@ -1,7 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
-  HostBinding, inject, Input,
+  HostBinding, inject,
   OnDestroy,
   OnInit
 } from '@angular/core';
@@ -12,16 +12,36 @@ import {TableColumn} from '../contract/table-column';
 import {IIdName} from '../../../common/contract/i-id-name';
 import {ICellValue} from '../contract/i-cell-value';
 import {IDictionary} from '../../../common/contract/i-dictionary';
-import {ControlContainer, FormGroup, NgForm} from "@angular/forms";
+import {ControlContainer, FormControl, FormGroup, NgForm} from "@angular/forms";
 import {FormsUtil} from "../../../util/forms-util";
 
 @Component({
   template: '',
 })
 export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
+  @HostBinding('class.cell-component') private readonly cellClass = true;
+
+  @HostBinding('class.cell-invalid') get cellInvalid() {
+    const control = this.formGroup?.get(this.column?.name);
+    if (control) {
+      return control.invalid;
+    }
+    return false;
+  }
+
+  private _formGroup = inject(ControlContainer, {
+    optional: true
+  });
+
+  get control(): FormControl {
+    return this.formGroup?.get(this.column?.name) as FormControl;
+  }
+
   protected _column: TableColumn;
+
   set column(column: TableColumn) {
     this._column = column;
+    this.setupControl();
   }
 
   get column() {
@@ -31,6 +51,7 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   protected _row: T;
   set row(row: T) {
     this._row = row;
+    this.setupControl();
   }
 
   get row() {
@@ -41,12 +62,6 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   dict: IDictionary<IIdName<any>[]> = {};
 
 
-  @HostBinding('class.cell-component') private readonly cellClass = true;
-
-  private _formGroup = inject(ControlContainer, {
-    optional: true
-  });
-
   get formGroup(): FormGroup {
     if (this._formGroup instanceof FormGroup) {
       return this._formGroup;
@@ -55,14 +70,6 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       return this._formGroup.form;
     }
     return null;
-  }
-
-  @HostBinding('class.cell-invalid') get cellInvalid() {
-    const control = this.formGroup?.get(this.column?.name);
-    if (control) {
-      return control.invalid;
-    }
-    return false;
   }
 
   protected _edit: boolean;
@@ -81,7 +88,6 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   get index() {
     return this.svc.getRowIndex(this.row);
   }
-
 
   protected _alive = true;
 
@@ -104,18 +110,17 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.init();
-    this.formGroup.registerControl(this.column.name, FormsUtil.initControlFromColumn(this.column, this.row));
 
     this.formGroup?.controls[this.column.name]?.valueChanges
       .pipe(
         takeWhile(() => this._alive)
       )
       .subscribe((value) => {
-        console.log('value', value)
-        // this.controlValueChange.emit({
-        //   id: _,
-        //   name: this.column.name,
-        // });
+        this.formGroup.updateValueAndValidity();
+        console.error('valueChanges', this.formGroup, this.formGroup?.valid);
+        if (this.formGroup?.valid) {
+          this.row[this.column.name] = this.control.value;
+        }
       });
   }
 
@@ -150,8 +155,13 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       .pipe(takeWhile((_) => this._alive))
       .subscribe((cellValue: ICellValue) => {
         if (this.index === cellValue.row && this.column.name === cellValue.column) {
+          // console.error('valueSet', this.column.name, 'cellValue', cellValue, 'this.row', this.row);
           this.row[this.column.name] = cellValue.value;
+          this.setupControl();
+          this.formGroup.updateValueAndValidity();
+          console.log('valueSet', this.column.name, this.formGroup.valid)
           this.cdr.detectChanges();
+          this.cdr.markForCheck();
         }
       });
 
@@ -159,9 +169,32 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       .pipe(takeWhile((_) => this._alive))
       .subscribe((cellValue: ICellCoordinates) => {
         if (this.index === cellValue.row) {
+          console.error('valueChanged', this.column.name, 'cellValue', cellValue, 'this.row', this.row);
+          this.setupControl();
+          this.formGroup.updateValueAndValidity();
           this.cdr.detectChanges();
         }
       });
+  }
+
+  abstract startEdit(
+    initiator: ICellCoordinates,
+    type: 'cell' | 'row'
+  ): void;
+
+  abstract stopEdit(): void;
+
+  private setupControl() {
+    if (!this.column) {
+      return;
+    }
+    if (!this.control) {
+      this.formGroup.registerControl(this.column.name, FormsUtil.initControlFromColumn(this.column, this.row));
+    } else {
+      this.control.patchValue(this.row[this.column.name], {
+        emitEvent: false
+      });
+    }
   }
 
   private start(initiator: ICellCoordinates, type: 'cell' | 'row') {
@@ -172,17 +205,11 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
 
   private stop() {
     this._edit = false;
-    console.log(this.formGroup.controls)
     this.formGroup.updateValueAndValidity();
-    console.error('valid', this.formGroup, this.formGroup.valid);
+    if (this.formGroup?.valid) {
+      this.row[this.column.name] = this.control.value;
+    }
     this.stopEdit();
     this.cdr.markForCheck();
   }
-
-  abstract startEdit(
-    initiator: ICellCoordinates,
-    type: 'cell' | 'row'
-  ): void;
-
-  abstract stopEdit(): void;
 }

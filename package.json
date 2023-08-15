@@ -35,7 +35,7 @@
     "object-hash": "^2.2.0",
     "rxjs": "^7.5.5",
     "style-dictionary": "^3.7.1",
-    "three": "^0.139.2",
+    "three": "^0.154.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.1"
   },

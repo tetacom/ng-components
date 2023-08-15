@@ -3,13 +3,10 @@ import {
   Component,
   HostBinding,
   Input,
-  OnDestroy,
-  OnInit,
 } from '@angular/core';
-import { TableColumn } from '../contract/table-column';
-import { TableService } from '../service/table.service';
-import { IIdName } from '../../../common/contract/i-id-name';
-import { IDictionary } from '../../../common/contract/i-dictionary';
+import {TableColumn} from '../contract/table-column';
+import {IIdName} from '../../../common/contract/i-id-name';
+import {IDictionary} from '../../../common/contract/i-dictionary';
 
 @Component({
   selector: 'teta-cell',
@@ -17,20 +14,10 @@ import { IDictionary } from '../../../common/contract/i-dictionary';
   styleUrls: ['./cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CellComponent<T> implements OnInit, OnDestroy {
+export class CellComponent<T> {
   @Input() column: TableColumn;
   @Input() filterOptions: IIdName<any>[];
   @Input() dict: IDictionary<IIdName<any>[]>;
   @Input() row: T;
   @HostBinding('class.cell') private readonly tableCellClass = true;
-
-  private alive = true;
-
-  constructor(protected _svc: TableService<T>) {}
-
-  ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.alive = false;
-  }
 }
