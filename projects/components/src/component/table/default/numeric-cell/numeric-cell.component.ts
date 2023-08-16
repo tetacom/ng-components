@@ -6,22 +6,24 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {CellComponentBase} from '../../base/cell-component-base';
-import {TableService} from '../../service/table.service';
-import {ICellCoordinates} from '../../contract/i-cell-coordinates';
-import {FormsUtil} from "../../../../util/forms-util";
+
+import { FormsUtil } from '../../../../util/forms-util';
+import { CellComponentBase } from '../../base/cell-component-base';
+import { ICellCoordinates } from '../../contract/i-cell-coordinates';
+import { TableService } from '../../service/table.service';
 
 @Component({
   selector: 'teta-numeric-cell',
   templateUrl: './numeric-cell.component.html',
   styleUrls: ['./numeric-cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  viewProviders: [FormsUtil.formProvider]
+  viewProviders: [FormsUtil.formProvider],
 })
 export class NumericCellComponent<T>
   extends CellComponentBase<T>
-  implements OnInit {
-  @ViewChild('input', {static: false}) input: ElementRef;
+  implements OnInit
+{
+  @ViewChild('input', { static: false }) input: ElementRef;
 
   constructor(
     protected override svc: TableService<T>,
@@ -30,13 +32,13 @@ export class NumericCellComponent<T>
     super(svc, cdr);
   }
 
-  applyValue(value) {
-    this.row[this.column.name] = value;
-  }
-
-  setValue(): void {
-    this.valueChanged();
-  }
+  // applyValue(value) {
+  //   this.row[this.column.name] = value;
+  // }
+  //
+  // setValue(): void {
+  //   this.valueChanged();
+  // }
 
   override ngOnInit(): void {
     super.ngOnInit();

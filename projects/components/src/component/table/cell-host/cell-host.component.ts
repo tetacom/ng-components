@@ -10,12 +10,14 @@ import {
   SimpleChanges,
   ViewContainerRef,
 } from '@angular/core';
-import {CellComponentBase} from '../base/cell-component-base';
-import {TableColumn} from '../contract/table-column';
-import {getCellComponent} from '../contract/cell-components-map';
-import {IIdName} from '../../../common/contract/i-id-name';
-import {IDictionary} from '../../../common/contract/i-dictionary';
-import {FormsUtil} from "../../../util/forms-util";
+
+import { IDictionary } from '../../../common/contract/i-dictionary';
+import { IIdName } from '../../../common/contract/i-id-name';
+import { FormsUtil } from '../../../util/forms-util';
+import { CellComponentBase } from '../base/cell-component-base';
+import { getCellComponent } from '../contract/cell-components-map';
+import { TableColumn } from '../contract/table-column';
+import { TableRow } from '../contract/table-row';
 
 @Component({
   selector: 'teta-cell-host',
@@ -24,19 +26,23 @@ import {FormsUtil} from "../../../util/forms-util";
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [FormsUtil.formProvider],
 })
-export class CellHostComponent<T> implements OnInit, OnDestroy, OnChanges {
+export class CellHostComponent<T> implements OnInit, OnChanges {
   @Input() column: TableColumn;
-  @Input() row: T;
+  @Input() row: TableRow<T>;
   @Input() filterOptions: IIdName<any>[];
   @Input() dict: IDictionary<IIdName<any>[]>;
   private _init = false;
-  private _componentRef: ComponentRef<any>;
+  private _componentRef: ComponentRef<CellComponentBase<T>>;
 
-  constructor(private viewContainerRef: ViewContainerRef) {
-  }
+  constructor(private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit(): void {
-    if (!CellComponentBase.isPrototypeOf(this.column.cellComponent)) {
+    if (
+      !Object.prototype.isPrototypeOf.call(
+        CellComponentBase,
+        this.column.cellComponent
+      )
+    ) {
       this.column.cellComponent = getCellComponent(this.column);
     }
     this._componentRef = this.viewContainerRef.createComponent(
@@ -49,16 +55,13 @@ export class CellHostComponent<T> implements OnInit, OnDestroy, OnChanges {
     this._init = true;
   }
 
-  ngOnDestroy(): void {
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (
       this._init &&
-      (changes.hasOwnProperty('row') ||
-        changes.hasOwnProperty('column') ||
-        changes.hasOwnProperty('filterOptions') ||
-        changes.hasOwnProperty('dict'))
+      (Object.prototype.hasOwnProperty.call(changes, 'row') ||
+        Object.prototype.hasOwnProperty.call(changes, 'column') ||
+        Object.prototype.hasOwnProperty.call(changes, 'filterOptions') ||
+        Object.prototype.hasOwnProperty.call(changes, 'dict'))
     ) {
       this._componentRef.instance.row = this.row;
       this._componentRef.instance.column = this.column;

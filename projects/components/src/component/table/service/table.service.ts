@@ -24,6 +24,7 @@ import { ICellValue } from '../contract/i-cell-value';
 import { SortEvent } from '../contract/sort-event';
 import { TableColumn } from '../contract/table-column';
 import { TableColumnStore } from '../contract/table-column-store';
+import { TableRow } from '../contract/table-row';
 import { EditEvent } from '../enum/edit-event.enum';
 import { EditType } from '../enum/edit-type.enum';
 import { SelectType } from '../enum/select-type.enum';
@@ -34,7 +35,7 @@ import { StateUtil } from '../util/state-util';
 })
 export class TableService<T> {
   columns: Observable<TableColumn[]>;
-  displayData: Observable<T[]>;
+  displayData: Observable<TableRow<T>[]>;
   dict: Observable<IDictionary<IIdName<any>[]>>;
   filterOptions: Observable<IDictionary<IIdName<any>[]>>;
   state: Observable<FilterState>;
@@ -73,7 +74,9 @@ export class TableService<T> {
     TableColumn[]
   >([]);
   private _hiddenColumns = new BehaviorSubject<string[]>([]);
-  private _displayData: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
+  private _displayData: BehaviorSubject<TableRow<T>[]> = new BehaviorSubject<
+    TableRow<T>[]
+  >([]);
   private _dict: BehaviorSubject<IDictionary<IIdName<any>[]>> =
     new BehaviorSubject<IDictionary<IIdName<any>[]>>({});
   private _filterOptions: BehaviorSubject<IDictionary<IIdName<any>[]>> =
@@ -123,7 +126,14 @@ export class TableService<T> {
   }
 
   setData(data: T[]): void {
-    this._displayData.next(data ? [...data] : []);
+    this._displayData.next(
+      data?.map(
+        item =>
+          new TableRow<T>({
+            data: item,
+          })
+      ) ?? []
+    );
   }
 
   setDict(dict: IDictionary<IIdName<any>[]>): void {
@@ -422,7 +432,7 @@ export class TableService<T> {
       } else {
         if (
           this.boolOrFuncCallback<T>(this.rowEditable)(
-            this.getRowByIndex(cellEvent?.row)
+            this.getRowByIndex(cellEvent?.row).data
           )
         ) {
           this._editRowStart.next(cellEvent);
@@ -477,16 +487,16 @@ export class TableService<T> {
   }
 
   selectRange(row: T): void {
-    const index = this._displayData.value.indexOf(row);
+    const index = this._displayData.value.findIndex(_ => _.data === row);
     let minIndex = this._selectedRows.value.reduce((prev, curr) => {
-      const newIndex = this._displayData.value.indexOf(curr);
+      const newIndex = this._displayData.value.findIndex(_ => _.data === curr);
       if (newIndex < prev) {
         return newIndex;
       }
       return prev;
     }, this._displayData.value.length);
     let maxIndex = this._selectedRows.value.reduce((prev, curr) => {
-      const newIndex = this._displayData.value.indexOf(curr);
+      const newIndex = this._displayData.value.findIndex(_ => _.data === curr);
       if (newIndex > prev) {
         return newIndex;
       }
@@ -502,7 +512,7 @@ export class TableService<T> {
       maxIndex = index;
     }
     this._selectedRows.next([
-      ...this._displayData.value.slice(minIndex, maxIndex + 1),
+      ...this._displayData.value.slice(minIndex, maxIndex + 1).map(_ => _.data),
     ]);
   }
 
@@ -521,7 +531,7 @@ export class TableService<T> {
   }
 
   selectAll() {
-    this._selectedRows.next(this._displayData.value);
+    this._selectedRows.next(this._displayData.value.map(_ => _.data));
   }
 
   deselectAll() {
@@ -533,7 +543,9 @@ export class TableService<T> {
       this._displayData.value?.length &&
       this._selectedRows.value?.length &&
       this._displayData.value.every(
-        _ => this._selectedRows.value.indexOf(_) >= 0
+        _ =>
+          this._selectedRows.value.findIndex(selected => selected === _.data) >=
+          0
       )
     ) {
       return true;
@@ -568,7 +580,7 @@ export class TableService<T> {
       typeof cellValue.column === 'object'
     ) {
       value = {
-        row: this.getRowIndex(cellValue.row),
+        row: this.getRowIndex(cellValue.row.data),
         column: cellValue.column.name,
         value: cellValue.value,
       };
@@ -578,12 +590,12 @@ export class TableService<T> {
     this._valueSet.next(value);
   }
 
-  getRowByIndex(rowIndex: number) {
+  getRowByIndex(rowIndex?: number): TableRow<T> | undefined {
     return this._displayData?.value[rowIndex];
   }
 
   getRowIndex(row: T) {
-    return this._displayData.value.indexOf(row);
+    return this._displayData.value.findIndex(_ => _.data === row);
   }
 
   getEventCell(event: Event): HTMLElement | null {

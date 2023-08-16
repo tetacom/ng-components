@@ -5,12 +5,13 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {TableService} from '../../service/table.service';
-import {CellComponentBase} from '../../base/cell-component-base';
-import {SelectComponent} from '../../../select/select/select.component';
-import {IIdName} from '../../../../common/contract/i-id-name';
-import {ICellCoordinates} from '../../contract/i-cell-coordinates';
-import {VerticalAlign} from '../../../../common/enum/vertical-align.enum';
+
+import { IIdName } from '../../../../common/contract/i-id-name';
+import { VerticalAlign } from '../../../../common/enum/vertical-align.enum';
+import { SelectComponent } from '../../../select/select/select.component';
+import { CellComponentBase } from '../../base/cell-component-base';
+import { ICellCoordinates } from '../../contract/i-cell-coordinates';
+import { TableService } from '../../service/table.service';
 
 @Component({
   selector: 'teta-list-cell',
@@ -20,15 +21,11 @@ import {VerticalAlign} from '../../../../common/enum/vertical-align.enum';
 })
 export class ListCellComponent<T>
   extends CellComponentBase<T>
-  implements OnInit {
-
-  get value() {
-    return this.getValue();
-  }
-
+  implements OnInit
+{
   get displayFilterOptions(): IIdName<any>[] {
     if (this.column?.parentName?.length > 0) {
-      const parentValue = this.row[this.column.parentName];
+      const parentValue = this.row.data[this.column.parentName];
       if (parentValue) {
         return this.filterOptions.filter(_ => _.parentId === parentValue);
       }
@@ -36,7 +33,7 @@ export class ListCellComponent<T>
     return this.filterOptions;
   }
 
-  @ViewChild('input', {static: false}) input: SelectComponent;
+  @ViewChild('input', { static: false }) input: SelectComponent;
 
   verticalAlign = VerticalAlign;
 
@@ -47,10 +44,10 @@ export class ListCellComponent<T>
     super(svc, cdr);
   }
 
-  setValue(value: any): void {
-    this.row[this.column.name] = value;
-    this.valueChanged();
-  }
+  // setValue(value: any): void {
+  //   this.row[this.column.name] = value;
+  //   this.valueChanged();
+  // }
 
   startEdit(initiator: ICellCoordinates, type: 'cell' | 'row'): void {
     if (initiator?.column === this.column.name) {
@@ -69,7 +66,7 @@ export class ListCellComponent<T>
     super.ngOnInit();
   }
 
-  private getValue() {
+  protected getValue(value) {
     if (
       this.filterOptions === null ||
       this.filterOptions === undefined ||
@@ -77,9 +74,7 @@ export class ListCellComponent<T>
     ) {
       return '';
     }
-    const item = this.filterOptions.find(
-      (option) => option.id === this.row[this.column.name]
-    );
+    const item = this.filterOptions.find(option => option.id === value);
     if (item === null || item === undefined) {
       return '';
     }

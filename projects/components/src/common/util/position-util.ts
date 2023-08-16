@@ -1,6 +1,6 @@
-import {IRect} from '../contract/i-rect';
-import {Align} from '../enum/align.enum';
-import {VerticalAlign} from '../enum/vertical-align.enum';
+import { IRect } from '../contract/i-rect';
+import { Align } from '../enum/align.enum';
+import { VerticalAlign } from '../enum/vertical-align.enum';
 
 export class PositionUtil {
   public static getPosition(
@@ -8,13 +8,13 @@ export class PositionUtil {
     elementPosition: IRect,
     align: Align,
     verticalAlign: VerticalAlign,
-    margin: number = 0,
-    verticalMargin: number = 0,
+    margin = 0,
+    verticalMargin = 0,
     transformedParentRect: IRect = {
       left: 0,
       right: 0,
       top: 0,
-      bottom: 0
+      bottom: 0,
     }
   ): IRect {
     const rect: IRect = {};
@@ -112,10 +112,17 @@ export class PositionUtil {
     if (rect.top < 0) {
       rect.top = 0;
     }
-    if (verticalAlign === VerticalAlign.bottom || verticalAlign === VerticalAlign.center || verticalAlign === VerticalAlign.innerBottom) {
+    if (
+      verticalAlign === VerticalAlign.bottom ||
+      verticalAlign === VerticalAlign.center ||
+      verticalAlign === VerticalAlign.innerBottom
+    ) {
       rect.maxHeight = window.innerHeight - rect.top;
     }
-    if (verticalAlign === VerticalAlign.top || verticalAlign === VerticalAlign.innerTop) {
+    if (
+      verticalAlign === VerticalAlign.top ||
+      verticalAlign === VerticalAlign.innerTop
+    ) {
       rect.maxHeight = containerPosition.top;
     }
     if (!isNaN(rect.left)) {
@@ -128,7 +135,9 @@ export class PositionUtil {
       rect.top = rect.top - transformedParentRect.top;
     }
     if (!isNaN(rect.bottom)) {
-      rect.bottom = rect.bottom ? rect.bottom - transformedParentRect.bottom : rect.bottom;
+      rect.bottom = rect.bottom
+        ? rect.bottom - transformedParentRect.bottom
+        : rect.bottom;
     }
     return rect;
   }

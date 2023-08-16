@@ -29,6 +29,7 @@ import { ICellCoordinates } from '../contract/i-cell-coordinates';
 import { ICellEvent } from '../contract/i-cell-event';
 import { ICellInstance, ICellInstanceEvent } from '../contract/i-cell-instance';
 import { TableColumn } from '../contract/table-column';
+import { TableRow } from '../contract/table-row';
 import { EditEvent } from '../enum/edit-event.enum';
 import { EditType } from '../enum/edit-type.enum';
 import { SelectType } from '../enum/select-type.enum';
@@ -101,7 +102,7 @@ export class TableComponent<T>
   @Output() cellKeyDown = new EventEmitter<ICellInstanceEvent<T>>();
   @Output() rowLeft = new EventEmitter<T>();
   @Output() rowEditStart = new EventEmitter<ICellInstance<T>>();
-  @Output() rowEditEnd = new EventEmitter<T>();
+  @Output() rowEditEnd = new EventEmitter<TableRow<T>>();
   @Output() cellEditStart = new EventEmitter<ICellInstance<T>>();
   @Output() cellEditEnd = new EventEmitter<ICellInstance<T>>();
   @Output() valueChange = new EventEmitter<ICellInstance<T>>();
@@ -199,11 +200,11 @@ export class TableComponent<T>
       }
       if (row) {
         if (event.ctrlKey) {
-          this._svc.selectOrDeselectRow(row);
+          this._svc.selectOrDeselectRow(row.data);
         } else if (event.shiftKey) {
-          this._svc.selectRange(row);
+          this._svc.selectRange(row.data);
         } else {
-          this._svc.selectRows([row]);
+          this._svc.selectRows([row.data]);
         }
       }
       if (!eventIsOnRow && !event.defaultPrevented) {
@@ -413,7 +414,7 @@ export class TableComponent<T>
     if (rowElement) {
       const rowIndex = parseInt(rowElement.getAttribute('data-row'), 10);
       if (rowIndex >= 0) {
-        this.contextMenuRow = this._svc.getRowByIndex(rowIndex);
+        this.contextMenuRow = this._svc.getRowByIndex(rowIndex).data;
       }
     }
   }
@@ -459,7 +460,7 @@ export class TableComponent<T>
     return null;
   }
 
-  private getRow(event: Event): T | null {
+  private getRow(event: Event): TableRow<T> | null {
     if (event.composedPath().indexOf(this._elementRef.nativeElement) < 0) {
       return null;
     }

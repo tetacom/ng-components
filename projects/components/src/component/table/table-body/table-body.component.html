@@ -37,11 +37,11 @@
 <ng-template #bodyTemplate let-row="row" let-rowIndex="rowIndex">
   <div class="table-row"
        ngForm
-       (click)="setActiveRow(row, $event)"
+       (click)="setActiveRow(row.data, $event)"
        [attr.data-row]="rowIndex"
        [class.table-row_odd]="rowIndex % 2 === 1"
-       [ngClass]="rowClass ? rowClass(row, rowIndex) : ''"
-       [class.table-row_selected]="selectedRows && selectedRows.indexOf(row) >= 0"
+       [ngClass]="rowClass ? rowClass(row.data, rowIndex) : ''"
+       [class.table-row_selected]="selectedRows && selectedRows.indexOf(row.data) >= 0"
        [style.flex-grow]="totalFlex"
        [style.flex-basis.px]="totalWidth"
        [style.min-width.px]="totalWidth">
@@ -50,9 +50,9 @@
          [style.flex-grow]="lockedFlex"
          [style.flex-basis.px]="lockedWidth"
          [style.min-width.px]="lockedWidth"
-         [style.zIndex]="row === activeRow ? 2 : 1">
+         [style.zIndex]="row.data === activeRow ? 2 : 1">
       <teta-selection-cell *ngIf="selectType === selectTypeEnum.checkBox && locked.length"
-                           [row]="row"
+                           [row]="row.data"
                            style="width: 28px;"></teta-selection-cell>
       <teta-cell
         *ngFor="let column of locked; let colIndex = index; trackBy: trackColumns;"
@@ -69,7 +69,7 @@
       ></teta-cell>
     </div>
     <teta-selection-cell *ngIf="selectType === selectTypeEnum.checkBox && locked.length < 1"
-                         [row]="row"
+                         [row]="row.data"
                          style="width: 28px;"></teta-selection-cell>
     <teta-cell
       *ngFor="let column of unlocked; let colIndex = index; trackBy: trackColumns;"

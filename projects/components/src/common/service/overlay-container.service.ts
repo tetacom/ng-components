@@ -1,17 +1,16 @@
-import {Inject, Injectable, OnDestroy} from '@angular/core';
-import {DOCUMENT} from '@angular/common';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, OnDestroy } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OverlayContainerService implements OnDestroy {
   private _containerClass = 'overlay-container';
-  private _container: HTMLElement;
+  private _container?: HTMLElement;
 
-  constructor(@Inject(DOCUMENT) private document$: any) {
-  }
+  constructor(@Inject(DOCUMENT) private document$: any) {}
 
-  getContainer(): HTMLElement {
+  getContainer(): HTMLElement | undefined {
     if (!this._container) {
       this.createContainer();
     }

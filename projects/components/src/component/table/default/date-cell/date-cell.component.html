@@ -1,14 +1,13 @@
 <span [style.display]="edit ? 'none' : 'block'"
-      class="cell-text"
-      [class.cell-text_disabled]="!editable">
-  {{row[column.name] | date : 'dd.MM.yyyy'}}
+      class='cell-text'
+      [class.cell-text_disabled]='!editable'>
+  {{control?.value | date : 'dd.MM.yyyy'}}
 </span>
-<teta-date-picker class="datepicker-table"
+<teta-date-picker class='datepicker-table'
                   #input
-                  *ngIf="edit"
-                  [allowNull]="!column.required"
-                  [appendToBody]="true"
-                  [showTime]="false"
-                  [ngModel]="row[column.name]"
-                  (ngModelChange)="setValue($event)"
+                  *ngIf='edit'
+                  [allowNull]='!column.required'
+                  [appendToBody]='true'
+                  [showTime]='false'
+                  [formControl]='control'
 ></teta-date-picker>
