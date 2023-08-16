@@ -8,7 +8,7 @@ import { tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
-export class ChartService {
+export class Chart3dService {
   public minMax: Observable<Axes3dMinMax>;
   public data: Observable<I3dChartConfig>;
   public scales: Observable<{ x; y; z }>;
@@ -37,7 +37,7 @@ export class ChartService {
   setData(data) {
     this.data$.next(data);
   }
-  getAxesMinMax(data: I3dChartConfig): Axes3dMinMax {
+  private getAxesMinMax(data: I3dChartConfig): Axes3dMinMax {
     const zArr: number[] = data.series
       .map((_) => {
         return _.data.map((d) => d.z);
@@ -53,26 +53,36 @@ export class ChartService {
         return _.data.map((d) => d.y);
       })
       .flat();
-
+    const ZMinMaxVal: [number, number] = [Math.min(...zArr), Math.max(...zArr)];
+    const XMinMaxVal: [number, number] = [Math.min(...xArr), Math.max(...xArr)];
+    const YMinMaxVal: [number, number] = [Math.min(...yArr), Math.max(...yArr)];
     return {
-      z: [
-        data.zAxis?.min || Math.min(...zArr),
-        data.zAxis?.max || Math.max(...zArr),
-      ],
-      x: [
-        data.xAxis?.min || Math.min(...xArr),
-        data.xAxis?.max || Math.max(...xArr),
-      ],
-      y: [
-        data.yAxis?.min || Math.min(...yArr),
-        data.yAxis?.max || Math.max(...yArr),
-      ],
+      z: this.getMinMaxRange(ZMinMaxVal, data.zAxis?.min, data.zAxis?.max),
+      x: this.getMinMaxRange(XMinMaxVal, data.xAxis?.min, data.xAxis?.max),
+      y: this.getMinMaxRange(YMinMaxVal, data.yAxis?.min, data.yAxis?.max),
     };
   }
-  getScales(axesMinMax: Axes3dMinMax) {
-    const z = d3.scaleLinear().domain(axesMinMax.z).range([0, 100]);
-    const x = d3.scaleLinear().domain(axesMinMax.x).range([0, 25]);
-    const y = d3.scaleLinear().domain(axesMinMax.y).range([0, 100]);
+  private getMinMaxRange(
+    minMax: [number, number],
+    axisMin: number,
+    axisMax: number
+  ): [number, number] {
+    const min =
+      axisMin ||
+      (minMax[0] === minMax[1]
+        ? minMax[0] - Math.abs(minMax[0] - 1) * 0.1
+        : minMax[0]);
+    const max =
+      axisMax ||
+      (minMax[0] === minMax[1]
+        ? minMax[1] + Math.abs(minMax[1] + 1) * 0.1
+        : minMax[1]);
+    return [min, max];
+  }
+  private getScales(axesMinMax: Axes3dMinMax) {
+    const z = d3.scaleLinear().domain(axesMinMax.z).range([50, -50]);
+    const x = d3.scaleLinear().domain(axesMinMax.x).range([25, 0]);
+    const y = d3.scaleLinear().domain(axesMinMax.y).range([50, -50]);
     return {
       x,
       y,

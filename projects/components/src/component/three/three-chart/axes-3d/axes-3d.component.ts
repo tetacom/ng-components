@@ -13,7 +13,7 @@ import * as THREE from 'three';
 import { Euler } from 'three';
 import { extend } from 'angular-three';
 import { Axis3dPoint } from '../model/axis-3d-point';
-import { ChartService } from '../service/chart.service';
+import { Chart3dService } from '../service/chart-3d.service';
 import { combineLatest, map, Observable, takeWhile } from 'rxjs';
 import { Axes3dMinMax } from '../model/axes-3d-min-max';
 
@@ -29,10 +29,14 @@ extend(THREE);
 })
 export class Axes3dComponent implements OnDestroy {
   @Input() rotation: Euler;
-  public axes: Observable<{ z: Axis3dPoint[]; y: Axis3dPoint[] }>;
+  public axes: Observable<{
+    z: Axis3dPoint[];
+    y: Axis3dPoint[];
+    x: Axis3dPoint[];
+  }>;
   private _alive = true;
 
-  protected readonly chartService = inject(ChartService);
+  protected readonly chartService = inject(Chart3dService);
   constructor() {
     this.axes = combineLatest([
       this.chartService.scales,
@@ -52,7 +56,10 @@ export class Axes3dComponent implements OnDestroy {
     const axisY = this.generateTicks(minMax.y, 12).map((_) => {
       return { value: _.toFixed(1), position: scales.y(_) };
     });
-    return { z: axisZ, y: axisY };
+    const axisX = this.generateTicks(minMax.x, 4).map((_) => {
+      return { value: _.toFixed(1), position: scales.x(_) };
+    });
+    return { z: axisZ, y: axisY, x: axisX };
   }
   generateTicks(extremes: number[], count = 10) {
     const [min, max] = extremes;

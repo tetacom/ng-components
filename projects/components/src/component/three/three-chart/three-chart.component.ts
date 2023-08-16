@@ -13,7 +13,7 @@ import * as THREE from 'three';
 import { OrthographicCamera } from 'three';
 import { SceneComponent } from './scene/scene.component';
 import { I3dChartConfig } from './model/i-3d-chart-config';
-import { ChartService } from './service/chart.service';
+import { Chart3dService } from './service/chart-3d.service';
 import { CommonModule } from '@angular/common';
 
 extend(THREE);
@@ -32,8 +32,7 @@ export class ThreeChartComponent implements OnInit, OnChanges {
   @Input() data: I3dChartConfig;
   public scene: typeof SceneComponent;
   public camera: OrthographicCamera;
-  protected readonly chartService = inject(ChartService);
-
+  protected readonly chartService = inject(Chart3dService);
   ngOnInit(): void {
     this.scene = SceneComponent;
     this.camera = new OrthographicCamera(20, 20, 20, 20, 0.1, 1000);

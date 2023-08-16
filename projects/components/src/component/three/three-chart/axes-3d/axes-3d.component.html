@@ -1,18 +1,17 @@
 <ng-container *ngIf="{axes:axes|async}as data">
-<ngts-text *ngFor="let tick of data.axes.y;let i=index" [text]="tick.value"
+<ngts-text *ngFor="let tick of data.axes.y;let i=index" [text]="tick.value+'-'"
            [color]="'var(--color-text-90)'"
            [rotation]="rotation"
            [fontSize]="2.5"
-           [position]="[25,-50,100-tick.position-50]"
-></ngts-text>
-<ngts-text *ngFor="let tick of data.axes.z;let i=index"  [text]="tick.value+'-'"
-           [color]="'var(--color-text-90)'"
-           [rotation]="rotation"
-           [fontSize]="2.5"
+           [position]="[0,tick.position,50]"
            [anchorX]="'right'"
            [anchorY]="'middle'"
-           [position]="[0,100-tick.position-50,50]"
            [textAlign]="'right'"
+></ngts-text>
+<ngts-text *ngFor="let tick of data.axes.z;let i=index"  [text]="tick.value"
+           [color]="'var(--color-text-90)'"
+           [rotation]="rotation"
+           [fontSize]="2.5"
+           [position]="[25,-50,tick.position]"
            ></ngts-text>
-
 </ng-container>

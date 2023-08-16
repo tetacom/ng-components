@@ -2,20 +2,20 @@ import {
   ChangeDetectionStrategy,
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
-  inject,
-  Input,
-  OnInit,
+  OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgtsText } from 'angular-three-soba/abstractions';
-import { extend, NgtArgs } from 'angular-three';
+import { extend, NgtArgs, NgtStore } from 'angular-three';
 import * as THREE from 'three';
 import { Texture } from 'three';
-import { ChartService } from '../service/chart.service';
-import { map, Observable } from 'rxjs';
-import { Lithotype3dSeries } from '../model/lithotype-3d-series';
+import { Chart3dService } from '../service/chart-3d.service';
+import { map, Observable, takeWhile } from 'rxjs';
+import { Base3dSeriesComponent } from '../base-3d-series/base3d-series.component';
+import { Lithotype3dPoint } from '../model/lithotype-3d-point';
 
 extend(THREE);
+
 @Component({
   selector: 'teta-lithotype-3d',
   templateUrl: './lithotype-3d.component.html',
@@ -24,31 +24,42 @@ extend(THREE);
   imports: [CommonModule, NgtArgs, NgtsText],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class Lithotype3dComponent implements OnInit {
-  @Input() series: Lithotype3dSeries;
+export class Lithotype3dComponent<T extends Lithotype3dPoint>
+  extends Base3dSeriesComponent<T>
+  implements OnDestroy
+{
   public lithotypes: Observable<
-    THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>[][]
+    {
+      component: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
+      position: number;
+    }[][]
   >;
-
-  protected readonly chartService = inject(ChartService);
+  private _alive = true;
   protected readonly Math = Math;
+
+  constructor(override svc: Chart3dService, override ngtStore: NgtStore) {
+    super(svc, ngtStore);
+  }
+
   ngOnInit(): void {
-    this.lithotypes = this.chartService.scales.pipe(
+    this.lithotypes = this.svc.scales.pipe(
+      takeWhile(() => this._alive),
       map((scales) => {
         return this.series?.data.map((_) => {
           return this.createSVGTexture(
-            scales.z(_.z),
-            scales.z(_.z1),
+            scales.y(_.y),
+            scales.y(_.y1),
             _.lithotypeId
           );
         });
       })
     );
   }
-  createSVGTexture(z: number, z1: number, litotypeId: number) {
-    const max = Math.max(z, z1);
-    const min = Math.min(z, z1);
-    const height = max - min;
+
+  createSVGTexture(y: number, y1: number, litotypeId: number) {
+    const max = Math.max(y, y1);
+    const min = Math.min(y, y1);
+    const height = Math.abs(max - min);
     const icon = document.querySelector(`#icon${litotypeId}`);
     const svgString = `<svg width="100" height="100" viewBox="0 0 16 16" fill="none"  xmlns="http://www.w3.org/2000/svg">${icon.innerHTML}</svg>`;
 
@@ -59,10 +70,14 @@ export class Lithotype3dComponent implements OnInit {
     const plane = this.createTexturedPlane(texture, 100, height);
     const plane1 = this.createTexturedPlane(texture, 25, height);
     plane.rotation.set(0, Math.PI / 2, 0);
-    plane.position.set(0.17, 50 - min - height / 2, 0);
-    plane1.position.set(25 / 2, 50 - min - height / 2, -50 + 0.17);
-    return [plane, plane1];
+    plane.position.set(0.17, min + height / 2, 0);
+    plane1.position.set(25 / 2, min + height / 2, -50 + 0.17);
+    return [
+      { component: plane, position: min + height / 2 },
+      { component: plane1, position: min + height / 2 },
+    ];
   }
+
   createTexturedPlane(texture: Texture, width: number, height: number) {
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
@@ -83,5 +98,8 @@ export class Lithotype3dComponent implements OnInit {
     geometry.setAttribute('uv', new THREE.BufferAttribute(newUvs, 2));
     const plane = new THREE.Mesh(geometry, material);
     return plane;
+  }
+  ngOnDestroy(): void {
+    this._alive = false;
   }
 }

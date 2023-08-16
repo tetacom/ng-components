@@ -1,8 +1,8 @@
-import { Line3dSeries } from './line-3d-series';
-import { Lithotype3dSeries } from './lithotype-3d-series';
+import { Base3dSeries } from './base-3d-series';
+import { Base3dThreePoint } from './base-3d-three-point';
 
 export interface I3dChartConfig {
-  series?: Line3dSeries[] | Lithotype3dSeries[];
+  series?: Base3dSeries<Base3dThreePoint>[];
   noDataText?: string;
   xAxis?: minMax;
   yAxis?: minMax;

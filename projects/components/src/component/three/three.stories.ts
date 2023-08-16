@@ -3,11 +3,8 @@ import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ThreeChartComponent } from './three-chart/three-chart.component';
-import { Area3dComponent } from './three-chart/area-3d/area-3d.component';
-import { Axes3dComponent } from './three-chart/axes-3d/axes-3d.component';
-import { Line3dComponent } from './three-chart/line-3d/line-3d.component';
-import { SceneComponent } from './three-chart/scene/scene.component';
 import { Series3dType } from './three-chart/model/enum/series-3d-type';
+import { CustomSeriesComponent } from './custom-series/custom-series.component';
 
 export default {
   title: 'Component/Three',
@@ -24,14 +21,7 @@ export default {
 
 export const lithotypeChart = () => ({
   moduleMetadata: {
-    imports: [
-      ThreeChartComponent,
-      Area3dComponent,
-      Axes3dComponent,
-      Line3dComponent,
-      SceneComponent,
-      IconModule,
-    ],
+    imports: [ThreeChartComponent, IconModule],
   },
   props: {
     data: {
@@ -42,15 +32,17 @@ export const lithotypeChart = () => ({
           color: 'red',
           data: [
             { x: 0, y: 0, z: 0 },
-            { x: 0, y: 1000, z: 0 },
+            { x: 0, y: 50, z: 2000 },
           ],
         },
         {
           type: Series3dType.line,
           color: 'red',
           data: [
-            { x: 0, y: 1000, z: 0 },
-            { x: 120, y: 820, z: 1200 },
+            { x: 0, y: 0, z: 0 },
+            { x: 0, y: 70, z: 2000 },
+            { x: 50, y: 700, z: 100 },
+            { x: 150, y: 1700, z: 1200 },
           ],
         },
         {
@@ -61,32 +53,57 @@ export const lithotypeChart = () => ({
               lithotypeName: 'Гранит',
               x: 0,
               y: 0,
+              y1: 100,
               z: 0,
-              z1: 100,
             },
             {
               lithotypeId: 2,
               lithotypeName: 'Глина',
               x: 0,
-              z: 100,
-              y: 0,
-              z1: 500,
+              y: 100,
+              y1: 500,
+              z: 0,
             },
             {
               lithotypeId: 3,
               lithotypeName: 'Грунт',
               x: 0,
-              z: 500,
-              z1: 4000,
-              y: 0,
+              y: 500,
+              y1: 4000,
+              z: 0,
             },
           ],
         },
       ],
-      zAxis: {
+      yAxis: {
         min: 0,
         max: 4000,
       },
+      xAxis: {
+        min: 0,
+        max: 1000,
+      },
+    },
+  },
+  template: `<div [tetaIconSprite]="'assets/lithotype-icons.svg'" class="font-body-3 padding-3 column column_auto gap-20 content-block " style="width: 1000px;height: 600px">
+                  <teta-three-chart [data]="data"></teta-three-chart>
+    </div>`,
+});
+export const customSeries = () => ({
+  moduleMetadata: {
+    imports: [ThreeChartComponent, IconModule],
+  },
+  props: {
+    data: {
+      noDataText: 's',
+      series: [
+        {
+          type: Series3dType.line,
+          color: 'red',
+          component: CustomSeriesComponent,
+          data: [{ x: 500, y: 555, z: 333 }],
+        },
+      ],
     },
   },
   template: `<div [tetaIconSprite]="'assets/lithotype-icons.svg'" class="font-body-3 padding-3 column column_auto gap-20 content-block " style="width: 1000px;height: 600px">
