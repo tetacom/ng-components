@@ -73,7 +73,7 @@
             ],
             "configDir": ".storybook",
             "browserTarget": "components:build",
-            "compodoc": false,
+            "compodoc": true,
             "compodocArgs": [
               "-e",
               "json",
