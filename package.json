@@ -94,7 +94,7 @@
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.63.6",
     "sass-loader": "^13.3.2",
-    "semantic-release": "^21.0.7",
+    "semantic-release": "^18.0.0",
     "semantic-release-monorepo": "^7.0.5",
     "storybook": "7.0.26",
     "style-loader": "^3.3.3",
