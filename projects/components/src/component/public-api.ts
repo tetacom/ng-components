@@ -98,6 +98,5 @@ export * from './three/public-api';
 export * from './chart-3d/public-api';
 
 /* Resize panel */
-export * from './resize-panel/public-api';
-
 export * from './divider/public-api';
+export * from './resize-panel/public-api';
