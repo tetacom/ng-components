@@ -39,6 +39,8 @@
     "rxjs": "^7.5.5",
     "style-dictionary": "^3.7.1",
     "three": "^0.154.0",
+    "three-stdlib": "^2.24.2",
+    "troika-three-text": "^0.48.0-unicode.3",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.1"
   },
@@ -71,11 +73,11 @@
     "@typescript-eslint/parser": "5.62.0",
     "@webcomponents/custom-elements": "^1.5.0",
     "ajv-formats": "^2.1.1",
+    "angular-three": "^1.10.6",
+    "angular-three-soba": "^1.14.1",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
-    "angular-three": "^1.10.6",
-    "angular-three-soba": "^1.14.1",
     "faker": "^5.5.3",
     "jasmine-core": "~3.10.0",
     "karma": "~6.3.0",
@@ -91,12 +93,11 @@
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.63.6",
     "sass-loader": "^13.3.2",
-    "semantic-release": "^18.0.0",
+    "semantic-release": "^21.0.7",
     "semantic-release-monorepo": "^7.0.5",
     "storybook": "7.0.26",
     "style-loader": "^3.3.3",
-    "typescript": "~4.9.5",
-    "troika-three-text": "^0.48.0-unicode.3"
+    "typescript": "~4.9.5"
   },
   "plugins": [
     [
