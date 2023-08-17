@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "sb": "ng run components:storybook",
+    "build-storybook": "ng run components:build-storybook",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
