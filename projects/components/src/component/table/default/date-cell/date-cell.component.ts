@@ -34,12 +34,6 @@ export class DateCellComponent<T>
     super.ngOnInit();
   }
 
-  // setValue(value: Date): void {
-  //   this.row[this.column.name] = value ? new Date(value) : value;
-  //   this.valueChanged();
-  //   this.cdr.detectChanges();
-  // }
-
   startEdit(initiator: ICellCoordinates, type: 'cell' | 'row'): void {
     if (initiator?.column === this.column.name) {
       setTimeout(() => {

@@ -30,10 +30,6 @@ export class BooleanCellComponent<T>
     super(svc, cdr);
   }
 
-  // setValue(): void {
-  //   this.valueChanged();
-  // }
-
   override ngOnInit(): void {
     super.ngOnInit();
   }
