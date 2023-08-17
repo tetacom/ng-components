@@ -16,9 +16,12 @@ jobs:
         with:
           cache: npm
           node-version: 18
-      - name: Install & Build
+      - name: Install
         run: yarn && yarn global add @angular/cli
+      - name: Build
+        run: npm run build-storybook
       - name: Deploy To Github Pages
-        run: npx -p @storybook/storybook-deployer storybook-to-ghpages --branch gh-pages --source-branch main --ci true
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/storybook
