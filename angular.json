@@ -73,14 +73,14 @@
             ],
             "configDir": ".storybook",
             "browserTarget": "components:build",
-            "compodoc": true,
+            "compodoc": false,
             "compodocArgs": [
               "-e",
               "json",
               "-d",
               ".storybook/documentation"
             ],
-            "outputDir": "dist/storybook/components"
+            "outputDir": "dist/storybook"
           }
         }
       }
