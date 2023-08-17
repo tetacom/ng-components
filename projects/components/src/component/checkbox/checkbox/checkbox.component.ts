@@ -54,7 +54,7 @@ export class CheckboxComponent implements ControlValueAccessor, OnInit {
    * true/false или list
    */
   @Input() binary: boolean;
-  @Input () labelPosition:'left'|'right'="right"
+  @Input() labelPosition: 'left' | 'right' = 'right';
   @Input() allowNull: boolean;
 
   checked: boolean;

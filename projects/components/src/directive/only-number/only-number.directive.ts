@@ -1,5 +1,5 @@
-import {Directive, ElementRef, HostListener, Input} from '@angular/core';
-import {NgControl} from '@angular/forms';
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { NgControl } from '@angular/forms';
 
 @Directive({
   selector: '[tetaOnlyNumber]',
@@ -20,8 +20,10 @@ export class OnlyNumberDirective {
 
   private readonly _minusSign: string = '-';
 
-  constructor(private _elementRef: ElementRef<HTMLInputElement>, private _control: NgControl) {
-  }
+  constructor(
+    private _elementRef: ElementRef<HTMLInputElement>,
+    private _control: NgControl
+  ) {}
 
   @HostListener('change', ['$event']) onChange(e: any) {
     if (this.tetaOnlyNumber === false) {
@@ -109,9 +111,15 @@ export class OnlyNumberDirective {
         // this._elementRef.nativeElement.value =
         //   `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`;
         this._control.control.patchValue(
-          `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`);
+          `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(
+            cursorPosition
+          )}`
+        );
         if (this._elementRef.nativeElement.setSelectionRange) {
-          this._elementRef.nativeElement.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
+          this._elementRef.nativeElement.setSelectionRange(
+            cursorPosition + 1,
+            cursorPosition + 1
+          );
         }
       }
       e.preventDefault();
@@ -158,7 +166,7 @@ export class OnlyNumberDirective {
       firstCharacter === '0' &&
       secondChar !== '' &&
       secondChar !== this.decimalSeparator
-      ) {
+    ) {
       value = value.substring(1);
       firstCharacter = value.charAt(0);
       secondChar = value.charAt(1);
@@ -186,10 +194,6 @@ export class OnlyNumberDirective {
     }
     const valid: boolean = new RegExp(regex).test(value.toString());
 
-    // if (valid && value.toString() !== this._control.control.value.toString()) {
-    //   console.log(value, parseFloat(value));
-    //   this._control.control.patchValue(parseFloat(value));
-    // }
     if (valid) {
       this._control.control.patchValue(parseFloat(value));
     }

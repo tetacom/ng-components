@@ -1,27 +1,32 @@
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, ElementRef, EventEmitter,
+  Component,
+  ElementRef,
+  EventEmitter,
   HostBinding,
   Input,
   OnDestroy,
-  OnInit, Output,
+  OnInit,
+  Output,
   Type,
   ViewChild,
 } from '@angular/core';
-import {TableColumn} from '../contract/table-column';
-import {TableService} from '../service/table.service';
-import {DetailComponentBase} from '../base/detail-component-base';
-import {takeWhile} from 'rxjs/operators';
-import {SelectType} from '../enum/select-type.enum';
-import {combineLatest, Observable} from 'rxjs';
-import {ArrayUtil} from '../../../common/util/array-util';
-import {IDictionary} from '../../../common/contract/i-dictionary';
-import {IIdName} from '../../../common/contract/i-id-name';
-import {AggregationType} from '../enum/aggregation-type.enum';
-import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
-import {TetaLocalisation} from '../../../locale/teta-localisation';
-import {TetaConfigService} from '../../../locale/teta-config.service';
+import { combineLatest, Observable } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
+
+import { IDictionary } from '../../../common/contract/i-dictionary';
+import { IIdName } from '../../../common/contract/i-id-name';
+import { ArrayUtil } from '../../../common/util/array-util';
+import { TetaConfigService } from '../../../locale/teta-config.service';
+import { TetaLocalisation } from '../../../locale/teta-localisation';
+import { DetailComponentBase } from '../base/detail-component-base';
+import { TableColumn } from '../contract/table-column';
+import { TableRow } from '../contract/table-row';
+import { AggregationType } from '../enum/aggregation-type.enum';
+import { SelectType } from '../enum/select-type.enum';
+import { TableService } from '../service/table.service';
 
 @Component({
   selector: 'teta-table-body',
@@ -39,11 +44,13 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   @Input() rowClass: (row: T, index?: number) => string;
   @Input() trackRow: (index: number, row: T) => any;
   @Input() trackColumns: (index: number, column: TableColumn) => any;
-  @ViewChild(CdkVirtualScrollViewport, {static: false}) viewport: CdkVirtualScrollViewport;
+  @ViewChild(CdkVirtualScrollViewport, { static: false })
+  viewport: CdkVirtualScrollViewport;
 
   @HostBinding('class.table-body') private readonly tableBodyClass = true;
-  @Output() scroll = new EventEmitter<Event>();
-  set data(data: T[]) {
+  @Output() scrollChange = new EventEmitter<Event>();
+
+  set data(data: TableRow<T>[]) {
     this._data = data;
   }
 
@@ -63,19 +70,31 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
 
   private _columns: TableColumn[] = [];
   private _alive = true;
-  private _data: T[];
+  private _data: TableRow<T>[];
   private _hiddenColumns: string[] = [];
   private _obs: ResizeObserver;
 
   set columns(columns: TableColumn[]) {
     this._columns = columns;
-    this.locked = this._columns?.filter((_) => _.locked === true);
-    this.unlocked = this._columns?.filter((_) => _.locked === false);
+    this.locked = this._columns?.filter(_ => _.locked === true);
+    this.unlocked = this._columns?.filter(_ => _.locked === false);
     const startWidth = this.selectType === SelectType.checkBox ? 28 : 0;
-    this.lockedFlex = this.locked.reduce((prev: number, curr: TableColumn) => prev + curr.flex, 0);
-    this.lockedWidth = this.locked.reduce((prev: number, curr: TableColumn) => prev + curr.width, startWidth);
-    this.totalFlex = this._columns.reduce((prev: number, curr: TableColumn) => prev + curr.flex, 0);
-    this.totalWidth = this._columns.reduce((prev: number, curr: TableColumn) => prev + curr.width, startWidth);
+    this.lockedFlex = this.locked.reduce(
+      (prev: number, curr: TableColumn) => prev + curr.flex,
+      0
+    );
+    this.lockedWidth = this.locked.reduce(
+      (prev: number, curr: TableColumn) => prev + curr.width,
+      startWidth
+    );
+    this.totalFlex = this._columns.reduce(
+      (prev: number, curr: TableColumn) => prev + curr.flex,
+      0
+    );
+    this.totalWidth = this._columns.reduce(
+      (prev: number, curr: TableColumn) => prev + curr.width,
+      startWidth
+    );
   }
 
   get columns(): TableColumn[] {
@@ -84,12 +103,12 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
 
   locale: Observable<TetaLocalisation>;
 
-  constructor(private _svc: TableService<T>,
-              private _elementRef: ElementRef,
-              private _config: TetaConfigService,
-              private _cdr: ChangeDetectorRef) {
-
-  }
+  constructor(
+    private _svc: TableService<T>,
+    private _elementRef: ElementRef,
+    private _config: TetaConfigService,
+    private _cdr: ChangeDetectorRef
+  ) {}
 
   setActiveRow(row: T, event: MouseEvent) {
     if (!event.shiftKey && !event.ctrlKey) {
@@ -100,53 +119,51 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.locale = this._config.locale;
     combineLatest([this._svc.columns, this._svc.hiddenColumns])
-      .pipe(takeWhile((_) => this._alive))
+      .pipe(takeWhile(_ => this._alive))
       .subscribe((values: [TableColumn[], string[]]) => {
         const [columns, hiddenColumns] = values;
         this._hiddenColumns = hiddenColumns;
         this.columns = ArrayUtil.flatten(columns, 'columns', true).filter(
-          (_) => this._hiddenColumns.indexOf(_.name) < 0
+          _ => this._hiddenColumns.indexOf(_.name) < 0
         );
         this._cdr.markForCheck();
       });
 
-    this._svc.displayData.pipe(
-      takeWhile((_) => this._alive)
-    ).subscribe((_) => {
+    this._svc.displayData.pipe(takeWhile(_ => this._alive)).subscribe(_ => {
       this.data = _;
       this._cdr.markForCheck();
       this.viewport?.checkViewportSize();
     });
 
-    this._svc.dict.pipe(takeWhile((_) => this._alive)).subscribe((_) => {
+    this._svc.dict.pipe(takeWhile(_ => this._alive)).subscribe(_ => {
       this.dict = _;
       this._cdr.markForCheck();
     });
 
     this._svc.scrollIndex
       .pipe(takeWhile(() => this._alive))
-      .subscribe(async (index) => {
+      .subscribe(async index => {
         if (this.viewport) {
           this.viewport.scrollToIndex(index, 'auto');
         } else {
-          const row = this._elementRef.nativeElement.querySelector(`.table-row[data-row="${index}"]`) as HTMLElement;
+          const row = this._elementRef.nativeElement.querySelector(
+            `.table-row[data-row="${index}"]`
+          ) as HTMLElement;
           row?.scrollIntoView();
         }
         this._cdr.markForCheck();
       });
 
-    this._svc.activeRow
-      .pipe(takeWhile((_) => this._alive))
-      .subscribe(async (_) => {
-        this.activeRow = _;
-        this._cdr.markForCheck();
-      });
+    this._svc.activeRow.pipe(takeWhile(_ => this._alive)).subscribe(async _ => {
+      this.activeRow = _;
+      this._cdr.markForCheck();
+    });
     this.addResizeObserver();
   }
 
   ngOnDestroy(): void {
     this._alive = false;
-    this.removeResizeObserver()
+    this.removeResizeObserver();
   }
 
   getAggregateValue(column: TableColumn): number {
@@ -181,22 +198,15 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   }
 
   emitScroll(event) {
-    this.scroll.emit(event)
+    this.scrollChange.emit(event);
   }
 
-  // trackRow(index: number, row: T): any {
-  //   if (row['id']) {
-  //     return row['id'];
-  //   }
-  //   return index;
-  // }
-  //
-  // trackColumns(index: number, column: TableColumn): any {
-  //   return column.name;
-  // }
+  trackTableRow = (index: number, row: TableRow<T>): any => {
+    return this.trackRow ? this.trackRow(index, row.data) : row.data['id'];
+  };
 
   private addResizeObserver() {
-    this._obs = new ResizeObserver((_) => {
+    this._obs = new ResizeObserver(_ => {
       this.viewport?.checkViewportSize();
     });
 
@@ -208,29 +218,29 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     this._obs.disconnect();
   }
 
-  private getSum(columnName) {
+  private getSum(columnName: string) {
     return this.data?.reduce((accum, current) => {
-      const val = parseFloat(current[columnName]);
+      const val = parseFloat(current.data[columnName]);
       return accum + (isNaN(val) ? 0 : val);
     }, 0);
   }
 
-  private getMin(columnName) {
+  private getMin(columnName: string): number {
     return this.data?.reduce(
-      (accum, current) =>
-        accum != null && accum <= current[columnName]
+      (accum, current: TableRow<T>) =>
+        accum != null && accum <= current.data[columnName]
           ? accum
-          : current[columnName],
+          : current.data[columnName],
       null
     );
   }
 
-  private getMax(columnName) {
+  private getMax(columnName: string): number {
     return this.data?.reduce(
       (accum, current) =>
-        accum != null && accum >= current[columnName]
+        accum != null && accum >= current.data[columnName]
           ? accum
-          : current[columnName],
+          : current.data[columnName],
       null
     );
   }

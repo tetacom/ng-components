@@ -3,6 +3,23 @@ import {StringFilterType} from '../enum/string-filter-type.enum';
 import {ListFilterType} from '../enum/list-filter-type.enum';
 import {StringUtil} from '../../../util/string-util';
 
+export interface IFilterItemOptions {
+  sortOrder?: number;
+  name?: string;
+  caption?: string;
+  hint?: string;
+  sortable?: boolean;
+  sortField?: string;
+  filterable?: boolean;
+  filterField?: string;
+  filterType?: FilterType | null;
+  stringFilterType?: StringFilterType;
+  listFilterType?: ListFilterType;
+  strict?: boolean;
+  filterComponent?: any;
+  columns?: FilterItem[];
+}
+
 export class FilterItem {
   /**
    * Порядковый номер
@@ -62,22 +79,7 @@ export class FilterItem {
    */
   columns: FilterItem[];
 
-  constructor(options?: {
-    sortOrder?: number;
-    name?: string;
-    caption?: string;
-    hint?: string;
-    sortable?: boolean;
-    sortField?: string;
-    filterable?: boolean;
-    filterField?: string;
-    filterType?: FilterType | null;
-    stringFilterType?: StringFilterType;
-    listFilterType?: ListFilterType;
-    strict?: boolean;
-    filterComponent?: any;
-    columns?: FilterItem[];
-  }) {
+  constructor(options?: IFilterItemOptions) {
     this.sortOrder = options?.sortOrder ?? Number.MAX_VALUE;
     this.name = options?.name ?? '';
     this.caption = options?.caption ?? this.name;

@@ -5,10 +5,11 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {CellComponentBase} from '../../base/cell-component-base';
-import {TableService} from '../../service/table.service';
-import {ICellCoordinates} from '../../contract/i-cell-coordinates';
-import {DatePickerComponent} from '../../../date-picker/date-picker/date-picker.component';
+
+import { DatePickerComponent } from '../../../date-picker/date-picker/date-picker.component';
+import { CellComponentBase } from '../../base/cell-component-base';
+import { ICellCoordinates } from '../../contract/i-cell-coordinates';
+import { TableService } from '../../service/table.service';
 
 @Component({
   selector: 'teta-date-cell',
@@ -18,9 +19,9 @@ import {DatePickerComponent} from '../../../date-picker/date-picker/date-picker.
 })
 export class DateCellComponent<T>
   extends CellComponentBase<T>
-  implements OnInit {
-
-  @ViewChild('input', {static: false}) input: DatePickerComponent;
+  implements OnInit
+{
+  @ViewChild('input', { static: false }) input: DatePickerComponent;
 
   constructor(
     protected override svc: TableService<T>,
@@ -33,11 +34,11 @@ export class DateCellComponent<T>
     super.ngOnInit();
   }
 
-  setValue(value: Date): void {
-    this.row[this.column.name] = value ? new Date(value) : value;
-    this.valueChanged();
-    this.cdr.detectChanges();
-  }
+  // setValue(value: Date): void {
+  //   this.row[this.column.name] = value ? new Date(value) : value;
+  //   this.valueChanged();
+  //   this.cdr.detectChanges();
+  // }
 
   startEdit(initiator: ICellCoordinates, type: 'cell' | 'row'): void {
     if (initiator?.column === this.column.name) {

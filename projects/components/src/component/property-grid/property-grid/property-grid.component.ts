@@ -1,19 +1,23 @@
 import {
   AfterViewInit,
-  Component, ContentChildren,
+  Component,
+  ContentChildren,
   EventEmitter,
   HostBinding,
   Input,
   OnDestroy,
-  OnInit, Optional,
-  Output, QueryList,
+  OnInit,
+  Optional,
+  Output,
+  QueryList,
 } from '@angular/core';
-import {TableColumn} from '../../table/contract/table-column';
-import {IDictionary} from '../../../common/contract/i-dictionary';
-import {IIdName} from '../../../common/contract/i-id-name';
-import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
-import {PropertyGridItemDescriptionDirective} from "./property-grid-item-description.directive";
-import {FormsUtil} from "../../../util/forms-util";
+import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
+
+import { IDictionary } from '../../../common/contract/i-dictionary';
+import { IIdName } from '../../../common/contract/i-id-name';
+import { FormsUtil } from '../../../util/forms-util';
+import { TableColumn } from '../../table/contract/table-column';
+import { PropertyGridItemDescriptionDirective } from './property-grid-item-description.directive';
 
 @Component({
   selector: 'teta-property-grid',
@@ -21,17 +25,20 @@ import {FormsUtil} from "../../../util/forms-util";
   styleUrls: ['./property-grid.component.scss'],
   viewProviders: [FormsUtil.formProvider],
 })
-export class PropertyGridComponent<T> implements OnInit, OnDestroy, AfterViewInit {
+export class PropertyGridComponent<T>
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @HostBinding('class.form-container') formClass = true;
-  @ContentChildren(PropertyGridItemDescriptionDirective) itemTemplates: QueryList<PropertyGridItemDescriptionDirective>;
+  @ContentChildren(PropertyGridItemDescriptionDirective)
+  itemTemplates: QueryList<PropertyGridItemDescriptionDirective>;
   @Input() hideNonEditable: boolean;
   @Input() columns: TableColumn[];
   @Input() dict: IDictionary<IIdName<any>[]>;
   @Input() set item(item: T) {
     this._item = item;
-    if(this.formGroup) {
+    if (this.formGroup) {
       this.formGroup.patchValue(item, {
-        emitEvent: false
+        emitEvent: false,
       });
     }
   }
@@ -56,14 +63,12 @@ export class PropertyGridComponent<T> implements OnInit, OnDestroy, AfterViewIni
     return null;
   }
 
-  constructor(@Optional() private _formGroup: ControlContainer) {
-    // console.log(this.formGroup)
-  }
+  constructor(@Optional() private _formGroup: ControlContainer) {}
 
   onControlValueChange(event: IIdName<any>) {
-    const affected = this.columns.filter((_) => _.parentName === event.name);
+    const affected = this.columns.filter(_ => _.parentName === event.name);
     if (affected?.length) {
-      affected.forEach((item) => {
+      affected.forEach(item => {
         const value = this.formGroup.getRawValue()[item.name];
         if (value) {
           const dictValue = this.getDictValue(value, item.name);
@@ -78,8 +83,7 @@ export class PropertyGridComponent<T> implements OnInit, OnDestroy, AfterViewIni
     this.controlValueChange.emit(event);
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy() {
     this._alive = false;
@@ -90,9 +94,8 @@ export class PropertyGridComponent<T> implements OnInit, OnDestroy, AfterViewIni
   }
 
   private getDictValue(value: any, name: string) {
-    return this.dict[name]?.find((_) => _.id === value);
+    return this.dict[name]?.find(_ => _.id === value);
   }
 
-  ngAfterViewInit(): void {
-  }
+  ngAfterViewInit(): void {}
 }

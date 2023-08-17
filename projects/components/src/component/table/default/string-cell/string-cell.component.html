@@ -5,13 +5,11 @@
       [appendToBody]="true"
       [overflownOnly]="true"
       [class.cell-text_disabled]="!editable">
-  {{row[column.name]}}
+  {{control.value}}
 </span>
 <input #input
        *ngIf="edit"
        type="text"
        class="input row_auto border-radius-0"
-       (blur)="setValue()"
-       [ngModel]="row[column.name]"
-       (ngModelChange)="row[column.name]=$event"/>
+       [formControl]='control'/>
 

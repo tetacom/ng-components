@@ -13,20 +13,21 @@ import {
   TemplateRef,
   Type,
 } from '@angular/core';
-import {DynamicComponentService} from '../common/service/dynamic-component.service';
-import {Align} from '../common/enum/align.enum';
-import {VerticalAlign} from '../common/enum/vertical-align.enum';
-import {filter, takeWhile} from 'rxjs/operators';
-import {TetaContentRef} from '../common/contract/teta-content-ref';
-import {PopupContentComponent} from '../component/dynamic-component/popup-content/popup-content.component';
+import { filter, takeWhile } from 'rxjs/operators';
+
+import { TetaContentRef } from '../common/contract/teta-content-ref';
+import { Align } from '../common/enum/align.enum';
+import { VerticalAlign } from '../common/enum/vertical-align.enum';
+import { DynamicComponentService } from '../common/service/dynamic-component.service';
+import { PopupContentComponent } from '../component/dynamic-component/popup-content/popup-content.component';
 
 @Directive()
-export abstract class DynamicContentBaseDirective implements OnInit, OnDestroy {
+export abstract class DynamicContentBaseDirective implements OnDestroy {
   @Input() data: any;
-  @Input() className: string | string[];
+  @Input() className?: string | string[];
   @Input() align: Align = Align.left;
   @Input() verticalAlign: VerticalAlign = VerticalAlign.auto;
-  @Input() appendToBody: boolean;
+  @Input() appendToBody = false;
 
   @Input() set open(open: boolean) {
     this._open = open;
@@ -40,14 +41,16 @@ export abstract class DynamicContentBaseDirective implements OnInit, OnDestroy {
   @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   protected _alive = true;
-  protected _componentRef: ComponentRef<any>;
-  protected _content: TetaContentRef;
+  protected _componentRef?: ComponentRef<any> | null;
+  protected _content?: TetaContentRef;
   protected _open = false;
 
   protected abstract get _dynamicContent():
     | string
     | TemplateRef<any>
-    | Type<any>;
+    | Type<any>
+    | null
+    | undefined;
 
   protected constructor(
     protected _document: any,
@@ -59,10 +62,10 @@ export abstract class DynamicContentBaseDirective implements OnInit, OnDestroy {
   ) {
     this._zone.onStable
       .pipe(
-        takeWhile((_) => this._alive),
-        filter((_) => this._open)
+        takeWhile(_ => this._alive),
+        filter(_ => this._open)
       )
-      .subscribe((_) => {
+      .subscribe(_ => {
         this.setPosition();
       });
   }
@@ -70,9 +73,6 @@ export abstract class DynamicContentBaseDirective implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._alive = false;
     this.destroyContentRef();
-  }
-
-  ngOnInit(): void {
   }
 
   protected createContentRef<T>(

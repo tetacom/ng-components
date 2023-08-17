@@ -1,13 +1,14 @@
 import {
   ChangeDetectionStrategy,
-  Component, ContentChild,
+  Component,
+  ContentChild,
   ElementRef,
   EventEmitter,
   HostBinding,
   HostListener,
   Input,
-  OnInit,
-  Output, TemplateRef,
+  Output,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
 
@@ -17,7 +18,7 @@ import {
   styleUrls: ['./file-upload-area.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FileUploadAreaComponent implements OnInit {
+export class FileUploadAreaComponent {
   @HostBinding('class.file-upload') fileUpload = true;
 
   @HostBinding('class.file-upload_active')
@@ -26,49 +27,47 @@ export class FileUploadAreaComponent implements OnInit {
   }
 
   @Input() multiple = true;
-  @Input() disabled: boolean;
-  @Input() accept: string[];
+  @Input() disabled = false;
+  @Input() accept: string[] = [];
 
   @Output() upload: EventEmitter<FileList> = new EventEmitter();
 
-  @ViewChild('fileUpload', { static: false }) input: ElementRef;
-  @ContentChild('buttonTemplate') buttonTemplate: TemplateRef<any>;
+  @ViewChild('fileUpload', { static: false }) input?: ElementRef;
+  @ContentChild('buttonTemplate') buttonTemplate?: TemplateRef<any>;
   files: any;
 
-  private _asActive: boolean;
+  private _asActive = false;
 
-  constructor() {}
-
-  @HostListener('dragenter', ['$event']) dragEnter(event) {
+  @HostListener('dragenter', ['$event']) dragEnter(event: DragEvent) {
     this.preventDefaults(event);
     this._asActive = true;
   }
 
-  @HostListener('dragover', ['$event']) dragOver(event) {
+  @HostListener('dragover', ['$event']) dragOver(event: DragEvent) {
     this.preventDefaults(event);
     this._asActive = true;
   }
 
-  @HostListener('dragleave', ['$event']) dragLeave(event) {
+  @HostListener('dragleave', ['$event']) dragLeave(event: DragEvent) {
     this.preventDefaults(event);
     this._asActive = false;
   }
 
-  @HostListener('drop', ['$event']) drop(event) {
-    this.upload.emit(event.dataTransfer.files);
+  @HostListener('drop', ['$event']) drop(event: DragEvent) {
+    this.upload.emit(event.dataTransfer?.files);
     this.preventDefaults(event);
   }
-
-  ngOnInit() {}
 
   fileChanged(event: any) {
     if (event.target && event.target.files) {
       this.upload.emit(event.target.files);
-      this.input.nativeElement.value = null;
+      if (this.input) {
+        this.input.nativeElement.value = null;
+      }
     }
   }
 
-  private preventDefaults(event) {
+  private preventDefaults(event: Event) {
     event.preventDefault();
     event.stopPropagation();
   }

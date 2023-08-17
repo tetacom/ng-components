@@ -1,10 +1,55 @@
-import {FilterItem} from '../../filter/contarct/filter-item';
-import {FilterType} from '../../filter/enum/filter-type.enum';
-import {StringFilterType} from '../../filter/enum/string-filter-type.enum';
-import {ListFilterType} from '../../filter/enum/list-filter-type.enum';
-import {AggregationType} from '../enum/aggregation-type.enum';
-import {ICellInstance} from './i-cell-instance';
-import {HeadDropdownTabConfig} from './head-dropdown-tab';
+import { Type } from '@angular/core';
+import { ValidatorFn } from '@angular/forms';
+
+import {
+  FilterItem,
+  IFilterItemOptions,
+} from '../../filter/contarct/filter-item';
+import { FilterType } from '../../filter/enum/filter-type.enum';
+import { ListFilterType } from '../../filter/enum/list-filter-type.enum';
+import { StringFilterType } from '../../filter/enum/string-filter-type.enum';
+import { CellComponentBase } from '../base/cell-component-base';
+import { AggregationType } from '../enum/aggregation-type.enum';
+import { HeadDropdownTabConfig } from './head-dropdown-tab';
+import { ICellInstance } from './i-cell-instance';
+
+export interface ITableColumnOptions extends IFilterItemOptions {
+  width?: number;
+  flex?: number;
+  sortOrder?: number;
+  locked?: boolean;
+  name?: string;
+  parentName?: string;
+  caption?: string;
+  hint?: string;
+  unit?: string;
+  unitMeasureParameterId?: number;
+  unitId?: number;
+  sortable?: boolean;
+  sortField?: string;
+  filterable?: boolean;
+  filterField?: string;
+  filterType?: FilterType | null;
+  stringFilterType?: StringFilterType;
+  listFilterType?: ListFilterType;
+  strict?: boolean;
+  headCellClass?: string[];
+  cellClass?: string[];
+  data?: any;
+  editable?: boolean | ((coordinates: ICellInstance<any>) => boolean);
+  objectType?: boolean;
+  cellComponent?: Type<CellComponentBase<any>>;
+  headCellComponent?: any;
+  headDropdownConfig?: HeadDropdownTabConfig;
+  filterComponent?: any;
+  columns?: any[];
+  aggregate?: AggregationType;
+  defaultValue?: any;
+  maxValue?: number;
+  minValue?: number;
+  required?: boolean;
+  validators?: [ValidatorFn];
+}
 
 export class TableColumn extends FilterItem {
   /**
@@ -22,7 +67,6 @@ export class TableColumn extends FilterItem {
   /**
    * Название столбца в строке результатов
    */
-  // override name: string = '';
   /**
    * Название столбца родителя
    */
@@ -30,7 +74,6 @@ export class TableColumn extends FilterItem {
   /**
    * Название столбца для заголовка таблицы
    */
-  // override caption: string = '';
   /**
    * Единицы измерения
    */
@@ -96,44 +139,14 @@ export class TableColumn extends FilterItem {
   required: boolean;
 
   /**
+   * Функции валидации
+   */
+  validators: [ValidatorFn];
+
+  /**
    * Инициализация из анонимного объекта
    */
-  constructor(options?: {
-    width?: number;
-    flex?: number;
-    sortOrder?: number;
-    locked?: boolean;
-    name?: string;
-    parentName?: string;
-    caption?: string;
-    hint?: string;
-    unit?: string;
-    unitMeasureParameterId?: number;
-    unitId?: number;
-    sortable?: boolean;
-    sortField?: string;
-    filterable?: boolean;
-    filterField?: string;
-    filterType?: FilterType | null;
-    stringFilterType?: StringFilterType;
-    listFilterType?: ListFilterType;
-    strict?: boolean;
-    headCellClass?: string[];
-    cellClass?: string[];
-    data?: any;
-    editable?: boolean | ((coordinates: ICellInstance<any>) => boolean);
-    objectType?: boolean;
-    cellComponent?: any;
-    headCellComponent?: any;
-    headDropdownConfig?: HeadDropdownTabConfig;
-    filterComponent?: any;
-    columns?: any[];
-    aggregate?: AggregationType;
-    defaultValue?: any;
-    maxValue?: number;
-    minValue?: number;
-    required?: boolean;
-  }) {
+  constructor(options?: ITableColumnOptions) {
     super(options);
     this.width = options?.width ?? 80;
     this.flex = options?.flex ?? 1;
@@ -154,6 +167,7 @@ export class TableColumn extends FilterItem {
     this.maxValue = options?.maxValue;
     this.minValue = options?.minValue;
     this.required = options?.required;
-    this.columns = options?.columns?.map((x) => new TableColumn(x)) ?? [];
+    this.columns = options?.columns?.map(x => new TableColumn(x)) ?? [];
+    this.validators = options?.validators;
   }
 }
