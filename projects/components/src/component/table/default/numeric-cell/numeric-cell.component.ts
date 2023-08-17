@@ -32,14 +32,6 @@ export class NumericCellComponent<T>
     super(svc, cdr);
   }
 
-  // applyValue(value) {
-  //   this.row[this.column.name] = value;
-  // }
-  //
-  // setValue(): void {
-  //   this.valueChanged();
-  // }
-
   override ngOnInit(): void {
     super.ngOnInit();
   }
@@ -48,14 +40,6 @@ export class NumericCellComponent<T>
     if (initiator?.column === this.column.name) {
       this.cdr.detectChanges();
       this.input.nativeElement?.focus();
-      // this.input.nativeElement?.select();
-      // this.cdr.detectChanges();
-
-      // setTimeout(() => {
-      //   this.input?.nativeElement.focus();
-      //   this.input?.nativeElement.select();
-      //   this.cdr.markForCheck();
-      // }, 0);
     }
   }
 

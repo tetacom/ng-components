@@ -2,6 +2,7 @@
   "name": "teta-components",
   "version": "0.0.0",
   "scripts": {
+    "sb": "ng run components:storybook",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

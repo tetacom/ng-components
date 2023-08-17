@@ -44,11 +44,6 @@ export class ListCellComponent<T>
     super(svc, cdr);
   }
 
-  // setValue(value: any): void {
-  //   this.row[this.column.name] = value;
-  //   this.valueChanged();
-  // }
-
   startEdit(initiator: ICellCoordinates, type: 'cell' | 'row'): void {
     if (initiator?.column === this.column.name) {
       setTimeout(() => {

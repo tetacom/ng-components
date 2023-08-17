@@ -201,16 +201,9 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     this.scrollChange.emit(event);
   }
 
-  // trackRow(index: number, row: T): any {
-  //   if (row['id']) {
-  //     return row['id'];
-  //   }
-  //   return index;
-  // }
-  //
-  // trackColumns(index: number, column: TableColumn): any {
-  //   return column.name;
-  // }
+  trackTableRow = (index: number, row: TableRow<T>): any => {
+    return this.trackRow ? this.trackRow(index, row.data) : row.data['id'];
+  };
 
   private addResizeObserver() {
     this._obs = new ResizeObserver(_ => {

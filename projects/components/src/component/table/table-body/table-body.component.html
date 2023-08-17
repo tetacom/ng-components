@@ -6,7 +6,7 @@
                                class="table-body-container"
                                (scroll)="emitScroll($event)"
                                [itemSize]="28">
-    <ng-container *cdkVirtualFor="let row of data;templateCacheSize: 0; let rowIndex = index; trackBy: trackRow;">
+    <ng-container *cdkVirtualFor="let row of data;templateCacheSize: 0; let rowIndex = index; trackBy: trackTableRow;">
       <ng-container *ngTemplateOutlet="bodyTemplate; context: {row: row, rowIndex: rowIndex}"></ng-container>
     </ng-container>
   </cdk-virtual-scroll-viewport>
@@ -23,7 +23,7 @@
            *ngIf="!data?.length">
         <ng-content></ng-content>
       </div>
-      <ng-container *ngFor="let row of data; let rowIndex = index; trackBy: trackRow;">
+      <ng-container *ngFor="let row of data; let rowIndex = index; trackBy: trackTableRow;">
         <ng-container *ngTemplateOutlet="bodyTemplate; context: {row: row, rowIndex: rowIndex}"></ng-container>
       </ng-container>
       <ng-container *ngIf="aggregate">

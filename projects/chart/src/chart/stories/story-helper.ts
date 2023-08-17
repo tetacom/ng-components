@@ -1,19 +1,19 @@
-import {randomInt} from 'd3-random';
-import {cssColorNames} from './cssColorNames';
-import {SeriesType} from '../model/enum/series-type';
-import {Series} from '../model/series';
-import {BasePoint} from '../model/base-point';
-import {FillType} from '../model/enum/fill-type';
-import {IChartConfig} from '../model/i-chart-config';
-import {TooltipTracking} from '../model/enum/tooltip-tracking';
-import {ChartBounds} from '../model/chart-bounds';
-import {BrushType} from '../model/enum/brush-type';
-import {ZoomType} from '../model/enum/zoom-type';
+import { randomInt } from 'd3-random';
+import { cssColorNames } from './cssColorNames';
+import { SeriesType } from '../model/enum/series-type';
+import { Series } from '../model/series';
+import { BasePoint } from '../model/base-point';
+import { FillType } from '../model/enum/fill-type';
+import { IChartConfig } from '../model/i-chart-config';
+import { TooltipTracking } from '../model/enum/tooltip-tracking';
+import { ChartBounds } from '../model/chart-bounds';
+import { BrushType } from '../model/enum/brush-type';
+import { ZoomType } from '../model/enum/zoom-type';
 import * as faker from 'faker';
-import {DragPointType} from '../model/enum/drag-point-type';
-import {ZoomBehaviorType} from '../model/enum/zoom-behavior-type';
-import {ScaleType} from "../model/enum/scale-type";
-import {BandseriesComponent} from "./bandseries/bandseries.component";
+import { DragPointType } from '../model/enum/drag-point-type';
+import { ZoomBehaviorType } from '../model/enum/zoom-behavior-type';
+import { ScaleType } from '../model/enum/scale-type';
+import { BandseriesComponent } from './bandseries/bandseries.component';
 
 const randomColor = randomInt(0, cssColorNames.length - 1);
 
@@ -35,15 +35,15 @@ export const createSeries = (size: number) => {
         fillType: FillType.gradient,
         data: Array.from(Array(size).keys())
           .map((key, index, arr) => {
-            const num = faker.datatype.number({min: 0, max: 6000});
-            const iconId = faker.datatype.number({min: 1, max: 14});
+            const num = faker.datatype.number({ min: 0, max: 6000 });
+            const iconId = faker.datatype.number({ min: 1, max: 14 });
 
             const point: BasePoint = {
               x: num,
               y:
                 type === SeriesType.block
                   ? 0
-                  : faker.datatype.number({min: 0, max: 200}),
+                  : faker.datatype.number({ min: 0, max: 200 }),
               iconId: `icon${iconId}`,
               text: faker.commerce.productMaterial(),
             };
@@ -72,30 +72,31 @@ export const createDragSeries = (size: number): Series<BasePoint> => {
     xAxisIndex: 0,
     color: cssColorNames[randomColor()].toLowerCase(),
     fillType: FillType.gradient,
-    data: Array.from(Array(size).keys())
-      .map((key, index, arr) => {
-        const point: BasePoint = {
-          x: index,
-          y: faker.datatype.number({min: 0, max: 200}),
-          marker: index % 33 === 0 ? {
-            draggable: true,
-            dragType: DragPointType.xy,
-            style: {
-              strokeWidth: 10,
-              fill: 'red'
-            },
-            label: {
-              draggable: false,
-              text: 'index'
-            }
-          } : null
-        };
+    data: Array.from(Array(size).keys()).map((key, index, arr) => {
+      const point: BasePoint = {
+        x: index,
+        y: faker.datatype.number({ min: 0, max: 200 }),
+        marker:
+          index % 33 === 0
+            ? {
+                draggable: true,
+                dragType: DragPointType.xy,
+                style: {
+                  strokeWidth: 10,
+                  fill: 'red',
+                },
+                label: {
+                  draggable: false,
+                  text: 'index',
+                },
+              }
+            : null,
+      };
 
-        return point;
-      }),
+      return point;
+    }),
   };
 };
-
 
 export const createBandSeries = (size: number): Series<BasePoint> => {
   return {
@@ -106,17 +107,21 @@ export const createBandSeries = (size: number): Series<BasePoint> => {
     xAxisIndex: 0,
     component: BandseriesComponent as any,
     color: cssColorNames[randomColor()].toLowerCase(),
-    data: Array.from(Array(size).keys())
-      .map((key, index, arr) => {
-        const x = faker.date.between('2022-09-25T00:00:00.000Z', '2022-10-10T00:00:00.000Z');
-        const point: BasePoint = {
-          x: x,
-          x1: new Date(x.getTime() + faker.datatype.number({min: 8640000, max: 109640000})) as any,
-          y: faker.address.cityName()
-        };
-        console.log(point)
-        return point;
-      }),
+    data: Array.from(Array(size).keys()).map((key, index, arr) => {
+      const x = faker.date.between(
+        '2022-09-25T00:00:00.000Z',
+        '2022-10-10T00:00:00.000Z'
+      );
+      const point: BasePoint = {
+        x: x,
+        x1: new Date(
+          x.getTime() + faker.datatype.number({ min: 8640000, max: 109640000 })
+        ) as any,
+        y: faker.address.cityName(),
+      };
+      console.log(point);
+      return point;
+    }),
   };
 };
 
@@ -161,7 +166,7 @@ export const createChart = (size: number, inverted = true): IChartConfig => {
       min: 100,
       max: 5000,
       minTranslate: 0,
-      maxTranslate: 7000
+      maxTranslate: 7000,
     },
     legend: {
       enable: false,
@@ -177,20 +182,16 @@ export const createDragChart = (size: number): IChartConfig => {
     tooltip: {
       tracking: TooltipTracking.y,
     },
-    bounds: new ChartBounds({
-    }),
+    bounds: new ChartBounds({}),
     xAxis: [
       {
         niceTicks: false,
       },
     ],
-    yAxis: [
-      {
-      },
-    ],
+    yAxis: [{}],
     zoom: {
       enable: true,
-      type: ZoomType.y
+      type: ZoomType.y,
     },
     legend: {
       enable: false,
@@ -206,7 +207,7 @@ export const createBandChart = (size: number): IChartConfig => {
       tracking: TooltipTracking.y,
     },
     bounds: new ChartBounds({
-      top: 30
+      top: 30,
     }),
     xAxis: [
       {
@@ -215,21 +216,21 @@ export const createBandChart = (size: number): IChartConfig => {
         min: new Date('2022-09-25').getTime(),
         max: new Date('2022-09-30').getTime(),
         scaleType: {
-          type: ScaleType.time
-        }
+          type: ScaleType.time,
+        },
       },
     ],
     yAxis: [
       {
         visible: true,
         scaleType: {
-          type: ScaleType.band
-        }
+          type: ScaleType.band,
+        },
       },
     ],
     zoom: {
       enable: true,
-      type: ZoomType.x
+      type: ZoomType.x,
     },
     legend: {
       enable: false,

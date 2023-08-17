@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectorRef,
   Directive,
@@ -11,15 +12,15 @@ import {
   TemplateRef,
   Type,
 } from '@angular/core';
-import {DynamicContentBaseDirective} from '../dynamic-content-base.directive';
-import {DOCUMENT} from '@angular/common';
-import {DynamicComponentService} from '../../common/service/dynamic-component.service';
-import {PositionUtil} from '../../common/util/position-util';
-import {ArrayUtil} from '../../common/util/array-util';
-import {Align} from '../../common/enum/align.enum';
-import {VerticalAlign} from '../../common/enum/vertical-align.enum';
-import {DomUtil} from '../../common/util/dom-util';
-import {viewType} from "../../common/model/view-type.model";
+
+import { Align } from '../../common/enum/align.enum';
+import { VerticalAlign } from '../../common/enum/vertical-align.enum';
+import { viewType } from '../../common/model/view-type.model';
+import { DynamicComponentService } from '../../common/service/dynamic-component.service';
+import { ArrayUtil } from '../../common/util/array-util';
+import { DomUtil } from '../../common/util/dom-util';
+import { PositionUtil } from '../../common/util/position-util';
+import { DynamicContentBaseDirective } from '../dynamic-content-base.directive';
 import Timeout = NodeJS.Timeout;
 
 @Directive({
@@ -27,22 +28,23 @@ import Timeout = NodeJS.Timeout;
 })
 export class HintDirective
   extends DynamicContentBaseDirective
-  implements OnDestroy {
+  implements OnDestroy
+{
   /**
    * Строка, шаблон или компонент для создания контекстного меню
    */
-  @Input() tetaHint: string | TemplateRef<any> | Type<any>;
+  @Input() tetaHint?: string | TemplateRef<any> | Type<any>;
   @Input() override align: Align = Align.center;
   @Input() override verticalAlign: VerticalAlign = VerticalAlign.top;
   @Input() delay = 300;
-  @Input() viewType: viewType = 'rounded'
+  @Input() viewType: viewType = 'rounded';
   @Input() overflownOnly = false;
 
   get _dynamicContent() {
     return this.tetaHint;
   }
 
-  private _timeout: Timeout;
+  private _timeout?: Timeout;
   private _componentRect: any;
 
   constructor(
@@ -108,13 +110,18 @@ export class HintDirective
   }
 
   private createHint(): void {
-    if (!this._dynamicContent || (this.overflownOnly && !DomUtil.isOverflown(this._elementRef.nativeElement))) {
+    if (
+      !this._dynamicContent ||
+      (this.overflownOnly &&
+        !DomUtil.isOverflown(this._elementRef.nativeElement))
+    ) {
       return;
     }
     this._componentRef = this.createContentRef();
     this._componentRef.instance.className = [
       ...ArrayUtil.asArray(this.className),
-      'hint ', 'hint_' + this.viewType
+      'hint ',
+      'hint_' + this.viewType,
     ];
   }
 

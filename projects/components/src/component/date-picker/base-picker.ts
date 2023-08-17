@@ -1,11 +1,12 @@
-import dayjs from 'dayjs';
+import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, ElementRef, EventEmitter } from '@angular/core';
+import { MaskitoOptions } from '@maskito/core';
+import dayjs from 'dayjs';
+import { ReplaySubject } from 'rxjs';
+
 import { Align } from '../../common/enum/align.enum';
 import { VerticalAlign } from '../../common/enum/vertical-align.enum';
-import { ReplaySubject } from 'rxjs';
-import { MaskitoOptions } from '@maskito/core';
 import { viewType } from '../../common/model/view-type.model';
-import { DatePipe } from '@angular/common';
 import { DateFromToModel } from './model/from-to.model';
 
 export abstract class BasePicker {
@@ -52,7 +53,7 @@ export abstract class BasePicker {
   }
 
   changePlaceholder(value: string) {
-    let val = this.mask.split('');
+    const val = this.mask.split('');
     for (let i = 0; value.length > i; i++) {
       val.splice(i, 1, value[i]);
     }
@@ -118,7 +119,7 @@ export abstract class BasePicker {
     return false;
   }
 
-  getDateFromStr(str: string, separator: string = '.') {
+  getDateFromStr(str: string, separator = '.') {
     const date = str?.split(separator);
     const day = this.isAvailableLength(date?.[0], 2) ? Number(date[0]) : null;
     const month = this.isAvailableLength(date?.[1], 2) ? Number(date[1]) : null;
@@ -126,7 +127,7 @@ export abstract class BasePicker {
     return { day, month, year };
   }
 
-  getTimeFromStr(str: string, separator: string = ':') {
+  getTimeFromStr(str: string, separator = ':') {
     const time = str?.trim().split(separator);
     const hours = this.isAvailableLength(time?.[0], 2) ? Number(time[0]) : null;
     const mins = this.isAvailableLength(time?.[1], 2) ? Number(time[1]) : null;
@@ -152,8 +153,8 @@ export abstract class BasePicker {
     max: Date | number | string,
     date: Date | number | string
   ) {
-    let minDate = dayjs(new Date(min)).startOf('day').toDate();
-    let maxDate = dayjs(new Date(max)).endOf('day').toDate();
+    const minDate = dayjs(new Date(min)).startOf('day').toDate();
+    const maxDate = dayjs(new Date(max)).endOf('day').toDate();
     if (min && minDate.getTime() >= new Date(date).getTime()) {
       return new Date();
     }

@@ -2,7 +2,7 @@ import { TableColumn } from './table-column';
 import { TableRow } from './table-row';
 
 export interface ICellInstance<T> {
-  row: TableRow<T>;
+  row?: TableRow<T>;
   column: TableColumn;
 }
 

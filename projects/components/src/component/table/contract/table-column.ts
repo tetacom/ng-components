@@ -1,10 +1,17 @@
-import {FilterItem, IFilterItemOptions} from '../../filter/contarct/filter-item';
-import {FilterType} from '../../filter/enum/filter-type.enum';
-import {StringFilterType} from '../../filter/enum/string-filter-type.enum';
-import {ListFilterType} from '../../filter/enum/list-filter-type.enum';
-import {AggregationType} from '../enum/aggregation-type.enum';
-import {ICellInstance} from './i-cell-instance';
-import {HeadDropdownTabConfig} from './head-dropdown-tab';
+import { Type } from '@angular/core';
+import { ValidatorFn } from '@angular/forms';
+
+import {
+  FilterItem,
+  IFilterItemOptions,
+} from '../../filter/contarct/filter-item';
+import { FilterType } from '../../filter/enum/filter-type.enum';
+import { ListFilterType } from '../../filter/enum/list-filter-type.enum';
+import { StringFilterType } from '../../filter/enum/string-filter-type.enum';
+import { CellComponentBase } from '../base/cell-component-base';
+import { AggregationType } from '../enum/aggregation-type.enum';
+import { HeadDropdownTabConfig } from './head-dropdown-tab';
+import { ICellInstance } from './i-cell-instance';
 
 export interface ITableColumnOptions extends IFilterItemOptions {
   width?: number;
@@ -31,7 +38,7 @@ export interface ITableColumnOptions extends IFilterItemOptions {
   data?: any;
   editable?: boolean | ((coordinates: ICellInstance<any>) => boolean);
   objectType?: boolean;
-  cellComponent?: any;
+  cellComponent?: Type<CellComponentBase<any>>;
   headCellComponent?: any;
   headDropdownConfig?: HeadDropdownTabConfig;
   filterComponent?: any;
@@ -41,6 +48,7 @@ export interface ITableColumnOptions extends IFilterItemOptions {
   maxValue?: number;
   minValue?: number;
   required?: boolean;
+  validators?: [ValidatorFn];
 }
 
 export class TableColumn extends FilterItem {
@@ -131,6 +139,11 @@ export class TableColumn extends FilterItem {
   required: boolean;
 
   /**
+   * Функции валидации
+   */
+  validators: [ValidatorFn];
+
+  /**
    * Инициализация из анонимного объекта
    */
   constructor(options?: ITableColumnOptions) {
@@ -154,6 +167,7 @@ export class TableColumn extends FilterItem {
     this.maxValue = options?.maxValue;
     this.minValue = options?.minValue;
     this.required = options?.required;
-    this.columns = options?.columns?.map((x) => new TableColumn(x)) ?? [];
+    this.columns = options?.columns?.map(x => new TableColumn(x)) ?? [];
+    this.validators = options?.validators;
   }
 }

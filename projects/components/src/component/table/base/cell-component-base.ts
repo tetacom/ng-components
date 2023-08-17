@@ -165,20 +165,8 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
           this.setupControl();
           this.formGroup.updateValueAndValidity();
           this.row.valid = this.formGroup.valid;
-          console.log('valueSet', this.column.name, this.formGroup.valid);
           this.cdr.detectChanges();
           this.cdr.markForCheck();
-        }
-      });
-
-    this.svc.valueChanged
-      .pipe(takeWhile(_ => this._alive))
-      .subscribe((cellValue: ICellCoordinates) => {
-        if (this.index === cellValue.row) {
-          this.setupControl();
-          this.formGroup.updateValueAndValidity();
-          this.row.valid = this.formGroup.valid;
-          this.cdr.detectChanges();
         }
       });
   }
@@ -213,7 +201,6 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
     this._edit = false;
     this.formGroup.updateValueAndValidity();
     this.row.valid = this.formGroup?.valid;
-    this.row.data[this.column.name] = this.control.value;
     this.stopEdit();
     this.cdr.markForCheck();
   }

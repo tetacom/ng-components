@@ -1,14 +1,14 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   forwardRef,
-  HostBinding, HostListener,
+  HostListener,
   Input,
-  OnInit,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'teta-color-input',
@@ -25,11 +25,10 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 })
 export class ColorInputComponent implements ControlValueAccessor {
   @Input() disabled = false;
-  @ViewChild('input', {static: false}) input: ElementRef;
+  @ViewChild('input', { static: false }) input: ElementRef;
   value = '';
 
-  constructor(private _cdr: ChangeDetectorRef) {
-  }
+  constructor(private _cdr: ChangeDetectorRef) {}
 
   @HostListener('click') onFocus() {
     if (this.disabled) {
@@ -60,11 +59,9 @@ export class ColorInputComponent implements ControlValueAccessor {
     this._cdr.detectChanges();
   }
 
-  onChange(input: string): void {
-  }
+  onChange(input: string): void {}
 
-  onTouched(): void {
-  }
+  onTouched(): void {}
 
   getHexColor(color: string) {
     if (color && color.startsWith('rgb')) {
@@ -73,10 +70,11 @@ export class ColorInputComponent implements ControlValueAccessor {
         color.lastIndexOf(')')
       );
       const colorArray = value.split(',');
-      color = `#${
-        ('00' + parseInt(colorArray[0], 10).toString(16)).slice(-2)}${
-        ('00' + parseInt(colorArray[1], 10).toString(16)).slice(-2)}${
-        ('00' + parseInt(colorArray[2], 10).toString(16)).slice(-2)}`;
+      color = `#${('00' + parseInt(colorArray[0], 10).toString(16)).slice(
+        -2
+      )}${('00' + parseInt(colorArray[1], 10).toString(16)).slice(-2)}${(
+        '00' + parseInt(colorArray[2], 10).toString(16)
+      ).slice(-2)}`;
     }
     return color;
   }

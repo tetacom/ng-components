@@ -32,10 +32,6 @@ export class StringCellComponent<T>
     super(svc, cdr);
   }
 
-  // setValue(): void {
-  //   this.valueChanged();
-  // }
-
   override ngOnInit(): void {
     super.ngOnInit();
   }
@@ -45,14 +41,6 @@ export class StringCellComponent<T>
       this.cdr.detectChanges();
       this.input.nativeElement?.focus();
       this.input.nativeElement?.select();
-      // this.cdr.detectChanges();
-      // this.input.nativeElement?.focus();
-      // this.input.nativeElement?.select();
-      // this.cdr.detectChanges();
-      // setTimeout(() => {
-      //   this.input.nativeElement?.focus();
-      //   this.input.nativeElement?.select();
-      // }, 0);
     }
   }
 

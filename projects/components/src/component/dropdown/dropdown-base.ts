@@ -10,16 +10,17 @@ import {
   Output,
   Renderer2,
 } from '@angular/core';
-import {DomUtil} from '../../common/util/dom-util';
-import {PositionUtil} from '../../common/util/position-util';
-import {Align} from '../../common/enum/align.enum';
-import {VerticalAlign} from '../../common/enum/vertical-align.enum';
-import {DropdownHeadDirective} from './dropdown-head.directive';
-import {DropdownContentDirective} from './dropdown-content.directive';
-import {AutoCloseIgnoreCase} from '../../common/contract/auto-close-ignore-case';
-import {IRect} from '../../common/contract/i-rect';
-import {takeWhile, throttleTime} from 'rxjs/operators';
-import {viewType} from '../../common/model/view-type.model';
+import { takeWhile, throttleTime } from 'rxjs/operators';
+
+import { AutoCloseIgnoreCase } from '../../common/contract/auto-close-ignore-case';
+import { IRect } from '../../common/contract/i-rect';
+import { Align } from '../../common/enum/align.enum';
+import { VerticalAlign } from '../../common/enum/vertical-align.enum';
+import { viewType } from '../../common/model/view-type.model';
+import { DomUtil } from '../../common/util/dom-util';
+import { PositionUtil } from '../../common/util/position-util';
+import { DropdownContentDirective } from './dropdown-content.directive';
+import { DropdownHeadDirective } from './dropdown-head.directive';
 
 @Directive()
 export class DropdownBase {
@@ -56,14 +57,13 @@ export class DropdownBase {
   @Input() autoClose = true;
   @Input() autoCloseIgnore: Array<AutoCloseIgnoreCase> = ['inside'];
 
-
   @ContentChild(DropdownHeadDirective, {
     static: false,
     read: ElementRef,
   })
   protected _head: ElementRef;
 
-  @ContentChild(DropdownContentDirective, {static: false})
+  @ContentChild(DropdownContentDirective, { static: false })
   protected _content: DropdownContentDirective;
 
   protected _body: HTMLElement | null = null;
@@ -80,10 +80,10 @@ export class DropdownBase {
   ) {
     this._zone.onStable
       .pipe(
-        takeWhile((_) => this._alive),
-        throttleTime(10, undefined, {trailing: true})
+        takeWhile(_ => this._alive),
+        throttleTime(10, undefined, { trailing: true })
       )
-      .subscribe((_) => {
+      .subscribe(_ => {
         if (this._head?.nativeElement && this._body) {
           setTimeout(() => {
             if (this._head?.nativeElement && this._body) {
@@ -97,7 +97,10 @@ export class DropdownBase {
 
   @HostListener('click', ['$event']) click(event: MouseEvent): void {
     if (this.open) {
-      if (!DomUtil.clickedInside(this._body, event) || this.autoCloseIgnore.indexOf('inside') < 0) {
+      if (
+        !DomUtil.clickedInside(this._body, event) ||
+        this.autoCloseIgnore.indexOf('inside') < 0
+      ) {
         this.closeDropdown();
       }
     } else {
@@ -148,18 +151,22 @@ export class DropdownBase {
   }
 
   protected addScrollListener() {
-    window.addEventListener('scroll', this.scrollListener, true)
+    window.addEventListener('scroll', this.scrollListener, true);
   }
 
   protected removeScrollListener() {
-    window.removeEventListener('scroll', this.scrollListener, true)
+    window.removeEventListener('scroll', this.scrollListener, true);
   }
 
-  private scrollListener = (event) => {
-    if (this.open && !this._body.contains(event.target) && this._body !== event.target) {
+  private scrollListener = event => {
+    if (
+      this.open &&
+      !this._body.contains(event.target) &&
+      this._body !== event.target
+    ) {
       this.closeDropdown();
     }
-  }
+  };
 
   protected closeDropdown(): void {
     if (this.open && this._body && this.container.contains(this._body)) {
@@ -182,7 +189,8 @@ export class DropdownBase {
     this.openChange.emit(this.open);
     const renderer = this._renderer;
     const content = this._content.nativeElement;
-    const container = (this._body = this._body || renderer.createElement('div'));
+    const container = (this._body =
+      this._body || renderer.createElement('div'));
     renderer.addClass(container, 'dropdown');
     renderer.addClass(container, 'dropdown_' + this.viewType);
     if (this.backdrop) {
@@ -192,7 +200,7 @@ export class DropdownBase {
     }
     if (this.className != null) {
       if (this.className instanceof Array && this.className.length > 0) {
-        this.className.forEach((_) => {
+        this.className.forEach(_ => {
           renderer.addClass(container, _);
         });
       }
@@ -229,7 +237,7 @@ export class DropdownBase {
       left: 0,
       right: 0,
       top: 0,
-      bottom: 0
+      bottom: 0,
     };
     if (targetTransformedParent) {
       parentPosition = targetTransformedParent.getBoundingClientRect();
