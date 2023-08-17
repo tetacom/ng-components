@@ -6,23 +6,24 @@ import {
   ElementRef,
   OnInit,
 } from '@angular/core';
-import {SeriesBaseComponent} from '../../../base/series-base.component';
-import {BasePoint} from '../../../model/base-point';
-import {ChartService} from '../../../service/chart.service';
-import {ScaleService} from '../../../service/scale.service';
-import {ZoomService} from '../../../service/zoom.service';
-import {filter, map, Observable} from 'rxjs';
-import {FillType} from '../../../model/enum/fill-type';
+import { SeriesBaseComponent } from '../../../base/series-base.component';
+import { BasePoint } from '../../../model/base-point';
+import { ChartService } from '../../../service/chart.service';
+import { ScaleService } from '../../../service/scale.service';
+import { ZoomService } from '../../../service/zoom.service';
+import { filter, map, Observable } from 'rxjs';
+import { FillType } from '../../../model/enum/fill-type';
 
 @Component({
-  selector: 'svg:svg[teta-block-area-series]',
+  selector: 'svg:svg[teta-block-area-3d-series]',
   templateUrl: './block-area-series.component.html',
   styleUrls: ['./block-area-series.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlockAreaSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
-  implements OnInit, AfterViewInit {
+  implements OnInit, AfterViewInit
+{
   x: Observable<any>;
   y: Observable<any>;
   displayPoints: Observable<BasePoint[]>;
@@ -53,21 +54,22 @@ export class BlockAreaSeriesComponent<T extends BasePoint>
       map((y) => {
         return this.series.data.filter((point, index, arr) => {
           const [min, max] = y.domain();
-          return (point.y >= min ||
+          return (
+            (point.y >= min ||
               point.y1 >= min ||
               arr[index + 1]?.y >= min ||
               arr[index + 1]?.y1 >= min) &&
             (point.y <= max ||
               point.y1 <= max ||
               arr[index - 1]?.y <= max ||
-              arr[index - 1]?.y1 <= max);
+              arr[index - 1]?.y1 <= max)
+          );
         });
       })
     );
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   mouseenter(point: BasePoint) {
     this.svc.setTooltip({

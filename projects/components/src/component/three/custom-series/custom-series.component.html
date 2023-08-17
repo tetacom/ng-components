@@ -1,0 +1,6 @@
+<ng-container *ngIf=" {scales:scales|async} as scales">
+    <ngt-mesh [position]="[scales.scales.x(this.series.data[0].x),scales.scales.y(this.series.data[0].y),scales.scales.z(this.series.data[0].z) ]">
+      <ngt-box-geometry   *args="[5,5,5]"></ngt-box-geometry>
+      <ngt-mesh-basic-material></ngt-mesh-basic-material>
+    </ngt-mesh>
+</ng-container>

@@ -15,7 +15,11 @@
     "@maskito/core": "^1.2.0",
     "@maskito/angular": "^1.2.0",
     "@maskito/kit": "^1.2.0",
-    "dayjs": "^1.11.7"
+    "angular-three": "^1.10.6",
+    "angular-three-soba": "^1.14.1",
+    "dayjs": "^1.11.7",
+    "three-stdlib": "^2.24.2",
+    "troika-three-text": "^0.48.0-unicode.3"
   },
   "dependencies": {
     "tslib": "^2.3.0"
