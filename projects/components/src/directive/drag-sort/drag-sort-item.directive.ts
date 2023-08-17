@@ -9,19 +9,20 @@ import {
   OnInit,
   Renderer2,
 } from '@angular/core';
-import {DragSortContainerDirective} from './drag-sort-container.directive';
+
+import { DragSortContainerDirective } from './drag-sort-container.directive';
 
 @Directive({
   selector: '[tetaDragSortItem]',
 })
 export class DragSortItemDirective<T> implements OnInit, OnDestroy {
-  @Input() tetaDragSortItem: T;
+  @Input() tetaDragSortItem!: T;
   @Input() dragSortDirection: 'horizontal' | 'vertical' = 'horizontal';
 
   @HostBinding('attr.draggable') private readonly draggable = true;
   @HostBinding('class.position-relative') private readonly relative = true;
 
-  private _dragElement: HTMLElement;
+  private _dragElement!: HTMLElement;
 
   private rect: any;
 
@@ -29,8 +30,7 @@ export class DragSortItemDirective<T> implements OnInit, OnDestroy {
     @Host() private _container: DragSortContainerDirective<T>,
     private _elementRef: ElementRef,
     private _renderer: Renderer2
-  ) {
-  }
+  ) {}
 
   @HostListener('dragstart', ['$event']) dragstart(event: DragEvent): void {
     this._container.setDragItem(this.tetaDragSortItem);

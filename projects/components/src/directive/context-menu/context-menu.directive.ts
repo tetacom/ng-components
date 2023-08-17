@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectorRef,
   Directive,
@@ -8,25 +9,25 @@ import {
   Input,
   NgZone,
   OnDestroy,
-  OnInit,
   TemplateRef,
   Type,
 } from '@angular/core';
-import {DynamicComponentService} from '../../common/service/dynamic-component.service';
-import {DOCUMENT} from '@angular/common';
-import {ArrayUtil} from '../../common/util/array-util';
-import {DomUtil} from '../../common/util/dom-util';
-import {PositionUtil} from '../../common/util/position-util';
-import {DynamicContentBaseDirective} from '../dynamic-content-base.directive';
-import {ClickService} from '../../common/service/click.service';
-import {AutoCloseIgnoreCase} from '../../common/contract/auto-close-ignore-case';
+
+import { AutoCloseIgnoreCase } from '../../common/contract/auto-close-ignore-case';
+import { ClickService } from '../../common/service/click.service';
+import { DynamicComponentService } from '../../common/service/dynamic-component.service';
+import { ArrayUtil } from '../../common/util/array-util';
+import { DomUtil } from '../../common/util/dom-util';
+import { PositionUtil } from '../../common/util/position-util';
+import { DynamicContentBaseDirective } from '../dynamic-content-base.directive';
 
 @Directive({
   selector: '[tetaContextMenu]',
 })
 export class ContextMenuDirective
   extends DynamicContentBaseDirective
-  implements OnDestroy, OnInit {
+  implements OnDestroy
+{
   /**
    * Строка, шаблон или компонент для создания контекстного меню
    */
@@ -80,22 +81,29 @@ export class ContextMenuDirective
   @HostListener('document:click', ['$event'])
   @HostListener('document:contextmenu', ['$event'])
   documentClick(event: MouseEvent): void {
-    if (this._open && this._componentRef && (!DomUtil.clickedInside(this._componentRef.location.nativeElement,
-      event) || this.autoCloseIgnore.indexOf('inside') < 0)) {
+    if (
+      this._open &&
+      this._componentRef &&
+      (!DomUtil.clickedInside(
+        this._componentRef.location.nativeElement,
+        event
+      ) ||
+        this.autoCloseIgnore.indexOf('inside') < 0)
+    ) {
       this.destroyContentRef();
       this.openChange.emit(false);
     }
   }
 
   protected addScrollListener() {
-    window.addEventListener('scroll', this.scrollListener, true)
+    window.addEventListener('scroll', this.scrollListener, true);
   }
 
   protected removeScrollListener() {
-    window.removeEventListener('scroll', this.scrollListener, true)
+    window.removeEventListener('scroll', this.scrollListener, true);
   }
 
-  private scrollListener = (event) => {
+  private scrollListener = event => {
     if (
       this._open &&
       this._componentRef &&
@@ -105,11 +113,7 @@ export class ContextMenuDirective
       this.destroyContentRef();
       this.openChange.emit(false);
     }
-  }
-
-  override ngOnInit() {
-    super.ngOnInit();
-  }
+  };
 
   override ngOnDestroy() {
     super.ngOnDestroy();

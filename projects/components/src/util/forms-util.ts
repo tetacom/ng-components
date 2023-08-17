@@ -1,24 +1,27 @@
+import { Optional, Provider } from '@angular/core';
 import {
   AbstractControl,
-  ControlContainer, NgForm, NgModelGroup,
+  ControlContainer,
+  NgForm,
+  NgModelGroup,
   UntypedFormControl,
   UntypedFormGroup,
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import {TableColumn} from '../component/table/contract/table-column';
-import {ArrayUtil} from '../common/util/array-util';
-import {FilterType} from "../component/filter/enum/filter-type.enum";
-import {Optional, Provider} from "@angular/core";
+
+import { ArrayUtil } from '../common/util/array-util';
+import { FilterType } from '../component/filter/enum/filter-type.enum';
+import { TableColumn } from '../component/table/contract/table-column';
 
 export class FormsUtil {
   static validateAllFormFields(formGroup: UntypedFormGroup) {
     formGroup.updateValueAndValidity();
-    Object.keys(formGroup.controls).forEach((field) => {
+    Object.keys(formGroup.controls).forEach(field => {
       const control = formGroup.get(field);
       if (control instanceof UntypedFormControl) {
-        control.markAsTouched({onlySelf: true});
-        control.markAsDirty({onlySelf: true});
+        control.markAsTouched({ onlySelf: true });
+        control.markAsDirty({ onlySelf: true });
       } else if (control instanceof UntypedFormGroup) {
         this.validateAllFormFields(control);
       }
@@ -32,7 +35,10 @@ export class FormsUtil {
     );
   }
 
-  static getControlErrors(formGroup: UntypedFormGroup, controlName: string): string[] {
+  static getControlErrors(
+    formGroup: UntypedFormGroup,
+    controlName: string
+  ): string[] {
     if (FormsUtil.controlIsInvalid(formGroup, controlName)) {
       return Object.keys(formGroup.controls[controlName]?.errors);
     }
@@ -47,7 +53,7 @@ export class FormsUtil {
       !!control.parent.value &&
       control.value === control.parent.controls[matchTo].value
         ? null
-        : {isMatching: false};
+        : { isMatching: false };
   }
 
   static requiredIf(
@@ -59,7 +65,7 @@ export class FormsUtil {
       control.value != null &&
       value
         ? null
-        : {isMatching: false};
+        : { isMatching: false };
   }
 
   static initFormFromColumns(columns: TableColumn[], dataItem: any) {
@@ -80,8 +86,13 @@ export class FormsUtil {
       },
       {
         validators: FormsUtil.getValidators(column),
-        updateOn: column.filterType === FilterType.number || column.filterType === FilterType.string ? 'blur' : 'change'
-      });
+        updateOn:
+          column.filterType === FilterType.number ||
+          column.filterType === FilterType.string
+            ? 'blur'
+            : 'change',
+      }
+    );
   }
 
   static getValidators(column: TableColumn) {
@@ -96,12 +107,15 @@ export class FormsUtil {
     if (column.maxValue != null) {
       validators.push(Validators.max(column.maxValue));
     }
+    if (column.validators?.length > 0) {
+      validators.push(...column.validators);
+    }
     return validators;
   }
 
   static validatorNotEmpty(control: AbstractControl): ValidationErrors | null {
     if (control?.value?.toString()?.trim()?.length <= 0) {
-      return {required: true}
+      return { required: true };
     }
     return null;
   }

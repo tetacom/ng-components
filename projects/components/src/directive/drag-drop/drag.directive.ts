@@ -5,36 +5,42 @@ import {
   HostBinding,
   HostListener,
   Inject,
-  Input, NgZone, OnDestroy,
+  Input,
+  NgZone,
+  OnDestroy,
   OnInit,
   Optional,
   Output,
-  SkipSelf
+  SkipSelf,
 } from '@angular/core';
-import {DragInstance} from './model/drag-instance';
-import {DragContainerDirective} from './drag-container.directive';
-import {DragDropService} from './drag-drop.service';
-import {DropTarget} from './model/drop-target';
-import {filter, takeWhile} from 'rxjs/operators';
-import {DropEvent} from './model/drop-event';
-import {DragSelection} from './model/drag-selection';
+import { filter, takeWhile } from 'rxjs/operators';
+
+import { DragContainerDirective } from './drag-container.directive';
+import { DragDropService } from './drag-drop.service';
+import { DragInstance } from './model/drag-instance';
+import { DragSelection } from './model/drag-selection';
+import { DropEvent } from './model/drop-event';
+import { DropTarget } from './model/drop-target';
 
 @Directive({
   selector: '[tetaDrag]',
   exportAs: 'drag',
+  // eslint-disable-next-line @angular-eslint/no-host-metadata-property
   host: {
     '[style.userSelect]': '"none"',
-    '[class.teta-drag-item]': '"true"'
-  }
+    '[class.teta-drag-item]': '"true"',
+  },
 })
 export class DragDirective<T> implements OnInit, OnDestroy {
   @Input('tetaDrag') data: T;
 
   @HostBinding('class.teta_draggable_item')
-  @Input() allowDrag = true;
+  @Input()
+  allowDrag = true;
 
   @HostBinding('class.teta_droppable_item')
-  @Input() allowDrop = true;
+  @Input()
+  allowDrop = true;
 
   @Input() allowDropPredicate: (data: DragSelection<T>, target: T) => boolean;
 
@@ -58,8 +64,8 @@ export class DragDirective<T> implements OnInit, OnDestroy {
 
   @HostListener('mousedown', ['$event'])
   @HostListener('touchstart', ['$event'])
-  mousedown(event) {
-    if(!this.allowDrag) {
+  mousedown(event: MouseEvent) {
+    if (!this.allowDrag) {
       return;
     }
     if (event.ctrlKey && this._container?.multiple) {
@@ -69,7 +75,7 @@ export class DragDirective<T> implements OnInit, OnDestroy {
     }
     this._dragService.setStartPosition({
       x: event.x,
-      y: event.y
+      y: event.y,
     });
   }
 
@@ -77,7 +83,10 @@ export class DragDirective<T> implements OnInit, OnDestroy {
   mouseenter(event: MouseEvent) {
     if (this.allowDrop) {
       event.stopPropagation();
-      if(this.allowDropPredicate === undefined || this.allowDropPredicate(this._dragService.selection, this.data)) {
+      if (
+        this.allowDropPredicate === undefined ||
+        this.allowDropPredicate(this._dragService.selection, this.data)
+      ) {
         this._dragService.setDropTarget(this.instance);
       }
     }
@@ -87,19 +96,24 @@ export class DragDirective<T> implements OnInit, OnDestroy {
     this._dragService.setDropTarget(null);
   }
 
-  constructor(@Inject(DragContainerDirective) @Optional() @SkipSelf() private _container: DragContainerDirective<T>,
-              private _dragService: DragDropService<T>,
-              private _zone: NgZone,
-              private _cdr: ChangeDetectorRef) {
-  }
+  constructor(
+    @Inject(DragContainerDirective)
+    @Optional()
+    @SkipSelf()
+    private _container: DragContainerDirective<T>,
+    private _dragService: DragDropService<T>,
+    private _zone: NgZone,
+    private _cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.instance = new DragInstance({
       container: this._container?.instance,
-      data: this.data
+      data: this.data,
     });
-    this._dragService.dropTarget.pipe(takeWhile(() => this._alive))
-      .subscribe((target) => {
+    this._dragService.dropTarget
+      .pipe(takeWhile(() => this._alive))
+      .subscribe(target => {
         this.dropTarget = target;
         if (target === this.instance) {
           this.tetaDragEnter.emit(this.instance);
@@ -107,12 +121,14 @@ export class DragDirective<T> implements OnInit, OnDestroy {
         this._cdr.detectChanges();
         this._cdr.markForCheck();
       });
-    this._dragService.dropped.pipe(takeWhile(() => this._alive))
+    this._dragService.dropped
+      .pipe(takeWhile(() => this._alive))
       .pipe(
         filter((event: DropEvent<T>) => {
           return event.target === this.instance;
-        }))
-      .subscribe((event) => {
+        })
+      )
+      .subscribe(event => {
         this.tetaDrop.emit(event);
       });
   }

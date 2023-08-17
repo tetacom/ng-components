@@ -15,8 +15,8 @@ export class ArrayUtil {
     onlyLeafs?: boolean
   ): any[] {
     const result: any[] = [];
-    data.forEach((child) => {
-      let childItems: any[];
+    data.forEach(child => {
+      let childItems: any[] = [];
       if (children) {
         if (typeof children === 'string') {
           childItems = child[children];
@@ -46,9 +46,9 @@ export class ArrayUtil {
   static findRecursive(
     tree: any[],
     comparer: (iterableNode: any) => boolean,
-    children: string = 'children'
+    children = 'children'
   ): any {
-    const found = tree.find((x) => comparer(x));
+    const found = tree.find(x => comparer(x));
     if (found !== null && found !== undefined) {
       return found;
     }
@@ -67,9 +67,9 @@ export class ArrayUtil {
   static filterRecursive(
     array: any[],
     filter: (item: any) => boolean,
-    children: string = 'children',
-    keepChildren: boolean = true,
-    fullscanChildren: boolean = false
+    children = 'children',
+    keepChildren = true,
+    fullscanChildren = false
   ): any {
     const result = [];
     if (array && array.length) {
@@ -80,7 +80,7 @@ export class ArrayUtil {
           if (!keepChildren) {
             resultItem[children] = [];
             if (fullscanChildren) {
-             continue;
+              continue;
             }
             break;
           }
@@ -99,7 +99,6 @@ export class ArrayUtil {
           }
         }
       }
-
     }
     return result;
   }
@@ -108,7 +107,7 @@ export class ArrayUtil {
     const result: T[] = [];
     if (array && array.length) {
       for (const item of array) {
-        const found = result.find((_) => comparator(_) === comparator(item));
+        const found = result.find(_ => comparator(_) === comparator(item));
         if (!found) {
           result.push(item);
         }
@@ -117,7 +116,7 @@ export class ArrayUtil {
     return result;
   }
 
-  static findParents(tree: any[], item: any) {
+  static findParents(tree: any[], item: any): any[] | null {
     if (tree?.indexOf(item) >= 0) {
       return tree;
     }
@@ -129,9 +128,10 @@ export class ArrayUtil {
         }
       }
     }
+    return null;
   }
 
-  static moveItem(list: any[], sourceIndex, targetIndex) {
+  static moveItem(list: any[], sourceIndex: number, targetIndex: number) {
     const res = [...list];
     const item = list[sourceIndex];
     if (targetIndex > sourceIndex) {

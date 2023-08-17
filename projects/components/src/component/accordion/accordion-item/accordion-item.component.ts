@@ -6,12 +6,12 @@ import {
   HostBinding,
   Inject,
   Input,
-  OnInit,
   Optional,
 } from '@angular/core';
-import {AccordionContentDirective} from '../accordion-content.directive';
-import {AccordionComponent} from '../accordion/accordion.component';
-import {viewType} from "../../../common/model/view-type.model";
+
+import { viewType } from '../../../common/model/view-type.model';
+import { AccordionComponent } from '../accordion/accordion.component';
+import { AccordionContentDirective } from '../accordion-content.directive';
 
 @Component({
   selector: 'teta-accordion-item',
@@ -19,22 +19,23 @@ import {viewType} from "../../../common/model/view-type.model";
   styleUrls: ['./accordion-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccordionItemComponent implements OnInit {
-
-  @ContentChild(AccordionContentDirective, {static: false})
-  content: AccordionContentDirective;
+export class AccordionItemComponent {
+  @ContentChild(AccordionContentDirective, { static: false })
+  content?: AccordionContentDirective;
 
   @HostBinding('class.accordion-item_active')
   @Input()
-  open: boolean;
-  @Input() disabled: boolean;
-  @Input() viewType: viewType = 'rounded'
+  open = false;
+  @Input()
+  disabled = false;
+  @Input()
+  viewType: viewType = 'rounded';
   @HostBinding('class.accordion-item') private readonly accordionItemClass =
     true;
 
   @HostBinding(`class`)
   get class() {
-    return `accordion_${this.viewType}`
+    return `accordion_${this.viewType}`;
   }
 
   private readonly accordion$: AccordionComponent;
@@ -49,8 +50,5 @@ export class AccordionItemComponent implements OnInit {
   toggle() {
     this.open = !this.open;
     this.cdr$.detectChanges();
-  }
-
-  ngOnInit() {
   }
 }

@@ -6,9 +6,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {CellComponentBase} from '../../base/cell-component-base';
-import {TableService} from '../../service/table.service';
-import {ICellCoordinates} from '../../contract/i-cell-coordinates';
+
+import { CellComponentBase } from '../../base/cell-component-base';
+import { ICellCoordinates } from '../../contract/i-cell-coordinates';
+import { TableService } from '../../service/table.service';
 
 @Component({
   selector: 'teta-boolean-cell',
@@ -18,16 +19,20 @@ import {ICellCoordinates} from '../../contract/i-cell-coordinates';
 })
 export class BooleanCellComponent<T>
   extends CellComponentBase<T>
-  implements OnInit {
-  @ViewChild('input', {static: false}) input: ElementRef;
+  implements OnInit
+{
+  @ViewChild('input', { static: false }) input: ElementRef;
 
-  constructor(public override svc: TableService<T>, public override cdr: ChangeDetectorRef) {
+  constructor(
+    public override svc: TableService<T>,
+    public override cdr: ChangeDetectorRef
+  ) {
     super(svc, cdr);
   }
 
-  setValue(): void {
-    this.valueChanged();
-  }
+  // setValue(): void {
+  //   this.valueChanged();
+  // }
 
   override ngOnInit(): void {
     super.ngOnInit();

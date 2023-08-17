@@ -207,6 +207,10 @@
     box-shadow: inset 0 0 0 1px var(--color-primary-50);
   }
 
+  &-invalid {
+    box-shadow: inset 0 0 0 1px var(--color-red-50);
+  }
+
   &-component {
     display: flex;
     flex-grow: 1;

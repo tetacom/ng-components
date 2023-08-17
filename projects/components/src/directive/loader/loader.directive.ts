@@ -1,13 +1,14 @@
+import { DOCUMENT } from '@angular/common';
 import {
   Directive,
   ElementRef,
   Inject,
-  Input, NgZone,
+  Input,
+  NgZone,
   OnDestroy,
   Renderer2,
 } from '@angular/core';
-import {DOCUMENT} from '@angular/common';
-import {takeWhile, throttleTime} from "rxjs/operators";
+import { takeWhile } from 'rxjs/operators';
 
 @Directive({
   selector: '[tetaLoader]',
@@ -34,24 +35,20 @@ export class LoaderDirective implements OnDestroy {
   private _loader: any;
   private _mask: any;
   private _alive = true;
-  private _loading: boolean;
+  private _loading = false;
 
   constructor(
     private _elementRef: ElementRef,
     private _renderer: Renderer2,
     @Inject(DOCUMENT) private _document: any,
-    protected _zone: NgZone,
+    protected _zone: NgZone
   ) {
     this._element = this._elementRef.nativeElement;
-    this._zone.onStable
-      .pipe(
-        takeWhile((_) => this._alive)
-      )
-      .subscribe((_) => {
-        if (this._loading && this._loader) {
-          this.setPosition();
-        }
-      });
+    this._zone.onStable.pipe(takeWhile(_ => this._alive)).subscribe(_ => {
+      if (this._loading && this._loader) {
+        this.setPosition();
+      }
+    });
   }
 
   ngOnDestroy(): void {

@@ -9,8 +9,9 @@ import {
   TemplateRef,
   Type,
 } from '@angular/core';
-import { TetaContentRef } from '../contract/teta-content-ref';
+
 import { DynamicData } from '../contract/dynamic-data';
+import { TetaContentRef } from '../contract/teta-content-ref';
 
 @Injectable({
   providedIn: 'root',
@@ -41,7 +42,7 @@ export class DynamicComponentService {
   }
 
   createContent(
-    content: string | TemplateRef<any> | Type<any>,
+    content: string | TemplateRef<any> | Type<any> | null | undefined,
     injector: Injector,
     context?: any
   ): TetaContentRef {
@@ -58,8 +59,8 @@ export class DynamicComponentService {
   }
 
   destroy<T>(
-    component: ComponentRef<T>,
-    content: TetaContentRef,
+    component: ComponentRef<T> | null | undefined,
+    content: TetaContentRef | null,
     container: HTMLElement
   ): void {
     if (component) {
@@ -73,7 +74,7 @@ export class DynamicComponentService {
   }
 
   getContext(
-    content: string | TemplateRef<any> | Type<any>,
+    content: string | TemplateRef<any> | Type<any> | null | undefined,
     context: any
   ): any {
     if (content instanceof TemplateRef) {
@@ -119,7 +120,7 @@ export class DynamicComponentService {
       this._componentFactoryResolver.resolveComponentFactory<any>(content);
     const componentRef = componentFactory.create(injector);
     for (const key in context) {
-      if (context.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(context, key)) {
         componentRef.instance[key] = context[key];
       }
     }

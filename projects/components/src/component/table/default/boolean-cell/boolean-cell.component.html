@@ -1,12 +1,12 @@
 <span [style.display]="edit ? 'none' : 'block'"
       class="cell-text"
       [class.cell-text_disabled]="!editable">
-  {{ row[column.name] }}
+  {{ control?.value }}
 </span>
 <teta-checkbox
   #input
   *ngIf="edit"
   [binary]="true"
-  [(ngModel)]="row[column.name]"
+  [formControl]='control'
   (blur)="setValue()"
 ></teta-checkbox>

@@ -6,34 +6,30 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {CellComponentBase} from '../../base/cell-component-base';
-import {TableService} from '../../service/table.service';
-import {ICellCoordinates} from '../../contract/i-cell-coordinates';
+
+import { FormsUtil } from '../../../../util/forms-util';
+import { CellComponentBase } from '../../base/cell-component-base';
+import { ICellCoordinates } from '../../contract/i-cell-coordinates';
+import { TableService } from '../../service/table.service';
 
 @Component({
   selector: 'teta-numeric-cell',
   templateUrl: './numeric-cell.component.html',
   styleUrls: ['./numeric-cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [FormsUtil.formProvider],
 })
 export class NumericCellComponent<T>
   extends CellComponentBase<T>
-  implements OnInit {
-  @ViewChild('input', {static: false}) input: ElementRef;
+  implements OnInit
+{
+  @ViewChild('input', { static: false }) input: ElementRef;
 
   constructor(
     protected override svc: TableService<T>,
     protected override cdr: ChangeDetectorRef
   ) {
     super(svc, cdr);
-  }
-
-  applyValue(value) {
-    this.row[this.column.name] = value;
-  }
-
-  setValue(): void {
-    this.valueChanged();
   }
 
   override ngOnInit(): void {
@@ -44,14 +40,6 @@ export class NumericCellComponent<T>
     if (initiator?.column === this.column.name) {
       this.cdr.detectChanges();
       this.input.nativeElement?.focus();
-      // this.input.nativeElement?.select();
-      // this.cdr.detectChanges();
-
-      // setTimeout(() => {
-      //   this.input?.nativeElement.focus();
-      //   this.input?.nativeElement.select();
-      //   this.cdr.markForCheck();
-      // }, 0);
     }
   }
 

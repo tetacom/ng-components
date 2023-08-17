@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectorRef,
   Directive,
@@ -12,16 +13,16 @@ import {
   TemplateRef,
   Type,
 } from '@angular/core';
-import { DynamicContentBaseDirective } from '../dynamic-content-base.directive';
-import { DOCUMENT } from '@angular/common';
+import { merge } from 'rxjs';
+import { filter, takeWhile, tap } from 'rxjs/operators';
+
+import { Align } from '../../common/enum/align.enum';
+import { VerticalAlign } from '../../common/enum/vertical-align.enum';
+import { ClickService } from '../../common/service/click.service';
 import { DynamicComponentService } from '../../common/service/dynamic-component.service';
 import { DomUtil } from '../../common/util/dom-util';
 import { PositionUtil } from '../../common/util/position-util';
-import { Align } from '../../common/enum/align.enum';
-import { VerticalAlign } from '../../common/enum/vertical-align.enum';
-import { merge } from 'rxjs';
-import { filter, takeWhile, tap } from 'rxjs/operators';
-import { ClickService } from '../../common/service/click.service';
+import { DynamicContentBaseDirective } from '../dynamic-content-base.directive';
 
 @Directive({
   selector: '[tetaTooltip]',
@@ -33,7 +34,12 @@ export class TooltipDirective
   /**
    * Строка, шаблон или компонент для создания контекстного меню
    */
-  @Input() tetaTooltip: string | TemplateRef<any> | Type<any>;
+  @Input() tetaTooltip?:
+    | string
+    | TemplateRef<any>
+    | Type<any>
+    | null
+    | undefined = null;
   @Input() override align: Align = Align.center;
   @Input() override verticalAlign: VerticalAlign = VerticalAlign.top;
   private _componentRect: any;
@@ -61,8 +67,7 @@ export class TooltipDirective
     this.createTooltip();
   }
 
-  override ngOnInit() {
-    super.ngOnInit();
+  ngOnInit() {
     merge(this._click.click, this._click.contextMenu)
       .pipe(
         takeWhile(() => this._alive),
@@ -75,11 +80,11 @@ export class TooltipDirective
         filter(
           (event: MouseEvent) =>
             !DomUtil.clickedInside(
-              this._componentRef.location.nativeElement,
+              this._componentRef?.location.nativeElement,
               event
             )
         ),
-        tap((_) => this.destroyContentRef())
+        tap(_ => this.destroyContentRef())
       )
       .subscribe();
   }

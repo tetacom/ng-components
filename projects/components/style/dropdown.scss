@@ -9,7 +9,7 @@
   z-index: 1050;
   box-shadow: var(--shadow-2);
   background: var(--color-global-bgcard);
-  animation: fadeInFromNone 0.5s ease-out;
+  animation: fadeInFromNone .5s ease-out;
 
   @include getView('base');
 
@@ -30,12 +30,12 @@
   }
 
   1% {
-    display: block;
+    display: flex;
     opacity: 0;
   }
 
   100% {
-    display: block;
+    display: flex;
     opacity: 1;
   }
 }

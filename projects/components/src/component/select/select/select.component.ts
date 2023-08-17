@@ -7,18 +7,18 @@ import {
   forwardRef,
   HostBinding,
   Input,
-  OnInit,
 } from '@angular/core';
-import {Align} from '../../../common/enum/align.enum';
-import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
-import {AutoCloseIgnoreCase} from '../../../common/contract/auto-close-ignore-case';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {SelectOptionDirective} from '../select-option.directive';
-import {SelectValueDirective} from '../select-value.directive';
-import {TetaConfigService} from "../../../locale/teta-config.service";
-import {Observable} from "rxjs";
-import {TetaLocalisation} from "../../../locale/teta-localisation";
-import {viewType} from "../../../common/model/view-type.model";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Observable } from 'rxjs';
+
+import { AutoCloseIgnoreCase } from '../../../common/contract/auto-close-ignore-case';
+import { Align } from '../../../common/enum/align.enum';
+import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
+import { viewType } from '../../../common/model/view-type.model';
+import { TetaConfigService } from '../../../locale/teta-config.service';
+import { TetaLocalisation } from '../../../locale/teta-localisation';
+import { SelectOptionDirective } from '../select-option.directive';
+import { SelectValueDirective } from '../select-value.directive';
 
 @Component({
   selector: 'teta-select',
@@ -33,14 +33,18 @@ import {viewType} from "../../../common/model/view-type.model";
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectComponent implements ControlValueAccessor, OnInit {
+export class SelectComponent implements ControlValueAccessor {
   @HostBinding('class.select_multiple')
   @Input()
   multiple: boolean;
 
   @Input() set options(options: any[]) {
     this._options = options;
-    if (this._internalValue !== null && this._internalValue !== undefined && this.options) {
+    if (
+      this._internalValue !== null &&
+      this._internalValue !== undefined &&
+      this.options
+    ) {
       this.getSelectedValue(this._internalValue);
     }
   }
@@ -67,10 +71,10 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   @Input() textRef: ((item: any) => string) | string;
   @Input() searchRef: string | ((item: any) => string);
 
-  @ContentChild(SelectOptionDirective, {static: true})
+  @ContentChild(SelectOptionDirective, { static: true })
   optionDirective: SelectOptionDirective;
 
-  @ContentChild(SelectValueDirective, {static: true})
+  @ContentChild(SelectValueDirective, { static: true })
   valueDirective: SelectValueDirective;
 
   @HostBinding('class.select_open') open = false;
@@ -96,7 +100,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
       return this.options;
     }
     return this.options?.filter(
-      (option) =>
+      option =>
         this.getSearchString(option)
           .toLowerCase()
           .indexOf(this.searchText.toLowerCase()) >= 0
@@ -111,7 +115,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
     private _elementRef: ElementRef,
     private _config: TetaConfigService
   ) {
-    this.locale = this._config.locale
+    this.locale = this._config.locale;
   }
 
   clear() {
@@ -138,7 +142,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
       } else {
         this.value = [...this.value, option];
       }
-      this._internalValue = this.value.map((_) => this.getValue(_))
+      this._internalValue = this.value.map(_ => this.getValue(_));
       this.onChange(this._internalValue);
     } else {
       this.value = option;
@@ -161,12 +165,12 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   removeItemClick(option: any, event: MouseEvent): void {
     event.stopPropagation();
     this.removeItem(option);
-    this._internalValue = this.value.map((_) => this.getValue(_))
+    this._internalValue = this.value.map(_ => this.getValue(_));
     this.onChange(this._internalValue);
   }
 
   removeItem(option: any): void {
-    this.value = this.value.filter((_) => _ !== option);
+    this.value = this.value.filter(_ => _ !== option);
   }
 
   search(text: string): void {
@@ -213,24 +217,19 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
     this._elementRef.nativeElement.focus();
   }
 
-  ngOnInit(): void {
-  }
-
   writeValue(value: any | any[]): void {
     this._internalValue = value;
-    this.getSelectedValue(value)
+    this.getSelectedValue(value);
     this._cdr.detectChanges();
   }
 
-  onChange: (value: any) => void = () => {
-  };
+  onChange: (value: any) => void = () => {};
 
   registerOnChange(fn: (value: any) => void): void {
     this.onChange = fn;
   }
 
-  onTouched = () => {
-  };
+  onTouched = () => {};
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
@@ -246,13 +245,13 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
       this.value =
         value && this.options
           ? this.options.filter(
-            (option) => value.indexOf(this.getValue(option)) > -1
-          )
+              option => value.indexOf(this.getValue(option)) > -1
+            )
           : [];
     } else {
       this.value =
         this.options &&
-        this.options?.find((option) => this.getValue(option) === value);
+        this.options?.find(option => this.getValue(option) === value);
     }
   }
 }

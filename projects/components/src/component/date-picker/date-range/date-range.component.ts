@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,16 +11,16 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { BasePicker } from '../base-picker';
-import { DatePipe } from '@angular/common';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { maskitoDateRangeOptionsGenerator } from '@maskito/kit';
+import dayjs from 'dayjs';
+import { ReplaySubject } from 'rxjs';
+
 import { Align } from '../../../common/enum/align.enum';
 import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import dayjs from 'dayjs';
-import { maskitoDateRangeOptionsGenerator } from '@maskito/kit';
-import { ReplaySubject } from 'rxjs';
-import { DateFromToModel } from '../model/from-to.model';
 import { viewType } from '../../../common/model/view-type.model';
+import { BasePicker } from '../base-picker';
+import { DateFromToModel } from '../model/from-to.model';
 
 export const DATE_Range_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -39,22 +40,22 @@ export class DateRangeComponent
   implements OnInit, ControlValueAccessor
 {
   @Input() date: DateFromToModel = { from: null, to: null };
-  @Input() locale: string = 'ru';
-  @Input() showTime: boolean = false;
+  @Input() locale = 'ru';
+  @Input() showTime = false;
   @Input() minDate: Date | string | number = null;
   @Input() maxDate: Date | string | number = null;
-  @Input() invalid: boolean = false;
-  @Input() disabled: boolean = false;
+  @Input() invalid = false;
+  @Input() disabled = false;
   @Input() align: Align = Align.left;
   @Input() verticalAlign: VerticalAlign = VerticalAlign.auto;
   @Input() viewType: viewType = 'rounded';
   @Input() appendToBody: boolean;
   @Input() backdrop: boolean;
-  @Input() allowNull: boolean = false;
+  @Input() allowNull = true;
   @ViewChild('input') input: ElementRef;
   @Output() selectDate: EventEmitter<DateFromToModel> =
     new EventEmitter<DateFromToModel>();
-  public mask: string = '';
+  public mask = '';
   public selectedDate: ReplaySubject<DateFromToModel> =
     new ReplaySubject<DateFromToModel>(1);
 
@@ -107,7 +108,7 @@ export class DateRangeComponent
           ' - ' +
           this.getLocaleString(new Date());
     }
-    let option: { mode; separator; min?; max?; minLength?; maxLength? } = {
+    const option: { mode; separator; min?; max?; minLength?; maxLength? } = {
       mode: 'dd/mm/yyyy',
       separator: '.',
     };
