@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -6,18 +7,18 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { Euler } from 'three';
-import { NgtsOrbitControls } from 'angular-three-soba/controls';
-import { CommonModule } from '@angular/common';
 import { NgtStore } from 'angular-three';
+import { NgtsOrbitControls } from 'angular-three-soba/controls';
 import { Observable } from 'rxjs';
-import { Chart3dService } from '../service/chart-3d.service';
-import { I3dChartConfig } from '../model/i-3d-chart-config';
+import { Euler } from 'three';
+
 import { Area3dComponent } from '../area-3d/area-3d.component';
-import { Line3dComponent } from '../line-3d/line-3d.component';
 import { Axes3dComponent } from '../axes-3d/axes-3d.component';
-import { Lithotype3dComponent } from '../lithotype-3d/lithotype-3d.component';
+import { Block3dComponent } from '../block-3d/block-3d.component';
 import { Series3dHost } from '../directive/series-3d-host';
+import { Line3dComponent } from '../line-3d/line-3d.component';
+import { I3dChartConfig } from '../model/i-3d-chart-config';
+import { Chart3dService } from '../service/chart-3d.service';
 
 @Component({
   standalone: true,
@@ -30,7 +31,7 @@ import { Series3dHost } from '../directive/series-3d-host';
     Area3dComponent,
     Line3dComponent,
     Axes3dComponent,
-    Lithotype3dComponent,
+    Block3dComponent,
     Series3dHost,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
