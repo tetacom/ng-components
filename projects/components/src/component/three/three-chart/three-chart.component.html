@@ -3,6 +3,6 @@
               [camera]="camera">
   </ngt-canvas>
   <ng-template #noData>
-    <p>{{data.noDataText}}</p>
+    <p>{{data?.noDataText||'no data'}}</p>
   </ng-template>
 </div>
