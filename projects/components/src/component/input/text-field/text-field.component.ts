@@ -9,7 +9,7 @@ import {
   Input,
   ViewChild,
 } from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'teta-text-field',
@@ -35,14 +35,13 @@ export class TextFieldComponent implements ControlValueAccessor {
   @HostBinding('class.text-field_invalid')
   @Input()
   invalid: boolean;
-  @ViewChild('input', {static: false}) input: ElementRef;
+  @ViewChild('input', { static: false }) input: ElementRef;
   inputFocused: boolean;
   @HostBinding('class.text-field')
   private readonly textField = true;
   value = '';
 
-  constructor(private _cdr: ChangeDetectorRef) {
-  }
+  constructor(private _cdr: ChangeDetectorRef) {}
 
   @HostListener('click') onFocus() {
     if (this.disabled) {
@@ -79,9 +78,7 @@ export class TextFieldComponent implements ControlValueAccessor {
     this._cdr.detectChanges();
   }
 
-  onChange(input: string): void {
-  }
+  onChange(input: string): void {}
 
-  onTouched(): void {
-  }
+  onTouched(): void {}
 }

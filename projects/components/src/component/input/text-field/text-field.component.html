@@ -1,21 +1,20 @@
-<teta-icon *ngIf="leftIconName" [name]="leftIconName" [palette]="'text'"></teta-icon>
+<teta-icon *ngIf='leftIconName' [name]='leftIconName' [palette]="'text'"></teta-icon>
 <input
   #input
-  [ngModel]="value | tetaNumber : !onlyNumber ? null : inputFocused ? 1000 : decimalPart"
-  [tetaOnlyNumber]="onlyNumber"
-  (ngModelChange)="value = $event; onChange($event);"
-  [placeholder]="placeholder"
-  [disabled]="disabled"
+  [ngModel]='value | tetaNumber : !onlyNumber ? null : inputFocused ? 1000 : decimalPart'
+  [tetaOnlyNumber]='onlyNumber'
+  (ngModelChange)='value = $event; onChange($event);'
+  [placeholder]='placeholder'
+  [disabled]='disabled'
   [ngClass]="{'color-text-40':disabled}"
   (focus)='inputFocused = true'
-  (blur)="inputFocused = false;emitBlur()"
-  (keydown)="keyPress($event)"
-  autocomplete="off"
-  type="text"
+  (blur)='inputFocused = false;emitBlur()'
+  (keydown)='keyPress($event)'
+  type='text'
 />
 <teta-icon
-  *ngIf="value && !disabled"
-  class="close-icon"
+  *ngIf='value && !disabled'
+  class='close-icon'
   [name]="'closeCircle'"
   [palette]="'text'"
   (click)="value = ''; onChange('');"

@@ -1,11 +1,11 @@
-import {IChartConfig} from '../../model/i-chart-config';
-import {AxisOrientation} from '../../model/enum/axis-orientation';
-import {Series} from '../../model/series';
-import {BasePoint} from '../../model/base-point';
+import { IChartConfig } from '../../model/i-chart-config';
+import { AxisOrientation } from '../../model/enum/axis-orientation';
+import { Series } from '../../model/series';
+import { BasePoint } from '../../model/base-point';
 import * as d3 from 'd3';
-import {AxisOptions} from '../../model/axis-options';
-import {AxisSizeBuilder, ExtremesBuilder} from './builders/public-api';
-import {ScaleType} from '../../model/enum/scale-type';
+import { AxisOptions } from '../../model/axis-options';
+import { AxisSizeBuilder, ExtremesBuilder } from './builders/public-api';
+import { ScaleType } from '../../model/enum/scale-type';
 
 export class Axis {
   private chartConfig: IChartConfig;
@@ -26,9 +26,9 @@ export class Axis {
     .set(ScaleType.symlog, d3.format('~s'))
     .set(ScaleType.pow, d3.format('~s'))
     .set(ScaleType.sqrt, d3.format('~s'))
-    .set(ScaleType.band, (_) => {return _})
-
-
+    .set(ScaleType.band, _ => {
+      return _;
+    });
 
   private defaultScales = new Map<ScaleType, any>()
     .set(ScaleType.linear, d3.scaleLinear)
@@ -95,7 +95,7 @@ export class Axis {
     const linkedFilter = (serie: Series<BasePoint>) =>
       serie[
         this._orientation === AxisOrientation.y ? 'yAxisIndex' : 'xAxisIndex'
-        ] === this._index;
+      ] === this._index;
 
     return this.chartConfig?.series.filter(linkedFilter);
   }
@@ -112,10 +112,10 @@ export class Axis {
   public setScale(scale: any) {
     this._scale = scale;
 
-    if(this.options.scaleType.type === ScaleType.band) {
+    if (this.options.scaleType.type === ScaleType.band) {
       this._scale.ticks = () => {
-        return this._scale.domain()
-      }
+        return this._scale.domain();
+      };
     }
   }
 
@@ -175,6 +175,4 @@ export class Axis {
   public defaultScale() {
     return this.defaultScales.get(this.options.scaleType.type);
   }
-
-
 }
