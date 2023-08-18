@@ -25,17 +25,17 @@
 
 @keyframes fadeInFromNone {
   0% {
-    display: none;
+    //display: none;
     opacity: 0;
   }
 
   1% {
-    display: flex;
+    //display: flex;
     opacity: 0;
   }
 
   100% {
-    display: flex;
+    //display: flex;
     opacity: 1;
   }
 }
