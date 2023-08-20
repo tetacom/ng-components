@@ -41,7 +41,7 @@ export class Line3dComponent
   }
   getPoints(scales) {
     return this.series?.data?.map(_ => {
-      return [scales.x(_.x), scales.y(_.y), scales.z(_.z)];
+      return [scales.x(_?.x), scales.y(_?.y), scales.z(_?.z)];
     });
   }
 

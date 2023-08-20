@@ -40,7 +40,7 @@ export class Chart3dService {
   private getAxesMinMax(data: I3dChartConfig): Axes3dMinMax {
     const zArr: number[] = data.series
       .map(_ => {
-        return _.data?.map(d => d.z);
+        return _?.data?.map(d => d?.z);
       })
       .flat()
       .filter(_ => {
@@ -48,7 +48,7 @@ export class Chart3dService {
       });
     const xArr: number[] = data.series
       .map(_ => {
-        return _.data?.map(d => d.x);
+        return _?.data?.map(d => d?.x);
       })
       .flat()
       .filter(_ => {
@@ -56,7 +56,7 @@ export class Chart3dService {
       });
     const yArr: number[] = data.series
       .map(_ => {
-        return _.data?.map(d => d.y);
+        return _?.data?.map(d => d?.y);
       })
       .flat()
       .filter(_ => {
