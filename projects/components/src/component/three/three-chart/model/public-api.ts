@@ -7,4 +7,4 @@ export * from './enum/public-api';
 export * from './i-3d-chart-config';
 export * from './line-3d-point';
 export * from './line-3d-series';
-export * from './lithotype-3d-series';
+export * from './block-3d-series';

@@ -21,14 +21,14 @@ export class Chart3dService {
     this.minMax = this.minMax$.asObservable();
     this.data
       .pipe(
-        tap((_) => {
+        tap(_ => {
           this.minMax$.next(this.getAxesMinMax(_));
         })
       )
       .subscribe();
 
     this.scales = this.minMax.pipe(
-      map((minMax) => {
+      map(minMax => {
         return this.getScales(minMax);
       }),
       shareReplay(1)
@@ -39,20 +39,29 @@ export class Chart3dService {
   }
   private getAxesMinMax(data: I3dChartConfig): Axes3dMinMax {
     const zArr: number[] = data.series
-      .map((_) => {
-        return _.data.map((d) => d.z);
+      .map(_ => {
+        return _?.data?.map(d => d?.z);
       })
-      .flat();
+      .flat()
+      .filter(_ => {
+        return _ !== null && _ !== undefined;
+      });
     const xArr: number[] = data.series
-      .map((_) => {
-        return _.data.map((d) => d.x);
+      .map(_ => {
+        return _?.data?.map(d => d?.x);
       })
-      .flat();
+      .flat()
+      .filter(_ => {
+        return _ !== null && _ !== undefined;
+      });
     const yArr: number[] = data.series
-      .map((_) => {
-        return _.data.map((d) => d.y);
+      .map(_ => {
+        return _?.data?.map(d => d?.y);
       })
-      .flat();
+      .flat()
+      .filter(_ => {
+        return _ !== null && _ !== undefined;
+      });
     const ZMinMaxVal: [number, number] = [Math.min(...zArr), Math.max(...zArr)];
     const XMinMaxVal: [number, number] = [Math.min(...xArr), Math.max(...xArr)];
     const YMinMaxVal: [number, number] = [Math.min(...yArr), Math.max(...yArr)];
