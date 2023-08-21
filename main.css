@@ -2302,15 +2302,12 @@ a {
 
 @keyframes fadeInFromNone {
   0% {
-    display: none;
     opacity: 0;
   }
   1% {
-    display: flex;
     opacity: 0;
   }
   100% {
-    display: flex;
     opacity: 1;
   }
 }
