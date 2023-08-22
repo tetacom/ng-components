@@ -12,6 +12,7 @@ import {
 import { extend, NgtCanvas, NgtStore } from 'angular-three';
 import * as THREE from 'three';
 import { OrthographicCamera } from 'three';
+import { Series3dType } from './model/enum/series-3d-type';
 
 import { I3dChartConfig } from './model/i-3d-chart-config';
 import { SceneComponent } from './scene/scene.component';
@@ -46,6 +47,116 @@ export class ThreeChartComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (this.data?.series?.length) {
       this.chartService.setData(this.data);
+      setTimeout(
+        () =>
+          this.chartService.setData({
+            noDataText: 's',
+            series: [
+              {
+                type: Series3dType.block,
+                data: [
+                  {
+                    iconId: 'icon1',
+                    name: 'Гранит',
+                    x: 0,
+                    y: 0,
+                    y1: 100,
+                    z: 0,
+                  },
+                  {
+                    iconId: 'icon2',
+                    name: 'Глина',
+                    x: 0,
+                    y: 100,
+                    y1: 500,
+                    z: 0,
+                  },
+                  {
+                    iconId: 'icon3',
+                    name: 'Грунт',
+                    x: 0,
+                    y: 500,
+                    y1: 4000,
+                    z: 0,
+                  },
+                ],
+              },
+            ],
+            yAxis: {
+              min: 0,
+              max: 4000,
+            },
+            xAxis: {
+              min: 0,
+              max: 1000,
+            },
+          }),
+        1000
+      );
+      setTimeout(
+        () =>
+          this.chartService.setData({
+            noDataText: 's',
+            series: [
+              {
+                type: Series3dType.line,
+                color: 'red',
+                data: [
+                  { x: 0, y: 0, z: 0 },
+                  { x: 0, y: 50, z: 2000 },
+                ],
+              },
+              {
+                type: Series3dType.line,
+                color: 'red',
+                data: [
+                  { x: 0, y: 0, z: 0 },
+                  { x: 0, y: 70, z: 2000 },
+                  { x: 50, y: 700, z: 100 },
+                  { x: 150, y: 1700, z: 1200 },
+                ],
+              },
+              {
+                type: Series3dType.block,
+                data: [
+                  {
+                    iconId: 'icon1',
+                    name: 'Гранит',
+                    x: 0,
+                    y: 0,
+                    y1: 100,
+                    z: 0,
+                  },
+                  {
+                    iconId: 'icon2',
+                    name: 'Глина',
+                    x: 0,
+                    y: 100,
+                    y1: 500,
+                    z: 0,
+                  },
+                  {
+                    iconId: 'icon3',
+                    name: 'Грунт',
+                    x: 0,
+                    y: 500,
+                    y1: 4000,
+                    z: 0,
+                  },
+                ],
+              },
+            ],
+            yAxis: {
+              min: 0,
+              max: 4000,
+            },
+            xAxis: {
+              min: 0,
+              max: 1000,
+            },
+          }),
+        3000
+      );
     }
   }
 }

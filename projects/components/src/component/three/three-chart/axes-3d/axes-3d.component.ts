@@ -50,13 +50,13 @@ export class Axes3dComponent implements OnDestroy {
   }
 
   createAxes(scales, minMax: Axes3dMinMax) {
-    const axisZ = this.generateTicks(minMax.z, 12).map((_) => {
+    const axisZ = this.generateTicks(minMax.z, 12).map(_ => {
       return { value: _.toFixed(1), position: scales.z(_) };
     });
-    const axisY = this.generateTicks(minMax.y, 12).map((_) => {
+    const axisY = this.generateTicks(minMax.y, 12).map(_ => {
       return { value: _.toFixed(1), position: scales.y(_) };
     });
-    const axisX = this.generateTicks(minMax.x, 4).map((_) => {
+    const axisX = this.generateTicks(minMax.x, 4).map(_ => {
       return { value: _.toFixed(1), position: scales.x(_) };
     });
     return { z: axisZ, y: axisY, x: axisX };
@@ -67,11 +67,13 @@ export class Axes3dComponent implements OnDestroy {
 
     const ticks = d3
       .range(min, max + tickStep, tickStep)
-      .filter((step) => step <= max);
+      .filter(step => step <= max);
 
     return ticks;
   }
-
+  trackBy(i) {
+    return i;
+  }
   ngOnDestroy(): void {
     this._alive = false;
   }

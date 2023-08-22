@@ -3,7 +3,6 @@ import { map, Observable, ReplaySubject, shareReplay } from 'rxjs';
 import { I3dChartConfig } from '../model/i-3d-chart-config';
 import { Axes3dMinMax } from '../model/axes-3d-min-max';
 import * as d3 from 'd3';
-import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -19,14 +18,18 @@ export class Chart3dService {
   constructor() {
     this.data = this.data$.asObservable();
     this.minMax = this.minMax$.asObservable();
-    this.data
-      .pipe(
-        tap(_ => {
-          this.minMax$.next(this.getAxesMinMax(_));
-        })
-      )
-      .subscribe();
-
+    this.minMax = this.data.pipe(
+      map(_ => {
+        return this.getAxesMinMax(_);
+      })
+    );
+    // this.data
+    //   .pipe(
+    //     tap(_ => {
+    //       this.minMax$.next(this.getAxesMinMax(_));
+    //     })
+    //   )
+    //   .subscribe();
     this.scales = this.minMax.pipe(
       map(minMax => {
         return this.getScales(minMax);

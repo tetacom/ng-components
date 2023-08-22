@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { NgtStore } from 'angular-three';
 import { NgtsOrbitControls } from 'angular-three-soba/controls';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Euler } from 'three';
 
 import { Area3dComponent } from '../area-3d/area-3d.component';
@@ -44,9 +44,12 @@ export class SceneComponent implements OnInit {
   protected readonly chartService = inject(Chart3dService);
   protected readonly _cdr = inject(ChangeDetectorRef);
   constructor() {
-    this.data = this.chartService.data;
+    this.data = this.chartService.data.pipe(
+      tap(() => {
+        this._cdr.detectChanges();
+      })
+    );
   }
-
   setRotation() {
     this.rotation = null;
     this._cdr.detectChanges();
