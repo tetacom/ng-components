@@ -6,5 +6,6 @@ export * from './three-chart/block-3d/block-3d.component';
 export * from './three-chart/directive/public-api';
 export * from './three-chart/line-3d/line-3d.component';
 export * from './three-chart/model/public-api';
+export * from './three-chart/canvas/canvas.component';
 export * from './three-chart/scene/scene.component';
 export * from './three-chart/three-chart.component';
