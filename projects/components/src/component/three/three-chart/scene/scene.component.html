@@ -4,7 +4,7 @@
                          (change)="setRotation()"></ngts-orbit-controls>
   </ngt-scene>
   <teta-area-3d></teta-area-3d>
-  <ng-container *ngFor="let s of config.data.series">
+  <ng-container *ngFor="let s of config.data?.series;">
     <div teta-series-3d-host [series]="s"></div>
   </ng-container>
   <teta-axes-3d [rotation]="rotation"></teta-axes-3d>

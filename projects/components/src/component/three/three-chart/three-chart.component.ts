@@ -1,21 +1,24 @@
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
   inject,
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges,
+  SimpleChanges, ViewChild, ViewContainerRef,
 } from '@angular/core';
-import { extend, NgtCanvas, NgtStore } from 'angular-three';
+import {extend, NgtCanvas, NgtStore} from 'angular-three';
 import * as THREE from 'three';
-import { OrthographicCamera } from 'three';
+import {OrthographicCamera} from 'three';
 
-import { I3dChartConfig } from './model/i-3d-chart-config';
-import { SceneComponent } from './scene/scene.component';
-import { Chart3dService } from './service/chart-3d.service';
+import {I3dChartConfig} from './model/i-3d-chart-config';
+import {SceneComponent} from './scene/scene.component';
+import {Chart3dService} from './service/chart-3d.service';
+import {CanvasComponent} from "./canvas/canvas.component";
+import {Canvas3dHost} from "./directive/canvas-3d-host";
+import { Series3dType } from './model/enum/series-3d-type';
 
 extend(THREE);
 
@@ -27,13 +30,16 @@ extend(THREE);
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NgtStore],
-  imports: [NgtCanvas, SceneComponent, CommonModule],
+  imports: [NgtCanvas, SceneComponent, CommonModule, CanvasComponent,Canvas3dHost],
 })
 export class ThreeChartComponent implements OnInit, OnChanges {
   @Input() data: I3dChartConfig;
   public scene: typeof SceneComponent;
   public camera: OrthographicCamera;
+
   protected readonly chartService = inject(Chart3dService);
+  protected readonly store = inject(NgtStore)
+  protected readonly cdr = inject(ChangeDetectorRef)
 
   ngOnInit(): void {
     this.scene = SceneComponent;

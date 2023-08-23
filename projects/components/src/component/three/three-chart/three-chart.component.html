@@ -1,8 +1,3 @@
-<div class="column_auto column justify-content-center align-center" style="height: 100%;width: 100%;">
-  <ngt-canvas *ngIf="data?.series?.length;else noData" [sceneGraph]="scene"
-              [camera]="camera">
-  </ngt-canvas>
-  <ng-template #noData>
-    <p>{{data?.noDataText||'no data'}}</p>
-  </ng-template>
+<div  class="column_auto column justify-content-center align-center" style="height: 100%;width: 100%;">
+  <div teta-canvas-3d-host [camera]="camera" [data]="data" [scene]="scene"></div>
 </div>

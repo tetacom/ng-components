@@ -7,7 +7,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { NgtStore } from 'angular-three';
+import { NgtStore} from 'angular-three';
 import { NgtsOrbitControls } from 'angular-three-soba/controls';
 import { Observable } from 'rxjs';
 import { Euler } from 'three';
@@ -44,9 +44,8 @@ export class SceneComponent implements OnInit {
   protected readonly chartService = inject(Chart3dService);
   protected readonly _cdr = inject(ChangeDetectorRef);
   constructor() {
-    this.data = this.chartService.data;
+    this.data = this.chartService.data
   }
-
   setRotation() {
     this.rotation = null;
     this._cdr.detectChanges();
