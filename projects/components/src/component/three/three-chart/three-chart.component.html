@@ -1,3 +1,8 @@
-<div  class="column_auto column justify-content-center align-center" style="height: 100%;width: 100%;">
-  <div teta-canvas-3d-host [camera]="camera" [data]="data" [scene]="scene"></div>
-</div>
+<!--<div  class="column_auto column justify-content-center align-center" style="height: 100%;width: 100%;">-->
+<!--  <div teta-canvas-3d-host [camera]="camera" [data]="data" [scene]="scene" ></div>-->
+<ngt-canvas [camera]='camera' [sceneGraph]='scene' [sceneGraphInputs]='{
+  config: config,
+  scales: scales,
+  minMax: minMax
+}'></ngt-canvas>
+<!--</div>-->

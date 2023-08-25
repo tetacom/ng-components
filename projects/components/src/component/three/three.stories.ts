@@ -1,10 +1,11 @@
-import { IconModule } from '../icon/icon.module';
-import { applicationConfig, Meta } from '@storybook/angular';
-import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { ThreeChartComponent } from './three-chart/three-chart.component';
+import { importProvidersFrom } from '@angular/core';
+import { applicationConfig, Meta } from '@storybook/angular';
+
+import { IconModule } from '../icon/icon.module';
 import { Series3dType } from './three-chart/model/enum/series-3d-type';
-import { CustomSeriesComponent } from './custom-series/custom-series.component';
+import { CustomSeriesComponent } from './three-chart/series/custom-series/custom-series.component';
+import { ThreeChartComponent } from './three-chart/three-chart.component';
 
 export default {
   title: 'Component/Three',

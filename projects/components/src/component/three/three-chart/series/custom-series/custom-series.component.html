@@ -1,0 +1,10 @@
+<ng-container *ngIf='scales && series'>
+  <ngt-mesh [position]='[
+      scales.x(series.data[0].x),
+      scales.y(series.data[0].y),
+      scales.z(series.data[0].z)
+      ]'>
+    <ngt-box-geometry *args='[5,5,5]'></ngt-box-geometry>
+    <ngt-mesh-basic-material></ngt-mesh-basic-material>
+  </ngt-mesh>
+</ng-container>

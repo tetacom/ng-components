@@ -1,13 +1,13 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
   OnInit,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { extend, NgtArgs } from 'angular-three';
 import * as THREE from 'three';
 import { GridHelper } from 'three';
-import { extend, NgtArgs } from 'angular-three';
 
 extend(THREE);
 
@@ -16,7 +16,7 @@ extend(THREE);
   templateUrl: './area-3d.component.html',
   standalone: true,
   imports: [CommonModule, NgtArgs],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class Area3dComponent implements OnInit {
