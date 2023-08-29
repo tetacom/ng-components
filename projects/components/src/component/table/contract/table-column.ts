@@ -11,7 +11,7 @@ import { StringFilterType } from '../../filter/enum/string-filter-type.enum';
 import { CellComponentBase } from '../base/cell-component-base';
 import { AggregationType } from '../enum/aggregation-type.enum';
 import { HeadDropdownTabConfig } from './head-dropdown-tab';
-import { ICellInstance } from './i-cell-instance';
+import { IColumnRow } from './i-cell-instance';
 
 export interface ITableColumnOptions extends IFilterItemOptions {
   width?: number;
@@ -36,7 +36,7 @@ export interface ITableColumnOptions extends IFilterItemOptions {
   headCellClass?: string[];
   cellClass?: string[];
   data?: any;
-  editable?: boolean | ((coordinates: ICellInstance<any>) => boolean);
+  editable?: boolean | ((coordinates: IColumnRow<any>) => boolean);
   objectType?: boolean;
   cellComponent?: Type<CellComponentBase<any>>;
   headCellComponent?: any;
@@ -65,15 +65,9 @@ export class TableColumn extends FilterItem {
    */
   locked: boolean;
   /**
-   * Название столбца в строке результатов
-   */
-  /**
    * Название столбца родителя
    */
   parentName: string;
-  /**
-   * Название столбца для заголовка таблицы
-   */
   /**
    * Единицы измерения
    */
@@ -95,7 +89,7 @@ export class TableColumn extends FilterItem {
   /**
    * Колонка доступна для редактирования
    */
-  editable: boolean | ((coordinates: ICellInstance<any>) => boolean);
+  editable: boolean | ((coordinates: IColumnRow<any>) => boolean);
   /**
    * Компонент для рендера ячейки
    */
@@ -112,37 +106,30 @@ export class TableColumn extends FilterItem {
    * Дочерние колонки
    */
   override columns: TableColumn[] = [];
-
   /**
    * Aggregate type
    */
   aggregate: AggregationType;
-
   /**
    * Значение по умолчанию при создании записи
    */
   defaultValue: any;
-
   /**
    * Значение по умолчанию при создании записи
    */
   maxValue: number;
-
   /**
    * Значение по умолчанию при создании записи
    */
   minValue: number;
-
   /**
    * Поле обязательно для заполнения
    */
   required: boolean;
-
   /**
    * Функции валидации
    */
   validators: [ValidatorFn];
-
   /**
    * Инициализация из анонимного объекта
    */

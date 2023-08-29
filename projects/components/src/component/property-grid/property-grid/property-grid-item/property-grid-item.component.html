@@ -3,7 +3,7 @@
             [formGroup]="formGroup"
             [horizontal]="horizontal"
             [required]="column.required"
-            *ngIf="column.editable || !hideNonEditable">
+            *ngIf="editable || !hideNonEditable">
   <ng-container *ngIf="template; else default">
     <ng-container *ngTemplateOutlet="template.template;context: {$implicit: formGroup?.get(column.name)}"></ng-container>
   </ng-container>
@@ -32,7 +32,6 @@
       </teta-toggle>
       <teta-text-field class="row_auto"
                        *ngSwitchDefault
-
                        [decimalPart]="column.filterType === filterTypeEnum.number ? decimalPart : null"
                        [onlyNumber]="column.filterType === filterTypeEnum.number"
                        [placeholder]="column.caption"

@@ -1,12 +1,10 @@
 import {
-  AfterViewInit,
   Component,
   ContentChildren,
   EventEmitter,
   HostBinding,
   Input,
   OnDestroy,
-  OnInit,
   Optional,
   Output,
   QueryList,
@@ -15,6 +13,7 @@ import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
 
 import { IDictionary } from '../../../common/contract/i-dictionary';
 import { IIdName } from '../../../common/contract/i-id-name';
+import { boolOrFuncCallback } from '../../../util/bool-or-func';
 import { FormsUtil } from '../../../util/forms-util';
 import { TableColumn } from '../../table/contract/table-column';
 import { PropertyGridItemDescriptionDirective } from './property-grid-item-description.directive';
@@ -25,9 +24,7 @@ import { PropertyGridItemDescriptionDirective } from './property-grid-item-descr
   styleUrls: ['./property-grid.component.scss'],
   viewProviders: [FormsUtil.formProvider],
 })
-export class PropertyGridComponent<T>
-  implements OnInit, OnDestroy, AfterViewInit
-{
+export class PropertyGridComponent<T> implements OnDestroy {
   @HostBinding('class.form-container') formClass = true;
   @ContentChildren(PropertyGridItemDescriptionDirective)
   itemTemplates: QueryList<PropertyGridItemDescriptionDirective>;
@@ -65,6 +62,13 @@ export class PropertyGridComponent<T>
 
   constructor(@Optional() private _formGroup: ControlContainer) {}
 
+  getEditable(column: TableColumn) {
+    return boolOrFuncCallback(column.editable)({
+      column: column,
+      row: this.formGroup?.getRawValue(),
+    });
+  }
+
   onControlValueChange(event: IIdName<any>) {
     const affected = this.columns.filter(_ => _.parentName === event.name);
     if (affected?.length) {
@@ -83,8 +87,6 @@ export class PropertyGridComponent<T>
     this.controlValueChange.emit(event);
   }
 
-  ngOnInit(): void {}
-
   ngOnDestroy() {
     this._alive = false;
   }
@@ -96,6 +98,4 @@ export class PropertyGridComponent<T>
   private getDictValue(value: any, name: string) {
     return this.dict[name]?.find(_ => _.id === value);
   }
-
-  ngAfterViewInit(): void {}
 }

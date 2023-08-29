@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { IDictionary } from '../../../common/contract/i-dictionary';
 import { IIdName } from '../../../common/contract/i-id-name';
 import { ArrayUtil } from '../../../common/util/array-util';
+import { boolOrFuncCallback } from '../../../util/bool-or-func';
 import { DateUtil } from '../../../util/date-util';
 import { DateFilter } from '../../filter/contarct/date-filter';
 import { DateFilterValue } from '../../filter/contarct/date-filter-value';
@@ -451,7 +452,7 @@ export class TableService<T> {
         this._currentEditCell = cellEvent;
       } else {
         if (
-          this.boolOrFuncCallback<T>(!!this.rowEditable)(
+          boolOrFuncCallback<T>(!!this.rowEditable)(
             this.getRowByIndex(cellEvent?.row)?.data
           )
         ) {
@@ -472,7 +473,7 @@ export class TableService<T> {
       }
       const column = this.getColumnByName(cellEvent?.column);
       if (
-        this.boolOrFuncCallback<ICellInstance<T>>(column?.editable)({
+        boolOrFuncCallback<ICellInstance<T>>(column?.editable)({
           row: this.getRowByIndex(cellEvent?.row),
           column: column,
         })
@@ -640,7 +641,7 @@ export class TableService<T> {
     }
     const column = this.getColumnByName(nextCell?.column);
     if (
-      this.boolOrFuncCallback<ICellInstance<T>>(column.editable)({
+      boolOrFuncCallback<ICellInstance<T>>(column.editable)({
         row: this.getRowByIndex(nextCell.row),
         column,
       })
@@ -657,7 +658,7 @@ export class TableService<T> {
     }
     const column = this.getColumnByName(prevCell?.column);
     if (
-      this.boolOrFuncCallback<ICellInstance<T>>(column.editable)({
+      boolOrFuncCallback<ICellInstance<T>>(column.editable)({
         row: this.getRowByIndex(prevCell.row),
         column,
       })
@@ -756,17 +757,6 @@ export class TableService<T> {
     this._scrollIndex.next(index);
   }
 
-  boolOrFuncCallback<M>(variable: boolean | ((row: M | undefined) => boolean)) {
-    return (args: M) => {
-      if (typeof variable === 'boolean') {
-        return variable;
-      } else if (this.isFunction(variable)) {
-        return (variable as (row: M) => boolean)(args);
-      }
-      return true;
-    };
-  }
-
   getVisibleColumns() {
     const visible = ArrayUtil.flatten(
       this._columns.value,
@@ -833,10 +823,6 @@ export class TableService<T> {
 
   getTableElement(element: HTMLElement) {
     return element.closest('teta-table');
-  }
-
-  private isFunction(obj: any) {
-    return !!(obj && obj?.constructor && obj?.call && obj?.apply);
   }
 
   private setColumnAutoWidth(column: TableColumn, table: HTMLElement) {

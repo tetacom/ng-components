@@ -1,6 +1,11 @@
 import { TableColumn } from './table-column';
 import { TableRow } from './table-row';
 
+export interface IColumnRow<T> {
+  row?: T;
+  column: TableColumn;
+}
+
 export interface ICellInstance<T> {
   row?: TableRow<T>;
   column: TableColumn;

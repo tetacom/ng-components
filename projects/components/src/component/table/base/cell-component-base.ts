@@ -16,6 +16,7 @@ import { takeWhile } from 'rxjs/operators';
 
 import { IDictionary } from '../../../common/contract/i-dictionary';
 import { IIdName } from '../../../common/contract/i-id-name';
+import { boolOrFuncCallback } from '../../../util/bool-or-func';
 import { FormsUtil } from '../../../util/forms-util';
 import { ICellCoordinates } from '../contract/i-cell-coordinates';
 import { ICellValue } from '../contract/i-cell-value';
@@ -87,9 +88,9 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   }
 
   get editable() {
-    return this.svc.boolOrFuncCallback(this.column.editable)({
+    return boolOrFuncCallback(this.column.editable)({
       column: this.column,
-      row: this.row,
+      row: this.row.data,
     });
   }
 

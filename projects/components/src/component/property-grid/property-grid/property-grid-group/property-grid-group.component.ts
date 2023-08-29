@@ -2,20 +2,26 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
-  Output, QueryList,
+  Optional,
+  Output,
+  QueryList,
 } from '@angular/core';
-import {TableColumn} from '../../../table/contract/table-column';
-import {IDictionary} from '../../../../common/contract/i-dictionary';
-import {IIdName} from '../../../../common/contract/i-id-name';
-import {PropertyGridItemDescriptionDirective} from "../property-grid-item-description.directive";
+import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
+
+import { IDictionary } from '../../../../common/contract/i-dictionary';
+import { IIdName } from '../../../../common/contract/i-id-name';
+import { boolOrFuncCallback } from '../../../../util/bool-or-func';
+import { FormsUtil } from '../../../../util/forms-util';
+import { TableColumn } from '../../../table/contract/table-column';
+import { PropertyGridItemDescriptionDirective } from '../property-grid-item-description.directive';
 
 @Component({
   selector: 'teta-property-grid-group',
   templateUrl: './property-grid-group.component.html',
   styleUrls: ['./property-grid-group.component.scss'],
+  viewProviders: [FormsUtil.formProvider],
 })
-export class PropertyGridGroupComponent<T> implements OnInit {
+export class PropertyGridGroupComponent<T> {
   @Input() column: TableColumn;
   @Input() hideNonEditable: boolean;
   @Input() dict: IDictionary<IIdName<any>[]>;
@@ -25,11 +31,24 @@ export class PropertyGridGroupComponent<T> implements OnInit {
   @Input() decimalPart: number;
   @Input() itemTemplates: QueryList<PropertyGridItemDescriptionDirective>;
 
-  constructor() {
+  get formGroup(): FormGroup {
+    if (this._formGroup instanceof FormGroup) {
+      return this._formGroup;
+    }
+    if (this._formGroup instanceof NgForm) {
+      return this._formGroup.form;
+    }
+    return null;
   }
 
-  ngOnInit(): void {
+  get editable() {
+    return boolOrFuncCallback(this.column.editable)({
+      column: this.column,
+      row: this.formGroup?.getRawValue(),
+    });
   }
+
+  constructor(@Optional() private _formGroup: ControlContainer) {}
 
   trackColumns(index: number, column: TableColumn): any {
     return column.name;

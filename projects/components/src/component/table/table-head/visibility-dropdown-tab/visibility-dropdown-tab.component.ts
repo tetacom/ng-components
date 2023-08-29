@@ -5,25 +5,25 @@ import {
   ElementRef,
   Input,
   OnDestroy,
-  OnInit
 } from '@angular/core';
-import {TableColumn} from '../../contract/table-column';
-import {FilterState} from '../../../filter/contarct/filter-state';
-import {Observable} from 'rxjs';
-import {TetaLocalisation} from '../../../../locale/teta-localisation';
-import {TableService} from '../../service/table.service';
-import {TetaConfigService} from '../../../../locale/teta-config.service';
-import {ITreeData} from '../../../../common/contract/i-tree-data';
-import {map, takeWhile} from 'rxjs/operators';
-import {ArrayUtil} from '../../../../common/util/array-util';
+import { Observable } from 'rxjs';
+import { map, takeWhile } from 'rxjs/operators';
+
+import { ITreeData } from '../../../../common/contract/i-tree-data';
+import { ArrayUtil } from '../../../../common/util/array-util';
+import { TetaConfigService } from '../../../../locale/teta-config.service';
+import { TetaLocalisation } from '../../../../locale/teta-localisation';
+import { FilterState } from '../../../filter/contarct/filter-state';
+import { TableColumn } from '../../contract/table-column';
+import { TableService } from '../../service/table.service';
 
 @Component({
   selector: 'teta-visibility-dropdown-tab',
   templateUrl: './visibility-dropdown-tab.component.html',
   styleUrls: ['./visibility-dropdown-tab.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VisibilityDropdownTabComponent<T> implements OnInit, OnDestroy {
+export class VisibilityDropdownTabComponent<T> implements OnDestroy {
   @Input() columns: ITreeData[];
   @Input() column: TableColumn;
   @Input() state: FilterState;
@@ -35,7 +35,7 @@ export class VisibilityDropdownTabComponent<T> implements OnInit, OnDestroy {
 
   get openItems() {
     if (this._openItems == null) {
-      this._openItems = this.columns.map((_) => _);
+      this._openItems = this.columns.map(_ => _);
     }
     return this._openItems;
   }
@@ -51,17 +51,19 @@ export class VisibilityDropdownTabComponent<T> implements OnInit, OnDestroy {
   private _openItems: ITreeData[];
   private _alive = true;
 
-  constructor(private _svc: TableService<T>,
-              private _config: TetaConfigService,
-              private _elementRef: ElementRef,
-              private _cdr: ChangeDetectorRef) {
+  constructor(
+    private _svc: TableService<T>,
+    private _config: TetaConfigService,
+    private _elementRef: ElementRef,
+    private _cdr: ChangeDetectorRef
+  ) {
     this.locale = this._config.locale;
     this._svc.hiddenColumns
       .pipe(
-        takeWhile((_) => this._alive),
-        map((_) => [..._])
+        takeWhile(_ => this._alive),
+        map(_ => [..._])
       )
-      .subscribe((_) => {
+      .subscribe(_ => {
         this.hiddenColumns = _;
       });
   }
@@ -75,9 +77,7 @@ export class VisibilityDropdownTabComponent<T> implements OnInit, OnDestroy {
       return true;
     }
     const columns = ArrayUtil.flatten(this.columns, 'columns');
-    const notHidden = columns.find(
-      (_) => this.hiddenColumns.indexOf(_.name) < 0
-    );
+    const notHidden = columns.find(_ => this.hiddenColumns.indexOf(_.name) < 0);
     if (!notHidden) {
       return false;
     }
@@ -89,7 +89,7 @@ export class VisibilityDropdownTabComponent<T> implements OnInit, OnDestroy {
       this.hiddenColumns = [];
     } else {
       this.hiddenColumns = ArrayUtil.flatten(this.columns, 'columns').map(
-        (_) => _.name
+        _ => _.name
       );
     }
   }
@@ -116,7 +116,7 @@ export class VisibilityDropdownTabComponent<T> implements OnInit, OnDestroy {
       this.hideColumn(column, hiddenColumns);
     }
     if (column.columns) {
-      column.columns.forEach((x) => {
+      column.columns.forEach(x => {
         this.setChildrenVisibility(x, visible, hiddenColumns);
       });
     }
@@ -148,7 +148,7 @@ export class VisibilityDropdownTabComponent<T> implements OnInit, OnDestroy {
       parent &&
       !this.columnIsHidden(parent) &&
       parent.columns &&
-      parent.columns.every((_) => this.columnIsHidden(_))
+      parent.columns.every(_ => this.columnIsHidden(_))
     ) {
       this.hideColumn(parent, hiddenColumns);
       this.hideParents(parent, hiddenColumns);
@@ -169,12 +169,9 @@ export class VisibilityDropdownTabComponent<T> implements OnInit, OnDestroy {
   ): TableColumn | null {
     return ArrayUtil.findRecursive(
       columns,
-      (iterableNode) => iterableNode.columns?.indexOf(column) >= 0,
+      iterableNode => iterableNode.columns?.indexOf(column) >= 0,
       'columns'
     );
-  }
-
-  ngOnInit() {
   }
 
   ngOnDestroy(): void {
