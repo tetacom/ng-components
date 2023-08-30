@@ -1,39 +1,49 @@
 import {
   ChangeDetectionStrategy,
-  Component, ContentChild,
-  ElementRef, EventEmitter, HostBinding, Inject,
-  Injector, Input, NgZone, OnDestroy,
-  OnInit, Output, ViewChild,
+  ChangeDetectorRef,
+  Component,
+  ContentChild,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
 } from '@angular/core';
-import {ScrollableDirective} from "../scrollable.directive";
-import {ANIMATION_FRAME} from "../../../observable/animation-frame";
-import {fromEvent, Observable, tap} from "rxjs";
-import {map, takeWhile, throttleTime} from "rxjs/operators";
-import {tetaZoneFull} from "../../../observable/zoneObservable";
+import { fromEvent, tap } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
+
+import { ScrollableDirective } from '../scrollable.directive';
 
 @Component({
   selector: 'teta-scrollable',
   templateUrl: './scrollable.component.html',
   styleUrls: ['./scrollable.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScrollableComponent implements OnInit, OnDestroy {
   @ContentChild(ScrollableDirective, {
     static: true,
-    read: ElementRef
-  }) private _scrollDirective: ElementRef;
+    read: ElementRef,
+  })
+  private _scrollDirective: ElementRef;
 
   @ViewChild('scrollableWrapper', {
-    static: true
-  }) private _scrollableWrapper: ElementRef
+    static: true,
+  })
+  private _scrollableWrapper: ElementRef;
 
   @ViewChild('scrollbarVertical', {
-    static: true
-  }) private _scrollbarVertical: ElementRef
+    static: true,
+  })
+  private _scrollbarVertical: ElementRef;
 
   @ViewChild('scrollbarHorizontal', {
-    static: true
-  }) private _scrollbarHorizontal: ElementRef;
+    static: true,
+  })
+  private _scrollbarHorizontal: ElementRef;
 
   @Input() direction: 'row' | 'column' = 'row';
   @Input()
@@ -44,44 +54,37 @@ export class ScrollableComponent implements OnInit, OnDestroy {
 
   @Output() scroll = new EventEmitter<Event>();
 
-  scrollSize: Observable<{
+  scrollSize: {
     clientHeight: number;
     clientWidth: number;
     scrollHeight: number;
     scrollWidth: number;
-  }>;
+  };
 
   private _container: ElementRef;
   private _alive = true;
+  private _observer: ResizeObserver;
 
-  constructor(private _elementRef: ElementRef,
-              private _injector: Injector,
-              private _ngZone: NgZone,
-              @Inject(ANIMATION_FRAME) private _animationFrame: Observable<number>) {
-    this.scrollSize = this._animationFrame.pipe(
-      throttleTime(300),
-      map(() => ({
-        scrollHeight: this._container.nativeElement.scrollHeight,
-        scrollWidth: this._container.nativeElement.scrollWidth,
-        clientHeight: this._container.nativeElement.clientHeight,
-        clientWidth: this._container.nativeElement.clientWidth,
-      })),
-      tetaZoneFull(this._ngZone)
-    )
+  constructor(private _cdr: ChangeDetectorRef) {
+    this._observer = new ResizeObserver(this._observe);
   }
+
+  private _observe = () => {
+    this.scrollSize = {
+      scrollHeight: this._container.nativeElement.scrollHeight,
+      scrollWidth: this._container.nativeElement.scrollWidth,
+      clientHeight: this._container.nativeElement.clientHeight,
+      clientWidth: this._container.nativeElement.clientWidth,
+    };
+    this._cdr.detectChanges();
+  };
 
   scrollVertical(event) {
     this._container.nativeElement.scrollTop = event.target.scrollTop;
-    // event.scrollLeft = this._container.nativeElement.scrollLeft;
-    // this._elementRef.nativeElement.dispatchEvent(event);
-    // this.scroll.emit(event);
   }
 
   scrollHorizontal(event) {
     this._container.nativeElement.scrollLeft = event.target.scrollLeft;
-    // event.scrollTop = this._container.nativeElement.scrollTop;
-    // this._elementRef.nativeElement.dispatchEvent(event);
-    // this.scroll.emit(event);
   }
 
   ngOnInit(): void {
@@ -94,15 +97,20 @@ export class ScrollableComponent implements OnInit, OnDestroy {
       .pipe(
         takeWhile(() => this._alive),
         tap((event: any) => {
-          this._scrollbarHorizontal.nativeElement.scrollLeft = event.target.scrollLeft;
-          this._scrollbarVertical.nativeElement.scrollTop = event.target.scrollTop;
-          // this._elementRef.nativeElement.dispatchEvent(event);
+          this._scrollbarHorizontal.nativeElement.scrollLeft =
+            event.target.scrollLeft;
+          this._scrollbarVertical.nativeElement.scrollTop =
+            event.target.scrollTop;
           this.scroll.emit(event);
         })
-      ).subscribe()
+      )
+      .subscribe();
+    this._observer.observe(this._container.nativeElement);
   }
 
   ngOnDestroy() {
     this._alive = false;
+    this._observer.unobserve(this._container.nativeElement);
+    this._observer.disconnect();
   }
 }

@@ -3,8 +3,8 @@ import {
   Component,
   HostBinding,
   Input,
-  OnInit,
 } from '@angular/core';
+
 import { TetaSize } from '../../../common/enum/teta-size.enum';
 
 @Component({
@@ -13,7 +13,7 @@ import { TetaSize } from '../../../common/enum/teta-size.enum';
   styleUrls: ['./icon.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class IconComponent implements OnInit {
+export class IconComponent {
   @Input() name: string;
   @Input() size: TetaSize = TetaSize.M;
   @Input() palette: string;
@@ -28,10 +28,6 @@ export class IconComponent implements OnInit {
     }
     return result.join(' ');
   }
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   getName(): string {
     return `#${this.name}`;
