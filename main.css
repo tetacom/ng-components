@@ -2052,6 +2052,22 @@ a {
   background-color: transparent;
 }
 
+.daterange {
+  display: inline-flex;
+  width: 200px;
+  min-width: 0;
+  border-radius: var(--radius-base-round);
+}
+.daterange_brick {
+  border-radius: var(--radius-base-brick);
+}
+.daterange_circle {
+  border-radius: var(--radius-base-circle);
+}
+.daterange_rounded {
+  border-radius: var(--radius-base-round);
+}
+
 .datepicker {
   display: inline-flex;
   width: 110px;
@@ -2509,21 +2525,27 @@ a {
 }
 .icon.icon-global {
   fill: var(--color-global-70);
+  color: var(--color-global-70);
 }
 .icon.icon-text {
   fill: var(--color-text-70);
+  color: var(--color-text-70);
 }
 .icon.icon-primary {
   fill: var(--color-primary-70);
+  color: var(--color-primary-70);
 }
 .icon.icon-green {
   fill: var(--color-green-70);
+  color: var(--color-green-70);
 }
 .icon.icon-red {
   fill: var(--color-red-70);
+  color: var(--color-red-70);
 }
 .icon.icon-yellow {
   fill: var(--color-yellow-70);
+  color: var(--color-yellow-70);
 }
 
 .form-container {
@@ -3113,7 +3135,7 @@ body {
   min-height: 28px;
   display: inline-flex;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 8px;
   white-space: nowrap;
   background-color: transparent;
   transition: background 0.4s;
@@ -3689,18 +3711,6 @@ body {
   text-decoration: none;
   display: inline-flex;
   flex-direction: column;
-}
-.select-list {
-  padding: 8px 0;
-  display: inline-flex;
-  flex-direction: column;
-}
-.select-list-item {
-  padding: 0 8px 0 8px;
-  white-space: nowrap;
-}
-.select-list-item_active {
-  padding: 0 8px 0 8px;
 }
 
 .sidebar {
