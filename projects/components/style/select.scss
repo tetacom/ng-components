@@ -93,21 +93,4 @@
     display: inline-flex;
     flex-direction: column;
   }
-  &-list {
-    padding: 8px 0;
-    display: inline-flex;
-    flex-direction: column;
-    //border-radius: 2px;
-    //background-color: getColorVar('background', '50');
-
-
-    &-item {
-      padding: 0 8px 0 8px;
-      white-space: nowrap;
-
-      &_active {
-        padding: 0 8px 0 8px;
-      }
-    }
-  }
 }

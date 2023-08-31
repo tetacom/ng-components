@@ -47,9 +47,9 @@
                                        [itemSize]='40'
                                        minBufferPx='200'
                                        maxBufferPx='600'>
-            <div [class]="'select-list-item select-list-item_interactive justify-content-between select_'+viewType"
+            <div [class]="'list-item list-item_interactive justify-content-between select_'+viewType"
                  *cdkVirtualFor='let option of visibleOptions; templateCacheSize: 0;'
-                 [class.select-list-item_active]='itemSelected(option)'
+                 [class.list-item_active]='itemSelected(option)'
                  [tetaHighlight]='searchText'
                  (click)='clickOption(option, $event)'>
               <div [tetaHighlight]='searchText'>
@@ -64,11 +64,10 @@
         </teta-scrollable>
         <ng-template #default>
           <teta-scrollable class='column column_auto padding-h-2' [contentClass]="['column', 'column_auto']">
-            <div class='select-list'>
+            <div class='list'>
               <div [class]="'list-item list-item_interactive justify-content-between  select_'+viewType"
                    *ngFor='let option of visibleOptions'
-                   [class.select-list-item_active]='itemSelected(option) && multiple'
-                   [class.select-list-item]='multiple'
+                   [class.list-item_active]='itemSelected(option)'
                    (click)='clickOption(option, $event)'>
               <span [tetaHighlight]='searchText'>
                 <ng-container

@@ -156,8 +156,10 @@ export class SelectComponent implements ControlValueAccessor {
 
   itemSelected(option: any): boolean {
     if (this.multiple) {
+      console.log(this.value?.indexOf(option) >= 0);
       return this.value?.indexOf(option) >= 0;
     } else {
+      console.log(this.value === option);
       return this.value === option;
     }
   }
