@@ -6,6 +6,7 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
+  HostBinding,
   Input,
   OnInit,
   Output,
@@ -58,7 +59,7 @@ export class DateRangeComponent
   public mask = '';
   public selectedDate: ReplaySubject<DateFromToModel> =
     new ReplaySubject<DateFromToModel>(1);
-
+  @HostBinding('class.daterange') private readonly classDaterange = true;
   constructor(
     override _cdr: ChangeDetectorRef,
     override _elementRef: ElementRef,

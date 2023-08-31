@@ -3,6 +3,13 @@
 @import "util/color-util.scss";
 @import "presets/view-types.scss";
 
+.daterange{
+  display: inline-flex;
+  width: 200px;
+  min-width: 0;
+
+  @include getView('base');
+}
 .datepicker {
   display: inline-flex;
   width: 110px;
