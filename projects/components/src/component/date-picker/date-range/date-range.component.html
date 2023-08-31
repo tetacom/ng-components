@@ -1,4 +1,5 @@
 <teta-dropdown *ngIf="{selectedDate:selectedDate|async}as data" [appendToBody]="appendToBody" [backdrop]="backdrop"
+               class='row row_auto'
                [(open)]="open" (openChange)="openChange($event)" [viewType]="viewType"
                [disabled]="disabled" [verticalAlign]="verticalAlign" [align]="align"
                [autoCloseIgnore]="['esc', 'inside','enter']">
@@ -7,7 +8,7 @@
        [ngClass]="{'datepicker-head_invalid':invalid,'datepicker-head_disabled':disabled}">
     <teta-input class="row row_auto flex">
       <div [class]="'row_auto row datepicker_'+viewType">
-        <div class="row position-relative font-body-3 align-center">
+        <div class="row row_auto position-relative font-body-3 align-center">
           <input [ngClass]="{'color-text-90':!disabled}" [disabled]="disabled" #input style="z-index: 1"
                  class="border-0 color-text-90" (keydown)="checkEnter($event)"
                  [(ngModel)]="inputText" (ngModelChange)="changeInput($event)"
