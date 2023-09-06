@@ -41,7 +41,7 @@ export class DateRangeComponent
   implements OnInit, ControlValueAccessor
 {
   @Input() date: DateFromToModel = { from: null, to: null };
-  @Input() locale = 'ru';
+  @Input() locale: 'en' | 'ru' = 'ru';
   @Input() showTime = false;
   @Input() minDate: Date | string | number = null;
   @Input() maxDate: Date | string | number = null;
@@ -113,7 +113,10 @@ export class DateRangeComponent
       mode: 'dd/mm/yyyy',
       separator: '.',
     };
-    this.mask = 'dd.mm.yyyy - dd.mm.yyyy';
+    this.mask =
+      this.locale === 'en'
+        ? 'dd.mm.yyyy - dd.mm.yyyy'
+        : 'дд.мм.гггг - дд.мм.гггг';
     if (this.minDate) {
       option.min = dayjs(new Date(this.minDate)).startOf('day');
     }

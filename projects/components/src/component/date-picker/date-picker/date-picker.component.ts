@@ -44,7 +44,7 @@ export class DatePickerComponent
   implements OnInit, ControlValueAccessor
 {
   @Input() date: Date | string | number = null;
-  @Input() locale = 'ru';
+  @Input() locale: 'en' | 'ru' = 'ru';
   @Input() showTime = false;
   @Input() minDate: Date | string | number = null;
   @Input() maxDate: Date | string | number = null;
@@ -103,7 +103,8 @@ export class DatePickerComponent
       }
     };
     if (this.showTime) {
-      this.mask = 'dd.mm.yyyy, hh:mm';
+      this.mask =
+        this.locale === 'en' ? 'dd.mm.yyyy, hh:mm' : 'дд.мм.гггг, чч:мм';
       option = {
         dateMode: 'dd/mm/yyyy',
         timeMode: 'HH:MM',
@@ -112,7 +113,7 @@ export class DatePickerComponent
       setMinMax();
       this.maskitoOptions = maskitoDateTimeOptionsGenerator(option);
     } else {
-      this.mask = 'dd.mm.yyyy';
+      this.mask = this.locale === 'en' ? 'dd.mm.yyyy' : 'дд.мм.гггг';
       option = {
         mode: 'dd/mm/yyyy',
         separator: '.',
