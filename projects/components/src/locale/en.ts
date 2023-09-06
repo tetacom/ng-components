@@ -1,4 +1,4 @@
-import {TetaLocalisation} from './teta-localisation';
+import { TetaLocalisation } from './teta-localisation';
 
 export const enLocale: TetaLocalisation = {
   apply: 'Apply',
@@ -12,6 +12,9 @@ export const enLocale: TetaLocalisation = {
   clearAllSort: 'Clear all sort',
   clearFilter: 'Clear filter',
   clearAllFilters: 'Clear all filters',
+  dateRangeMask: 'dd.mm.yyyy - dd.mm.yyyy',
+  dateMask: 'dd.mm.yyyy',
+  dateTimeMask: 'dd.mm.yyyy, hh:mm',
   autosizeColumn: 'Autosize column',
   autosizeAll: 'Autosize all columns',
   resetColumnsSize: 'Reset columns settings',
@@ -23,9 +26,9 @@ export const enLocale: TetaLocalisation = {
   sum: 'Sum',
   avg: 'Avg',
   search: 'Search',
-  selected:'Selected',
+  selected: 'Selected',
   notSelected: 'Not selected',
-  notFound:'Not found',
+  notFound: 'Not found',
   yes: 'Yes',
   no: 'No',
   months: [
@@ -40,7 +43,7 @@ export const enLocale: TetaLocalisation = {
     'September',
     'October',
     'November',
-    'December'
+    'December',
   ],
   days: [
     'Sunday',
@@ -49,15 +52,7 @@ export const enLocale: TetaLocalisation = {
     'Wednesday',
     'Thursday',
     'Friday',
-    'Saturday'
+    'Saturday',
   ],
-  daysShort: [
-    'Su',
-    'Mo',
-    'Tu',
-    'We',
-    'Th',
-    'Fr',
-    'Sa'
-  ]
+  daysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
 };

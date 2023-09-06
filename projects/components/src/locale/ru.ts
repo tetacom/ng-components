@@ -1,9 +1,12 @@
-import {TetaLocalisation} from './teta-localisation';
+import { TetaLocalisation } from './teta-localisation';
 
 export const ruLocale: TetaLocalisation = {
   apply: 'Применить',
   cancel: 'Отменить',
   clear: 'Очистить',
+  dateRangeMask: 'дд.мм.гггг - дд.мм.гггг',
+  dateMask: 'дд.мм.гггг',
+  dateTimeMask: 'дд.мм.гггг, чч:мм',
   pin: 'Закрепить',
   unpin: 'Открепить',
   sortAsc: 'Сортировать по возрастанию',
@@ -23,8 +26,8 @@ export const ruLocale: TetaLocalisation = {
   sum: 'Сумма',
   avg: 'Средн',
   search: 'Поиск',
-  notFound:'Не найдено',
-  selected:'Выбрано',
+  notFound: 'Не найдено',
+  selected: 'Выбрано',
   notSelected: 'Не выбрано',
   yes: 'Да',
   no: 'Нет',
@@ -40,7 +43,7 @@ export const ruLocale: TetaLocalisation = {
     'Сентябрь',
     'Октябрь',
     'Ноябрь',
-    'Декабрь'
+    'Декабрь',
   ],
   days: [
     'Воскресенье',
@@ -49,15 +52,7 @@ export const ruLocale: TetaLocalisation = {
     'Среда',
     'Четверг',
     'Пятниуа',
-    'Суббота'
+    'Суббота',
   ],
-  daysShort: [
-    'Вс',
-    'Пн',
-    'Вт',
-    'Ср',
-    'Чт',
-    'Пт',
-    'Сб'
-  ]
+  daysShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
 };

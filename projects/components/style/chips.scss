@@ -6,7 +6,7 @@
   height: 28px;
   @include getFont($fonts,'button-2');
   border: solid transparent 0;
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--color-text-10);
   fill: var(--color-text-50);
   color: var(--color-text-90);
@@ -14,10 +14,11 @@
   margin-top: 4px;
   display: inline-flex;
   align-items: center;
-  padding: 4px 4px 4px 10px;
-  gap: 8px;
-  @include getView('base');
+  padding: 6px 4px 6px 10px;
   &:hover {
     cursor: pointer;
+  }
+  &>*:first-child{
+    padding-right: 6px;
   }
 }
