@@ -1,13 +1,16 @@
-<ng-container *ngIf="{data:data|async} as config">
+<ng-container *ngIf='{data:data|async} as config'>
   <ngt-scene>
-    <ngts-orbit-controls [minAzimuthAngle]="0" [maxAzimuthAngle]="Math.PI/2" [maxZoom]="15" [minZoom]="4"
-                         (change)="setRotation()"></ngts-orbit-controls>
+    <ngts-orbit-controls [minAzimuthAngle]='0'
+                         [maxAzimuthAngle]='Math.PI/2'
+                         [maxZoom]='30'
+                         [minZoom]='2'
+                         (change)='setRotation()'></ngts-orbit-controls>
   </ngt-scene>
   <teta-area-3d></teta-area-3d>
-  <ng-container *ngFor="let s of config.data?.series;">
-    <div teta-series-3d-host [series]="s"></div>
+  <ng-container *ngFor='let s of config.data?.series;'>
+    <div teta-series-3d-host [series]='s'></div>
   </ng-container>
-  <teta-axes-3d [rotation]="rotation"></teta-axes-3d>
+  <teta-axes-3d [rotation]='rotation'></teta-axes-3d>
 </ng-container>
 
 

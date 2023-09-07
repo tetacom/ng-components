@@ -1,5 +1,6 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy,
+  AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   Input,
@@ -8,13 +9,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import * as THREE from 'three';
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as d3 from 'd3';
-import {Chart3dOptions} from '../model/chart-3d-options';
-import {Base3dPoint} from '../model/base-3d-point';
-import {Series3d} from '../model/series-3d';
-import {ThemeSwitchService} from '../../theme-switch/theme-switch.service';
-import {takeWhile, tap} from 'rxjs/operators';
+import { Chart3dOptions } from '../model/chart-3d-options';
+import { Base3dPoint } from '../model/base-3d-point';
+import { Series3d } from '../model/series-3d';
+import { ThemeSwitchService } from '../../theme-switch/theme-switch.service';
+import { takeWhile, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'teta-chart3d',
@@ -41,8 +42,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private _elementRef: ElementRef,
     private _themeService: ThemeSwitchService
-  ) {
-  }
+  ) {}
 
   @Input() set config(config: Chart3dOptions) {
     if (config) {
@@ -62,10 +62,10 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this._themeService.theme
       .pipe(
-        takeWhile((_) => this._alive),
-        tap((_) => {
+        takeWhile(_ => this._alive),
+        tap(_ => {
           this.gridColor = _ ? '#5d6a73' : '#bdbdc6';
-          this.axesColor =  _ ? '#8e8f9d' : '#7d8f9a';
+          this.axesColor = _ ? '#8e8f9d' : '#7d8f9a';
           this.init();
         })
       )
@@ -93,15 +93,16 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
       this._scene.remove(this._scene.children[0]);
     }
 
-    const {x, y, z} = this.getScales(this._config.series);
+    const { x, y, z } = this.getScales(this._config.series);
 
     this.config.series.forEach((data, idx) => {
-
       if (!data.points?.length) {
-        return
+        return;
       }
 
-      const points = data.points.map((_) => new THREE.Vector3(x(_.x), y(_.y), z(_.z)));
+      const points = data.points.map(
+        _ => new THREE.Vector3(x(_.x), y(_.y), z(_.z))
+      );
 
       const color = d3.scaleOrdinal(d3.schemeTableau10);
 
@@ -119,51 +120,50 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
 
       let tube = new THREE.Line(tubeGeometry, material);
       this._scene.add(tube);
-
-
     });
-
 
     const circles = x.ticks(this.SIDE_SIZE / 10);
 
-
-    const material = new THREE.LineBasicMaterial( { color: this.axesColor } );
+    const material = new THREE.LineBasicMaterial({ color: this.axesColor });
     const pointsLines = [];
-    pointsLines.push(new THREE.Vector3(0, 0 , 0));
-    pointsLines.push(new THREE.Vector3(0, 0 , z(-z.domain()[1])));
+    pointsLines.push(new THREE.Vector3(0, 0, 0));
+    pointsLines.push(new THREE.Vector3(0, 0, z(-z.domain()[1])));
 
-    pointsLines.push(new THREE.Vector3(0, 0 , 0));
-    pointsLines.push(new THREE.Vector3(x(-x.domain()[1]), 0 , 0));
+    pointsLines.push(new THREE.Vector3(0, 0, 0));
+    pointsLines.push(new THREE.Vector3(x(-x.domain()[1]), 0, 0));
 
     const geometryLines = new THREE.BufferGeometry().setFromPoints(pointsLines);
     const line = new THREE.Line(geometryLines, material);
 
-    this._scene.add(line)
+    this._scene.add(line);
 
-    circles.forEach((r) => {
-
+    circles.forEach(r => {
       const material = new THREE.LineDashedMaterial({
         color: this.gridColor,
         dashSize: 1,
-        gapSize: 3
+        gapSize: 3,
       });
 
       const circleGeometry = new THREE.BufferGeometry().setFromPoints(
-        new THREE.Path().absarc(0, 0, x(r), 0, Math.PI * 2, false).getSpacedPoints(100)
+        new THREE.Path()
+          .absarc(0, 0, x(r), 0, Math.PI * 2, false)
+          .getSpacedPoints(100)
       );
 
       const circle = new THREE.LineSegments(circleGeometry, material);
 
-      circle.geometry.rotateX(-Math.PI / 2)
+      circle.geometry.rotateX(-Math.PI / 2);
 
       this._scene.add(circle);
-
     });
 
     this.drawTicks(x, y, z);
 
-    if(!this._controls) {
-      this._controls = new OrbitControls(this._camera, this._renderer.domElement);
+    if (!this._controls) {
+      this._controls = new OrbitControls(
+        this._camera,
+        this._renderer.domElement
+      );
 
       this._controls.enableDamping = true;
       this._controls.enablePan = true;
@@ -175,8 +175,6 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this._controls.enableZoom = true;
     }
-
-
   }
 
   private createScene() {
@@ -199,8 +197,6 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this._camera.position.set(1300, 1300, 1300).setLength(1300);
     this._scene.add(this._camera);
-
-
   }
 
   private setSize(width: number, height: number) {
@@ -232,12 +228,13 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private addResizeObserver() {
-    this._obs = new ResizeObserver((_) => {
+    this._obs = new ResizeObserver(_ => {
       this.setSize(_[0]?.contentRect.width, _[0]?.contentRect.height);
     });
 
     this._obs.observe(this._elementRef.nativeElement);
   }
+
   private removeResizeObserver() {
     this._obs.unobserve(this._elementRef.nativeElement);
     this._obs.disconnect();
@@ -270,8 +267,6 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
     const sprite = new THREE.Sprite(spriteMaterial);
     sprite.scale.set(0.4 * fontSize, 0.4 * fontSize, 0.4 * fontSize);
 
-
-
     return sprite;
   }
 
@@ -280,7 +275,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
     const scalesExtrems: any[] = [];
 
     [x, y, z].forEach((scale, idx) => {
-      const generatedTicks = scale.ticks(this.SIDE_SIZE / 10)
+      const generatedTicks = scale.ticks(this.SIDE_SIZE / 10);
 
       scalesExtrems.push(d3.max(generatedTicks));
 
@@ -293,7 +288,6 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (idx === 1) {
           sprite.position.set(-10, y(_), 0);
-
         }
 
         if (idx === 2) {
@@ -301,13 +295,12 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         ticks.add(sprite);
-
       });
     });
 
-    const northLabel = this.makeSprite('X', {fontSize: 28});
-    const westLabel = this.makeSprite('Y', {fontSize: 28});
-    const tvdLabel = this.makeSprite('TVD', {fontSize: 28});
+    const northLabel = this.makeSprite('X', { fontSize: 28 });
+    const westLabel = this.makeSprite('Y', { fontSize: 28 });
+    const tvdLabel = this.makeSprite('TVD', { fontSize: 28 });
 
     northLabel.position.set(x(x.domain()[1]) + 5, 0, 0);
     westLabel.position.set(0, 0, y(y.domain()[0]) + 5);
@@ -315,9 +308,8 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ticks.add(northLabel, westLabel, tvdLabel);
 
-
     const axesHelper = new THREE.AxesHelper(this.SIDE_SIZE);
-    axesHelper.setColors(this.axesColor, this.axesColor, this.axesColor)
+    axesHelper.setColors(this.axesColor, this.axesColor, this.axesColor);
 
     this._scene.add(axesHelper);
 
@@ -325,7 +317,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getScales(series: Series3d<Base3dPoint>[]) {
-    const extrems = series.map((_) => ({
+    const extrems = series.map(_ => ({
       x: d3.extent(_.points, (p: any) => p.x),
       y: d3.extent(_.points, (p: any) => p.y),
       z: d3.extent(_.points, (p: any) => p.z),
@@ -338,31 +330,36 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
         acc.z = acc.z.concat(_.z);
         return acc as any;
       },
-      {x: [], y: [], z: []}
+      { x: [], y: [], z: [] }
     );
 
     const x = d3
       .scaleLinear()
-      .domain([0, this._config?.axes?.max == null
+      .domain([
+        0,
+        this._config?.axes?.max == null
           ? parseInt(d3.max(flattenExtrems.x))
           : this._config.axes.max,
       ])
-      .range([0, this.SIDE_SIZE]).nice()
+      .range([0, this.SIDE_SIZE])
+      .nice();
 
     const y = d3
       .scaleLinear()
       .domain([0, parseInt(d3.max(flattenExtrems.y), 10)])
-      .range([this.SIDE_SIZE, 0])
+      .range([this.SIDE_SIZE, 0]);
 
     const z = d3
       .scaleLinear()
-      .domain([0,
+      .domain([
+        0,
         this._config?.axes?.max == null
           ? parseInt(d3.max(flattenExtrems.z))
-          : this._config.axes.max])
-      .range([0, this.SIDE_SIZE]).nice()
+          : this._config.axes.max,
+      ])
+      .range([0, this.SIDE_SIZE])
+      .nice();
 
-
-    return {x, y, z};
+    return { x, y, z };
   }
 }

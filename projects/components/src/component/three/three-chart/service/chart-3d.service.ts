@@ -1,8 +1,9 @@
-import {Injectable} from '@angular/core';
-import {map, Observable, ReplaySubject, shareReplay, tap} from 'rxjs';
-import {I3dChartConfig} from '../model/i-3d-chart-config';
-import {Axes3dMinMax} from '../model/axes-3d-min-max';
+import { Injectable } from '@angular/core';
 import * as d3 from 'd3';
+import { map, Observable, ReplaySubject, shareReplay, tap } from 'rxjs';
+
+import { Axes3dMinMax } from '../model/axes-3d-min-max';
+import { I3dChartConfig } from '../model/i-3d-chart-config';
 
 @Injectable({
   providedIn: 'root',
@@ -75,12 +76,12 @@ export class Chart3dService {
   ): [number, number] {
     const min =
       axisMin ||
-      (minMax[0] === minMax[1]
+      (Math.abs(minMax[0] - minMax[1]) < 0.0000001
         ? minMax[0] - Math.abs(minMax[0] - 1) * 0.1
         : minMax[0]);
     const max =
       axisMax ||
-      (minMax[0] === minMax[1]
+      (Math.abs(minMax[0] - minMax[1]) < 0.0000001
         ? minMax[1] + Math.abs(minMax[1] + 1) * 0.1
         : minMax[1]);
     return [min, max];
