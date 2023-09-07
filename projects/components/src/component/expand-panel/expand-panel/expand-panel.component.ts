@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+
 import { ExpandPanelContentDirective } from '../expand-panel-content.directive';
 import { ExpandPanelHeadDirective } from '../expand-panel-head.directive';
 
