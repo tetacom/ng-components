@@ -15,13 +15,14 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { maskitoDateRangeOptionsGenerator } from '@maskito/kit';
 import dayjs from 'dayjs';
-import { ReplaySubject } from 'rxjs';
+import { lastValueFrom, ReplaySubject, take } from 'rxjs';
 
 import { Align } from '../../../common/enum/align.enum';
 import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
 import { viewType } from '../../../common/model/view-type.model';
 import { BasePicker } from '../base-picker';
 import { DateFromToModel } from '../model/from-to.model';
+import { TetaConfigService } from '../../../locale/teta-config.service';
 
 export const DATE_Range_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -41,7 +42,7 @@ export class DateRangeComponent
   implements OnInit, ControlValueAccessor
 {
   @Input() date: DateFromToModel = { from: null, to: null };
-  @Input() locale = 'ru';
+  @Input() locale: 'en' | 'ru' = 'ru';
   @Input() showTime = false;
   @Input() minDate: Date | string | number = null;
   @Input() maxDate: Date | string | number = null;
@@ -63,7 +64,8 @@ export class DateRangeComponent
   constructor(
     override _cdr: ChangeDetectorRef,
     override _elementRef: ElementRef,
-    override datePipe: DatePipe
+    override datePipe: DatePipe,
+    private localeService: TetaConfigService
   ) {
     super(_elementRef, _cdr, datePipe);
   }
@@ -97,7 +99,8 @@ export class DateRangeComponent
     );
   }
 
-  prepareInput() {
+  async prepareInput() {
+    const config = await lastValueFrom(this.localeService.locale.pipe(take(1)));
     let str =
       this.getLocaleString(this.date.from) +
       ' - ' +
@@ -113,7 +116,7 @@ export class DateRangeComponent
       mode: 'dd/mm/yyyy',
       separator: '.',
     };
-    this.mask = 'dd.mm.yyyy - dd.mm.yyyy';
+    this.mask = config.dateRangeMask;
     if (this.minDate) {
       option.min = dayjs(new Date(this.minDate)).startOf('day');
     }

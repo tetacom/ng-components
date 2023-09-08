@@ -18,13 +18,14 @@ import {
   maskitoDateTimeOptionsGenerator,
 } from '@maskito/kit';
 import dayjs from 'dayjs';
-import { ReplaySubject } from 'rxjs';
+import { lastValueFrom, ReplaySubject, take } from 'rxjs';
 
 import { Align } from '../../../common/enum/align.enum';
 import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
 import { viewType } from '../../../common/model/view-type.model';
 import { BasePicker } from '../base-picker';
 import { DatePeriod } from '../model/date-period';
+import { TetaConfigService } from '../../../locale/teta-config.service';
 
 export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -44,7 +45,7 @@ export class DatePickerComponent
   implements OnInit, ControlValueAccessor
 {
   @Input() date: Date | string | number = null;
-  @Input() locale = 'ru';
+  @Input() locale: 'en' | 'ru' = 'ru';
   @Input() showTime = false;
   @Input() minDate: Date | string | number = null;
   @Input() maxDate: Date | string | number = null;
@@ -76,7 +77,8 @@ export class DatePickerComponent
   constructor(
     override _elementRef: ElementRef,
     override _cdr: ChangeDetectorRef,
-    override datePipe: DatePipe
+    override datePipe: DatePipe,
+    private localeService: TetaConfigService
   ) {
     super(_elementRef, _cdr, datePipe);
   }
@@ -91,7 +93,8 @@ export class DatePickerComponent
     this.prepareInput();
   }
 
-  prepareInput() {
+  async prepareInput() {
+    const config = await lastValueFrom(this.localeService.locale.pipe(take(1)));
     const str = this.date ? this.getLocaleString(this.date) : '';
     let option;
     const setMinMax = () => {
@@ -103,7 +106,7 @@ export class DatePickerComponent
       }
     };
     if (this.showTime) {
-      this.mask = 'dd.mm.yyyy, hh:mm';
+      this.mask = config.dateTimeMask;
       option = {
         dateMode: 'dd/mm/yyyy',
         timeMode: 'HH:MM',
@@ -112,7 +115,7 @@ export class DatePickerComponent
       setMinMax();
       this.maskitoOptions = maskitoDateTimeOptionsGenerator(option);
     } else {
-      this.mask = 'dd.mm.yyyy';
+      this.mask = config.dateMask;
       option = {
         mode: 'dd/mm/yyyy',
         separator: '.',

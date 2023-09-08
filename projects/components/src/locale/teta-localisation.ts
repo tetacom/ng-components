@@ -2,6 +2,9 @@ export interface TetaLocalisation {
   apply: string;
   cancel: string;
   clear: string;
+  dateRangeMask: string;
+  dateMask: string;
+  dateTimeMask: string;
   pin: string;
   unpin: string;
   sortAsc: string;
@@ -21,8 +24,8 @@ export interface TetaLocalisation {
   sum: string;
   avg: string;
   search: string;
-  selected:string;
-  notFound:string;
+  selected: string;
+  notFound: string;
   notSelected: string;
   yes: string;
   no: string;
@@ -38,24 +41,8 @@ export interface TetaLocalisation {
     string,
     string,
     string,
-    string
+    string,
   ];
-  days: [
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string
-  ];
-  daysShort: [
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string
-  ];
+  days: [string, string, string, string, string, string, string];
+  daysShort: [string, string, string, string, string, string, string];
 }

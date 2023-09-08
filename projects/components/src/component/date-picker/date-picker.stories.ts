@@ -50,7 +50,7 @@ export const datepicker = () => ({
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [date]="date" [minDate]="min" [showTime]="showTime" [maxDate]="max" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
 });
-const rangeValue = (date) => {
+const rangeValue = date => {
   console.log(date);
 };
 export const dateRange = () => ({
@@ -111,5 +111,5 @@ export const datepickerWithTime = () => ({
     showTime: true,
     viewType: select('viewType', ['rounded', 'brick', 'circle'], 'rounded'),
   },
-  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [date]="date" [minDate]="minDate" [showTime]="showTime" [maxDate]="maxDate" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
+  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker style="width: 250px" [date]="date" [minDate]="minDate" [showTime]="showTime" [maxDate]="maxDate" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
 });
