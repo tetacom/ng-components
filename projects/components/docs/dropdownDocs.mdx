@@ -1,0 +1,143 @@
+import {Meta} from "@storybook/blocks";
+import DropdownStories from "../src/component/dropdown/Dropdown.stories";
+
+<Meta of={DropdownStories}/>
+
+<div class='column gap-24'>
+  <h1>Dropdown</h1>
+  <div class='column'>
+    <p>Dropdown — элемент позволяющий выбрать одно из нескольких заранее определённых значений параметра.</p>
+  </div>
+  <h3>Функции</h3>
+  <div class='column'>
+    <p>Когда дропдаун неактивен, отображается только выбранное значение или их количество. При нажатии на него список раскрывается,
+      отображая все возможные значения. После выбора список возможных значений исчезает.</p>
+  </div>
+  <h3>Как пользоваться компонентом</h3>
+  <div class='column'>
+    <p>Для начала нужно создать <code> &lt;teta-dropdown&gt;</code>, и в него прокинуть элементы с директивой tetaDropdownHead и tetaDropdownContent</p>
+    <p>Директива <code>tetaDropdownHead</code> отвечает за отображение дочерних элементов в шапке дропдауна.</p>
+    <p>Содержимое блока с директивой <code>tetaDropdownContent</code> используется к качестве элементов выпадающего списка.</p>
+  </div>
+  <h3>Примеры кода</h3>
+  <p><pre><code>&lt;teta-dropdown&gt;
+    &nbsp;&nbsp;&lt;div tetaDropdownHead&gt;Heading 1&lt;/div&gt;
+    &nbsp;&nbsp;&lt;div tetaDropdownContent&gt;
+    &nbsp;&nbsp;&nbsp;&lt;div class="padding-v-3 padding-h-2"&gt;I am the content 1&lt;/div&gt;
+   &nbsp;&nbsp;&lt;/div&gt;
+    &lt;/teta-dropdown&gt;</code></pre></p>
+  <div class='column'>
+    <h3>Свойства</h3>
+    <h4>teta-dropdown</h4>
+    <table>
+      <thead>
+      <tr>
+        <th>Свойство</th>
+        <th>Tип</th>
+        <th>Описание</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class='text-align-center'>
+          <p>align</p>
+        </td>
+        <td class='text-align-center'>
+          <code>Align</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Позиционирование содержимого дропдауна по горизонтали</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>verticalAlign</p>
+        </td>
+        <td class='text-align-center'>
+          <code>VerticalAlign</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Позиционирование содержимого дропдауна по вертикали</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>open</p>
+        </td>
+        <td class='text-align-center'>
+          <code>boolean</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Свойство позволяющее управлять состоянием аккордеона</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>openChange</p>
+        </td>
+        <td class='text-align-center'>
+          <code>function</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Указанная функция выполняется при изменении свойства <code>open</code></p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>disabled</p>
+        </td>
+        <td class='text-align-center'>
+          <code>boolean</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Свойство для отключения аккордеона</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>appendToBody</p>
+        </td>
+        <td class='text-align-center'>
+          <code>boolean</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Позволяет прикрепить содержимое дропдауна не к элементу с tetaDropdownHead, а к <code>body</code></p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>autoClose</p>
+        </td>
+        <td class='text-align-center'>
+          <code>boolean</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Свойство, которое включает/отключает закрытие дропдауна автоматически.</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>autoCloseIgnore</p>
+        </td>
+        <td class='text-align-center'>
+          <code>AutoCloseIgnoreCase[]</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Свойство, которое игнорирует указанные причины закрытия дропдауна</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>backdrop</p>
+        </td>
+        <td class='text-align-center'>
+          <code>boolean</code>
+        </td>
+        <td class='text-align-center'>
+          <p>При открытии дропдауна создает поверх <code>div</code>, который не позволяет взаимодействовать с элементами вне содержимого дропдауна, пока он открыт</p>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

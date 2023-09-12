@@ -1,19 +1,17 @@
-import {boolean, select, text, withKnobs} from '@storybook/addon-knobs';
-import {ButtonComponent} from './button/button.component';
-import {ButtonModule} from './button.module';
-import {IconModule} from '../icon/icon.module';
-import {applicationConfig, Meta} from "@storybook/angular";
-import {importProvidersFrom} from "@angular/core";
-import {HttpClientModule} from "@angular/common/http";
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
+import { ButtonComponent } from './button/button.component';
+import { ButtonModule } from './button.module';
+import { IconModule } from '../icon/icon.module';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { importProvidersFrom } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 export default {
   title: 'Component/Button',
   decorators: [
     withKnobs,
     applicationConfig({
-      providers: [
-        importProvidersFrom(HttpClientModule)
-      ],
+      providers: [importProvidersFrom(HttpClientModule)],
     }),
   ],
   component: ButtonComponent,
@@ -33,9 +31,10 @@ export const buttons = () => ({
     size: select('size', ['m', 'l'], 'm'),
     leftIcon: boolean('leftIcon', true),
     rightIcon: boolean('rightIcon', true),
-    disabled: boolean('disabled', false)
+    disabled: boolean('disabled', false),
   },
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
+
     <div class="column padding-top-11 font-body-3" style="gap:32px">
         <p>Default</p>
         <p>Only Icon</p>

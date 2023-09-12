@@ -1,0 +1,56 @@
+import {Meta} from "@storybook/blocks";
+import ExpandStories from "../src/component/expand-card/expand.stories";
+
+<Meta of={ExpandStories}/>
+
+<div class='column gap-24'>
+  <h1>ExpandCard</h1>
+  <div class='column'>
+    <p>ExpandCard обычно используется для создания блока с настройками для чего-либо.</p>
+  </div>
+  <h3>Функции</h3>
+  <div class='column'>
+    <p>ExpandCard позволяет скрывать содержимое при клике на соответствующую кнопку.</p>
+  </div>
+  <h3>Как пользоваться компонентом</h3>
+  <div class='column'>
+    <p>Нужно создать <code> &lt;teta-expand-item&gt;</code>, внуть передаем блоки с
+      <code>ngProjectAs</code>(текст в шапке) и его содержимое.</p>
+  </div>
+  <div class='column'>
+  <h3>Свойства</h3>
+  <table>
+    <thead>
+    <tr>
+      <th>Свойство</th>
+      <th>Tип</th>
+      <th>Описание</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td class='text-align-center'>
+        <p>open</p>
+      </td>
+      <td class='text-align-center'>
+        <code>boolean</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Свойство позволяющее управлять его состоянием</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>openChange</p>
+      </td>
+      <td class='text-align-center'>
+        <code>function</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Указанная функция выполняется при изменении свойства <code>open</code></p>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</div>

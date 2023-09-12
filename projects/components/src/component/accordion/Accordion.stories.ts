@@ -1,35 +1,33 @@
-import {withKnobs} from '@storybook/addon-knobs';
-import {AccordionComponent} from './accordion/accordion.component';
-import {AccordionModule} from './accordion.module';
-import {IconModule} from '../icon/icon.module';
-import {applicationConfig, Meta} from "@storybook/angular";
-import {importProvidersFrom} from "@angular/core";
-import {HttpClientModule} from "@angular/common/http";
+import { withKnobs } from '@storybook/addon-knobs';
+import { AccordionComponent } from './accordion/accordion.component';
+import { AccordionModule } from './accordion.module';
+import { IconModule } from '../icon/icon.module';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { importProvidersFrom } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 export default {
   title: 'Component/Accordion',
   decorators: [
     withKnobs,
     applicationConfig({
-      providers: [
-        importProvidersFrom(HttpClientModule)
-      ],
+      providers: [importProvidersFrom(HttpClientModule)],
     }),
   ],
   component: AccordionComponent,
   moduleMetadata: {
-    imports: [AccordionModule]
-  }
+    imports: [AccordionModule],
+  },
 } as Meta;
 
 export const basicAccordion = () => ({
   moduleMetadata: {
-    imports: [AccordionModule, IconModule]
+    imports: [AccordionModule, IconModule],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="font-body-3 padding-3 bg-global-bgcard">
       <teta-accordion>
         <teta-accordion-item [viewType]="'rounded'">
-          <teta-accordion-head>
+          <teta-accordion-head >
             Heading 1
           </teta-accordion-head>
           <ng-template tetaAccordionContent>
@@ -55,4 +53,3 @@ export const basicAccordion = () => ({
       </teta-accordion>
     </div>`,
 });
-
