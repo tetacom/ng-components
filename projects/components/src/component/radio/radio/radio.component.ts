@@ -39,7 +39,7 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
 
   @Input() set disabled(val: boolean) {
     this.disabled$ = val;
-    this.buttons$.forEach((b) => (b.disabled = this.disabled));
+    this.buttons$.forEach(b => (b.disabled = this.disabled));
   }
 
   get disabled() {
@@ -131,6 +131,7 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
     }
     return false;
   }
+
   _setChecked(btn: RadioButtonComponent) {
     if (this.checkedButton$) {
       this.checkedButton$.checked = false;
@@ -166,7 +167,7 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
       this.checkedButton$.checked = false;
     }
 
-    this.checkedButton$ = this.buttons$.find((b) => b.value === obj);
+    this.checkedButton$ = this.buttons$.find(b => b.value === obj);
     if (this.checkedButton$) {
       this.checkedButton$.checked = true;
     }

@@ -12,5 +12,6 @@
              [options]='displayFilterOptions'
              [valueRef]="'id'"
              [textRef]="'name'"
+             [searchRef]="displayFilterOptions?.length > 20 ? 'name' : ''"
              [formControl]='control'>
 </teta-select>
