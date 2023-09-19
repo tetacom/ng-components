@@ -210,7 +210,9 @@ export class DropdownBase {
     }
     renderer.appendChild(container, content);
     renderer.appendChild(this.container, container);
-    this.setPosition(this._head.nativeElement, this._body);
+    setTimeout(() => {
+      this.setPosition(this._head.nativeElement, this._body);
+    });
   }
 
   private setPosition(container: HTMLElement, target: HTMLElement): void {
