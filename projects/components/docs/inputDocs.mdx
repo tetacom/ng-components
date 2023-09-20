@@ -1,30 +1,24 @@
 import {Meta} from "@storybook/blocks";
-import * as  AvatarStories from "../src/component/avatar/avatar.stories";
+import InputStories from "../src/component/input/Input.stories";
 
-<Meta of={AvatarStories}/>
+<Meta of={InputStories}/>
 
 <div class='column gap-24'>
-  <h1>Аватар</h1>
+  <h1>Инпут</h1>
   <div class='column'>
-    <p>Аватар — графическое изображение пользователя, фотография или рисунок. Он нужен, чтобы быстро узнавать
-      пользователя (например, в ветке комментариев), а ещё — чтобы пользователь мог узнать сам себя. Например,
-      проверить, что вошёл в аккаунт под нужным логином.</p>
-    <p>В библиотеке существует два вида аватаров: изображения и цветные буквенные. Также, они различаются по размерам и
-      скруглениям.</p>
+    <p>Input (поле ввода) — компонент, который позволяет указать значение с помощью клавиатуры.</p>
+    <p>В библиотеке существует два вида иконок: цветные и без заливки</p>
   </div>
   <h3>Как использовать</h3>
   <div class='column'>
-    <p>Аватар нужен в случаях:</p>
+    <p>Иконки нужны для быстрого восприятия информации и помогают пользователю быстро и легко узнать о теме функции или категории, не используя текст.</p>
+    <p>Используются в различных компонентах:</p>
     <ul>
-      <li> Если на странице есть возможность добавить комментарий;</li>
-      <li>Отображение профиля в хедере или же в других компонентах.</li>
+      <li>Кнопки</li>
+      <li>Инпуты</li>
+      <li>Селекты</li>
+      <li>Аккордеонах и т.п.</li>
     </ul>
-  </div>
-  <div class='column'>
-    <h3>Скругления и размеры</h3>
-    <div>
-      <p>В основном, в наших продуктах используются круглые аватары (type: round) с размером 28x28.</p>
-    </div>
   </div>
   <div class='column'>
     <h3>Свойства</h3>
@@ -64,7 +58,7 @@ import * as  AvatarStories from "../src/component/avatar/avatar.stories";
           <p>photo</p>
         </td>
         <td class='text-align-center'>
-          <code>string | ArrayBuffer</code>
+          <code>'string | ArrayBuffer'</code>
         </td>
         <td  class='text-align-center'>
           <p>Изображение для фона компонента</p>
@@ -75,7 +69,7 @@ import * as  AvatarStories from "../src/component/avatar/avatar.stories";
           <p>id</p>
         </td>
         <td class='text-align-center'>
-          <code>number</code>
+          <code>'number'</code>
         </td>
         <td  class='text-align-center'>
           <p>Свойство, которое отвечает за цвет фона компонента</p>
@@ -86,7 +80,7 @@ import * as  AvatarStories from "../src/component/avatar/avatar.stories";
           <p>name</p>
         </td>
         <td class='text-align-center'>
-          <code>string</code>
+          <code>'string'</code>
         </td>
         <td  class='text-align-center'>
           <p>Отображаемый текст</p>

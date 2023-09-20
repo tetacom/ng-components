@@ -1,20 +1,28 @@
-import {withKnobs} from '@storybook/addon-knobs';
-import {MessageSampleComponent} from './message-samples/message-sample/message-sample.component';
-import {MessageSamplesModule} from './message-samples/message-samples.module';
-import {Meta} from "@storybook/angular";
+import { withKnobs } from '@storybook/addon-knobs';
+import { MessageSampleComponent } from './message-samples/message-sample/message-sample.component';
+import { MessageSamplesModule } from './message-samples/message-samples.module';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { IconModule } from '@tetacom/ng-components';
+import { importProvidersFrom } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 export default {
   title: 'Component/Message',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [importProvidersFrom(HttpClientModule)],
+    }),
+  ],
   component: MessageSampleComponent,
   moduleMetadata: {
-    imports: [MessageSamplesModule]
-  }
+    imports: [MessageSamplesModule],
+  },
 } as Meta;
 
 export const messageSample = () => ({
   moduleMetadata: {
-    imports: [MessageSamplesModule]
+    imports: [MessageSamplesModule, IconModule],
   },
-  template: `<teta-message-sample></teta-message-sample>`,
+  template: `<div  [tetaIconSprite]="'assets/icons.svg'"><teta-message-sample ></teta-message-sample></div>`,
 });

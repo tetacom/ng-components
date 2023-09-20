@@ -1,19 +1,26 @@
-import {text, withKnobs} from '@storybook/addon-knobs';
-import {ModalSamplesModule} from './modal-samples/modal-samples.module';
-import {ModalFromComponentComponent} from './modal-samples/modal-from-component/modal-from-component.component';
-import {ModalFromTemplateComponent} from './modal-samples/modal-from-template/modal-from-template.component';
-import {AlertSampleComponent} from './modal-samples/alert-sample/alert-sample.component';
-import {Meta} from "@storybook/angular";
+import { text, withKnobs } from '@storybook/addon-knobs';
+import { ModalSamplesModule } from './modal-samples/modal-samples.module';
+import { ModalFromComponentComponent } from './modal-samples/modal-from-component/modal-from-component.component';
+import { ModalFromTemplateComponent } from './modal-samples/modal-from-template/modal-from-template.component';
+import { AlertSampleComponent } from './modal-samples/alert-sample/alert-sample.component';
+import { applicationConfig, Meta, StoryFn } from '@storybook/angular';
+import { importProvidersFrom } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 export default {
   title: 'Component/Modal',
-  decorators: [withKnobs],
+  decorators: [
+    withKnobs,
+    applicationConfig({
+      providers: [importProvidersFrom(HttpClientModule)],
+    }),
+  ],
   moduleMetadata: {
     imports: [ModalSamplesModule],
   },
 } as Meta;
 
-export const fromComponent = () => ({
+export const fromComponent: StoryFn<ModalFromComponentComponent> = () => ({
   moduleMetadata: {
     imports: [ModalSamplesModule],
   },
@@ -22,6 +29,9 @@ export const fromComponent = () => ({
     name: text('name', 'Название'),
     description: text('description', 'Описание объекта'),
   },
+  template: `<div>
+    <teta-modal-from-component></teta-modal-from-component>
+    </div>`,
 });
 
 export const fromTemplate = () => ({
@@ -33,6 +43,9 @@ export const fromTemplate = () => ({
     name: text('name', 'Название'),
     description: text('description', 'Описание объекта'),
   },
+  template: `<div>
+    <app-modal-from-template></app-modal-from-template>
+    </div>`,
 });
 
 export const alert = () => ({
@@ -40,4 +53,7 @@ export const alert = () => ({
     imports: [ModalSamplesModule],
   },
   component: AlertSampleComponent,
+  template: `<div>
+    <teta-alert-sample></teta-alert-sample>
+    </div>`,
 });

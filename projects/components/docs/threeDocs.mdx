@@ -1,0 +1,66 @@
+import {Meta} from "@storybook/blocks";
+import ThreeStories from "../src/component/three/three.stories";
+
+<Meta of={ThreeStories}/>
+
+<div class='column gap-24'>
+  <h1>Компонент 3д графика</h1>
+  <div class='column'>
+    <p>3д график — это визуализация данных на графике с использованием трех измерений.</p>
+  </div>
+  <h3>Функции</h3>
+  <div class='column'>
+    <p>Используйте модальное окно для второстепенного содержимого страниц, которое требуется только в некоторых случаях,
+      или для того, чтобы сосредоточить внимание пользователя на совершаемом действии. Как правило, это настройки,
+      создание новых документов, заполнение небольших форм.</p>
+    <p>Не используйте модальное окно для больших форм. Большие формы — это формы которые не помещаются в два экрана
+      монитора. </p>
+  </div>
+  <h3>Как использовать</h3>
+  <div class='column'>
+    <p>Для создания 3д график используется компонент <code>teta-three-chart</code>. В свойство <code>data</code> необходимо передать объект с типом <code>I3dChartConfig</code></p>
+    <p>Этот объет включает в себя:</p>
+    <ul>
+      <li>noDataText- текст который будет отображаться при отсутствии серий в графике.</li>
+      <li>xAxis - принимает в себя объект со свойствами min и max. Эти значения применяются при генерации оси X. </li>
+      <li>yAxis - принимает в себя объект со свойствами min и max. Эти значения применяются при генерации оси Y.</li>
+      <li>zAxis - принимает в себя объект со свойствами min и max. Эти значения применяются при генерации оси Z.</li>
+      <li>series - набор данных или набор точек данных, которые отображаются на графике.</li>
+    </ul>
+    <p>В свою очередь свойство <code>series</code></p>
+    <p>Внутри компонента модалки мы привязываем события для закрытия модалки (допустим при нажатии на кнопку). Для этого
+      нужно внедрить сервис <code>CurrentModal</code> и вызвать метод close и передать в него объект со свойствами:</p>
+    <ul>
+      <li><code>reason</code> - принимает номер причины закрытия модалки (ModalCloseReason)</li>
+      <li><code>data</code> - данные, которые нужно вывести из модалки</li>
+    </ul>
+    <p></p>
+    <p>Также есть возможность скрыть все открытые модалки медотом <code>closeAll</code> из <code>modalService</code></p>
+  </div>
+  <h3>Пример кода</h3>
+  <div>
+    <p>Создание модалки</p>
+    <p>
+    <pre><code>createModal(name:string,description:string)&#123;
+      &nbsp;&nbsp;const modal=this.modalService.create(Component,&#123;name,description&#125;)
+      &nbsp;&nbsp;modal.onClose.pipe(
+      &nbsp;&nbsp;&nbsp;takeWhile(()=>this.alive),
+      &nbsp;&nbsp;&nbsp;filter((data)=>data.reason===ModalCloseReason.resolve),
+      &nbsp;&nbsp;&nbsp;tap((data)=>&#123;console.log(data.data.description)&#125;)
+      &nbsp;&nbsp;).subscribe()
+      &nbsp;&#125;</code></pre>
+    </p>
+    <p>Закрытие модалки</p>
+    <p>
+    <pre><code>closeModal(description:string)&#123;
+      &nbsp;&nbsp;this.currentModal.close(
+      &nbsp;&nbsp;&nbsp;&#123;
+      &nbsp;&nbsp;&nbsp;&nbsp;reason:ModalCloseReason.resolve,
+      &nbsp;&nbsp;&nbsp;&nbsp;data:&#123;description&#125;,
+      &nbsp;&nbsp;&nbsp;&#125;
+      &nbsp;&nbsp;)
+      &nbsp;&#125;</code></pre>
+    </p>
+
+  </div>
+</div>

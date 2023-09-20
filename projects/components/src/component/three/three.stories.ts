@@ -106,7 +106,7 @@ export const customSeries = () => ({
       ],
     },
   },
-  template: `<div [tetaIconSprite]="'assets/lithotype-icons.svg'" class="font-body-3 padding-3 column column_auto gap-20 content-block " style="width: 1000px;height: 600px">
+  template: `<div [tetaIconSprite]="'assets/lithotype-icons.svg'"  class="font-body-3 padding-3 column column_auto gap-20 content-block " style="width: 1000px;height: 600px">
                   <teta-three-chart [data]="data"></teta-three-chart>
     </div>`,
 });

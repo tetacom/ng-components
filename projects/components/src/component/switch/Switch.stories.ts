@@ -1,21 +1,19 @@
-import {select, withKnobs} from '@storybook/addon-knobs';
-import {IconModule} from '../icon/icon.module';
-import {SwitchComponent} from './switch/switch.component';
-import {SwitchModule} from './switch.module';
-import {action} from '@storybook/addon-actions';
-import {FormsModule} from '@angular/forms';
-import {applicationConfig, Meta} from "@storybook/angular";
-import {importProvidersFrom} from "@angular/core";
-import {HttpClientModule} from "@angular/common/http";
+import { select, withKnobs } from '@storybook/addon-knobs';
+import { IconModule } from '../icon/icon.module';
+import { SwitchComponent } from './switch/switch.component';
+import { SwitchModule } from './switch.module';
+import { action } from '@storybook/addon-actions';
+import { FormsModule } from '@angular/forms';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { importProvidersFrom } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 export default {
   title: 'Component/Switch',
   decorators: [
     withKnobs,
     applicationConfig({
-      providers: [
-        importProvidersFrom(HttpClientModule)
-      ],
+      providers: [importProvidersFrom(HttpClientModule)],
     }),
   ],
   component: SwitchComponent,
@@ -38,7 +36,7 @@ export const switchSample = () => ({
     },
   },
   template: `<teta-switch [viewType]="viewType" [tetaIconSprite]="'assets/icons.svg'"
-                          [ngModel]="model"
+                          [ngModel]="model" 
                           (ngModelChange)="log('switch', $event)">
   <teta-switch-button *ngFor="let val of values" [value]="val">
     <teta-icon [name]="'settings'" class="margin-right-2"></teta-icon> {{val}}

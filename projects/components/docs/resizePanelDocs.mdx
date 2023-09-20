@@ -1,0 +1,86 @@
+import {Meta} from "@storybook/blocks";
+import ResizeStories from "../src/component/resize-panel/Resize.stories";
+
+<Meta of={ResizeStories}/>
+
+<div class='column gap-24'>
+  <h1>Панель изменения размера</h1>
+  <div class='column'>
+    <p>Resizing panel (Панель изменения размера) — это элемент интерфейса, который обычно используется для изменения размера окна, панели
+      или другого элемента на экране. Это может быть полезным для пользователей, чтобы они могли настроить размер
+      элементов под свои потребности или предпочтения.</p>
+  </div>
+  <h3>Функции</h3>
+  <div class='column'>
+    <p>Функции resizing panel зависят от контекста, в котором она используется. Вот несколько общих функций, которые она
+      может выполнять:</p>
+    <ul>
+      <li>Изменение размера элементов: Основная функция resizing panel - это позволить пользователю изменять размер
+        элементов интерфейса. Это может быть окон, панелей, изображений, виджетов и т. д.</li>
+      <li>Размещение элементов: Некоторые resizing panel также могут помогать пользователю выравнивать и располагать
+        элементы на экране. Например, они могут предоставлять сетку или направляющие линии для более точного
+        позиционирования.</li>
+    </ul>
+  </div>
+  <h3>Как использовать</h3>
+  <div class='column'>
+    <p><code>teta-resize-panel</code> - компонент для создания панели изменения размера.</p>
+    <p>Панель может расрываться горизонтально и вертикально. За это отвечает свойство <code>direction</code></p>
+  </div>
+  <h3>Свойства</h3>
+  <table>
+    <thead>
+    <tr>
+      <th>Свойство</th>
+      <th>Tип</th>
+      <th>Описание</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td class='text-align-center'>
+        <p>direction</p>
+      </td>
+      <td class='text-align-center'>
+        <code>'vertical' | 'horizontal'</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Направления раскрытия панели</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>minSize</p>
+      </td>
+      <td class='text-align-center'>
+        <code>number</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Минимальный размер панели</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>maxSize</p>
+      </td>
+      <td class='text-align-center'>
+        <code>number</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Максимальный размер панели</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>grabPosition</p>
+      </td>
+      <td class='text-align-center'>
+        <code>'top' | 'bottom' | 'right' | 'left'</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Позиция иконки для изменения размера.</p>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

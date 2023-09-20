@@ -4,26 +4,24 @@ import {
   select,
   withKnobs,
 } from '@storybook/addon-knobs';
-import {Align} from '../../common/enum/align.enum';
-import {VerticalAlign} from '../../common/enum/vertical-align.enum';
-import {SelectComponent} from './select/select.component';
-import {SelectModule} from './select.module';
+import { Align } from '../../common/enum/align.enum';
+import { VerticalAlign } from '../../common/enum/vertical-align.enum';
+import { SelectComponent } from './select/select.component';
+import { SelectModule } from './select.module';
 import * as faker from 'faker';
-import {iconsList} from '../icon/icons-list';
-import {IconModule} from '../icon/icon.module';
-import {FormsModule} from '@angular/forms';
-import {applicationConfig, Meta} from "@storybook/angular";
-import {importProvidersFrom} from "@angular/core";
-import {HttpClientModule} from "@angular/common/http";
+import { iconsList } from '../icon/icons-list';
+import { IconModule } from '../icon/icon.module';
+import { FormsModule } from '@angular/forms';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { importProvidersFrom } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 export default {
   title: 'Component/Select',
   decorators: [
     withKnobs,
     applicationConfig({
-      providers: [
-        importProvidersFrom(HttpClientModule)
-      ],
+      providers: [importProvidersFrom(HttpClientModule)],
     }),
   ],
   component: SelectComponent,
@@ -32,7 +30,7 @@ export default {
   },
 } as Meta;
 
-const getOptions = (size) => {
+const getOptions = size => {
   const res = [];
   for (let i = 0; i < size; i++) {
     res.push({
