@@ -1,0 +1,266 @@
+import {Meta} from "@storybook/blocks";
+import TableStories from "../src/component/table/Table.stories";
+
+<Meta of={TableStories}/>
+
+<div class='column gap-24'>
+  <h1>Таблица</h1>
+  <div class='column'>
+    <p>Table (таблица) — компонент, который отображает данные. Создает на основе двух элементов: Table Header (шапка таблицы) и Cell (ячейка).</p>
+  </div>
+  <h3>Правила применения</h3>
+  <div class='column'>
+    <p>Основные правила применения элементов таблицы:</p>
+    <ul>
+      <li>в ячейке могут быть иконки, текстовые составляющие, выпадающие таблицы, тоглы, чекбоксы и др.;</li>
+      <li>Table Header используется только в шапке таблице.</li>
+    </ul>
+    <p>Для упрощения дизайн-процесса лучше всего создать строку из необходимого количества Table Header и объединить в компонент. Затем то же самое повторить со строками с Cell и из полученных строк создать компонент таблицы.</p>
+  </div>
+  <h3>Как использовать</h3>
+  <div class='column'>
+    <p>Для начала нужно создать <code> &lt;teta-table&gt;</code>.</p>
+    <p>Для создания таблицы в компонент необходимо передать свойства:</p>
+    <ul>
+      <li><code>data</code> - данные для формирования таблицы.</li>
+      <li><code>columns</code> - каркас данных для таблицы.</li>
+    </ul>
+    <p><code>columns</code> принимает в себя массив объектов типа <code>TableColumn</code>. Он состоит из:</p>
+    <ul>
+      <li><code>width</code> - ширина поля</li>
+      <li><code>flex</code> - коэффициент растяжения ячейки </li>
+      <li><code>headCellClass</code> - применяет указанный класс к шапке столбца</li>
+      <li><code>cellClass</code> - применяет указанный класс к каждой ячейке столбца</li>
+      <li><code>filterType</code> - тип поля в ячейке (select,datepicker,string и т.д.)</li>
+      <li><code>locked</code> - закрепляет столбец</li>
+      <li><code>parentName</code> - название столбца родителя </li>
+      <li><code>unit</code> - единицы измерения</li>
+      <li><code>unitMeasureParameterId</code> -  id измеряемого параметра </li>
+      <li><code>unitId</code> - id единицы измерения </li>
+      <li><code>data</code> - дополнительные данные, свободное описание, доступны внутри компонета ячейки, можно прокинуть callback например</li>
+      <li><code>editable</code> - флаг включения/отключения редактирования ячейки</li>
+      <li><code>headCellComponent</code> - компонент кастомной ячейки шапки стобца</li>
+      <li><code>headDropdownConfig</code> - кастомный дропдаун заголовка для столбца </li>
+      <li><code>cellComponent</code> - компонент кастомной ячейки</li>
+      <li><code>aggregate</code> - аггрегирует данные по указанному методу и выводит в последней строчке таблицы.</li>
+      <li><code>defaultValue</code> - данные которые будут выводится при отсутствии данных в ячейке</li>
+      <li><code>maxValue</code> - максимальное значение в ячейке</li>
+      <li><code>minValue</code> - минимальное значение в ячейке</li>
+      <li><code>required</code> - флаг обязательности ввода данных в ячейки</li>
+      <li><code>columns</code> -  дочерние колонки</li>
+      <li><code>validators</code> - валидаторы для ячеек таблицы</li>
+      <li><code>sortOrder</code> - порядковый номер</li>
+      <li><code>name</code> - название столбца в строке результатов</li>
+      <li><code>caption</code> - название столбца для заголовка таблицы </li>
+      <li><code>hint</code> - указанный текст появляется при наведении на ячейку.</li>
+      <li><code>sortable</code> - возможность сортировать поле</li>
+      <li><code>sortField</code> - поле для сортировки</li>
+      <li><code>filterable</code> - возможность фильтровать поле</li>
+      <li><code>filterField</code> - поле для фильтрации</li>
+      <li><code>stringFilterType</code> - тип сравнения строкового фильтра</li>
+      <li><code>listFilterType</code> - тип сравнения строкового фильтра</li>
+      <li><code>strict</code> - строгое сравнение </li>
+      <li><code>filterComponent</code> - компонент для рендера фильтра </li>
+    </ul>
+    <p>При выборе листа в качестве типа ячейки, то необходимо добавить свойство <code>dict</code>, которое отвечает за отображаемые элементы списка.</p>
+ </div>
+  <h3>Свойства</h3>
+  <table>
+    <thead>
+    <tr>
+      <th>Свойство</th>
+      <th>Tип</th>
+      <th>Описание</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td class='text-align-center'>
+        <p>data</p>
+      </td>
+      <td class='text-align-center'>
+        <code>any[]</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Данные для формирования таблицы</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>cookieName</p>
+      </td>
+      <td class='text-align-center'>
+        <code>string</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Будут формироваться куки данных таблицы с указанным именем</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>columns</p>
+      </td>
+      <td class='text-align-center'>
+        <code>TableColumns[]</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Шаблон столбцов таблицы</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>virtual</p>
+      </td>
+      <td class='text-align-center'>
+        <code>boolean</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Флаг для добавления виртульного скролла</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>dict</p>
+      </td>
+      <td class='text-align-center'>
+        <code>any[]</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Массив выбираемых элементов. Каждое свойство имеет название, которое должно совпадать с соответствующим свойством в <code>data</code>. В качестве значения принимает массив объектов id,name.Требуется если вы добавляете ячейку типа лист.</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>contextMenu</p>
+      </td>
+      <td class='text-align-center'>
+        <code>template</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Шаблон контекстного меню </p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>filterOptions</p>
+      </td>
+      <td class='text-align-center'>
+        <code>IDictionary&lt;IIdName&lt;any&gt;[]&gt;</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Список опций для фильтрации, если не задано - берет Dict</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>editType</p>
+      </td>
+      <td class='text-align-center'>
+        <code>EditType</code>
+      </td>
+      <td class='text-align-center'>
+        <p> Тип редактирования - построчно или по ячейкам. При построчном - активируется вся строка для редактирования, иначе - по одной ячейке  </p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>editEvent</p>
+      </td>
+      <td class='text-align-center'>
+        <code>EditEvent</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Выбор события при котором начинается редактирование ячейки таблицы</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>selectType</p>
+      </td>
+      <td class='text-align-center'>
+        <code>SelectType</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Тип выбора строк. Никак, чекбоксами (появляется доп столбец с чеком), или просто мышью.</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>selectedRows</p>
+      </td>
+      <td class='text-align-center'>
+        <code>any[]</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Свойство отвечающее за выбранные ячейки</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>tableService</p>
+      </td>
+      <td class='text-align-center'>
+        <code>function</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Срабатывает при создании сервиса и отдает его.</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>cellEditEnd</p>
+      </td>
+      <td class='text-align-center'>
+        <code>function</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Указанная функция применяется при окончании редактирования ячейки </p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>cellEditStart</p>
+      </td>
+      <td class='text-align-center'>
+        <code>function</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Указанная функция применяется при начале редактирования ячейки </p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>rowEditEnd</p>
+      </td>
+      <td class='text-align-center'>
+        <code>function</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Указанная функция применяется при окончании редактирования строчки.</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>rowEditStart</p>
+      </td>
+      <td class='text-align-center'>
+        <code>function</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Указанная функция применяется при начале редактирования строчки.</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>activeRowChange</p>
+      </td>
+      <td class='text-align-center'>
+        <code>function</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Указанная функция применяется при изменении выбранной строчки.</p>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

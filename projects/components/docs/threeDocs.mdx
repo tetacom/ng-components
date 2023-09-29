@@ -8,58 +8,57 @@ import ThreeStories from "../src/component/three/three.stories";
   <div class='column'>
     <p>3д график — это визуализация данных на графике с использованием трех измерений.</p>
   </div>
-  <h3>Функции</h3>
-  <div class='column'>
-    <p>Используйте модальное окно для второстепенного содержимого страниц, которое требуется только в некоторых случаях,
-      или для того, чтобы сосредоточить внимание пользователя на совершаемом действии. Как правило, это настройки,
-      создание новых документов, заполнение небольших форм.</p>
-    <p>Не используйте модальное окно для больших форм. Большие формы — это формы которые не помещаются в два экрана
-      монитора. </p>
-  </div>
   <h3>Как использовать</h3>
   <div class='column'>
-    <p>Для создания 3д график используется компонент <code>teta-three-chart</code>. В свойство <code>data</code> необходимо передать объект с типом <code>I3dChartConfig</code></p>
+    <p>Для создания 3д графика используется компонент <code>teta-three-chart</code>. В свойство <code>data</code> необходимо передать объект с типом <code>I3dChartConfig</code></p>
     <p>Этот объет включает в себя:</p>
     <ul>
-      <li>noDataText- текст который будет отображаться при отсутствии серий в графике.</li>
-      <li>xAxis - принимает в себя объект со свойствами min и max. Эти значения применяются при генерации оси X. </li>
-      <li>yAxis - принимает в себя объект со свойствами min и max. Эти значения применяются при генерации оси Y.</li>
-      <li>zAxis - принимает в себя объект со свойствами min и max. Эти значения применяются при генерации оси Z.</li>
-      <li>series - набор данных или набор точек данных, которые отображаются на графике.</li>
+      <li><code>noDataText</code> - текст который будет отображаться при отсутствии серий в графике.</li>
+      <li><code>xAxis</code> - принимает в себя объект со свойствами min и max. Эти значения применяются при генерации оси X. </li>
+      <li><code>yAxis</code> - принимает в себя объект со свойствами min и max. Эти значения применяются при генерации оси Y.</li>
+      <li><code>zAxis</code> - принимает в себя объект со свойствами min и max. Эти значения применяются при генерации оси Z.</li>
+      <li><code>series</code> - набор данных или набор точек данных, которые отображаются на графике.</li>
     </ul>
-    <p>В свою очередь свойство <code>series</code></p>
-    <p>Внутри компонента модалки мы привязываем события для закрытия модалки (допустим при нажатии на кнопку). Для этого
-      нужно внедрить сервис <code>CurrentModal</code> и вызвать метод close и передать в него объект со свойствами:</p>
+    <p>В свою очередь свойство <code>series</code> принимает в себя массив:</p>
     <ul>
-      <li><code>reason</code> - принимает номер причины закрытия модалки (ModalCloseReason)</li>
-      <li><code>data</code> - данные, которые нужно вывести из модалки</li>
+      <li><code>color</code> - цвет серии</li>
+      <li><code>type</code> - тип серии</li>
+      <li><code>visible</code> - отображение серии</li>
+      <li><code>name</code> - название серии</li>
+      <li><code>component</code> - свойство для добавления кастомной серии.</li>
+      <li><code>data</code> - данные, на основе которых формируется серия</li>
     </ul>
-    <p></p>
-    <p>Также есть возможность скрыть все открытые модалки медотом <code>closeAll</code> из <code>modalService</code></p>
+    <p>В зависимости от типа серии, свойсво <code>data</code> принимает разные типы данных.</p>
+    <p>Для типа серии <code>Series3dType.line</code> нужно передать массив объектов  x,y,z, а при типе серии <code>Series3dType.block</code> необходимо передать x,y,y1,z,iconId и name.</p>
+    <p>Свойства xAxis,yAxis,zAxis можно не вводить, при этом они будут генерироваться за счет свойств x,y,z из свойства data объекта series.</p>
+    <p>Для создания кастомной серии необходимо создать <code>standalone</code> компонент, в декоратор <code>Component</code> передать <code>schemas</code> со значением <code>[CUSTOM_ELEMENTS_SCHEMA]</code>. Добавить <code>extend(THREE);</code> в компонент серии.</p>
+    <p>В кастомный компонент можно внедрять <code>NgtStore</code>, с помощью которого можно управлять камерой, событиями, размером и т.д.</p>
   </div>
-  <h3>Пример кода</h3>
+  <h3>Пример кода кастомной серии</h3>
   <div>
-    <p>Создание модалки</p>
     <p>
-    <pre><code>createModal(name:string,description:string)&#123;
-      &nbsp;&nbsp;const modal=this.modalService.create(Component,&#123;name,description&#125;)
-      &nbsp;&nbsp;modal.onClose.pipe(
-      &nbsp;&nbsp;&nbsp;takeWhile(()=>this.alive),
-      &nbsp;&nbsp;&nbsp;filter((data)=>data.reason===ModalCloseReason.resolve),
-      &nbsp;&nbsp;&nbsp;tap((data)=>&#123;console.log(data.data.description)&#125;)
-      &nbsp;&nbsp;).subscribe()
-      &nbsp;&#125;</code></pre>
-    </p>
-    <p>Закрытие модалки</p>
-    <p>
-    <pre><code>closeModal(description:string)&#123;
-      &nbsp;&nbsp;this.currentModal.close(
-      &nbsp;&nbsp;&nbsp;&#123;
-      &nbsp;&nbsp;&nbsp;&nbsp;reason:ModalCloseReason.resolve,
-      &nbsp;&nbsp;&nbsp;&nbsp;data:&#123;description&#125;,
-      &nbsp;&nbsp;&nbsp;&#125;
-      &nbsp;&nbsp;)
-      &nbsp;&#125;</code></pre>
+      <pre><code>extend(THREE);
+        &nbsp;@Component(&#123;
+        &nbsp;&nbsp;selector: 'teta-custom-series',
+        &nbsp;&nbsp;standalone: true,
+        &nbsp;&nbsp;imports: [CommonModule, NgtArgs],
+        &nbsp;&nbsp;schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        &nbsp;&nbsp;changeDetection: ChangeDetectionStrategy.OnPush,
+        &nbsp;&nbsp;templateUrl: './custom-series.component.html',
+        &nbsp;&#125;)
+        &nbsp;export class CustomSeriesComponent extends Base3dSeriesComponent&lt;Base3dPoint&gt; implements OnInit &#123;
+        &nbsp;&nbsp;public scales: Observable&lt;&#123; x; y; z &#125;&gt;;
+        &nbsp;&nbsp;constructor(override svc: Chart3dService, override ngtStore: NgtStore) &#123;
+        &nbsp;&nbsp;&nbsp;super(svc, ngtStore);
+        &nbsp;&nbsp;&nbsp;this.scales = this.svc.scales;
+        &nbsp;&nbsp;&#125;
+        &nbsp;&nbsp;ngOnInit(): void &#123;
+        &nbsp;&nbsp;&nbsp;setTimeout(() => &#123;
+        &nbsp;&nbsp;&nbsp;&nbsp;this.ngtStore.get('camera').zoom = 2;
+        &nbsp;&nbsp;&nbsp;&nbsp;this.ngtStore.get('camera').updateProjectionMatrix();
+        &nbsp;&nbsp;&nbsp;&#125;, 1000);
+        &nbsp;&nbsp;&#125;
+        &nbsp;&#125;</code></pre>
     </p>
 
   </div>
