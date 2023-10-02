@@ -178,4 +178,15 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
   selectDate(date: Date) {
     this.setDate.emit(date);
   }
+  scrollMonth = (e: any, month: number, year: number) => {
+    const delta = e?.deltaY ?? e;
+    if (e instanceof WheelEvent) {
+      e.preventDefault();
+    }
+    if (delta > 0) {
+      this.changeMonth(month - 1, year);
+    } else {
+      this.changeMonth(month + 1, year);
+    }
+  };
 }

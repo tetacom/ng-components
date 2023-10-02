@@ -3,7 +3,7 @@
   class="datepicker-content overflow-y-auto"
 >
   <ng-container *ngIf="data.selectedPicker==='day'">
-    <div class="row ">
+    <div class="row " (wheel)="scrollMonth($event,data.currentMonth,data.currentYear)">
       <div class="padding-h-3 padding-v-2">
         <div class="row align-center justify-content-between">
           <teta-button
