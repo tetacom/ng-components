@@ -1,0 +1,54 @@
+import {Meta} from "@storybook/blocks";
+import toggleStories from "../src/component/toggle/Toggle.stories";
+
+<Meta of={toggleStories}/>
+
+<div class='column gap-24'>
+  <h1>Переключатель</h1>
+  <div class='column'>
+    <p>Toggle (переключатель) — компонент, который позволяет переключаться между состояниями.</p>
+  </div>
+  <h3>Функции</h3>
+  <div class='column'>
+    <p>Функционально тогл — аналог чекбокса, но контекст их использования может отличаться. Тогл нельзя использовать для выбора элементов в списке. Например, выбрать несколько параметров.</p>
+    <p>Тогл больше и заметнее чекбокса. Хорошо, когда на странице 1 тогл, максимум 2–3.</p>
+  </div>
+  <h3>Как использовать</h3>
+  <div class='column'>
+    <p><code>teta-toggle</code> - компонент для создание тогла. Для управления его состоянием используется <code>ngModel</code></p>
+  </div>
+  <h3>Свойства</h3>
+  <table>
+    <thead>
+    <tr>
+      <th>Свойство</th>
+      <th>Tип</th>
+      <th>Описание</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td class='text-align-center'>
+        <p>noLabel</p>
+      </td>
+      <td class='text-align-center'>
+        <code>boolean</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Свойство, которое отображает/скрывает блок текста в тогле</p>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-align-center'>
+        <p>disabled</p>
+      </td>
+      <td class='text-align-center'>
+        <code>boolean</code>
+      </td>
+      <td class='text-align-center'>
+        <p>Отключает взаимодействие со всем листом радиокнопок</p>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

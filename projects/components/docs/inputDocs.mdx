@@ -1,0 +1,92 @@
+import {Meta} from "@storybook/blocks";
+import InputStories from "../src/component/input/Input.stories";
+
+<Meta of={InputStories}/>
+
+<div class='column gap-24'>
+  <h1>Инпут</h1>
+  <div class='column'>
+    <p>Input (поле ввода) — компонент, который позволяет указать значение с помощью клавиатуры.</p>
+    <p>В библиотеке существует два вида иконок: цветные и без заливки</p>
+  </div>
+  <h3>Как использовать</h3>
+  <div class='column'>
+    <p>Иконки нужны для быстрого восприятия информации и помогают пользователю быстро и легко узнать о теме функции или категории, не используя текст.</p>
+    <p>Используются в различных компонентах:</p>
+    <ul>
+      <li>Кнопки</li>
+      <li>Инпуты</li>
+      <li>Селекты</li>
+      <li>Аккордеонах и т.п.</li>
+    </ul>
+  </div>
+  <div class='column'>
+    <h3>Свойства</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>Свойство</th>
+        <th>Tип</th>
+        <th>Описание</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td  class='text-align-center'>
+          <p>viewType</p>
+        </td>
+        <td class='text-align-center'>
+          <code>'rounded'|'circle'|'brick'</code>
+        </td>
+        <td  class='text-align-center'>
+            <p>Свойство округления компонента.</p>
+        </td>
+      </tr>
+      <tr>
+        <td  class='text-align-center'>
+          <p>size</p>
+        </td>
+        <td class='text-align-center'>
+          <code>'24' | '28' | '32' | '44' | '64' | '128' | '200'</code>
+        </td>
+        <td  class='text-align-center'>
+          <p>Размер компонента</p>
+        </td>
+      </tr>
+      <tr>
+        <td  class='text-align-center'>
+          <p>photo</p>
+        </td>
+        <td class='text-align-center'>
+          <code>'string | ArrayBuffer'</code>
+        </td>
+        <td  class='text-align-center'>
+          <p>Изображение для фона компонента</p>
+        </td>
+      </tr>
+      <tr>
+        <td  class='text-align-center'>
+          <p>id</p>
+        </td>
+        <td class='text-align-center'>
+          <code>'number'</code>
+        </td>
+        <td  class='text-align-center'>
+          <p>Свойство, которое отвечает за цвет фона компонента</p>
+        </td>
+      </tr>
+      <tr>
+        <td  class='text-align-center'>
+          <p>name</p>
+        </td>
+        <td class='text-align-center'>
+          <code>'string'</code>
+        </td>
+        <td  class='text-align-center'>
+          <p>Отображаемый текст</p>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

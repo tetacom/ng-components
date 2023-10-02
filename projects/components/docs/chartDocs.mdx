@@ -1,0 +1,153 @@
+import {Meta} from "@storybook/blocks";
+import ChartStories from '../../chart/src/chart/stories/Chart.stories'
+
+<Meta of={ChartStories}/>
+<div class='column gap-24'>
+  <h1>Компонент 2д графика</h1>
+  <div class='column'>
+    <p>2д график представляет собой двумерное визуальное представление данных на плоскости. Он используется для отображения зависимостей между двумя переменными или для представления информации, которая имеет только два измерения.</p>
+  </div>
+  <h3>Как использовать</h3>
+  <div class='column'>
+    <p>Для создания 2д графика используется компонент <code>teta-svg-chart</code>. В свойство <code>data</code> необходимо передать объект с типом <code>IChartConfig</code></p>
+    <p>Этот объет включает в себя:</p>
+    <ul>
+      <li><code>noDataText</code> - текст который будет отображаться при отсутствии серий в графике.</li>
+      <li><code>name</code> - имя графика.</li>
+      <li><code>id</code> - внутренний идентификатор графика. </li>
+      <li><code>legend</code> - отвечает за отображение легенды графика. Принимает в себя объект со свойством <code>enabled</code> </li>
+      <li><code>bounds</code> - Добавляет отступ внутри графика. Принимает в себя объект со свойствами <code>top</code>, <code>bottom</code>, <code>left</code>, <code>right</code>. Они ждут числовые значения, которые будут использоваться для добавления соответствующих отступов в px. </li>
+      <li><code>inverted</code> - свойство, которое добавляет инвертацию осей графика.</li>
+      <li><code>height</code> - высота графика </li>
+      <li><code>width</code> - ширина графика </li>
+      <li><code>brush</code> - отвечает за отрисовку выделяемой области на графике. </li>
+      <li><code>zoom</code> - отвечает за зум графика.</li>
+      <li><code>annotations</code> - добавляет дополнительную информацию для точек на графике.</li>
+      <li><code>gridLines</code> - отвечает за отображение сетки графика.</li>
+      <li><code>tooltip</code> - отвечает за отображение туллтипа над точками графика при наведении.</li>
+      <li><code>xAxis</code> - обработка оси X</li>
+      <li><code>yAxis</code> - обработка оси Y</li>
+      <li><code>series</code> - набор данных или набор точек данных, которые отображаются на графике.</li>
+    </ul>
+    <p><code>brush</code> принимает в себя:</p>
+    <ul>
+      <li><code>enable</code> - флаг включен/отключен</li>
+      <li><code>type</code> - тип направления выделения области (x или y)</li>
+      <li><code>from</code> - начало отрисовки области</li>
+      <li><code>to</code> - окончание отрисовки области</li>
+      <li><code>min</code> - минимальное значение</li>
+      <li><code>max</code> - максимальное значение</li>
+    </ul>
+    <p><code>zoom</code> принимает в себя:</p>
+    <ul>
+      <li><code>enable</code> - флаг включен/отключен</li>
+      <li><code>type</code> - тип зума области (x или y)</li>
+      <li><code>syncChannel</code> - канал синхронизации нескольких графиков.</li>
+      <li><code>min</code> - минимальное значение</li>
+      <li><code>max</code> - максимальное значение</li>
+      <li><code>limitTranslateByData</code> - ограничение перемещения зума по данным</li>
+      <li><code>limitZoomByData</code> - ограничение приближения по данным</li>
+      <li><code>zoomBehavior</code> - тип поведения зума (onWheel , onWheel + ctrl)</li>
+      <li><code>wheelDelta</code> - коэфициент зума</li>
+      <li><code>minTranslate</code> - минимальная точка перемещения</li>
+      <li><code>maxTranslate</code> - максимальная точка перемещения</li>
+      <li><code>wheelFilter</code> - принимает функцию, которая ждет будет отдавать true/false, для реагирование зум при зажатых клавишах (допустим если требуется сделать зум только при зажатом shift)</li>
+    </ul>
+    <p><code>tooltip</code> принимает в себя:</p>
+    <ul>
+      <li><code>enable</code> - флаг включен/отключен</li>
+      <li><code>showMarkers</code> - тип зума области (x или y)</li>
+      <li><code>showLine</code> - канал синхронизации нескольких графиков.</li>
+      <li><code>showCrosshair</code> - минимальное значение</li>
+      <li><code>tracking</code> - максимальное значение</li>
+      <li><code>template</code> - ограничение перемещения зума по данным</li>
+      <li><code>format</code> - ограничение приближения по данным</li>
+      <li><code>padding</code> - тип поведения зума (onWheel , onWheel + ctrl)</li>
+   </ul>
+    <p><code>annotations</code> принимает в себя массив:</p>
+    <ul>
+      <li><code>id</code> - индентификатор</li>
+      <li><code>point</code> - позиция аннотации</li>
+      <li><code>draggable</code> - возможность двигать аннотацию</li>
+      <li><code>xAxisIndex</code> - индекс оси Х, к которой привязана аннотация</li>
+      <li><code>yAxisIndex</code> - индекс оси Y, к которой привязана аннотация</li>
+      <li><code>dx</code> - смешение аннотации по X относительно точки в px</li>
+      <li><code>dy</code> - смешение аннотации по Y относительно точки в px</li>
+      <li><code>className</code> - css класс, который применяется к аннотации</li>
+      <li><code>style</code> - css стиль, который применяется к аннотации</li>
+      <li><code>data</code> - дополнительные данные</li>
+    </ul>
+    <p><code>gridLines</code> принимает в себя:</p>
+    <ul>
+      <li><code>enable</code> - флаг включен/отключен</li>
+      <li><code>showX</code> - флаг включен/отключен X</li>
+      <li><code>showY</code> -флаг включен/отключен Y</li>
+      <li><code>x</code> - принимает объект со свойством <code>ticks</code>, которое означает количество линий по X.</li>
+      <li><code>y</code> - принимает объект со свойством <code>ticks</code>, которое означает количество линий по Y.</li>
+    </ul>
+    <p><code>xAxis</code> и <code>yAxis</code> принимают в себя массив:</p>
+    <ul>
+      <li><code>title</code> - название оси,которое выводится левее нее</li>
+      <li><code>min</code> - минимальное значение оси</li>
+      <li><code>max</code> - максимальное значение оси</li>
+      <li><code>scaleType</code> - тип значений на оси</li>
+      <li><code>visible</code> - флаг отображения оси</li>
+      <li><code>tickFormat</code> - коллбек для форматирования текста на оси.</li>
+      <li><code>inverted</code> - инверсия оси</li>
+      <li><code>opposite</code> - смена положения оси на противоположную сторону</li>
+      <li><code>niceTicks</code> - флаг округления чисел на осях</li>
+    </ul>
+    <p><code>series</code> принимают в себя массив:</p>
+    <ul>
+      <li><code>id</code> - индентификатор серии</li>
+      <li><code>color</code> - цвет серии</li>
+      <li><code>type</code> - тип серии</li>
+      <li><code>xAxisIndex</code> - индетификатор, по которому выбирается ось в массиве X и серии рисуются по ней.</li>
+      <li><code>yAxisIndex</code> - индетификатор, по которому выбирается ось в массиве Y и серии рисуются по ней.</li>
+      <li><code>fillType</code> - тип заливки серии </li>
+      <li><code>fillDirection</code> - направление заливки</li>
+      <li><code>showInLegend</code> - флаг отображения в легенде чарта.</li>
+      <li><code>clipPointsDirection</code> - отключение отрисовки точек за пределами области видимости.</li>
+      <li><code>visible</code> - отображение серии</li>
+      <li><code>name</code> - название серии</li>
+      <li><code>component</code> - свойство для добавления кастомной серии.</li>
+      <li><code>data</code> - данные, на основе которых формируется серия</li>
+    </ul>
+    <p>В зависимости от типа серии, свойсво <code>data</code> принимает разные типы данных.</p>
+    <p>В шаблонных сериях объект <code>data</code> ждет свойсва <code>x</code> и <code>y</code>. В зависимости от типа серии он может ждать: x1, y1, iconId,marker,text,color</p>
+    <p>Свойства xAxis,yAxis можно не вводить, при этом они будут генерироваться за счет свойств x,y из свойства data объекта series.</p>
+    <p>Для создания кастомной серии необходимо создать компонент, в свойстве <code>selector</code> декоратора <code>Component</code> обернуть название компонента тегом svg (<code>selector:"svg:svg[app-component]"</code>).</p>
+    <p>Для того чтобы определять положение точек, объектов на графике , необходимо из <code>scaleService</code> взять скейлы.</p>
+  </div>
+  <h3>Пример кода кастомной серии</h3>
+  <div>
+    <p>
+      <pre><code>@Component(&#123;
+        &nbsp;&nbsp;selector: 'svg:svg[teta-custom-series]',
+        &nbsp;&nbsp;templateUrl: './custom-series.component.html',
+        &nbsp;&nbsp;styleUrls: ['./custom-series.component.scss'],
+        &nbsp;&nbsp;changeDetection: ChangeDetectionStrategy.OnPush,
+        &nbsp;&#125;)
+        &nbsp;private _alive = true;
+        &nbsp;public x: Observable&lt;any&gt;;
+        &nbsp;public y: Observable&lt;any&gt;;
+        &nbsp;export class CustomSeriesComponent extends SeriesBaseComponent&lt;BasePoint&gt; implements OnInit,OnDestroy &#123;
+        &nbsp;&nbsp;public x: Observable&lt;any&gt;;
+        &nbsp;&nbsp;public x: Observable&lt;any&gt;;
+        &nbsp;&nbsp;constructor(override svc: Chart3dService, override cdr: ChangeDetectorRef,scaleService: ScaleService,zoomService: ZoomService,element: ElementRef) &#123;
+        &nbsp;&nbsp;&nbsp;super(svc, cdr, scaleService, zoomService, element);
+        &nbsp;&nbsp;&#125;
+        &nbsp;&nbsp;override ngOnInit(): void &#123;
+        &nbsp;&nbsp;&nbsp;this.x = this.scaleService.scales.pipe(
+        &nbsp;&nbsp;&nbsp;&nbsp;takeWhile(() => this.&#95;alive),
+        &nbsp;&nbsp;&nbsp;&nbsp;map(&#95; => _.x.get(this.series.xAxisIndex)?.scale)
+        &nbsp;&nbsp;&nbsp;&#125;);
+        &nbsp;&nbsp;&#125;
+        &nbsp;&nbsp; ngOnDestroy(): void &#123;
+        &nbsp;&nbsp;&nbsp;this._alive=false
+        &nbsp;&nbsp;&#125;
+        &nbsp;&#125;</code></pre>
+    </p>
+
+  </div>
+</div>

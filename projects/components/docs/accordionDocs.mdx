@@ -1,0 +1,118 @@
+import {Meta} from "@storybook/blocks";
+import AccordionStories from "../src/component/accordion/Accordion.stories";
+
+<Meta of={AccordionStories}/>
+
+<div class='column gap-24'>
+  <h1>Аккордеон</h1>
+  <div class='column'>
+    <p>Аккордеон — это список параметров, которые можно развернуть / свернуть, чтобы отобразить или скрыть
+      дополнительный связанный контент.</p>
+  </div>
+  <h3>Функции</h3>
+  <div class='column'>
+    <p>Аккордеон позволяет пользователю расширить и свернуть разделы контента и тем самым быстро перемещаться по
+      материалам, а также дизайнер может вмещать большие объемы информации в ограниченном пространстве.</p>
+    <p>У элемента есть возможность добавить иконку для уточнения раздела или же кнопку “Дополнительно” для уточнения
+      возможностей аккордеона.</p>
+  </div>
+  <h3>Состояния</h3>
+  <div class='column'>
+    <p>По умолчанию у аккордеона есть 3 состояния: Close, Hover и Open.</p>
+    <p>Аккордеон при наведении визуально выделяется, чтобы человек понимал, что при нажатии на этот элемент что-то
+      произойдет. После нажатия стрелка поворчаивается, показывая, что элемент был успешно развёрнут. При повторном
+      щелчке, стрелка возвращается в исходное положение, а информация сворачивается.</p>
+  </div>
+  <h3>Как пользоваться компонентом</h3>
+  <div class='column'>
+    <p>Для начала нужно создать <code> &lt;teta-accordion&gt;</code>-обертку для аккордеонов и служит для объединения аккордеонов, т.е. среди них может быть открыт только один.</p>
+    <p>Сам аккордеон создается при помощи тега <code> &lt;teta-accordion-item&gt;</code>.</p>
+    <p>Внутрь необходимо передать контент для шапки аккордеона и наполнение аккордеона. Это делается при помощи компонента <code>&lt;teta-accordion-head&gt;</code> с наполнением шапки и директивы <code>tetaAccordionContent</code></p>
+  </div>
+  <h3>Примеры кода</h3>
+    <p><pre><code>&lt;teta-accordion&gt;
+      &nbsp;&nbsp;&lt;teta-accordion-item [viewType]="'brick'"&gt;
+      &nbsp;&nbsp;&nbsp;&lt;teta-accordion-head&gt;Heading 1&lt;/teta-accordion-head&gt;
+      &nbsp;&nbsp;&nbsp;&lt;ng-template tetaAccordionContent&gt;
+      &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="padding-v-3 padding-h-2"&gt;I am the content 1&lt;/div&gt;
+      &nbsp;&nbsp;&nbsp;&lt;/ng-template&gt;
+      &nbsp;&nbsp;&lt;/teta-accordion-item&gt;
+      &nbsp;&nbsp;&lt;teta-accordion-item [viewType]="'rounded'"&gt;
+      &nbsp;&nbsp;&nbsp;&lt;teta-accordion-head&gt;Heading 3&lt;/teta-accordion-head&gt;
+      &nbsp;&nbsp;&nbsp;&lt;ng-template tetaAccordionContent&gt;
+      &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="padding-v-3 padding-h-5"&gt;I am the content 3&lt;/div&gt;
+      &nbsp;&nbsp;&nbsp;&lt;/ng-template&gt;
+      &nbsp;&nbsp;&lt;/teta-accordion-item&gt;
+      &lt;/teta-accordion&gt;</code></pre></p>
+  <div class='column'>
+    <h3>Свойства</h3>
+    <h4>teta-accordion-item</h4>
+    <table>
+      <thead>
+      <tr>
+        <th>Свойство</th>
+        <th>Tип</th>
+        <th>Описание</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class='text-align-center'>
+          <p>viewType</p>
+        </td>
+        <td class='text-align-center'>
+          <code>'rounded'|'circle'|'brick'</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Свойство округления компонента.</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>open</p>
+        </td>
+        <td class='text-align-center'>
+          <code>boolean</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Свойство позволяющее управлять состоянием аккордеона</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>disabled</p>
+        </td>
+        <td class='text-align-center'>
+          <code>boolean</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Свойство для отключения аккордеона</p>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <h4>teta-accordion-head</h4>
+    <table>
+      <thead>
+      <tr>
+        <th>Свойство</th>
+        <th>Tип</th>
+        <th>Описание</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class='text-align-center'>
+          <p>showToggle</p>
+        </td>
+        <td class='text-align-center'>
+          <code>boolean</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Свойство для отображения состояния аккордеона</p>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
