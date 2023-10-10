@@ -16,7 +16,7 @@
        [ngClass]="{'datepicker-head_invalid':invalid,'datepicker-head_disabled':disabled}">
     <teta-input class='row row_auto flex'>
       <div [class]="'row_auto row datepicker_'+viewType">
-        <div class='row row_auto position-relative font-body-3 align-center'>
+        <div class='row row_auto position-relative font-body-3 align-center' style="width: 80%">
           <input [ngClass]="{'color-text-90':!disabled}"
                  [disabled]='disabled' #input style='z-index: 1'
                  class='row_auto border-0'
@@ -25,7 +25,7 @@
                  (ngModelChange)='changeInput($event)'
                  [maskito]='maskitoOptions'>
           <div (click)='input.focus()' *ngIf='data.selectedDate||allowNull' class='position-absolute color-text-10'
-               style='top:-0.3px;cursor: text;user-select: none'>{{placeholder}}</div>
+               style='cursor: text;user-select: none'>{{placeholder}}</div>
         </div>
         <teta-icon [name]="'calendar'" [palette]="'text'"></teta-icon>
       </div>

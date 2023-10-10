@@ -71,7 +71,9 @@ export class DatePickerComponent
     new ReplaySubject<Date | string | number>(1);
   public mask = '';
 
-  @HostBinding('class.datepicker') private readonly classDatepicker = true;
+  @HostBinding('class') get datepickerClass() {
+    return this.showTime?"datepicker-time":"datepicker"
+  }
   @HostBinding('tabindex') private readonly tabindex = 0;
 
   constructor(

@@ -17,6 +17,10 @@
 
   @include getView('base');
 
+  &-time{
+   width: 160px;
+  }
+
   &-wide {
     width: 170px;
   }
