@@ -15,12 +15,12 @@ import { ScaleService } from '../../../service/scale.service';
 import { ZoomService } from '../../../service/zoom.service';
 
 @Component({
-  selector: 'svg:svg[teta-block-series]',
-  templateUrl: './block-series.component.html',
-  styleUrls: ['./block-series.component.scss'],
+  selector: 'svg:svg[teta-block-horizontal-series]',
+  templateUrl: './block-horizontal-series.component.html',
+  styleUrls: ['./block-horizontal-series.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BlockSeriesComponent<T extends BasePoint>
+export class BlockHorizontalSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
   implements OnInit
 {
@@ -50,20 +50,20 @@ export class BlockSeriesComponent<T extends BasePoint>
       map(_ => _.y.get(this.series.yAxisIndex)?.scale)
     );
 
-    this.displayPoints = this.y.pipe(
+    this.displayPoints = this.x.pipe(
       filter(y => y),
       map(y => {
         return this.series.data.filter((point, index, arr) => {
           const [min, max] = y.domain();
           return (
-            (point.y >= min ||
-              point.y1 >= min ||
-              arr[index + 1]?.y >= min ||
-              arr[index + 1]?.y1 >= min) &&
-            (point.y <= max ||
-              point.y1 <= max ||
-              arr[index - 1]?.y <= max ||
-              arr[index - 1]?.y1 <= max)
+            (point.x >= min ||
+              point.x1 >= min ||
+              arr[index + 1]?.x >= min ||
+              arr[index + 1]?.x1 >= min) &&
+            (point.x <= max ||
+              point.x1 <= max ||
+              arr[index - 1]?.x <= max ||
+              arr[index - 1]?.x1 <= max)
           );
         });
       })

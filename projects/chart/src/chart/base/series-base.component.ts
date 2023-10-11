@@ -2,15 +2,17 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Input, NgZone,
+  Input,
+  NgZone,
   OnInit,
 } from '@angular/core';
-import {ChartService} from '../service/chart.service';
-import {Series} from '../model/series';
-import {BasePoint} from '../model/base-point';
-import {ScaleService} from '../service/scale.service';
-import {ZoomService} from '../service/zoom.service';
-import {IChartConfig} from '../model/i-chart-config';
+
+import { BasePoint } from '../model/base-point';
+import { IChartConfig } from '../model/i-chart-config';
+import { Series } from '../model/series';
+import { ChartService } from '../service/chart.service';
+import { ScaleService } from '../service/scale.service';
+import { ZoomService } from '../service/zoom.service';
 
 @Component({
   template: '',
@@ -44,9 +46,7 @@ export class SeriesBaseComponent<T extends BasePoint> implements OnInit {
     protected zoomService: ZoomService,
     protected element: ElementRef,
     protected zone?: NgZone
-  ) {
-  }
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

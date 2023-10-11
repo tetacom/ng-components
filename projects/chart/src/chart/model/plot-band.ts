@@ -11,6 +11,7 @@ export class PlotBand {
   resizable?: boolean;
   min?: number;
   max?: number;
+  order = 0;
   style?: {
     plotBand?: SvgAttributes;
     grabbers?: SvgAttributes;
@@ -27,6 +28,7 @@ export class PlotBand {
     resizable?: boolean;
     min?: number;
     max?: number;
+    order?: number;
     style?: {
       plotBand?: SvgAttributes;
       grabbers?: SvgAttributes;
@@ -43,6 +45,7 @@ export class PlotBand {
     this.resizable = options?.resizable != null ? options?.resizable : true;
     this.min = options?.min;
     this.max = options?.max;
+    this.order = options?.order ?? 0;
     this.style = options?.style;
   }
 }

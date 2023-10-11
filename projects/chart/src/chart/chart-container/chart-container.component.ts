@@ -1,60 +1,67 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   NgZone,
   OnDestroy,
-  OnInit,
 } from '@angular/core';
-import {IChartConfig} from '../model/i-chart-config';
-import {ChartService} from '../service/chart.service';
+import { tetaZoneFull } from '@tetacom/ng-components';
 import {
   animationFrameScheduler,
   combineLatest,
   map,
-  Observable, observeOn,
+  Observable,
+  observeOn,
   shareReplay,
   withLatestFrom,
 } from 'rxjs';
-import {Axis} from '../core/axis/axis';
-import {AxisOrientation} from '../model/enum/axis-orientation';
-import {ScaleService} from '../service/scale.service';
-import {ZoomService} from '../service/zoom.service';
-import {BrushType} from '../model/enum/brush-type';
-import {ZoomType} from '../model/enum/zoom-type';
-import {tetaZoneFull} from '@tetacom/ng-components';
-import {IScalesMap} from '../model/i-scales-map';
-import {Series} from "../model/series";
-import {BasePoint} from "../model/base-point";
+
+import { Axis } from '../core/axis/axis';
+import { BasePoint } from '../model/base-point';
+import { AxisOrientation } from '../model/enum/axis-orientation';
+import { BrushType } from '../model/enum/brush-type';
+import { ZoomType } from '../model/enum/zoom-type';
+import { IChartConfig } from '../model/i-chart-config';
+import { IScalesMap } from '../model/i-scales-map';
+import { PlotBand } from '../model/plot-band';
+import { Series } from '../model/series';
+import { ChartService } from '../service/chart.service';
+import { ScaleService } from '../service/scale.service';
 
 type Opposite = boolean;
-
+type DisplayPlotBand = {
+  axis: Axis;
+  plotBand: PlotBand;
+};
 @Component({
   selector: 'teta-chart-container',
   templateUrl: './chart-container.component.html',
   styleUrls: ['./chart-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChartContainerComponent implements OnInit, OnDestroy {
+export class ChartContainerComponent implements AfterViewInit, OnDestroy {
   config: Observable<IChartConfig>;
   scales: Observable<IScalesMap>;
   size: Observable<DOMRect>;
   visibleRect: Observable<any>;
   brushScale: Observable<any>;
   zoomType = ZoomType;
+  plotBands: Observable<DisplayPlotBand[]>;
 
   private _observer: ResizeObserver;
-  private filterPositionMap = new Map<Opposite,
-    (axis: Axis) => (_: Axis) => boolean>()
+  private filterPositionMap = new Map<
+    Opposite,
+    (axis: Axis) => (_: Axis) => boolean
+  >()
     .set(
       true,
-      (axis) => (_: Axis) =>
+      axis => (_: Axis) =>
         _.options.opposite && _.options.visible && axis.index <= _.index
     )
     .set(
       false,
-      (axis) => (_: Axis) =>
+      axis => (_: Axis) =>
         _.options.opposite !== true &&
         _.options.visible &&
         _.index <= axis.index
@@ -62,9 +69,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
 
   constructor(
     private _svc: ChartService,
-    private _cdr: ChangeDetectorRef,
     private _scaleService: ScaleService,
-    private _zoomService: ZoomService,
     private _elementRef: ElementRef,
     private _zone: NgZone
   ) {
@@ -80,12 +85,39 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       })
     );
 
+    this.plotBands = combineLatest([this.config, this.scales]).pipe(
+      map(([config, scales]) => {
+        const bands: DisplayPlotBand[] = [];
+        config.xAxis?.forEach((axis, index) => {
+          axis.plotBands?.forEach(band => {
+            bands.push({
+              plotBand: band,
+              axis: scales.x.get(index),
+            });
+          });
+        });
+        config.yAxis?.forEach((axis, index) => {
+          axis.plotBands?.forEach(band => {
+            bands.push({
+              plotBand: band,
+              axis: scales.y.get(index),
+            });
+          });
+        });
+
+        return bands.sort((a, b) => a.plotBand.order - b.plotBand.order);
+      })
+    );
+
     this.brushScale = this._scaleService.scales.pipe(
       withLatestFrom(this.config),
       map((data: [IScalesMap, IChartConfig]) => {
-        const [{x, y}, config] = data;
+        const [{ x, y }, config] = data;
 
-        return config.brush?.type === BrushType.x || config?.zoom?.type === ZoomType.x ? x.get(0)?.scale : y.get(0)?.scale;
+        return config.brush?.type === BrushType.x ||
+          config?.zoom?.type === ZoomType.x
+          ? x.get(0)?.scale
+          : y.get(0)?.scale;
       }),
       shareReplay({
         bufferSize: 1,
@@ -93,58 +125,53 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
       })
     );
 
+    this.visibleRect = combineLatest([
+      this.size,
+      this.scales,
+      this.config,
+    ]).pipe(
+      map((data: [DOMRect, IScalesMap, IChartConfig]) => {
+        const [size, { x, y }, config] = data;
+        const yAxesArray = Array.from(y.values());
+        const xAxesArray = Array.from(x.values());
+        const left = yAxesArray
+          .filter(_ => _.options.opposite !== true && _.options.visible)
+          .reduce(this.sumSize, 0);
 
-    this.visibleRect = combineLatest([this.size, this.scales, this.config])
-      .pipe(
-        map(
-          (
-            data: [DOMRect, IScalesMap, IChartConfig]
-          ) => {
-            const [size, {x, y}, config] = data;
-            const yAxesArray = Array.from(y.values());
-            const xAxesArray = Array.from(x.values());
-            const left = yAxesArray
-              .filter((_) => _.options.opposite !== true && _.options.visible)
-              .reduce(this.sumSize, 0);
+        const right = yAxesArray
+          .filter(_ => _.options.opposite && _.options.visible)
+          .reduce(this.sumSize, 0);
 
-            const right = yAxesArray
-              .filter((_) => _.options.opposite && _.options.visible)
-              .reduce(this.sumSize, 0);
+        const bottom = xAxesArray
+          .filter(_ => _.options.opposite !== true && _.options.visible)
+          .reduce(this.sumSize, 0);
 
-            const bottom = xAxesArray
-              .filter((_) => _.options.opposite !== true && _.options.visible)
-              .reduce(this.sumSize, 0);
-
-            const top = xAxesArray
-              .filter((_) => _.options.opposite && _.options.visible)
-              .reduce(this.sumSize, 0);
-            return {
-              x: left + config.bounds?.left,
-              y: top + config.bounds?.top,
-              width:
-                size.width -
-                left -
-                right -
-                config.bounds?.left -
-                config.bounds?.right,
-              height:
-                size.height -
-                top -
-                bottom -
-                config.bounds?.top -
-                config.bounds?.bottom,
-            };
-          }
-        ),
-        tetaZoneFull(this._zone),
-        shareReplay({
-          bufferSize: 1,
-          refCount: true,
-        })
-      );
-  }
-
-  ngOnInit() {
+        const top = xAxesArray
+          .filter(_ => _.options.opposite && _.options.visible)
+          .reduce(this.sumSize, 0);
+        return {
+          x: left + config.bounds?.left,
+          y: top + config.bounds?.top,
+          width:
+            size.width -
+            left -
+            right -
+            config.bounds?.left -
+            config.bounds?.right,
+          height:
+            size.height -
+            top -
+            bottom -
+            config.bounds?.top -
+            config.bounds?.bottom,
+        };
+      }),
+      tetaZoneFull(this._zone),
+      shareReplay({
+        bufferSize: 1,
+        refCount: true,
+      })
+    );
   }
 
   ngAfterViewInit(): void {
@@ -175,7 +202,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     return this.scales.pipe(
       withLatestFrom(this.config),
       map((data: [IScalesMap, IChartConfig]) => {
-        const [{x, y}, config] = data;
+        const [{ x, y }, config] = data;
         const xAxesArray = Array.from(x.values());
         const yAxesArray = Array.from(y.values());
 
@@ -208,11 +235,11 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
         );
 
         const left = yAxesArray
-          .filter((_) => _.options.visible && _.options.opposite !== true)
+          .filter(_ => _.options.visible && _.options.opposite !== true)
           .reduce((acc, curr) => acc + curr.selfSize, config.bounds?.left);
 
         const top = xAxesArray
-          .filter((_) => _.options.visible && _.options.opposite === true)
+          .filter(_ => _.options.visible && _.options.opposite === true)
           .reduce((acc, curr) => acc + curr.selfSize, config.bounds?.top);
 
         if (axis.orientation === AxisOrientation.x) {
@@ -281,6 +308,6 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
   }
 
   trackSerie(index, item: Series<BasePoint>) {
-    return item.name?.length ? item.name : index
+    return item.name?.length ? item.name : index;
   }
 }
