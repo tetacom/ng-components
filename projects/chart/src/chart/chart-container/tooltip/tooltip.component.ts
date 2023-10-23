@@ -8,15 +8,16 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {filter, map, Observable, tap} from 'rxjs';
-import {ChartService} from '../../service/chart.service';
-import {ZoomService} from '../../service/zoom.service';
-import {IDisplayTooltip} from '../../model/i-display-tooltip';
-import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
-import {IChartConfig} from '../../model/i-chart-config';
-import {Series} from '../../model/series';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Align, PositionUtil, VerticalAlign } from '@tetacom/ng-components';
 import * as d3 from 'd3';
-import {Align, PositionUtil, VerticalAlign} from '@tetacom/ng-components';
+import { filter, map, Observable, tap } from 'rxjs';
+
+import { IChartConfig } from '../../model/i-chart-config';
+import { IDisplayTooltip } from '../../model/i-display-tooltip';
+import { Series } from '../../model/series';
+import { ChartService } from '../../service/chart.service';
+import { ZoomService } from '../../service/zoom.service';
 
 @Component({
   selector: 'teta-tooltip',
@@ -28,7 +29,8 @@ export class TooltipComponent implements OnInit {
   @Input() size: DOMRect;
   @Input() config: IChartConfig;
 
-  @ViewChild('tooltip', {static: false, read: ElementRef}) tooltip: ElementRef;
+  @ViewChild('tooltip', { static: false, read: ElementRef })
+  tooltip: ElementRef;
 
   position: Observable<{
     left?: number;
@@ -49,7 +51,7 @@ export class TooltipComponent implements OnInit {
     private _zone: NgZone,
     private _elementRef: ElementRef
   ) {
-    this.tooltips = this.svc.tooltips.pipe(map((_) => [..._.values()]));
+    this.tooltips = this.svc.tooltips.pipe(map(_ => [..._.values()]));
   }
 
   ngOnInit(): void {
@@ -65,8 +67,8 @@ export class TooltipComponent implements OnInit {
     );
 
     this.position = this.svc.pointerMove.pipe(
-      filter((event) => !!event),
-      map((_) => {
+      filter(event => !!event),
+      map(_ => {
         return this.getPosition(_);
       }),
       tap(() => this.cdr.detectChanges())
@@ -79,14 +81,22 @@ export class TooltipComponent implements OnInit {
     const defaultFormatter = (tooltips: IDisplayTooltip[]): SafeHtml => {
       let html = '';
       const format = d3.timeFormat('%d.%m.%Y');
-      tooltips.forEach((_) => {
+      tooltips.forEach(_ => {
         const indicatorStyle = `display:block; width: 10px; height: 2px; background-color: ${_?.series?.color}`;
 
-        html += `<div class="display-flex align-center"><span class="margin-right-1" style="${indicatorStyle}"></span>
-          <span class="font-title-3">${_.series.name}
-            <span class="font-body-3">
-              x: ${(_.point.x as any) instanceof Date ? format(_.point.x as any) : _.point.x?.toFixed(2)}
-              y: ${(_.point.y as any) instanceof Date ? format(_.point.y as any) : _.point.y?.toFixed(2)}
+        html += `<div class='display-flex align-center'><span class='margin-right-1' style='${indicatorStyle}'></span>
+          <span class='font-title-3'>${_.series.name}
+            <span class='font-body-3'>
+              x: ${
+                (_.point.x as any) instanceof Date
+                  ? format(_.point.x as any)
+                  : _.point.x?.toFixed(2)
+              }
+              y: ${
+                (_.point.y as any) instanceof Date
+                  ? format(_.point.y as any)
+                  : _.point.y?.toFixed(2)
+              }
             </span>
           </span></div>`;
       });
@@ -127,7 +137,6 @@ export class TooltipComponent implements OnInit {
       12
     );
   }
-
 
   format(input: number | Date): string {
     if (input instanceof Date) {
