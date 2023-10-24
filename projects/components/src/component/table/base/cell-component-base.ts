@@ -190,6 +190,13 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
         emitEvent: false,
       });
     }
+    if (this.column && this.row) {
+      if (this.editable) {
+        this.control.enable({ emitEvent: false });
+      } else {
+        this.control.disable({ emitEvent: false });
+      }
+    }
   }
 
   private start(initiator: ICellCoordinates, type: 'cell' | 'row') {

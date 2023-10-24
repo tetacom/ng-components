@@ -20,7 +20,11 @@ import { ColumnReorderEvent } from '../contract/column-reorder-event';
 import { ColumnResizeEvent } from '../contract/column-resize-event';
 import { ICellCoordinates } from '../contract/i-cell-coordinates';
 import { ICellEvent } from '../contract/i-cell-event';
-import { ICellInstance, ICellInstanceValue } from '../contract/i-cell-instance';
+import {
+  ICellInstance,
+  ICellInstanceValue,
+  IColumnRow,
+} from '../contract/i-cell-instance';
 import { ICellValue } from '../contract/i-cell-value';
 import { SortEvent } from '../contract/sort-event';
 import { TableColumn } from '../contract/table-column';
@@ -473,8 +477,8 @@ export class TableService<T> {
       }
       const column = this.getColumnByName(cellEvent?.column);
       if (
-        boolOrFuncCallback<ICellInstance<T>>(column?.editable)({
-          row: this.getRowByIndex(cellEvent?.row),
+        boolOrFuncCallback<IColumnRow<T>>(column?.editable)({
+          row: this.getRowByIndex(cellEvent?.row)?.data,
           column: column,
         })
       ) {

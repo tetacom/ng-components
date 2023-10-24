@@ -23,7 +23,7 @@ export const TOGGLE_CONTROL_VALUE_ACCESSOR: any = {
   providers: [TOGGLE_CONTROL_VALUE_ACCESSOR],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ToggleComponent implements ControlValueAccessor, OnInit {
+export class ToggleComponent implements ControlValueAccessor {
   @HostBinding('attr.tabindex') tabindex = 0;
   @HostBinding('class.toggle') toggleClass = true;
 
@@ -73,8 +73,6 @@ export class ToggleComponent implements ControlValueAccessor, OnInit {
     this.model$ = model;
     this.cdr.markForCheck();
   }
-
-  ngOnInit() {}
 
   onChange(_: any) {}
 

@@ -29,7 +29,7 @@
     "@maskito/kit": "^1.2.0",
     "@ngneat/transloco": "^3.1.0",
     "@storybook/addon-knobs": "^7.0.2",
-    "@tetacom/ng-components": "^1.1.9",
+    "@tetacom/ng-components": "^1.1.31",
     "d3": "^7.1.1",
     "dayjs": "^1.11.7",
     "eslint-plugin-simple-import-sort": "^10.0.0",

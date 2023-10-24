@@ -15,7 +15,7 @@
     display: flex;
     overflow: hidden;
     flex-shrink: 0;
-    background-color: var(--color-text-10);
+    background-color: var(--color-global-bgcard);
     color: var(--color-text-90);
     @include getFont($fonts, 'table-header');
 
@@ -36,6 +36,7 @@
       flex-direction: row;
       justify-content: center;
       text-overflow: ellipsis;
+      background-color: var(--color-text-10);
 
       &:last-child {
         border-right: 0;
@@ -129,9 +130,11 @@
           height: 100%;
           display: none;
         }
+
         &:hover &_drag {
           display: block;
         }
+
         &:hover {
           cursor: col-resize;
         }
