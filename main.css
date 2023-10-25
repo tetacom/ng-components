@@ -2075,6 +2075,9 @@ a {
 .datepicker_rounded {
   border-radius: var(--radius-base-round);
 }
+.datepicker-time {
+  width: 160px;
+}
 .datepicker-wide {
   width: 170px;
 }
@@ -2510,6 +2513,7 @@ a {
   display: inline-flex;
   height: 16px;
   width: 16px;
+  flex-shrink: 0;
 }
 .icon-file {
   width: 32px;
@@ -4950,7 +4954,7 @@ body {
   display: flex;
   overflow: hidden;
   flex-shrink: 0;
-  background-color: var(--color-text-10);
+  background-color: var(--color-global-bgcard);
   color: var(--color-text-90);
   font-size: 11px;
   font-family: Inter;
@@ -4975,6 +4979,7 @@ body {
   flex-direction: row;
   justify-content: center;
   text-overflow: ellipsis;
+  background-color: var(--color-text-10);
 }
 .table-head__group:last-child {
   border-right: 0;

@@ -18,6 +18,12 @@ Original licenses apply:
 */
 
 /**
+ * @license
+ * Copyright 2010-2023 Three.js Authors
+ * SPDX-License-Identifier: MIT
+ */
+
+/**
  * @license Angular v16.2.1
  * (c) 2010-2022 Google LLC. https://angular.io/
  * License: MIT
