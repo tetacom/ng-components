@@ -11,5 +11,6 @@
        *ngIf="edit"
        type="text"
        class="input row_auto border-radius-0"
+       (keydown.enter)='input.blur()'
        [formControl]='control'/>
 
