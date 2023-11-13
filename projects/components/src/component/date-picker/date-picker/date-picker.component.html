@@ -17,6 +17,7 @@
     <teta-input class='row row_auto flex'>
       <div [class]="'row_auto row datepicker_'+viewType">
         <div class='row row_auto position-relative font-body-3 align-center'>
+
           <input [ngClass]="{'color-text-90':!disabled}"
                  [disabled]='disabled' #input style='z-index: 1'
                  class='row_auto border-0'
@@ -33,7 +34,6 @@
   </div>
   <div tetaDropdownContent
        (click)='$event.preventDefault()'>
-    <!--    <ng-container *ngIf='open'>-->
     <teta-date-calendar [isDateNull]='date===null'
                         [open]='open'
                         [max]='maxDate'
@@ -41,6 +41,5 @@
                         (setDate)='changeSelectedDate($event)'
                         [selectedDate]='data.selectedDate'
                         [viewType]='viewType' [locale]='locale'></teta-date-calendar>
-    <!--    </ng-container>-->
   </div>
 </teta-dropdown>

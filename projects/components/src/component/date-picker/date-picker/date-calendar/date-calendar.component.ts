@@ -6,7 +6,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  Output,
+  Output, SimpleChanges,
 } from '@angular/core';
 import dayjs from 'dayjs';
 import { combineLatest, filter, map, takeWhile } from 'rxjs';
@@ -23,8 +23,7 @@ import { DayModel } from '../../model/day-model';
 })
 export class DateCalendarComponent
   extends BaseCalendar
-  implements OnChanges, OnDestroy
-{
+  implements OnChanges, OnDestroy {
   @Input() selectedDate: Date | string | number = new Date();
   @Input() locale: string;
   @Input() open: boolean;
@@ -34,9 +33,10 @@ export class DateCalendarComponent
   @Input() max: Date | string | number;
   @Output() setDate: EventEmitter<Date> = new EventEmitter<Date>();
   public calendar: DayModel[] = [];
+
   constructor(override _cdr: ChangeDetectorRef) {
     super(_cdr);
-    dayjs().locale('ru', { weekStart: 1 });
+    dayjs().locale('ru', {weekStart: 1});
     combineLatest([this.currentYear, this.currentMonth, this.minMax])
       .pipe(
         takeWhile(() => this.alive),
@@ -57,4 +57,5 @@ export class DateCalendarComponent
         this.calendar = _;
       });
   }
+
 }
