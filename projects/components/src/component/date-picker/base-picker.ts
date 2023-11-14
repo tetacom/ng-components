@@ -153,10 +153,10 @@ export abstract class BasePicker {
     max: Date | number | string,
     date: Date | number | string
   ) {
-    const minDate = dayjs(new Date(min)).startOf('day').toDate();
-    const maxDate = dayjs(new Date(max)).endOf('day').toDate();
+    const minDate =this.showTime?new Date(min): dayjs(new Date(min)).startOf('day').toDate();
+    const maxDate = this.showTime?new Date(max):dayjs(new Date(max)).endOf('day').toDate();
     if (min && minDate.getTime() >= new Date(date).getTime()) {
-      return new Date();
+      return minDate||new Date();
     }
     if (max && maxDate.getTime() <= new Date(date).getTime()) {
       return maxDate;

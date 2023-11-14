@@ -7,9 +7,9 @@ import {
   EventEmitter,
   forwardRef,
   HostBinding,
-  Input,
+  Input, OnChanges,
   OnInit,
-  Output,
+  Output, SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -42,7 +42,7 @@ export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
 })
 export class DatePickerComponent
   extends BasePicker
-  implements OnInit, ControlValueAccessor
+  implements OnInit, ControlValueAccessor,OnChanges
 {
   @Input() date: Date | string | number = null;
   @Input() locale: 'en' | 'ru' = 'ru';
@@ -129,24 +129,24 @@ export class DatePickerComponent
   }
 
   onBlur() {
-    if (this.allowNull && this.inputText.trim() === '') {
-      this.setDate(null);
-      this.emitValue(null);
-    } else {
-      const val = this.inputText.split(',');
-      const { day, year, month } = this.getDateFromStr(val[0]);
-      const { mins, hours } = this.getTimeFromStr(val[1]);
-      if (day && year && month) {
-        let date = new Date(year, month - 1, day);
-        if (this.showTime) {
-          date = new Date(date.setHours(hours || 0, mins || 0));
-        }
-        this.changeSelectedDate(
-          this.getAvailableDate(this.minDate, this.maxDate, date)
-        );
+      if (this.allowNull && this.inputText.trim() === '') {
+        this.setDate(null);
+        this.emitValue(null);
       } else {
-        this.setDate(this.date);
-      }
+        const val = this.inputText.split(',');
+        const { day, year, month } = this.getDateFromStr(val[0]);
+        const { mins, hours } = this.getTimeFromStr(val[1]);
+        if (day && year && month) {
+          let date = new Date(year, month - 1, day);
+          if (this.showTime) {
+            date = new Date(date.setHours(hours || 0, mins || 0));
+          }
+          this.changeSelectedDate(
+            this.getAvailableDate(this.minDate, this.maxDate, date)
+          );
+        } else {
+          this.setDate(this.date);
+        }
     }
   }
 
@@ -162,7 +162,8 @@ export class DatePickerComponent
     }
   }
 
-  onChange(date: Date) {}
+  onChange(date: Date) {
+  }
 
   registerOnChange(fn: (date: Date) => any): void {
     this.onChange = fn;
@@ -183,5 +184,9 @@ export class DatePickerComponent
         this.selectedDate.next(this.minDate || new Date());
       }
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.prepareInput()
   }
 }

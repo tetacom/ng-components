@@ -139,6 +139,9 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.changeCalendarData(this.selectedDate);
+    if(changes['open']){
+      this.selectedPicker.next('day')
+    }
   }
 
   changeCalendarData(selectedDate: Date | number | string) {
