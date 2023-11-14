@@ -13,6 +13,7 @@ import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { viewType } from '../../common/model/view-type.model';
 import { DayModel } from './model/day-model';
 import { MinMaxDateModel } from './model/min-max-date.model';
+import {TetaLocalisation} from "../../locale/teta-localisation";
 
 @Component({
   template: '',
@@ -20,7 +21,7 @@ import { MinMaxDateModel } from './model/min-max-date.model';
 })
 export abstract class BaseCalendar implements OnChanges, OnDestroy {
   abstract selectedDate;
-  abstract locale: string;
+  abstract locale: TetaLocalisation;
   abstract open: boolean;
   abstract viewType: viewType;
   abstract min: Date | string | number;
@@ -36,35 +37,6 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
   abstract calendar:
     | DayModel[]
     | { currentMonth: DayModel[]; nextMonth: DayModel[] };
-  public localeMonths = new Map()
-    .set('ru', [
-      'Январь',
-      'Февраль',
-      'Март',
-      'Апрель',
-      'Май',
-      'Июнь',
-      'Июль',
-      'Август',
-      'Сентябрь',
-      'Октябрь',
-      'Ноябрь',
-      'Декабрь',
-    ])
-    .set('en', [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ]);
 
   public alive = true;
 
@@ -175,7 +147,7 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
   }
 
   getMothName(month: number) {
-    return this.localeMonths.get(this.locale)[month];
+    return this.locale.months[month];
   }
 
   selectDate(date: Date) {

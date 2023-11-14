@@ -40,6 +40,6 @@
                         [min]='minDate'
                         (setDate)='changeSelectedDate($event)'
                         [selectedDate]='data.selectedDate'
-                        [viewType]='viewType' [locale]='locale'></teta-date-calendar>
+                        [viewType]='viewType' [locale]='locale|async'></teta-date-calendar>
   </div>
 </teta-dropdown>

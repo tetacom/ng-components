@@ -1,8 +1,9 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {DayModel} from "../model/day-model";
 import {DateFromToModel} from "../model/from-to.model";
 import dayjs from "dayjs";
 import {viewType} from "../../../common/model/view-type.model";
+import {TetaLocalisation} from "../../../locale/teta-localisation";
 
 @Component({
   selector: 'teta-day-picker',
@@ -10,20 +11,18 @@ import {viewType} from "../../../common/model/view-type.model";
   styleUrls: ['./day-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DayPickerComponent {
+export class DayPickerComponent implements OnChanges{
   @Input() date: Date | string | number = new Date();
   @Input() calendar: DayModel[];
   @Input() viewType: viewType;
   @Input() range?: DateFromToModel;
   @Input() min: Date | string | number;
   @Input() max: Date | string | number;
-  @Input() locale: string;
+  @Input() locale: TetaLocalisation;
   @Input() hoveredDate?: Date;
   @Output() hoveredDateChange?: EventEmitter<Date> = new EventEmitter<Date>()
   @Output() selectDate: EventEmitter<Date> = new EventEmitter<Date>()
-  public daysOfWeek = new Map().set('ru', ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']).set('en', ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'])
-
-
+  public dayOrder:string[];
   constructor() {
   }
 
@@ -106,5 +105,11 @@ export class DayPickerComponent {
       return 'datepicker-date_active-second'
     }
     return ''
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const arr=[...this.locale.daysShort]
+    arr.push(arr.shift())
+    this.dayOrder=arr
   }
 }

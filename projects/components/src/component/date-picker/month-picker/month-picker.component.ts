@@ -9,11 +9,10 @@ import {viewType} from "../../../common/model/view-type.model";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MonthPickerComponent implements OnInit {
-  @Input() locale: string;
   @Input() selectedMonth: number = 1;
   @Input() viewType: viewType;
   @Input() currentYear: number;
-  @Input() localeMoths:Map<string,string[]>
+  @Input() localeMoths:string[]
   @Output() selectMonth: EventEmitter<number> = new EventEmitter<number>()
   @Output() changeYear: EventEmitter<number> = new EventEmitter<number>()
   public months: IIdName<any>[] = [];
@@ -30,7 +29,7 @@ export class MonthPickerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.months = this.localeMoths.get(this.locale).map((m,i) => {
+    this.months = this.localeMoths.map((m,i) => {
       return {
         id: i,
         name: m,

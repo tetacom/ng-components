@@ -9,6 +9,7 @@ import {
 import {viewType} from "../../../common/model/view-type.model";
 import dayjs from "dayjs";
 import {MinMaxDateModel} from "../model/min-max-date.model";
+import {TetaLocalisation} from "../../../locale/teta-localisation";
 
 @Component({
   selector: 'teta-year-picker',
@@ -20,11 +21,8 @@ export class YearPickerComponent implements OnInit {
   @Input() selectedYear: number;
   @Input() viewType: viewType;
   @Input() minMax?: MinMaxDateModel;
-  @Input() locale: string;
+  @Input() locale: TetaLocalisation;
   @Output() selectYear: EventEmitter<number> = new EventEmitter<number>()
-
-  public yearPickerDictionary: Map<string, string> = new Map<string, string>().set('ru', 'Выберете год').set('en', 'Select year')
-  public alive = true;
   public years: { id: number, isSelected: boolean,disabled:boolean }[]
 
   constructor() {
