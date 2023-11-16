@@ -112,6 +112,11 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
         value: column.maxValue,
       });
     }
+    if (control?.hasError('maxlength')) {
+      return this._transloco.translate('errors.max_length', {
+        value: column.maxLength,
+      });
+    }
   }
 
   ngOnDestroy() {

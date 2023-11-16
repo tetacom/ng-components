@@ -107,6 +107,9 @@ export class FormsUtil {
     if (column.maxValue != null) {
       validators.push(Validators.max(column.maxValue));
     }
+    if (column.maxLength != null) {
+      validators.push(Validators.maxLength(column.maxLength));
+    }
     if (column.validators?.length > 0) {
       validators.push(...column.validators);
     }

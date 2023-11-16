@@ -47,6 +47,7 @@ export interface ITableColumnOptions extends IFilterItemOptions {
   defaultValue?: any;
   maxValue?: number;
   minValue?: number;
+  maxLength?: number;
   required?: boolean;
   validators?: [ValidatorFn];
 }
@@ -123,6 +124,10 @@ export class TableColumn extends FilterItem {
    */
   minValue: number;
   /**
+   * Максимальная длина
+   */
+  maxLength: number;
+  /**
    * Поле обязательно для заполнения
    */
   required: boolean;
@@ -153,6 +158,7 @@ export class TableColumn extends FilterItem {
     this.defaultValue = options?.defaultValue;
     this.maxValue = options?.maxValue;
     this.minValue = options?.minValue;
+    this.maxLength = options?.maxLength;
     this.required = options?.required;
     this.columns = options?.columns?.map(x => new TableColumn(x)) ?? [];
     this.validators = options?.validators;
