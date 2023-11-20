@@ -5,7 +5,6 @@ import {
   ComponentRef,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewContainerRef,
@@ -56,17 +55,19 @@ export class CellHostComponent<T> implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (
-      this._init &&
-      (Object.prototype.hasOwnProperty.call(changes, 'row') ||
-        Object.prototype.hasOwnProperty.call(changes, 'column') ||
-        Object.prototype.hasOwnProperty.call(changes, 'filterOptions') ||
-        Object.prototype.hasOwnProperty.call(changes, 'dict'))
-    ) {
-      this._componentRef.instance.row = this.row;
-      this._componentRef.instance.column = this.column;
-      this._componentRef.instance.filterOptions = this.filterOptions;
-      this._componentRef.instance.dict = this.dict;
+    if (this._init) {
+      if (Object.prototype.hasOwnProperty.call(changes, 'row')) {
+        this._componentRef.instance.row = this.row;
+      }
+      if (Object.prototype.hasOwnProperty.call(changes, 'column')) {
+        this._componentRef.instance.column = this.column;
+      }
+      if (Object.prototype.hasOwnProperty.call(changes, 'filterOptions')) {
+        this._componentRef.instance.filterOptions = this.filterOptions;
+      }
+      if (Object.prototype.hasOwnProperty.call(changes, 'dict')) {
+        this._componentRef.instance.dict = this.dict;
+      }
       this._componentRef.injector.get(ChangeDetectorRef).markForCheck();
     }
   }
