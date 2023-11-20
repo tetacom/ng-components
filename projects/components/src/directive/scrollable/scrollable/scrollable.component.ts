@@ -1,6 +1,6 @@
 import {
+  AfterContentChecked,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
@@ -12,10 +12,24 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { fromEvent, tap } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import {
+  animationFrameScheduler,
+  fromEvent,
+  Observable,
+  shareReplay,
+  Subject,
+  tap,
+} from 'rxjs';
+import { map, takeWhile, throttleTime } from 'rxjs/operators';
 
 import { ScrollableDirective } from '../scrollable.directive';
+
+type ScrollDimensions = {
+  clientHeight: number;
+  clientWidth: number;
+  scrollHeight: number;
+  scrollWidth: number;
+};
 
 @Component({
   selector: 'teta-scrollable',
@@ -23,7 +37,9 @@ import { ScrollableDirective } from '../scrollable.directive';
   styleUrls: ['./scrollable.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScrollableComponent implements OnInit, OnDestroy {
+export class ScrollableComponent
+  implements OnInit, OnDestroy, AfterContentChecked
+{
   @ContentChild(ScrollableDirective, {
     static: true,
     read: ElementRef,
@@ -54,29 +70,34 @@ export class ScrollableComponent implements OnInit, OnDestroy {
 
   @Output() scroll = new EventEmitter<Event>();
 
-  scrollSize: {
-    clientHeight: number;
-    clientWidth: number;
-    scrollHeight: number;
-    scrollWidth: number;
-  };
+  private _scrollSize = new Subject<void>();
+  scrollSize: Observable<ScrollDimensions>;
 
   private _container: ElementRef;
   private _alive = true;
   private _observer: ResizeObserver;
 
-  constructor(private _cdr: ChangeDetectorRef) {
+  constructor() {
+    this.scrollSize = this._scrollSize.asObservable().pipe(
+      throttleTime(100, animationFrameScheduler),
+      map(() => {
+        return {
+          scrollHeight: this._container.nativeElement.scrollHeight,
+          scrollWidth: this._container.nativeElement.scrollWidth,
+          clientHeight: this._container.nativeElement.clientHeight,
+          clientWidth: this._container.nativeElement.clientWidth,
+        };
+      }),
+      shareReplay({
+        refCount: true,
+        bufferSize: 1,
+      })
+    );
     this._observer = new ResizeObserver(this._observe);
   }
 
   private _observe = () => {
-    this.scrollSize = {
-      scrollHeight: this._container.nativeElement.scrollHeight,
-      scrollWidth: this._container.nativeElement.scrollWidth,
-      clientHeight: this._container.nativeElement.clientHeight,
-      clientWidth: this._container.nativeElement.clientWidth,
-    };
-    this._cdr.detectChanges();
+    this._scrollSize.next();
   };
 
   scrollVertical(event) {
@@ -105,6 +126,7 @@ export class ScrollableComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+
     this._observer.observe(this._container.nativeElement);
   }
 
@@ -112,5 +134,9 @@ export class ScrollableComponent implements OnInit, OnDestroy {
     this._alive = false;
     this._observer.unobserve(this._container.nativeElement);
     this._observer.disconnect();
+  }
+
+  ngAfterContentChecked() {
+    this._observe();
   }
 }
