@@ -7,12 +7,12 @@ import {
   OnDestroy,
   SimpleChanges,
 } from '@angular/core';
-import dayjs, { Dayjs } from 'dayjs';
-import { BehaviorSubject, ReplaySubject } from 'rxjs';
+import dayjs, {Dayjs} from 'dayjs';
+import {BehaviorSubject, ReplaySubject} from 'rxjs';
 
-import { viewType } from '../../common/model/view-type.model';
-import { DayModel } from './model/day-model';
-import { MinMaxDateModel } from './model/min-max-date.model';
+import {viewType} from '../../common/model/view-type.model';
+import {DayModel} from './model/day-model';
+import {MinMaxDateModel} from './model/min-max-date.model';
 import {TetaLocalisation} from "../../locale/teta-localisation";
 
 @Component({
@@ -40,7 +40,8 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
 
   public alive = true;
 
-  protected constructor(protected _cdr: ChangeDetectorRef) {}
+  protected constructor(protected _cdr: ChangeDetectorRef) {
+  }
 
   generateCalendar(
     selectedDate: Dayjs,
@@ -71,14 +72,14 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
   isSuitableMinDate(d: Date, minDate: Date | string | number) {
     return (
       dayjs(new Date(minDate)).startOf('date').toDate() <= new Date(d) ||
-      minDate === null
+      !minDate
     );
   }
 
   isSuitableMaxDate(d: Date, maxDate: Date | string | number) {
     return (
       new Date(d) < dayjs(new Date(maxDate)).endOf('date').toDate() ||
-      maxDate === null
+      !maxDate
     );
   }
 
@@ -111,16 +112,23 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.changeCalendarData(this.selectedDate);
-    if(changes['open']){
+    if (changes['open']) {
       this.selectedPicker.next('day')
     }
   }
 
   changeCalendarData(selectedDate: Date | number | string) {
-    const date = new Date(selectedDate || new Date());
+    let date: Date | string | number;
+    if (!this.isSuitableMinDate(new Date(selectedDate), this.min)) {
+      date=this.min
+    } else if (!this.isSuitableMaxDate(new Date(selectedDate), this.max)) {
+      date=this.max
+    } else {
+      date=selectedDate
+    }
     this.currentMonth.next(new Date(date).getMonth());
     this.currentYear.next(new Date(date).getFullYear());
-    this.minMax.next({ min: this.min, max: this.max });
+    this.minMax.next({min: this.min, max: this.max});
   }
 
   setYear(year: number) {
@@ -128,7 +136,7 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
   }
 
   changeMonth(month: number, year: number) {
-    const { availableYear, availableMonth } = this.getAvailableMonthYear(
+    const {availableYear, availableMonth} = this.getAvailableMonthYear(
       month,
       year
     );
@@ -138,12 +146,12 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
 
   getAvailableMonthYear(month: number, year: number) {
     if (month > 11) {
-      return { availableMonth: month - 12, availableYear: year + 1 };
+      return {availableMonth: month - 12, availableYear: year + 1};
     }
     if (month < 0) {
-      return { availableMonth: 12 + month, availableYear: year - 1 };
+      return {availableMonth: 12 + month, availableYear: year - 1};
     }
-    return { availableMonth: month, availableYear: year };
+    return {availableMonth: month, availableYear: year};
   }
 
   getMothName(month: number) {
@@ -153,6 +161,7 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
   selectDate(date: Date) {
     this.setDate.emit(date);
   }
+
   scrollMonth = (e: any, month: number, year: number) => {
     const delta = e?.deltaY ?? e;
     if (e instanceof WheelEvent) {
