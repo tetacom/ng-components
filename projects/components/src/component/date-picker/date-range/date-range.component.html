@@ -30,7 +30,7 @@
                              (setDate)="changeSelectedDate($event,data.selectedDate)"
                              [selectedDate]="data.selectedDate"
                              [date]="date"
-                             [viewType]="viewType" [locale]="locale"></teta-range-calendar>
+                             [viewType]="viewType" [locale]="locale|async"></teta-range-calendar>
       </div>
     </ng-container>
   </div>

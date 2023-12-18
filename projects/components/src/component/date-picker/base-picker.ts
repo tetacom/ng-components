@@ -2,17 +2,18 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, ElementRef, EventEmitter } from '@angular/core';
 import { MaskitoOptions } from '@maskito/core';
 import dayjs from 'dayjs';
-import { ReplaySubject } from 'rxjs';
+import {Observable, ReplaySubject} from 'rxjs';
 
 import { Align } from '../../common/enum/align.enum';
 import { VerticalAlign } from '../../common/enum/vertical-align.enum';
 import { viewType } from '../../common/model/view-type.model';
 import { DateFromToModel } from './model/from-to.model';
+import {TetaLocalisation} from "../../locale/teta-localisation";
 
 export abstract class BasePicker {
   abstract mask: string;
   abstract date;
-  abstract locale: string;
+  abstract locale: Observable<TetaLocalisation>;
   abstract showTime: boolean;
   abstract minDate: Date | string | number;
   abstract maxDate: Date | string | number;
@@ -142,7 +143,7 @@ export abstract class BasePicker {
     return new Date(date).toLocaleString([], {
       year: 'numeric',
       month: '2-digit',
-      day: '2-digit',
+      day: '2-digit',hourCycle:'h24',
       hour: this.showTime ? '2-digit' : undefined,
       minute: this.showTime ? '2-digit' : undefined,
     });

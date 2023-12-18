@@ -1,6 +1,6 @@
 <div class="column">
   <div class="font-title-3 padding-v-4 padding-h-3">
-    <p>{{yearPickerDictionary.get(locale)}}</p>
+    <p>{{locale.selectYear}}</p>
   </div>
   <div class="datepicker-year overflow-y-auto">
     <div *ngFor="let y of years" class="font-button-2" (click)="pickYear(y.id,y.disabled)">

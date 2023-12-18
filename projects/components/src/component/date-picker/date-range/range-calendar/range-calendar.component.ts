@@ -10,12 +10,13 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import dayjs from 'dayjs';
-import { combineLatest, filter, map, shareReplay, takeWhile } from 'rxjs';
+import {combineLatest, filter, map, shareReplay, takeWhile} from 'rxjs';
 
-import { viewType } from '../../../../common/model/view-type.model';
-import { BaseCalendar } from '../../base-calendar';
-import { DayModel } from '../../model/day-model';
-import { DateFromToModel } from '../../model/from-to.model';
+import {viewType} from '../../../../common/model/view-type.model';
+import {BaseCalendar} from '../../base-calendar';
+import {DayModel} from '../../model/day-model';
+import {DateFromToModel} from '../../model/from-to.model';
+import {TetaLocalisation} from "../../../../locale/teta-localisation";
 
 @Component({
   selector: 'teta-range-calendar',
@@ -25,9 +26,8 @@ import { DateFromToModel } from '../../model/from-to.model';
 })
 export class RangeCalendarComponent
   extends BaseCalendar
-  implements OnChanges, OnDestroy
-{
-  @Input() locale: string;
+  implements OnChanges, OnDestroy {
+  @Input() locale: TetaLocalisation;
   @Input() open: boolean;
   @Input() date: DateFromToModel;
   @Input() viewType: viewType;
@@ -51,33 +51,28 @@ export class RangeCalendarComponent
 
   constructor(override _cdr: ChangeDetectorRef) {
     super(_cdr);
-    dayjs().locale('ru', { weekStart: 1 });
     combineLatest([this.currentYear, this.currentMonth, this.minMax])
       .pipe(
         takeWhile(() => this.alive),
-        shareReplay({ bufferSize: 1, refCount: false }),
+        shareReplay({bufferSize: 1, refCount: false}),
         filter(
           ([currentYear, currentMonth]) =>
             currentMonth !== null && currentYear !== null
         ),
         map(([year, month, minMax]) => {
-          const { availableYear, availableMonth } = this.getAvailableMonthYear(
+          const {availableYear, availableMonth} = this.getAvailableMonthYear(
             month + 1,
             year
           );
           return {
             currentMonth: this.generateCalendar(
-              dayjs(new Date(this.selectedDate.from || new Date())).locale(
-                this.locale
-              ),
+              dayjs(new Date(this.selectedDate.from || new Date())).locale('ru', {weekStart: 1}),
               year,
               month,
               minMax
             ),
             nextMonth: this.generateCalendar(
-              dayjs(new Date(this.selectedDate.from || new Date())).locale(
-                this.locale
-              ),
+              dayjs(new Date(this.selectedDate.from || new Date())).locale('ru', {weekStart: 1}),
               availableYear,
               availableMonth,
               minMax
@@ -106,11 +101,11 @@ export class RangeCalendarComponent
       }
     }
 
-    return { from: dateFrom, to: dateTo };
+    return {from: dateFrom, to: dateTo};
   }
 
   override isSelected(d: Date, selectedDate: Date) {
-    const { from, to } = this.getFromTo();
+    const {from, to} = this.getFromTo();
     return this.checkSelected(d, from) || this.checkSelected(d, to);
   }
 
@@ -122,7 +117,7 @@ export class RangeCalendarComponent
   }
 
   isFirstDaySuitable(m: number, y: number, max: Date) {
-    const { availableYear, availableMonth } = this.getAvailableMonthYear(m, y);
+    const {availableYear, availableMonth} = this.getAvailableMonthYear(m, y);
     return this.isSuitableMaxDate(
       dayjs(new Date(availableYear, availableMonth)).startOf('month').toDate(),
       max
@@ -130,7 +125,7 @@ export class RangeCalendarComponent
   }
 
   isLastDaySuitable(m: number, y: number, min: Date) {
-    const { availableYear, availableMonth } = this.getAvailableMonthYear(m, y);
+    const {availableYear, availableMonth} = this.getAvailableMonthYear(m, y);
     return this.isSuitableMinDate(
       dayjs(new Date(availableYear, availableMonth)).endOf('month').toDate(),
       min

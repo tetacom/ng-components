@@ -18,7 +18,7 @@ import {
   maskitoDateTimeOptionsGenerator,
 } from '@maskito/kit';
 import dayjs from 'dayjs';
-import { lastValueFrom, ReplaySubject, take } from 'rxjs';
+import {lastValueFrom, Observable, ReplaySubject, take} from 'rxjs';
 
 import { Align } from '../../../common/enum/align.enum';
 import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
@@ -26,6 +26,7 @@ import { viewType } from '../../../common/model/view-type.model';
 import { BasePicker } from '../base-picker';
 import { DatePeriod } from '../model/date-period';
 import { TetaConfigService } from '../../../locale/teta-config.service';
+import {TetaLocalisation} from "../../../locale/teta-localisation";
 
 export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -45,7 +46,7 @@ export class DatePickerComponent
   implements OnInit, ControlValueAccessor,OnChanges
 {
   @Input() date: Date | string | number = null;
-  @Input() locale: 'en' | 'ru' = 'ru';
+  public locale: Observable<TetaLocalisation>;
   @Input() showTime = false;
   @Input() minDate: Date | string | number = null;
   @Input() maxDate: Date | string | number = null;
@@ -83,6 +84,7 @@ export class DatePickerComponent
     private localeService: TetaConfigService
   ) {
     super(_elementRef, _cdr, datePipe);
+    this.locale = this.localeService.locale;
   }
 
   ngOnInit(): void {

@@ -14,6 +14,7 @@ import { combineLatest, filter, map, takeWhile } from 'rxjs';
 import { viewType } from '../../../../common/model/view-type.model';
 import { BaseCalendar } from '../../base-calendar';
 import { DayModel } from '../../model/day-model';
+import {TetaLocalisation} from "../../../../locale/teta-localisation";
 
 @Component({
   selector: 'teta-date-calendar',
@@ -25,8 +26,8 @@ export class DateCalendarComponent
   extends BaseCalendar
   implements OnChanges, OnDestroy {
   @Input() selectedDate: Date | string | number = new Date();
-  @Input() locale: string;
   @Input() open: boolean;
+  @Input() locale:TetaLocalisation
   @Input() viewType: viewType;
   @Input() min: Date | string | number;
   @Input() isDateNull: boolean;
@@ -36,7 +37,6 @@ export class DateCalendarComponent
 
   constructor(override _cdr: ChangeDetectorRef) {
     super(_cdr);
-    dayjs().locale('ru', {weekStart: 1});
     combineLatest([this.currentYear, this.currentMonth, this.minMax])
       .pipe(
         takeWhile(() => this.alive),
@@ -46,7 +46,7 @@ export class DateCalendarComponent
         ),
         map(([year, month, minMax]) => {
           return this.generateCalendar(
-            dayjs(new Date(this.selectedDate)).locale(this.locale),
+            dayjs(new Date(this.selectedDate)).locale('ru', { weekStart: 1 }),
             year,
             month,
             minMax

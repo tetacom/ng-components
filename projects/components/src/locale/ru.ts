@@ -28,6 +28,7 @@ export const ruLocale: TetaLocalisation = {
   search: 'Поиск',
   notFound: 'Не найдено',
   selected: 'Выбрано',
+  selectYear:'Выберите год',
   notSelected: 'Не выбрано',
   yes: 'Да',
   no: 'Нет',
