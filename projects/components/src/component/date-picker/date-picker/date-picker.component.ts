@@ -94,18 +94,18 @@ export class DatePickerComponent
     } else {
       this.setDate(new Date(this.date));
     }
-    this.prepareInput();
+    this.prepareInput(true);
   }
 
-  async prepareInput() {
+  async prepareInput(isFirstRender?:boolean) {
     const config = await lastValueFrom(this.localeService.locale.pipe(take(1)));
     const str = this.date ? this.getLocaleString(this.date) : '';
     let option;
     const setMinMax = () => {
-      if (this.minDate) {
+      if (this.minDate&&!isFirstRender) {
         option.min = dayjs(new Date(this.minDate)).startOf('day');
       }
-      if (this.maxDate) {
+      if (this.maxDate&&!isFirstRender) {
         option.max = dayjs(new Date(this.maxDate)).endOf('day');
       }
     };
@@ -189,6 +189,6 @@ export class DatePickerComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.prepareInput()
+    this.prepareInput(false)
   }
 }
