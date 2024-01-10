@@ -124,7 +124,7 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
     } else if (!this.isSuitableMaxDate(new Date(selectedDate), this.max)) {
       date=this.max
     } else {
-      date=selectedDate
+      date=selectedDate?selectedDate:this.min?this.min:this.max?this.max:new Date();
     }
     this.currentMonth.next(new Date(date).getMonth());
     this.currentYear.next(new Date(date).getFullYear());
