@@ -143,7 +143,7 @@ export abstract class BasePicker {
     return new Date(date).toLocaleString([], {
       year: 'numeric',
       month: '2-digit',
-      day: '2-digit',hourCycle:'h24',
+      day: '2-digit',hour12: false,
       hour: this.showTime ? '2-digit' : undefined,
       minute: this.showTime ? '2-digit' : undefined,
     });
