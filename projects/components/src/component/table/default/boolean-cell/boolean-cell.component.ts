@@ -10,12 +10,20 @@ import {
 import { CellComponentBase } from '../../base/cell-component-base';
 import { ICellCoordinates } from '../../contract/i-cell-coordinates';
 import { TableService } from '../../service/table.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CheckboxComponent } from '../../../checkbox/checkbox/checkbox.component';
 
 @Component({
-  selector: 'teta-boolean-cell',
-  templateUrl: './boolean-cell.component.html',
-  styleUrls: ['./boolean-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-boolean-cell',
+    templateUrl: './boolean-cell.component.html',
+    styleUrls: ['./boolean-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        CheckboxComponent,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
 })
 export class BooleanCellComponent<T>
   extends CellComponentBase<T>

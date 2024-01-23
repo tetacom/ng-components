@@ -1,4 +1,6 @@
 <ng-content select="teta-accordion-head"></ng-content>
-<div class="accordion-content" *ngIf="open">
-  <ng-container *ngTemplateOutlet="content.template"></ng-container>
-</div>
+@if (open) {
+  <div class="accordion-content">
+    <ng-container *ngTemplateOutlet="content.template"></ng-container>
+  </div>
+}

@@ -9,12 +9,16 @@ import { TreeService } from '../tree.service';
 import { ITreeData } from '../../../common/contract/i-tree-data';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { IconComponent } from '../../icon/icon/icon.component';
 
 @Component({
-  selector: 'teta-tree-item-toggle',
-  templateUrl: './tree-item-toggle.component.html',
-  styleUrls: ['./tree-item-toggle.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-tree-item-toggle',
+    templateUrl: './tree-item-toggle.component.html',
+    styleUrls: ['./tree-item-toggle.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [IconComponent, AsyncPipe],
 })
 export class TreeItemToggleComponent implements OnInit {
   @Input() item: ITreeData;

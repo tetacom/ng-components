@@ -9,12 +9,16 @@ import {
 } from '@angular/core';
 import { TableService } from '../service/table.service';
 import { takeWhile } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
+import { CheckboxComponent } from '../../checkbox/checkbox/checkbox.component';
 
 @Component({
-  selector: 'teta-selection-cell',
-  templateUrl: './selection-cell.component.html',
-  styleUrls: ['./selection-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-selection-cell',
+    templateUrl: './selection-cell.component.html',
+    styleUrls: ['./selection-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CheckboxComponent, FormsModule],
 })
 export class SelectionCellComponent<T> implements OnInit, OnDestroy {
   @Input() row: T;

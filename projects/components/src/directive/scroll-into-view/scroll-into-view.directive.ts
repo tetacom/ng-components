@@ -3,7 +3,8 @@ import {isPlatformBrowser} from '@angular/common';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 
 @Directive({
-  selector: '[tetaScrollIntoView]'
+    selector: '[tetaScrollIntoView]',
+    standalone: true
 })
 export class ScrollIntoViewDirective implements OnChanges {
   @Input() tetaScrollIntoView: boolean | undefined;

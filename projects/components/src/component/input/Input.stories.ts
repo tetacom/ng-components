@@ -1,15 +1,15 @@
 import {withKnobs} from '@storybook/addon-knobs';
 import {IconComponent} from '../icon/icon/icon.component';
-import {IconModule} from '../icon/icon.module';
-import {InputModule} from './input.module';
+
+
 import {FormsModule} from '@angular/forms';
-import {SelectModule} from '../select/select.module';
-import {RadioModule} from '../radio/radio.module';
-import {DatePickerModule} from '../date-picker/date-picker.module';
-import {ToggleModule} from '../toggle/toggle.module';
-import {CheckboxModule} from '../checkbox/checkbox.module';
+
+
+
+
+
 import {action} from '@storybook/addon-actions';
-import {SampleInputModule} from './sample-input/sample-input.module';
+
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
@@ -26,23 +26,15 @@ export default {
   ],
   component: IconComponent,
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [],
   },
 } as Meta;
 
 export const reactiveForm = () => ({
   moduleMetadata: {
     imports: [
-      SampleInputModule,
-      IconModule,
-      InputModule,
-      FormsModule,
-      SelectModule,
-      RadioModule,
-      DatePickerModule,
-      ToggleModule,
-      CheckboxModule,
-    ],
+    FormsModule,
+],
   },
   props: {
     log: (name, value) => {
@@ -57,15 +49,8 @@ export const reactiveForm = () => ({
 export const basicInput = () => ({
   moduleMetadata: {
     imports: [
-      IconModule,
-      InputModule,
-      FormsModule,
-      SelectModule,
-      RadioModule,
-      DatePickerModule,
-      ToggleModule,
-      CheckboxModule,
-    ],
+    FormsModule,
+],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="border border-text-10 padding-3" style="width: 500px;">
   <div class="form-container">

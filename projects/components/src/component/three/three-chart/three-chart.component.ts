@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -35,10 +35,9 @@ extend(THREE);
   imports: [
     NgtCanvas,
     SceneComponent,
-    CommonModule,
     CanvasComponent,
-    Canvas3dHost,
-  ],
+    Canvas3dHost
+],
 })
 export class ThreeChartComponent implements OnInit, OnChanges {
   @Input() data: I3dChartConfig;

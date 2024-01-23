@@ -1,17 +1,18 @@
 <span [style.display]="edit ? 'none' : 'block'"
-      class='cell-text'
-      [class.cell-text_disabled]='!editable'>
+  class='cell-text'
+  [class.cell-text_disabled]='!editable'>
   {{getValue(control.value)}}
 </span>
-<teta-select #input
-             class='row_auto select-table'
-             *ngIf='edit'
-             [allowNull]='!column.required'
-             [verticalAlign]='verticalAlign.auto'
-             [appendToBody]='true'
-             [options]='displayFilterOptions'
-             [valueRef]="'id'"
-             [textRef]="'name'"
-             [searchRef]="displayFilterOptions?.length > 20 ? 'name' : ''"
-             [formControl]='control'>
-</teta-select>
+@if (edit) {
+  <teta-select #input
+    class='row_auto select-table'
+    [allowNull]='!column.required'
+    [verticalAlign]='verticalAlign.auto'
+    [appendToBody]='true'
+    [options]='displayFilterOptions'
+    [valueRef]="'id'"
+    [textRef]="'name'"
+    [searchRef]="displayFilterOptions?.length > 20 ? 'name' : ''"
+    [formControl]='control'>
+  </teta-select>
+}

@@ -16,12 +16,33 @@ import { TetaLocalisation } from '../../../../locale/teta-localisation';
 import { FilterState } from '../../../filter/contarct/filter-state';
 import { TableColumn } from '../../contract/table-column';
 import { TableService } from '../../service/table.service';
+import { AsyncPipe } from '@angular/common';
+import { ButtonComponent } from '../../../button/button/button.component';
+import { ToolbarComponent } from '../../../toolbar/toolbar/toolbar.component';
+import { TreeItemToggleComponent } from '../../../tree/tree-item-toggle/tree-item-toggle.component';
+import { TetaTemplateDirective } from '../../../../directive/teta-template/teta-template.directive';
+import { TreeComponent } from '../../../tree/tree/tree.component';
+import { ScrollableComponent } from '../../../../directive/scrollable/scrollable/scrollable.component';
+import { FormsModule } from '@angular/forms';
+import { CheckboxComponent } from '../../../checkbox/checkbox/checkbox.component';
 
 @Component({
-  selector: 'teta-visibility-dropdown-tab',
-  templateUrl: './visibility-dropdown-tab.component.html',
-  styleUrls: ['./visibility-dropdown-tab.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-visibility-dropdown-tab',
+    templateUrl: './visibility-dropdown-tab.component.html',
+    styleUrls: ['./visibility-dropdown-tab.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        CheckboxComponent,
+        FormsModule,
+        ScrollableComponent,
+        TreeComponent,
+        TetaTemplateDirective,
+        TreeItemToggleComponent,
+        ToolbarComponent,
+        ButtonComponent,
+        AsyncPipe,
+    ],
 })
 export class VisibilityDropdownTabComponent<T> implements OnDestroy {
   @Input() columns: ITreeData[];

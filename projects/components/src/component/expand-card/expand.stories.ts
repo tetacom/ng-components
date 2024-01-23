@@ -1,7 +1,7 @@
 import {withKnobs} from '@storybook/addon-knobs';
-import {ExpandCardModule} from "./expand-card.module";
+
 import {ExpandItemComponent} from "./expand-item/expand-item.component";
-import {IconModule} from "../icon/icon.module";
+
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
@@ -18,16 +18,13 @@ export default {
   ],
   component: ExpandItemComponent,
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [],
   },
 } as Meta;
 
 export const expandItem = () => ({
   moduleMetadata: {
-    imports: [
-      ExpandCardModule,
-      IconModule
-    ],
+    imports: [],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" style="width: 300px">
                 <teta-expand-item>

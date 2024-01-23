@@ -1,8 +1,8 @@
 import {select, withKnobs} from '@storybook/addon-knobs';
-import {ContextMenuModule} from './context-menu.module';
-import {ButtonModule} from '../../component/button/button.module';
+
+
 import {PopupContentComponent} from '../../component/dynamic-component/popup-content/popup-content.component';
-import {IconModule} from '../../component/icon/icon.module';
+
 import {Align} from '../../common/enum/align.enum';
 import {VerticalAlign} from '../../common/enum/vertical-align.enum';
 import {applicationConfig, Meta} from "@storybook/angular";
@@ -23,7 +23,7 @@ export default {
 
 export const basicContextMenu = () => ({
   moduleMetadata: {
-    imports: [ContextMenuModule, ButtonModule, IconModule],
+    imports: [],
     entryComponents: [PopupContentComponent],
   },
   props: {

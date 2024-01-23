@@ -1,4 +1,4 @@
-import {IconModule} from '../icon/icon.module';
+
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
@@ -16,7 +16,7 @@ export default {
 
 export const basicList = () => ({
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="padding-10">
 <div class="list shadow-1" style="width: 200px">
@@ -41,7 +41,7 @@ export const basicList = () => ({
 
 export const interactiveList = () => ({
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [],
   },
   template: `<div class="padding-10">
 <div class="list shadow-1" style="width: 200px">

@@ -9,11 +9,18 @@ import {SelectType} from '../../enum/select-type.enum';
 import {EditEvent} from '../../enum/edit-event.enum';
 import {TableService} from '../../service/table.service';
 import {ICellInstance} from '../../contract/i-cell-instance';
+import { JsonPipe } from '@angular/common';
+import { TableComponent } from '../../table/table.component';
+import { IconComponent } from '../../../icon/icon/icon.component';
+import { ButtonComponent } from '../../../button/button/button.component';
+import { ToolbarComponent } from '../../../toolbar/toolbar/toolbar.component';
 
 @Component({
-  selector: 'teta-table-demo',
-  templateUrl: './table-demo.component.html',
-  styleUrls: ['./table-demo.component.scss']
+    selector: 'teta-table-demo',
+    templateUrl: './table-demo.component.html',
+    styleUrls: ['./table-demo.component.scss'],
+    standalone: true,
+    imports: [ToolbarComponent, ButtonComponent, IconComponent, TableComponent, JsonPipe]
 })
 export class TableDemoComponent implements OnInit {
   @Input() size: number;

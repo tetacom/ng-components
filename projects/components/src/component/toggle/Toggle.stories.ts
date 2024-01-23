@@ -1,8 +1,8 @@
 import { text, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
-import { IconModule } from '../icon/icon.module';
+
 import { ToggleComponent } from './toggle/toggle.component';
-import { ToggleModule } from './toggle.module';
+
 import { FormsModule } from '@angular/forms';
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
@@ -18,13 +18,13 @@ export default {
   ],
   component: ToggleComponent,
   moduleMetadata: {
-    imports: [ToggleModule, FormsModule],
+    imports: [FormsModule],
   },
 } as Meta;
 
 export const sample = () => ({
   moduleMetadata: {
-    imports: [ToggleModule, IconModule, FormsModule],
+    imports: [FormsModule],
   },
   props: {
     text: text('text', 'Remember me'),

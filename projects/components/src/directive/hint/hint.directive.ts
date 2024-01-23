@@ -24,7 +24,8 @@ import { DynamicContentBaseDirective } from '../dynamic-content-base.directive';
 import Timeout = NodeJS.Timeout;
 
 @Directive({
-  selector: '[tetaHint]',
+    selector: '[tetaHint]',
+    standalone: true,
 })
 export class HintDirective
   extends DynamicContentBaseDirective

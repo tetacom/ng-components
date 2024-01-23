@@ -1,8 +1,8 @@
 import { withKnobs } from '@storybook/addon-knobs';
 import { RadioComponent } from './radio/radio.component';
-import { RadioModule } from './radio.module';
+
 import { FormsModule } from '@angular/forms';
-import { IconModule } from '../icon/icon.module';
+
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -17,13 +17,13 @@ export default {
   ],
   component: RadioComponent,
   moduleMetadata: {
-    imports: [RadioModule],
+    imports: [],
   },
 } as Meta;
 
 export const radioButton = () => ({
   moduleMetadata: {
-    imports: [RadioModule, FormsModule, IconModule],
+    imports: [FormsModule],
   },
   template: `<div class="padding-4 bg-panel-50" [tetaIconSprite]="'assets/icons.svg'">
     <teta-radio  [ngModel]="3">

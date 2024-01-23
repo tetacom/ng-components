@@ -1,6 +1,6 @@
 import { select, withKnobs } from '@storybook/addon-knobs';
 import { IconComponent } from './icon/icon.component';
-import { IconModule } from './icon.module';
+
 import {
   coloredIconsList,
   fileIconsList,
@@ -10,6 +10,7 @@ import {
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import {IconSpriteDirective} from "./icon-sprite.directive";
 
 export default {
   title: 'Component/Icon',
@@ -21,13 +22,13 @@ export default {
   ],
   component: IconComponent,
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [],
   },
 } as Meta;
 
 export const icons = () => ({
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [IconComponent,IconSpriteDirective],
   },
   props: {
     palette: select('palette', ['primary', 'grey', 'red', 'white'], 'primary'),
@@ -43,7 +44,7 @@ export const icons = () => ({
 
 export const coloredIcons = () => ({
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [],
   },
   props: {
     palette: select(
@@ -62,7 +63,7 @@ export const coloredIcons = () => ({
 });
 export const fileIcons = () => ({
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [],
   },
   props: {
     palette: select(
@@ -82,7 +83,7 @@ export const fileIcons = () => ({
 
 export const lithotypeIcons = () => ({
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [],
   },
   props: {
     palette: select(

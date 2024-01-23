@@ -1,6 +1,6 @@
-import {IconModule} from '../icon/icon.module';
+
 import {AvatarComponent} from "./avatar/avatar.component";
-import {AvatarModule} from "./avatar.module";
+
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
@@ -16,13 +16,13 @@ export default {
   ],
   component: AvatarComponent,
   moduleMetadata: {
-    imports: [AvatarModule]
+    imports: []
   }
 } as Meta;
 
 export const basicAvatar = () => ({
   moduleMetadata: {
-    imports: [AvatarModule, IconModule],
+    imports: [],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="font-body-3 padding-3 bg-global-bgcard row gap-20">
              <div class="column gap-12 align-center">

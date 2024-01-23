@@ -1,53 +1,57 @@
-<div class="list column_auto" *ngIf="locale | async as loc">
-  <ng-container *ngIf="!parent">
-    <div class="list-item list-item_interactive"
-         (click)="pinColumn()">
-      {{column.locked ? loc.unpin : loc.pin}}
-    </div>
-    <div class="list-divider"></div>
-  </ng-container>
-  <ng-container *ngIf="column.sortable">
-    <div class="list-item list-item_interactive"
-         (click)="sortAsc($event)">
-      {{loc.sortAsc}}
-    </div>
-    <div class="list-item list-item_interactive"
-         (click)="sortDesc($event)">
-      {{loc.sortDesc}}
-    </div>
-    <ng-container *ngIf="hasSortedColumns()">
+@if (locale | async; as loc) {
+  <div class="list column_auto">
+    @if (!parent) {
       <div class="list-item list-item_interactive"
-           *ngIf="sortParam"
-           (click)="clearSort()">
-        {{loc.clearSort}}
-      </div>
-      <div class="list-item list-item_interactive"
-           (click)="clearAllSort()">
-        {{loc.clearAllSort}}
+        (click)="pinColumn()">
+        {{column.locked ? loc.unpin : loc.pin}}
       </div>
       <div class="list-divider"></div>
-    </ng-container>
-  </ng-container>
-  <ng-container *ngIf="hasFilteredColumns()">
-    <div class="list-item list-item_interactive"
-         *ngIf="filtered"
-         (click)="clearFilter()">
-      {{loc.clearFilter}}
+    }
+    @if (column.sortable) {
+      <div class="list-item list-item_interactive"
+        (click)="sortAsc($event)">
+        {{loc.sortAsc}}
+      </div>
+      <div class="list-item list-item_interactive"
+        (click)="sortDesc($event)">
+        {{loc.sortDesc}}
+      </div>
+      @if (hasSortedColumns()) {
+        @if (sortParam) {
+          <div class="list-item list-item_interactive"
+            (click)="clearSort()">
+            {{loc.clearSort}}
+          </div>
+        }
+        <div class="list-item list-item_interactive"
+          (click)="clearAllSort()">
+          {{loc.clearAllSort}}
+        </div>
+        <div class="list-divider"></div>
+      }
+    }
+    @if (hasFilteredColumns()) {
+      @if (filtered) {
+        <div class="list-item list-item_interactive"
+          (click)="clearFilter()">
+          {{loc.clearFilter}}
+        </div>
+      }
+      <div class="list-item list-item_interactive"
+        (click)="clearAllFilters()">
+        {{loc.clearAllFilters}}
+      </div>
+      <div class="list-divider"></div>
+    }
+    <div class="list-item list-item_interactive" (click)="autosizeColumn()">
+      {{loc.autosizeColumn}}
     </div>
-    <div class="list-item list-item_interactive"
-         (click)="clearAllFilters()">
-      {{loc.clearAllFilters}}
+    <div class="list-item list-item_interactive" (click)="autosizeAllColumns()">
+      {{loc.autosizeAll}}
     </div>
     <div class="list-divider"></div>
-  </ng-container>
-  <div class="list-item list-item_interactive" (click)="autosizeColumn()">
-    {{loc.autosizeColumn}}
+    <div class="list-item list-item_interactive" (click)="restoreDefaultColumns()">
+      {{loc.resetColumnsSize}}
+    </div>
   </div>
-  <div class="list-item list-item_interactive" (click)="autosizeAllColumns()">
-    {{loc.autosizeAll}}
-  </div>
-  <div class="list-divider"></div>
-  <div class="list-item list-item_interactive" (click)="restoreDefaultColumns()">
-    {{loc.resetColumnsSize}}
-  </div>
-</div>
+}

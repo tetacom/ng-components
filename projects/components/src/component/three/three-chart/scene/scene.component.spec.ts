@@ -8,8 +8,8 @@ describe('SceneGraphComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SceneGraphComponent],
-    });
+    imports: [SceneGraphComponent],
+});
     fixture = TestBed.createComponent(SceneGraphComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

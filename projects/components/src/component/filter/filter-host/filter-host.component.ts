@@ -19,10 +19,11 @@ import {getFilterComponent} from '../contarct/filter-component-map';
 import {IIdName} from '../../../common/contract/i-id-name';
 
 @Component({
-  selector: 'teta-filter-host',
-  template: '',
-  styles: [],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-filter-host',
+    template: '',
+    styles: [],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class FilterHostComponent<T> implements OnInit, OnDestroy {
   @Input()

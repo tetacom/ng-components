@@ -4,7 +4,7 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   OnInit,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import * as THREE from 'three';
 import { GridHelper } from 'three';
 import { extend, NgtArgs } from 'angular-three';
@@ -15,7 +15,7 @@ extend(THREE);
   selector: 'teta-area-3d',
   templateUrl: './area-3d.component.html',
   standalone: true,
-  imports: [CommonModule, NgtArgs],
+  imports: [NgtArgs],
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

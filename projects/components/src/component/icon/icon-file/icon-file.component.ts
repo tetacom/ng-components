@@ -1,10 +1,11 @@
 import {ChangeDetectionStrategy, Component, HostBinding, Input, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'teta-icon-file',
-  templateUrl: './icon-file.component.html',
-  styleUrls: ['./icon-file.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-icon-file',
+    templateUrl: './icon-file.component.html',
+    styleUrls: ['./icon-file.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class IconFileComponent implements OnInit {
   @Input() name: string;

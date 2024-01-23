@@ -14,24 +14,27 @@ import {ITreeData} from '../../../common/contract/i-tree-data';
 import {TreeService} from '../tree.service';
 import {takeWhile} from 'rxjs/operators';
 import {animate, style, transition, trigger} from '@angular/animations';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 
 /**
  * TODO: Lazy загрузка дочерних элементов, Output onExpand, шаблон для иконки expand
  */
 @Component({
-  selector: 'teta-tree-item',
-  templateUrl: './tree-item.component.html',
-  styleUrls: ['./tree-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    trigger('treeItemInstance', [
-      transition('void => *', [
-        style({opacity: '0'}),
-        animate(200, style({opacity: '1'})),
-      ]),
-      // transition('* => void', [animate(200, style({opacity: '0'}))]),
-    ]),
-  ],
+    selector: 'teta-tree-item',
+    templateUrl: './tree-item.component.html',
+    styleUrls: ['./tree-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [
+        trigger('treeItemInstance', [
+            transition('void => *', [
+                style({ opacity: '0' }),
+                animate(200, style({ opacity: '1' })),
+            ]),
+            // transition('* => void', [animate(200, style({opacity: '0'}))]),
+        ]),
+    ],
+    standalone: true,
+    imports: [NgClass, NgTemplateOutlet],
 })
 export class TreeItemComponent implements OnInit, OnChanges, OnDestroy {
   @Input() item: ITreeData;

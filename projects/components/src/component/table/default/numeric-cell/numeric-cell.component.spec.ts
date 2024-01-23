@@ -8,8 +8,8 @@ describe('NumericCellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NumericCellComponent]
-    })
+    imports: [NumericCellComponent]
+})
       .compileComponents();
   });
 

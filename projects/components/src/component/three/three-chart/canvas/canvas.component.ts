@@ -4,7 +4,7 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   Input,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { NgtCanvas, NgtStore } from 'angular-three';
 import { SceneComponent } from '../scene/scene.component';
 import { I3dChartConfig } from '../model/i-3d-chart-config';
@@ -18,7 +18,7 @@ import { Camera } from 'three';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NgtStore],
-  imports: [NgtCanvas, SceneComponent, CommonModule],
+  imports: [NgtCanvas, SceneComponent],
 })
 export class CanvasComponent {
   @Input() scene: typeof SceneComponent;

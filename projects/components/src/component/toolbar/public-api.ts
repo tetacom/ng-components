@@ -1,6 +1,6 @@
-export * from './toolbar.module';
+
 
 /**
  * Components
  */
-export * from './toolbar/toolbar.component';
+export *  as ToolbarModule from './toolbar/toolbar.component';

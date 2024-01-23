@@ -1,10 +1,11 @@
 import { withKnobs } from '@storybook/addon-knobs';
 import { AccordionComponent } from './accordion/accordion.component';
-import { AccordionModule } from './accordion.module';
-import { IconModule } from '../icon/icon.module';
+
+
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import {AccordionModule, IconModule} from "@tetacom/ng-components";
 
 export default {
   title: 'Component/Accordion',
@@ -16,7 +17,7 @@ export default {
   ],
   component: AccordionComponent,
   moduleMetadata: {
-    imports: [AccordionModule],
+    imports: [],
   },
 } as Meta;
 

@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass, AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -12,7 +12,7 @@ import {
   Output, SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import {
   maskitoDateOptionsGenerator,
   maskitoDateTimeOptionsGenerator,
@@ -27,6 +27,13 @@ import { BasePicker } from '../base-picker';
 import { DatePeriod } from '../model/date-period';
 import { TetaConfigService } from '../../../locale/teta-config.service';
 import {TetaLocalisation} from "../../../locale/teta-localisation";
+import { DateCalendarComponent } from './date-calendar/date-calendar.component';
+import { DropdownContentDirective } from '../../dropdown/dropdown-content.directive';
+import { IconComponent } from '../../icon/icon/icon.component';
+import { MaskitoModule } from '@maskito/angular';
+import { InputComponent } from '../../input/input/input.component';
+import { DropdownHeadDirective } from '../../dropdown/dropdown-head.directive';
+import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
 
 export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -35,11 +42,24 @@ export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'teta-date-picker',
-  templateUrl: './date-picker.component.html',
-  styleUrls: ['./date-picker.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DATE_PICKER_CONTROL_VALUE_ACCESSOR, DatePipe],
+    selector: 'teta-date-picker',
+    templateUrl: './date-picker.component.html',
+    styleUrls: ['./date-picker.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [DATE_PICKER_CONTROL_VALUE_ACCESSOR, DatePipe],
+    standalone: true,
+    imports: [
+        DropdownComponent,
+        DropdownHeadDirective,
+        NgClass,
+        InputComponent,
+        FormsModule,
+        MaskitoModule,
+        IconComponent,
+        DropdownContentDirective,
+        DateCalendarComponent,
+        AsyncPipe,
+    ],
 })
 export class DatePickerComponent
   extends BasePicker

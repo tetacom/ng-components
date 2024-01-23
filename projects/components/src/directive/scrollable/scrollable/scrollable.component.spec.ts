@@ -8,8 +8,8 @@ describe('TetaScrollableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ScrollableComponent ]
-    })
+    imports: [ScrollableComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(ScrollableComponent);

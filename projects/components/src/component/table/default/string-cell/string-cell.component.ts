@@ -11,12 +11,20 @@ import { Align } from '../../../../common/enum/align.enum';
 import { CellComponentBase } from '../../base/cell-component-base';
 import { ICellCoordinates } from '../../contract/i-cell-coordinates';
 import { TableService } from '../../service/table.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HintDirective } from '../../../../directive/hint/hint.directive';
 
 @Component({
-  selector: 'teta-string-cell',
-  templateUrl: './string-cell.component.html',
-  styleUrls: ['./string-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-string-cell',
+    templateUrl: './string-cell.component.html',
+    styleUrls: ['./string-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        HintDirective,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
 })
 export class StringCellComponent<T>
   extends CellComponentBase<T>

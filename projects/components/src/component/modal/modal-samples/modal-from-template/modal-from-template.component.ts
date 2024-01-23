@@ -7,12 +7,25 @@ import {
 } from '@angular/core';
 import { ModalCloseReason } from '../../model/modal-close-reason.enum';
 import { ModalService } from '../../modal.service';
+import { FormsModule } from '@angular/forms';
+import { IconComponent } from '../../../icon/icon/icon.component';
+import { ButtonComponent } from '../../../button/button/button.component';
+import { ToolbarComponent } from '../../../toolbar/toolbar/toolbar.component';
+import { IconSpriteDirective } from '../../../icon/icon-sprite.directive';
 
 @Component({
-  selector: 'app-modal-from-template',
-  templateUrl: './modal-from-template.component.html',
-  styleUrls: ['./modal-from-template.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-modal-from-template',
+    templateUrl: './modal-from-template.component.html',
+    styleUrls: ['./modal-from-template.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        IconSpriteDirective,
+        ToolbarComponent,
+        ButtonComponent,
+        IconComponent,
+        FormsModule,
+    ],
 })
 export class ModalFromTemplateComponent implements OnInit {
   @Input() name: string;

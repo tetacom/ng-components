@@ -1,6 +1,6 @@
 import {withKnobs} from '@storybook/addon-knobs';
 import {PropertyGridModule} from './property-grid.module';
-import {IconModule} from '../icon/icon.module';
+
 import {PropertyGridDemoModule} from "./property-grid-demo/property-grid-demo.module";
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
@@ -23,7 +23,7 @@ export default {
 
 export const simplePropertyGrid = () => ({
   moduleMetadata: {
-    imports: [PropertyGridModule, IconModule, PropertyGridDemoModule],
+    imports: [PropertyGridModule, PropertyGridDemoModule],
     entryComponents: [],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'"

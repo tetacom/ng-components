@@ -8,8 +8,8 @@ describe('MainDropdownTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MainDropdownTabComponent ]
-    })
+    imports: [MainDropdownTabComponent]
+})
     .compileComponents();
   });
 

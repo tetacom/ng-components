@@ -7,10 +7,10 @@ import {
 import { Align } from '../../common/enum/align.enum';
 import { VerticalAlign } from '../../common/enum/vertical-align.enum';
 import { SelectComponent } from './select/select.component';
-import { SelectModule } from './select.module';
+
 import * as faker from 'faker';
 import { iconsList } from '../icon/icons-list';
-import { IconModule } from '../icon/icon.module';
+
 import { FormsModule } from '@angular/forms';
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
@@ -26,7 +26,7 @@ export default {
   ],
   component: SelectComponent,
   moduleMetadata: {
-    imports: [SelectModule, FormsModule],
+    imports: [FormsModule],
   },
 } as Meta;
 
@@ -43,7 +43,7 @@ const getOptions = size => {
 
 export const singleSelect = () => ({
   moduleMetadata: {
-    imports: [SelectModule, IconModule, FormsModule],
+    imports: [FormsModule],
   },
   props: {
     icon: 'user',
@@ -116,7 +116,7 @@ export const singleSelect = () => ({
 
 export const multipleSelect = () => ({
   moduleMetadata: {
-    imports: [SelectModule, IconModule, FormsModule],
+    imports: [FormsModule],
   },
   props: {
     icon: select('icon', iconsList, null),
@@ -187,7 +187,7 @@ export const multipleSelect = () => ({
 
 export const multipleCustom = () => ({
   moduleMetadata: {
-    imports: [SelectModule, IconModule, FormsModule],
+    imports: [FormsModule],
   },
   props: {
     icon: select('icon', iconsList, null),

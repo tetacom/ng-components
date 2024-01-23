@@ -1,16 +1,17 @@
 <span [style.display]="edit ? 'none' : 'block'"
-      class="cell-text"
-      [tetaHint]="row[column.name]"
-      [align]="align.auto"
-      [appendToBody]="true"
-      [overflownOnly]="true"
-      [class.cell-text_disabled]="!editable">
+  class="cell-text"
+  [tetaHint]="row[column.name]"
+  [align]="align.auto"
+  [appendToBody]="true"
+  [overflownOnly]="true"
+  [class.cell-text_disabled]="!editable">
   {{control.value}}
 </span>
-<input #input
-       *ngIf="edit"
-       type="text"
-       class="input row_auto border-radius-0"
-       (keydown.enter)='input.blur()'
-       [formControl]='control'/>
+@if (edit) {
+  <input #input
+    type="text"
+    class="input row_auto border-radius-0"
+    (keydown.enter)='input.blur()'
+    [formControl]='control'/>
+}
 

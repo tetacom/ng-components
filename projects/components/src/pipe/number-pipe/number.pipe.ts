@@ -2,7 +2,8 @@ import {Pipe, PipeTransform} from '@angular/core';
 import {formatNumber} from '../util/number-helper';
 
 @Pipe({
-  name: 'tetaNumber'
+    name: 'tetaNumber',
+    standalone: true
 })
 export class NumberPipe implements PipeTransform {
   transform(value: number | string,

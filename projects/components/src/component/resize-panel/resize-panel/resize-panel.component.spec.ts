@@ -8,8 +8,8 @@ describe('ResizePanelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ResizePanelComponent ]
-    })
+    imports: [ResizePanelComponent]
+})
     .compileComponents();
   });
 

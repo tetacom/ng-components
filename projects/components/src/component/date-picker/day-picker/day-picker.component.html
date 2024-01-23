@@ -1,17 +1,19 @@
 <div class="datepicker-week font-caption">
-  <p class="datepicker-day" *ngFor="let day of dayOrder">
-    {{day}}
-  </p>
+  @for (day of dayOrder; track day) {
+    <p class="datepicker-day">
+      {{day}}
+    </p>
+  }
 </div>
 <div class="datepicker-picker color-text-90 font-body-3">
-  <ng-container *ngFor="let day of calendar">
+  @for (day of calendar; track day) {
     <div [class]="getRangeActiveClass(day)+' datepicker-date font-body-3 datepicker_'+viewType"
-         (mouseenter)="hover(day.date)"
-         (click)="pickDate(day)"
+      (mouseenter)="hover(day.date)"
+      (click)="pickDate(day)"
          [ngClass]="{'datepicker-date_active':day.selected||(day.date===hoveredDate&&range&&!range.to),'datepicker-date-range_hover':range&&isHoveredRange(day),
          'datepicker-date_disabled':day.disabled,'color-text-30':day.disabled||(!range&&!day.isCurrentMonth),'datepicker-date-range_disabled':!day.isCurrentMonth&&range,'datepicker-date-range_active':isActiveRange(day)}">
       <teta-day-item [day]="day"></teta-day-item>
     </div>
-  </ng-container>
+  }
 </div>
 

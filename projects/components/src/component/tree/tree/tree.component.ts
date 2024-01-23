@@ -16,14 +16,26 @@ import {ITreeData} from '../../../common/contract/i-tree-data';
 import {TreeService} from '../tree.service';
 import {TetaTemplateDirective} from '../../../directive/teta-template/teta-template.directive';
 import {filter, takeWhile} from 'rxjs/operators';
-import {CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
+import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from "@angular/cdk/scrolling";
+import { TreeItemComponent } from '../tree-item/tree-item.component';
+import { ScrollableDirective } from '../../../directive/scrollable/scrollable.directive';
+import { ScrollableComponent } from '../../../directive/scrollable/scrollable/scrollable.component';
 
 @Component({
-  selector: 'teta-tree',
-  templateUrl: './tree.component.html',
-  styleUrls: ['./tree.component.scss'],
-  providers: [TreeService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-tree',
+    templateUrl: './tree.component.html',
+    styleUrls: ['./tree.component.scss'],
+    providers: [TreeService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        ScrollableComponent,
+        CdkVirtualScrollViewport,
+        CdkFixedSizeVirtualScroll,
+        ScrollableDirective,
+        CdkVirtualForOf,
+        TreeItemComponent,
+    ],
 })
 export class TreeComponent implements OnInit, OnChanges, OnDestroy {
   @Input()

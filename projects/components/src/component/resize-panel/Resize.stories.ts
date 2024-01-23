@@ -1,6 +1,6 @@
 // eslint-disable-next-line id-blacklist
 import {number, select, withKnobs} from '@storybook/addon-knobs';
-import {ResizePanelModule} from './resize-panel.module';
+
 import {Meta} from "@storybook/angular";
 
 export default {
@@ -10,7 +10,7 @@ export default {
 
 export const horizontal = () => ({
   moduleMetadata: {
-    imports: [ResizePanelModule],
+    imports: [],
   },
   props: {
     maxSize: number('maxSize', 500, {
@@ -47,7 +47,7 @@ export const horizontal = () => ({
 
 export const vertical = () => ({
   moduleMetadata: {
-    imports: [ResizePanelModule],
+    imports: [],
   },
   props: {
     maxSize: number('maxSize', 500, {

@@ -1,8 +1,6 @@
 import {withKnobs} from '@storybook/addon-knobs';
 import {ChartComponent} from '../chart/chart.component';
 import {ChartModule} from '../chart.module';
-import {IconModule} from '../../../../components/src/component/icon/icon.module';
-import {ButtonModule} from '../../../../components/src/component/button/button.module';
 import {createBandChart, createChart, createDragChart} from './story-helper';
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
@@ -20,13 +18,13 @@ export default {
   ],
   component: ChartComponent,
   moduleMetadata: {
-    imports: [ChartModule, IconModule, ButtonModule],
+    imports: [ChartModule],
   },
 } as Meta;
 
 export const basicChart = () => ({
   moduleMetadata: {
-    imports: [ChartModule, IconModule, ButtonModule],
+    imports: [ChartModule],
   },
 
   props: {
@@ -69,7 +67,7 @@ export const basicChart = () => ({
 
 export const draggableChart = () => ({
   moduleMetadata: {
-    imports: [ChartModule, IconModule, ButtonModule],
+    imports: [ChartModule],
   },
 
   props: {
@@ -88,7 +86,7 @@ export const draggableChart = () => ({
 
 export const bandChart = () => ({
   moduleMetadata: {
-    imports: [ChartModule, IconModule, ButtonModule],
+    imports: [ChartModule],
   },
 
   props: {

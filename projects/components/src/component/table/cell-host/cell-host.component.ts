@@ -19,11 +19,12 @@ import { TableColumn } from '../contract/table-column';
 import { TableRow } from '../contract/table-row';
 
 @Component({
-  selector: 'teta-cell-host',
-  template: '',
-  styleUrls: ['./cell-host.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  viewProviders: [FormsUtil.formProvider],
+    selector: 'teta-cell-host',
+    template: '',
+    styleUrls: ['./cell-host.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    viewProviders: [FormsUtil.formProvider],
+    standalone: true,
 })
 export class CellHostComponent<T> implements OnInit, OnChanges {
   @Input() column: TableColumn;

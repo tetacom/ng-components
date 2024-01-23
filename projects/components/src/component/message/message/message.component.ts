@@ -10,12 +10,21 @@ import {
   Output,
 } from '@angular/core';
 import {Message} from '../model/message';
+import { NgTemplateOutlet } from '@angular/common';
+import { IconComponent } from '../../icon/icon/icon.component';
+import { ButtonComponent } from '../../button/button/button.component';
 
 @Component({
-  selector: 'teta-message',
-  templateUrl: './message.component.html',
-  styleUrls: ['./message.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-message',
+    templateUrl: './message.component.html',
+    styleUrls: ['./message.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        ButtonComponent,
+        IconComponent,
+        NgTemplateOutlet,
+    ],
 })
 export class MessageComponent implements AfterViewInit, OnDestroy {
   @Input() message: Message;

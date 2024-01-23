@@ -1,26 +1,31 @@
-<div class="table-head_locked"
-     *ngIf="locked?.length"
-     [style.flex-grow]="lockedFlex"
-     [style.flex-basis.px]="lockedWidth"
-     [style.min-width.px]="lockedWidth">
-  <teta-selection-head-cell
-    *ngIf="selectType === selectTypeEnum.checkBox"
+@if (locked?.length) {
+  <div class="table-head_locked"
+    [style.flex-grow]="lockedFlex"
+    [style.flex-basis.px]="lockedWidth"
+    [style.min-width.px]="lockedWidth">
+    @if (selectType === selectTypeEnum.checkBox) {
+      <teta-selection-head-cell
+      style="width: 28px;"></teta-selection-head-cell>
+    }
+    @for (column of locked; track track($index, column)) {
+      <teta-table-head-group
+        class="table-head__group"
+        [data]="data"
+        [showHeadCellMenu]="showHeadCellMenu"
+      [column]="column"></teta-table-head-group>
+    }
+  </div>
+}
+@if (unlocked?.length) {
+  @if (selectType === selectTypeEnum.checkBox && locked?.length < 1) {
+    <teta-selection-head-cell
     style="width: 28px;"></teta-selection-head-cell>
-  <teta-table-head-group
-    *ngFor="let column of locked; trackBy: track"
-    class="table-head__group"
-    [data]="data"
-    [showHeadCellMenu]="showHeadCellMenu"
+  }
+  @for (column of unlocked; track track($index, column)) {
+    <teta-table-head-group
+      class="table-head__group"
+      [data]="data"
+      [showHeadCellMenu]="showHeadCellMenu"
     [column]="column"></teta-table-head-group>
-</div>
-<ng-container *ngIf="unlocked?.length">
-  <teta-selection-head-cell
-    *ngIf="selectType === selectTypeEnum.checkBox && locked?.length < 1"
-    style="width: 28px;"></teta-selection-head-cell>
-  <teta-table-head-group
-    *ngFor="let column of unlocked; trackBy: track"
-    class="table-head__group"
-    [data]="data"
-    [showHeadCellMenu]="showHeadCellMenu"
-    [column]="column"></teta-table-head-group>
-</ng-container>
+  }
+}

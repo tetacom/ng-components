@@ -13,7 +13,8 @@ import {DOCUMENT} from '@angular/common';
 import {DropdownBase} from './dropdown-base';
 
 @Directive({
-  selector: '[tetaDropdown]'
+    selector: '[tetaDropdown]',
+    standalone: true
 })
 export class DropdownDirective extends DropdownBase implements OnInit, OnDestroy, AfterViewInit {
   constructor(protected override _cdr: ChangeDetectorRef,

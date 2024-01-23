@@ -9,6 +9,8 @@ import {
   OnInit,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NgTemplateOutlet } from '@angular/common';
+import { IconComponent } from '../../icon/icon/icon.component';
 
 export const CHECKBOX_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -17,11 +19,13 @@ export const CHECKBOX_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'teta-checkbox',
-  templateUrl: './checkbox.component.html',
-  styleUrls: ['./checkbox.component.scss'],
-  providers: [CHECKBOX_CONTROL_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-checkbox',
+    templateUrl: './checkbox.component.html',
+    styleUrls: ['./checkbox.component.scss'],
+    providers: [CHECKBOX_CONTROL_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [IconComponent, NgTemplateOutlet],
 })
 export class CheckboxComponent implements ControlValueAccessor, OnInit {
   @HostBinding('attr.tabindex') tabindex = 0;

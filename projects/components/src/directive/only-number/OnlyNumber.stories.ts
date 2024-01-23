@@ -1,5 +1,5 @@
 import {withKnobs} from '@storybook/addon-knobs';
-import {OnlyNumberModule} from './only-number.module';
+
 import {FormsModule} from '@angular/forms';
 import {action} from '@storybook/addon-actions';
 import {Meta} from "@storybook/angular";
@@ -11,7 +11,7 @@ export default {
 
 export const onlyNumber = () => ({
   moduleMetadata: {
-    imports: [OnlyNumberModule, FormsModule],
+    imports: [FormsModule],
   },
   props: {
     data: 123,

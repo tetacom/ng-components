@@ -8,7 +8,7 @@ import {
   HostBinding,
   Input,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { AutoCloseIgnoreCase } from '../../../common/contract/auto-close-ignore-case';
@@ -19,19 +19,48 @@ import { TetaConfigService } from '../../../locale/teta-config.service';
 import { TetaLocalisation } from '../../../locale/teta-localisation';
 import { SelectOptionDirective } from '../select-option.directive';
 import { SelectValueDirective } from '../select-value.directive';
+import { HighlightDirective } from '../../../directive/highlight/highlight.directive';
+import { ScrollableDirective } from '../../../directive/scrollable/scrollable.directive';
+import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
+import { ScrollableComponent } from '../../../directive/scrollable/scrollable/scrollable.component';
+import { TextFieldComponent } from '../../input/text-field/text-field.component';
+import { DropdownContentDirective } from '../../dropdown/dropdown-content.directive';
+import { NgTemplateOutlet, AsyncPipe } from '@angular/common';
+import { IconComponent } from '../../icon/icon/icon.component';
+import { DropdownHeadDirective } from '../../dropdown/dropdown-head.directive';
+import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
+import { LetDirective } from '../../../directive/let/let.directive';
 
 @Component({
-  selector: 'teta-select',
-  templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => SelectComponent),
-      multi: true,
-    },
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-select',
+    templateUrl: './select.component.html',
+    styleUrls: ['./select.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => SelectComponent),
+            multi: true,
+        },
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        LetDirective,
+        DropdownComponent,
+        DropdownHeadDirective,
+        IconComponent,
+        NgTemplateOutlet,
+        DropdownContentDirective,
+        TextFieldComponent,
+        FormsModule,
+        ScrollableComponent,
+        CdkVirtualScrollViewport,
+        CdkFixedSizeVirtualScroll,
+        ScrollableDirective,
+        CdkVirtualForOf,
+        HighlightDirective,
+        AsyncPipe,
+    ],
 })
 export class SelectComponent implements ControlValueAccessor {
   @HostBinding('class.select_multiple')

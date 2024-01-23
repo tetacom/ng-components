@@ -1,10 +1,11 @@
 import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
 import { ButtonComponent } from './button/button.component';
-import { ButtonModule } from './button.module';
-import { IconModule } from '../icon/icon.module';
+
+
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import {IconModule} from "@tetacom/ng-components";
 
 export default {
   title: 'Component/Button',
@@ -16,13 +17,13 @@ export default {
   ],
   component: ButtonComponent,
   moduleMetadata: {
-    imports: [ButtonModule],
+    imports: [],
   },
 } as Meta;
 
 export const buttons = () => ({
   moduleMetadata: {
-    imports: [ButtonModule, IconModule],
+    imports: [IconModule],
   },
   props: {
     palettes: ['primary', 'text', 'red', 'yellow', 'green'],

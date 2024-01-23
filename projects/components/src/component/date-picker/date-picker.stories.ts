@@ -1,8 +1,8 @@
 import { boolean, date, select, withKnobs } from '@storybook/addon-knobs';
-import { DatePickerModule } from './date-picker.module';
+
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { FormsModule } from '@angular/forms';
-import { IconModule } from '../icon/icon.module';
+
 import { MaskitoModule } from '@maskito/angular';
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
@@ -18,13 +18,13 @@ export default {
   ],
   component: DatePickerComponent,
   moduleMetadata: {
-    imports: [DatePickerModule, FormsModule, MaskitoModule],
+    imports: [FormsModule, MaskitoModule],
   },
 } as Meta;
 
 export const datepicker = () => ({
   moduleMetadata: {
-    imports: [DatePickerModule, IconModule, FormsModule, MaskitoModule],
+    imports: [FormsModule, MaskitoModule],
   },
   props: {
     date: new Date(),
@@ -55,7 +55,7 @@ const rangeValue = date => {
 };
 export const dateRange = () => ({
   moduleMetadata: {
-    imports: [DatePickerModule, IconModule, FormsModule, MaskitoModule],
+    imports: [FormsModule, MaskitoModule],
   },
   props: {
     data: {
@@ -87,7 +87,7 @@ export const dateRange = () => ({
 });
 export const datepickerWithTime = () => ({
   moduleMetadata: {
-    imports: [DatePickerModule, IconModule, FormsModule, MaskitoModule],
+    imports: [FormsModule, MaskitoModule],
   },
   props: {
     date: new Date(),

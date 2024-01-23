@@ -1,8 +1,8 @@
 import {withKnobs} from '@storybook/addon-knobs';
 import {ToolbarComponent} from './toolbar/toolbar.component';
-import {ToolbarModule} from './toolbar.module';
-import {ButtonModule} from '../button/button.module';
-import {IconModule} from '../icon/icon.module';
+
+
+
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
@@ -19,13 +19,13 @@ export default {
   ],
   component: ToolbarComponent,
   moduleMetadata: {
-    imports: [ToolbarModule],
+    imports: [],
   },
 } as Meta;
 
 export const basicToolbar = () => ({
   moduleMetadata: {
-    imports: [ToolbarModule, ButtonModule, IconModule],
+    imports: [],
   },
   props: {
     data: treeData,

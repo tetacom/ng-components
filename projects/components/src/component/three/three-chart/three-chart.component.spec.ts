@@ -8,8 +8,8 @@ describe('ThreeChartComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ThreeChartComponent]
-    });
+    imports: [ThreeChartComponent]
+});
     fixture = TestBed.createComponent(ThreeChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

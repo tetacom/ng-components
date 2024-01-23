@@ -4,11 +4,12 @@ import {viewType} from "../../../common/model/view-type.model";
 export type ButtonViewType = 'primary' | 'outline' | 'ghost';
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'button[teta-button], teta-button',
-  templateUrl: './button.component.html',
-  styleUrls: ['./button.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    // eslint-disable-next-line @angular-eslint/component-selector
+    selector: 'button[teta-button], teta-button',
+    templateUrl: './button.component.html',
+    styleUrls: ['./button.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class ButtonComponent implements OnInit {
   @Input() palette: string;

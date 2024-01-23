@@ -1,4 +1,4 @@
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -27,12 +27,36 @@ import { TableRow } from '../contract/table-row';
 import { AggregationType } from '../enum/aggregation-type.enum';
 import { SelectType } from '../enum/select-type.enum';
 import { TableService } from '../service/table.service';
+import { NumberPipe } from '../../../pipe/number-pipe/number.pipe';
+import { IconComponent } from '../../icon/icon/icon.component';
+import { CellComponent } from '../cell/cell.component';
+import { SelectionCellComponent } from '../selection-cell/selection-cell.component';
+import { FormsModule } from '@angular/forms';
+import { NgTemplateOutlet, NgClass, AsyncPipe } from '@angular/common';
+import { ScrollableDirective } from '../../../directive/scrollable/scrollable.directive';
+import { ScrollableComponent } from '../../../directive/scrollable/scrollable/scrollable.component';
 
 @Component({
-  selector: 'teta-table-body',
-  templateUrl: './table-body.component.html',
-  styleUrls: ['./table-body.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-table-body',
+    templateUrl: './table-body.component.html',
+    styleUrls: ['./table-body.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        ScrollableComponent,
+        CdkVirtualScrollViewport,
+        CdkFixedSizeVirtualScroll,
+        ScrollableDirective,
+        CdkVirtualForOf,
+        NgTemplateOutlet,
+        FormsModule,
+        NgClass,
+        SelectionCellComponent,
+        CellComponent,
+        IconComponent,
+        AsyncPipe,
+        NumberPipe,
+    ],
 })
 export class TableBodyComponent<T> implements OnInit, OnDestroy {
   @Input() virtual: boolean;

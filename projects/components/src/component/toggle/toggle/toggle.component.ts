@@ -9,6 +9,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NgClass } from '@angular/common';
 
 export const TOGGLE_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -17,11 +18,13 @@ export const TOGGLE_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'teta-toggle',
-  templateUrl: './toggle.component.html',
-  styleUrls: ['./toggle.component.scss'],
-  providers: [TOGGLE_CONTROL_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-toggle',
+    templateUrl: './toggle.component.html',
+    styleUrls: ['./toggle.component.scss'],
+    providers: [TOGGLE_CONTROL_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [NgClass],
 })
 export class ToggleComponent implements ControlValueAccessor {
   @HostBinding('attr.tabindex') tabindex = 0;

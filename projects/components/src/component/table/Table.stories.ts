@@ -1,10 +1,10 @@
 import {select, withKnobs} from '@storybook/addon-knobs';
-import {TableModule} from './table.module';
+
 import {EditType} from './enum/edit-type.enum';
 import {EditEvent} from './enum/edit-event.enum';
 import {SelectType} from './enum/select-type.enum';
-import {IconModule} from '../icon/icon.module';
-import {TableDemoModule} from './table-demo/table-demo.module';
+
+
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
@@ -20,13 +20,13 @@ export default {
     }),
   ],
   moduleMetadata: {
-    imports: [TableModule],
+    imports: [],
   },
 } as Meta;
 
 export const basicTable = () => ({
   moduleMetadata: {
-    imports: [TableDemoModule, IconModule],
+    imports: [],
   },
   props: {
     editType: select(
@@ -69,7 +69,7 @@ export const basicTable = () => ({
 
 export const virtualTable = () => ({
   moduleMetadata: {
-    imports: [TableDemoModule, IconModule],
+    imports: [],
   },
   props: {
     editType: select(

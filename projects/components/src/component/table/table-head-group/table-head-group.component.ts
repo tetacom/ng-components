@@ -11,12 +11,15 @@ import {TableUtil} from '../util/table-util';
 import {TableService} from '../service/table.service';
 import {takeWhile} from 'rxjs/operators';
 import {ArrayUtil} from '../../../common/util/array-util';
+import { HeadCellComponent } from '../head-cell/head-cell.component';
 
 @Component({
-  selector: 'teta-table-head-group',
-  templateUrl: './table-head-group.component.html',
-  styleUrls: ['./table-head-group.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-table-head-group',
+    templateUrl: './table-head-group.component.html',
+    styleUrls: ['./table-head-group.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [HeadCellComponent],
 })
 export class TableHeadGroupComponent<T> implements OnInit, OnDestroy {
   @Input() showHeadCellMenu: boolean;

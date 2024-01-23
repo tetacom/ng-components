@@ -1,12 +1,18 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {DragSortEvent} from '../../../drag-sort/drag-sort-event';
 import {ArrayUtil} from '../../../../common/util/array-util';
+import { JsonPipe } from '@angular/common';
+import { DragPreviewDirective } from '../../drag-preview.directive';
+import { DragDirective } from '../../drag.directive';
+import { DragContainerDirective } from '../../drag-container.directive';
 
 @Component({
-  selector: 'teta-drag-drop-demo',
-  templateUrl: './drag-drop-demo.component.html',
-  styleUrls: ['./drag-drop-demo.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'teta-drag-drop-demo',
+    templateUrl: './drag-drop-demo.component.html',
+    styleUrls: ['./drag-drop-demo.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [DragContainerDirective, DragDirective, DragPreviewDirective, JsonPipe]
 })
 export class DragDropDemoComponent implements OnInit {
   items = [

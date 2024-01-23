@@ -1,12 +1,13 @@
 <span [style.display]="edit ? 'none' : 'block'"
-      class='cell-text'
-      [class.cell-text_disabled]='!editable'>
+  class='cell-text'
+  [class.cell-text_disabled]='!editable'>
   {{control?.value | date : 'dd.MM.yyyy'}}
 </span>
-<teta-date-picker class='datepicker-table'
-                  #input
-                  *ngIf='edit'
-                  [allowNull]='!column.required'
-                  [appendToBody]='true'
-                  [showTime]='false'
-                  [formControl]='control'></teta-date-picker>
+@if (edit) {
+  <teta-date-picker class='datepicker-table'
+    #input
+    [allowNull]='!column.required'
+    [appendToBody]='true'
+    [showTime]='false'
+  [formControl]='control'></teta-date-picker>
+}

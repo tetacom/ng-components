@@ -1,11 +1,11 @@
 // eslint-disable-next-line id-blacklist
 import { boolean, select, withKnobs } from '@storybook/addon-knobs';
-import { ButtonModule } from '../button/button.module';
-import { IconModule } from '../icon/icon.module';
-import { DropdownModule } from './dropdown.module';
+
+
+
 import { Align } from '../../common/enum/align.enum';
 import { VerticalAlign } from '../../common/enum/vertical-align.enum';
-import { ScrollableModule } from '../../directive/scrollable/scrollable.module';
+
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -19,7 +19,7 @@ export default {
     }),
   ],
   moduleMetadata: {
-    imports: [DropdownModule],
+    imports: [],
   },
 } as Meta;
 
@@ -33,7 +33,7 @@ const alignMap = new Map<VerticalAlign, string>()
   .set(VerticalAlign.innerTop, 'innerTop');
 export const dropdownDirective = args => ({
   moduleMetadata: {
-    imports: [DropdownModule, ButtonModule, IconModule, ScrollableModule],
+    imports: [],
   },
   props: {
     alignMap: alignMap,
@@ -98,7 +98,7 @@ export const dropdownDirective = args => ({
 });
 export const dropdownComponent = args => ({
   moduleMetadata: {
-    imports: [DropdownModule, ButtonModule, IconModule],
+    imports: [],
   },
   props: {
     align: select(

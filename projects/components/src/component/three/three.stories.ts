@@ -1,4 +1,4 @@
-import { IconModule } from '../icon/icon.module';
+
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,7 +21,7 @@ export default {
 
 export const lithotypeChart = () => ({
   moduleMetadata: {
-    imports: [ThreeChartComponent, IconModule],
+    imports: [ThreeChartComponent],
   },
   props: {
     data: {
@@ -91,7 +91,7 @@ export const lithotypeChart = () => ({
 });
 export const customSeries = () => ({
   moduleMetadata: {
-    imports: [ThreeChartComponent, IconModule],
+    imports: [ThreeChartComponent],
   },
   props: {
     data: {

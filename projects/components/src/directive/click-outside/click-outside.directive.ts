@@ -9,7 +9,8 @@ import {
 import {DomUtil} from '../../common/util/dom-util';
 
 @Directive({
-  selector: '[tetaClickOutside]',
+    selector: '[tetaClickOutside]',
+    standalone: true,
 })
 export class ClickOutsideDirective implements OnDestroy {
   @Output() clickOutside = new EventEmitter<MouseEvent>();

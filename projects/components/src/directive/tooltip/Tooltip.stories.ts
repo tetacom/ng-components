@@ -1,9 +1,9 @@
-import { ButtonModule } from '../../component/button/button.module';
+
 import { PopupContentComponent } from '../../component/dynamic-component/popup-content/popup-content.component';
-import { IconModule } from '../../component/icon/icon.module';
+
 import { Align } from '../../common/enum/align.enum';
 import { VerticalAlign } from '../../common/enum/vertical-align.enum';
-import { TooltipModule } from './tooltip.module';
+
 import {applicationConfig, Meta} from "@storybook/angular";
 import {select, withKnobs} from "@storybook/addon-knobs";
 import {importProvidersFrom} from "@angular/core";
@@ -23,7 +23,7 @@ export default {
 
 export const fromString = () => ({
   moduleMetadata: {
-    imports: [TooltipModule, ButtonModule, IconModule],
+    imports: [],
     entryComponents: [PopupContentComponent],
   },
   props: {
@@ -63,7 +63,7 @@ export const fromString = () => ({
 
 export const fromTemplate = () => ({
   moduleMetadata: {
-    imports: [TooltipModule, ButtonModule, IconModule],
+    imports: [],
     entryComponents: [PopupContentComponent],
   },
   props: {

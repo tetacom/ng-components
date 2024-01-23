@@ -1,6 +1,6 @@
 // eslint-disable-next-line id-blacklist
 import {boolean, withKnobs} from '@storybook/addon-knobs';
-import {LoaderModule} from './loader.module';
+
 import {Meta} from "@storybook/angular";
 
 export default {
@@ -10,7 +10,7 @@ export default {
 
 export const sample = () => ({
   moduleMetadata: {
-    imports: [LoaderModule]
+    imports: []
   },
   props: {
     show: boolean('show', true)

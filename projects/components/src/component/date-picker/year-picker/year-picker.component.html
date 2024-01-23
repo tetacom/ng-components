@@ -3,17 +3,23 @@
     <p>{{locale.selectYear}}</p>
   </div>
   <div class="datepicker-year overflow-y-auto">
-    <div *ngFor="let y of years" class="font-button-2" (click)="pickYear(y.id,y.disabled)">
-      <div [ngClass]="{'datepicker-year_item_active':y.isSelected,'datepicker-year_item_disabled':y.disabled}"
-           [class]="'datepicker-year_item column align-center justify-content-center datepicker_'+viewType">
-        <div *ngIf=" y.isSelected===true" tetaScrollToSelectedYear>
-          <span>{{y.id}}</span>
-        </div>
-        <div *ngIf="!y.isSelected">
-          <span>{{y.id}} </span>
+    @for (y of years; track y) {
+      <div class="font-button-2" (click)="pickYear(y.id,y.disabled)">
+        <div [ngClass]="{'datepicker-year_item_active':y.isSelected,'datepicker-year_item_disabled':y.disabled}"
+          [class]="'datepicker-year_item column align-center justify-content-center datepicker_'+viewType">
+          @if ( y.isSelected===true) {
+            <div tetaScrollToSelectedYear>
+              <span>{{y.id}}</span>
+            </div>
+          }
+          @if (!y.isSelected) {
+            <div>
+              <span>{{y.id}} </span>
+            </div>
+          }
         </div>
       </div>
-    </div>
+    }
   </div>
 </div>
 

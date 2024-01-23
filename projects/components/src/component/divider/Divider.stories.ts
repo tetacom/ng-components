@@ -1,7 +1,7 @@
 // eslint-disable-next-line id-blacklist
 import {withKnobs} from '@storybook/addon-knobs';
-import {IconModule} from '../icon/icon.module';
-import {DividerModule} from './divider.module';
+
+
 import {DividerComponent} from "./divider/divider.component";
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
@@ -19,13 +19,13 @@ export default {
   ],
   component: DividerComponent,
   moduleMetadata: {
-    imports: [DividerModule],
+    imports: [],
   },
 } as Meta;
 
 export const divider = () => ({
   moduleMetadata: {
-    imports: [DividerModule, IconModule],
+    imports: [],
   },
   template: `<div class="padding-4" style="width: 300px" [tetaIconSprite]="'assets/icons.svg'"><teta-divider [label]="'Название раздела'"></teta-divider></div>`,
 });

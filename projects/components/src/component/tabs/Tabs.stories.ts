@@ -1,6 +1,6 @@
 import {withKnobs} from '@storybook/addon-knobs';
-import {TabsModule} from './tabs.module';
-import {IconModule} from '../icon/icon.module';
+
+
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
@@ -16,13 +16,13 @@ export default {
     }),
   ],
   moduleMetadata: {
-    imports: [TabsModule, IconModule]
+    imports: []
   },
 } as Meta;
 
 export const basicTab = () => ({
   moduleMetadata: {
-    imports: [TabsModule, IconModule]
+    imports: []
   },
   props: {},
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="padding-3" style="width 100px; height 800px;">

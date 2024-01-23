@@ -6,13 +6,16 @@ import {
 } from '@angular/core';
 import { ThemeSwitchService } from '../theme-switch.service';
 import { Observable } from 'rxjs';
-import {ButtonViewType} from '../../button/button/button.component';
+import { ButtonViewType, ButtonComponent } from '../../button/button/button.component';
+import { IconComponent } from '../../icon/icon/icon.component';
 
 @Component({
-  selector: 'teta-theme-switch',
-  templateUrl: './theme-switch.component.html',
-  styleUrls: ['./theme-switch.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-theme-switch',
+    templateUrl: './theme-switch.component.html',
+    styleUrls: ['./theme-switch.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [ButtonComponent, IconComponent],
 })
 export class ThemeSwitchComponent implements OnInit {
   @Input() palette = 'text';

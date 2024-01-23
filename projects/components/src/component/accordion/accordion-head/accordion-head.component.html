@@ -1,5 +1,7 @@
 <ng-content></ng-content>
-<div *ngIf="showToggle" class="accordion-toggle">
-  <teta-icon [name]="open ? 'arrowUpKey' : 'arrowDownKey'" [palette]="'text'"></teta-icon>
-</div>
+@if (showToggle) {
+  <div class="accordion-toggle">
+    <teta-icon [name]="open ? 'arrowUpKey' : 'arrowDownKey'" [palette]="'text'"></teta-icon>
+  </div>
+}
 

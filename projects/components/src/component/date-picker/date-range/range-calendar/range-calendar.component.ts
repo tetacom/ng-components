@@ -17,12 +17,28 @@ import {BaseCalendar} from '../../base-calendar';
 import {DayModel} from '../../model/day-model';
 import {DateFromToModel} from '../../model/from-to.model';
 import {TetaLocalisation} from "../../../../locale/teta-localisation";
+import { YearPickerComponent } from '../../year-picker/year-picker.component';
+import { MonthPickerComponent } from '../../month-picker/month-picker.component';
+import { DayPickerComponent } from '../../day-picker/day-picker.component';
+import { IconComponent } from '../../../icon/icon/icon.component';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { ButtonComponent } from '../../../button/button/button.component';
 
 @Component({
-  selector: 'teta-range-calendar',
-  templateUrl: './range-calendar.component.html',
-  styleUrls: ['./range-calendar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-range-calendar',
+    templateUrl: './range-calendar.component.html',
+    styleUrls: ['./range-calendar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        ButtonComponent,
+        NgClass,
+        IconComponent,
+        DayPickerComponent,
+        MonthPickerComponent,
+        YearPickerComponent,
+        AsyncPipe,
+    ],
 })
 export class RangeCalendarComponent
   extends BaseCalendar

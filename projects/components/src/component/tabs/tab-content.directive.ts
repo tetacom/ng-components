@@ -1,7 +1,8 @@
 import {Directive, TemplateRef} from '@angular/core';
 
 @Directive({
-  selector: '[tetaTabContent]'
+    selector: '[tetaTabContent]',
+    standalone: true
 })
 export class TabContentDirective {
   constructor(public template: TemplateRef<any>) {

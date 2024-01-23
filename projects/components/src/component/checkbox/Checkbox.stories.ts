@@ -1,9 +1,9 @@
 import {select, text, withKnobs, boolean} from '@storybook/addon-knobs';
 import {action} from '@storybook/addon-actions';
 import {CheckboxComponent} from './checkbox/checkbox.component';
-import {CheckboxModule} from './checkbox.module';
+
 // @ts-ignore
-import {IconModule} from '../icon/icon.module';
+
 import {FormsModule} from '@angular/forms';
 import {applicationConfig, Meta} from "@storybook/angular";
 import {CommonModule} from "@angular/common";
@@ -22,13 +22,13 @@ export default {
   ],
   component: CheckboxComponent,
   moduleMetadata: {
-    imports: [CheckboxModule, IconModule, FormsModule, CommonModule],
+    imports: [FormsModule, CommonModule],
   },
 } as Meta;
 
 export const binary = () => ({
   moduleMetadata: {
-    imports: [CheckboxModule, IconModule, FormsModule, CommonModule],
+    imports: [FormsModule, CommonModule],
   },
   props: {
     type: select('type', ['binary', 'list'], 'binary'),
@@ -64,7 +64,7 @@ export const binary = () => ({
 
 export const list = () => ({
   moduleMetadata: {
-    imports: [CheckboxModule, IconModule, FormsModule],
+    imports: [FormsModule],
   },
   props: {
     type: select('type', ['binary', 'list'], 'binary'),

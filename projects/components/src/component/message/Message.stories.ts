@@ -1,6 +1,6 @@
 import { withKnobs } from '@storybook/addon-knobs';
 import { MessageSampleComponent } from './message-samples/message-sample/message-sample.component';
-import { MessageSamplesModule } from './message-samples/message-samples.module';
+
 import { applicationConfig, Meta } from '@storybook/angular';
 import { IconModule } from '@tetacom/ng-components';
 import { importProvidersFrom } from '@angular/core';
@@ -16,13 +16,13 @@ export default {
   ],
   component: MessageSampleComponent,
   moduleMetadata: {
-    imports: [MessageSamplesModule],
+    imports: [],
   },
 } as Meta;
 
 export const messageSample = () => ({
   moduleMetadata: {
-    imports: [MessageSamplesModule, IconModule],
+    imports: [IconModule],
   },
   template: `<div  [tetaIconSprite]="'assets/icons.svg'"><teta-message-sample ></teta-message-sample></div>`,
 });

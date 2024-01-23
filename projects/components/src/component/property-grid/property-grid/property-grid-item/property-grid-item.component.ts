@@ -9,7 +9,7 @@ import {
   QueryList,
   SimpleChanges,
 } from '@angular/core';
-import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
+import { ControlContainer, FormGroup, NgForm, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslocoService } from '@ngneat/transloco';
 import { Subscription } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
@@ -22,12 +22,29 @@ import { FormsUtil } from '../../../../util/forms-util';
 import { FilterType } from '../../../filter/enum/filter-type.enum';
 import { TableColumn } from '../../../table/contract/table-column';
 import { PropertyGridItemDescriptionDirective } from '../property-grid-item-description.directive';
+import { TextFieldComponent } from '../../../input/text-field/text-field.component';
+import { ToggleComponent } from '../../../toggle/toggle/toggle.component';
+import { DatePickerComponent } from '../../../date-picker/date-picker/date-picker.component';
+import { SelectComponent } from '../../../select/select/select.component';
+import { NgTemplateOutlet } from '@angular/common';
+import { InputComponent } from '../../../input/input/input.component';
 
 @Component({
-  selector: 'teta-property-grid-item',
-  templateUrl: './property-grid-item.component.html',
-  styleUrls: ['./property-grid-item.component.scss'],
-  viewProviders: [FormsUtil.formProvider],
+    selector: 'teta-property-grid-item',
+    templateUrl: './property-grid-item.component.html',
+    styleUrls: ['./property-grid-item.component.scss'],
+    viewProviders: [FormsUtil.formProvider],
+    standalone: true,
+    imports: [
+        InputComponent,
+        FormsModule,
+        ReactiveFormsModule,
+        NgTemplateOutlet,
+        SelectComponent,
+        DatePickerComponent,
+        ToggleComponent,
+        TextFieldComponent,
+    ],
 })
 export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
   @Input() column: TableColumn;

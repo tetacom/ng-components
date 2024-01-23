@@ -1,7 +1,7 @@
 import { select, withKnobs } from '@storybook/addon-knobs';
-import { IconModule } from '../icon/icon.module';
+
 import { SwitchComponent } from './switch/switch.component';
-import { SwitchModule } from './switch.module';
+
 import { action } from '@storybook/addon-actions';
 import { FormsModule } from '@angular/forms';
 import { applicationConfig, Meta } from '@storybook/angular';
@@ -18,13 +18,13 @@ export default {
   ],
   component: SwitchComponent,
   moduleMetadata: {
-    imports: [SwitchModule, FormsModule, IconModule],
+    imports: [FormsModule],
   },
 } as Meta;
 
 export const switchSample = () => ({
   moduleMetadata: {
-    imports: [SwitchModule, IconModule, FormsModule],
+    imports: [FormsModule],
   },
   props: {
     model: 'item 1',

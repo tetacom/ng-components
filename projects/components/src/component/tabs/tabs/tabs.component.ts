@@ -9,6 +9,7 @@ import {
   QueryList,
 } from '@angular/core';
 import { TabComponent } from '../tab/tab.component';
+import { NgTemplateOutlet } from '@angular/common';
 
 export interface ITabChangeEvent {
   activeId: string | null;
@@ -17,9 +18,11 @@ export interface ITabChangeEvent {
 }
 
 @Component({
-  selector: 'teta-tabs',
-  templateUrl: './tabs.component.html',
-  styleUrls: ['./tabs.component.scss'],
+    selector: 'teta-tabs',
+    templateUrl: './tabs.component.html',
+    styleUrls: ['./tabs.component.scss'],
+    standalone: true,
+    imports: [NgTemplateOutlet],
 })
 export class TabsComponent implements AfterContentChecked {
   @HostBinding('class.tabs') classTabs = true;

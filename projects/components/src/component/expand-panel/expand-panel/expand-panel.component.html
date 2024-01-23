@@ -1,4 +1,4 @@
-<ng-container *ngIf='open'>
+@if (open) {
   <teta-toolbar
     style='display: flex'
     [style.justifyContent]="direction === 'right' ? 'space-between' : 'unset'"
@@ -9,7 +9,7 @@
       [palette]="'text'"
       [view]="'ghost'"
       (click)='closePanel()'
-    >
+      >
       <teta-icon [palette]="'text'" [name]="direction === 'right' ? 'start' : 'end'"></teta-icon>
     </button>
     <span class='font-title-2' style='display: contents'>
@@ -17,8 +17,8 @@
     </span>
   </teta-toolbar>
   <ng-container *ngTemplateOutlet='content?.template'></ng-container>
-</ng-container>
-<ng-container *ngIf='!open'>
+}
+@if (!open) {
   <div class='width-10 overflow-hidden' style='height: 100%;'>
     <button
       teta-button
@@ -30,10 +30,10 @@
       [palette]="'text'"
       [view]="'ghost'"
       (click)='openPanel()'
-    >
+      >
       <div class='font-button-2 nowrap'>{{ placeholder }}</div>
       <teta-icon style='transform-origin: 0 0;transform: rotate(-90deg) translateX(-100%);'
-                 [palette]="'text'" [name]="direction === 'right' ? 'start' : 'end'"></teta-icon>
+      [palette]="'text'" [name]="direction === 'right' ? 'start' : 'end'"></teta-icon>
     </button>
   </div>
-</ng-container>
+}

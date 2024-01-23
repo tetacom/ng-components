@@ -1,6 +1,7 @@
-<ngt-canvas *ngIf="data?.series?.length;else noData" [sceneGraph]="scene"
-            [camera]="camera">
-</ngt-canvas>
-<ng-template #noData>
+@if (data?.series?.length) {
+  <ngt-canvas [sceneGraph]="scene"
+    [camera]="camera">
+  </ngt-canvas>
+} @else {
   <p>{{data?.noDataText || 'no data'}}</p>
-</ng-template>
+}

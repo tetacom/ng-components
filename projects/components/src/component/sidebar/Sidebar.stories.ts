@@ -1,9 +1,9 @@
 import {boolean, withKnobs} from '@storybook/addon-knobs';
 import {SidebarComponent} from './sidebar/sidebar.component';
-import {SidebarModule} from './sidebar.module';
+
 import {SidebarPosition} from './sidebar-position.enum';
-import {IconModule} from '../icon/icon.module';
-import {ButtonModule} from '../button/button.module';
+
+
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
@@ -20,13 +20,13 @@ export default {
   ],
   component: SidebarComponent,
   moduleMetadata: {
-    imports: [SidebarModule]
+    imports: []
   }
 } as Meta;
 
 export const basic = () => ({
   moduleMetadata: {
-    imports: [SidebarModule, IconModule, ButtonModule]
+    imports: []
   },
   props: {
     backdrop: boolean('backdrop', false),

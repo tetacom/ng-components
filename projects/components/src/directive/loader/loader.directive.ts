@@ -11,7 +11,8 @@ import {
 import { takeWhile } from 'rxjs/operators';
 
 @Directive({
-  selector: '[tetaLoader]',
+    selector: '[tetaLoader]',
+    standalone: true,
 })
 export class LoaderDirective implements OnDestroy {
   @Input() appendToBody = false;

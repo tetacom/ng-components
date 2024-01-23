@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Chart3dService } from '../service/chart-3d.service';
 import { Base3dThreePoint } from '../model/base-3d-three-point';
 import { Base3dSeries } from '../model/base-3d-series';
@@ -8,7 +8,7 @@ import { NgtStore } from 'angular-three';
 @Component({
   selector: 'teta-base3d-series',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './base3d-series.component.html',
   styleUrls: ['./base3d-series.component.scss'],
 })

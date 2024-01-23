@@ -3,7 +3,8 @@ import { TranslocoService } from '@ngneat/transloco';
 import { DateTime, DateTimeFormatOptions } from 'luxon';
 
 @Pipe({
-  name: 'tetaDate',
+    name: 'tetaDate',
+    standalone: true,
 })
 export class TetaDatePipe implements PipeTransform {
   constructor(private _transloco: TranslocoService) {}

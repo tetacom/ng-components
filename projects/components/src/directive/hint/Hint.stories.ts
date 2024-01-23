@@ -1,10 +1,10 @@
 import {number, select, withKnobs} from '@storybook/addon-knobs';
-import {ButtonModule} from '../../component/button/button.module';
+
 import {PopupContentComponent} from '../../component/dynamic-component/popup-content/popup-content.component';
-import {IconModule} from '../../component/icon/icon.module';
+
 import {Align} from '../../common/enum/align.enum';
 import {VerticalAlign} from '../../common/enum/vertical-align.enum';
-import {HintModule} from './hint.module';
+
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
@@ -23,7 +23,7 @@ export default {
 
 export const fromString = () => ({
   moduleMetadata: {
-    imports: [HintModule, ButtonModule, IconModule],
+    imports: [],
     entryComponents: [PopupContentComponent],
   },
   props: {
@@ -71,7 +71,7 @@ export const fromString = () => ({
 
 export const fromTemplate = () => ({
   moduleMetadata: {
-    imports: [HintModule, ButtonModule, IconModule],
+    imports: [],
     entryComponents: [PopupContentComponent],
   },
   props: {

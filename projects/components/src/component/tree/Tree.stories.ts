@@ -1,8 +1,8 @@
 import { withKnobs } from '@storybook/addon-knobs';
 import { TreeComponent } from './tree/tree.component';
-import { TreeModule } from './tree.module';
-import { TetaTemplateModule } from '../../directive/teta-template/teta-template.module';
-import { IconModule } from '../icon/icon.module';
+
+
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
@@ -22,11 +22,8 @@ export default {
 export const basicTree = () => ({
   moduleMetadata: {
     imports: [
-      TreeModule,
-      TetaTemplateModule,
-      IconModule,
-      BrowserAnimationsModule,
-    ],
+    BrowserAnimationsModule,
+],
   },
   props: {
     data: treeData,
