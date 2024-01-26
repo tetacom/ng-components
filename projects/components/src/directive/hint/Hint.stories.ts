@@ -8,6 +8,10 @@ import {VerticalAlign} from '../../common/enum/vertical-align.enum';
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
+import {IconComponent} from "../../component/icon/icon/icon.component";
+import {IconSpriteDirective} from "../../component/icon/icon-sprite.directive";
+import {ButtonComponent} from "../../component/button/button/button.component";
+import {HintDirective} from "./hint.directive";
 
 export default {
   title: 'Directive/Hint',
@@ -23,7 +27,7 @@ export default {
 
 export const fromString = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [IconComponent,IconSpriteDirective,ButtonComponent,HintDirective],
     entryComponents: [PopupContentComponent],
   },
   props: {
@@ -71,7 +75,7 @@ export const fromString = () => ({
 
 export const fromTemplate = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [IconComponent,IconSpriteDirective,ButtonComponent,HintDirective],
     entryComponents: [PopupContentComponent],
   },
   props: {

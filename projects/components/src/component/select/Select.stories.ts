@@ -15,6 +15,9 @@ import { FormsModule } from '@angular/forms';
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
+import {SelectOptionDirective} from "./select-option.directive";
+import {SelectValueDirective} from "./select-value.directive";
 
 export default {
   title: 'Component/Select',
@@ -43,7 +46,7 @@ const getOptions = size => {
 
 export const singleSelect = () => ({
   moduleMetadata: {
-    imports: [FormsModule],
+    imports: [FormsModule,IconSpriteDirective,SelectOptionDirective,SelectValueDirective],
   },
   props: {
     icon: 'user',
@@ -116,7 +119,7 @@ export const singleSelect = () => ({
 
 export const multipleSelect = () => ({
   moduleMetadata: {
-    imports: [FormsModule],
+    imports: [FormsModule,IconSpriteDirective,SelectOptionDirective,SelectValueDirective],
   },
   props: {
     icon: select('icon', iconsList, null),
@@ -187,7 +190,7 @@ export const multipleSelect = () => ({
 
 export const multipleCustom = () => ({
   moduleMetadata: {
-    imports: [FormsModule],
+    imports: [FormsModule,IconSpriteDirective,SelectOptionDirective,SelectValueDirective],
   },
   props: {
     icon: select('icon', iconsList, null),

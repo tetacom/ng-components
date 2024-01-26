@@ -1,6 +1,6 @@
 @if (dropDownOpen) {
   <teta-tabs class="column_auto">
-    @for (tab of tabTemplates; track trackIndex($index, tab)) {
+    @for (tab of tabTemplates; track trackIndex($index)) {
       @if (tab.showTab(column)) {
         <teta-tab>
           <ng-template tetaTabTitle>

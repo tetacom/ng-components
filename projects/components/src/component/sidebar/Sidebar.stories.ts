@@ -7,6 +7,9 @@ import {SidebarPosition} from './sidebar-position.enum';
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
+import {IconComponent} from "../icon/icon/icon.component";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
+import {ButtonComponent} from "../button/button/button.component";
 
 export default {
   title: 'Component/Sidebar',
@@ -26,7 +29,7 @@ export default {
 
 export const basic = () => ({
   moduleMetadata: {
-    imports: []
+    imports: [SidebarComponent,ButtonComponent,IconComponent,IconSpriteDirective]
   },
   props: {
     backdrop: boolean('backdrop', false),

@@ -18,7 +18,7 @@
     style="width: 100%">
     @for (month of months; track month) {
       <div (click)="pickMonth(month.id)">
-        <div [ngClass]="{'datepicker-month_item_active':month.isSelected}"
+        <div [ngClass]="{'datepicker-month_item_active':month['isSelected']}"
           [class]="'datepicker-month_item column align-center justify-content-center datepicker_'+viewType">
           <p>
             {{month.name}}

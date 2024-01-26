@@ -2,6 +2,7 @@ import {withKnobs} from '@storybook/addon-knobs';
 
 
 import {Meta} from "@storybook/angular";
+import {DragSortDemoComponent} from "./drag-sort-demo/drag-sort-demo/drag-sort-demo.component";
 
 export default {
   title: 'Directive/DragSort',
@@ -10,7 +11,7 @@ export default {
 
 export const dragSort = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [DragSortDemoComponent],
   },
   props: {},
   template: `<teta-drag-sort-demo></teta-drag-sort-demo>`,

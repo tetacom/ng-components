@@ -8,6 +8,10 @@ import {VerticalAlign} from '../../common/enum/vertical-align.enum';
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
+import {ButtonComponent} from "../../component/button/button/button.component";
+import {IconComponent} from "../../component/icon/icon/icon.component";
+import {IconSpriteDirective} from "../../component/icon/icon-sprite.directive";
+import {ContextMenuDirective} from "./context-menu.directive";
 
 export default {
   title: 'Directive/ContextMenu',
@@ -23,7 +27,7 @@ export default {
 
 export const basicContextMenu = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [ButtonComponent,IconComponent,IconSpriteDirective,ContextMenuDirective],
     entryComponents: [PopupContentComponent],
   },
   props: {

@@ -8,6 +8,10 @@ import {applicationConfig, Meta} from "@storybook/angular";
 import {select, withKnobs} from "@storybook/addon-knobs";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
+import {IconComponent} from "../../component/icon/icon/icon.component";
+import {IconSpriteDirective} from "../../component/icon/icon-sprite.directive";
+import {TooltipDirective} from "./tooltip.directive";
+import {ButtonComponent} from "../../component/button/button/button.component";
 
 export default {
   title: 'Directive/Tooltip',
@@ -23,7 +27,7 @@ export default {
 
 export const fromString = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [TooltipDirective,IconComponent,IconSpriteDirective,ButtonComponent],
     entryComponents: [PopupContentComponent],
   },
   props: {
@@ -63,7 +67,7 @@ export const fromString = () => ({
 
 export const fromTemplate = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [TooltipDirective,IconComponent,IconSpriteDirective,ButtonComponent],
     entryComponents: [PopupContentComponent],
   },
   props: {

@@ -5,6 +5,8 @@ import {PropertyGridDemoModule} from "./property-grid-demo/property-grid-demo.mo
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
+import {IconComponent} from "../icon/icon/icon.component";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 
 export default {
   title: 'Component/PropertyGrid',
@@ -23,7 +25,7 @@ export default {
 
 export const simplePropertyGrid = () => ({
   moduleMetadata: {
-    imports: [PropertyGridModule, PropertyGridDemoModule],
+    imports: [PropertyGridModule, PropertyGridDemoModule,IconSpriteDirective],
     entryComponents: [],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'"

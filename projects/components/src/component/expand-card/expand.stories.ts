@@ -5,6 +5,7 @@ import {ExpandItemComponent} from "./expand-item/expand-item.component";
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 
 export default {
   title: 'Component/Expand',
@@ -24,7 +25,7 @@ export default {
 
 export const expandItem = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [IconSpriteDirective],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" style="width: 300px">
                 <teta-expand-item>

@@ -7,6 +7,9 @@ import { FormsModule } from '@angular/forms';
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import {SwitchButtonComponent} from "./switch-button/switch-button.component";
+import {IconComponent} from "../icon/icon/icon.component";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 
 export default {
   title: 'Component/Switch',
@@ -24,7 +27,7 @@ export default {
 
 export const switchSample = () => ({
   moduleMetadata: {
-    imports: [FormsModule],
+    imports: [FormsModule,SwitchButtonComponent,IconComponent,IconSpriteDirective],
   },
   props: {
     model: 'item 1',
@@ -36,7 +39,7 @@ export const switchSample = () => ({
     },
   },
   template: `<teta-switch [viewType]="viewType" [tetaIconSprite]="'assets/icons.svg'"
-                          [ngModel]="model" 
+                          [ngModel]="model"
                           (ngModelChange)="log('switch', $event)">
   <teta-switch-button *ngFor="let val of values" [value]="val">
     <teta-icon [name]="'settings'" class="margin-right-2"></teta-icon> {{val}}

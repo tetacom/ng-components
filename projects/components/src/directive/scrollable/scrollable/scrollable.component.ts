@@ -42,7 +42,7 @@ type ScrollDimensions = {
     imports: [
         LetDirective,
         NgClass,
-        AsyncPipe,
+        AsyncPipe,ScrollableDirective
     ],
 })
 export class ScrollableComponent

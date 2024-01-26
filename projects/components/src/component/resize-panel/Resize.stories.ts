@@ -2,6 +2,7 @@
 import {number, select, withKnobs} from '@storybook/addon-knobs';
 
 import {Meta} from "@storybook/angular";
+import {ResizePanelComponent} from "./resize-panel/resize-panel.component";
 
 export default {
   title: 'Component/ResizePanel',
@@ -10,7 +11,7 @@ export default {
 
 export const horizontal = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [ResizePanelComponent],
   },
   props: {
     maxSize: number('maxSize', 500, {
@@ -47,7 +48,7 @@ export const horizontal = () => ({
 
 export const vertical = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [ResizePanelComponent],
   },
   props: {
     maxSize: number('maxSize', 500, {

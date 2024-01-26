@@ -1,4 +1,4 @@
-<ng-container *tetaLet='locale | async as loc'>
+@if (locale|async; as loc){
   <teta-dropdown [align]='align'
     [verticalAlign]='verticalAlign'
     [autoClose]='autoClose'
@@ -125,5 +125,5 @@
       <span class='row row_auto overflow-hidden text-overflow-ellipsis'>{{getText(value)}}</span>
     }
   </ng-template>
-</ng-container>
+}
 

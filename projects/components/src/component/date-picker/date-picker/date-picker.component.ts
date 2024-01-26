@@ -65,6 +65,7 @@ export class DatePickerComponent
   extends BasePicker
   implements OnInit, ControlValueAccessor,OnChanges
 {
+  @Input()a?:any
   @Input() date: Date | string | number = null;
   public locale: Observable<TetaLocalisation>;
   @Input() showTime = false;

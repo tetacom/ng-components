@@ -1,4 +1,4 @@
-@if ({points:points|async}as data) {
+@if ({points:points|async};as data) {
   @if (data?.points?.length) {
     <ngt-mesh>
       <ngts-line [color]="series.color" [lineWidth]="2" [points]="data.points"></ngts-line>

@@ -8,6 +8,9 @@ import {SelectType} from './enum/select-type.enum';
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
+import {TableDemoComponent} from "./table-demo/table-demo/table-demo.component";
+import {IconComponent} from "../icon/icon/icon.component";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 
 export default {
   title: 'Component/Table',
@@ -26,7 +29,7 @@ export default {
 
 export const basicTable = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [TableDemoComponent,IconSpriteDirective],
   },
   props: {
     editType: select(
@@ -69,7 +72,7 @@ export const basicTable = () => ({
 
 export const virtualTable = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [TableDemoComponent,IconSpriteDirective],
   },
   props: {
     editType: select(

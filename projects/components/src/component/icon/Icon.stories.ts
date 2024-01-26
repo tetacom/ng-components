@@ -44,7 +44,7 @@ export const icons = () => ({
 
 export const coloredIcons = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [IconComponent,IconSpriteDirective],
   },
   props: {
     palette: select(
@@ -63,7 +63,7 @@ export const coloredIcons = () => ({
 });
 export const fileIcons = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [IconComponent,IconSpriteDirective],
   },
   props: {
     palette: select(
@@ -83,7 +83,7 @@ export const fileIcons = () => ({
 
 export const lithotypeIcons = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [IconComponent,IconSpriteDirective],
   },
   props: {
     palette: select(

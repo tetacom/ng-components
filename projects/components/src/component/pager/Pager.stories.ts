@@ -4,6 +4,9 @@ import {withKnobs} from '@storybook/addon-knobs';
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
+import {IconComponent} from "../icon/icon/icon.component";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
+import {PagerComponent} from "./pager/pager.component";
 
 export default {
   title: 'Component/Pager',
@@ -22,7 +25,7 @@ export default {
 
 export const pagerSample = () => ({
   moduleMetadata: {
-    imports: []
+    imports: [PagerComponent,IconSpriteDirective]
   },
   template: `<teta-pager [tetaIconSprite]="'assets/icons.svg'"></teta-pager>`,
 });

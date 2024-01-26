@@ -9,6 +9,14 @@ import { VerticalAlign } from '../../common/enum/vertical-align.enum';
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import {DropdownComponent} from "./dropdown/dropdown.component";
+import {DropdownHeadDirective} from "./dropdown-head.directive";
+import {DropdownContentDirective} from "./dropdown-content.directive";
+import {ScrollableComponent} from "../../directive/scrollable/scrollable/scrollable.component";
+import {DropdownDirective} from "./dropdown.directive";
+import {ButtonComponent} from "../button/button/button.component";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
+import {IconComponent} from "../icon/icon/icon.component";
 
 export default {
   title: 'Component/Dropdown',
@@ -33,7 +41,7 @@ const alignMap = new Map<VerticalAlign, string>()
   .set(VerticalAlign.innerTop, 'innerTop');
 export const dropdownDirective = args => ({
   moduleMetadata: {
-    imports: [],
+    imports: [DropdownComponent,DropdownHeadDirective,DropdownContentDirective,ScrollableComponent,DropdownDirective,ButtonComponent,IconSpriteDirective,IconComponent],
   },
   props: {
     alignMap: alignMap,
@@ -98,7 +106,7 @@ export const dropdownDirective = args => ({
 });
 export const dropdownComponent = args => ({
   moduleMetadata: {
-    imports: [],
+    imports: [DropdownComponent,DropdownHeadDirective,DropdownContentDirective,ScrollableComponent,DropdownDirective,ButtonComponent,IconSpriteDirective,IconComponent],
   },
   props: {
     align: select(

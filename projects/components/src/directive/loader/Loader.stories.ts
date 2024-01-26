@@ -2,6 +2,7 @@
 import {boolean, withKnobs} from '@storybook/addon-knobs';
 
 import {Meta} from "@storybook/angular";
+import {LoaderDirective} from "./loader.directive";
 
 export default {
   title: 'Directive/Loader',
@@ -10,7 +11,7 @@ export default {
 
 export const sample = () => ({
   moduleMetadata: {
-    imports: []
+    imports: [LoaderDirective]
   },
   props: {
     show: boolean('show', true)

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { LetModule } from '@tetacom/ng-components';
+
 
 import { SeriesBaseComponent } from './base/series-base.component';
 import { ChartComponent } from './chart/chart.component';
@@ -27,6 +27,7 @@ import { DraggablePointDirective } from './directives/draggable-point.directive'
 import { ZoomableDirective } from './directives/zoomable.directive';
 import { LegendComponent } from './legend/legend.component';
 import { BandseriesComponent } from './stories/bandseries/bandseries.component';
+import {LetDirective} from "@tetacom/ng-components";
 
 @NgModule({
   declarations: [
@@ -68,6 +69,6 @@ import { BandseriesComponent } from './stories/bandseries/bandseries.component';
     BlockAreaSeriesComponent,
     BlockHorizontalSeriesComponent,
   ],
-  imports: [CommonModule, LetModule],
+  imports: [CommonModule,LetDirective],
 })
 export class ChartModule {}

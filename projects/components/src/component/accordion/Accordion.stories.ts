@@ -6,6 +6,11 @@ import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import {AccordionModule, IconModule} from "@tetacom/ng-components";
+import {AccordionContentDirective} from "./accordion-content.directive";
+import {AccordionHeadComponent} from "./accordion-head/accordion-head.component";
+import {AccordionItemComponent} from "./accordion-item/accordion-item.component";
+import {IconComponent} from "../icon/icon/icon.component";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 
 export default {
   title: 'Component/Accordion',
@@ -23,7 +28,7 @@ export default {
 
 export const basicAccordion = () => ({
   moduleMetadata: {
-    imports: [AccordionModule, IconModule],
+    imports: [AccordionComponent, IconSpriteDirective,AccordionContentDirective,AccordionItemComponent,AccordionHeadComponent],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="font-body-3 padding-3 bg-global-bgcard">
       <teta-accordion>

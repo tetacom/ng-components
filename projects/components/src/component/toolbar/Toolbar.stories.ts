@@ -6,6 +6,9 @@ import {ToolbarComponent} from './toolbar/toolbar.component';
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
+import {IconComponent} from "../icon/icon/icon.component";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
+import {ButtonComponent} from "../button/button/button.component";
 
 export default {
   title: 'Component/Toolbar',
@@ -25,7 +28,7 @@ export default {
 
 export const basicToolbar = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [IconComponent,IconSpriteDirective,ButtonComponent],
   },
   props: {
     data: treeData,

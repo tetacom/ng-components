@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ThreeChartComponent } from './three-chart/three-chart.component';
 import { Series3dType } from './three-chart/model/enum/series-3d-type';
 import { CustomSeriesComponent } from './custom-series/custom-series.component';
+import {IconComponent} from "../icon/icon/icon.component";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 
 export default {
   title: 'Component/Three',
@@ -21,7 +23,7 @@ export default {
 
 export const lithotypeChart = () => ({
   moduleMetadata: {
-    imports: [ThreeChartComponent],
+    imports: [ThreeChartComponent,IconSpriteDirective],
   },
   props: {
     data: {
@@ -91,7 +93,7 @@ export const lithotypeChart = () => ({
 });
 export const customSeries = () => ({
   moduleMetadata: {
-    imports: [ThreeChartComponent],
+    imports: [ThreeChartComponent,IconSpriteDirective],
   },
   props: {
     data: {

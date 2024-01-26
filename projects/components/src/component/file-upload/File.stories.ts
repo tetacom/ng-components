@@ -6,6 +6,7 @@ import { FileUploadAreaComponent } from './file-upload-area/file-upload-area.com
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 
 export default {
   title: 'Component/File',
@@ -23,7 +24,7 @@ export default {
 
 export const area = () => ({
   moduleMetadata: {
-    imports: [],
+    imports: [IconSpriteDirective],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="font-body-3 padding-3">
     <teta-file-upload-area   style="height: 250px; width: 300px;">

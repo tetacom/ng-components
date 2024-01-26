@@ -1,17 +1,20 @@
-<div class="scroll-controls" *tetaLet='scrollSize | async as scrollSize'>
-  <div #scrollbarVertical
-       [class.display-none]="scrollSize?.scrollHeight <= scrollSize?.clientHeight"
-       class="scroll-scrollbar scroll-scrollbar-vertical"
-       (scroll)="scrollVertical($event)">
-    <div [style.height.px]="scrollSize?.scrollHeight" style="width: 1px;"></div>
+@if (scrollSize | async; as scrollSize){
+  <div class="scroll-controls">
+    <div #scrollbarVertical
+         [class.display-none]="scrollSize?.scrollHeight <= scrollSize?.clientHeight"
+         class="scroll-scrollbar scroll-scrollbar-vertical"
+         (scroll)="scrollVertical($event)">
+      <div [style.height.px]="scrollSize?.scrollHeight" style="width: 1px;"></div>
+    </div>
+    <div #scrollbarHorizontal
+         [class.display-none]="scrollSize?.scrollWidth <= scrollSize?.clientWidth"
+         class="scroll-scrollbar scroll-scrollbar-horizontal"
+         (scroll)="scrollHorizontal($event)">
+      <div [style.width.px]="scrollSize?.scrollWidth" style="height: 1px;"></div>
+    </div>
   </div>
-  <div #scrollbarHorizontal
-       [class.display-none]="scrollSize?.scrollWidth <= scrollSize?.clientWidth"
-       class="scroll-scrollbar scroll-scrollbar-horizontal"
-       (scroll)="scrollHorizontal($event)">
-    <div [style.width.px]="scrollSize?.scrollWidth" style="height: 1px;"></div>
-  </div>
-</div>
+}
+
 
 
 <!--<div #scrollableWrapper class="scroll-content-wrapper">-->

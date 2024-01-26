@@ -13,6 +13,16 @@ import {action} from '@storybook/addon-actions';
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
+import {InputComponent} from "./input/input.component";
+import {TextFieldComponent} from "./text-field/text-field.component";
+import {DatePickerComponent} from "../date-picker/date-picker/date-picker.component";
+import {SelectComponent} from "../select/select/select.component";
+import {RadioComponent} from "../radio/radio/radio.component";
+import {ToggleComponent} from "../toggle/toggle/toggle.component";
+import {CheckboxComponent} from "../checkbox/checkbox/checkbox.component";
+import {RadioButtonComponent} from "../radio/radio-button/radio-button.component";
+import {SampleInputComponent} from "./sample-input/sample-input/sample-input.component";
 
 export default {
   title: 'Component/Input',
@@ -33,7 +43,7 @@ export default {
 export const reactiveForm = () => ({
   moduleMetadata: {
     imports: [
-    FormsModule,
+    FormsModule,IconSpriteDirective,SampleInputComponent
 ],
   },
   props: {
@@ -49,7 +59,7 @@ export const reactiveForm = () => ({
 export const basicInput = () => ({
   moduleMetadata: {
     imports: [
-    FormsModule,
+    FormsModule,IconSpriteDirective,InputComponent,TextFieldComponent,DatePickerComponent,SelectComponent,RadioComponent,ToggleComponent,CheckboxComponent,RadioButtonComponent
 ],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="border border-text-10 padding-3" style="width: 500px;">

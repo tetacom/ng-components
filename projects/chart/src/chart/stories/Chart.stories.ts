@@ -5,6 +5,7 @@ import {createBandChart, createChart, createDragChart} from './story-helper';
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
+import {ButtonComponent, IconSpriteDirective} from "@tetacom/ng-components";
 
 export default {
   title: 'Component/Chart',
@@ -24,7 +25,7 @@ export default {
 
 export const basicChart = () => ({
   moduleMetadata: {
-    imports: [ChartModule],
+    imports: [ChartModule,ButtonComponent,IconSpriteDirective],
   },
 
   props: {

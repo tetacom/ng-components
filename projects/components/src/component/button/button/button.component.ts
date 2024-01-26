@@ -18,6 +18,7 @@ export class ButtonComponent implements OnInit {
   @Input() square = false;
   @Input() viewType: viewType = 'rounded'
   @Input() size: 'm' | 'l' = 'm';
+  @Input() test?:any
 
   @HostBinding('class')
   private get getClass(): string {

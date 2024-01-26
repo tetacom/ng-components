@@ -7,6 +7,8 @@ import { MaskitoModule } from '@maskito/angular';
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import {DateRangeComponent} from "./date-range/date-range.component";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 
 export default {
   title: 'Component/Datepicker',
@@ -55,7 +57,7 @@ const rangeValue = date => {
 };
 export const dateRange = () => ({
   moduleMetadata: {
-    imports: [FormsModule, MaskitoModule],
+    imports: [FormsModule, MaskitoModule,DateRangeComponent,IconSpriteDirective],
   },
   props: {
     data: {

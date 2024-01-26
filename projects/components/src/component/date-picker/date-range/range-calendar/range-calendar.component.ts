@@ -132,7 +132,7 @@ export class RangeCalendarComponent
     return isSelectedDate && isSelectedMonth && isSelectedYear;
   }
 
-  isFirstDaySuitable(m: number, y: number, max: Date) {
+  isFirstDaySuitable(m: number, y: number, max: string|number|Date) {
     const {availableYear, availableMonth} = this.getAvailableMonthYear(m, y);
     return this.isSuitableMaxDate(
       dayjs(new Date(availableYear, availableMonth)).startOf('month').toDate(),
@@ -140,7 +140,7 @@ export class RangeCalendarComponent
     );
   }
 
-  isLastDaySuitable(m: number, y: number, min: Date) {
+  isLastDaySuitable(m: number, y: number, min: string|number|Date) {
     const {availableYear, availableMonth} = this.getAvailableMonthYear(m, y);
     return this.isSuitableMinDate(
       dayjs(new Date(availableYear, availableMonth)).endOf('month').toDate(),

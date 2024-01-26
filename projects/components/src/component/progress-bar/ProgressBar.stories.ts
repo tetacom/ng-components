@@ -3,6 +3,7 @@ import { number, withKnobs } from '@storybook/addon-knobs';
 
 import { FormsModule } from '@angular/forms';
 import {Meta} from "@storybook/angular";
+import {ProgressBarComponent} from "./progress-bar/progress-bar.component";
 
 export default {
   title: 'Component/ProgressBar',
@@ -14,7 +15,7 @@ export default {
 
 export const sample = () => ({
   moduleMetadata: {
-    imports: [FormsModule],
+    imports: [FormsModule,ProgressBarComponent],
     entryComponents: [],
   },
   props: {

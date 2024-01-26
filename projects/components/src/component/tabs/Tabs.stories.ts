@@ -4,6 +4,12 @@ import {withKnobs} from '@storybook/addon-knobs';
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
+import {IconComponent} from "../icon/icon/icon.component";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
+import {TabsComponent} from "./tabs/tabs.component";
+import {TabComponent} from "./tab/tab.component";
+import {TabTitleDirective} from "./tab-title.directive";
+import {TabContentDirective} from "./tab-content.directive";
 
 export default {
   title: 'Component/Tabs',
@@ -22,7 +28,7 @@ export default {
 
 export const basicTab = () => ({
   moduleMetadata: {
-    imports: []
+    imports: [IconComponent,IconSpriteDirective,TabsComponent,TabComponent,TabTitleDirective,TabContentDirective]
   },
   props: {},
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="padding-3" style="width 100px; height 800px;">
