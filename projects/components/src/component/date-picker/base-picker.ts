@@ -140,7 +140,7 @@ export abstract class BasePicker {
   }
 
   getLocaleString(date: Date | number | string) {
-    return new Date(date).toLocaleString([], {
+    return new Date(date).toLocaleString(['ru'], {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',hour12: false,
