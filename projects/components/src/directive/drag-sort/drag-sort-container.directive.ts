@@ -13,7 +13,8 @@ import { DragSortEvent } from './drag-sort-event';
 // import {DragSortItemDirective} from './drag-sort-item.directive';
 
 @Directive({
-  selector: '[tetaDragSortContainer]',
+    selector: '[tetaDragSortContainer]',
+    standalone: true,
 })
 export class DragSortContainerDirective<T> {
   @Input() dragSortList: T[] = [];

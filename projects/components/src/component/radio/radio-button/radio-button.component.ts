@@ -13,11 +13,11 @@ import {
 import { RadioComponent } from '../radio/radio.component';
 
 @Component({
-  selector: 'teta-radio-button',
-  templateUrl: './radio-button.component.html',
-  styleUrls: ['./radio-button.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-radio-button',
+    templateUrl: './radio-button.component.html',
+    styleUrls: ['./radio-button.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: true,
 })
 export class RadioButtonComponent implements OnInit, OnDestroy {
   @HostBinding('class.radio-button')

@@ -8,8 +8,8 @@ describe('ToggleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ToggleComponent ]
-    })
+    imports: [ToggleComponent]
+})
     .compileComponents();
   });
 

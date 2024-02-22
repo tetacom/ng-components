@@ -14,19 +14,20 @@ import { RadioButtonComponent } from '../radio-button/radio-button.component';
 type ButtonOrNullOrUndefined = RadioButtonComponent | undefined | null;
 
 @Component({
-  selector: 'teta-radio',
-  templateUrl: './radio.component.html',
-  styleUrls: ['./radio.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => RadioComponent),
-      multi: true,
-    },
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-radio',
+    templateUrl: './radio.component.html',
+    styleUrls: ['./radio.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => RadioComponent),
+            multi: true,
+        },
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
-export class RadioComponent implements OnInit, ControlValueAccessor {
+export class RadioComponent implements ControlValueAccessor {
   @HostBinding('tabindex') tabindex = 0;
   @HostBinding('class.radio') radioClass = true;
 
@@ -101,7 +102,7 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
         this.selectNext();
         break;
       default:
-        return;
+        return false;
     }
 
     event.cancelBubble = true;
@@ -111,7 +112,6 @@ export class RadioComponent implements OnInit, ControlValueAccessor {
     return false;
   }
 
-  ngOnInit() {}
 
   selectFirst() {
     if (!this.selectedButton$) {

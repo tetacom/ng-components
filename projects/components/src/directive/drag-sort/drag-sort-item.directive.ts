@@ -13,7 +13,8 @@ import {
 import { DragSortContainerDirective } from './drag-sort-container.directive';
 
 @Directive({
-  selector: '[tetaDragSortItem]',
+    selector: '[tetaDragSortItem]',
+    standalone: true,
 })
 export class DragSortItemDirective<T> implements OnInit, OnDestroy {
   @Input() tetaDragSortItem!: T;

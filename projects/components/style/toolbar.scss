@@ -13,7 +13,7 @@
   @include getFont($fonts, 'title-2');
 
   @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
-    &.toolbar-#{$paletteName} {
+    &#{'.toolbar-'+$paletteName} {
       background-color: getColorVar($paletteName, '50');
     }
   }

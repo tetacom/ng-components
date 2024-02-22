@@ -13,11 +13,12 @@ import {DOCUMENT} from '@angular/common';
 import {DropdownBase} from '../dropdown-base';
 
 @Component({
-  selector: 'teta-dropdown',
-  templateUrl: './dropdown.component.html',
-  styleUrls: ['./dropdown.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  exportAs: 'dropdown'
+    selector: 'teta-dropdown',
+    templateUrl: './dropdown.component.html',
+    styleUrls: ['./dropdown.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    exportAs: 'dropdown',
+    standalone: true
 })
 export class DropdownComponent
   extends DropdownBase

@@ -15,17 +15,25 @@ import { ZoomService } from '../../../service/zoom.service';
 import { map, Observable } from 'rxjs';
 import { SeriesType } from '../../../model/enum/series-type';
 import * as d3 from 'd3';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: 'svg:svg[teta-bar-series]',
   templateUrl: './bar-series.component.html',
   styleUrls: ['./bar-series.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    AsyncPipe,
+    NgForOf,
+    NgIf
+  ]
 })
 export class BarSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
   implements OnInit, OnChanges
 {
+
   x: Observable<any>;
   x1: Observable<any>;
   y: Observable<any>;
@@ -94,4 +102,8 @@ export class BarSeriesComponent<T extends BasePoint>
   }
 
   ngOnChanges(changes: SimpleChanges) {}
+
+  isNumber(value: any): value is number {
+    return typeof value === 'number'
+  }
 }

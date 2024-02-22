@@ -1,0 +1,26 @@
+{
+  "name": "components",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "projects/components/src",
+  "prefix": "teta",
+  "tags": [],
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "options": {
+        "project": "projects/components/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "projects/components/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "projects/components/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    }
+  }
+}

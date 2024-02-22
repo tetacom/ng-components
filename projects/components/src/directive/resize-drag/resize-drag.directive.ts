@@ -10,7 +10,8 @@ import {
 import { DOCUMENT } from '@angular/common';
 
 @Directive({
-  selector: '[tetaResizeDrag]',
+    selector: '[tetaResizeDrag]',
+    standalone: true,
 })
 export class ResizeDragDirective {
   @Input() tetaResizeDrag: 'horizontal' | 'vertical' = 'vertical';

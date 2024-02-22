@@ -1,9 +1,10 @@
-<ng-container *ngIf="locale | async as loc">
-  <teta-filter-host [column]="column"
-                    [data]="data"
-                    [state]="state"
-                    *ngIf="filterOptions | async as options"
-                    [filterOptions]="options[column.name]"></teta-filter-host>
+@if (locale | async; as loc) {
+  @if (filterOptions | async; as options) {
+    <teta-filter-host [column]="column"
+      [data]="data"
+      [state]="state"
+    [filterOptions]="options[column.name]"></teta-filter-host>
+  }
   <teta-toolbar class="justify-content-between">
     <button type="button" teta-button [palette]="'text'" [view]="'ghost'" (click)="clearFilter()">
       {{loc.clear}}
@@ -13,4 +14,4 @@
       {{loc.apply}}
     </button>
   </teta-toolbar>
-</ng-container>
+}

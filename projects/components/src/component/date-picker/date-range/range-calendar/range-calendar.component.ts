@@ -17,12 +17,28 @@ import {BaseCalendar} from '../../base-calendar';
 import {DayModel} from '../../model/day-model';
 import {DateFromToModel} from '../../model/from-to.model';
 import {TetaLocalisation} from "../../../../locale/teta-localisation";
+import { YearPickerComponent } from '../../year-picker/year-picker.component';
+import { MonthPickerComponent } from '../../month-picker/month-picker.component';
+import { DayPickerComponent } from '../../day-picker/day-picker.component';
+import { IconComponent } from '../../../icon/icon/icon.component';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { ButtonComponent } from '../../../button/button/button.component';
 
 @Component({
-  selector: 'teta-range-calendar',
-  templateUrl: './range-calendar.component.html',
-  styleUrls: ['./range-calendar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-range-calendar',
+    templateUrl: './range-calendar.component.html',
+    styleUrls: ['./range-calendar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        ButtonComponent,
+        NgClass,
+        IconComponent,
+        DayPickerComponent,
+        MonthPickerComponent,
+        YearPickerComponent,
+        AsyncPipe,
+    ],
 })
 export class RangeCalendarComponent
   extends BaseCalendar
@@ -116,7 +132,7 @@ export class RangeCalendarComponent
     return isSelectedDate && isSelectedMonth && isSelectedYear;
   }
 
-  isFirstDaySuitable(m: number, y: number, max: Date) {
+  isFirstDaySuitable(m: number, y: number, max: string|number|Date) {
     const {availableYear, availableMonth} = this.getAvailableMonthYear(m, y);
     return this.isSuitableMaxDate(
       dayjs(new Date(availableYear, availableMonth)).startOf('month').toDate(),
@@ -124,7 +140,7 @@ export class RangeCalendarComponent
     );
   }
 
-  isLastDaySuitable(m: number, y: number, min: Date) {
+  isLastDaySuitable(m: number, y: number, min: string|number|Date) {
     const {availableYear, availableMonth} = this.getAvailableMonthYear(m, y);
     return this.isSuitableMinDate(
       dayjs(new Date(availableYear, availableMonth)).endOf('month').toDate(),

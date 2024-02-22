@@ -1,17 +1,16 @@
 {
   "name": "@tetacom/svg-charts",
   "version": "0.0.1",
-  "private": false,
   "peerDependencies": {
-    "@angular/common": "^16.0.0",
-    "@angular/core": "^16.0.0",
-    "@tetacom/ng-components": "^1.1.31",
+    "@angular/common": "^17.1.0",
+    "@angular/core": "^17.1.0",
     "d3": "^7.1.1"
+  },
+  "devDependencies": {
+    "faker": "^5.5.3"
   },
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "publishConfig": {
-    "access": "public"
-  }
+  "sideEffects": false
 }

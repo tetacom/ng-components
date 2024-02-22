@@ -23,6 +23,7 @@ import { ScaleType } from '../model/enum/scale-type';
 
 @Directive({
   selector: '[tetaZoomable]',
+  standalone:true
 })
 export class ZoomableDirective implements OnDestroy, AfterViewInit {
   @Input() config: IChartConfig;

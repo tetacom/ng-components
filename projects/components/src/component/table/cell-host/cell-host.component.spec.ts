@@ -8,8 +8,8 @@ describe('TableCellWrapperComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CellHostComponent]
-    })
+    imports: [CellHostComponent]
+})
       .compileComponents();
   });
 

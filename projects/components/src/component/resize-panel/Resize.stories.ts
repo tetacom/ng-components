@@ -1,31 +1,29 @@
 // eslint-disable-next-line id-blacklist
-import {number, select, withKnobs} from '@storybook/addon-knobs';
-import {ResizePanelModule} from './resize-panel.module';
 import {Meta} from "@storybook/angular";
+import {ResizePanelComponent} from "./resize-panel/resize-panel.component";
 
 export default {
   title: 'Component/ResizePanel',
-  decorators: [withKnobs],
+  argTypes:{
+    minSize:{
+      control:{type:'number'}
+    },
+    maxSize:{
+      control:{type:'number'}
+    }
+  },
+  args:{
+    minSize:50,
+    maxSize:500
+  }
 } as Meta;
 
-export const horizontal = () => ({
+export const vertical = (args) => ({
   moduleMetadata: {
-    imports: [ResizePanelModule],
+    imports: [ResizePanelComponent],
   },
   props: {
-    maxSize: number('maxSize', 500, {
-      min: 300,
-      max: 450,
-      range: true,
-      step: 10,
-    }),
-    minSize: number('minSize', 50, {
-      min: 50,
-      max: 150,
-      range: true,
-      step: 10,
-    }),
-    grabPosition: select('grabPosition', ['left', 'right'], 'left'),
+    maxSize:args
   },
   template: `<div class="bg-panel-50 padding-10 margin-10">
                 <div class="row bg-white-50"
@@ -37,7 +35,7 @@ export const horizontal = () => ({
                         [maxSize]="maxSize"
                         [minSize]="minSize"
                         [direction]="'vertical'"
-                        [grabPosition]="grabPosition"
+
                         class="column_6 bg-red-5">
                     I will resize
                   </teta-resize-panel>
@@ -45,24 +43,12 @@ export const horizontal = () => ({
               </div>`,
 });
 
-export const vertical = () => ({
+export const horizontal = (args) => ({
   moduleMetadata: {
-    imports: [ResizePanelModule],
+    imports: [ResizePanelComponent],
   },
   props: {
-    maxSize: number('maxSize', 500, {
-      min: 300,
-      max: 450,
-      range: true,
-      step: 10,
-    }),
-    minSize: number('minSize', 50, {
-      min: 50,
-      max: 150,
-      range: true,
-      step: 10,
-    }),
-    grabPosition: select('grabPosition', ['top', 'bottom'], 'top'),
+    maxSize:args
   },
   template: `<div class="bg-panel-50 padding-10 margin-10">
                 <div class="column bg-white-50"
@@ -74,7 +60,7 @@ export const vertical = () => ({
                         [maxSize]="maxSize"
                         [minSize]="minSize"
                         [direction]="'horizontal'"
-                        [grabPosition]="grabPosition"
+
                         class="row_6 bg-red-5">
                     I will resize
                   </teta-resize-panel>

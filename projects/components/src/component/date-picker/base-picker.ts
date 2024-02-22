@@ -26,7 +26,7 @@ export abstract class BasePicker {
   abstract backdrop: boolean;
   abstract allowNull: boolean;
   abstract input: ElementRef;
-  abstract selectDate: EventEmitter<Date | DateFromToModel>;
+  abstract selectDate: EventEmitter<Date>| EventEmitter<DateFromToModel>;
   public open = false;
   abstract selectedDate: ReplaySubject<any>;
   public placeholder = '';

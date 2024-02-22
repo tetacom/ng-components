@@ -9,21 +9,24 @@ import {
 } from '@angular/core';
 import { SidebarPosition } from '../sidebar-position.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'teta-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    trigger('sidebar', [
-      transition('void => *', [
-        style({ opacity: '0' }),
-        animate(300, style({ opacity: '1' })),
-      ]),
-      transition('* => void', [animate(300, style({ opacity: '0' }))]),
-    ]),
-  ],
+    selector: 'teta-sidebar',
+    templateUrl: './sidebar.component.html',
+    styleUrls: ['./sidebar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [
+        trigger('sidebar', [
+            transition('void => *', [
+                style({ opacity: '0' }),
+                animate(300, style({ opacity: '1' })),
+            ]),
+            transition('* => void', [animate(300, style({ opacity: '0' }))]),
+        ]),
+    ],
+    standalone: true,
+    imports: [NgClass],
 })
 export class SidebarComponent implements OnInit {
   @Input() position: SidebarPosition = SidebarPosition.left;

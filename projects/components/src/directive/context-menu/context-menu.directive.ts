@@ -22,7 +22,8 @@ import { PositionUtil } from '../../common/util/position-util';
 import { DynamicContentBaseDirective } from '../dynamic-content-base.directive';
 
 @Directive({
-  selector: '[tetaContextMenu]',
+    selector: '[tetaContextMenu]',
+    standalone: true,
 })
 export class ContextMenuDirective
   extends DynamicContentBaseDirective

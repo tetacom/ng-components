@@ -133,11 +133,12 @@ export class DropdownBase {
   }
 
   @HostListener('window:keyup', ['$event']) keyUp(event: KeyboardEvent): void {
+    const key:AutoCloseIgnoreCase[]= ['esc' , 'enter']
     if (
       !this.open ||
       !this.autoClose ||
-      ['esc', 'enter'].every(
-        (_: 'esc' | 'enter') => this.autoCloseIgnore.indexOf(_) >= 0
+      key.every(
+        (_) => this.autoCloseIgnore.indexOf(_) >= 0
       )
     ) {
       return;

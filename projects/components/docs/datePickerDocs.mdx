@@ -4,18 +4,16 @@ import DatePickerStories from "../src/component/date-picker/date-picker.stories"
 <Meta of={DatePickerStories}/>
 
 <div class='column gap-24'>
-  <h1>DatePicker/DateRange</h1>
+  <h1>DatePicker</h1>
   <div class='column'>
     <p>DatePicker (выбор даты) — компонент, который помогает вводить дату с клавиатуры или выбирать её с помощью мыши.</p>
     <p>В строке можно вручную ввести дату в формате дд.мм.гггг достаточно лишь воспользоваться клавиатурой. Нажатие на
       строку выбора даты/кнопки периода вызывается блок календаря. Блок календаря состоит из специальных элементов
       (Calendar_Item).</p>
     <p>Также можно добавить выбор времени, при надобности.В этом случае формат даты будет следующим : дд.мм.гггг, чч:мм</p>
-    <p>DateRange — компонент,который позволяет выбрать отрезок дат (от и до). В строке также можно вводить отрезок дат в формате дд.мм.гггг - дд.мм.гггг</p>
-  </div>
+   </div>
   <h3>Как использовать</h3>
   <div class='column'>
-    <p>Datepicker:</p>
     <ul>
       <li>Запись в строке происходит в формате дд.мм.гггг;</li>
       <li>Внутри datePicker-a присутствует mothPicker и yearPicker;</li>
@@ -23,19 +21,10 @@ import DatePickerStories from "../src/component/date-picker/date-picker.stories"
       <li>Для отображения времени нужно передать <code>[showTime]="true"</code>;</li>
       <li>Если нужно чтобы datePicker не мог быть пустым, то нужно передать <code>[allowNull]="false"</code>;</li>
     </ul>
-    <p>DateRange:</p>
-    <ul>
-      <li>Запись в строке происходит в формате дд.мм.гггг-дд.мм.гггг;</li>
-      <li>Внутри dateRange-a присутствует yearPicker;</li>
-      <li>Переключение месяцев происходит посредством стрелочек;</li>
-      <li>Он принимает в себя данные в формате <code>&#123; from:string | Date | number, to:string | Date | number &#125;</code></li>
-      <li>Если нужно чтобы dateRange не мог быть пустым, то нужно передать <code>[allowNull]="false"</code></li>
-    </ul>
     <p>Также можно передать свойста minDate и maxDate для ограничения по выбору дат.</p>
   </div>
   <div class='column'>
     <h3>Свойства</h3>
-    <h4>Общие свойства у teta-date-picker и teta-date-range </h4>
     <table>
       <thead>
       <tr>
@@ -101,6 +90,17 @@ import DatePickerStories from "../src/component/date-picker/date-picker.stories"
         </td>
       </tr>
       <tr>
+              <td class='text-align-center'>
+                <p>showTime</p>
+              </td>
+              <td class='text-align-center'>
+                <code>boolean</code>
+              </td>
+              <td class='text-align-center'>
+                <p>Свойство, которое добавляет выбор времени</p>
+              </td>
+            </tr>
+      <tr>
         <td class='text-align-center'>
           <p>align</p>
         </td>
@@ -144,6 +144,7 @@ import DatePickerStories from "../src/component/date-picker/date-picker.stories"
           <p>Применяет функцию при изменении данных.Отдает выбранную дату/рендж</p>
         </td>
       </tr>
+
       <tr>
         <td class='text-align-center'>
           <p>allowNull</p>
@@ -175,52 +176,6 @@ import DatePickerStories from "../src/component/date-picker/date-picker.stories"
         </td>
         <td class='text-align-center'>
           <p>При открытии дропдауна создает поверх <code>div</code>, который не позволяет взаимодействовать с элементами вне содержимого дропдауна, пока он открыт</p>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <h4>teta-date-picker</h4>
-    <table>
-      <thead>
-      <tr>
-        <th>Свойство</th>
-        <th>Tип</th>
-        <th>Описание</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td class='text-align-center'>
-          <p>showTime</p>
-        </td>
-        <td class='text-align-center'>
-          <code>boolean</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Свойство, которое добавляет выбор времени</p>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <h4>teta-date-range</h4>
-    <table>
-      <thead>
-      <tr>
-        <th>Свойство</th>
-        <th>Tип</th>
-        <th>Описание</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td class='text-align-center'>
-          <p>date</p>
-        </td>
-        <td class='text-align-center'>
-          <code>DateFromToModel</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Другой способ передачи данных в пикер (помимо ngModel)</p>
         </td>
       </tr>
       </tbody>

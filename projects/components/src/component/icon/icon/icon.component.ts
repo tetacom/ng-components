@@ -6,12 +6,15 @@ import {
 } from '@angular/core';
 
 import { TetaSize } from '../../../common/enum/teta-size.enum';
+import {IconSpriteDirective} from "../icon-sprite.directive";
 
 @Component({
-  selector: 'teta-icon',
-  templateUrl: './icon.component.html',
-  styleUrls: ['./icon.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-icon',
+    templateUrl: './icon.component.html',
+    styleUrls: ['./icon.component.scss'],
+    imports:[IconSpriteDirective],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class IconComponent {
   @Input() name: string;

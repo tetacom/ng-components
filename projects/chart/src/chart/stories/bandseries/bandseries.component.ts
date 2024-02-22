@@ -5,10 +5,17 @@ import {ChartService} from '../../service/chart.service';
 import {ScaleService} from "../../service/scale.service";
 import {ZoomService} from "../../service/zoom.service";
 import {map, Observable} from "rxjs";
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: 'svg:svg[teta-bandseries]',
   templateUrl: './bandseries.component.html',
+  standalone:true,
+  imports: [
+    NgForOf,
+    NgIf,
+    AsyncPipe
+  ],
   styleUrls: ['./bandseries.component.scss']
 })
 export class BandseriesComponent extends SeriesBaseComponent<BasePoint> implements OnInit {

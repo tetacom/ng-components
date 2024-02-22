@@ -8,12 +8,16 @@ import {
 } from '@angular/core';
 import { TableService } from '../service/table.service';
 import { takeWhile } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
+import { CheckboxComponent } from '../../checkbox/checkbox/checkbox.component';
 
 @Component({
-  selector: 'teta-selection-head-cell',
-  templateUrl: './selection-head-cell.component.html',
-  styleUrls: ['./selection-head-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-selection-head-cell',
+    templateUrl: './selection-head-cell.component.html',
+    styleUrls: ['./selection-head-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CheckboxComponent, FormsModule],
 })
 export class SelectionHeadCellComponent<T> implements OnInit, OnDestroy {
   @HostBinding('class.table-head__group') private readonly tableCellClass = true;

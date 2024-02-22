@@ -10,12 +10,19 @@ import {ScaleService} from '../../service/scale.service';
 import {getTextWidth} from '../../core/utils/get-text-width';
 import * as d3 from 'd3';
 import {ChartService} from '../../service/chart.service';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: '[teta-x-axis]',
   templateUrl: './x-axis.component.html',
   styleUrls: ['./x-axis.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    AsyncPipe,
+    NgForOf,
+    NgIf
+  ]
 })
 export class XAxisComponent implements OnInit, OnChanges, OnDestroy {
   x: Observable<any>;

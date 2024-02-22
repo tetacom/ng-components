@@ -7,7 +7,8 @@ import {PositionUtil} from '../../common/util/position-util';
 import {takeWhile} from 'rxjs/operators';
 
 @Directive({
-  selector: '[tetaAutoPosition]'
+    selector: '[tetaAutoPosition]',
+    standalone: true
 })
 export class AutoPositionDirective implements AfterViewInit, OnDestroy {
   @Input() align: Align;

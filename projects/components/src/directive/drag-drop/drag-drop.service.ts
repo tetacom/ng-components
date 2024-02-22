@@ -32,8 +32,8 @@ export class DragDropService<T> {
     this.dropTarget = this.dropTarget$.asObservable();
     this.dropped = this.dropped$.asObservable();
     merge(
-      fromEvent(this._document, 'mousemove'),
-      fromEvent(this._document, 'touchmove')
+      fromEvent<MouseEvent>(this._document, 'mousemove'),
+      fromEvent<MouseEvent>(this._document, 'touchmove')
     ).pipe(
       filter(() => {
         return this.startPosition != null;
@@ -48,8 +48,8 @@ export class DragDropService<T> {
     });
 
     merge(
-      fromEvent(this._document, 'mouseup'),
-      fromEvent(this._document, 'touchend')
+      fromEvent<MouseEvent>(this._document, 'mouseup'),
+      fromEvent<MouseEvent>(this._document, 'touchend')
     ).pipe(
       withLatestFrom(this.dropTarget)
     ).subscribe((data: [MouseEvent, DropTarget<T>]) => {

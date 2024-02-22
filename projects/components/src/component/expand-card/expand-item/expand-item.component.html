@@ -6,6 +6,8 @@
     <teta-icon [name]="open ? 'arrowUpKey' : 'arrowDownKey'" [palette]="'text'"></teta-icon>
   </button>
 </div>
-<div class="content" *ngIf="open">
-  <ng-content></ng-content>
-</div>
+@if (open) {
+  <div class="content">
+    <ng-content></ng-content>
+  </div>
+}

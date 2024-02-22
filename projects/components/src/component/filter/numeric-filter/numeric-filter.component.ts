@@ -17,12 +17,23 @@ import { IIdName } from '../../../common/contract/i-id-name';
 import {TetaConfigService} from '../../../locale/teta-config.service';
 import {Observable} from 'rxjs';
 import {TetaLocalisation} from '../../../locale/teta-localisation';
+import { AsyncPipe } from '@angular/common';
+import { OnlyNumberDirective } from '../../../directive/only-number/only-number.directive';
+import { FormsModule } from '@angular/forms';
+import { InputComponent } from '../../input/input/input.component';
 
 @Component({
-  selector: 'teta-numeric-filter',
-  templateUrl: './numeric-filter.component.html',
-  styleUrls: ['./numeric-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-numeric-filter',
+    templateUrl: './numeric-filter.component.html',
+    styleUrls: ['./numeric-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        InputComponent,
+        FormsModule,
+        OnlyNumberDirective,
+        AsyncPipe,
+    ],
 })
 export class NumericFilterComponent<T>
   extends FilterComponentBase<T>

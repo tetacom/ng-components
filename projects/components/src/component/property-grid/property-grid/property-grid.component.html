@@ -1,26 +1,30 @@
-<ng-container *ngIf='columns?.length'>
-  <ng-container *ngFor='let column of columns; trackBy: trackColumns'>
-    <teta-property-grid-item *ngIf='column.columns?.length < 1 && (getEditable(column) || !hideNonEditable)'
-                             [dict]='dict'
-                             [column]='column'
-                             [item]='item'
-                             [id]='column.name'
-                             [itemTemplates]='itemTemplates'
-                             [decimalPart]='decimalPart'
-                             [formGroup]='formGroup'
-                             [horizontal]='horizontal'
-                             (controlValueChange)='onControlValueChange($event)'
-                             [hideNonEditable]='hideNonEditable'></teta-property-grid-item>
-    <teta-property-grid-group *ngIf='column.columns?.length > 0 && (getEditable(column) || !hideNonEditable)'
-                              [id]='column.name'
-                              [dict]='dict'
-                              [column]='column'
-                              [item]='item'
-                              [itemTemplates]='itemTemplates'
-                              [decimalPart]='decimalPart'
-                              [formGroup]='formGroup'
-                              [horizontal]='horizontal'
-                              (controlValueChange)='onControlValueChange($event)'
-                              [hideNonEditable]='hideNonEditable'></teta-property-grid-group>
-  </ng-container>
-</ng-container>
+@if (columns?.length) {
+  @for (column of columns; track trackColumns($index, column)) {
+    @if (column.columns?.length < 1 && (getEditable(column) || !hideNonEditable)) {
+      <teta-property-grid-item
+        [dict]='dict'
+        [column]='column'
+        [item]='item'
+        [id]='column.name'
+        [itemTemplates]='itemTemplates'
+        [decimalPart]='decimalPart'
+        [formGroup]='formGroup'
+        [horizontal]='horizontal'
+        (controlValueChange)='onControlValueChange($event)'
+      [hideNonEditable]='hideNonEditable'></teta-property-grid-item>
+    }
+    @if (column.columns?.length > 0 && (getEditable(column) || !hideNonEditable)) {
+      <teta-property-grid-group
+        [id]='column.name'
+        [dict]='dict'
+        [column]='column'
+        [item]='item'
+        [itemTemplates]='itemTemplates'
+        [decimalPart]='decimalPart'
+        [formGroup]='formGroup'
+        [horizontal]='horizontal'
+        (controlValueChange)='onControlValueChange($event)'
+      [hideNonEditable]='hideNonEditable'></teta-property-grid-group>
+    }
+  }
+}

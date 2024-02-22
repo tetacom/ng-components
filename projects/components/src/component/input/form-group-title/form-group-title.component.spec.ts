@@ -8,8 +8,8 @@ describe('FormGroupTitleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FormGroupTitleComponent ]
-    })
+    imports: [FormGroupTitleComponent]
+})
     .compileComponents();
   });
 

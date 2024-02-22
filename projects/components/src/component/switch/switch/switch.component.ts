@@ -20,11 +20,12 @@ export const SWITCH_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'teta-switch',
-  templateUrl: './switch.component.html',
-  styleUrls: ['./switch.component.scss'],
-  providers: [SWITCH_CONTROL_VALUE_ACCESSOR, SwitchService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-switch',
+    templateUrl: './switch.component.html',
+    styleUrls: ['./switch.component.scss'],
+    providers: [SWITCH_CONTROL_VALUE_ACCESSOR, SwitchService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class SwitchComponent
   implements OnInit, OnDestroy, ControlValueAccessor {

@@ -14,11 +14,14 @@ import {ScaleService} from '../../service/scale.service';
 import * as d3 from 'd3';
 import {IChartEvent} from '../../model/i-chart-event';
 import {ChartService} from '../../service/chart.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: '[teta-plot-line]',
   templateUrl: './plotline.component.html',
   styleUrls: ['./plotline.component.scss'],
+  standalone:true,
+  imports:[NgIf],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlotlineComponent implements OnInit, OnDestroy {
@@ -60,6 +63,7 @@ export class PlotlineComponent implements OnInit, OnDestroy {
         if (this.axis.orientation === AxisOrientation.x) {
           return {x: plotlineElement.attr('x1')};
         }
+        return null
       });
     const drag = this.dragElements
       .on(

@@ -16,12 +16,13 @@ import {DropEvent} from './model/drop-event';
 import {DragInstance} from './model/drag-instance';
 
 @Directive({
-  selector: '[tetaDragContainer]',
-  exportAs: 'dragContainer',
-  host: {
-    '[class.teta-drag-container]': '"true"',
-    '[class.teta-drop-target]': 'isDropTarget'
-  }
+    selector: '[tetaDragContainer]',
+    exportAs: 'dragContainer',
+    host: {
+        '[class.teta-drag-container]': '"true"',
+        '[class.teta-drop-target]': 'isDropTarget'
+    },
+    standalone: true
 })
 export class DragContainerDirective<T> implements OnInit, OnDestroy {
   @Input('tetaDragContainer') data: T[];

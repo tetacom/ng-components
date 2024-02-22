@@ -1,37 +1,103 @@
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
+
 import { ButtonComponent } from './button/button.component';
-import { ButtonModule } from './button.module';
-import { IconModule } from '../icon/icon.module';
-import { applicationConfig, Meta } from '@storybook/angular';
+
+
+import { applicationConfig, Meta, StoryFn } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
+import { IconComponent } from '../icon/icon/icon.component';
 
 export default {
   title: 'Component/Button',
   decorators: [
-    withKnobs,
+
     applicationConfig({
       providers: [importProvidersFrom(HttpClientModule)],
     }),
   ],
+  argTypes:{
+    viewType:{
+      options:['rounded','brick','circle'],
+      control:{type:'select'},
+    },
+    palette:{
+      options:['primary', 'text', 'red', 'yellow', 'green'],
+      control:{type:'select'}
+    },
+    size:{
+      options:['m','l'],
+      control:{type:'select'}
+    },
+    view:{
+      control:{type:'select'},
+      options:['primary','ghost','outline']
+    },
+    text:{
+      control:{type:'text'}
+    }
+
+  },
+  args:{
+    viewType:'circle',
+    palette:'primary',
+    view:'primary',
+    text:'text text',
+    size:'m'
+  },
   component: ButtonComponent,
   moduleMetadata: {
-    imports: [ButtonModule],
+    imports: [],
   },
 } as Meta;
-
-export const buttons = () => ({
+export const baseButton:StoryFn = (args) => ({
   moduleMetadata: {
-    imports: [ButtonModule, IconModule],
+    imports: [IconSpriteDirective,IconComponent],
+  },
+  props: args,
+  template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
+       <button teta-button  [disabled]="false" [view]="view" [square]="false"  [size]="size" [viewType]="viewType" [palette]="palette">
+          <teta-icon [name]="'addCircle'"></teta-icon>
+          {{text}}
+       </button>
+</div>`,
+});
+export const disabledButton:StoryFn = (args) => ({
+  moduleMetadata: {
+    imports: [IconSpriteDirective,IconComponent]
+  },
+  props: args,
+  template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
+       <button teta-button  [disabled]="true" [view]="view" [square]="false"  [size]="size" [viewType]="viewType" [palette]="palette">
+          <teta-icon [name]="'addCircle'"></teta-icon>
+          {{text}}
+       </button>
+</div>`,
+});
+export const squireButton = (args) => ({
+  moduleMetadata: {
+    imports: [IconSpriteDirective,IconComponent],
+  },
+  props: args,
+  template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
+       <button teta-button  [disabled]="false" [view]="view" [square]="true"  [size]="size" [viewType]="viewType" [palette]="palette">
+          <teta-icon [name]="'addCircle'"></teta-icon>
+          {{text}}
+       </button>
+</div>`,
+});
+export const allButtonTypes:StoryFn = (args) => ({
+  moduleMetadata: {
+    imports: [IconSpriteDirective,IconComponent],
   },
   props: {
     palettes: ['primary', 'text', 'red', 'yellow', 'green'],
     types: ['brick', 'circle', 'rounded', 'rounded', 'rounded'],
-    text: text('text', 'Push me'),
-    size: select('size', ['m', 'l'], 'm'),
-    leftIcon: boolean('leftIcon', true),
-    rightIcon: boolean('rightIcon', true),
-    disabled: boolean('disabled', false),
+    text: 'Push me',
+    size: 'm',
+    leftIcon: true,
+    rightIcon: true,
+    disabled: false,
   },
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
 

@@ -1,4 +1,4 @@
-import {IconModule} from '../icon/icon.module';
+
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
@@ -16,7 +16,7 @@ export default {
 
 export const sample = () => ({
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="padding-10">
 <div class="column gap-8">

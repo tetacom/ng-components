@@ -1,7 +1,8 @@
 import {Directive, ElementRef, Inject, OnDestroy} from '@angular/core';
 
 @Directive({
-  selector: '[tetaScrollToSelectedYear]'
+    selector: '[tetaScrollToSelectedYear]',
+    standalone: true
 })
 export class ScrollToSelectedYearDirective implements OnDestroy {
   public alive = true;

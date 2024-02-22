@@ -45,7 +45,7 @@
 
 
   @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
-    &.checkbox-#{$paletteName} {
+    &#{'.checkbox-'+$paletteName} {
       fill: getColorVar($paletteName, '50');
     }
   }

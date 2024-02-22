@@ -7,10 +7,11 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'teta-delimiter',
-  templateUrl: './delimiter.component.html',
-  styleUrls: ['./delimiter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-delimiter',
+    templateUrl: './delimiter.component.html',
+    styleUrls: ['./delimiter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class DelimiterComponent implements OnInit {
   @Input() direction: 'vertical' | 'horizontal' = 'vertical';

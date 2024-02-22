@@ -1,7 +1,8 @@
 import {Directive, Inject, Input, TemplateRef, ViewContainerRef} from '@angular/core';
 
 @Directive({
-  selector: '[tetaLet]'
+    selector: '[tetaLet]',
+  standalone:true
 })
 export class LetDirective<T> {
   @Input()

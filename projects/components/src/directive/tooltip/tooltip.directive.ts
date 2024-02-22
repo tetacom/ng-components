@@ -25,7 +25,8 @@ import { PositionUtil } from '../../common/util/position-util';
 import { DynamicContentBaseDirective } from '../dynamic-content-base.directive';
 
 @Directive({
-  selector: '[tetaTooltip]',
+    selector: '[tetaTooltip]',
+    standalone: true,
 })
 export class TooltipDirective
   extends DynamicContentBaseDirective

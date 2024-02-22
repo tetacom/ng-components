@@ -4,12 +4,16 @@ import {DateFromToModel} from "../model/from-to.model";
 import dayjs from "dayjs";
 import {viewType} from "../../../common/model/view-type.model";
 import {TetaLocalisation} from "../../../locale/teta-localisation";
+import { DayItemComponent } from './day-item/day-item.component';
+import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'teta-day-picker',
-  templateUrl: './day-picker.component.html',
-  styleUrls: ['./day-picker.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'teta-day-picker',
+    templateUrl: './day-picker.component.html',
+    styleUrls: ['./day-picker.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [NgClass, DayItemComponent]
 })
 export class DayPickerComponent implements OnChanges{
   @Input() date: Date | string | number = new Date();
@@ -95,6 +99,7 @@ export class DayPickerComponent implements OnChanges{
     if (new Date(this.range.from) < this.hoveredDate) {
       return 'datepicker-date_active-second'
     }
+    return '';
   }
 
   getClassSelectedItem(d: DayModel) {

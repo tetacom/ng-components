@@ -1,4 +1,4 @@
-import {ScrollableModule} from "./scrollable.module";
+
 import {Meta} from "@storybook/angular";
 
 export default {
@@ -7,9 +7,7 @@ export default {
 
 export const scrollable = () => ({
   moduleMetadata: {
-    imports: [
-      ScrollableModule
-    ],
+    imports: [],
   },
   template: `<div class="bg-panel-50 padding-10 margin-10">
                 <teta-scrollable style="width: 500px; height: 300px;background: cyan">

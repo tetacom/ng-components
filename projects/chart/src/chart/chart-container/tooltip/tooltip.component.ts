@@ -9,7 +9,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Align, PositionUtil, VerticalAlign } from '@tetacom/ng-components';
 import * as d3 from 'd3';
 import { filter, map, Observable, tap } from 'rxjs';
 
@@ -18,12 +17,23 @@ import { IDisplayTooltip } from '../../model/i-display-tooltip';
 import { Series } from '../../model/series';
 import { ChartService } from '../../service/chart.service';
 import { ZoomService } from '../../service/zoom.service';
+import { AsyncPipe, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { PositionUtil } from '../../core/utils/position-util';
+import { Align } from '../../model/enum/align.enum';
+import { VerticalAlign } from '../../model/enum/vertical-align.enum';
 
 @Component({
   selector: 'teta-tooltip',
   templateUrl: './tooltip.component.html',
+  standalone: true,
   styleUrls: ['./tooltip.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    AsyncPipe,
+    NgForOf,
+    NgIf,
+    NgTemplateOutlet
+  ]
 })
 export class TooltipComponent implements OnInit {
   @Input() size: DOMRect;
@@ -53,7 +63,9 @@ export class TooltipComponent implements OnInit {
   ) {
     this.tooltips = this.svc.tooltips.pipe(map(_ => [..._.values()]));
   }
-
+  getImplicit(t){
+    return {$implicit: t} as any
+  }
   ngOnInit(): void {
     this.display = this.svc.pointerMove.pipe(
       map((event: PointerEvent) => {

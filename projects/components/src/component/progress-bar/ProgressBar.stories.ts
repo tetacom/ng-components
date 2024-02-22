@@ -1,28 +1,41 @@
 // eslint-disable-next-line id-blacklist
-import { number, withKnobs } from '@storybook/addon-knobs';
-import { ProgressBarModule } from './progress-bar.module';
 import { FormsModule } from '@angular/forms';
 import {Meta} from "@storybook/angular";
+import {ProgressBarComponent} from "./progress-bar/progress-bar.component";
 
 export default {
   title: 'Component/ProgressBar',
-  decorators: [withKnobs],
   moduleMetadata: {
-    imports: [ProgressBarModule, FormsModule],
+    imports: [FormsModule],
+  },
+  argTypes:{
+    step:{
+      control:{type:'number'}
+    },
+   min:{
+      control:{type:'number'}
+    },
+    max:{
+      control:{type:'number'}
+    },
+    value:{
+      control:{type:'number'}
+    }
+  },
+  args:{
+    min:0,
+    max:100,
+    value:50,
+    step:0
   },
 } as Meta;
 
-export const sample = () => ({
+export const sample = (args) => ({
   moduleMetadata: {
-    imports: [ProgressBarModule, FormsModule],
+    imports: [FormsModule,ProgressBarComponent],
     entryComponents: [],
   },
-  props: {
-    min: number('min', 0),
-    max: number('max', 100),
-    value: number('value', 50),
-    step: number('step', 0),
-  },
+  props: args,
   template: `<div class="bg-panel-50 padding-3" style="display: flex; width: 900px; height: 600px;">
               <teta-progress-bar [min]="min" [max]="max" [step]="step" [(ngModel)]="value"></teta-progress-bar>
             </div>`,

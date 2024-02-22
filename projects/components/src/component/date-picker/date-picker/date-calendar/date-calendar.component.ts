@@ -15,12 +15,27 @@ import { viewType } from '../../../../common/model/view-type.model';
 import { BaseCalendar } from '../../base-calendar';
 import { DayModel } from '../../model/day-model';
 import {TetaLocalisation} from "../../../../locale/teta-localisation";
+import { AsyncPipe } from '@angular/common';
+import { YearPickerComponent } from '../../year-picker/year-picker.component';
+import { MonthPickerComponent } from '../../month-picker/month-picker.component';
+import { DayPickerComponent } from '../../day-picker/day-picker.component';
+import { IconComponent } from '../../../icon/icon/icon.component';
+import { ButtonComponent } from '../../../button/button/button.component';
 
 @Component({
-  selector: 'teta-date-calendar',
-  templateUrl: './date-calendar.component.html',
-  styleUrls: ['./date-calendar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-date-calendar',
+    templateUrl: './date-calendar.component.html',
+    styleUrls: ['./date-calendar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        ButtonComponent,
+        IconComponent,
+        DayPickerComponent,
+        MonthPickerComponent,
+        YearPickerComponent,
+        AsyncPipe,
+    ],
 })
 export class DateCalendarComponent
   extends BaseCalendar

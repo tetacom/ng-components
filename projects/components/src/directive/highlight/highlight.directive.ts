@@ -1,7 +1,8 @@
 import {Directive, ElementRef, Input} from '@angular/core';
 
 @Directive({
-  selector: '[tetaHighlight]',
+    selector: '[tetaHighlight]',
+    standalone: true,
 })
 export class HighlightDirective {
   @Input() set tetaHighlight(text: string) {

@@ -1,12 +1,13 @@
 <span [style.display]="edit ? 'none' : 'block'"
-      class="cell-text"
-      [class.cell-text_disabled]="!editable">
+  class="cell-text"
+  [class.cell-text_disabled]="!editable">
   {{control?.value | tetaNumber : 2}}
 </span>
-<input #input
-       *ngIf="edit"
-       [tetaOnlyNumber]="true"
-       type="text"
-       class="input row_auto border-radius-0"
-       (keydown.enter)='input.blur()'
-       [formControl]="control"/>
+@if (edit) {
+  <input #input
+    [tetaOnlyNumber]="true"
+    type="text"
+    class="input row_auto border-radius-0"
+    (keydown.enter)='input.blur()'
+    [formControl]="control"/>
+}

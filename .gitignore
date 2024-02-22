@@ -1,19 +1,12 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
-/projects/*/dist
-/tmp
+dist
+tmp
 /out-tsc
-# Only exists if Bazel was run
-/bazel-out
+
 # dependencies
-/node_modules
-
 node_modules
-
-# profiling files
-chrome-profiler-events*.json
 
 # IDEs and editors
 /.idea
@@ -30,10 +23,8 @@ chrome-profiler-events*.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.history/*
 
 # misc
-/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage
@@ -42,9 +33,13 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
-documentation.json
 
 # System Files
 .DS_Store
 Thumbs.db
-projects/components/src/component/chart/Chart.stories.ts
+
+.nx/cache
+.angular
+
+
+storybook-static

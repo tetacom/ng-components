@@ -8,8 +8,8 @@ describe('TableHeadCellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HeadCellComponent ]
-    })
+    imports: [HeadCellComponent]
+})
     .compileComponents();
   });
 

@@ -10,12 +10,21 @@ import { DatePickerComponent } from '../../../date-picker/date-picker/date-picke
 import { CellComponentBase } from '../../base/cell-component-base';
 import { ICellCoordinates } from '../../contract/i-cell-coordinates';
 import { TableService } from '../../service/table.service';
+import { DatePipe } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'teta-date-cell',
-  templateUrl: './date-cell.component.html',
-  styleUrls: ['./date-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-date-cell',
+    templateUrl: './date-cell.component.html',
+    styleUrls: ['./date-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        DatePickerComponent,
+        FormsModule,
+        ReactiveFormsModule,
+        DatePipe,
+    ],
 })
 export class DateCellComponent<T>
   extends CellComponentBase<T>

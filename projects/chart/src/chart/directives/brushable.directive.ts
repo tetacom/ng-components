@@ -17,6 +17,7 @@ import {filter, takeWhile} from 'rxjs';
 
 @Directive({
   selector: '[tetaBrushable]',
+  standalone:true
 })
 export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnChanges {
   @Input() config: IChartConfig;

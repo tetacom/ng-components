@@ -8,8 +8,8 @@ describe('DragSortDemoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DragSortDemoComponent ]
-    })
+    imports: [DragSortDemoComponent]
+})
     .compileComponents();
   });
 

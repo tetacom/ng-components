@@ -1,0 +1,26 @@
+{
+  "name": "chart",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "projects/chart/src",
+  "prefix": "ng-components",
+  "tags": [],
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "options": {
+        "project": "projects/chart/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "projects/chart/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "projects/chart/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    }
+  }
+}

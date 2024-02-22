@@ -1,104 +1,82 @@
-import {select, withKnobs} from '@storybook/addon-knobs';
-import {TableModule} from './table.module';
 import {EditType} from './enum/edit-type.enum';
 import {EditEvent} from './enum/edit-event.enum';
 import {SelectType} from './enum/select-type.enum';
-import {IconModule} from '../icon/icon.module';
-import {TableDemoModule} from './table-demo/table-demo.module';
+
+
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
+import {TableDemoComponent} from "./table-demo/table-demo/table-demo.component";
+import {IconComponent} from "../icon/icon/icon.component";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
+import { Align } from '../../common/enum/align.enum';
 
 export default {
   title: 'Component/Table',
   decorators: [
-    withKnobs,
+
     applicationConfig({
       providers: [
         importProvidersFrom(HttpClientModule)
       ],
     }),
   ],
+  argTypes: {
+    selectType:{
+      options:['SelectType.none', 'SelectType.checkBox', 'SelectType.mouse',],
+      control:{type:'select'}
+    },
+    editType:{
+      options:['EditType.row', 'EditType.cell'],
+      control:{type:'select'}
+    },
+    editEvent:{
+      options:['EditEvent.focus', 'EditEvent.click', 'EditEvent.doubleClick'],
+      control:{type:'select'}
+    }
+
+  },
+  args: {
+    selectType:'SelectType.none',
+    editType:'EditType.cell',
+    editEvent:'EditEvent.doubleClick'
+  },
   moduleMetadata: {
-    imports: [TableModule],
+    imports: [],
   },
 } as Meta;
-
-export const basicTable = () => ({
+const selectTypeMap = new Map<string, SelectType>()
+  .set('SelectType.none',SelectType.none)
+  .set('SelectType.checkBox', SelectType.checkBox)
+  .set('SelectType.mouse', SelectType.mouse)
+const editEventMap = new Map<string, EditEvent>()
+  .set('EditEvent.focus',EditEvent.focus)
+  .set('EditEvent.click', EditEvent.click)
+  .set('EditEvent.doubleClick', EditEvent.doubleClick)
+const editTypeMap = new Map<string, EditType>()
+  .set('EditType.row',EditType.row)
+  .set('EditType.cell', EditType.cell)
+export const basicTable = (args) => ({
   moduleMetadata: {
-    imports: [TableDemoModule, IconModule],
+    imports: [TableDemoComponent,IconSpriteDirective],
   },
-  props: {
-    editType: select(
-      'editType',
-      {
-        row: EditType.row,
-        cell: EditType.cell,
-      },
-      EditType.cell
-    ),
-    selectType: select(
-      'selectType',
-      {
-        none: SelectType.none,
-        multiple: SelectType.checkBox,
-        single: SelectType.mouse,
-      },
-      SelectType.checkBox
-    ),
-    editEvent: select(
-      'editEvent',
-      {
-        focus: EditEvent.focus,
-        click: EditEvent.click,
-        doubleClick: EditEvent.doubleClick,
-      },
-      EditEvent.doubleClick
-    ),
-  },
+  props: { ...args,selectTypeMap,editEventMap,editTypeMap },
   template: `<div [tetaIconSprite]="['assets/icons.svg', 'assets/color-icons.svg']"
                   class="bg-panel-0 padding-10"
                   style="display: flex; width: 1200px; height: 600px;">
                 <teta-table-demo [size]="50"
-                                  [editEvent]="editEvent"
-                                  [editType]="editType"
-                                  [selectType]="selectType"
+                                  [editEvent]="editEventMap.get(editEvent)"
+                                  [editType]="editTypeMap.get(editType)"
+                                  [selectType]="selectTypeMap.get(selectType)"
                                   [virtual]="false"></teta-table-demo>
             </div>`,
 });
 
-export const virtualTable = () => ({
+export const virtualTable = (args) => ({
   moduleMetadata: {
-    imports: [TableDemoModule, IconModule],
+    imports: [TableDemoComponent,IconSpriteDirective],
   },
-  props: {
-    editType: select(
-      'editType',
-      {
-        row: EditType.row,
-        cell: EditType.cell,
-      },
-      EditType.cell
-    ),
-    selectType: select(
-      'selectType',
-      {
-        none: SelectType.none,
-        multiple: SelectType.checkBox,
-        single: SelectType.mouse,
-      },
-      SelectType.checkBox
-    ),
-    editEvent: select(
-      'editEvent',
-      {
-        focus: EditEvent.focus,
-        click: EditEvent.click,
-        doubleClick: EditEvent.doubleClick,
-      },
-      EditEvent.doubleClick
-    ),
-  },
+  props: { ...args,selectTypeMap,editEventMap,editTypeMap },
   template: `<div [tetaIconSprite]="['assets/icons.svg', 'assets/color-icons.svg']"
                   class="bg-panel-0 padding-10"
                   style="display: flex; width: 1200px; height: 600px;">

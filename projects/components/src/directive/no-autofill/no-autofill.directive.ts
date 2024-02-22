@@ -1,7 +1,8 @@
 import { Directive, ElementRef, OnInit, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[tetaNoAutofill]',
+    selector: '[tetaNoAutofill]',
+    standalone: true,
 })
 
 /**

@@ -2,7 +2,8 @@ import { Directive, Input } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 @Directive({
-  selector: '[tetaDisableControl]',
+    selector: '[tetaDisableControl]',
+    standalone: true,
 })
 export class DisableControlDirective {
   @Input() set tetaDisableControl(val: boolean) {

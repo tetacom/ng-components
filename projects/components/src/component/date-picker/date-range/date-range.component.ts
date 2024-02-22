@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass, AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -12,7 +12,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { maskitoDateRangeOptionsGenerator } from '@maskito/kit';
 import dayjs from 'dayjs';
 import {lastValueFrom, Observable, ReplaySubject, take} from 'rxjs';
@@ -25,6 +25,13 @@ import { DateFromToModel } from '../model/from-to.model';
 import { TetaConfigService } from '../../../locale/teta-config.service';
 import {TetaLocalisation} from "../../../locale/teta-localisation";
 import {ruLocale} from "../../../locale/ru";
+import { RangeCalendarComponent } from './range-calendar/range-calendar.component';
+import { DropdownContentDirective } from '../../dropdown/dropdown-content.directive';
+import { IconComponent } from '../../icon/icon/icon.component';
+import { MaskitoModule } from '@maskito/angular';
+import { InputComponent } from '../../input/input/input.component';
+import { DropdownHeadDirective } from '../../dropdown/dropdown-head.directive';
+import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
 
 export const DATE_Range_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -33,11 +40,24 @@ export const DATE_Range_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'teta-date-range',
-  templateUrl: './date-range.component.html',
-  styleUrls: ['./date-range.component.scss'],
-  providers: [DATE_Range_CONTROL_VALUE_ACCESSOR, DatePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-date-range',
+    templateUrl: './date-range.component.html',
+    styleUrls: ['./date-range.component.scss'],
+    providers: [DATE_Range_CONTROL_VALUE_ACCESSOR, DatePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        DropdownComponent,
+        DropdownHeadDirective,
+        NgClass,
+        InputComponent,
+        FormsModule,
+        MaskitoModule,
+        IconComponent,
+        DropdownContentDirective,
+        RangeCalendarComponent,
+        AsyncPipe,
+    ],
 })
 export class DateRangeComponent
   extends BasePicker

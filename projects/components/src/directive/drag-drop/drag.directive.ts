@@ -23,13 +23,14 @@ import { DropEvent } from './model/drop-event';
 import { DropTarget } from './model/drop-target';
 
 @Directive({
-  selector: '[tetaDrag]',
-  exportAs: 'drag',
-  // eslint-disable-next-line @angular-eslint/no-host-metadata-property
-  host: {
-    '[style.userSelect]': '"none"',
-    '[class.teta-drag-item]': '"true"',
-  },
+    selector: '[tetaDrag]',
+    exportAs: 'drag',
+    // eslint-disable-next-line @angular-eslint/no-host-metadata-property
+    host: {
+        '[style.userSelect]': '"none"',
+        '[class.teta-drag-item]': '"true"',
+    },
+    standalone: true,
 })
 export class DragDirective<T> implements OnInit, OnDestroy {
   @Input('tetaDrag') data: T;

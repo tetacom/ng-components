@@ -13,7 +13,7 @@
   color: var(--color-text-90);
 
   @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
-    &-#{$paletteName}::before {
+    &#{'-'+$paletteName}::before {
       background: getColorVar($paletteName, '50');
       content: " ";
       position: absolute;

@@ -14,12 +14,16 @@ import { boolOrFuncCallback } from '../../../../util/bool-or-func';
 import { FormsUtil } from '../../../../util/forms-util';
 import { TableColumn } from '../../../table/contract/table-column';
 import { PropertyGridItemDescriptionDirective } from '../property-grid-item-description.directive';
+import { PropertyGridItemComponent } from '../property-grid-item/property-grid-item.component';
+import { ExpandItemComponent } from '../../../expand-card/expand-item/expand-item.component';
 
 @Component({
-  selector: 'teta-property-grid-group',
-  templateUrl: './property-grid-group.component.html',
-  styleUrls: ['./property-grid-group.component.scss'],
-  viewProviders: [FormsUtil.formProvider],
+    selector: 'teta-property-grid-group',
+    templateUrl: './property-grid-group.component.html',
+    styleUrls: ['./property-grid-group.component.scss'],
+    viewProviders: [FormsUtil.formProvider],
+    standalone: true,
+    imports: [ExpandItemComponent, PropertyGridItemComponent],
 })
 export class PropertyGridGroupComponent<T> {
   @Input() column: TableColumn;

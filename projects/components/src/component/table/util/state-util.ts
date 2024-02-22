@@ -72,7 +72,7 @@ export class StateUtil {
 
   static isColumnFiltered(state: FilterState, column: TableColumn): boolean {
     if (!column.filterable) {
-      return;
+      return false;
     }
     let filtered = false;
     switch (column.filterType) {

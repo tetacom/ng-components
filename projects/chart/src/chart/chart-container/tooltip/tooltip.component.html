@@ -1,19 +1,19 @@
-<ng-container *tetaLet="position | async as p">
-  <ng-container *ngIf="tooltips | async as t">
+<ng-container *ngIf="{p:position | async} as data">
+  <ng-container *ngIf="(tooltips | async) as t">
     <div class="chart-tooltip color-text-90 bg-global-bgcard shadow-2"
          #tooltip
          [style.position]="'fixed'"
          *ngIf="t.length > 0"
          [style.opacity]="display | async"
-         [hidden]="!p"
+         [hidden]="!data.p"
          style="pointer-events: none; min-width: 200px;"
-         [style.left.px]="p?.left"
-         [style.top.px]="p?.top"
-         [style.bottom.px]="p?.bottom"
-         [style.right.px]="p?.right"
+         [style.left.px]="data.p?.left"
+         [style.top.px]="data.p?.top"
+         [style.bottom.px]="data.p?.bottom"
+         [style.right.px]="data.p?.right"
     >
       <ng-container *ngIf="config.tooltip?.template">
-        <ng-container *ngTemplateOutlet="config.tooltip.template; context: {$implicit: t}"></ng-container>
+        <ng-container *ngTemplateOutlet="config.tooltip.template; context: getImplicit(t)"></ng-container>
       </ng-container>
 
       <ng-container *ngIf="config.tooltip?.format; else default">

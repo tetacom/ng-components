@@ -46,7 +46,7 @@
       }
 
       @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
-        &#{$button}-#{$paletteName} {
+        &#{$button+ '-'+ $paletteName} {
           background: getColorVar($paletteName, '50');
 
           &:hover:not(.toggle_disabled):not(:active) {

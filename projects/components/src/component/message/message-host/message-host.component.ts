@@ -14,12 +14,15 @@ import {Message} from '../model/message';
 import {Align} from '../../../common/enum/align.enum';
 import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
 import {takeWhile} from 'rxjs/operators';
+import { MessageComponent } from '../message/message.component';
 
 @Component({
-  selector: 'teta-message-host',
-  templateUrl: './message-host.component.html',
-  styleUrls: ['./message-host.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-message-host',
+    templateUrl: './message-host.component.html',
+    styleUrls: ['./message-host.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [MessageComponent],
 })
 export class MessageHostComponent implements OnInit, OnDestroy {
   @Input() class;

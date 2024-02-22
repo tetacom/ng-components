@@ -18,10 +18,11 @@ import { ThemeSwitchService } from '../../theme-switch/theme-switch.service';
 import { takeWhile, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'teta-chart3d',
-  templateUrl: './chart3d.component.html',
-  styleUrls: ['./chart3d.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-chart3d',
+    templateUrl: './chart3d.component.html',
+    styleUrls: ['./chart3d.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('canvas') canvasRef: ElementRef;

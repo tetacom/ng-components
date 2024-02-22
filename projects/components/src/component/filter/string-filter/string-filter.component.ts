@@ -16,12 +16,21 @@ import {IIdName} from '../../../common/contract/i-id-name';
 import {TetaConfigService} from '../../../locale/teta-config.service';
 import {Observable} from 'rxjs';
 import {TetaLocalisation} from '../../../locale/teta-localisation';
+import { AsyncPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { InputComponent } from '../../input/input/input.component';
 
 @Component({
-  selector: 'teta-string-filter',
-  templateUrl: './string-filter.component.html',
-  styleUrls: ['./string-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-string-filter',
+    templateUrl: './string-filter.component.html',
+    styleUrls: ['./string-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        InputComponent,
+        FormsModule,
+        AsyncPipe,
+    ],
 })
 export class StringFilterComponent<T>
   extends FilterComponentBase<T>

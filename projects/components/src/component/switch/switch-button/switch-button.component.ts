@@ -12,10 +12,11 @@ import { SwitchService } from '../switch.service';
 import { takeWhile } from 'rxjs/operators';
 
 @Component({
-  selector: 'teta-switch-button',
-  templateUrl: './switch-button.component.html',
-  styleUrls: ['./switch-button.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-switch-button',
+    templateUrl: './switch-button.component.html',
+    styleUrls: ['./switch-button.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class SwitchButtonComponent implements OnInit, OnDestroy {
   @Input() value: any;
