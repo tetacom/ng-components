@@ -1,11 +1,10 @@
-
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ThreeChartComponent } from './three-chart/three-chart.component';
 import { Series3dType } from './three-chart/model/enum/series-3d-type';
 import { CustomSeriesComponent } from './custom-series/custom-series.component';
-// import { IconSpriteDirective } from '../../../../components/src/component/icon/icon-sprite.directive';
+import { IconSpriteDirective } from '@tetacom/ng-components';
 
 export default {
   title: 'Component/Three',
@@ -16,13 +15,13 @@ export default {
   ],
   component: ThreeChartComponent,
   moduleMetadata: {
-    imports: [ThreeChartComponent],
+    imports: [ThreeChartComponent, IconSpriteDirective],
   },
 } as Meta;
 
 export const lithotypeChart = () => ({
   moduleMetadata: {
-    imports: [ThreeChartComponent],
+    imports: [ThreeChartComponent, IconSpriteDirective],
   },
   props: {
     data: {

@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "ng-components",
+            "prefix": "teta",
             "style": "kebab-case"
           }
         ]

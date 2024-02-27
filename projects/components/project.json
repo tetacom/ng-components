@@ -21,6 +21,69 @@
         }
       },
       "defaultConfiguration": "production"
+    },
+    "storybook": {
+      "executor": "@storybook/angular:start-storybook",
+      "options": {
+        "port": 4400,
+        "configDir": ".storybook",
+        "browserTarget": "components:build-storybook",
+        "compodoc": false,
+        "styles": [".storybook/sb.scss"],
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "projects/components/assets",
+            "output": "/assets/"
+          }
+        ]
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@storybook/angular:build-storybook",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "outputDir": "dist/storybook",
+        "configDir": ".storybook",
+        "browserTarget": "components:build-storybook",
+        "compodoc": false,
+        "styles": [".storybook/sb.scss"],
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "projects/components/assets",
+            "output": "/assets/"
+          }
+        ]
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "test-storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "test-storybook -c projects/components/.storybook --url=http://localhost:4400"
+      }
+    },
+    "static-storybook": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "components:build-storybook",
+        "staticFilePath": "dist/storybook"
+      },
+      "configurations": {
+        "ci": {
+          "buildTarget": "components:build-storybook:ci"
+        }
+      }
     }
   }
 }

@@ -6,7 +6,6 @@
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
-    "preserveSymlinks": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
@@ -18,7 +17,6 @@
     "baseUrl": ".",
     "paths": {
       "@tetacom/ng-components": ["projects/components/src/index.ts"],
-      "@tetacom/ng-core": ["projects/core/src/index.ts"],
       "@tetacom/ng-threejs-chart": ["projects/three/src/index.ts"],
       "@tetacom/svg-charts": ["projects/chart/src/index.ts"]
     }

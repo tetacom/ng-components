@@ -1,0 +1,23 @@
+{
+  "extends": "../projects/components/tsconfig.json",
+  "compilerOptions": {
+    "emitDecoratorMetadata": true
+  },
+  "exclude": [
+    "../projects/chart/src/test.ts",
+    "../projects/chart/**/*.spec.ts",
+    "../projects/chart/**/test-setup.ts",
+    "../projects/components/src/test.ts",
+    "../projects/components/**/*.spec.ts",
+    "../projects/components/**/test-setup.ts",
+    "../projects/three/src/test.ts",
+    "../projects/three/**/*.spec.ts",
+    "../projects/three/**/test-setup.ts"
+  ],
+  "include": [
+    "../projects/chart/**/*",
+    "../projects/components/**/*",
+    "../projects/three/**/*",
+    "./preview.ts"
+  ]
+}

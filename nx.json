@@ -7,13 +7,13 @@
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
-      "!{projectRoot}/.eslintrc.json",
-      "!{projectRoot}/eslint.config.js",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s",
       "!{projectRoot}/test-setup.[jt]s",
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/eslint.config.js",
       "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)",
       "!{projectRoot}/.storybook/**/*",
       "!{projectRoot}/tsconfig.storybook.json"
@@ -21,11 +21,6 @@
     "sharedGlobals": []
   },
   "targetDefaults": {
-    "@angular-devkit/build-angular:application": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
-    },
     "@nx/angular:package": {
       "cache": true,
       "dependsOn": ["^build"],
@@ -33,26 +28,15 @@
     },
     "build-storybook": {
       "cache": true,
-      "options": {
-        "compodoc": true,
-        "assets": [
-          {
-            "glob": "**/*",
-            "input": "projects/components/assets",
-            "output": "/assets/"
-          }
-        ],
-        "styles": ["projects/components/.storybook/sb.scss"]
-      }
+      "inputs": [
+        "default",
+        "^production",
+        "{projectRoot}/.storybook/**/*",
+        "{projectRoot}/tsconfig.storybook.json"
+      ]
     }
   },
   "plugins": [
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    },
     {
       "plugin": "@nx/jest/plugin",
       "options": {
@@ -60,22 +44,13 @@
       }
     },
     {
-      "plugin": "@nx/storybook/plugin",
+      "plugin": "@nx/eslint/plugin",
       "options": {
-        "buildStorybookTargetName": "build-storybook",
-        "serveStorybookTargetName": "storybook",
-        "testStorybookTargetName": "test-storybook",
-        "staticStorybookTargetName": "static-storybook"
+        "targetName": "lint"
       }
     }
   ],
   "generators": {
-    "@nx/angular:application": {
-      "e2eTestRunner": "none",
-      "linter": "eslint",
-      "style": "scss",
-      "unitTestRunner": "jest"
-    },
     "@nx/angular:library": {
       "linter": "eslint",
       "unitTestRunner": "jest"
