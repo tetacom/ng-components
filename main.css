@@ -293,19 +293,19 @@ a {
 .tatneftlight {
   --color-global-link: #007eff;
   --color-global-white: white;
-  --color-global-bgmain: #f4f4f4;
+  --color-global-bgmain: #f4f5fc;
   --color-global-bgcard: white;
   --color-global-staticprimary: #26413f;
-  --color-text-5: rgba(36, 36, 36, 0.0705882353);
-  --color-text-10: rgba(13, 13, 13, 0.1411764706);
-  --color-text-20: rgba(3, 7, 7, 0.231372549);
-  --color-text-30: rgba(2, 5, 8, 0.3215686275);
-  --color-text-40: rgba(1, 1, 4, 0.4117647059);
-  --color-text-50: rgba(1, 1, 4, 0.5019607843);
-  --color-text-60: rgba(3, 3, 7, 0.6);
-  --color-text-70: rgba(2, 2, 3, 0.6901960784);
-  --color-text-80: rgba(2, 2, 3, 0.7803921569);
-  --color-text-90: rgba(2, 2, 3, 0.8784313725);
+  --color-text-5: rgba(9, 25, 134, 0.0588235294);
+  --color-text-10: rgba(15, 22, 62, 0.1294117647);
+  --color-text-20: rgba(7, 12, 34, 0.2196078431);
+  --color-text-30: rgba(0, 7, 20, 0.3098039216);
+  --color-text-40: rgba(5, 11, 20, 0.4);
+  --color-text-50: rgba(3, 6, 8, 0.4784313725);
+  --color-text-60: rgba(5, 9, 11, 0.568627451);
+  --color-text-70: rgba(3, 7, 7, 0.6509803922);
+  --color-text-80: rgba(2, 3, 3, 0.7294117647);
+  --color-text-90: rgba(3, 3, 3, 0.8117647059);
   --color-primary-5: #e6f7e9;
   --color-primary-10: #b8e9c7;
   --color-primary-20: #8bd9ab;
@@ -356,8 +356,8 @@ a {
 .tatneftdark {
   --color-global-link: #007eff;
   --color-global-white: white;
-  --color-global-bgmain: #262626;
-  --color-global-bgcard: #303030;
+  --color-global-bgmain: #212121;
+  --color-global-bgcard: #2b2b2b;
   --color-global-staticprimary: #26413f;
   --color-text-5: rgba(255, 255, 255, 0.0588235294);
   --color-text-10: rgba(255, 255, 255, 0.0784313725);
@@ -389,11 +389,11 @@ a {
   --color-green-70: #68bd75;
   --color-green-80: #a1d499;
   --color-green-90: #d8eacc;
-  --color-red-5: #662a2b;
-  --color-red-10: #803032;
-  --color-red-20: #9a3538;
-  --color-red-30: #b5393c;
-  --color-red-40: #d23b40;
+  --color-red-5: #4e2921;
+  --color-red-10: #6b322a;
+  --color-red-20: #8a3931;
+  --color-red-30: #aa3c36;
+  --color-red-40: #cc3c3a;
   --color-red-50: #ef3d42;
   --color-red-60: #fa606b;
   --color-red-70: #ff8794;
@@ -1717,6 +1717,9 @@ a {
   font-style: normal;
   line-height: 16px;
   text-decoration: none;
+}
+.accordion-head_disabled {
+  color: var(--color-text-30);
 }
 .accordion-head:hover:not(.accordion-head_disabled) {
   cursor: pointer;
@@ -4908,19 +4911,10 @@ body {
   padding: 0 8px;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-field-round);
+  border-radius: inherit;
 }
 .switch-button:hover {
   cursor: pointer;
-}
-.switch-button_brick {
-  border-radius: var(--radius-field-brick);
-}
-.switch-button_circle {
-  border-radius: var(--radius-field-circle);
-}
-.switch-button_rounded {
-  border-radius: var(--radius-field-round);
 }
 .switch-button:active:not(.switch-button_active) {
   background: var(--color-text-10);
