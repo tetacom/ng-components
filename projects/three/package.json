@@ -8,5 +8,9 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  }
 }
