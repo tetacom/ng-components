@@ -19,7 +19,7 @@ jobs:
 #      - name: Install
 #        run: yarn && yarn global add @angular/cli
       - name: Build
-        run: npx nx run components:build-storybook
+        run: npm install && npx nx run components:build-storybook
       - name: Deploy To Github Pages
         uses: peaceiris/actions-gh-pages@v3
         with:

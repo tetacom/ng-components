@@ -13,7 +13,7 @@ jobs:
           cache: npm
           node-version: 18
       - name: Install & Build
-        run: npx nx build chart
+        run: npm install && nxp nx build chart
       - name: Publish
         run: cd projects/chart && rm -f *.* && rm -r src && cp -r ./dist/* . && rm -rf dist && npx semantic-release -e semantic-release-monorepo
         env:
