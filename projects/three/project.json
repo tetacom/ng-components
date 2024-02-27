@@ -2,7 +2,7 @@
   "name": "three",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "projects/three/src",
-  "prefix": "ng-components",
+  "prefix": "teta",
   "tags": [],
   "projectType": "library",
   "targets": {
