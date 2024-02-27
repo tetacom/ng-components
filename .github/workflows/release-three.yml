@@ -13,7 +13,7 @@ jobs:
           cache: npm
           node-version: 18
       - name: Install & Build
-        run: npm install && nxp nx build three
+        run: npm install && npx nx build three
       - name: Publish
         run: cd projects/three && rm -f *.* && rm -r src && cp -r ./dist/* . && rm -rf dist && npx semantic-release -e semantic-release-monorepo
         env:
