@@ -7,25 +7,25 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { map, Observable, takeWhile, withLatestFrom } from 'rxjs';
+import {map, Observable, takeWhile, withLatestFrom} from 'rxjs';
 
-import { Annotation } from '../model/annotation';
-import { BasePoint } from '../model/base-point';
-import { ScaleType } from '../model/enum/scale-type';
-import { TooltipTracking } from '../model/enum/tooltip-tracking';
-import { IChartConfig } from '../model/i-chart-config';
-import { IChartEvent } from '../model/i-chart-event';
-import { IPointMove } from '../model/i-point-move';
-import { IScalesMap } from '../model/i-scales-map';
-import { PlotBand } from '../model/plot-band';
-import { PlotLine } from '../model/plot-line';
-import { BrushService } from '../service/brush.service';
-import { ChartService } from '../service/chart.service';
-import { ScaleService } from '../service/scale.service';
-import { ZoomService } from '../service/zoom.service';
-import { ChartContainerComponent } from '../chart-container/chart-container.component';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { LegendComponent } from '../legend/legend.component';
+import {Annotation} from '../model/annotation';
+import {BasePoint} from '../model/base-point';
+import {ScaleType} from '../model/enum/scale-type';
+import {TooltipTracking} from '../model/enum/tooltip-tracking';
+import {IChartConfig} from '../model/i-chart-config';
+import {IChartEvent} from '../model/i-chart-event';
+import {IPointMove} from '../model/i-point-move';
+import {IScalesMap} from '../model/i-scales-map';
+import {PlotBand} from '../model/plot-band';
+import {PlotLine} from '../model/plot-line';
+import {BrushService} from '../service/brush.service';
+import {ChartService} from '../service/chart.service';
+import {ScaleService} from '../service/scale.service';
+import {ZoomService} from '../service/zoom.service';
+import {ChartContainerComponent} from '../chart-container/chart-container.component';
+import {AsyncPipe, NgIf} from '@angular/common';
+import {LegendComponent} from '../legend/legend.component';
 
 @Component({
   selector: 'teta-svg-chart',
@@ -138,7 +138,7 @@ export class ChartComponent implements OnInit, OnDestroy {
         withLatestFrom(this.scaleService.scales, this.chartService.config)
       )
       .subscribe((data: [PointerEvent, IScalesMap, IChartConfig]) => {
-        const [event, { x, y }, config] = data;
+        const [event, {x, y}, config] = data;
         const tooltipTracking = config?.tooltip?.tracking;
         if (tooltipTracking === TooltipTracking.y) {
           const result = new Map<number, number>();
