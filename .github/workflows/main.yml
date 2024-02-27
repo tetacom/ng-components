@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           cache: npm
-          node-version: 18
+          node-version: 20
 #      - name: Install
 #        run: yarn && yarn global add @angular/cli
       - name: Build
