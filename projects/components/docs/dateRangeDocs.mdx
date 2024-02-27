@@ -1,0 +1,172 @@
+import {Meta} from "@storybook/blocks";
+import DateRangeStories from "../src/component/date-picker/date-range.stories";
+
+<Meta of={DateRangeStories}/>
+
+<div class='column gap-24'>
+  <h1>DateRange</h1>
+  <div class='column'>
+    <p>DateRange — компонент,который позволяет выбрать отрезок дат (от и до). В строке также можно вводить отрезок дат в формате дд.мм.гггг - дд.мм.гггг</p>
+    <p>В строке можно вручную ввести дату в формате дд.мм.гггг достаточно лишь воспользоваться клавиатурой. Нажатие на
+        строку выбора даты/кнопки периода вызывается блок календаря. Блок календаря состоит из специальных элементов
+        (Calendar_Item).</p>
+  </div>
+  <h3>Как использовать</h3>
+  <div class='column'>
+    <ul>
+      <li>Запись в строке происходит в формате дд.мм.гггг-дд.мм.гггг;</li>
+      <li>Внутри dateRange-a присутствует yearPicker;</li>
+      <li>Переключение месяцев происходит посредством стрелочек;</li>
+      <li>Он принимает в себя данные в формате <code>&#123; from:string | Date | number, to:string | Date | number &#125;</code></li>
+      <li>Если нужно чтобы dateRange не мог быть пустым, то нужно передать <code>[allowNull]="false"</code></li>
+    </ul>
+    <p>Также можно передать свойста minDate и maxDate для ограничения по выбору дат.</p>
+  </div>
+  <div class='column'>
+    <h3>Свойства</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>Свойство</th>
+        <th>Tип</th>
+        <th>Описание</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class='text-align-center'>
+          <p>viewType</p>
+        </td>
+        <td class='text-align-center'>
+          <code>'rounded'|'circle'|'brick'</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Свойство округления компонента.</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>locale</p>
+        </td>
+        <td class='text-align-center'>
+          <code>'en'|'ru'</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Локализация календаря</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>disabled</p>
+        </td>
+        <td class='text-align-center'>
+          <code>boolean</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Отключает реакцию компонента на клик пользователя</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>minDate</p>
+        </td>
+        <td class='text-align-center'>
+          <code>string | Date | number</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Минимальная для выбора дата</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>maxDate</p>
+        </td>
+        <td class='text-align-center'>
+          <code>string | Date | number</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Максимальная для выбора дата</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>align</p>
+        </td>
+        <td class='text-align-center'>
+          <code>Align</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Позиционирование содержимого дропдауна по горизонтали</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>verticalAlign</p>
+        </td>
+        <td class='text-align-center'>
+          <code>VerticalAlign</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Позиционирование содержимого дропдауна по вертикали</p>
+        </td>
+      </tr>
+                  <tr>
+                    <td class='text-align-center'>
+                      <p>date</p>
+                    </td>
+                    <td class='text-align-center'>
+                      <code>DateFromToModel</code>
+                    </td>
+                    <td class='text-align-center'>
+                      <p>Другой способ передачи данных в пикер (помимо ngModel)</p>
+                    </td>
+                  </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>selectDate</p>
+        </td>
+        <td class='text-align-center'>
+          <code>function</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Применяет функцию при изменении данных.Отдает выбранную дату/рендж</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>allowNull</p>
+        </td>
+        <td class='text-align-center'>
+          <code>boolean</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Свойство, которое позволяет/запрещает оставлять пустую строчку в пикере </p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>invalid</p>
+        </td>
+        <td class='text-align-center'>
+          <code>boolean</code>
+        </td>
+        <td class='text-align-center'>
+          <p>Свойство для отображения некорректности введенных данных</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-align-center'>
+          <p>backdrop</p>
+        </td>
+        <td class='text-align-center'>
+          <code>boolean</code>
+        </td>
+        <td class='text-align-center'>
+          <p>При открытии дропдауна создает поверх <code>div</code>, который не позволяет взаимодействовать с элементами вне содержимого дропдауна, пока он открыт</p>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

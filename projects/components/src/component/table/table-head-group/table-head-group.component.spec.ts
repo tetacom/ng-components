@@ -8,8 +8,8 @@ describe('TableHeadGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TableHeadGroupComponent]
-    })
+    imports: [TableHeadGroupComponent]
+})
       .compileComponents();
   });
 

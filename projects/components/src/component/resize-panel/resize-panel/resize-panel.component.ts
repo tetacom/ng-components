@@ -9,13 +9,21 @@ import {
   OnInit,
   Renderer2,
 } from '@angular/core';
-import {DOCUMENT} from '@angular/common';
+import { DOCUMENT, NgClass } from '@angular/common';
+import { IconComponent } from '../../icon/icon/icon.component';
+import { ResizeDragDirective } from '../../../directive/resize-drag/resize-drag.directive';
 
 @Component({
-  selector: 'teta-resize-panel',
-  templateUrl: './resize-panel.component.html',
-  styleUrls: ['./resize-panel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-resize-panel',
+    templateUrl: './resize-panel.component.html',
+    styleUrls: ['./resize-panel.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        ResizeDragDirective,
+        NgClass,
+        IconComponent,
+    ],
 })
 export class ResizePanelComponent implements OnInit, OnDestroy {
   @Input() size = 8;

@@ -1,12 +1,17 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IIdName} from "../../../common/contract/i-id-name";
 import {viewType} from "../../../common/model/view-type.model";
+import { NgClass } from '@angular/common';
+import { IconComponent } from '../../icon/icon/icon.component';
+import { ButtonComponent } from '../../button/button/button.component';
 
 @Component({
-  selector: 'teta-month-picker',
-  templateUrl: './month-picker.component.html',
-  styleUrls: ['./month-picker.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'teta-month-picker',
+    templateUrl: './month-picker.component.html',
+    styleUrls: ['./month-picker.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [ButtonComponent, IconComponent, NgClass]
 })
 export class MonthPickerComponent implements OnInit {
   @Input() selectedMonth: number = 1;

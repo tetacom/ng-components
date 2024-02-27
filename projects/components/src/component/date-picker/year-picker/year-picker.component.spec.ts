@@ -8,8 +8,8 @@ describe('YearPickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ YearPickerComponent ]
-    })
+    imports: [YearPickerComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(YearPickerComponent);

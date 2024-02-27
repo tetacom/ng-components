@@ -15,11 +15,16 @@ import { AxisOrientation } from '../../model/enum/axis-orientation';
 import { IChartEvent } from '../../model/i-chart-event';
 import { PlotBand } from '../../model/plot-band';
 import { ChartService } from '../../service/chart.service';
+import { NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: '[teta-plot-band]',
   templateUrl: './plot-band.component.html',
   styleUrls: ['./plot-band.component.scss'],
+  standalone:true,
+  imports:[
+    NgIf
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlotBandComponent implements AfterViewInit, OnDestroy {
@@ -95,6 +100,7 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
       if (this.axis.orientation === AxisOrientation.y) {
         return { y: plotbandElement.attr('y') };
       }
+      return null
     });
 
     const drag = this.dragElements.on(

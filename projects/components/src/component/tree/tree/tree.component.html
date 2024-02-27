@@ -1,26 +1,29 @@
-<teta-scrollable *ngIf="virtual; else default" class="column column_auto">
-  <cdk-virtual-scroll-viewport tetaScrollable
-                               class="table-body-container"
-                               [itemSize]="height">
-    <teta-tree-item *cdkVirtualFor="let item of displayData;templateCacheSize: 0; trackBy: trackRow;"
-                    [item]="item"
-                    [style.height.px]="height"
-                    [depth]="item['level']"
-                    [padding]="padding"
-                    [childNodeName]="childNodeName"
-                    [childPadding]="childPadding"
-                    [template]="template?.template"></teta-tree-item>
-  </cdk-virtual-scroll-viewport>
-</teta-scrollable>
-<ng-template #default>
-  <teta-scrollable class="column column_auto" direction="column">
-    <teta-tree-item *ngFor="let item of displayData; trackBy: trackRow"
-                    [item]="item"
-                    [style.height.px]="height"
-                    [depth]="item['level']"
-                    [padding]="padding"
-                    [childNodeName]="childNodeName"
-                    [childPadding]="childPadding"
-                    [template]="template?.template"></teta-tree-item>
+@if (virtual) {
+  <teta-scrollable class="column column_auto">
+    <cdk-virtual-scroll-viewport tetaScrollable
+      class="table-body-container"
+      [itemSize]="height">
+      <teta-tree-item *cdkVirtualFor="let item of displayData;templateCacheSize: 0; trackBy: trackRow;"
+        [item]="item"
+        [style.height.px]="height"
+        [depth]="item['level']"
+        [padding]="padding"
+        [childNodeName]="childNodeName"
+        [childPadding]="childPadding"
+      [template]="template?.template"></teta-tree-item>
+    </cdk-virtual-scroll-viewport>
   </teta-scrollable>
-</ng-template>
+} @else {
+  <teta-scrollable class="column column_auto" direction="column">
+    @for (item of displayData; track trackRow($index, item)) {
+      <teta-tree-item
+        [item]="item"
+        [style.height.px]="height"
+        [depth]="item['level']"
+        [padding]="padding"
+        [childNodeName]="childNodeName"
+        [childPadding]="childPadding"
+      [template]="template?.template"></teta-tree-item>
+    }
+  </teta-scrollable>
+}

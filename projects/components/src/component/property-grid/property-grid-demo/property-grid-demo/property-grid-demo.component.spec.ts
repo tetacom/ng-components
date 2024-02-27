@@ -8,8 +8,8 @@ describe('PropertyGridDemoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PropertyGridDemoComponent ]
-    })
+    imports: [PropertyGridDemoComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(PropertyGridDemoComponent);

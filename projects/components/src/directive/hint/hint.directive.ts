@@ -21,10 +21,10 @@ import { ArrayUtil } from '../../common/util/array-util';
 import { DomUtil } from '../../common/util/dom-util';
 import { PositionUtil } from '../../common/util/position-util';
 import { DynamicContentBaseDirective } from '../dynamic-content-base.directive';
-import Timeout = NodeJS.Timeout;
 
 @Directive({
-  selector: '[tetaHint]',
+    selector: '[tetaHint]',
+    standalone: true,
 })
 export class HintDirective
   extends DynamicContentBaseDirective
@@ -44,7 +44,7 @@ export class HintDirective
     return this.tetaHint;
   }
 
-  private _timeout?: Timeout;
+  private _timeout?: any;
   private _componentRect: any;
 
   constructor(

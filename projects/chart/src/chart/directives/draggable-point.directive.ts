@@ -3,7 +3,8 @@ import {DragPointType} from '../model/enum/drag-point-type';
 
 @Directive({
   selector: '[tetaDraggablePoint]',
-  exportAs: 'tetaDraggablePoint'
+  exportAs: 'tetaDraggablePoint',
+  standalone:true
 })
 export class DraggablePointDirective {
   @Input() tetaDraggablePoint: boolean;

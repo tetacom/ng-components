@@ -1,115 +1,80 @@
-import { boolean, date, select, withKnobs } from '@storybook/addon-knobs';
-import { DatePickerModule } from './date-picker.module';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { FormsModule } from '@angular/forms';
-import { IconModule } from '../icon/icon.module';
+
 import { MaskitoModule } from '@maskito/angular';
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import {DateRangeComponent} from "./date-range/date-range.component";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 
 export default {
   title: 'Component/Datepicker',
   decorators: [
-    withKnobs,
+
     applicationConfig({
       providers: [importProvidersFrom(HttpClientModule)],
     }),
-  ],
+  ], argTypes:{
+    minDate:{
+      control:{type:'date'}
+    },
+    maxDate:{
+      control:{type:'date'}
+    },
+    viewType:{
+      options:['rounded', 'brick', 'circle'],
+      control:{type:'select'}
+    },
+    allowNull:{
+      control:{type:'boolean'}
+    }
+  },
+  args:{
+    viewType:'rounded',
+    minDate: new Date(
+      new Date().getFullYear() - 3,
+      new Date().getMonth(),
+      new Date().getDate()
+    ),
+    maxDate: new Date(
+      new Date().getFullYear() + 3,
+      new Date().getMonth(),
+      new Date().getDate()
+    ),
+    allowNull:true,
+  },
   component: DatePickerComponent,
   moduleMetadata: {
-    imports: [DatePickerModule, FormsModule, MaskitoModule],
+    imports: [FormsModule, MaskitoModule],
   },
 } as Meta;
 
-export const datepicker = () => ({
+export const baseDatepicker = (args) => ({
   moduleMetadata: {
-    imports: [DatePickerModule, IconModule, FormsModule, MaskitoModule],
+    imports: [FormsModule, MaskitoModule,IconSpriteDirective],
   },
-  props: {
-    date: new Date(),
-    min: date(
-      'min',
-      new Date(
-        new Date().getFullYear() - 3,
-        new Date().getMonth(),
-        new Date().getDate()
-      )
-    ),
-    max: date(
-      'max',
-      new Date(
-        new Date().getFullYear() + 3,
-        new Date().getMonth(),
-        new Date().getDate()
-      )
-    ),
-    allowNull: boolean('allowNull', false),
-    showTime: false,
-    viewType: select('viewType', ['rounded', 'brick', 'circle'], 'rounded'),
-  },
-  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [date]="date" [minDate]="min" [showTime]="showTime" [maxDate]="max" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
+  props:{...args,date:new Date()},
+  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [date]="date" [minDate]="min" [maxDate]="max" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
 });
-const rangeValue = date => {
-  console.log(date);
-};
-export const dateRange = () => ({
+export const disabledDatepicker = (args) => ({
   moduleMetadata: {
-    imports: [DatePickerModule, IconModule, FormsModule, MaskitoModule],
+    imports: [FormsModule, MaskitoModule,IconSpriteDirective],
   },
-  props: {
-    data: {
-      from: new Date(new Date().setMonth(new Date().getMonth() - 1)),
-      to: new Date(new Date().setMonth(new Date().getMonth() + 2)),
-    },
-    rangeValue,
-    minDate: date(
-      'min',
-      new Date(
-        new Date().getFullYear() - 3,
-        new Date().getMonth(),
-        new Date().getDate()
-      )
-    ),
-    maxDate: date(
-      'max',
-      new Date(
-        new Date().getFullYear() + 3,
-        new Date().getMonth(),
-        new Date().getDate()
-      )
-    ),
-    allowNull: boolean('allowNull', true),
-    showTime: false,
-    viewType: select('viewType', ['rounded', 'brick', 'circle'], 'rounded'),
-  },
-  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-range [ngModel]="data" (ngModelChange)="rangeValue($event)"  [showTime]="showTime"  [viewType]="viewType" [allowNull]="allowNull"></teta-date-range></div>`,
+  props:{...args,date:new Date()},
+  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [disabled]="true" [date]="date" [minDate]="min" [maxDate]="max" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
 });
-export const datepickerWithTime = () => ({
+export const invalidDatepicker = (args) => ({
   moduleMetadata: {
-    imports: [DatePickerModule, IconModule, FormsModule, MaskitoModule],
+    imports: [FormsModule, MaskitoModule,IconSpriteDirective],
   },
-  props: {
-    date: new Date(),
-    min: date(
-      'min',
-      new Date(
-        new Date().getFullYear() - 3,
-        new Date().getMonth(),
-        new Date().getDate()
-      )
-    ),
-    max: date(
-      'max',
-      new Date(
-        new Date().getFullYear() + 3,
-        new Date().getMonth(),
-        new Date().getDate()
-      )
-    ),
-    allowNull: boolean('allowNull', false),
-    showTime: true,
-    viewType: select('viewType', ['rounded', 'brick', 'circle'], 'rounded'),
+  props:{...args,date:new Date()},
+  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [invalid]="true" [date]="date" [minDate]="min"  [maxDate]="max" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
+});
+export const datepickerWithTime = (args) => ({
+  moduleMetadata: {
+    imports: [FormsModule, MaskitoModule,IconSpriteDirective],
   },
-  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker style="width: 250px" [date]="date" [minDate]="minDate" [showTime]="showTime" [maxDate]="maxDate" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
+  props:{...args,date:new Date()},
+  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker style="width: 250px" [date]="date" [minDate]="minDate" [showTime]="true" [maxDate]="maxDate" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
 });

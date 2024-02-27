@@ -18,6 +18,7 @@ import {defaultSeriesTypeMapping} from '../../default/defaultSeriesTypeMapping';
 @Component({
   selector: '[teta-series-host]',
   template: '',
+  standalone:true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeriesHostComponent<T extends BasePoint> implements OnInit, OnDestroy {

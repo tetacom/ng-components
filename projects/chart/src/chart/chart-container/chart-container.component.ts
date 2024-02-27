@@ -6,7 +6,6 @@ import {
   NgZone,
   OnDestroy,
 } from '@angular/core';
-import { tetaZoneFull } from '@tetacom/ng-components';
 import {
   animationFrameScheduler,
   combineLatest,
@@ -28,6 +27,19 @@ import { PlotBand } from '../model/plot-band';
 import { Series } from '../model/series';
 import { ChartService } from '../service/chart.service';
 import { ScaleService } from '../service/scale.service';
+import { TooltipComponent } from './tooltip/tooltip.component';
+import { XAxisComponent } from './x-axis/x-axis.component';
+import { ZoomableDirective } from '../directives/zoomable.directive';
+import { YAxisComponent } from './y-axis/y-axis.component';
+import { AsyncPipe, KeyValuePipe, NgForOf, NgIf } from '@angular/common';
+import { PlotBandComponent } from './plotband/plot-band.component';
+import { GridlinesComponent } from './gridlines/gridlines.component';
+import { SeriesHostComponent } from './series-host/series-host.component';
+import { PlotlineComponent } from './plotline/plotline.component';
+import { AnnotationComponent } from './annotation/annotation.component';
+import { CrosshairComponent } from './crosshair/crosshair.component';
+import { BrushableDirective } from '../directives/brushable.directive';
+import { tetaZoneFull } from '../../observable/zoneObservable';
 
 type Opposite = boolean;
 type DisplayPlotBand = {
@@ -38,7 +50,25 @@ type DisplayPlotBand = {
   selector: 'teta-chart-container',
   templateUrl: './chart-container.component.html',
   styleUrls: ['./chart-container.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TooltipComponent,
+    ZoomableDirective,
+    XAxisComponent,
+    YAxisComponent,
+    AsyncPipe,
+    KeyValuePipe,
+    PlotBandComponent,
+    GridlinesComponent,
+    SeriesHostComponent,
+    PlotlineComponent,
+    AnnotationComponent,
+    CrosshairComponent,
+    BrushableDirective,
+    NgForOf,
+    NgIf
+  ]
 })
 export class ChartContainerComponent implements AfterViewInit, OnDestroy {
   config: Observable<IChartConfig>;

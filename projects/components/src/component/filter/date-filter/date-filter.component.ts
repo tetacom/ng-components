@@ -17,12 +17,23 @@ import { IIdName } from '../../../common/contract/i-id-name';
 import {Observable} from 'rxjs';
 import {TetaLocalisation} from '../../../locale/teta-localisation';
 import {TetaConfigService} from '../../../locale/teta-config.service';
+import { AsyncPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { DatePickerComponent } from '../../date-picker/date-picker/date-picker.component';
+import { InputComponent } from '../../input/input/input.component';
 
 @Component({
-  selector: 'teta-date-filter',
-  templateUrl: './date-filter.component.html',
-  styleUrls: ['./date-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-date-filter',
+    templateUrl: './date-filter.component.html',
+    styleUrls: ['./date-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        InputComponent,
+        DatePickerComponent,
+        FormsModule,
+        AsyncPipe,
+    ],
 })
 export class DateFilterComponent<T> extends FilterComponentBase<T> implements OnInit {
   @Input() column: FilterItem;

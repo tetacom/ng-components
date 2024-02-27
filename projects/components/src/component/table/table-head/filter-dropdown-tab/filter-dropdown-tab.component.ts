@@ -16,12 +16,19 @@ import {TetaConfigService} from '../../../../locale/teta-config.service';
 import {IDictionary} from '../../../../common/contract/i-dictionary';
 import {IIdName} from '../../../../common/contract/i-id-name';
 import {ITreeData} from '../../../../common/contract/i-tree-data';
+import { AsyncPipe } from '@angular/common';
+import { IconComponent } from '../../../icon/icon/icon.component';
+import { ButtonComponent } from '../../../button/button/button.component';
+import { ToolbarComponent } from '../../../toolbar/toolbar/toolbar.component';
+import { FilterHostComponent } from '../../../filter/filter-host/filter-host.component';
 
 @Component({
-  selector: 'teta-filter-dropdown-tab',
-  templateUrl: './filter-dropdown-tab.component.html',
-  styleUrls: ['./filter-dropdown-tab.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'teta-filter-dropdown-tab',
+    templateUrl: './filter-dropdown-tab.component.html',
+    styleUrls: ['./filter-dropdown-tab.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [FilterHostComponent, ToolbarComponent, ButtonComponent, IconComponent, AsyncPipe]
 })
 export class FilterDropdownTabComponent<T> implements OnInit {
   @Input() columns: ITreeData[];

@@ -1,111 +1,90 @@
-import {number, select, withKnobs} from '@storybook/addon-knobs';
-import {ButtonModule} from '../../component/button/button.module';
-import {PopupContentComponent} from '../../component/dynamic-component/popup-content/popup-content.component';
-import {IconModule} from '../../component/icon/icon.module';
-import {Align} from '../../common/enum/align.enum';
-import {VerticalAlign} from '../../common/enum/vertical-align.enum';
-import {HintModule} from './hint.module';
-import {applicationConfig, Meta} from "@storybook/angular";
-import {importProvidersFrom} from "@angular/core";
-import {HttpClientModule} from "@angular/common/http";
+import { PopupContentComponent } from '../../component/dynamic-component/popup-content/popup-content.component';
+
+import { Align } from '../../common/enum/align.enum';
+import { VerticalAlign } from '../../common/enum/vertical-align.enum';
+
+import { applicationConfig, Meta } from '@storybook/angular';
+import { importProvidersFrom } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { IconComponent } from '../../component/icon/icon/icon.component';
+import { IconSpriteDirective } from '../../component/icon/icon-sprite.directive';
+import { ButtonComponent } from '../../component/button/button/button.component';
+import { HintDirective } from './hint.directive';
 
 export default {
   title: 'Directive/Hint',
   decorators: [
-    withKnobs,
     applicationConfig({
       providers: [
         importProvidersFrom(HttpClientModule)
-      ],
-    }),
+      ]
+    })
   ],
+  argTypes: {
+    align: {
+      options: ['Align.left', ' Align.right', 'Align.center', 'Align.auto'],
+      control: { type: 'select' }
+    }, verticalAlign: {
+      options: ['VerticalAlign.bottom', 'VerticalAlign.top', 'VerticalAlign.center', 'VerticalAlign.auto', 'VerticalAlign.innerAuto', 'VerticalAlign.innerBottom', 'VerticalAlign.innerTop'],
+      control: { type: 'select' }
+    },
+    delay: {
+      control: { type: 'number' }
+    },
+    text: {
+      control: { type: 'text' }
+    }
+  },
+  args: {
+    verticalAlign:'VerticalAlign.auto',
+    align:'Align.auto',
+    text:'text',
+    delay:50
+  }
 } as Meta;
-
-export const fromString = () => ({
+const alignMap = new Map<string, Align>()
+  .set('Align.left', Align.left)
+  .set('Align.auto', Align.auto)
+  .set('Align.center', Align.center)
+  .set('Align.right', Align.right);
+const valignMap = new Map<string, VerticalAlign>()
+  .set('VerticalAlign.bottom', VerticalAlign.bottom)
+  .set('VerticalAlign.top', VerticalAlign.top)
+  .set('VerticalAlign.center', VerticalAlign.center)
+  .set('VerticalAlign.auto', VerticalAlign.auto)
+  .set('VerticalAlign.innerAuto', VerticalAlign.innerAuto)
+  .set('VerticalAlign.innerBottom', VerticalAlign.innerBottom)
+  .set('VerticalAlign.innerTop', VerticalAlign.innerTop);
+export const fromString = (args) => ({
   moduleMetadata: {
-    imports: [HintModule, ButtonModule, IconModule],
-    entryComponents: [PopupContentComponent],
+    imports: [IconComponent, IconSpriteDirective, ButtonComponent, HintDirective],
+    entryComponents: [PopupContentComponent]
   },
-  props: {
-    align: select(
-      'align',
-      {
-        left: Align.left,
-        right: Align.right,
-        center: Align.center,
-        auto: Align.auto,
-      },
-      Align.center
-    ),
-    verticalAlign: select(
-      'verticalAlign',
-      {
-        bottom: VerticalAlign.bottom,
-        top: VerticalAlign.top,
-        center: VerticalAlign.center,
-        auto: VerticalAlign.auto,
-      },
-      VerticalAlign.top
-    ),
-    delay: number('delay', 0, {
-      max: 5000,
-      min: 0,
-      range: true,
-      step: 100,
-    }),
-  },
+  props:{...args,valignMap,alignMap},
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="bg-panel-50 padding-10 margin-10">
               <button teta-button
                      [palette]="'primary'"
-                     [tetaHint]="'You can get it now, right?'"
-                     [align]="align"
+                     [tetaHint]="text"
+                     [align]="alignMap.get(align)"
                      viewType="rounded"
-                     [verticalAlign]="verticalAlign"
+                     [verticalAlign]="valignMap.get(verticalAlign)"
                      [delay]="delay"
                      [className]="'one'">
                 <teta-icon [palette]="'background'" [name]="'settings'" class="margin-right-2"></teta-icon>
                 Hover me
               </button>
-            </div>`,
+            </div>`
 });
 
-export const fromTemplate = () => ({
+export const fromTemplate = (args) => ({
   moduleMetadata: {
-    imports: [HintModule, ButtonModule, IconModule],
-    entryComponents: [PopupContentComponent],
+    imports: [IconComponent, IconSpriteDirective, ButtonComponent, HintDirective],
+    entryComponents: [PopupContentComponent]
   },
-  props: {
-    test: 'AAAAA',
-    align: select(
-      'align',
-      {
-        left: Align.left,
-        right: Align.right,
-        center: Align.center,
-        auto: Align.auto,
-      },
-      Align.center
-    ),
-    verticalAlign: select(
-      'verticalAlign',
-      {
-        bottom: VerticalAlign.bottom,
-        top: VerticalAlign.top,
-        center: VerticalAlign.center,
-        auto: VerticalAlign.auto,
-      },
-      VerticalAlign.top
-    ),
-    delay: number('delay', 0, {
-      max: 5000,
-      min: 0,
-      range: true,
-      step: 100,
-    }),
-  },
+  props:{...args,valignMap,alignMap},
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="bg-panel-50 padding-10 margin-10">
               <ng-template #hint>
-                <div>{{test}}</div>
+                <div>{{text}}</div>
               </ng-template>
               <button teta-button
                      [palette]="'primary'"
@@ -117,5 +96,5 @@ export const fromTemplate = () => ({
                 <teta-icon [palette]="'background'" [name]="'settings'" class="margin-right-2"></teta-icon>
                 Hover me
               </button>
-            </div>`,
+            </div>`
 });

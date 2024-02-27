@@ -17,12 +17,10 @@
     padding: 0 8px;
     align-items: center;
     justify-content: center;
-
+    border-radius: inherit;
     &:hover {
       cursor: pointer;
     }
-
-    @include getView('field');
 
     &:active:not(&_active) {
       background: var(--color-text-10);

@@ -1,12 +1,15 @@
 import {ChangeDetectionStrategy, Component, HostBinding, Input, OnInit} from '@angular/core';
 import {AvatarColorEnum} from '../model/avatar-color.enum';
 import {viewType} from "../../../common/model/view-type.model";
+import { IconComponent } from '../../icon/icon/icon.component';
 
 @Component({
-  selector: 'teta-avatar',
-  templateUrl: './avatar.component.html',
-  styleUrls: ['./avatar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'teta-avatar',
+    templateUrl: './avatar.component.html',
+    styleUrls: ['./avatar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [IconComponent]
 })
 export class AvatarComponent implements OnInit {
   @Input() photo?: string | ArrayBuffer;

@@ -16,6 +16,8 @@ import { ZoomService } from '../service/zoom.service';
 
 @Component({
   template: '',
+  standalone:true,
+
 })
 export class SeriesBaseComponent<T extends BasePoint> implements OnInit {
   @Input()

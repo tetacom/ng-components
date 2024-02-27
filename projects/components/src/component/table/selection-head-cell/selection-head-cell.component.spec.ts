@@ -8,8 +8,8 @@ describe('SelectionHeadCellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SelectionHeadCellComponent]
-    })
+    imports: [SelectionHeadCellComponent]
+})
       .compileComponents();
   });
 

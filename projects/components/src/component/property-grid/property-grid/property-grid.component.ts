@@ -9,7 +9,7 @@ import {
   Output,
   QueryList,
 } from '@angular/core';
-import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
+import { ControlContainer, FormGroup, NgForm, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IDictionary } from '../../../common/contract/i-dictionary';
 import { IIdName } from '../../../common/contract/i-id-name';
@@ -17,12 +17,21 @@ import { boolOrFuncCallback } from '../../../util/bool-or-func';
 import { FormsUtil } from '../../../util/forms-util';
 import { TableColumn } from '../../table/contract/table-column';
 import { PropertyGridItemDescriptionDirective } from './property-grid-item-description.directive';
+import { PropertyGridGroupComponent } from './property-grid-group/property-grid-group.component';
+import { PropertyGridItemComponent } from './property-grid-item/property-grid-item.component';
 
 @Component({
-  selector: 'teta-property-grid',
-  templateUrl: './property-grid.component.html',
-  styleUrls: ['./property-grid.component.scss'],
-  viewProviders: [FormsUtil.formProvider],
+    selector: 'teta-property-grid',
+    templateUrl: './property-grid.component.html',
+    styleUrls: ['./property-grid.component.scss'],
+    viewProviders: [FormsUtil.formProvider],
+    standalone: true,
+    imports: [
+        PropertyGridItemComponent,
+        FormsModule,
+        ReactiveFormsModule,
+        PropertyGridGroupComponent,
+    ],
 })
 export class PropertyGridComponent<T> implements OnDestroy {
   @HostBinding('class.form-container') formClass = true;

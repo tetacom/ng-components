@@ -15,14 +15,14 @@
   @include getView('base');
 
   @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
-    &-#{$paletteName} {
+    &#{'-'+$paletteName} {
       background: getColorVar($paletteName, '50');
     }
-    &-#{$paletteName} &-item:hover {
+    &#{'-'+$paletteName} &-item:hover {
       background: getColorVar($paletteName, '40');
       cursor: pointer;
     }
-    &-#{$paletteName} &-item_active {
+    &#{'-'+$paletteName} &-item_active {
       background: getColorVar($paletteName, '30');
     }
   }

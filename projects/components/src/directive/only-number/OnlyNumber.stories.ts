@@ -1,17 +1,16 @@
-import {withKnobs} from '@storybook/addon-knobs';
-import {OnlyNumberModule} from './only-number.module';
+
 import {FormsModule} from '@angular/forms';
 import {action} from '@storybook/addon-actions';
 import {Meta} from "@storybook/angular";
+import {OnlyNumberDirective} from "./only-number.directive";
 
 export default {
   title: 'Directive/OnlyNumber',
-  decorators: [withKnobs],
 } as Meta;
 
 export const onlyNumber = () => ({
   moduleMetadata: {
-    imports: [OnlyNumberModule, FormsModule],
+    imports: [FormsModule,OnlyNumberDirective],
   },
   props: {
     data: 123,

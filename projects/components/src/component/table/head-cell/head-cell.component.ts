@@ -19,12 +19,38 @@ import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
 import {Align} from '../../../common/enum/align.enum';
 import {combineLatest, Observable} from 'rxjs';
 import {HeadDropdownTab} from '../contract/head-dropdown-tab';
+import { VisibilityDropdownTabComponent } from '../table-head/visibility-dropdown-tab/visibility-dropdown-tab.component';
+import { FilterDropdownTabComponent } from '../table-head/filter-dropdown-tab/filter-dropdown-tab.component';
+import { MainDropdownTabComponent } from '../table-head/main-dropdown-tab/main-dropdown-tab.component';
+import { ResizeDragDirective } from '../../../directive/resize-drag/resize-drag.directive';
+import { DropdownContentDirective } from '../../dropdown/dropdown-content.directive';
+import { HeadCellDropdownComponent } from '../head-cell-dropdown/head-cell-dropdown.component';
+import { IconComponent } from '../../icon/icon/icon.component';
+import { HeadCellHostComponent } from '../head-cell-host/head-cell-host.component';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { DropdownHeadDirective } from '../../dropdown/dropdown-head.directive';
+import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
 
 @Component({
-  selector: 'teta-head-cell',
-  templateUrl: './head-cell.component.html',
-  styleUrls: ['./head-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-head-cell',
+    templateUrl: './head-cell.component.html',
+    styleUrls: ['./head-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        DropdownComponent,
+        DropdownHeadDirective,
+        NgClass,
+        HeadCellHostComponent,
+        IconComponent,
+        HeadCellDropdownComponent,
+        DropdownContentDirective,
+        ResizeDragDirective,
+        MainDropdownTabComponent,
+        FilterDropdownTabComponent,
+        VisibilityDropdownTabComponent,
+        AsyncPipe,
+    ],
 })
 export class HeadCellComponent<T> implements OnInit, OnDestroy {
   @Input() column: TableColumn;

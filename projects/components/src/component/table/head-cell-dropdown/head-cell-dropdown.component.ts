@@ -13,12 +13,27 @@ import { FilterState } from '../../filter/contarct/filter-state';
 import { HeadDropdownTab } from '../contract/head-dropdown-tab';
 import { TableColumn } from '../contract/table-column';
 import { TableService } from '../service/table.service';
+import { NgTemplateOutlet } from '@angular/common';
+import { TabContentDirective } from '../../tabs/tab-content.directive';
+import { IconComponent } from '../../icon/icon/icon.component';
+import { TabTitleDirective } from '../../tabs/tab-title.directive';
+import { TabComponent } from '../../tabs/tab/tab.component';
+import { TabsComponent } from '../../tabs/tabs/tabs.component';
 
 @Component({
-  selector: 'teta-head-cell-dropdown',
-  templateUrl: './head-cell-dropdown.component.html',
-  styleUrls: ['./head-cell-dropdown.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-head-cell-dropdown',
+    templateUrl: './head-cell-dropdown.component.html',
+    styleUrls: ['./head-cell-dropdown.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        TabsComponent,
+        TabComponent,
+        TabTitleDirective,
+        IconComponent,
+        TabContentDirective,
+        NgTemplateOutlet,
+    ],
 })
 export class HeadCellDropdownComponent<T> {
   @Input() columns: ITreeData[];

@@ -2,7 +2,8 @@ import {Directive, Input, OnInit} from '@angular/core';
 import {IconService} from './icon.service';
 
 @Directive({
-  selector: '[tetaIconSprite]'
+    selector: '[tetaIconSprite]',
+    standalone: true
 })
 export class IconSpriteDirective implements OnInit {
   @Input() tetaIconSprite: string | string[];

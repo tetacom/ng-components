@@ -1,80 +1,98 @@
 // eslint-disable-next-line id-blacklist
-import { boolean, select, withKnobs } from '@storybook/addon-knobs';
-import { ButtonModule } from '../button/button.module';
-import { IconModule } from '../icon/icon.module';
-import { DropdownModule } from './dropdown.module';
 import { Align } from '../../common/enum/align.enum';
 import { VerticalAlign } from '../../common/enum/vertical-align.enum';
-import { ScrollableModule } from '../../directive/scrollable/scrollable.module';
+
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import {DropdownComponent} from "./dropdown/dropdown.component";
+import {DropdownHeadDirective} from "./dropdown-head.directive";
+import {DropdownContentDirective} from "./dropdown-content.directive";
+import {ScrollableComponent} from "../../directive/scrollable/scrollable/scrollable.component";
+import {DropdownDirective} from "./dropdown.directive";
+import {ButtonComponent} from "../button/button/button.component";
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
+import {IconComponent} from "../icon/icon/icon.component";
 
 export default {
   title: 'Component/Dropdown',
   decorators: [
-    withKnobs,
+
     applicationConfig({
       providers: [importProvidersFrom(HttpClientModule)],
     }),
   ],
   moduleMetadata: {
-    imports: [DropdownModule],
+    imports: [],
+  },
+  argTypes:{
+    align:{
+      options:['Align.left',' Align.right', 'Align.center', 'Align.auto'],
+      control:{type:'select'}
+    },
+    verticalAlign:{
+      options:['VerticalAlign.bottom','VerticalAlign.top','VerticalAlign.center','VerticalAlign.auto','VerticalAlign.innerAuto','VerticalAlign.innerBottom','VerticalAlign.innerTop'],
+      control:{type:'select'}
+    },
+    viewType:{
+      options:['rounded', 'brick', 'circle'],
+      control:{type:'select'}
+    },
+    allowNull:{
+      control:{type:'boolean'}
+    },
+    autoClose:{
+      control:{type:'boolean'}
+    },
+    transform:{
+      control:{type:'boolean'}
+    }
+  },
+  args:{
+    viewType:'rounded',
+    autoClose:true,
+    transform:true,
+    verticalAlign:'VerticalAlign.top',
+    align:'Align.left',
+    allowNull:true,
   },
 } as Meta;
-
-const alignMap = new Map<VerticalAlign, string>()
-  .set(VerticalAlign.bottom, 'bottom')
-  .set(VerticalAlign.top, 'top')
-  .set(VerticalAlign.center, 'center')
-  .set(VerticalAlign.auto, 'auto')
-  .set(VerticalAlign.innerAuto, 'innerAuto')
-  .set(VerticalAlign.innerBottom, 'innerBottom')
-  .set(VerticalAlign.innerTop, 'innerTop');
-export const dropdownDirective = args => ({
+const alignMap = new Map<string, Align>()
+  .set('Align.left', Align.left)
+  .set('Align.auto', Align.auto)
+  .set('Align.center', Align.center)
+  .set('Align.right',Align.right)
+const valignMap = new Map<string, VerticalAlign>()
+  .set('VerticalAlign.bottom', VerticalAlign.bottom)
+  .set('VerticalAlign.top', VerticalAlign.top)
+  .set('VerticalAlign.center', VerticalAlign.center)
+  .set('VerticalAlign.auto',VerticalAlign.auto)
+  .set('VerticalAlign.innerAuto', VerticalAlign.innerAuto)
+  .set('VerticalAlign.innerBottom', VerticalAlign.innerBottom)
+  .set('VerticalAlign.innerTop', VerticalAlign.innerTop);
+export const baseDropdown = args => ({
   moduleMetadata: {
-    imports: [DropdownModule, ButtonModule, IconModule, ScrollableModule],
+    imports: [DropdownComponent,DropdownHeadDirective,DropdownContentDirective,ScrollableComponent,DropdownDirective,ButtonComponent,IconSpriteDirective,IconComponent],
   },
-  props: {
-    alignMap: alignMap,
-    align: select(
-      'align',
-      [Align.left, Align.right, Align.center, Align.auto],
-      Align.right
-    ),
-    verticalAlign: [
-      VerticalAlign.bottom,
-      VerticalAlign.top,
-      VerticalAlign.center,
-      VerticalAlign.auto,
-      VerticalAlign.innerAuto,
-      VerticalAlign.innerBottom,
-      VerticalAlign.innerTop,
-    ],
-    transform: boolean('transform', false),
-    autoClose: boolean('autoClose', true),
-    appendToBody: boolean('appendToBody', true),
-  },
+  props: { ...args,valignMap, alignMap},
   template: `<div class="padding-10 bg-panel-50 row"
                   style="width: 800px;"
                   [style.transform]="transform ? 'translate(100px, 100px)' : ''"
                   [style.margin]="transform ? '' : '100px 100px'"
                   [tetaIconSprite]="'assets/icons.svg'">
-                  <div style="position: fixed; top: 0; left: 0;">Fixed</div>
-                  <div style="position: fixed; top: 0; right: 0;transform: translateX(0px)">Fixed trans</div>
+
     <teta-scrollable tetaDropdown
           class="margin-right-4"
-          *ngFor="let valign of verticalAlign"
-          viewType="rounded"
+          [viewType]="viewType"
           [open]="true"
-          [align]="align"
-          [verticalAlign]="valign"
+          [align]="alignMap.get(align)"
+          [verticalAlign]="alignMap.get(verticalAlign)"
           [appendToBody]="appendToBody"
           [autoClose]="autoClose">
-          <button  tetaDropdownHead teta-button [palette]="'primary'" style="width: 80px">
-        {{alignMap.get(valign)}}
+          <button  tetaDropdownHead teta-button [viewType]="viewType" [palette]="'primary'">
+        {{verticalAlign}}
       </button>
-      <div tetaDropdownContent class="list">
+    <div tetaDropdownContent class="list">
         <ng-container *ngFor="let i of [1,2,3]">
           <div class="list-item">
             <teta-icon [name]="'user'" [palette]="'text'" class="margin-right-2"></teta-icon>Jerome Bell
@@ -96,58 +114,48 @@ export const dropdownDirective = args => ({
     </teta-scrollable>
   </div>`,
 });
-export const dropdownComponent = args => ({
+export const disabledDropdown = args => ({
   moduleMetadata: {
-    imports: [DropdownModule, ButtonModule, IconModule],
+    imports: [DropdownComponent,DropdownHeadDirective,DropdownContentDirective,ScrollableComponent,DropdownDirective,ButtonComponent,IconSpriteDirective,IconComponent],
   },
-  props: {
-    align: select(
-      'align',
-      [Align.left, Align.right, Align.center, Align.auto],
-      Align.right
-    ),
-    verticalAlign: [
-      VerticalAlign.bottom,
-      VerticalAlign.top,
-      VerticalAlign.center,
-      VerticalAlign.auto,
-      VerticalAlign.innerAuto,
-      VerticalAlign.innerBottom,
-      VerticalAlign.innerTop,
-    ],
-    transform: boolean('transform', false),
-    autoClose: boolean('autoClose', true),
-    appendToBody: boolean('appendToBody', true),
-  },
-  template: `<div class="padding-10 bg-panel-50"
+  props: { ...args,valignMap, alignMap},
+  template: `<div class="padding-10 bg-panel-50 row"
+                  style="width: 800px;"
                   [style.transform]="transform ? 'translate(100px, 100px)' : ''"
+                  [style.margin]="transform ? '' : '100px 100px'"
                   [tetaIconSprite]="'assets/icons.svg'">
-    <teta-dropdown  *ngFor="let valign of verticalAlign"
-                    [align]="align"
-                    [verticalAlign]="valign"
-                     viewType="rounded"
-                    [appendToBody]="appendToBody"
-                    [autoClose]="autoClose">
-      <button teta-button tetaDropdownHead  [palette]="'primary'">
-        Click to open
+
+    <teta-scrollable tetaDropdown
+          class="margin-right-4"
+          [disabled]="true"
+          [viewType]="viewType"
+          [open]="true"
+          [align]="alignMap.get(align)"
+          [verticalAlign]="alignMap.get(verticalAlign)"
+          [appendToBody]="appendToBody"
+          [autoClose]="autoClose">
+          <button  tetaDropdownHead teta-button [viewType]="viewType" [palette]="'text'">
+        {{verticalAlign}}
       </button>
-      <div tetaDropdownContent class="list overflow-auto" style="width: 200px">
-        <div class="list-item">
-          <teta-icon [name]="'user'" [palette]="'text'" class="margin-right-2"></teta-icon>Jerome Bell
-        </div>
-        <div class="list-item">
-          <teta-icon [name]="'calendar'" [palette]="'text'" class="margin-right-2"></teta-icon>Courtney Henry
-        </div>
-        <div class="list-item">
-          <teta-icon [name]="'eye'" [palette]="'text'" class="margin-right-2"></teta-icon>Wade Warren
-        </div>
-        <div class="list-item">
-          <teta-icon [name]="'folder'" [palette]="'text'" class="margin-right-2"></teta-icon>Ralph Edwards
-        </div>
-        <div class="list-item">
-          <teta-icon [name]="'map'" [palette]="'text'" class="margin-right-2"></teta-icon>Marvin McKinney
-        </div>
+    <div tetaDropdownContent class="list">
+        <ng-container *ngFor="let i of [1,2,3]">
+          <div class="list-item">
+            <teta-icon [name]="'user'" [palette]="'text'" class="margin-right-2"></teta-icon>Jerome Bell
+          </div>
+          <div class="list-item">
+            <teta-icon [name]="'calendar'" [palette]="'text'" class="margin-right-2"></teta-icon>Courtney Henry
+          </div>
+          <div class="list-item">
+            <teta-icon [name]="'eye'" [palette]="'text'" class="margin-right-2"></teta-icon>Wade Warren
+          </div>
+          <div class="list-item">
+            <teta-icon [name]="'folder'" [palette]="'text'" class="margin-right-2"></teta-icon>Ralph Edwards
+          </div>
+          <div class="list-item">
+            <teta-icon [name]="'map'" [palette]="'text'" class="margin-right-2"></teta-icon>Marvin McKinney
+          </div>
+        </ng-container>
       </div>
-    </teta-dropdown>
+    </teta-scrollable>
   </div>`,
 });

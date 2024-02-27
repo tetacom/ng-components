@@ -1,7 +1,8 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[tetaDragPlaceholder]'
+    selector: '[tetaDragPlaceholder]',
+    standalone: true
 })
 export class DragPlaceholderDirective {
 

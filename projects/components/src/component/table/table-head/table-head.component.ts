@@ -15,12 +15,16 @@ import { FilterState } from '../../filter/contarct/filter-state';
 import { TableColumn } from '../contract/table-column';
 import { SelectType } from '../enum/select-type.enum';
 import { TableService } from '../service/table.service';
+import { TableHeadGroupComponent } from '../table-head-group/table-head-group.component';
+import { SelectionHeadCellComponent } from '../selection-head-cell/selection-head-cell.component';
 
 @Component({
-  selector: 'teta-table-head',
-  templateUrl: './table-head.component.html',
-  styleUrls: ['./table-head.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-table-head',
+    templateUrl: './table-head.component.html',
+    styleUrls: ['./table-head.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [SelectionHeadCellComponent, TableHeadGroupComponent],
 })
 export class TableHeadComponent<T> implements OnInit, OnDestroy {
   @Input() selectType: SelectType;

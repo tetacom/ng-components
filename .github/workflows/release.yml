@@ -13,7 +13,7 @@ jobs:
           cache: npm
           node-version: 18
       - name: Install & Build
-        run: yarn && yarn global add @angular/cli && ng build components
+        run: npx nx build components
       - name: Publish
         run: cd projects/components && rm -f *.* && rm -r src && cp -r ./dist/* . && rm -rf dist && npx semantic-release -e semantic-release-monorepo
         env:

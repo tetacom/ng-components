@@ -10,12 +10,23 @@ import {
 
 import { ExpandPanelContentDirective } from '../expand-panel-content.directive';
 import { ExpandPanelHeadDirective } from '../expand-panel-head.directive';
+import { NgTemplateOutlet } from '@angular/common';
+import { IconComponent } from '../../icon/icon/icon.component';
+import { ButtonComponent } from '../../button/button/button.component';
+import { ToolbarComponent } from '../../toolbar/toolbar/toolbar.component';
 
 @Component({
-  selector: 'teta-expand-panel',
-  templateUrl: './expand-panel.component.html',
-  styleUrls: ['./expand-panel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-expand-panel',
+    templateUrl: './expand-panel.component.html',
+    styleUrls: ['./expand-panel.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        ToolbarComponent,
+        ButtonComponent,
+        IconComponent,
+        NgTemplateOutlet,
+    ],
 })
 export class ExpandPanelComponent implements OnInit {
   @ContentChild(ExpandPanelContentDirective, { static: false })

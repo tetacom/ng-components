@@ -4,19 +4,21 @@
 <teta-scrollable class="column column_auto" [contentClass]="['list', 'padding-v-2']">
   <div class="list-item">
     <teta-checkbox [binary]="true"
-                   [allowNull]="true"
-                   [ngModel]="all()"
-                   (ngModelChange)="setAll($event)">
+      [allowNull]="true"
+      [ngModel]="all()"
+      (ngModelChange)="setAll($event)">
       {{(locale | async)?.all}}
     </teta-checkbox>
   </div>
   <div class="list-divider"></div>
-  <div class="list-item" *ngFor="let option of visibleOptions">
-    <teta-checkbox [ngModel]="filter.value"
-                   (ngModelChange)="setFilter($event)"
-                   [value]="option.id"
-                   [binary]="false">
-      {{option.name}}
-    </teta-checkbox>
-  </div>
+  @for (option of visibleOptions; track option) {
+    <div class="list-item">
+      <teta-checkbox [ngModel]="filter.value"
+        (ngModelChange)="setFilter($event)"
+        [value]="option.id"
+        [binary]="false">
+        {{option.name}}
+      </teta-checkbox>
+    </div>
+  }
 </teta-scrollable>

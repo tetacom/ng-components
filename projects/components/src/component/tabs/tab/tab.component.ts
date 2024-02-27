@@ -13,10 +13,11 @@ import { TabTitleDirective } from '../tab-title.directive';
 let nextId = 0;
 
 @Component({
-  selector: 'teta-tab',
-  template: '',
-  styleUrls: ['./tab.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-tab',
+    template: '',
+    styleUrls: ['./tab.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class TabComponent implements AfterContentChecked {
   /**

@@ -6,6 +6,6 @@
     "./style"
   ],
   "lib": {
-    "entryFile": "src/public-api.ts"
+    "entryFile": "src/index.ts"
   }
 }

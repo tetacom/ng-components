@@ -1,0 +1,26 @@
+{
+  "name": "three",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "projects/three/src",
+  "prefix": "ng-components",
+  "tags": [],
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/{projectRoot}/dist"],
+      "options": {
+        "project": "projects/three/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "projects/three/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "projects/three/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    }
+  }
+}

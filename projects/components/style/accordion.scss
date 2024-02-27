@@ -43,7 +43,9 @@
     justify-content: space-between;
     @include getFont($fonts, 'title-3');
 
-
+    &_disabled{
+      color: var(--color-text-30);
+    }
     &:hover:not(&_disabled) {
       cursor: pointer;
       background: var(--color-text-5);

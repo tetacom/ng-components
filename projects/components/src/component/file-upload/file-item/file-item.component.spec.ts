@@ -8,8 +8,8 @@ describe('FileItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FileItemComponent ]
-    })
+    imports: [FileItemComponent]
+})
     .compileComponents();
   });
 

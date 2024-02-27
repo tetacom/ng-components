@@ -9,20 +9,32 @@ import {
   Input,
   ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
+import { NumberPipe } from '../../../pipe/number-pipe/number.pipe';
+import { NgClass } from '@angular/common';
+import { OnlyNumberDirective } from '../../../directive/only-number/only-number.directive';
+import { IconComponent } from '../../icon/icon/icon.component';
 
 @Component({
-  selector: 'teta-text-field',
-  templateUrl: './text-field.component.html',
-  styleUrls: ['./text-field.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => TextFieldComponent),
-      multi: true,
-    },
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-text-field',
+    templateUrl: './text-field.component.html',
+    styleUrls: ['./text-field.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => TextFieldComponent),
+            multi: true,
+        },
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        IconComponent,
+        FormsModule,
+        OnlyNumberDirective,
+        NgClass,
+        NumberPipe,
+    ],
 })
 export class TextFieldComponent implements ControlValueAccessor {
   @Input() placeholder = '';

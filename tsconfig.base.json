@@ -1,0 +1,25 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@tetacom/ng-components": ["projects/components/src/index.ts"],
+      "@tetacom/ng-threejs-chart": ["projects/three/src/index.ts"],
+      "@tetacom/svg-charts": ["projects/chart/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

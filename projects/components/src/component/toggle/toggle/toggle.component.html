@@ -1,6 +1,8 @@
-<span class="font-body-3 row_auto" *ngIf="!noLabel">
-  <ng-content></ng-content>
-</span>
+@if (!noLabel) {
+  <span class="font-body-3 row_auto">
+    <ng-content></ng-content>
+  </span>
+}
 <div class="toggle-button" [class.toggle-button-on]="model" [ngClass]="paletteClass">
   <div class="toggle-button-circle"></div>
 </div>

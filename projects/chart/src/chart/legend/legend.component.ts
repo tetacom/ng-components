@@ -13,6 +13,7 @@ import {ChartService} from "../service/chart.service";
   selector: 'teta-legend',
   templateUrl: './legend.component.html',
   styleUrls: ['./legend.component.scss'],
+  standalone:true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LegendComponent {

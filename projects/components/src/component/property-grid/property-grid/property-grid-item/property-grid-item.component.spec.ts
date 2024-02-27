@@ -8,8 +8,8 @@ describe('PropertyGridItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PropertyGridItemComponent],
-    }).compileComponents();
+    imports: [PropertyGridItemComponent],
+}).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,10 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TextFieldComponent } from '../../text-field/text-field.component';
+import { InputComponent } from '../../input/input.component';
 
 @Component({
-  selector: 'teta-sample-input',
-  templateUrl: './sample-input.component.html',
-  styleUrls: ['./sample-input.component.scss'],
+    selector: 'teta-sample-input',
+    templateUrl: './sample-input.component.html',
+    styleUrls: ['./sample-input.component.scss'],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        InputComponent,
+        TextFieldComponent,
+    ],
 })
 export class SampleInputComponent implements OnInit {
   form: UntypedFormGroup;

@@ -1,18 +1,18 @@
-import {select, withKnobs} from '@storybook/addon-knobs';
-import {ContextMenuModule} from './context-menu.module';
-import {ButtonModule} from '../../component/button/button.module';
 import {PopupContentComponent} from '../../component/dynamic-component/popup-content/popup-content.component';
-import {IconModule} from '../../component/icon/icon.module';
+
 import {Align} from '../../common/enum/align.enum';
 import {VerticalAlign} from '../../common/enum/vertical-align.enum';
 import {applicationConfig, Meta} from "@storybook/angular";
 import {importProvidersFrom} from "@angular/core";
 import {HttpClientModule} from "@angular/common/http";
+import {ButtonComponent} from "../../component/button/button/button.component";
+import {IconComponent} from "../../component/icon/icon/icon.component";
+import {IconSpriteDirective} from "../../component/icon/icon-sprite.directive";
+import {ContextMenuDirective} from "./context-menu.directive";
 
 export default {
   title: 'Directive/ContextMenu',
   decorators: [
-    withKnobs,
     applicationConfig({
       providers: [
         importProvidersFrom(HttpClientModule)
@@ -23,31 +23,31 @@ export default {
 
 export const basicContextMenu = () => ({
   moduleMetadata: {
-    imports: [ContextMenuModule, ButtonModule, IconModule],
+    imports: [ButtonComponent,IconComponent,IconSpriteDirective,ContextMenuDirective],
     entryComponents: [PopupContentComponent],
   },
-  props: {
-    align: select(
-      'align',
-      {
-        left: Align.left,
-        right: Align.right,
-        center: Align.center,
-        auto: Align.auto,
-      },
-      Align.left
-    ),
-    verticalAlign: select(
-      'verticalAlign',
-      {
-        bottom: VerticalAlign.bottom,
-        top: VerticalAlign.top,
-        center: VerticalAlign.center,
-        auto: VerticalAlign.auto,
-      },
-      VerticalAlign.bottom
-    ),
-  },
+  // props: {
+  //   align: select(
+  //     'align',
+  //     {
+  //       left: Align.left,
+  //       right: Align.right,
+  //       center: Align.center,
+  //       auto: Align.auto,
+  //     },
+  //     Align.left
+  //   ),
+  //   verticalAlign: select(
+  //     'verticalAlign',
+  //     {
+  //       bottom: VerticalAlign.bottom,
+  //       top: VerticalAlign.top,
+  //       center: VerticalAlign.center,
+  //       auto: VerticalAlign.auto,
+  //     },
+  //     VerticalAlign.bottom
+  //   ),
+  // },
   template: `<button teta-button
                      [tetaIconSprite]="'assets/icons.svg'"
                      [palette]="'primary'"

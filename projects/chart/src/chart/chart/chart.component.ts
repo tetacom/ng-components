@@ -23,13 +23,23 @@ import { BrushService } from '../service/brush.service';
 import { ChartService } from '../service/chart.service';
 import { ScaleService } from '../service/scale.service';
 import { ZoomService } from '../service/zoom.service';
+import { ChartContainerComponent } from '../chart-container/chart-container.component';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { LegendComponent } from '../legend/legend.component';
 
 @Component({
   selector: 'teta-svg-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
+  standalone: true,
   providers: [ChartService, ZoomService, ScaleService, BrushService],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    ChartContainerComponent,
+    AsyncPipe,
+    LegendComponent,
+    NgIf
+  ]
 })
 export class ChartComponent implements OnInit, OnDestroy {
   hasSeriesData: Observable<boolean>;

@@ -22,11 +22,12 @@ export const SLIDER_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'teta-progress-bar',
-  templateUrl: './progress-bar.component.html',
-  styleUrls: ['./progress-bar.component.scss'],
-  providers: [SLIDER_CONTROL_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-progress-bar',
+    templateUrl: './progress-bar.component.html',
+    styleUrls: ['./progress-bar.component.scss'],
+    providers: [SLIDER_CONTROL_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class ProgressBarComponent implements OnInit, ControlValueAccessor {
   @Input() min = 0;

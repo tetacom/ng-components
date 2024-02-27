@@ -14,19 +14,20 @@ import { ModalCloseReason } from '../model/modal-close-reason.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
-  selector: 'teta-modal-container',
-  templateUrl: './modal-container.component.html',
-  styleUrls: ['./modal-container.component.scss'],
-  animations: [
-    trigger('dialog', [
-      transition('void => *', [
-        style({ top: '-100%' }),
-        animate('150ms ease-in', style({ top: '0' })),
-      ]),
-      transition('* => void', [animate('150ms ease-in', style({ top: '-100%' }))]),
-    ]),
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-modal-container',
+    templateUrl: './modal-container.component.html',
+    styleUrls: ['./modal-container.component.scss'],
+    animations: [
+        trigger('dialog', [
+            transition('void => *', [
+                style({ top: '-100%' }),
+                animate('150ms ease-in', style({ top: '0' })),
+            ]),
+            transition('* => void', [animate('150ms ease-in', style({ top: '-100%' }))]),
+        ]),
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class ModalContainerComponent {
   @Input() config: IModalConfig;

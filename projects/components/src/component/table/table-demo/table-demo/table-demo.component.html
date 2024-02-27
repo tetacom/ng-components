@@ -1,29 +1,29 @@
 <teta-toolbar>
   <button teta-button
-          (click)='delete(selectedRows)'
-          [square]='true'
-          [palette]='"text"'
-          [view]='"ghost"'>
+    (click)='delete(selectedRows)'
+    [square]='true'
+    [palette]='"text"'
+    [view]='"ghost"'>
     <teta-icon [name]='"delete"' [palette]="'text'"></teta-icon>
   </button>
 </teta-toolbar>
 <teta-table [data]="data"
-            [cookieName]="'table-stories'"
-            [columns]="columns"
-            [virtual]="virtual"
-            [dict]="dict"
-            [contextMenu]="contextMenu"
-            [filterOptions]="dict"
-            [editType]="editType"
-            [editEvent]="editEvent"
-            [selectType]="selectType"
-            [(selectedRows)]="selectedRows"
-            (tableService)="tableService = $event"
-            (cellEditEnd)="log('cellEditEnd', $event)"
-            (cellEditStart)="cellEditStart($event)"
-            (rowEditEnd)="log('rowEditEnd', $event)"
-            (rowEditStart)="log('rowEditStart', $event)"
-            (activeRowChange)="activeRow = $event"></teta-table>
+  [cookieName]="'table-stories'"
+  [columns]="columns"
+  [virtual]="virtual"
+  [dict]="dict"
+  [contextMenu]="contextMenu"
+  [filterOptions]="dict"
+  [editType]="editType"
+  [editEvent]="editEvent"
+  [selectType]="selectType"
+  [(selectedRows)]="selectedRows"
+  (tableService)="tableService = $event"
+  (cellEditEnd)="log('cellEditEnd', $event)"
+  (cellEditStart)="cellEditStart($event)"
+  (rowEditEnd)="log('rowEditEnd', $event)"
+  (rowEditStart)="log('rowEditStart', $event)"
+(activeRowChange)="activeRow = $event"></teta-table>
 <ng-template let-data #dropdownTpl>
   <div class="padding-2">
     Some additional stuff here
@@ -32,27 +32,29 @@
 <ng-template let-data #contextMenu>
   <div class="list shadow-2">
     <div class="list-item list-item_interactive"
-         (click)="addRow()">Добавить строку
+      (click)="addRow()">Добавить строку
     </div>
     <div class="list-divider"></div>
     <div class="list-item list-item_interactive"
-         (click)="copy()">Copy
+      (click)="copy()">Copy
     </div>
+    @if (selectedRows?.length > 0) {
+      <div class="list-item list-item_interactive"
+        (click)="copyAll()">Copy selected
+      </div>
+    }
     <div class="list-item list-item_interactive"
-         *ngIf="selectedRows?.length > 0"
-         (click)="copyAll()">Copy selected
-    </div>
-    <div class="list-item list-item_interactive"
-         (click)="paste()">Paste
+      (click)="paste()">Paste
     </div>
     <div class="list-divider"></div>
     <div class="list-item list-item_interactive"
-         (click)="delete(selectedRows)">Удалить
+      (click)="delete(selectedRows)">Удалить
     </div>
-    <div class="list-item list-item_interactive"
-         *ngIf="selectedRows?.length > 0"
-         (click)="deleteAll()">Удалить выделенные
-    </div>
+    @if (selectedRows?.length > 0) {
+      <div class="list-item list-item_interactive"
+        (click)="deleteAll()">Удалить выделенные
+      </div>
+    }
     {{activeRow.name | json}}
   </div>
 </ng-template>

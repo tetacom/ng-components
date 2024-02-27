@@ -8,8 +8,8 @@ describe('DateTimeCellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DateTimeCellComponent ]
-    })
+    imports: [DateTimeCellComponent]
+})
     .compileComponents();
   });
 

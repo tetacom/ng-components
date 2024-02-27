@@ -11,10 +11,11 @@ import {TableColumn} from '../contract/table-column';
 import {DefaultHeadCellComponent} from '../default/default-head-cell/default-head-cell.component';
 
 @Component({
-  selector: 'teta-head-cell-host',
-  template: '',
-  styleUrls: ['./head-cell-host.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-head-cell-host',
+    template: '',
+    styleUrls: ['./head-cell-host.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class HeadCellHostComponent<T> implements OnInit {
   private _column: TableColumn;

@@ -34,13 +34,22 @@ import { EditEvent } from '../enum/edit-event.enum';
 import { EditType } from '../enum/edit-type.enum';
 import { SelectType } from '../enum/select-type.enum';
 import { TableService } from '../service/table.service';
+import { TableBodyComponent } from '../table-body/table-body.component';
+import { ContextMenuDirective } from '../../../directive/context-menu/context-menu.directive';
+import { TableHeadComponent } from '../table-head/table-head.component';
 
 @Component({
-  selector: 'teta-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [TableService],
+    selector: 'teta-table',
+    templateUrl: './table.component.html',
+    styleUrls: ['./table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [TableService],
+    standalone: true,
+    imports: [
+        TableHeadComponent,
+        ContextMenuDirective,
+        TableBodyComponent,
+    ],
 })
 export class TableComponent<T>
   implements OnInit, OnDestroy, AfterViewInit, OnChanges
@@ -435,8 +444,8 @@ export class TableComponent<T>
   }
 
   private eventIsOnRow(event: Event): boolean {
-    const row = event.composedPath().find((target: HTMLElement) => {
-      return target?.getAttribute && target?.getAttribute('data-row');
+    const row = event.composedPath().find((target) => {
+      return (target as HTMLElement)?.getAttribute && (target as HTMLElement)?.getAttribute('data-row');
     });
     return row && this._elementRef.nativeElement.contains(row);
   }

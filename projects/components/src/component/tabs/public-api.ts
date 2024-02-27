@@ -1,4 +1,4 @@
-export * from './tabs.module';
+
 
 /**
  * Components

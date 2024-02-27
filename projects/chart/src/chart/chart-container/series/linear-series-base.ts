@@ -28,6 +28,7 @@ import { ZoomService } from '../../service/zoom.service';
 
 @Component({
   template: '',
+  standalone:true,
 })
 export class LinearSeriesBase<T extends BasePoint>
   extends SeriesBaseComponent<T>
@@ -339,5 +340,6 @@ export class LinearSeriesBase<T extends BasePoint>
         y: intersect.y,
       };
     }
+    return  null
   }
 }

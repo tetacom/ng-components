@@ -1,29 +1,29 @@
 // eslint-disable-next-line id-blacklist
-import { withKnobs } from '@storybook/addon-knobs';
 import { FileUploadAreaComponent } from './file-upload-area/file-upload-area.component';
-import { FileUploadModule } from './file-upload.module';
-import { IconModule } from '../icon/icon.module';
+
+
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 
 export default {
   title: 'Component/File',
   decorators: [
-    withKnobs,
+
     applicationConfig({
       providers: [importProvidersFrom(HttpClientModule)],
     }),
   ],
   component: FileUploadAreaComponent,
   moduleMetadata: {
-    imports: [FileUploadModule],
+    imports: [],
   },
 } as Meta;
 
 export const area = () => ({
   moduleMetadata: {
-    imports: [FileUploadModule, IconModule],
+    imports: [IconSpriteDirective],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="font-body-3 padding-3">
     <teta-file-upload-area   style="height: 250px; width: 300px;">

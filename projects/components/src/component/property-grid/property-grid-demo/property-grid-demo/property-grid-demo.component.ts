@@ -3,13 +3,17 @@ import {TableColumn} from "../../../table/contract/table-column";
 import {FilterType} from "../../../filter/enum/filter-type.enum";
 import * as faker from 'faker';
 import {IIdName} from "../../../../common/contract/i-id-name";
-import {NgForm} from "@angular/forms";
+import { NgForm, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {IDictionary} from "../../../../common/contract/i-dictionary";
+import { PropertyGridItemDescriptionDirective } from '../../property-grid/property-grid-item-description.directive';
+import { PropertyGridComponent } from '../../property-grid/property-grid.component';
 
 @Component({
-  selector: 'teta-property-grid-demo',
-  templateUrl: './property-grid-demo.component.html',
-  styleUrls: ['./property-grid-demo.component.scss']
+    selector: 'teta-property-grid-demo',
+    templateUrl: './property-grid-demo.component.html',
+    styleUrls: ['./property-grid-demo.component.scss'],
+    standalone: true,
+    imports: [FormsModule, PropertyGridComponent, PropertyGridItemDescriptionDirective, ReactiveFormsModule]
 })
 export class PropertyGridDemoComponent implements OnInit {
   @ViewChild('form', {

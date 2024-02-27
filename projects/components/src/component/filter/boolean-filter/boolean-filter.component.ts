@@ -16,12 +16,23 @@ import {BooleanFilter} from '../contarct/boolean-filter';
 import {TetaConfigService} from "../../../locale/teta-config.service";
 import {Observable} from "rxjs";
 import {TetaLocalisation} from "../../../locale/teta-localisation";
+import { AsyncPipe } from '@angular/common';
+import { RadioButtonComponent } from '../../radio/radio-button/radio-button.component';
+import { FormsModule } from '@angular/forms';
+import { RadioComponent } from '../../radio/radio/radio.component';
 
 @Component({
-  selector: 'teta-boolean-filter',
-  templateUrl: './boolean-filter.component.html',
-  styleUrls: ['./boolean-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-boolean-filter',
+    templateUrl: './boolean-filter.component.html',
+    styleUrls: ['./boolean-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        RadioComponent,
+        FormsModule,
+        RadioButtonComponent,
+        AsyncPipe,
+    ],
 })
 export class BooleanFilterComponent<T>
   extends FilterComponentBase<T>

@@ -1,6 +1,6 @@
-import { select, withKnobs } from '@storybook/addon-knobs';
+
 import { IconComponent } from './icon/icon.component';
-import { IconModule } from './icon.module';
+
 import {
   coloredIconsList,
   fileIconsList,
@@ -10,27 +10,37 @@ import {
 import { applicationConfig, Meta } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import {IconSpriteDirective} from "./icon-sprite.directive";
 
 export default {
   title: 'Component/Icon',
   decorators: [
-    withKnobs,
+
     applicationConfig({
       providers: [importProvidersFrom(HttpClientModule)],
     }),
   ],
   component: IconComponent,
+  argTypes:{
+    palette:{
+      options:['primary', 'grey', 'red', 'white','green'],
+      control:{type:'select'}
+    },
+  },
+  args:{
+    palette:'primary'
+  },
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [],
   },
 } as Meta;
 
-export const icons = () => ({
+export const icons = (args) => ({
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [IconComponent,IconSpriteDirective],
   },
   props: {
-    palette: select('palette', ['primary', 'grey', 'red', 'white'], 'primary'),
+    ...args,
     icons: iconsList,
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" style="display: grid;grid-template-columns: repeat(3, auto);">
@@ -41,16 +51,12 @@ export const icons = () => ({
             </div>`,
 });
 
-export const coloredIcons = () => ({
+export const coloredIcons = (args) => ({
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [IconComponent,IconSpriteDirective],
   },
   props: {
-    palette: select(
-      'palette',
-      ['primary', 'text', 'red', 'white', 'yellow', 'green'],
-      'primary'
-    ),
+    ...args,
     icons: coloredIconsList,
   },
   template: `<div [tetaIconSprite]="'assets/color-icons.svg'" style="display: grid;grid-template-columns: repeat(3, auto);">
@@ -60,16 +66,12 @@ export const coloredIcons = () => ({
               </div>
             </div>`,
 });
-export const fileIcons = () => ({
+export const fileIcons = (args) => ({
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [IconComponent,IconSpriteDirective],
   },
   props: {
-    palette: select(
-      'palette',
-      ['primary', 'text', 'red', 'white', 'yellow', 'green'],
-      'primary'
-    ),
+    ...args,
     icons: fileIconsList,
   },
   template: `<div [tetaIconSprite]="'assets/file-icons.svg'" style="display: grid;grid-template-columns: repeat(3, auto);">
@@ -80,16 +82,12 @@ export const fileIcons = () => ({
             </div>`,
 });
 
-export const lithotypeIcons = () => ({
+export const lithotypeIcons = (args) => ({
   moduleMetadata: {
-    imports: [IconModule],
+    imports: [IconComponent,IconSpriteDirective],
   },
   props: {
-    palette: select(
-      'palette',
-      ['primary', 'text', 'red', 'white', 'yellow', 'green'],
-      'primary'
-    ),
+    ...args,
     icons: lithotypeIconsList,
   },
   template: `<div [tetaIconSprite]="'assets/lithotype-icons.svg'" style="display: grid;grid-template-columns: repeat(3, auto);">
