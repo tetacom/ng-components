@@ -110,5 +110,48 @@
       "@angular/platform-browser-dynamic": "~17.1.0",
       "@angular/router": "~17.1.0"
     }
+  },
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "conventionalcommits",
+        "releaseRules": [
+          {
+            "type": "*!",
+            "release": "major"
+          }
+        ]
+      }
+    ],
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          "dist/**"
+        ]
+      }
+    ],
+    [
+      "@semantic-release/npm",
+      {
+        "pkgRoot": "dist"
+      }
+    ],
+    "@semantic-release/git"
+  ],
+  "preset": "angular",
+  "release": {
+    "branches": [
+      "main",
+      "main-fix-old-version",
+      "update-date-cell"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tetacom/ng-components.git"
   }
 }
