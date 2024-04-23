@@ -20,11 +20,11 @@ import {
   Subject,
   tap,
 } from 'rxjs';
-import { map, takeWhile, throttleTime } from 'rxjs/operators';
+import {map, takeWhile, throttleTime} from 'rxjs/operators';
 
-import { ScrollableDirective } from '../scrollable.directive';
-import { NgClass, AsyncPipe } from '@angular/common';
-import { LetDirective } from '../../let/let.directive';
+import {ScrollableDirective} from '../scrollable.directive';
+import {NgClass, AsyncPipe} from '@angular/common';
+import {LetDirective} from '../../let/let.directive';
 
 type ScrollDimensions = {
   clientHeight: number;
@@ -34,20 +34,20 @@ type ScrollDimensions = {
 };
 
 @Component({
-    selector: 'teta-scrollable',
-    templateUrl: './scrollable.component.html',
-    styleUrls: ['./scrollable.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        LetDirective,
-        NgClass,
-        AsyncPipe,ScrollableDirective
-    ],
+  selector: 'teta-scrollable',
+  templateUrl: './scrollable.component.html',
+  styleUrls: ['./scrollable.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    LetDirective,
+    NgClass,
+    AsyncPipe,
+    ScrollableDirective
+  ],
 })
 export class ScrollableComponent
-  implements OnInit, OnDestroy, AfterContentChecked
-{
+  implements OnInit, OnDestroy, AfterContentChecked {
   @ContentChild(ScrollableDirective, {
     static: true,
     read: ElementRef,
