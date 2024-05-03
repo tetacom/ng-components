@@ -1,24 +1,28 @@
 import {
   ApplicationRef,
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
-  ElementRef, HostBinding,
+  ElementRef,
+  HostBinding,
   HostListener,
   Input,
   OnDestroy,
-  OnInit, TemplateRef, ViewChild,
+  OnInit,
+  TemplateRef,
+  ViewChild,
 } from '@angular/core';
-import {TableColumn} from '../contract/table-column';
-import {ColumnResizeEvent} from '../contract/column-resize-event';
-import {FilterState} from '../../filter/contarct/filter-state';
-import {TableService} from '../service/table.service';
-import {map} from 'rxjs/operators';
-import {SortParam} from '../../filter/contarct/sort-param';
-import {StateUtil} from '../util/state-util';
-import {VerticalAlign} from '../../../common/enum/vertical-align.enum';
-import {Align} from '../../../common/enum/align.enum';
-import {combineLatest, Observable} from 'rxjs';
-import {HeadDropdownTab} from '../contract/head-dropdown-tab';
+import { TableColumn } from '../contract/table-column';
+import { ColumnResizeEvent } from '../contract/column-resize-event';
+import { FilterState } from '../../filter/contarct/filter-state';
+import { TableService } from '../service/table.service';
+import { map } from 'rxjs/operators';
+import { SortParam } from '../../filter/contarct/sort-param';
+import { StateUtil } from '../util/state-util';
+import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
+import { Align } from '../../../common/enum/align.enum';
+import { combineLatest, Observable } from 'rxjs';
+import { HeadDropdownTab } from '../contract/head-dropdown-tab';
 import { VisibilityDropdownTabComponent } from '../table-head/visibility-dropdown-tab/visibility-dropdown-tab.component';
 import { FilterDropdownTabComponent } from '../table-head/filter-dropdown-tab/filter-dropdown-tab.component';
 import { MainDropdownTabComponent } from '../table-head/main-dropdown-tab/main-dropdown-tab.component';
@@ -32,25 +36,25 @@ import { DropdownHeadDirective } from '../../dropdown/dropdown-head.directive';
 import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
 
 @Component({
-    selector: 'teta-head-cell',
-    templateUrl: './head-cell.component.html',
-    styleUrls: ['./head-cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        DropdownComponent,
-        DropdownHeadDirective,
-        NgClass,
-        HeadCellHostComponent,
-        IconComponent,
-        HeadCellDropdownComponent,
-        DropdownContentDirective,
-        ResizeDragDirective,
-        MainDropdownTabComponent,
-        FilterDropdownTabComponent,
-        VisibilityDropdownTabComponent,
-        AsyncPipe,
-    ],
+  selector: 'teta-head-cell',
+  templateUrl: './head-cell.component.html',
+  styleUrls: ['./head-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    DropdownComponent,
+    DropdownHeadDirective,
+    NgClass,
+    HeadCellHostComponent,
+    IconComponent,
+    HeadCellDropdownComponent,
+    DropdownContentDirective,
+    ResizeDragDirective,
+    MainDropdownTabComponent,
+    FilterDropdownTabComponent,
+    VisibilityDropdownTabComponent,
+    AsyncPipe,
+  ],
 })
 export class HeadCellComponent<T> implements OnInit, OnDestroy {
   @Input() column: TableColumn;
@@ -72,9 +76,9 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
   private _alive = true;
   private _startPosition: number;
 
-  @ViewChild('mainTemplate', {static: true}) mainTemplate: TemplateRef<any>;
-  @ViewChild('filterTemplate', {static: true}) filterTemplate: TemplateRef<any>;
-  @ViewChild('columnsTemplate', {static: true}) columnsTemplate: TemplateRef<any>;
+  @ViewChild('mainTemplate', { static: true }) mainTemplate: TemplateRef<any>;
+  @ViewChild('filterTemplate', { static: true }) filterTemplate: TemplateRef<any>;
+  @ViewChild('columnsTemplate', { static: true }) columnsTemplate: TemplateRef<any>;
 
   get defaultTemplates(): HeadDropdownTab[] {
     return [
@@ -83,17 +87,19 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
         template: this.mainTemplate,
         order: 10,
         showTab: () => true,
-      }, {
+      },
+      {
         icon: 'filter',
         template: this.filterTemplate,
         order: 20,
         showTab: (column) => column.filterable,
-      }, {
+      },
+      {
         icon: 'eye',
         template: this.columnsTemplate,
         order: 30,
         showTab: () => true,
-      }
+      },
     ];
   }
 
@@ -106,8 +112,7 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
       if (this.column.headDropdownConfig.strategy === 'replace') {
         return this.column.headDropdownConfig.tabs;
       }
-      return [...this.defaultTemplates, ...this.column.headDropdownConfig.tabs]
-        .sort((a, b) => a.order - b.order);
+      return [...this.defaultTemplates, ...this.column.headDropdownConfig.tabs].sort((a, b) => a.order - b.order);
     }
 
     return this.defaultTemplates;
@@ -120,8 +125,7 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
     private _app: ApplicationRef,
     private _elementRef: ElementRef,
     private _cdr: ChangeDetectorRef
-  ) {
-  }
+  ) {}
 
   dragstart(event: DragEvent): void {
     if (event && event.dataTransfer) {
@@ -130,15 +134,14 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
     this._svc.dragStart(this.column);
   }
 
-  @HostListener('dragenter', ['$event']) dragenter(event: DragEvent): void {
+  @HostListener('dragenter', ['$event']) dragenter(): void {
     this.rect = this._elementRef.nativeElement.getBoundingClientRect();
   }
 
   @HostListener('dragover', ['$event']) allowDrop(event: DragEvent): void {
     event.preventDefault();
     if (this.rect && this._svc.dragSource) {
-      this.showDrag =
-        event.clientX >= this.rect.x + this.rect.width / 2 ? 'right' : 'left';
+      this.showDrag = event.clientX >= this.rect.x + this.rect.width / 2 ? 'right' : 'left';
     }
   }
 
@@ -147,7 +150,7 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
     this.showDrag = null;
   }
 
-  @HostListener('dragend', ['$event']) dragend(event: DragEvent): void {
+  @HostListener('dragend', ['$event']) dragend(): void {
     this.showDrag = null;
   }
 
@@ -162,39 +165,38 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.columns = this._svc.columns;
     this.state = this._svc.state;
-    this.sortParam = this.state.pipe(
-      map((_) => StateUtil.getSortState(_, this.column))
-    );
-    this.filtered = this.state.pipe(
-      map((_) => StateUtil.isColumnFiltered(_, this.column))
-    );
+    this.sortParam = this.state.pipe(map((_) => StateUtil.getSortState(_, this.column)));
+    this.filtered = this.state.pipe(map((_) => StateUtil.isColumnFiltered(_, this.column)));
     this.iconName = combineLatest([this.sortParam, this.filtered]).pipe(
       map((data: [SortParam, boolean]) => {
         const [sortParam, filtered] = data;
         if (sortParam && filtered) {
-          return sortParam.asc ? 'filterSortUpColor' : 'filterSortDownColor';
+          return sortParam.asc ? 'filterSortUp' : 'filterSortDown';
         }
         if (sortParam) {
-          return sortParam.asc ? 'sortUpColor' : 'sortDownColor';
+          return sortParam.asc ? 'arrowUp' : 'arrowDown';
         }
         if (filtered) {
-          return 'filterColor';
+          return 'filter';
         }
         return '';
       })
     );
 
-    this.observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting && this.dropDownOpen) {
-          this.dropDownOpen = false;
-          this._cdr.detectChanges();
-        }
-      });
-    }, {
-      root: this._svc.getTableElement(this._elementRef.nativeElement),
-      threshold: [1]
-    });
+    this.observer = new IntersectionObserver(
+      (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting && this.dropDownOpen) {
+            this.dropDownOpen = false;
+            this._cdr.detectChanges();
+          }
+        });
+      },
+      {
+        root: this._svc.getTableElement(this._elementRef.nativeElement),
+        threshold: [1],
+      }
+    );
     this.observer.observe(this._elementRef.nativeElement);
   }
 
@@ -204,7 +206,7 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
     this.observer.disconnect();
   }
 
-  resizeStart(event: MouseEvent): void {
+  resizeStart(): void {
     const rect = this._elementRef.nativeElement.getBoundingClientRect();
     this._startPosition = rect.x;
     this._svc.lockPreviousColumns(this.column, this._elementRef.nativeElement);
@@ -214,9 +216,7 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
     if (this._startPosition && event.pageX > 0) {
       const position = this._startPosition;
       requestAnimationFrame(() => {
-        this._svc.resizeColumn(
-          new ColumnResizeEvent(this.column, event.pageX - position)
-        );
+        this._svc.resizeColumn(new ColumnResizeEvent(this.column, event.pageX - position));
         this._app.tick();
       });
     }
