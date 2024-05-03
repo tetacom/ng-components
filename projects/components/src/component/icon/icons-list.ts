@@ -193,6 +193,7 @@ export const iconsList = [
   'xls',
   'y',
   'zoom',
+  'attach'
 ];
 
 export const coloredIconsList = [
