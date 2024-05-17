@@ -1,21 +1,17 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ThemeSwitchService } from '../theme-switch.service';
 import { Observable } from 'rxjs';
 import { ButtonViewType, ButtonComponent } from '../../button/button/button.component';
 import { IconComponent } from '../../icon/icon/icon.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'teta-theme-switch',
-    templateUrl: './theme-switch.component.html',
-    styleUrls: ['./theme-switch.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [ButtonComponent, IconComponent],
+  selector: 'teta-theme-switch',
+  templateUrl: './theme-switch.component.html',
+  styleUrls: ['./theme-switch.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ButtonComponent, IconComponent, AsyncPipe],
 })
 export class ThemeSwitchComponent implements OnInit {
   @Input() palette = 'text';
