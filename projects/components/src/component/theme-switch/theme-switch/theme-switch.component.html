@@ -1,3 +1,3 @@
 <button type="button" teta-button [palette]="palette" [view]="view" [square]="true" (click)="switchTheme()">
-  <teta-icon [name]="'lamp'" [palette]="'text'"></teta-icon>
+  <teta-icon [name]="(theme | async) ? 'darkMode' : 'lightMode'" [palette]="'text'"></teta-icon>
 </button>
