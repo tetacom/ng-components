@@ -11,6 +11,9 @@ export * from './autocomplete/public-api';
 export * from './button/public-api';
 
 /* checkbox */
+export * from './chart-3d/public-api';
+
+/* checkbox */
 export * from './checkbox/public-api';
 
 /* datepicker */

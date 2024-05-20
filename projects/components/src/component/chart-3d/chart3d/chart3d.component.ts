@@ -9,20 +9,20 @@ import {
   ViewChild,
 } from '@angular/core';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as d3 from 'd3';
-import { Chart3dOptions } from '../model/chart-3d-options';
-import { Base3dPoint } from '../model/base-3d-point';
-import { Series3d } from '../model/series-3d';
-import { ThemeSwitchService } from '../../theme-switch/theme-switch.service';
-import { takeWhile, tap } from 'rxjs/operators';
+import {Chart3dOptions} from '../model/chart-3d-options';
+import {Base3dPoint} from '../model/base-3d-point';
+import {Series3d} from '../model/series-3d';
+import {ThemeSwitchService} from '../../theme-switch/theme-switch.service';
+import {takeWhile, tap} from 'rxjs/operators';
+import {OrbitControls} from "three-stdlib";
 
 @Component({
-    selector: 'teta-chart3d',
-    templateUrl: './chart3d.component.html',
-    styleUrls: ['./chart3d.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'teta-chart3d',
+  templateUrl: './chart3d.component.html',
+  styleUrls: ['./chart3d.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('canvas') canvasRef: ElementRef;
@@ -43,7 +43,8 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private _elementRef: ElementRef,
     private _themeService: ThemeSwitchService
-  ) {}
+  ) {
+  }
 
   @Input() set config(config: Chart3dOptions) {
     if (config) {
@@ -94,7 +95,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
       this._scene.remove(this._scene.children[0]);
     }
 
-    const { x, y, z } = this.getScales(this._config.series);
+    const {x, y, z} = this.getScales(this._config.series);
 
     this.config.series.forEach((data, idx) => {
       if (!data.points?.length) {
@@ -125,7 +126,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const circles = x.ticks(this.SIDE_SIZE / 10);
 
-    const material = new THREE.LineBasicMaterial({ color: this.axesColor });
+    const material = new THREE.LineBasicMaterial({color: this.axesColor});
     const pointsLines = [];
     pointsLines.push(new THREE.Vector3(0, 0, 0));
     pointsLines.push(new THREE.Vector3(0, 0, z(-z.domain()[1])));
@@ -299,9 +300,9 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     });
 
-    const northLabel = this.makeSprite('X', { fontSize: 28 });
-    const westLabel = this.makeSprite('Y', { fontSize: 28 });
-    const tvdLabel = this.makeSprite('TVD', { fontSize: 28 });
+    const northLabel = this.makeSprite('X', {fontSize: 28});
+    const westLabel = this.makeSprite('Y', {fontSize: 28});
+    const tvdLabel = this.makeSprite('TVD', {fontSize: 28});
 
     northLabel.position.set(x(x.domain()[1]) + 5, 0, 0);
     westLabel.position.set(0, 0, y(y.domain()[0]) + 5);
@@ -331,7 +332,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
         acc.z = acc.z.concat(_.z);
         return acc as any;
       },
-      { x: [], y: [], z: [] }
+      {x: [], y: [], z: []}
     );
 
     const x = d3
@@ -361,6 +362,6 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
       .range([0, this.SIDE_SIZE])
       .nice();
 
-    return { x, y, z };
+    return {x, y, z};
   }
 }
