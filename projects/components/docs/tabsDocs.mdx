@@ -1,145 +1,154 @@
-import {Meta} from "@storybook/blocks";
-import TabsStories from "../src/component/tabs/Tabs.stories";
+import { Meta } from '@storybook/blocks';
+import TabsStories from '../src/component/tabs/Tabs.stories';
 
-<Meta of={TabsStories}/>
+<Meta of={TabsStories} />
 
-<div class='column gap-24'>
-  <h1>Таб</h1>
-  <div class='column'>
-    <p>Tab (таб) — компонент, который переключают вкладки на странице. Активный таб выделен цветом и помечен специальным
-      маркером — горизонтальной или вертикальной линией.</p>
-    <p>Табы группируют контент и помогают в навигации.</p>
-  </div>
-  <h3>Правила применения</h3>
-  <div class='column'>
-    <p>Основные правила применения табов:</p>
-    <ul>
-      <li>Не использовать табы для переключения состояний. Для таких моментов лучше использовать радиокнопки</li>
-      <li>Лучше всего подойдет для второстепенной навигации</li>
-      <li>Разделяйте табы и контент, чтобы информация лучше читалась.</li>
-    </ul>
-  </div>
-  <h3>Виды табов</h3>
-  <p>Существует 2 вида табов:</p>
-  <ul>
-    <li>Вертикальный(vertical)</li>
-    <li>Горизонтальный(horizontal)</li>
-  </ul>
-  <p>Для изменения вида таба, нужно передать свойство <code>direction</code></p>
-  <h3>Как использовать</h3>
-  <div class='column'>
-    <p>Для начала нужно создать <code> &lt;teta-tabs&gt;</code>- обертку для табов и служит для их объединения, т.е. среди них может быть выбран только один.</p>
-    <p>Таб создается при помощи тега <code> &lt;teta-tab&gt;</code>.</p>
-    <p>Внутрь необходимо передать контент для шапки и наполнение таба. Это делается при помощи <code>ng-template</code> с директивами <code>&lt;tetaTabTitle&gt;</code> и <code>tetaTabContent</code></p>
-  </div>
-  <h3>Пример кода</h3>
-  <p><pre><code>&lt;teta-tabs&gt;
-    &nbsp;&nbsp;&lt;teta-tab&gt;
-    &nbsp;&nbsp;&nbsp;&lt;ng-template tetaTabTitle&gt;
-    &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;1&lt;/p&gt;
-    &nbsp;&nbsp;&nbsp;&lt;/ng-template&gt;
-    &nbsp;&nbsp;&nbsp;&lt;ng-template tetaTabContent&gt;
-    &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="padding-v-3 padding-h-2"&gt;conteeeeeeeeeeeent 1&lt;/div&gt;
-    &nbsp;&nbsp;&nbsp;&lt;/ng-template&gt;
-    &nbsp;&nbsp;&lt;/teta-tab&gt;
-    &nbsp;&nbsp;&lt;teta-tab&gt;
-    &nbsp;&nbsp;&nbsp;&lt;ng-template tetaTabTitle&gt;
-    &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;2&lt;/p&gt;
-    &nbsp;&nbsp;&nbsp;&lt;/ng-template&gt;
-    &nbsp;&nbsp;&nbsp;&lt;ng-template tetaTabContent&gt;
-    &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="padding-v-3 padding-h-2"&gt;conteeeeeent 2&lt;/div&gt;
-    &nbsp;&nbsp;&nbsp;&lt;/ng-template&gt;
-    &nbsp;&nbsp;&lt;/teta-tab&gt;
-    &lt;/teta-tabs&gt;</code></pre></p>
-  <h3>Свойства</h3>
-  <h4>teta-tabs</h4>
-  <table>
-    <thead>
+# Таб
+
+Tab (таб) — компонент, который переключают вкладки на странице. Активный таб выделен цветом и помечен специальным
+маркером — горизонтальной или вертикальной линией
+
+Табы группируют контент и помогают в навигации
+
+Основные правила применения табов:
+
+### Правила применения
+
+- Не использовать табы для переключения состояний. Для таких моментов лучше использовать радиокнопки
+- Лучше всего подойдет для второстепенной навигации
+- Разделяйте табы и контент, чтобы информация лучше читалась
+
+### Как использовать
+
+Для начала нужно создать `<teta-tabs>` - обертку для табов и служит для их объединения, т.е.
+среди них может быть выбран только один
+
+Таб создается при помощи тега `<teta-tab>`
+
+Внутрь необходимо передать контент для шапки и наполнение таба. Это делается при помощи `ng-template` с
+директивами `<tetaTabTitle>` и `tetaTabContent`
+
+### Пример кода
+
+```
+<teta-tabs>
+  <teta-tab>
+    <ng-template tetaTabTitle>
+      <p>1</p>
+    </ng-template>
+    <ng-template tetaTabContent>
+      <div class="padding-v-3 padding-h-2">conteeeeeeeeeeeent 1</div>
+    </ng-template>
+  </teta-tab>
+  <teta-tab>
+    <ng-template tetaTabTitle>
+      <p>2</p>
+    </ng-template>
+    <ng-template tetaTabContent>
+      <div class="padding-v-3 padding-h-2">conteeeeeent 2</div>
+    </ng-template>
+  </teta-tab>
+</teta-tabs>
+```
+
+### Свойства
+
+#### teta-tabs
+
+<table>
+  <thead>
     <tr>
       <th>Свойство</th>
       <th>Tип</th>
       <th>Описание</th>
     </tr>
-    </thead>
-    <tbody>
+  </thead>
+  <tbody>
     <tr>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <p>activeId</p>
       </td>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <code>string</code>
       </td>
-      <td class='text-align-center'>
-        <p>Используется для указания выбранного таба (аттрибут не обязателен, т.к. компонент сам умеет управлять своим состоянием)</p>
+      <td class="text-align-center">
+        <p>
+          Используется для указания выбранного таба (аттрибут не обязателен, т.к. компонент сам умеет управлять своим
+          состоянием)
+        </p>
       </td>
     </tr>
     <tr>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <p>tabChange</p>
       </td>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <code>function</code>
       </td>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <p>Принимает функцию, которая применяется при изменении активного таба.Отдает текущее состояния.</p>
       </td>
     </tr>
     <tr>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <p>destroyOnHide</p>
       </td>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <code>boolean</code>
       </td>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <p>Свойство, отвечающее за уничтожение и пересоздание содержимого таба.</p>
       </td>
     </tr>
-    </tbody>
-  </table>
-  <h4>teta-tab</h4>
-  <table>
-    <thead>
+  </tbody>
+</table>
+
+#### teta-tab
+
+<table>
+  <thead>
     <tr>
       <th>Свойство</th>
       <th>Tип</th>
       <th>Описание</th>
     </tr>
-    </thead>
-    <tbody>
+  </thead>
+  <tbody>
     <tr>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <p>id</p>
       </td>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <code>string</code>
       </td>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <p>Идентификатор,который используется при выборе активного таба</p>
       </td>
     </tr>
     <tr>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <p>disabled</p>
       </td>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <code>boolean</code>
       </td>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <p>Отключает взаимодействие с табом</p>
       </td>
     </tr>
     <tr>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <p>title</p>
       </td>
-      <td class='text-align-center'>
+      <td class="text-align-center">
         <code>string</code>
       </td>
-      <td class='text-align-center'>
-        <p>Замента директиве <code>tetaTabTitle</code>. Это свойство нужно использовать, если требуется вывести просто текст без дополнительных модификаций.</p>
+      <td class="text-align-center">
+        <p>
+          Замента директиве <code>tetaTabTitle</code>. Это свойство нужно использовать, если требуется вывести просто
+          текст без дополнительных модификаций.
+        </p>
       </td>
     </tr>
-    </tbody>
-  </table>
-</div>
+  </tbody>
+</table>
