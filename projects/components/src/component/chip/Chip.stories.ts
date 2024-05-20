@@ -48,7 +48,7 @@ export const sample = (args) => ({
         <teta-icon name="closeCircleFilled"></teta-icon>
       </div>
       <div class="chip">
-        <img [src]="photo" width="28" height="28" alt="" />
+        <img [src]="photo" alt="" />
         <p>Label</p>
         <teta-icon name="closeCircleFilled"></teta-icon>
       </div>
@@ -71,7 +71,7 @@ export const sample = (args) => ({
         <teta-icon name="closeCircleFilled"></teta-icon>
       </div>
       <div class="chip chip_primary">
-        <img [src]="photo" width="28" height="28" alt="" />
+        <img [src]="photo" alt="" />
         <p>Label</p>
         <teta-icon name="closeCircleFilled"></teta-icon>
       </div>
@@ -94,7 +94,7 @@ export const sample = (args) => ({
         <teta-icon name="closeCircleFilled"></teta-icon>
       </div>
       <div class="chip chip_outlined">
-        <img [src]="photo" width="28" height="28" alt="" />
+        <img [src]="photo" alt="" />
         <p>Label</p>
         <teta-icon name="closeCircleFilled"></teta-icon>
       </div>
@@ -117,7 +117,7 @@ export const sample = (args) => ({
         <teta-icon name="closeCircleFilled"></teta-icon>
       </div>
       <div class="chip chip_outlined_primary">
-        <img [src]="photo" width="28" height="28" alt="" />
+        <img [src]="photo" alt="" />
         <p>Label</p>
         <teta-icon name="closeCircleFilled"></teta-icon>
       </div>

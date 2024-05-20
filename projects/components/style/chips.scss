@@ -3,12 +3,13 @@
 @import 'presets/view-types.scss';
 
 .chip {
+  --height: 28px;
   --space: 6px;
 
   @include getFont($fonts, 'caption');
 
-  height: 28px;
-  border-radius: 14px;
+  height: var(--height);
+  border-radius: calc(var(--height) / 2);
   border: 1px solid transparent;
   background-color: var(--color-text-5);
   color: var(--color-text-90);
@@ -36,6 +37,9 @@
 
   img {
     border-radius: 50%;
+    width: var(--height);
+    height: var(--height);
+    object-fit: cover;
   }
 
   &:hover {
