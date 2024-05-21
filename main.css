@@ -5240,39 +5240,35 @@ body {
 }
 .tabs-head {
   display: flex;
-  flex-grow: 0;
-  flex-shrink: 0;
-  height: 52px;
 }
 .tabs-head-item {
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  white-space: nowrap;
   font-size: 11px;
   font-family: Inter;
   font-weight: 500;
   font-style: normal;
   line-height: 16px;
   text-decoration: none;
-  color: var(--color-text-60);
+  border: none;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  white-space: nowrap;
+  color: var(--color-text-40);
   fill: var(--color-text-40);
+  transition: color 0.2s ease-in-out, fill 0.2s ease-in-out;
 }
-.tabs-head-item_disabled, .tabs-head-item[disabled] {
-  color: var(--color-text-20);
-  fill: var(--color-text-20);
-}
-.tabs-head-item:hover:not([disabled]):not(.tabs-head-item_disabled) {
+.tabs-head-item:hover:not([disabled]) {
   cursor: pointer;
-  color: var(--color-text-70);
-  fill: var(--color-text-70);
+  color: var(--color-text-50);
+  fill: var(--color-text-50);
 }
-.tabs-head-item_active {
+.tabs-head-item_active, .tabs-head-item_active:hover:not([disabled]) {
   position: relative;
   color: var(--color-text-90);
-  fill: var(--color-text-70);
+  fill: var(--color-text-90);
 }
-.tabs-head-item_active::after {
+.tabs-head-item_active::after, .tabs-head-item_active:hover:not([disabled])::after {
   content: "";
   position: absolute;
   height: 2px;
@@ -5282,15 +5278,36 @@ body {
   right: 0;
   bottom: 0;
 }
+.tabs-head-item[disabled] {
+  color: var(--color-text-20);
+  fill: var(--color-text-20);
+}
+.tabs-head-item[disabled]::after {
+  background-color: var(--color-text-40);
+}
+.tabs-head_small {
+  gap: 24px;
+}
+.tabs-head_small .tabs-head-item {
+  height: 32px;
+  padding: 0;
+}
+.tabs_vertical {
+  flex-direction: row;
+}
+.tabs_vertical .tabs-head {
+  flex-direction: column;
+}
 .tabs-title {
   display: inline-flex;
   align-items: center;
+  gap: 6px;
 }
 .tabs-content {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  overflow-y: overlay;
+  overflow-y: auto;
 }
 
 .tag {
