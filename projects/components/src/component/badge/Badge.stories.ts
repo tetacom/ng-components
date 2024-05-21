@@ -16,6 +16,7 @@ export const sample = () => ({
     imports: [],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="padding-10">
+<h1 style="margin-bottom: 0.5em">Бейдж</h1>
 <div class="column gap-8">
     <div class="row gap-8">
       <div class="badge badge-green" >
