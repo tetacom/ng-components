@@ -2018,29 +2018,104 @@ a {
 }
 
 .chip {
-  height: 28px;
+  --height: 28px;
+  --space: 6px;
   font-size: 11px;
   font-family: Inter;
-  font-weight: 500;
+  font-weight: normal;
   font-style: normal;
   line-height: 16px;
   text-decoration: none;
-  border: solid transparent 0;
-  border-radius: 14px;
-  background: var(--color-text-10);
-  fill: var(--color-text-50);
+  height: var(--height);
+  border-radius: calc(var(--height) / 2);
+  border: 1px solid transparent;
+  background-color: var(--color-text-5);
   color: var(--color-text-90);
-  margin-right: 4px;
-  margin-top: 4px;
+  fill: var(--color-text-90);
   display: inline-flex;
+  justify-content: center;
   align-items: center;
-  padding: 6px 4px 6px 10px;
+  gap: var(--space);
+  padding: var(--space);
+  transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out, color 0.2s ease-in-out, fill 0.2s ease-in-out;
+}
+.chip:has(p:first-child) {
+  padding-left: calc(2 * var(--space));
+}
+.chip:has(p:last-child) {
+  padding-right: calc(2 * var(--space));
+}
+.chip:has(img:first-child) {
+  padding-left: 0;
+}
+.chip:has(img:last-child) {
+  padding-right: 0;
+}
+.chip img {
+  border-radius: 50%;
+  width: var(--height);
+  height: var(--height);
+  object-fit: cover;
 }
 .chip:hover {
   cursor: pointer;
 }
-.chip > *:first-child {
-  padding-right: 6px;
+.chip:hover {
+  background-color: var(--color-text-10);
+}
+.chip:active {
+  background-color: var(--color-text-20);
+}
+.chip_primary {
+  background-color: var(--color-primary-5);
+  color: var(--color-primary-50);
+  fill: var(--color-primary-50);
+}
+.chip_primary:hover {
+  background-color: var(--color-primary-10);
+  color: var(--color-primary-60);
+  fill: var(--color-primary-60);
+}
+.chip_primary:active {
+  background-color: var(--color-primary-20);
+  color: var(--color-primary-70);
+  fill: var(--color-primary-70);
+}
+.chip_outlined {
+  border-color: var(--color-text-90);
+  color: var(--color-text-90);
+  fill: var(--color-text-90);
+  background-color: transparent;
+}
+.chip_outlined:hover {
+  background-color: transparent;
+  border-color: var(--color-text-80);
+  color: var(--color-text-80);
+  fill: var(--color-text-80);
+}
+.chip_outlined:active {
+  background-color: transparent;
+  border-color: var(--color-text-70);
+  color: var(--color-text-70);
+  fill: var(--color-text-70);
+}
+.chip_outlined_primary {
+  border-color: var(--color-primary-50);
+  color: var(--color-primary-50);
+  fill: var(--color-primary-50);
+  background-color: transparent;
+}
+.chip_outlined_primary:hover {
+  background-color: transparent;
+  border-color: var(--color-primary-60);
+  color: var(--color-primary-60);
+  fill: var(--color-primary-60);
+}
+.chip_outlined_primary:active {
+  background-color: transparent;
+  border-color: var(--color-primary-70);
+  color: var(--color-primary-70);
+  fill: var(--color-primary-70);
 }
 
 .bg-transparent {
