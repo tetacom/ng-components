@@ -54,6 +54,15 @@
         }
       }
     }
+
+    &_small {
+      gap: 24px;
+
+      .tabs-head-item {
+        height: 32px;
+        padding: 0;
+      }
+    }
   }
 
   &_vertical {

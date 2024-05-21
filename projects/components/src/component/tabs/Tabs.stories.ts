@@ -86,6 +86,39 @@ export const verticalTabs = () => ({
     </teta-tabs>
   </div>`,
 });
+export const smallTabs = () => ({
+  moduleMetadata: {
+    imports: [IconComponent, IconSpriteDirective, TabsComponent, TabComponent, TabTitleDirective, TabContentDirective],
+  },
+  props: {},
+  template: `<div [tetaIconSprite]="'assets/icons.svg'" class="padding-3">
+    <h1 style="margin-bottom: 0.5em">Табы маленького размера</h1>
+    <teta-tabs size="s">
+      <teta-tab>
+        <ng-template tetaTabTitle>
+          <teta-icon [name]="'calendar'"></teta-icon>Результат
+        </ng-template>
+        <ng-template tetaTabContent>
+          <div class="area area_accent">
+            <div class="container">
+             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, consectetur cumque ea excepturi ipsum praesentium quaerat reiciendis reprehenderit suscipit tenetur. A dolor fugit hic illo labore nostrum officia quo veritatis.
+            </div>
+          </div>
+        </ng-template>
+      </teta-tab>
+      <teta-tab>
+        <ng-template tetaTabTitle>
+          Код
+        </ng-template>
+        <ng-template tetaTabContent>
+          <div class="area area_code">
+           CODE
+          </div>
+        </ng-template>
+      </teta-tab>
+    </teta-tabs>
+  </div>`,
+});
 export const disabledTab = () => ({
   moduleMetadata: {
     imports: [IconComponent, IconSpriteDirective, TabsComponent, TabComponent, TabTitleDirective, TabContentDirective],

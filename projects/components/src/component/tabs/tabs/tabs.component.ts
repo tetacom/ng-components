@@ -17,8 +17,6 @@ export interface ITabChangeEvent {
   preventDefault: () => void;
 }
 
-export type TabsDirection = 'horizontal' | 'vertical';
-
 @Component({
   selector: 'teta-tabs',
   templateUrl: './tabs.component.html',
@@ -39,7 +37,12 @@ export class TabsComponent implements AfterContentChecked {
   /**
    * Tabs direction
    */
-  @Input() direction: TabsDirection = 'horizontal';
+  @Input() direction: 'horizontal' | 'vertical' = 'horizontal';
+
+  /**
+   * Tabs size
+   */
+  @Input() size: 's' | 'm' = 'm';
 
   /**
    * Whether the closed tabs should be hidden without destroying them

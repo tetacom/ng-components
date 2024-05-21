@@ -1,4 +1,4 @@
-<div class="tabs-head" role="tablist">
+<div role="tablist" class="tabs-head" [class.tabs-head_small]="size === 's'">
   @for (tab of tabs; track tab) {
   <button
     type="button"
@@ -21,7 +21,6 @@
     </span>
   </button>
   }
-  <ng-content></ng-content>
 </div>
 <div class="tabs-content">
   @for (tab of tabs; track tab) { @if (!destroyOnHide || tab.id === activeId) {
