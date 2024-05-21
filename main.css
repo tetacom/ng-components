@@ -1754,20 +1754,19 @@ a {
 }
 
 .badge {
+  font-size: 11px;
+  font-family: Inter;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 16px;
+  text-decoration: none;
+  border-radius: var(--radius-base-round);
   border-style: solid;
   border-width: 1px;
   width: -moz-fit-content;
   width: fit-content;
-  padding: 4px 6px;
-  border-radius: 8px;
-  font-size: 10px;
-  font-family: Inter;
-  font-weight: 600;
-  font-style: normal;
-  line-height: 12px;
-  letter-spacing: 1.5px;
-  text-decoration: none;
-  border-radius: var(--radius-base-round);
+  padding: 1px 6px;
+  border-radius: 4px;
 }
 .badge_brick {
   border-radius: var(--radius-base-brick);
@@ -1783,54 +1782,54 @@ a {
   color: var(--color-global-50);
 }
 .badge-global_filled {
-  background-color: var(--color-global-50);
-  color: white;
   border-color: transparent;
+  color: var(--color-global-50);
+  background-color: var(--color-global-10);
 }
 .badge-text {
   border-color: var(--color-text-50);
   color: var(--color-text-50);
 }
 .badge-text_filled {
-  background-color: var(--color-text-50);
-  color: white;
   border-color: transparent;
+  color: var(--color-text-50);
+  background-color: var(--color-text-10);
 }
 .badge-primary {
   border-color: var(--color-primary-50);
   color: var(--color-primary-50);
 }
 .badge-primary_filled {
-  background-color: var(--color-primary-50);
-  color: white;
   border-color: transparent;
+  color: var(--color-primary-50);
+  background-color: var(--color-primary-10);
 }
 .badge-green {
   border-color: var(--color-green-50);
   color: var(--color-green-50);
 }
 .badge-green_filled {
-  background-color: var(--color-green-50);
-  color: white;
   border-color: transparent;
+  color: var(--color-green-50);
+  background-color: var(--color-green-10);
 }
 .badge-red {
   border-color: var(--color-red-50);
   color: var(--color-red-50);
 }
 .badge-red_filled {
-  background-color: var(--color-red-50);
-  color: white;
   border-color: transparent;
+  color: var(--color-red-50);
+  background-color: var(--color-red-10);
 }
 .badge-yellow {
   border-color: var(--color-yellow-50);
   color: var(--color-yellow-50);
 }
 .badge-yellow_filled {
-  background-color: var(--color-yellow-50);
-  color: white;
   border-color: transparent;
+  color: var(--color-yellow-50);
+  background-color: var(--color-yellow-10);
 }
 
 .border {
@@ -2542,6 +2541,15 @@ a {
   font-size: 11px;
   font-family: Inter;
   font-weight: normal;
+  font-style: normal;
+  line-height: 16px;
+  text-decoration: none;
+}
+
+.font-captionBold {
+  font-size: 11px;
+  font-family: Inter;
+  font-weight: 500;
   font-style: normal;
   line-height: 16px;
   text-decoration: none;
