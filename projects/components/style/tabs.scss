@@ -1,5 +1,5 @@
-@import "util/color-util.scss";
-@import "util/font-util.scss";
+@import 'util/color-util.scss';
+@import 'util/font-util.scss';
 
 .tabs {
   display: flex;
@@ -7,34 +7,31 @@
 
   &-head {
     display: flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    height: 52px;
 
     &-item {
+      @include getFont($fonts, 'button-2');
+
+      border: none;
+      height: 52px;
       display: flex;
       align-items: center;
       padding: 0 16px;
       white-space: nowrap;
-      @include getFont($fonts, 'button-2');
-      color: var(--color-text-60);
+      color: var(--color-text-40);
       fill: var(--color-text-40);
+      transition: color 0.2s ease-in-out, fill 0.2s ease-in-out;
 
-      &_disabled, &[disabled] {
-        color: var(--color-text-20);
-        fill: var(--color-text-20);
-      }
-
-      &:hover:not([disabled]):not(&_disabled) {
+      &:hover:not([disabled]) {
         cursor: pointer;
-        color: var(--color-text-70);
-        fill: var(--color-text-70);
+        color: var(--color-text-50);
+        fill: var(--color-text-50);
       }
 
-      &_active {
+      &_active,
+      &_active:hover:not([disabled]) {
         position: relative;
         color: var(--color-text-90);
-        fill: var(--color-text-70);
+        fill: var(--color-text-90);
 
         &::after {
           content: '';
@@ -47,18 +44,45 @@
           bottom: 0;
         }
       }
+
+      &[disabled] {
+        color: var(--color-text-20);
+        fill: var(--color-text-20);
+
+        &::after {
+          background-color: var(--color-text-40);
+        }
+      }
+    }
+
+    &_small {
+      gap: 24px;
+
+      .tabs-head-item {
+        height: 32px;
+        padding: 0;
+      }
+    }
+  }
+
+  &_vertical {
+    flex-direction: row;
+
+    .tabs-head {
+      flex-direction: column;
     }
   }
 
   &-title {
     display: inline-flex;
     align-items: center;
+    gap: 6px;
   }
 
   &-content {
     display: flex;
     flex-direction: column;
     min-height: 0;
-    overflow-y: overlay;
+    overflow-y: auto;
   }
 }

@@ -1,23 +1,15 @@
-import {
-  AfterContentChecked,
-  ChangeDetectionStrategy,
-  Component,
-  ContentChild,
-  ContentChildren,
-  Input,
-  QueryList,
-} from '@angular/core';
+import { AfterContentChecked, ChangeDetectionStrategy, Component, ContentChild, Input } from '@angular/core';
 import { TabContentDirective } from '../tab-content.directive';
 import { TabTitleDirective } from '../tab-title.directive';
 
 let nextId = 0;
 
 @Component({
-    selector: 'teta-tab',
-    template: '',
-    styleUrls: ['./tab.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'teta-tab',
+  template: '',
+  styleUrls: ['./tab.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class TabComponent implements AfterContentChecked {
   /**
