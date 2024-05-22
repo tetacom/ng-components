@@ -1,12 +1,14 @@
-@import "./util/color-util.scss";
-@import "./util/font-util.scss";
-@import "presets/view-types.scss";
+@import './util/color-util.scss';
+@import './util/font-util.scss';
+@import 'presets/view-types.scss';
 
 .button {
   display: inline-flex;
-  grid-gap: 6px;
+  justify-content: center;
   align-items: center;
-  padding: 6px 8px;
+  text-align: center;
+  gap: 6px;
+  padding: 6px 12px;
   border: 0;
   color: var(--color-global-white);
   fill: var(--color-global-white);
@@ -21,17 +23,16 @@
     cursor: pointer;
   }
 
+  &-s {
+    height: 24px;
+  }
+
   &-m {
     height: 28px;
   }
 
   &-l {
     height: 32px;
-  }
-
-  &-xs {
-    padding: 0;
-    height: 16px;
   }
 
   &-square {
@@ -47,7 +48,7 @@
     opacity: 0.3;
   }
 
-  &:focus {
+  &:focus-visible {
     box-shadow: 0 0 0 4px var(--color-primary-10);
   }
 }
