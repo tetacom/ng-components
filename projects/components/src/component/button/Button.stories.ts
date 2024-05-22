@@ -1,6 +1,4 @@
-
 import { ButtonComponent } from './button/button.component';
-
 
 import { applicationConfig, Meta, StoryFn } from '@storybook/angular';
 import { importProvidersFrom } from '@angular/core';
@@ -11,48 +9,46 @@ import { IconComponent } from '../icon/icon/icon.component';
 export default {
   title: 'Component/Button',
   decorators: [
-
     applicationConfig({
       providers: [importProvidersFrom(HttpClientModule)],
     }),
   ],
-  argTypes:{
-    viewType:{
-      options:['rounded','brick','circle'],
-      control:{type:'select'},
+  argTypes: {
+    viewType: {
+      options: ['rounded', 'brick', 'circle'],
+      control: { type: 'select' },
     },
-    palette:{
-      options:['primary', 'text', 'red', 'yellow', 'green'],
-      control:{type:'select'}
+    palette: {
+      options: ['primary', 'text', 'red', 'yellow', 'green'],
+      control: { type: 'select' },
     },
-    size:{
-      options:['m','l'],
-      control:{type:'select'}
+    size: {
+      options: ['s', 'm', 'l'],
+      control: { type: 'select' },
     },
-    view:{
-      control:{type:'select'},
-      options:['primary','ghost','outline']
+    view: {
+      control: { type: 'select' },
+      options: ['primary', 'ghost', 'outline'],
     },
-    text:{
-      control:{type:'text'}
-    }
-
+    text: {
+      control: { type: 'text' },
+    },
   },
-  args:{
-    viewType:'circle',
-    palette:'primary',
-    view:'primary',
-    text:'text text',
-    size:'m'
+  args: {
+    viewType: 'circle',
+    palette: 'primary',
+    view: 'primary',
+    text: 'text text',
+    size: 'm',
   },
   component: ButtonComponent,
   moduleMetadata: {
     imports: [],
   },
 } as Meta;
-export const baseButton:StoryFn = (args) => ({
+export const baseButton: StoryFn = (args) => ({
   moduleMetadata: {
-    imports: [IconSpriteDirective,IconComponent],
+    imports: [IconSpriteDirective, IconComponent],
   },
   props: args,
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
@@ -62,9 +58,9 @@ export const baseButton:StoryFn = (args) => ({
        </button>
 </div>`,
 });
-export const disabledButton:StoryFn = (args) => ({
+export const disabledButton: StoryFn = (args) => ({
   moduleMetadata: {
-    imports: [IconSpriteDirective,IconComponent]
+    imports: [IconSpriteDirective, IconComponent],
   },
   props: args,
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
@@ -76,7 +72,7 @@ export const disabledButton:StoryFn = (args) => ({
 });
 export const squireButton = (args) => ({
   moduleMetadata: {
-    imports: [IconSpriteDirective,IconComponent],
+    imports: [IconSpriteDirective, IconComponent],
   },
   props: args,
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
@@ -86,9 +82,9 @@ export const squireButton = (args) => ({
        </button>
 </div>`,
 });
-export const allButtonTypes:StoryFn = (args) => ({
+export const allButtonTypes: StoryFn = () => ({
   moduleMetadata: {
-    imports: [IconSpriteDirective,IconComponent],
+    imports: [IconSpriteDirective, IconComponent],
   },
   props: {
     palettes: ['primary', 'text', 'red', 'yellow', 'green'],

@@ -1,120 +1,117 @@
-import {Meta} from "@storybook/blocks";
-import * as   ButtonStories from "../src/component/button/Button.stories";
+import { Meta } from '@storybook/blocks';
+import * as ButtonStories from '../src/component/button/Button.stories';
 
-<Meta of={ButtonStories}/>
+<Meta of={ButtonStories} />
 
-<div class='column gap-24'>
-  <h1>Кнопка</h1>
-  <div class='column'>
-    <p>Button (кнопка) — компонент, который призывает пользователя к совершению определенного действия в интерфейсе,
-      например: открыть следующую страницу, заказать товар или войти в свой аккаунт.</p>
-    <p>Основной призыв к действию. Предназначены для выполнения какого-либо действия в системе. </p>
-  </div>
-  <h3>Как использовать</h3>
-  <div class='column'>
-    <p>За создание кнопки отвечает компонент</p>
-    <p>Основные правила применения кнопки:</p>
-    <ul>
-      <li>Текст кнопки всегда должен быть с заглавной буквы;</li>
-      <li>Текст на кнопке должен сообщать пользователю, что произойдёт, если он нажмёт на кнопку (например, Сохранить, Добавить и т. п.);</li>
-      <li>Не перенасыщать страницу большим количеством Primary кнопок. Не распологать их рядом друг с другом.</li>
-    </ul>
-  </div>
-  <div class='column'>
-    <h3>Типы кнопок</h3>
-    <div>
-      <p>В системе существуют всего 3 типа кнопок</p>
-      <ul>
-        <li>Primary (основная)</li>
-        <li>Ghost (без фона)</li>
-        <li>Outline (с обводкой)</li>
-      </ul>
-    </div>
-  </div>
-  <div class='column'>
-    <h3>Размер кнопок</h3>
-    <div>
-      <p>Есть 2 размера кнопок — m и l. В основном в проектах используются кнопки размера m. </p>
-    </div>
-  </div>
-  <div class='column'>
-    <h3>Свойства</h3>
-    <table>
-      <thead>
-      <tr>
-        <th>Свойство</th>
-        <th>Tип</th>
-        <th>Описание</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td class='text-align-center'>
-          <p>viewType</p>
-        </td>
-        <td class='text-align-center'>
-          <code>'rounded'|'circle'|'brick'</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Свойство округления компонента.</p>
-        </td>
-      </tr>
-      <tr>
-        <td class='text-align-center'>
-          <p>size</p>
-        </td>
-        <td class='text-align-center'>
-          <code>'m' |'l'</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Размер кнопки</p>
-        </td>
-      </tr>
-      <tr>
-        <td class='text-align-center'>
-          <p>disabled</p>
-        </td>
-        <td class='text-align-center'>
-          <code>boolean</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Отключает реакцию компонента на клик пользователя</p>
-        </td>
-      </tr>
-      <tr>
-        <td class='text-align-center'>
-          <p>palette</p>
-        </td>
-        <td class='text-align-center'>
-          <code>string</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Отвечает за цвет фона кнопки. Принимает в себя название палитры и указывает 50-й оттенок (Пример: вводим yellow- цвет будет color-yellow-50). Работает только при view="primary"</p>
-        </td>
-      </tr>
-      <tr>
-        <td class='text-align-center'>
-          <p>view</p>
-        </td>
-        <td class='text-align-center'>
-          <code>'primary' | 'outline' | 'ghost'</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Свойство, которое отвечает за тип кнопки</p>
-        </td>
-      </tr>
-      <tr>
-        <td class='text-align-center'>
-          <p>square</p>
-        </td>
-        <td class='text-align-center'>
-          <code>boolean</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Отвечает за форму кнопки</p>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+# Кнопка
+
+Button (кнопка) — компонент, который призывает пользователя к совершению определенного действия в интерфейсе,
+например: открыть следующую страницу, заказать товар или войти в свой аккаунт.
+
+Основной призыв к действию. Предназначены для выполнения какого-либо действия в системе.
+
+### Как использовать
+
+За создание кнопки отвечает компонент
+
+Основные правила применения кнопки:
+
+- Текст кнопки всегда должен быть с заглавной буквы;
+- Текст на кнопке должен сообщать пользователю, что произойдёт, если он нажмёт на кнопку (например, Сохранить, Добавить
+  и т. п.);
+- Не перенасыщать страницу большим количеством Primary кнопок. Не распологать их рядом друг с другом.
+
+### Типы кнопок
+
+В системе существуют всего 3 типа кнопок
+
+- Primary (основная)
+- Ghost (без фона)
+- Outline (с обводкой)
+
+### Размер кнопок
+
+Есть 3 размера кнопок — s, m и l. В основном в проектах используются кнопки размера m.
+
+### Свойства
+
+<table>
+  <thead>
+    <tr>
+      <th>Свойство</th>
+      <th>Tип</th>
+      <th>Описание</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="text-align-center">
+        <p>viewType</p>
+      </td>
+      <td class="text-align-center">
+        <code>'rounded'|'circle'|'brick'</code>
+      </td>
+      <td class="text-align-center">
+        <p>Свойство округления компонента.</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-align-center">
+        <p>size</p>
+      </td>
+      <td class="text-align-center">
+        <code>'s' | 'm' |'l'</code>
+      </td>
+      <td class="text-align-center">
+        <p>Размер кнопки</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-align-center">
+        <p>disabled</p>
+      </td>
+      <td class="text-align-center">
+        <code>boolean</code>
+      </td>
+      <td class="text-align-center">
+        <p>Отключает реакцию компонента на клик пользователя</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-align-center">
+        <p>palette</p>
+      </td>
+      <td class="text-align-center">
+        <code>string</code>
+      </td>
+      <td class="text-align-center">
+        <p>
+          Отвечает за цвет фона кнопки. Принимает в себя название палитры и указывает 50-й оттенок (Пример: вводим
+          yellow- цвет будет color-yellow-50). Работает только при view="primary"
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-align-center">
+        <p>view</p>
+      </td>
+      <td class="text-align-center">
+        <code>'primary' | 'outline' | 'ghost'</code>
+      </td>
+      <td class="text-align-center">
+        <p>Свойство, которое отвечает за тип кнопки</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-align-center">
+        <p>square</p>
+      </td>
+      <td class="text-align-center">
+        <code>boolean</code>
+      </td>
+      <td class="text-align-center">
+        <p>Отвечает за форму кнопки</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
