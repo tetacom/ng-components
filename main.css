@@ -1912,9 +1912,11 @@ a {
 
 .button {
   display: inline-flex;
-  grid-gap: 6px;
+  justify-content: center;
   align-items: center;
-  padding: 6px 8px;
+  text-align: center;
+  gap: 6px;
+  padding: 6px 12px;
   border: 0;
   color: var(--color-global-white);
   fill: var(--color-global-white);
@@ -1936,15 +1938,14 @@ a {
 .button:hover:not([disabled]) {
   cursor: pointer;
 }
+.button-s {
+  height: 24px;
+}
 .button-m {
   height: 28px;
 }
 .button-l {
   height: 32px;
-}
-.button-xs {
-  padding: 0;
-  height: 16px;
 }
 .button-square {
   width: 28px;
@@ -1957,7 +1958,7 @@ a {
   filter: grayscale(1);
   opacity: 0.3;
 }
-.button:focus {
+.button:focus-visible {
   box-shadow: 0 0 0 4px var(--color-primary-10);
 }
 
@@ -2511,11 +2512,11 @@ a {
 }
 
 .font-button-1 {
-  font-size: 11px;
+  font-size: 13px;
   font-family: Inter;
   font-weight: 500;
   font-style: normal;
-  line-height: 16px;
+  line-height: 20px;
   text-decoration: none;
 }
 
