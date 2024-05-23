@@ -19,35 +19,43 @@ export const sample = () => ({
 <h1 style="margin-bottom: 0.5em">Бейдж</h1>
 <div class="column gap-8">
     <div class="row gap-8">
+      <div class="badge badge-primary" >
+        <p>Primary badge</p>
+      </div>
+      <div class="badge badge-primary_filled" >
+        <p>Primary filled badge</p>
+      </div>
+    </div>
+    <div class="row gap-8">
       <div class="badge badge-green" >
-        <p>Label</p>
+        <p>Green badge</p>
       </div>
       <div class="badge badge-green_filled" >
-        <p>Label</p>
+        <p>Green filled badge</p>
       </div>
     </div>
     <div class="row gap-8">
       <div class="badge badge-yellow" >
-        <p>Label</p>
+        <p>Yellow badge</p>
       </div>
       <div class="badge badge-yellow_filled" >
-        <p>Label</p>
+        <p>Yellow filled badge</p>
       </div>
     </div>
     <div class="row gap-8">
        <div class="badge badge-red" >
-          <p>Label</p>
+          <p>Red badge</p>
        </div>
        <div class="badge badge-red_filled" >
-          <p>Label</p>
+          <p>Red filled badge</p>
        </div>
     </div>
     <div class="row gap-8">
        <div class="badge badge-text" >
-          <p>Label</p>
+          <p>Text badge</p>
        </div>
        <div class="badge badge-text_filled" >
-          <p>Label</p>
+          <p>Text filled badge</p>
        </div>
     </div>
 </div>

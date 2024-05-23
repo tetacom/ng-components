@@ -54,29 +54,6 @@ export const sample = (args) => ({
       </div>
     </div>
     <div class="row gap-8">
-      <div class="chip chip_primary">
-        <p>Label</p>
-      </div>
-      <div class="chip chip_primary">
-        <teta-icon name="tick"></teta-icon>
-        <p>Label</p>
-      </div>
-      <div class="chip chip_primary">
-        <p>Label</p>
-        <teta-icon name="closeCircleFilled"></teta-icon>
-      </div>
-      <div class="chip chip_primary">
-        <teta-icon name="tick"></teta-icon>
-        <p>Label</p>
-        <teta-icon name="closeCircleFilled"></teta-icon>
-      </div>
-      <div class="chip chip_primary">
-        <img [src]="photo" alt="" />
-        <p>Label</p>
-        <teta-icon name="closeCircleFilled"></teta-icon>
-      </div>
-    </div>
-    <div class="row gap-8">
       <div class="chip chip_outlined">
         <p>Label</p>
       </div>
@@ -100,23 +77,230 @@ export const sample = (args) => ({
       </div>
     </div>
     <div class="row gap-8">
-      <div class="chip chip_outlined_primary">
+      <div class="chip chip_primary">
         <p>Label</p>
       </div>
-      <div class="chip chip_outlined_primary">
+      <div class="chip chip_primary">
         <teta-icon name="tick"></teta-icon>
         <p>Label</p>
       </div>
-      <div class="chip chip_outlined_primary">
+      <div class="chip chip_primary">
         <p>Label</p>
         <teta-icon name="closeCircleFilled"></teta-icon>
       </div>
-      <div class="chip chip_outlined_primary">
+      <div class="chip chip_primary">
         <teta-icon name="tick"></teta-icon>
         <p>Label</p>
         <teta-icon name="closeCircleFilled"></teta-icon>
       </div>
-      <div class="chip chip_outlined_primary">
+      <div class="chip chip_primary">
+        <img [src]="photo" alt="" />
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+    </div>
+    <div class="row gap-8">
+      <div class="chip chip_primary_outlined">
+        <p>Label</p>
+      </div>
+      <div class="chip chip_primary_outlined">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+      </div>
+      <div class="chip chip_primary_outlined">
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_primary_outlined">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_primary_outlined">
+        <img [src]="photo" alt="" />
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+    </div>
+    <div class="row gap-8">
+      <div class="chip chip_green">
+        <p>Label</p>
+      </div>
+      <div class="chip chip_green">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+      </div>
+      <div class="chip chip_green">
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_green">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_green">
+        <img [src]="photo" alt="" />
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+    </div>
+    <div class="row gap-8">
+      <div class="chip chip_green_outlined">
+        <p>Label</p>
+      </div>
+      <div class="chip chip_green_outlined">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+      </div>
+      <div class="chip chip_green_outlined">
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_green_outlined">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_green_outlined">
+        <img [src]="photo" alt="" />
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+    </div>
+    <div class="row gap-8">
+      <div class="chip chip_yellow">
+        <p>Label</p>
+      </div>
+      <div class="chip chip_yellow">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+      </div>
+      <div class="chip chip_yellow">
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_yellow">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_yellow">
+        <img [src]="photo" alt="" />
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+    </div>
+    <div class="row gap-8">
+      <div class="chip chip_yellow_outlined">
+        <p>Label</p>
+      </div>
+      <div class="chip chip_yellow_outlined">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+      </div>
+      <div class="chip chip_yellow_outlined">
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_yellow_outlined">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_yellow_outlined">
+        <img [src]="photo" alt="" />
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+    </div>
+    <div class="row gap-8">
+      <div class="chip chip_red">
+        <p>Label</p>
+      </div>
+      <div class="chip chip_red">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+      </div>
+      <div class="chip chip_red">
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_red">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_red">
+        <img [src]="photo" alt="" />
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+    </div>
+    <div class="row gap-8">
+      <div class="chip chip_red_outlined">
+        <p>Label</p>
+      </div>
+      <div class="chip chip_red_outlined">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+      </div>
+      <div class="chip chip_red_outlined">
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_red_outlined">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_red_outlined">
+        <img [src]="photo" alt="" />
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+    </div>
+    <div class="row gap-8">
+      <div class="chip chip_text">
+        <p>Label</p>
+      </div>
+      <div class="chip chip_text">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+      </div>
+      <div class="chip chip_text">
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_text">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_text">
+        <img [src]="photo" alt="" />
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+    </div>
+    <div class="row gap-8">
+      <div class="chip chip_text_outlined">
+        <p>Label</p>
+      </div>
+      <div class="chip chip_text_outlined">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+      </div>
+      <div class="chip chip_text_outlined">
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_text_outlined">
+        <teta-icon name="tick"></teta-icon>
+        <p>Label</p>
+        <teta-icon name="closeCircleFilled"></teta-icon>
+      </div>
+      <div class="chip chip_text_outlined">
         <img [src]="photo" alt="" />
         <p>Label</p>
         <teta-icon name="closeCircleFilled"></teta-icon>
