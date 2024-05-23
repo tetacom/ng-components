@@ -53,20 +53,42 @@
     background-color: var(--color-text-20);
   }
 
-  &_primary {
-    background-color: var(--color-primary-5);
-    color: var(--color-primary-50);
-    fill: var(--color-primary-50);
+  @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
+    &_#{'' + $paletteName} {
+      background-color: getColorVar($paletteName, '5');
+      color: getColorVar($paletteName, '50');
+      fill: getColorVar($paletteName, '50');
 
-    &:hover {
-      background-color: var(--color-primary-10);
-      color: var(--color-primary-60);
-      fill: var(--color-primary-60);
-    }
-    &:active {
-      background-color: var(--color-primary-20);
-      color: var(--color-primary-70);
-      fill: var(--color-primary-70);
+      &:hover {
+        background-color: getColorVar($paletteName, '10');
+        color: getColorVar($paletteName, '60');
+        fill: getColorVar($paletteName, '60');
+      }
+      &:active {
+        background-color: getColorVar($paletteName, '20');
+        color: getColorVar($paletteName, '70');
+        fill: getColorVar($paletteName, '70');
+      }
+
+      &_outlined {
+        border-color: getColorVar($paletteName, '50');
+        color: getColorVar($paletteName, '50');
+        fill: getColorVar($paletteName, '50');
+        background-color: transparent;
+
+        &:hover {
+          background-color: transparent;
+          border-color: getColorVar($paletteName, '60');
+          color: getColorVar($paletteName, '60');
+          fill: getColorVar($paletteName, '60');
+        }
+        &:active {
+          background-color: transparent;
+          border-color: getColorVar($paletteName, '70');
+          color: getColorVar($paletteName, '70');
+          fill: getColorVar($paletteName, '70');
+        }
+      }
     }
   }
 
@@ -87,26 +109,6 @@
       border-color: var(--color-text-70);
       color: var(--color-text-70);
       fill: var(--color-text-70);
-    }
-
-    &_primary {
-      border-color: var(--color-primary-50);
-      color: var(--color-primary-50);
-      fill: var(--color-primary-50);
-      background-color: transparent;
-
-      &:hover {
-        background-color: transparent;
-        border-color: var(--color-primary-60);
-        color: var(--color-primary-60);
-        fill: var(--color-primary-60);
-      }
-      &:active {
-        background-color: transparent;
-        border-color: var(--color-primary-70);
-        color: var(--color-primary-70);
-        fill: var(--color-primary-70);
-      }
     }
   }
 }
