@@ -1912,9 +1912,7 @@ a {
 
 .button {
   display: inline-flex;
-  justify-content: center;
   align-items: center;
-  text-align: center;
   gap: 6px;
   padding: 6px 12px;
   border: 0;
@@ -2066,6 +2064,72 @@ a {
 .chip:active {
   background-color: var(--color-text-20);
 }
+.chip_global {
+  background-color: var(--color-global-5);
+  color: var(--color-global-50);
+  fill: var(--color-global-50);
+}
+.chip_global:hover {
+  background-color: var(--color-global-10);
+  color: var(--color-global-60);
+  fill: var(--color-global-60);
+}
+.chip_global:active {
+  background-color: var(--color-global-20);
+  color: var(--color-global-70);
+  fill: var(--color-global-70);
+}
+.chip_global_outlined {
+  border-color: var(--color-global-50);
+  color: var(--color-global-50);
+  fill: var(--color-global-50);
+  background-color: transparent;
+}
+.chip_global_outlined:hover {
+  background-color: transparent;
+  border-color: var(--color-global-60);
+  color: var(--color-global-60);
+  fill: var(--color-global-60);
+}
+.chip_global_outlined:active {
+  background-color: transparent;
+  border-color: var(--color-global-70);
+  color: var(--color-global-70);
+  fill: var(--color-global-70);
+}
+.chip_text {
+  background-color: var(--color-text-5);
+  color: var(--color-text-50);
+  fill: var(--color-text-50);
+}
+.chip_text:hover {
+  background-color: var(--color-text-10);
+  color: var(--color-text-60);
+  fill: var(--color-text-60);
+}
+.chip_text:active {
+  background-color: var(--color-text-20);
+  color: var(--color-text-70);
+  fill: var(--color-text-70);
+}
+.chip_text_outlined {
+  border-color: var(--color-text-50);
+  color: var(--color-text-50);
+  fill: var(--color-text-50);
+  background-color: transparent;
+}
+.chip_text_outlined:hover {
+  background-color: transparent;
+  border-color: var(--color-text-60);
+  color: var(--color-text-60);
+  fill: var(--color-text-60);
+}
+.chip_text_outlined:active {
+  background-color: transparent;
+  border-color: var(--color-text-70);
+  color: var(--color-text-70);
+  fill: var(--color-text-70);
+}
 .chip_primary {
   background-color: var(--color-primary-5);
   color: var(--color-primary-50);
@@ -2080,6 +2144,123 @@ a {
   background-color: var(--color-primary-20);
   color: var(--color-primary-70);
   fill: var(--color-primary-70);
+}
+.chip_primary_outlined {
+  border-color: var(--color-primary-50);
+  color: var(--color-primary-50);
+  fill: var(--color-primary-50);
+  background-color: transparent;
+}
+.chip_primary_outlined:hover {
+  background-color: transparent;
+  border-color: var(--color-primary-60);
+  color: var(--color-primary-60);
+  fill: var(--color-primary-60);
+}
+.chip_primary_outlined:active {
+  background-color: transparent;
+  border-color: var(--color-primary-70);
+  color: var(--color-primary-70);
+  fill: var(--color-primary-70);
+}
+.chip_green {
+  background-color: var(--color-green-5);
+  color: var(--color-green-50);
+  fill: var(--color-green-50);
+}
+.chip_green:hover {
+  background-color: var(--color-green-10);
+  color: var(--color-green-60);
+  fill: var(--color-green-60);
+}
+.chip_green:active {
+  background-color: var(--color-green-20);
+  color: var(--color-green-70);
+  fill: var(--color-green-70);
+}
+.chip_green_outlined {
+  border-color: var(--color-green-50);
+  color: var(--color-green-50);
+  fill: var(--color-green-50);
+  background-color: transparent;
+}
+.chip_green_outlined:hover {
+  background-color: transparent;
+  border-color: var(--color-green-60);
+  color: var(--color-green-60);
+  fill: var(--color-green-60);
+}
+.chip_green_outlined:active {
+  background-color: transparent;
+  border-color: var(--color-green-70);
+  color: var(--color-green-70);
+  fill: var(--color-green-70);
+}
+.chip_red {
+  background-color: var(--color-red-5);
+  color: var(--color-red-50);
+  fill: var(--color-red-50);
+}
+.chip_red:hover {
+  background-color: var(--color-red-10);
+  color: var(--color-red-60);
+  fill: var(--color-red-60);
+}
+.chip_red:active {
+  background-color: var(--color-red-20);
+  color: var(--color-red-70);
+  fill: var(--color-red-70);
+}
+.chip_red_outlined {
+  border-color: var(--color-red-50);
+  color: var(--color-red-50);
+  fill: var(--color-red-50);
+  background-color: transparent;
+}
+.chip_red_outlined:hover {
+  background-color: transparent;
+  border-color: var(--color-red-60);
+  color: var(--color-red-60);
+  fill: var(--color-red-60);
+}
+.chip_red_outlined:active {
+  background-color: transparent;
+  border-color: var(--color-red-70);
+  color: var(--color-red-70);
+  fill: var(--color-red-70);
+}
+.chip_yellow {
+  background-color: var(--color-yellow-5);
+  color: var(--color-yellow-50);
+  fill: var(--color-yellow-50);
+}
+.chip_yellow:hover {
+  background-color: var(--color-yellow-10);
+  color: var(--color-yellow-60);
+  fill: var(--color-yellow-60);
+}
+.chip_yellow:active {
+  background-color: var(--color-yellow-20);
+  color: var(--color-yellow-70);
+  fill: var(--color-yellow-70);
+}
+.chip_yellow_outlined {
+  border-color: var(--color-yellow-50);
+  color: var(--color-yellow-50);
+  fill: var(--color-yellow-50);
+  background-color: transparent;
+}
+.chip_yellow_outlined:hover {
+  background-color: transparent;
+  border-color: var(--color-yellow-60);
+  color: var(--color-yellow-60);
+  fill: var(--color-yellow-60);
+}
+.chip_yellow_outlined:active {
+  background-color: transparent;
+  border-color: var(--color-yellow-70);
+  color: var(--color-yellow-70);
+  fill: var(--color-yellow-70);
 }
 .chip_outlined {
   border-color: var(--color-text-90);
@@ -2098,24 +2279,6 @@ a {
   border-color: var(--color-text-70);
   color: var(--color-text-70);
   fill: var(--color-text-70);
-}
-.chip_outlined_primary {
-  border-color: var(--color-primary-50);
-  color: var(--color-primary-50);
-  fill: var(--color-primary-50);
-  background-color: transparent;
-}
-.chip_outlined_primary:hover {
-  background-color: transparent;
-  border-color: var(--color-primary-60);
-  color: var(--color-primary-60);
-  fill: var(--color-primary-60);
-}
-.chip_outlined_primary:active {
-  background-color: transparent;
-  border-color: var(--color-primary-70);
-  color: var(--color-primary-70);
-  fill: var(--color-primary-70);
 }
 
 .bg-transparent {
