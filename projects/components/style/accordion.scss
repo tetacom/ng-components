@@ -1,13 +1,13 @@
-@import "./util/font-util.scss";
-@import "./util/color-util.scss";
-@import "presets/view-types";
+@import './util/font-util.scss';
+@import './util/color-util.scss';
+@import 'presets/view-types';
 
 .accordion_rounded .accordion-head {
   border-radius: 8px;
 }
 
 .accordion_brick .accordion-head {
-  border-radius: 0
+  border-radius: 0;
 }
 
 .accordion_circle .accordion-head {
@@ -15,11 +15,10 @@
 }
 
 .accordion {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
   @include getView('base');
+
+  display: grid;
+  gap: 8px;
 
   &-item {
     display: flex;
@@ -34,16 +33,16 @@
   }
 
   &-head {
+    @include getFont($fonts, 'title-3');
+
     display: flex;
     align-items: center;
     height: 52px;
     padding: 0 12px;
     flex-shrink: 0;
-    //border-bottom: solid 1px var(--color-text-5);
     justify-content: space-between;
-    @include getFont($fonts, 'title-3');
 
-    &_disabled{
+    &_disabled {
       color: var(--color-text-30);
     }
     &:hover:not(&_disabled) {
@@ -58,14 +57,11 @@
 
   &-toggle {
     display: flex;
-
   }
 
   &-content {
     display: flex;
     flex-grow: 1;
     min-height: 0;
-    //border-bottom: solid 1px var(--color-text-5);
   }
-
 }
