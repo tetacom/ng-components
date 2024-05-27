@@ -8,17 +8,16 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import {AccordionItemComponent} from '../accordion-item/accordion-item.component';
+import { AccordionItemComponent } from '../accordion-item/accordion-item.component';
 import { IconComponent } from '../../icon/icon/icon.component';
+
 @Component({
   selector: 'teta-accordion-head',
   templateUrl: './accordion-head.component.html',
   styleUrls: ['./accordion-head.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    IconComponent
-  ],
+  imports: [IconComponent],
 })
 export class AccordionHeadComponent implements OnInit {
   @HostBinding('class.accordion-head') private readonly accordionHeadClass = true;
@@ -30,7 +29,7 @@ export class AccordionHeadComponent implements OnInit {
   constructor(
     @Host()
     @Inject(AccordionItemComponent)
-      accordionItem: AccordionItemComponent
+    accordionItem: AccordionItemComponent
   ) {
     this.accordionItem$ = accordionItem;
   }
@@ -53,6 +52,5 @@ export class AccordionHeadComponent implements OnInit {
     return this.accordionItem$.disabled;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

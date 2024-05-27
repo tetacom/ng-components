@@ -15,12 +15,12 @@ import { AccordionContentDirective } from '../accordion-content.directive';
 import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
-    selector: 'teta-accordion-item',
-    templateUrl: './accordion-item.component.html',
-    styleUrls: ['./accordion-item.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [NgTemplateOutlet],
+  selector: 'teta-accordion-item',
+  templateUrl: './accordion-item.component.html',
+  styleUrls: ['./accordion-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgTemplateOutlet],
 })
 export class AccordionItemComponent {
   @ContentChild(AccordionContentDirective, { static: false })
@@ -33,20 +33,16 @@ export class AccordionItemComponent {
   disabled = false;
   @Input()
   viewType: viewType = 'rounded';
-  @HostBinding('class.accordion-item') private readonly accordionItemClass =
-    true;
+  @HostBinding('class.accordion-item') private readonly accordionItemClass = true;
 
   @HostBinding(`class`)
   get class() {
-    return `accordion_${this.viewType}`;
+    return `accordion-item_${this.viewType}`;
   }
 
   private readonly accordion$: AccordionComponent;
 
-  constructor(
-    @Optional() @Inject(AccordionComponent) accordion: AccordionComponent,
-    private cdr$: ChangeDetectorRef
-  ) {
+  constructor(@Optional() @Inject(AccordionComponent) accordion: AccordionComponent, private cdr$: ChangeDetectorRef) {
     this.accordion$ = accordion;
   }
 

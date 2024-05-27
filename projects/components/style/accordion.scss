@@ -2,66 +2,74 @@
 @import './util/color-util.scss';
 @import 'presets/view-types';
 
-.accordion_rounded .accordion-head {
-  border-radius: 8px;
-}
-
-.accordion_brick .accordion-head {
-  border-radius: 0;
-}
-
-.accordion_circle .accordion-head {
-  border-radius: 100px;
-}
-
 .accordion {
-  @include getView('base');
-
-  display: grid;
-  gap: 8px;
+  display: block;
 
   &-item {
-    display: flex;
-    flex-direction: column;
-    min-height: 52px;
-    background: var(--color-global-bgcard);
+    background-color: var(--color-global-bgcard);
+    display: block;
+    overflow: hidden;
+    transition: background-color 0.2s ease-in-out;
 
     &_active {
-      flex-grow: 0;
       background: var(--color-text-10);
+    }
+
+    &_rounded {
+      border-radius: 8px;
+    }
+    &_brick {
+      border-radius: 0;
+    }
+    &_circle {
+      border-radius: 48px;
+
+      .accordion-head,
+      .accordion-content {
+        padding: 12px 24px;
+      }
     }
   }
 
   &-head {
     @include getFont($fonts, 'title-3');
 
-    display: flex;
+    background-color: var(--color-global-bgcard);
+    display: grid;
+    grid-template-columns: 1fr auto;
     align-items: center;
-    height: 52px;
-    padding: 0 12px;
-    flex-shrink: 0;
-    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 
     &_disabled {
       color: var(--color-text-30);
+      cursor: default;
     }
+
     &:hover:not(&_disabled) {
       cursor: pointer;
       background: var(--color-text-5);
     }
 
     &_open {
-      border: none;
+      background-color: transparent;
     }
   }
 
-  &-toggle {
-    display: flex;
-  }
-
   &-content {
-    display: flex;
-    flex-grow: 1;
-    min-height: 0;
+    display: block;
+    padding: 8px;
+  }
+}
+
+.accordion-toggle {
+  display: block;
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease-in-out;
+
+  &_opened {
+    transform: rotate(180deg);
   }
 }
