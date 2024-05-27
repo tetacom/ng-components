@@ -48,20 +48,20 @@ export const basicAccordion = (args) => ({
   props: args,
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="padding-3 bg-global-bgcard">
          <h1 style="margin-bottom: 0.5em">Аккордион</h1>
-        <teta-accordion>
-             <teta-accordion-item [viewType]="viewType">
+        <teta-accordion [viewType]="viewType">
+             <teta-accordion-item>
               <teta-accordion-head [showToggle]="showToggle">Heading 1</teta-accordion-head>
               <ng-template tetaAccordionContent>
                 <p>I am the content 1</p>
               </ng-template>
             </teta-accordion-item>
-            <teta-accordion-item [viewType]="viewType">
+            <teta-accordion-item>
               <teta-accordion-head [showToggle]="showToggle">Heading 2</teta-accordion-head>
               <ng-template tetaAccordionContent>
                 <p>I am the content 2</p>
               </ng-template>
             </teta-accordion-item>
-            <teta-accordion-item [viewType]="viewType">
+            <teta-accordion-item>
               <teta-accordion-head [showToggle]="showToggle">Heading 3</teta-accordion-head>
               <ng-template tetaAccordionContent>
                 <p>I am the content 3</p>
@@ -83,20 +83,20 @@ export const disabledAccordion = (args) => ({
   props: args,
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="padding-3 bg-global-bgcard">
         <h1 style="margin-bottom: 0.5em">Аккордион</h1>
-       <teta-accordion>
-             <teta-accordion-item [viewType]="viewType">
+       <teta-accordion [viewType]="viewType">
+             <teta-accordion-item>
               <teta-accordion-head>Heading 1</teta-accordion-head>
               <ng-template tetaAccordionContent>
                 <p>I am the content 1</p>
               </ng-template>
             </teta-accordion-item>
-            <teta-accordion-item [viewType]="viewType" [disabled]="true">
+            <teta-accordion-item [disabled]="true">
               <teta-accordion-head>Heading 2</teta-accordion-head>
               <ng-template tetaAccordionContent>
                 <p>I am the content 2</p>
               </ng-template>
             </teta-accordion-item>
-            <teta-accordion-item [viewType]="viewType">
+            <teta-accordion-item>
               <teta-accordion-head>Heading 3</teta-accordion-head>
               <ng-template tetaAccordionContent>
                 <p>I am the content 3</p>

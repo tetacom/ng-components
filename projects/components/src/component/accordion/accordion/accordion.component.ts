@@ -1,4 +1,5 @@
-import {ChangeDetectionStrategy, Component, HostBinding} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { viewType } from '../../../common/model/view-type.model';
 
 @Component({
   selector: 'teta-accordion',
@@ -9,4 +10,12 @@ import {ChangeDetectionStrategy, Component, HostBinding} from '@angular/core';
 })
 export class AccordionComponent {
   @HostBinding('class.accordion') private readonly accordionClassName = true;
+
+  @Input()
+  viewType: viewType = 'rounded';
+
+  @HostBinding(`class`)
+  get class() {
+    return `accordion_${this.viewType}`;
+  }
 }

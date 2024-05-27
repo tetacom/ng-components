@@ -9,7 +9,6 @@ import {
   Optional,
 } from '@angular/core';
 
-import { viewType } from '../../../common/model/view-type.model';
 import { AccordionComponent } from '../accordion/accordion.component';
 import { AccordionContentDirective } from '../accordion-content.directive';
 import { NgTemplateOutlet } from '@angular/common';
@@ -31,14 +30,7 @@ export class AccordionItemComponent {
   open = false;
   @Input()
   disabled = false;
-  @Input()
-  viewType: viewType = 'rounded';
   @HostBinding('class.accordion-item') private readonly accordionItemClass = true;
-
-  @HostBinding(`class`)
-  get class() {
-    return `accordion-item_${this.viewType}`;
-  }
 
   private readonly accordion$: AccordionComponent;
 

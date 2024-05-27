@@ -5,6 +5,21 @@
 .accordion {
   display: block;
 
+  &_rounded .accordion-item {
+    border-radius: 8px;
+  }
+  &_brick .accordion-item {
+    border-radius: 0;
+  }
+  &_circle .accordion-item {
+    border-radius: 48px;
+
+    .accordion-head,
+    .accordion-content {
+      padding: 12px 24px;
+    }
+  }
+
   &-item {
     background-color: var(--color-global-bgcard);
     display: block;
@@ -13,21 +28,6 @@
 
     &_active {
       background: var(--color-text-10);
-    }
-
-    &_rounded {
-      border-radius: 8px;
-    }
-    &_brick {
-      border-radius: 0;
-    }
-    &_circle {
-      border-radius: 48px;
-
-      .accordion-head,
-      .accordion-content {
-        padding: 12px 24px;
-      }
     }
   }
 
