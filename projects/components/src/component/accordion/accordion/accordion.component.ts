@@ -12,8 +12,13 @@ export class AccordionComponent {
   @HostBinding('class.accordion') private readonly accordionClassName = true;
 
   @Input()
-  viewType: viewType = 'rounded';
+  divider: boolean = false;
+  @HostBinding('class.accordion_divider') get dividerClass() {
+    return this.divider;
+  }
 
+  @Input()
+  viewType: viewType = 'rounded';
   @HostBinding(`class`)
   get class() {
     return `accordion_${this.viewType}`;
