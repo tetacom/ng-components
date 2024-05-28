@@ -54,20 +54,20 @@ export const basicAccordion = (args) => ({
   props: args,
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="padding-3 bg-global-bgcard">
          <h1 style="margin-bottom: 0.5em">Аккордион</h1>
-        <teta-accordion [viewType]="viewType" [divider]="divider">
-             <teta-accordion-item>
+        <teta-accordion>
+             <teta-accordion-item [viewType]="viewType" [divider]="divider">
               <teta-accordion-head [showToggle]="showToggle">Heading 1</teta-accordion-head>
               <ng-template tetaAccordionContent>
                 <p>I am the content 1</p>
               </ng-template>
             </teta-accordion-item>
-            <teta-accordion-item>
+            <teta-accordion-item [viewType]="viewType" [divider]="divider">
               <teta-accordion-head [showToggle]="showToggle">Heading 2</teta-accordion-head>
               <ng-template tetaAccordionContent>
                 <p>I am the content 2</p>
               </ng-template>
             </teta-accordion-item>
-            <teta-accordion-item>
+            <teta-accordion-item [viewType]="viewType">
               <teta-accordion-head [showToggle]="showToggle">Heading 3</teta-accordion-head>
               <ng-template tetaAccordionContent>
                 <p>I am the content 3</p>
@@ -90,20 +90,20 @@ export const disabledAccordion = (args) => ({
   props: args,
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="padding-3 bg-global-bgcard">
         <h1 style="margin-bottom: 0.5em">Аккордион</h1>
-       <teta-accordion [viewType]="viewType" [divider]="divider">
-             <teta-accordion-item>
+       <teta-accordion>
+             <teta-accordion-item [viewType]="viewType" [divider]="divider">
               <teta-accordion-head>Heading 1</teta-accordion-head>
               <ng-template tetaAccordionContent>
                 <p>I am the content 1</p>
               </ng-template>
             </teta-accordion-item>
-            <teta-accordion-item [disabled]="true">
+            <teta-accordion-item [viewType]="viewType" [divider]="divider" [disabled]="true">
               <teta-accordion-head>Heading 2</teta-accordion-head>
               <ng-template tetaAccordionContent>
                 <p>I am the content 2</p>
               </ng-template>
             </teta-accordion-item>
-            <teta-accordion-item>
+            <teta-accordion-item [viewType]="viewType">
               <teta-accordion-head>Heading 3</teta-accordion-head>
               <ng-template tetaAccordionContent>
                 <p>I am the content 3</p>
@@ -128,8 +128,8 @@ export const filesListAccordion = (args) => ({
   template: `<div [tetaIconSprite]="'assets/file-icons.svg'">
         <h1 style="margin-bottom: 0.5em">Аккордион</h1>
         <div class="padding-3 bg-global-bgcard" style="width: 275px; border-radius: 8px;">
-            <teta-accordion [viewType]="viewType" [divider]="divider">
-             <teta-accordion-item>
+            <teta-accordion>
+             <teta-accordion-item [viewType]="viewType" [divider]="divider">
               <teta-accordion-head>
                 <div style="display: grid; grid-template-columns: 32px auto; align-items: center; gap: 12px;">
                   <teta-icon [name]="'file_txt'" style="width: 32px; height: 40px;"></teta-icon>
@@ -152,7 +152,7 @@ export const filesListAccordion = (args) => ({
                 </div>
               </ng-template>
             </teta-accordion-item>
-              <teta-accordion-item>
+              <teta-accordion-item [viewType]="viewType" [divider]="divider">
                 <teta-accordion-head>
                   <div style="display: grid; grid-template-columns: 32px auto; align-items: center; gap: 12px;">
                     <teta-icon [name]="'file_pdf'" style="width: 32px; height: 40px;"></teta-icon>
@@ -175,7 +175,7 @@ export const filesListAccordion = (args) => ({
                 </div>
                 </ng-template>
               </teta-accordion-item>
-              <teta-accordion-item>
+              <teta-accordion-item [viewType]="viewType" [divider]="divider">
               <teta-accordion-head>
                 <div style="display: grid; grid-template-columns: 32px auto; align-items: center; gap: 12px;">
                   <teta-icon [name]="'file_csv'" style="width: 32px; height: 40px;"></teta-icon>
@@ -198,7 +198,7 @@ export const filesListAccordion = (args) => ({
                 </div>
               </ng-template>
             </teta-accordion-item>
-            <teta-accordion-item>
+            <teta-accordion-item [viewType]="viewType">
               <teta-accordion-head>
                 <div style="display: grid; grid-template-columns: 32px auto; align-items: center; gap: 12px;">
                   <teta-icon [name]="'file_txt'" style="width: 32px; height: 40px;"></teta-icon>
