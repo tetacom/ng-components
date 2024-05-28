@@ -1667,74 +1667,84 @@ a {
   box-shadow: var(--shadow-5);
 }
 
-.accordion_rounded .accordion-head {
-  border-radius: 8px;
-}
-
-.accordion_brick .accordion-head {
-  border-radius: 0;
-}
-
-.accordion_circle .accordion-head {
-  border-radius: 100px;
-}
-
 .accordion {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  border-radius: var(--radius-base-round);
-}
-.accordion_brick {
-  border-radius: var(--radius-base-brick);
-}
-.accordion_circle {
-  border-radius: var(--radius-base-circle);
-}
-.accordion_rounded {
-  border-radius: var(--radius-base-round);
+  display: block;
 }
 .accordion-item {
-  display: flex;
-  flex-direction: column;
-  min-height: 52px;
-  background: var(--color-global-bgcard);
+  display: block;
+  overflow: hidden;
+  transition: background-color 0.2s ease-in-out;
 }
 .accordion-item_active {
-  flex-grow: 0;
   background: var(--color-text-10);
 }
+.accordion-item_active.accordion-item_divider::after {
+  background-color: transparent;
+}
+.accordion-item_divider {
+  position: relative;
+}
+.accordion-item_divider::after {
+  content: "";
+  position: absolute;
+  background-color: var(--color-text-5);
+  width: 100%;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+}
+.accordion-item_rounded {
+  border-radius: 8px;
+}
+.accordion-item_brick {
+  border-radius: 0;
+}
+.accordion-item_circle {
+  border-radius: 48px;
+}
+.accordion-item_circle .accordion-head,
+.accordion-item_circle .accordion-content {
+  padding: 12px 24px;
+}
 .accordion-head {
-  display: flex;
-  align-items: center;
-  height: 52px;
-  padding: 0 12px;
-  flex-shrink: 0;
-  justify-content: space-between;
   font-size: 12px;
   font-family: Inter;
   font-weight: 500;
   font-style: normal;
   line-height: 16px;
   text-decoration: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 .accordion-head_disabled {
   color: var(--color-text-30);
+  cursor: default;
 }
 .accordion-head:hover:not(.accordion-head_disabled) {
   cursor: pointer;
   background: var(--color-text-5);
 }
 .accordion-head_open {
-  border: none;
-}
-.accordion-toggle {
-  display: flex;
+  background-color: transparent;
 }
 .accordion-content {
-  display: flex;
-  flex-grow: 1;
-  min-height: 0;
+  display: block;
+  padding: 8px;
+}
+
+.accordion-toggle {
+  flex: 0 0 16px;
+  display: block;
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease-in-out;
+}
+.accordion-toggle_opened {
+  transform: rotate(180deg);
 }
 
 .skeleton-pulse {
@@ -2066,18 +2076,14 @@ a {
 }
 .chip_global {
   background-color: var(--color-global-5);
-  color: var(--color-global-50);
-  fill: var(--color-global-50);
+  color: var(--color-text-90);
+  fill: var(--color-text-90);
 }
 .chip_global:hover {
   background-color: var(--color-global-10);
-  color: var(--color-global-60);
-  fill: var(--color-global-60);
 }
 .chip_global:active {
   background-color: var(--color-global-20);
-  color: var(--color-global-70);
-  fill: var(--color-global-70);
 }
 .chip_global_outlined {
   border-color: var(--color-global-50);
@@ -2099,18 +2105,14 @@ a {
 }
 .chip_text {
   background-color: var(--color-text-5);
-  color: var(--color-text-50);
-  fill: var(--color-text-50);
+  color: var(--color-text-90);
+  fill: var(--color-text-90);
 }
 .chip_text:hover {
   background-color: var(--color-text-10);
-  color: var(--color-text-60);
-  fill: var(--color-text-60);
 }
 .chip_text:active {
   background-color: var(--color-text-20);
-  color: var(--color-text-70);
-  fill: var(--color-text-70);
 }
 .chip_text_outlined {
   border-color: var(--color-text-50);
@@ -2132,18 +2134,14 @@ a {
 }
 .chip_primary {
   background-color: var(--color-primary-5);
-  color: var(--color-primary-50);
-  fill: var(--color-primary-50);
+  color: var(--color-text-90);
+  fill: var(--color-text-90);
 }
 .chip_primary:hover {
   background-color: var(--color-primary-10);
-  color: var(--color-primary-60);
-  fill: var(--color-primary-60);
 }
 .chip_primary:active {
   background-color: var(--color-primary-20);
-  color: var(--color-primary-70);
-  fill: var(--color-primary-70);
 }
 .chip_primary_outlined {
   border-color: var(--color-primary-50);
@@ -2165,18 +2163,14 @@ a {
 }
 .chip_green {
   background-color: var(--color-green-5);
-  color: var(--color-green-50);
-  fill: var(--color-green-50);
+  color: var(--color-text-90);
+  fill: var(--color-text-90);
 }
 .chip_green:hover {
   background-color: var(--color-green-10);
-  color: var(--color-green-60);
-  fill: var(--color-green-60);
 }
 .chip_green:active {
   background-color: var(--color-green-20);
-  color: var(--color-green-70);
-  fill: var(--color-green-70);
 }
 .chip_green_outlined {
   border-color: var(--color-green-50);
@@ -2198,18 +2192,14 @@ a {
 }
 .chip_red {
   background-color: var(--color-red-5);
-  color: var(--color-red-50);
-  fill: var(--color-red-50);
+  color: var(--color-text-90);
+  fill: var(--color-text-90);
 }
 .chip_red:hover {
   background-color: var(--color-red-10);
-  color: var(--color-red-60);
-  fill: var(--color-red-60);
 }
 .chip_red:active {
   background-color: var(--color-red-20);
-  color: var(--color-red-70);
-  fill: var(--color-red-70);
 }
 .chip_red_outlined {
   border-color: var(--color-red-50);
@@ -2231,18 +2221,14 @@ a {
 }
 .chip_yellow {
   background-color: var(--color-yellow-5);
-  color: var(--color-yellow-50);
-  fill: var(--color-yellow-50);
+  color: var(--color-text-90);
+  fill: var(--color-text-90);
 }
 .chip_yellow:hover {
   background-color: var(--color-yellow-10);
-  color: var(--color-yellow-60);
-  fill: var(--color-yellow-60);
 }
 .chip_yellow:active {
   background-color: var(--color-yellow-20);
-  color: var(--color-yellow-70);
-  fill: var(--color-yellow-70);
 }
 .chip_yellow_outlined {
   border-color: var(--color-yellow-50);
