@@ -56,18 +56,14 @@
   @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
     &_#{'' + $paletteName} {
       background-color: getColorVar($paletteName, '5');
-      color: getColorVar($paletteName, '50');
-      fill: getColorVar($paletteName, '50');
+      color: var(--color-text-90);
+      fill: var(--color-text-90);
 
       &:hover {
         background-color: getColorVar($paletteName, '10');
-        color: getColorVar($paletteName, '60');
-        fill: getColorVar($paletteName, '60');
       }
       &:active {
         background-color: getColorVar($paletteName, '20');
-        color: getColorVar($paletteName, '70');
-        fill: getColorVar($paletteName, '70');
       }
 
       &_outlined {

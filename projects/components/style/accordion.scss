@@ -1,71 +1,94 @@
-@import "./util/font-util.scss";
-@import "./util/color-util.scss";
-@import "presets/view-types";
-
-.accordion_rounded .accordion-head {
-  border-radius: 8px;
-}
-
-.accordion_brick .accordion-head {
-  border-radius: 0
-}
-
-.accordion_circle .accordion-head {
-  border-radius: 100px;
-}
+@import './util/font-util.scss';
+@import './util/color-util.scss';
+@import 'presets/view-types';
 
 .accordion {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  @include getView('base');
+  display: block;
 
   &-item {
-    display: flex;
-    flex-direction: column;
-    min-height: 52px;
-    background: var(--color-global-bgcard);
+    display: block;
+    overflow: hidden;
+    transition: background-color 0.2s ease-in-out;
 
     &_active {
-      flex-grow: 0;
       background: var(--color-text-10);
+
+      &.accordion-item_divider {
+        &::after {
+          background-color: transparent;
+        }
+      }
+    }
+
+    &_divider {
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        background-color: var(--color-text-5);
+        width: 100%;
+        height: 1px;
+        bottom: 0;
+        left: 0;
+      }
+    }
+
+    &_rounded {
+      border-radius: 8px;
+    }
+    &_brick {
+      border-radius: 0;
+    }
+    &_circle {
+      border-radius: 48px;
+
+      .accordion-head,
+      .accordion-content {
+        padding: 12px 24px;
+      }
     }
   }
 
   &-head {
-    display: flex;
-    align-items: center;
-    height: 52px;
-    padding: 0 12px;
-    flex-shrink: 0;
-    //border-bottom: solid 1px var(--color-text-5);
-    justify-content: space-between;
     @include getFont($fonts, 'title-3');
 
-    &_disabled{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+    &_disabled {
       color: var(--color-text-30);
+      cursor: default;
     }
+
     &:hover:not(&_disabled) {
       cursor: pointer;
       background: var(--color-text-5);
     }
 
     &_open {
-      border: none;
+      background-color: transparent;
     }
   }
 
-  &-toggle {
-    display: flex;
-
-  }
-
   &-content {
-    display: flex;
-    flex-grow: 1;
-    min-height: 0;
-    //border-bottom: solid 1px var(--color-text-5);
+    display: block;
+    padding: 8px;
   }
+}
 
+.accordion-toggle {
+  flex: 0 0 16px;
+  display: block;
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease-in-out;
+
+  &_opened {
+    transform: rotate(180deg);
+  }
 }
