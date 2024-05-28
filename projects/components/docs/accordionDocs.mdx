@@ -37,14 +37,14 @@ import AccordionStories from '../src/component/accordion/Accordion.stories';
 ### Примеры кода
 
 ```
-<teta-accordion [viewType]="'rounded'">
-  <teta-accordion-item>
+<teta-accordion>
+  <teta-accordion-item [viewType]="'rounded'" [divider]="true">
    <teta-accordion-head>Heading 1</teta-accordion-head>
    <ng-template tetaAccordionContent>
     <div class="padding-v-3 padding-h-2">I am the content 1</div>
    </ng-template>
   </teta-accordion-item>
-  <teta-accordion-item>
+  <teta-accordion-item [viewType]="'brick'">
    <teta-accordion-head>Heading 3</teta-accordion-head>
    <ng-template tetaAccordionContent>
     <div class="padding-v-3 padding-h-5">I am the content 3</div>
