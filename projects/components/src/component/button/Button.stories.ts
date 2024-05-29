@@ -1,10 +1,11 @@
-import { ButtonComponent } from './button/button.component';
+import {ButtonComponent} from './button/button.component';
 
-import { applicationConfig, Meta, StoryFn } from '@storybook/angular';
-import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { IconSpriteDirective } from '../icon/icon-sprite.directive';
-import { IconComponent } from '../icon/icon/icon.component';
+import {applicationConfig, Meta, StoryFn} from '@storybook/angular';
+import {importProvidersFrom} from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
+import {IconSpriteDirective} from '../icon/icon-sprite.directive';
+import {IconComponent} from '../icon/icon/icon.component';
+import {TetaSize} from "../../common/enum/teta-size.enum";
 
 export default {
   title: 'Component/Button',
@@ -16,22 +17,22 @@ export default {
   argTypes: {
     viewType: {
       options: ['rounded', 'brick', 'circle'],
-      control: { type: 'select' },
+      control: {type: 'select'},
     },
     palette: {
       options: ['primary', 'text', 'red', 'yellow', 'green'],
-      control: { type: 'select' },
+      control: {type: 'select'},
     },
     size: {
-      options: ['s', 'm', 'l'],
-      control: { type: 'select' },
+      options: [TetaSize.S, TetaSize.M, TetaSize.L],
+      control: {type: 'select'},
     },
     view: {
-      control: { type: 'select' },
+      control: {type: 'select'},
       options: ['primary', 'ghost', 'outline'],
     },
     text: {
-      control: { type: 'text' },
+      control: {type: 'text'},
     },
   },
   args: {
