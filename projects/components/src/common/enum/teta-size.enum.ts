@@ -3,5 +3,5 @@ export enum TetaSize {
   S,
   M,
   L,
-  XL
+  XL,
 }
