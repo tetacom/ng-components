@@ -1,4 +1,4 @@
-@import "util/color-util.scss";
+@import 'util/color-util.scss';
 
 .checkbox {
   display: inline-flex;
@@ -6,9 +6,9 @@
   grid-gap: 8px;
 
   &_disabled {
-    cursor: default!important;
-    fill: var(--color-text-5)!important;
-    color: var(--color-text-50)!important;
+    cursor: default !important;
+    fill: var(--color-text-5) !important;
+    color: var(--color-text-50) !important;
   }
 
   &__tick {
@@ -26,13 +26,13 @@
       border-radius: 4px;
       background: var(--color-primary-50);
       fill: var(--color-global-white);
+      color: var(--color-global-white);
     }
   }
 
   &:hover:not(&_disabled) {
     cursor: pointer;
   }
-
 
   &:hover:not(&_disabled) &__tick {
     background: var(--color-text-5);
@@ -43,9 +43,8 @@
     }
   }
 
-
   @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
-    &#{'.checkbox-'+$paletteName} {
+    &#{'.checkbox-' + $paletteName} {
       fill: getColorVar($paletteName, '50');
     }
   }

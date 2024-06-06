@@ -1,89 +1,92 @@
-import {Meta} from "@storybook/blocks";
-import IconStories from "../src/component/icon/Icon.stories";
+import { Meta } from '@storybook/blocks';
+import IconStories from '../src/component/icon/Icon.stories';
 
-<Meta of={IconStories}/>
+<Meta of={IconStories} />
 
-<div class='column gap-24'>
-  <h1>Иконки</h1>
-  <div class='column'>
-    <p>Иконка — элемент графического интерфейса, небольшая картинка, обозначающая приложение, файл, каталог и т. п</p>
-    <p>В библиотеке существует два вида иконок: цветные и без заливки</p>
-  </div>
-  <h3>Функции</h3>
-  <div class='column'>
-    <p>Иконки нужны для быстрого восприятия информации и помогают пользователю быстро и легко узнать о теме функции или категории, не используя текст.</p>
-    <p>Используются в различных компонентах:</p>
-    <ul>
-      <li>Кнопки</li>
-      <li>Инпуты</li>
-      <li>Селекты</li>
-      <li>Аккордеонах и т.п.</li>
-    </ul>
-  </div>
-  <h3>Как использовать</h3>
-  <div>
-    <p>Для создание иконки используется <code>teta-icon</code> и аттрибут <code>name</code> для указания названия иконки.</p>
-    <p>Для того, чтобы инконки загрузились в проект, необходимо в родительском компоненте или в корневом элементе добавить директиву <code>tetaIconSprite</code> с указанием пакета с нужными иконками.</p>
-    <p>На данный момент есть следующие пакеты с иконками:</p>
-    <ul>
-      <li>'assets/icons.svg'- обычые иконки без заливки</li>
-      <li>'assets/color-icons.svg'- цветные иконки</li>
-      <li>'assets/file-icons.svg'- иконки с типами файлов</li>
-      <li>'assets/lithotype-icons.svg'- иконки литотипов</li>
-    </ul>
-  </div>
-  <h3>Пример кода</h3>
-  <p>
-    <pre><code>&lt;div [tetaIconSprite]="'assets/icons.svg'" class="column bg-global-bgcard font-body-3 padding-3"&gt;
-      &nbsp;&nbsp;&lt;teta-icon name='edit' &gt;
-      &nbsp;&nbsp;&lt;/teta-icon&gt;
-      &nbsp;&lt;/div&gt;</code></pre>
-  </p>
-  <div class='column'>
-    <h3>Свойства</h3>
-    <table>
-      <thead>
-      <tr>
-        <th>Свойство</th>
-        <th>Tип</th>
-        <th>Описание</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td  class='text-align-center'>
-          <p>name</p>
-        </td>
-        <td class='text-align-center'>
-          <code>string</code>
-        </td>
-        <td  class='text-align-center'>
-            <p>Название иконки</p>
-        </td>
-      </tr>
-      <tr>
-        <td  class='text-align-center'>
-          <p>size</p>
-        </td>
-        <td class='text-align-center'>
-          <code>TetaSize</code>
-        </td>
-        <td  class='text-align-center'>
-          <p>Размер иконки</p>
-        </td>
-      </tr>
-      <tr>
-        <td  class='text-align-center'>
-          <p>palette</p>
-        </td>
-        <td class='text-align-center'>
-          <code>string</code>
-        </td>
-        <td  class='text-align-center'>
-          <p>Принимает название палитры и окращивает в 50-й оттенок этой палитры</p>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+# Иконки
+
+Иконка — элемент графического интерфейса, небольшая картинка, обозначающая приложение, файл, каталог и т. п
+
+В библиотеке существует два вида иконок: цветные и без заливки
+
+### Функции
+
+Иконки нужны для быстрого восприятия информации и помогают пользователю быстро и легко узнать о теме функции или
+категории, не используя текст.
+
+Используются в различных компонентах:
+
+- Кнопки
+- Инпуты
+- Селекты
+- Аккордеонах и т.п.
+
+### Как использовать
+
+Для создание иконки используется `teta-icon` и аттрибут `name` для указания названия иконки.
+
+Для того, чтобы инконки загрузились в проект, необходимо в родительском компоненте или в корневом элементе добавить
+директиву `tetaIconSprite` с указанием пакета с нужными иконками.
+
+На данный момент есть следующие пакеты с иконками:
+
+- 'assets/icons.svg'- обычые иконки без заливки
+- 'assets/color-icons.svg'- цветные иконки
+- 'assets/file-icons.svg'- иконки с типами файлов
+- 'assets/lithotype-icons.svg'- иконки литотипов
+
+### Пример кода
+
+```
+<div [tetaIconSprite]="'assets/icons.svg'" class="column bg-global-bgcard font-body-3 padding-3">
+  <teta-icon name='edit'>
+  </teta-icon>
+ </div>
+```
+
+### Свойства
+
+<table>
+  <thead>
+    <tr>
+      <th>Свойство</th>
+      <th>Tип</th>
+      <th>Описание</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="text-align-center">
+        <p>name</p>
+      </td>
+      <td class="text-align-center">
+        <code>string</code>
+      </td>
+      <td class="text-align-center">
+        <p>Название иконки</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-align-center">
+        <p>size</p>
+      </td>
+      <td class="text-align-center">
+        <code>TetaSize</code>
+      </td>
+      <td class="text-align-center">
+        <p>Размер иконки</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-align-center">
+        <p>palette</p>
+      </td>
+      <td class="text-align-center">
+        <code>string</code>
+      </td>
+      <td class="text-align-center">
+        <p>Принимает название палитры и окращивает в 50-й оттенок этой палитры</p>
+      </td>
+    </tr>
+  </tbody>
+</table>

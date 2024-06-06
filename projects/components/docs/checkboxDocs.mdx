@@ -1,108 +1,110 @@
-import {Meta} from "@storybook/blocks";
-import checkboxStories from "../src/component/checkbox/Checkbox.stories";
+import { Meta } from '@storybook/blocks';
+import checkboxStories from '../src/component/checkbox/Checkbox.stories';
 
-<Meta of={checkboxStories}/>
+<Meta of={checkboxStories} />
 
-<div class='column gap-24'>
-  <h1>Чекбоксы</h1>
-  <div class='column'>
-    <p>Checkbox (чекбокс) — компонент, который позволяет пользователю выбрать опцию и может находится в состояниях
-      «выбран» (True) и «не выбран» (False).</p>
-    <p>Основной призыв к действию. Предназначены для выполнения какого-либо действия в системе. </p>
-  </div>
-  <h3>Как использовать</h3>
-  <div class='column'>
-    <p>Чекбоксы используются когда на странице есть список опций, из которых пользователь может выбрать любое
-      количество. В основном, чекбоксы не зависят друг от друга.</p>
-    <p>Не путать с Toggle, так как если нужно переключить режим, выбрать тему или же сделать какое-то внушительное
-      изменение в интерфейсе, лучше использовать его.</p>
-  </div>
-  <div class='column'>
-    <h3>Состояние выбора чекбоксов</h3>
-    <div>
-      <p>При клике пользователь переводит чекбокс из состояния False в Active. Undefined — неопределенное состояние и
-        используется только у родительских чекбоксов.</p>
-      <p>По дефолту включены состояния чекбокса <code>true</code> и <code>false</code>. Для включения состояния undefined нужно передать свойства <code>binary</code> и <code>allowNull</code> со значением <code>true</code></p>
-    </div>
-  </div>
-  <div class='column'>
-    <h3>Свойства</h3>
-    <table>
-      <thead>
-      <tr>
-        <th>Свойство</th>
-        <th>Tип</th>
-        <th>Описание</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td class='text-align-center'>
-          <p>viewType</p>
-        </td>
-        <td class='text-align-center'>
-          <code>'rounded'|'circle'|'brick'</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Свойство округления компонента.</p>
-        </td>
-      </tr>
-      <tr>
-        <td class='text-align-center'>
-          <p>disabled</p>
-        </td>
-        <td class='text-align-center'>
-          <code>boolean</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Отключает реакцию компонента на клик пользователя</p>
-        </td>
-      </tr>
-      <tr>
-        <td class='text-align-center'>
-          <p>noLabel</p>
-        </td>
-        <td class='text-align-center'>
-          <code>boolean</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Свойство, которое отображает/скрывает блок текста в чекбоксе</p>
-        </td>
-      </tr>
-      <tr>
-        <td class='text-align-center'>
-          <p>labelPosition</p>
-        </td>
-        <td class='text-align-center'>
-          <code>'left' | 'right'</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Позиция блока текста относительно чекбокса</p>
-        </td>
-      </tr>
-      <tr>
-        <td class='text-align-center'>
-          <p>allowNull</p>
-        </td>
-        <td class='text-align-center'>
-          <code>boolean</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Свойство отвечающее за реагирование на null</p>
-        </td>
-      </tr>
-      <tr>
-        <td class='text-align-center'>
-          <p>binary</p>
-        </td>
-        <td class='text-align-center'>
-          <code>boolean</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Свойство отвечающее за тип вводимых данных. Если <code>boolean</code>, то свойство должно быть <code>true</code></p>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+# Чекбоксы
+
+Checkbox (чекбокс) — компонент, который позволяет пользователю выбрать опцию и может находится в состояниях «выбран»
+(True) и «не выбран» (False).
+
+Основной призыв к действию. Предназначены для выполнения какого-либо действия в системе.
+
+### Как использовать
+
+Чекбоксы используются когда на странице есть список опций, из которых пользователь может выбрать любое количество. В
+основном, чекбоксы не зависят друг от друга.
+
+Не путать с Toggle, так как если нужно переключить режим, выбрать тему или же сделать какое-то внушительное изменение
+в интерфейсе, лучше использовать его.
+
+### Состояние выбора чекбоксов
+
+При клике пользователь переводит чекбокс из состояния False в Active. Undefined — неопределенное состояние и
+используется только у родительских чекбоксов.
+
+По дефолту включены состояния чекбокса `true` и `false`. Для включения состояния undefined нужно
+передать свойства `binary` и `allowNull` со значением `true`
+
+### Свойства
+
+<table>
+  <thead>
+    <tr>
+      <th>Свойство</th>
+      <th>Tип</th>
+      <th>Описание</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="text-align-center">
+        <p>viewType</p>
+      </td>
+      <td class="text-align-center">
+        <code>'rounded'|'circle'|'brick'</code>
+      </td>
+      <td class="text-align-center">
+        <p>Свойство округления компонента.</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-align-center">
+        <p>disabled</p>
+      </td>
+      <td class="text-align-center">
+        <code>boolean</code>
+      </td>
+      <td class="text-align-center">
+        <p>Отключает реакцию компонента на клик пользователя</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-align-center">
+        <p>noLabel</p>
+      </td>
+      <td class="text-align-center">
+        <code>boolean</code>
+      </td>
+      <td class="text-align-center">
+        <p>Свойство, которое отображает/скрывает блок текста в чекбоксе</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-align-center">
+        <p>labelPosition</p>
+      </td>
+      <td class="text-align-center">
+        <code>'left' | 'right'</code>
+      </td>
+      <td class="text-align-center">
+        <p>Позиция блока текста относительно чекбокса</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-align-center">
+        <p>allowNull</p>
+      </td>
+      <td class="text-align-center">
+        <code>boolean</code>
+      </td>
+      <td class="text-align-center">
+        <p>Свойство отвечающее за реагирование на null</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-align-center">
+        <p>binary</p>
+      </td>
+      <td class="text-align-center">
+        <code>boolean</code>
+      </td>
+      <td class="text-align-center">
+        <p>
+          Свойство отвечающее за тип вводимых данных. Если <code>boolean</code>, то свойство должно быть
+          <code>true</code>
+        </p>
+      </td>
+    </tr>
+  </tbody>
+</table>

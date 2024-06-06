@@ -1,63 +1,63 @@
-import {Meta} from "@storybook/blocks";
-import ModalStories from "../src/component/modal/Modal.stories";
+import { Meta } from '@storybook/blocks';
+import ModalStories from '../src/component/modal/Modal.stories';
 
-<Meta of={ModalStories}/>
+<Meta of={ModalStories} />
 
-<div class='column gap-24'>
-  <h1>Модальное окно</h1>
-  <div class='column'>
-    <p>Modal Window или Pop Up (модальное окно) — это эмуляция диалогового окна браузера, появляющегося поверх страницы
-      в ответ на действия пользователя и блокирующего доступ к основному содержимому страницы.</p>
-  </div>
-  <h3>Функции</h3>
-  <div class='column'>
-    <p>Используйте модальное окно для второстепенного содержимого страниц, которое требуется только в некоторых случаях,
-      или для того, чтобы сосредоточить внимание пользователя на совершаемом действии. Как правило, это настройки,
-      создание новых документов, заполнение небольших форм.</p>
-    <p>Не используйте модальное окно для больших форм. Большие формы — это формы которые не помещаются в два экрана
-      монитора. </p>
-  </div>
-  <h3>Как использовать</h3>
-  <div class='column'>
-    <p>Для того чтобы воспользоваться данным компонентом, нужно внедрить в компонент
-      сервис <code>modalService</code> и использовать метод <code>create</code>, передав компонент, который будет
-      помещен в модалку и необходимые свойсва.</p>
-    <p>Этот метод вернет объект со свойствами: <code>close</code>- функция, которая принимает причину закрытия модалки и закрывает
-      ее, <code>onClose</code>- поток, который срабатывает при закрытии модалки и отдает объект с причиной закрытия модалки и
-      данными, которые мы вернули из модалки</p>
-    <p>Внутри компонента модалки мы привязываем события для закрытия модалки (допустим при нажатии на кнопку). Для этого
-      нужно внедрить сервис <code>CurrentModal</code> и вызвать метод close и передать в него объект со свойствами:</p>
-    <ul>
-      <li><code>reason</code> - принимает номер причины закрытия модалки (ModalCloseReason)</li>
-      <li><code>data</code> - данные, которые нужно вывести из модалки</li>
-    </ul>
-    <p></p>
-    <p>Также есть возможность скрыть все открытые модалки медотом <code>closeAll</code> из <code>modalService</code></p>
-  </div>
-  <h3>Пример кода</h3>
-  <div>
-    <p>Создание модалки</p>
-    <p>
-    <pre><code>createModal(name:string,description:string)&#123;
-      &nbsp;&nbsp;const modal=this.modalService.create(Component,&#123;name,description&#125;)
-      &nbsp;&nbsp;modal.onClose.pipe(
-      &nbsp;&nbsp;&nbsp;takeWhile(()=>this.alive),
-      &nbsp;&nbsp;&nbsp;filter((data)=>data.reason===ModalCloseReason.resolve),
-      &nbsp;&nbsp;&nbsp;tap((data)=>&#123;console.log(data.data.description)&#125;)
-      &nbsp;&nbsp;).subscribe()
-      &nbsp;&#125;</code></pre>
-    </p>
-    <p>Закрытие модалки</p>
-    <p>
-    <pre><code>closeModal(description:string)&#123;
-      &nbsp;&nbsp;this.currentModal.close(
-      &nbsp;&nbsp;&nbsp;&#123;
-      &nbsp;&nbsp;&nbsp;&nbsp;reason:ModalCloseReason.resolve,
-      &nbsp;&nbsp;&nbsp;&nbsp;data:&#123;description&#125;,
-      &nbsp;&nbsp;&nbsp;&#125;
-      &nbsp;&nbsp;)
-      &nbsp;&#125;</code></pre>
-    </p>
+# Модальное окно
 
-  </div>
-</div>
+Modal Window или Pop Up (модальное окно) — это эмуляция диалогового окна браузера, появляющегося поверх страницы
+в ответ на действия пользователя и блокирующего доступ к основному содержимому страницы.
+
+### Функции
+
+Используйте модальное окно для второстепенного содержимого страниц, которое требуется только в некоторых случаях,
+или для того, чтобы сосредоточить внимание пользователя на совершаемом действии. Как правило, это настройки,
+создание новых документов, заполнение небольших форм.
+
+Не используйте модальное окно для больших форм. Большие формы — это формы которые не помещаются в два экрана монитора.
+
+### Как использовать
+
+Для того чтобы воспользоваться данным компонентом, нужно внедрить в компонент сервис `modalService` и использовать
+метод `create`, передав компонент, который будет помещен в модалку и необходимые свойсва.
+
+Этот метод вернет объект со свойствами: `close` - функция, которая принимает причину закрытия модалки и закрывает ее,
+`onClose` - поток, который срабатывает при закрытии модалки и отдает объект с причиной закрытия модалки и данными,
+которые мы вернули из модалки
+
+Внутри компонента модалки мы привязываем события для закрытия модалки (допустим при нажатии на кнопку). Для этого
+нужно внедрить сервис `CurrentModal` и вызвать метод `close` и передать в него объект со свойствами:
+
+- `reason` - принимает номер причины закрытия модалки (ModalCloseReason)
+- `data` - данные, которые нужно вывести из модалки
+
+Также есть возможность скрыть все открытые модалки медотом `closeAll` из `modalService`
+
+### Пример кода
+
+#### Создание модалки
+
+```
+createModal(name:string,description:string){
+  const modal=this.modalService.create(Component,{name,description})
+  modal.onClose.pipe(
+   takeWhile(()=>this.alive),
+   filter((data)=>data.reason===ModalCloseReason.resolve),
+   tap((data)=>{console.log(data.data.description)})
+  ).subscribe()
+}
+```
+
+#### Закрытие модалки
+
+```
+
+closeModal(description:string){
+  this.currentModal.close(
+   {
+    reason:ModalCloseReason.resolve,
+    data:{description},
+   }
+  )
+}
+```
