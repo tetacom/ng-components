@@ -94,6 +94,8 @@ export * from './toolbar/public-api';
 /* tree */
 export * from './tree/public-api';
 
+/* stepper */
+export * from './stepper/public-api';
 
 /* 3d-chart */
 export * from './chart-3d/public-api';

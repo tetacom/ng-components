@@ -1,0 +1,66 @@
+:host {
+  display: block;
+  padding: 18px 0 0;
+
+  .stepper {
+    --point-radius: 4px;
+
+    margin: 0;
+    padding: 0 var(--padding-right) 0 var(--padding-left);
+    list-style: none;
+    display: grid;
+    grid-template-columns: calc(2 * var(--point-radius)) repeat(var(--step-count), 1fr);
+
+    &Item {
+      position: relative;
+      display: flex;
+      justify-content: flex-end;
+      cursor: default;
+
+      &:not(:first-child) {
+        &::before {
+          content: '';
+          position: absolute;
+          top: calc(var(--point-radius) - 0.5px);
+          right: calc(2 * var(--point-radius));
+          width: calc(100% - 2 * var(--point-radius));
+          height: 1px;
+          background-color: var(--color-text-20);
+        }
+      }
+
+      .point {
+        position: relative;
+        display: block;
+        width: calc(2 * var(--point-radius));
+        height: calc(2 * var(--point-radius));
+        border-radius: 50%;
+        border: 1px solid var(--color-text-20);
+      }
+
+      .stepLabel {
+        position: absolute;
+        bottom: calc(2px + 100%);
+        left: 50%;
+        transform: translate(-50%);
+        white-space: nowrap;
+      }
+
+      &Active {
+        &:not(:first-child) {
+          &::before {
+            background-color: var(--color-primary-50);
+          }
+        }
+
+        .point {
+          border-color: var(--color-primary-50);
+        }
+
+        .stepLabel {
+          color: var(--color-primary-50);
+        }
+      }
+    }
+  }
+}

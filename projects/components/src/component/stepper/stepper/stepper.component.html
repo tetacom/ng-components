@@ -1,0 +1,24 @@
+@if (steps().length) {
+<ul
+  class="stepper"
+  [style]="
+    '--step-count: ' +
+    (steps().length - 1) +
+    '; --padding-left: ' +
+    steps().at(0).name.length / 2 +
+    'ch; --padding-right: ' +
+    steps().at(-1).name.length / 2 +
+    'ch;'
+  "
+>
+  @for (step of steps(); track step.id; let index = $index) {
+  <li class="font-title-3 stepperItem" [class.stepperItemActive]="currentIndex() >= index">
+    <span class="point">
+      <span class="stepLabel">{{ step.name }}</span>
+    </span>
+  </li>
+  }
+</ul>
+} @else {
+<p class="font-title-1 text-align-center">Шаги отсутствуют</p>
+}
