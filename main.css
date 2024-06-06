@@ -346,6 +346,22 @@ a {
   --color-yellow-70: #bd5400;
   --color-yellow-80: #9f3d00;
   --color-yellow-90: #802900;
+  --color-chart-coffee: #cdbcbc;
+  --color-chart-lightPurple: #cfaeff;
+  --color-chart-mandarin: #ffa496;
+  --color-chart-purple: #816af8;
+  --color-chart-green: #59ae50;
+  --color-chart-blue: #286cfd;
+  --color-chart-peach: #ffd297;
+  --color-chart-lemon: #ffe701;
+  --color-chart-lightBlue: #83cfff;
+  --color-chart-turquoise: #2bd8c5;
+  --color-chart-cadetBlue: #54adad;
+  --color-chart-red: #e55759;
+  --color-chart-acidOrange: #f67a1a;
+  --color-chart-mustard: #d8b655;
+  --color-chart-orange: #f6b520;
+  --color-chart-lightGreen: #46d39a;
   --shadow-1: 0px 4px 4px 0px rgba(0, 0, 0, 0.0588235294) ;
   --shadow-2: 0px 14px 18px 0px rgba(0, 0, 0, 0.0784313725) ;
   --shadow-3: 0px 16px 22px 0px rgba(0, 0, 0, 0.1019607843) ;
@@ -409,17 +425,33 @@ a {
   --color-yellow-70: #ffdf60;
   --color-yellow-80: #fff18f;
   --color-yellow-90: #fffcbf;
-  --shadow-1: 0px 4px 4px 0px rgba(11, 11, 12, 0.2392156863) ;
-  --shadow-2: 0px 14px 18px 0px rgba(0, 0, 0, 0.2392156863) ;
-  --shadow-3: 0px 8px 16px 0px rgba(0, 0, 0, 0.4) ;
-  --shadow-4: 0px 12px 24px 0px rgba(0, 0, 0, 0.4) ;
-  --shadow-5: 0px 16px 32px 0px rgba(0, 0, 0, 0.4) ;
+  --color-chart-coffee: #cdbcbc;
+  --color-chart-lightPurple: #cfaeff;
+  --color-chart-mandarin: #ffa496;
+  --color-chart-purple: #816af8;
+  --color-chart-green: #59ae50;
+  --color-chart-blue: #286cfd;
+  --color-chart-peach: #ffd297;
+  --color-chart-lemon: #ffe701;
+  --color-chart-lightBlue: #83cfff;
+  --color-chart-turquoise: #2bd8c5;
+  --color-chart-cadetBlue: #54adad;
+  --color-chart-red: #e55759;
+  --color-chart-acidOrange: #f67a1a;
+  --color-chart-mustard: #d8b655;
+  --color-chart-orange: #f6b520;
+  --color-chart-lightGreen: #46d39a;
+  --shadow-1: 0px 4px 15px 0px rgba(11, 11, 12, 0.2) ;
+  --shadow-2: 0px 4px 20px 0px rgba(0, 0, 0, 0.2509803922) ;
+  --shadow-3: 0px 4px 25px 0px rgba(0, 0, 0, 0.3019607843) ;
+  --shadow-4: 0px 4px 30px 0px rgba(0, 0, 0, 0.3490196078) ;
+  --shadow-5: 0px 4px 30px 0px rgba(0, 0, 0, 0.4) ;
 }
 
 .baselight {
   --color-global-link: #005ab6;
   --color-global-white: white;
-  --color-global-bgmain: #edeef0;
+  --color-global-bgmain: #f0f0f0;
   --color-global-bgcard: white;
   --color-global-staticprimary: #263077;
   --color-text-5: rgba(0, 0, 0, 0.0705882353);
@@ -472,6 +504,22 @@ a {
   --color-yellow-70: #bd5400;
   --color-yellow-80: #9f3d00;
   --color-yellow-90: #802900;
+  --color-chart-coffee: #cdbcbc;
+  --color-chart-lightPurple: #cfaeff;
+  --color-chart-mandarin: #ffa496;
+  --color-chart-purple: #816af8;
+  --color-chart-green: #59ae50;
+  --color-chart-blue: #286cfd;
+  --color-chart-peach: #ffd297;
+  --color-chart-lemon: #ffe701;
+  --color-chart-lightBlue: #83cfff;
+  --color-chart-turquoise: #2bd8c5;
+  --color-chart-cadetBlue: #54adad;
+  --color-chart-red: #e55759;
+  --color-chart-acidOrange: #f67a1a;
+  --color-chart-mustard: #d8b655;
+  --color-chart-orange: #f6b520;
+  --color-chart-lightGreen: #46d39a;
   --shadow-1: 0px 4px 4px 0px rgba(0, 0, 0, 0.0588235294) ;
   --shadow-2: 0px 6px 18px 0px rgba(0, 0, 0, 0.0784313725) ;
   --shadow-3: 0px 10px 22px 0px rgba(0, 0, 0, 0.1019607843) ;
@@ -482,8 +530,8 @@ a {
 .basedark {
   --color-global-link: #58c3ff;
   --color-global-white: white;
-  --color-global-bgmain: #1c1b21;
-  --color-global-bgcard: #222229;
+  --color-global-bgmain: #212121;
+  --color-global-bgcard: #2c2c2c;
   --color-global-staticprimary: #263077;
   --color-text-5: rgba(255, 255, 255, 0.0588235294);
   --color-text-10: rgba(255, 255, 255, 0.1019607843);
@@ -495,16 +543,16 @@ a {
   --color-text-70: rgba(255, 255, 255, 0.7215686275);
   --color-text-80: rgba(255, 255, 255, 0.8);
   --color-text-90: rgba(255, 255, 255, 0.8705882353);
-  --color-primary-5: #2b286f;
-  --color-primary-10: #2e2e88;
-  --color-primary-20: #3238a1;
-  --color-primary-30: #3643bb;
-  --color-primary-40: #3a4fd6;
-  --color-primary-50: #3c5df2;
-  --color-primary-60: #6386f8;
-  --color-primary-70: #8dacfd;
-  --color-primary-80: #b8d0ff;
-  --color-primary-90: #e5efff;
+  --color-primary-5: #2f3977;
+  --color-primary-10: #33428e;
+  --color-primary-20: #374da6;
+  --color-primary-30: #3958bf;
+  --color-primary-40: #3b64d8;
+  --color-primary-50: #3b72f3;
+  --color-primary-60: #568df9;
+  --color-primary-70: #72a7fd;
+  --color-primary-80: #90c0ff;
+  --color-primary-90: #b0d6ff;
   --color-green-5: #232f26;
   --color-green-10: #2f4533;
   --color-green-20: #3a5d3d;
@@ -1647,6 +1695,299 @@ a {
   fill: var(--color-yellow-90);
 }
 
+.button_primary.button-chart {
+  background-color: var(--color-chart-50);
+}
+.button_primary.button-chart.hover, .button_primary.button-chart:hover {
+  background-color: var(--color-chart-60);
+}
+.button_primary.button-chart.active, .button_primary.button-chart:active {
+  background-color: var(--color-chart-70);
+}
+
+.button_ghost.button-chart {
+  color: var(--color-text-90);
+  fill: var(--color-chart-90);
+  background-color: transparent;
+}
+.button_ghost.button-chart.hover, .button_ghost.button-chart:hover {
+  background-color: var(--color-text-5);
+}
+.button_ghost.button-chart.active, .button_ghost.button-chart:active {
+  background-color: var(--color-text-10);
+}
+
+.button_outline.button-chart {
+  color: var(--color-text-90);
+  fill: var(--color-chart-50);
+  border-color: var(--color-text-10);
+  border-style: solid;
+  border-width: 1px;
+  background-color: transparent;
+}
+.button_outline.button-chart.hover, .button_outline.button-chart:hover {
+  background-color: var(--color-text-5);
+}
+.button_outline.button-chart.active, .button_outline.button-chart:active {
+  background-color: var(--color-text-10);
+}
+
+.color-chart-coffee {
+  color: var(--color-chart-coffee);
+}
+
+.bg-chart-coffee {
+  background-color: var(--color-chart-coffee);
+}
+
+.border-chart-coffee {
+  border-color: var(--color-chart-coffee);
+}
+
+.fill-chart-coffee {
+  fill: var(--color-chart-coffee);
+}
+
+.color-chart-lightPurple {
+  color: var(--color-chart-lightPurple);
+}
+
+.bg-chart-lightPurple {
+  background-color: var(--color-chart-lightPurple);
+}
+
+.border-chart-lightPurple {
+  border-color: var(--color-chart-lightPurple);
+}
+
+.fill-chart-lightPurple {
+  fill: var(--color-chart-lightPurple);
+}
+
+.color-chart-mandarin {
+  color: var(--color-chart-mandarin);
+}
+
+.bg-chart-mandarin {
+  background-color: var(--color-chart-mandarin);
+}
+
+.border-chart-mandarin {
+  border-color: var(--color-chart-mandarin);
+}
+
+.fill-chart-mandarin {
+  fill: var(--color-chart-mandarin);
+}
+
+.color-chart-purple {
+  color: var(--color-chart-purple);
+}
+
+.bg-chart-purple {
+  background-color: var(--color-chart-purple);
+}
+
+.border-chart-purple {
+  border-color: var(--color-chart-purple);
+}
+
+.fill-chart-purple {
+  fill: var(--color-chart-purple);
+}
+
+.color-chart-green {
+  color: var(--color-chart-green);
+}
+
+.bg-chart-green {
+  background-color: var(--color-chart-green);
+}
+
+.border-chart-green {
+  border-color: var(--color-chart-green);
+}
+
+.fill-chart-green {
+  fill: var(--color-chart-green);
+}
+
+.color-chart-blue {
+  color: var(--color-chart-blue);
+}
+
+.bg-chart-blue {
+  background-color: var(--color-chart-blue);
+}
+
+.border-chart-blue {
+  border-color: var(--color-chart-blue);
+}
+
+.fill-chart-blue {
+  fill: var(--color-chart-blue);
+}
+
+.color-chart-peach {
+  color: var(--color-chart-peach);
+}
+
+.bg-chart-peach {
+  background-color: var(--color-chart-peach);
+}
+
+.border-chart-peach {
+  border-color: var(--color-chart-peach);
+}
+
+.fill-chart-peach {
+  fill: var(--color-chart-peach);
+}
+
+.color-chart-lemon {
+  color: var(--color-chart-lemon);
+}
+
+.bg-chart-lemon {
+  background-color: var(--color-chart-lemon);
+}
+
+.border-chart-lemon {
+  border-color: var(--color-chart-lemon);
+}
+
+.fill-chart-lemon {
+  fill: var(--color-chart-lemon);
+}
+
+.color-chart-lightBlue {
+  color: var(--color-chart-lightBlue);
+}
+
+.bg-chart-lightBlue {
+  background-color: var(--color-chart-lightBlue);
+}
+
+.border-chart-lightBlue {
+  border-color: var(--color-chart-lightBlue);
+}
+
+.fill-chart-lightBlue {
+  fill: var(--color-chart-lightBlue);
+}
+
+.color-chart-turquoise {
+  color: var(--color-chart-turquoise);
+}
+
+.bg-chart-turquoise {
+  background-color: var(--color-chart-turquoise);
+}
+
+.border-chart-turquoise {
+  border-color: var(--color-chart-turquoise);
+}
+
+.fill-chart-turquoise {
+  fill: var(--color-chart-turquoise);
+}
+
+.color-chart-cadetBlue {
+  color: var(--color-chart-cadetBlue);
+}
+
+.bg-chart-cadetBlue {
+  background-color: var(--color-chart-cadetBlue);
+}
+
+.border-chart-cadetBlue {
+  border-color: var(--color-chart-cadetBlue);
+}
+
+.fill-chart-cadetBlue {
+  fill: var(--color-chart-cadetBlue);
+}
+
+.color-chart-red {
+  color: var(--color-chart-red);
+}
+
+.bg-chart-red {
+  background-color: var(--color-chart-red);
+}
+
+.border-chart-red {
+  border-color: var(--color-chart-red);
+}
+
+.fill-chart-red {
+  fill: var(--color-chart-red);
+}
+
+.color-chart-acidOrange {
+  color: var(--color-chart-acidOrange);
+}
+
+.bg-chart-acidOrange {
+  background-color: var(--color-chart-acidOrange);
+}
+
+.border-chart-acidOrange {
+  border-color: var(--color-chart-acidOrange);
+}
+
+.fill-chart-acidOrange {
+  fill: var(--color-chart-acidOrange);
+}
+
+.color-chart-mustard {
+  color: var(--color-chart-mustard);
+}
+
+.bg-chart-mustard {
+  background-color: var(--color-chart-mustard);
+}
+
+.border-chart-mustard {
+  border-color: var(--color-chart-mustard);
+}
+
+.fill-chart-mustard {
+  fill: var(--color-chart-mustard);
+}
+
+.color-chart-orange {
+  color: var(--color-chart-orange);
+}
+
+.bg-chart-orange {
+  background-color: var(--color-chart-orange);
+}
+
+.border-chart-orange {
+  border-color: var(--color-chart-orange);
+}
+
+.fill-chart-orange {
+  fill: var(--color-chart-orange);
+}
+
+.color-chart-lightGreen {
+  color: var(--color-chart-lightGreen);
+}
+
+.bg-chart-lightGreen {
+  background-color: var(--color-chart-lightGreen);
+}
+
+.border-chart-lightGreen {
+  border-color: var(--color-chart-lightGreen);
+}
+
+.fill-chart-lightGreen {
+  fill: var(--color-chart-lightGreen);
+}
+
 .shadow-1 {
   box-shadow: var(--shadow-1);
 }
@@ -1841,6 +2182,15 @@ a {
   color: var(--color-yellow-50);
   background-color: var(--color-yellow-10);
 }
+.badge-chart {
+  border-color: var(--color-chart-50);
+  color: var(--color-chart-50);
+}
+.badge-chart_filled {
+  border-color: transparent;
+  color: var(--color-chart-50);
+  background-color: var(--color-chart-10);
+}
 
 .border {
   border-style: solid;
@@ -1995,6 +2345,7 @@ a {
   border-radius: 4px;
   background: var(--color-primary-50);
   fill: var(--color-global-white);
+  color: var(--color-global-white);
 }
 .checkbox:hover:not(.checkbox_disabled) {
   cursor: pointer;
@@ -2023,6 +2374,9 @@ a {
 }
 .checkbox.checkbox-yellow {
   fill: var(--color-yellow-50);
+}
+.checkbox.checkbox-chart {
+  fill: var(--color-chart-50);
 }
 
 .chip {
@@ -2247,6 +2601,35 @@ a {
   border-color: var(--color-yellow-70);
   color: var(--color-yellow-70);
   fill: var(--color-yellow-70);
+}
+.chip_chart {
+  background-color: var(--color-chart-5);
+  color: var(--color-text-90);
+  fill: var(--color-text-90);
+}
+.chip_chart:hover {
+  background-color: var(--color-chart-10);
+}
+.chip_chart:active {
+  background-color: var(--color-chart-20);
+}
+.chip_chart_outlined {
+  border-color: var(--color-chart-50);
+  color: var(--color-chart-50);
+  fill: var(--color-chart-50);
+  background-color: transparent;
+}
+.chip_chart_outlined:hover {
+  background-color: transparent;
+  border-color: var(--color-chart-60);
+  color: var(--color-chart-60);
+  fill: var(--color-chart-60);
+}
+.chip_chart_outlined:active {
+  background-color: transparent;
+  border-color: var(--color-chart-70);
+  color: var(--color-chart-70);
+  fill: var(--color-chart-70);
 }
 .chip_outlined {
   border-color: var(--color-text-90);
@@ -2747,13 +3130,31 @@ a {
 
 .icon {
   display: inline-flex;
-  height: 16px;
-  width: 16px;
   flex-shrink: 0;
 }
 .icon-file {
   width: 32px;
   height: 40px;
+}
+.icon-xs {
+  height: 8px;
+  width: 8px;
+}
+.icon-s {
+  height: 12px;
+  width: 12px;
+}
+.icon-m {
+  height: 16px;
+  width: 16px;
+}
+.icon-l {
+  height: 20px;
+  width: 20px;
+}
+.icon-xl {
+  height: 24px;
+  width: 24px;
 }
 .icon.icon-global {
   fill: var(--color-global-70);
@@ -2778,6 +3179,10 @@ a {
 .icon.icon-yellow {
   fill: var(--color-yellow-70);
   color: var(--color-yellow-70);
+}
+.icon.icon-chart {
+  fill: var(--color-chart-70);
+  color: var(--color-chart-70);
 }
 
 .form-container {
@@ -3537,6 +3942,15 @@ body {
   width: 4px;
   height: 100%;
 }
+.message-chart::before {
+  background: var(--color-chart-50);
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
 
 .message-host {
   position: fixed;
@@ -3584,7 +3998,7 @@ body {
   box-shadow: var(--shadow-5);
   background-color: var(--color-global-bgcard);
   border: solid 0;
-  border-radius: 4px;
+  border-radius: 12px;
 }
 .modal__container_resize {
   resize: both;
@@ -3674,6 +4088,16 @@ body {
 }
 .navigation-yellow .navigation-item_active {
   background: var(--color-yellow-30);
+}
+.navigation-chart {
+  background: var(--color-chart-50);
+}
+.navigation-chart .navigation-item:hover {
+  background: var(--color-chart-40);
+  cursor: pointer;
+}
+.navigation-chart .navigation-item_active {
+  background: var(--color-chart-30);
 }
 
 .progress {
@@ -5597,6 +6021,15 @@ body {
 .toggle-button-on.toggle-button-yellow:active {
   background: var(--color-yellow-70);
 }
+.toggle-button-on.toggle-button-chart {
+  background: var(--color-chart-50);
+}
+.toggle-button-on.toggle-button-chart:hover:not(.toggle_disabled):not(:active) {
+  background: var(--color-chart-60);
+}
+.toggle-button-on.toggle-button-chart:active {
+  background: var(--color-chart-70);
+}
 .toggle:not(.toggle_disabled):hover .toggle-button:not(.toggle-button-on) {
   background: var(--color-text-30);
 }
@@ -5637,6 +6070,9 @@ body {
 }
 .toolbar.toolbar-yellow {
   background-color: var(--color-yellow-50);
+}
+.toolbar.toolbar-chart {
+  background-color: var(--color-chart-50);
 }
 
 .tooltip {
