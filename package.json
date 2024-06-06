@@ -70,7 +70,7 @@
     "@maskito/core": "^2.0.2",
     "@maskito/kit": "^2.0.2",
     "@ngneat/transloco": "^6.0.4",
-    "@tetacom/themes": "^0.1.0",
+    "@tetacom/themes": "^0.1.2",
     "angular-three": "^1.10.6",
     "angular-three-soba": "^1.14.1",
     "d3": "^7.8.5",
