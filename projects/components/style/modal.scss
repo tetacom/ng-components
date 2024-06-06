@@ -1,5 +1,5 @@
-@import "util/color-util.scss";
-@import "util/shadow-util.scss";
+@import 'util/color-util.scss';
+@import 'util/shadow-util.scss';
 
 .modal {
   &__backdrop {
@@ -20,10 +20,10 @@
 
   &__container {
     min-width: 300px;
-    box-shadow: var(--shadow-5);;
+    box-shadow: var(--shadow-5);
     background-color: var(--color-global-bgcard);
     border: solid 0;
-    border-radius: 4px;
+    border-radius: 12px;
 
     &_resize {
       resize: both;
