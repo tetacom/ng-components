@@ -64,6 +64,30 @@
       </clipPath>
     </defs>
   </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="timeColor">
+    <g clip-path="url(#clip0_2635_65758)">
+      <rect width="16" height="16" rx="8" fill="url(#paint0_linear_2635_65758)"/>
+      <rect x="1" y="1" width="14" height="14" rx="7" fill="url(#paint1_linear_2635_65758)"/>
+      <path d="M8 3V7.87639C8 7.95214 8.0428 8.02139 8.11056 8.05527L10.4 9.19999" stroke="url(#paint2_linear_2635_65758)" stroke-linecap="round"/>
+    </g>
+    <defs>
+      <linearGradient id="paint0_linear_2635_65758" x1="8" y1="0" x2="8" y2="13.3333" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#FED200"/>
+        <stop offset="1" stop-color="#F49957"/>
+      </linearGradient>
+      <linearGradient id="paint1_linear_2635_65758" x1="1" y1="1" x2="15" y2="15" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#FEFEFE"/>
+        <stop offset="1" stop-color="#D5D5D5"/>
+      </linearGradient>
+      <linearGradient id="paint2_linear_2635_65758" x1="9.2" y1="3" x2="9.2" y2="9.19999" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#247BA1"/>
+        <stop offset="1" stop-color="#175B79"/>
+      </linearGradient>
+      <clipPath id="clip0_2635_65758">
+        <rect width="16" height="16" fill="white"/>
+      </clipPath>
+    </defs>
+  </symbol>
   <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="colmatantColor">
     <path d="M14 9C14 12.3137 11.3137 15 8 15C4.68629 15 2 12.3137 2 9C2 5.74129 5.98219 2.48258 7.45817 1.38668C7.7823 1.14602 8.2177 1.14602 8.54183 1.38668C10.0178 2.48258 14 5.74129 14 9Z" fill="url(#paint0_linear_8612_17074)"></path>
     <defs>
