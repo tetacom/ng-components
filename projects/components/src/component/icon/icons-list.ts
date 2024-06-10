@@ -204,6 +204,7 @@ export const coloredIconsList = [
   'calcColor',
   'calendarColor',
   'coinColor',
+  'timeColor',
   'colmatantColor',
   'folderColor',
   'geomechColor',
