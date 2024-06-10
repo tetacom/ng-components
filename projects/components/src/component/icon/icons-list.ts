@@ -85,7 +85,7 @@ export const iconsList = [
   'fullScreen',
   'gantt',
   'gear',
-  'Gis',
+  'gis',
   'grp',
   'handbag',
   'home',
