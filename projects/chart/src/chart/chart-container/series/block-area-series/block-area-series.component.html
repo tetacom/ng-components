@@ -18,47 +18,48 @@
     </svg:linearGradient>
   </svg:defs>
   <ng-container *ngIf="data.x && data.y">
-
-
     <ng-container *ngFor="let point of data.points">
       <svg:g (mouseenter)="mouseenter(point)"
              (mouseleave)="mouseleave(point)">
-        <svg:rect
-          *ngIf="!!config.inverted"
-          [attr.x]="data.x(0) < data.x(point.x) ? data.x(0) : data.x(point.x)"
-          [attr.y]="data.y(point.y)"
-          [attr.height]="Math.abs(data.y(point.y1) - data.y(point.y))"
-          [attr.width]="data.x(0) < data.x(point.x) ? data.x(point.x) - data.x(0) : data.x(0) - data.x(point.x)"
-          [attr.stroke]="point.iconId ? '' : point.color ?? series.style?.stroke ?? series.color"
-          [attr.stroke-dasharray]="series.style?.strokeDasharray"
-          [attr.stroke-width]="series.style?.strokeWidth"
-          [attr.fill]="series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : point.iconId ? 'url(#pattern'+point.iconId+')' : point.color ?? series.style?.fill ?? series.color"
-          [attr.fill-opacity]="series.style?.fillOpacity">
-        </svg:rect>
-        <svg:rect
-          *ngIf="!config.inverted"
-          [attr.x]="data.x(point.x)"
-          [attr.y]="data.y(0)"
-          [attr.height]="Math.abs(data.y(0) - data.y(point.y))"
-          [attr.width]="data.x(point.x1) - data.x(point.x)"
-          [attr.stroke]="point.iconId ? '' : point.color ?? series.color"
-          [attr.stroke-dasharray]="series.style?.strokeDasharray"
-          [attr.stroke-width]="series.style?.strokeWidth"
-          [attr.fill]="series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : point.iconId ? 'url(#pattern'+point.iconId+')' : point.color ?? series.color"
-          [attr.fill-opacity]="series.style?.fillOpacity">
-        </svg:rect>
-        <svg:text *ngIf="point.text"
-                  x="50%"
-                  [attr.y]="(data.y(point.y1) + data.y(point.y)) / 2"
-                  alignment-baseline="middle"
-                  text-anchor="middle">{{ point.text }}
-        </svg:text>
+        @if (!!config.inverted) {
+          <svg:rect
+            [attr.x]="data.x(0) < data.x(point.x) ? data.x(0) : data.x(point.x)"
+            [attr.y]="data.y(point.y)"
+            [attr.height]="Math.abs(data.y(point.y1) - data.y(point.y))"
+            [attr.width]="data.x(0) < data.x(point.x) ? data.x(point.x) - data.x(0) : data.x(0) - data.x(point.x)"
+            [attr.stroke]="point.iconId ? '' : point.color ?? series.style?.stroke ?? series.color"
+            [attr.stroke-dasharray]="series.style?.strokeDasharray"
+            [attr.stroke-width]="series.style?.strokeWidth"
+            [attr.fill]="series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : point.iconId ? 'url(#pattern'+point.iconId+')' : point.color ?? series.style?.fill ?? series.color"
+            [attr.fill-opacity]="series.style?.fillOpacity">
+          </svg:rect>
+        } @else {
+          <svg:rect
+            [attr.x]="data.x(point.x)"
+            [attr.y]="data.y(0)"
+            [attr.height]="Math.abs(data.y(0) - data.y(point.y))"
+            [attr.width]="data.x(point.x1) - data.x(point.x)"
+            [attr.stroke]="point.iconId ? '' : point.color ?? series.color"
+            [attr.stroke-dasharray]="series.style?.strokeDasharray"
+            [attr.stroke-width]="series.style?.strokeWidth"
+            [attr.fill]="series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : point.iconId ? 'url(#pattern'+point.iconId+')' : point.color ?? series.color"
+            [attr.fill-opacity]="series.style?.fillOpacity">
+          </svg:rect>
+        }
+        @if (point.text) {
+          <svg:text x="50%"
+                    fill="var(--color-text-50)"
+                    [attr.y]="(data.y(point.y1) + data.y(point.y)) / 2"
+                    alignment-baseline="middle"
+                    text-anchor="middle">{{ point.text }}
+          </svg:text>
+        }
+
 
         <!--      <svg:line x1="0" x2="100%" [attr.y1]="data.y(point.y)" [attr.y2]="data.y(point.y)" [attr.stroke]="point.iconId ? 'var(&#45;&#45;color-text-10)' : point.color ?? series.color"></svg:line>-->
         <!--      <svg:line x1="0" x2="100%" [attr.y1]="data.y(point.y1)" [attr.y2]="data.y(point.y1)" [attr.stroke]="point.iconId ? 'var(&#45;&#45;color-text-10)' : point.color ?? series.color"></svg:line>-->
 
       </svg:g>
     </ng-container>
-
   </ng-container>
 </ng-container>
