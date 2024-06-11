@@ -28,6 +28,7 @@ import { DatePickerComponent } from '../../../date-picker/date-picker/date-picke
 import { SelectComponent } from '../../../select/select/select.component';
 import { NgTemplateOutlet } from '@angular/common';
 import { InputComponent } from '../../../input/input/input.component';
+import {DisableControlDirective} from "@tetacom/ng-components";
 
 @Component({
     selector: 'teta-property-grid-item',
@@ -35,16 +36,17 @@ import { InputComponent } from '../../../input/input/input.component';
     styleUrls: ['./property-grid-item.component.scss'],
     viewProviders: [FormsUtil.formProvider],
     standalone: true,
-    imports: [
-        InputComponent,
-        FormsModule,
-        ReactiveFormsModule,
-        NgTemplateOutlet,
-        SelectComponent,
-        DatePickerComponent,
-        ToggleComponent,
-        TextFieldComponent,
-    ],
+  imports: [
+    InputComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    NgTemplateOutlet,
+    SelectComponent,
+    DatePickerComponent,
+    ToggleComponent,
+    TextFieldComponent,
+    DisableControlDirective,
+  ],
 })
 export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
   @Input() column: TableColumn;

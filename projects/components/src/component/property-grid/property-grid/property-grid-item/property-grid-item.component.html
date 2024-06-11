@@ -1,47 +1,52 @@
 @if (editable || !hideNonEditable) {
   <teta-input [label]="caption"
-    [hint]="column.hint"
-    [formGroup]="formGroup"
-    [horizontal]="horizontal"
-    [required]="column.required"
-    >
+              [hint]="column.hint"
+              [formGroup]="formGroup"
+              [horizontal]="horizontal"
+              [required]="column.required"
+  >
     @if (template) {
-      <ng-container *ngTemplateOutlet="template.template;context: {$implicit: formGroup?.get(column.name)}"></ng-container>
+      <ng-container
+        *ngTemplateOutlet="template.template;context: {$implicit: formGroup?.get(column.name)}"></ng-container>
     } @else {
       @if (formGroup?.get(column.name)) {
         @switch (column.filterType) {
           @case (filterTypeEnum.list) {
             <teta-select class="row_auto"
-              [searchRef]="getDict()?.length > 10 ? 'name' : ''"
-              [allowNull]="!column.required"
-              [appendToBody]="true"
-              [invalid]="controlIsInvalid(column.name)"
-              [formControlName]="column.name"
-              [options]="getDict()"
-              [valueRef]="'id'"
-              [textRef]="'name'"
-            [multiple]="false"></teta-select>
+                         [tetaDisableControl]="!editable"
+                         [searchRef]="getDict()?.length > 10 ? 'name' : ''"
+                         [allowNull]="!column.required"
+                         [appendToBody]="true"
+                         [invalid]="controlIsInvalid(column.name)"
+                         [formControlName]="column.name"
+                         [options]="getDict()"
+                         [valueRef]="'id'"
+                         [textRef]="'name'"
+                         [multiple]="false"></teta-select>
           }
           @case (filterTypeEnum.date) {
             <teta-date-picker
               class="row_auto"
               [appendToBody]="true"
+              [tetaDisableControl]="!editable"
               [invalid]="controlIsInvalid(column.name)"
-            [formControlName]="column.name"></teta-date-picker>
+              [formControlName]="column.name"></teta-date-picker>
           }
           @case (filterTypeEnum.boolean) {
             <teta-toggle
+              [tetaDisableControl]="!editable"
               [formControlName]="column.name">
-              {{column.caption}}
+              {{ column.caption }}
             </teta-toggle>
           }
           @default {
             <teta-text-field class="row_auto"
-              [decimalPart]="column.filterType === filterTypeEnum.number ? decimalPart : null"
-              [onlyNumber]="column.filterType === filterTypeEnum.number"
-              [placeholder]="column.caption"
-              [invalid]="controlIsInvalid(column.name)"
-            [formControlName]="column.name"></teta-text-field>
+                             [tetaDisableControl]="!editable"
+                             [decimalPart]="column.filterType === filterTypeEnum.number ? decimalPart : null"
+                             [onlyNumber]="column.filterType === filterTypeEnum.number"
+                             [placeholder]="column.caption"
+                             [invalid]="controlIsInvalid(column.name)"
+                             [formControlName]="column.name"></teta-text-field>
           }
         }
       }
@@ -51,36 +56,40 @@
         @switch (column.filterType) {
           @case (filterTypeEnum.list) {
             <teta-select class="row_auto"
-              [searchRef]="getDict()?.length > 10 ? 'name' : ''"
-              [allowNull]="!column.required"
-              [appendToBody]="true"
-              [invalid]="controlIsInvalid(column.name)"
-              [formControlName]="column.name"
-              [options]="getDict()"
-              [valueRef]="'id'"
-              [textRef]="'name'"
-            [multiple]="false"></teta-select>
+                         [tetaDisableControl]="!editable"
+                         [searchRef]="getDict()?.length > 10 ? 'name' : ''"
+                         [allowNull]="!column.required"
+                         [appendToBody]="true"
+                         [invalid]="controlIsInvalid(column.name)"
+                         [formControlName]="column.name"
+                         [options]="getDict()"
+                         [valueRef]="'id'"
+                         [textRef]="'name'"
+                         [multiple]="false"></teta-select>
           }
           @case (filterTypeEnum.date) {
             <teta-date-picker
               class="row_auto"
               [appendToBody]="true"
+              [tetaDisableControl]="!editable"
               [invalid]="controlIsInvalid(column.name)"
-            [formControlName]="column.name"></teta-date-picker>
+              [formControlName]="column.name"></teta-date-picker>
           }
           @case (filterTypeEnum.boolean) {
             <teta-toggle
+              [tetaDisableControl]="!editable"
               [formControlName]="column.name">
-              {{column.caption}}
+              {{ column.caption }}
             </teta-toggle>
           }
           @default {
             <teta-text-field class="row_auto"
-              [decimalPart]="column.filterType === filterTypeEnum.number ? decimalPart : null"
-              [onlyNumber]="column.filterType === filterTypeEnum.number"
-              [placeholder]="column.caption"
-              [invalid]="controlIsInvalid(column.name)"
-            [formControlName]="column.name"></teta-text-field>
+                             [decimalPart]="column.filterType === filterTypeEnum.number ? decimalPart : null"
+                             [onlyNumber]="column.filterType === filterTypeEnum.number"
+                             [placeholder]="column.caption"
+                             [invalid]="controlIsInvalid(column.name)"
+                             [tetaDisableControl]="!editable"
+                             [formControlName]="column.name"></teta-text-field>
           }
         }
       }
@@ -89,7 +98,7 @@
       <div
         ngProjectAs="message"
         class="color-red-50">
-        {{getError(column)}}
+        {{ getError(column) }}
       </div>
     }
   </teta-input>
