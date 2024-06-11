@@ -7,7 +7,6 @@ import { NgControl } from '@angular/forms';
 })
 export class DisableControlDirective {
   @Input() set tetaDisableControl(val: boolean) {
-    console.log('set tetaDisableControl', val);
     if (this.ngControl.control) {
       if (val) {
         this.ngControl.control.disable();
