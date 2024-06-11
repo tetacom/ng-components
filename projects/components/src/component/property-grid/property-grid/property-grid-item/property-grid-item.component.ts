@@ -9,33 +9,33 @@ import {
   QueryList,
   SimpleChanges,
 } from '@angular/core';
-import { ControlContainer, FormGroup, NgForm, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslocoService } from '@ngneat/transloco';
-import { Subscription } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import {ControlContainer, FormGroup, NgForm, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {TranslocoService} from '@ngneat/transloco';
+import {Subscription} from 'rxjs';
+import {takeWhile} from 'rxjs/operators';
 
-import { IDictionary } from '../../../../common/contract/i-dictionary';
-import { IIdName } from '../../../../common/contract/i-id-name';
-import { Align } from '../../../../common/enum/align.enum';
-import { boolOrFuncCallback } from '../../../../util/bool-or-func';
-import { FormsUtil } from '../../../../util/forms-util';
-import { FilterType } from '../../../filter/enum/filter-type.enum';
-import { TableColumn } from '../../../table/contract/table-column';
-import { PropertyGridItemDescriptionDirective } from '../property-grid-item-description.directive';
-import { TextFieldComponent } from '../../../input/text-field/text-field.component';
-import { ToggleComponent } from '../../../toggle/toggle/toggle.component';
-import { DatePickerComponent } from '../../../date-picker/date-picker/date-picker.component';
-import { SelectComponent } from '../../../select/select/select.component';
-import { NgTemplateOutlet } from '@angular/common';
-import { InputComponent } from '../../../input/input/input.component';
-import {DisableControlDirective} from "@tetacom/ng-components";
+import {IDictionary} from '../../../../common/contract/i-dictionary';
+import {IIdName} from '../../../../common/contract/i-id-name';
+import {Align} from '../../../../common/enum/align.enum';
+import {boolOrFuncCallback} from '../../../../util/bool-or-func';
+import {FormsUtil} from '../../../../util/forms-util';
+import {FilterType} from '../../../filter/enum/filter-type.enum';
+import {TableColumn} from '../../../table/contract/table-column';
+import {PropertyGridItemDescriptionDirective} from '../property-grid-item-description.directive';
+import {TextFieldComponent} from '../../../input/text-field/text-field.component';
+import {ToggleComponent} from '../../../toggle/toggle/toggle.component';
+import {DatePickerComponent} from '../../../date-picker/date-picker/date-picker.component';
+import {SelectComponent} from '../../../select/select/select.component';
+import {NgTemplateOutlet} from '@angular/common';
+import {InputComponent} from '../../../input/input/input.component';
+import {DisableControlDirective} from "../../../../directive/disable-control/disable-control.directive";
 
 @Component({
-    selector: 'teta-property-grid-item',
-    templateUrl: './property-grid-item.component.html',
-    styleUrls: ['./property-grid-item.component.scss'],
-    viewProviders: [FormsUtil.formProvider],
-    standalone: true,
+  selector: 'teta-property-grid-item',
+  templateUrl: './property-grid-item.component.html',
+  styleUrls: ['./property-grid-item.component.scss'],
+  viewProviders: [FormsUtil.formProvider],
+  standalone: true,
   imports: [
     InputComponent,
     FormsModule,
@@ -98,7 +98,8 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
   constructor(
     private _transloco: TranslocoService,
     @Optional() private _formGroup: ControlContainer
-  ) {}
+  ) {
+  }
 
   getDict() {
     const dict = this.dict ? this.dict[this.column.name] : [];
@@ -116,7 +117,7 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
     return FormsUtil.controlIsInvalid(this.formGroup, controlName);
   }
 
-  getError(column: TableColumn){
+  getError(column: TableColumn) {
     const control = this.formGroup?.get(column.name);
     if (control?.hasError('required')) {
       return this._transloco.translate('errors.field_is_required');
