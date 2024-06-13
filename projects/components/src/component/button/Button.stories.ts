@@ -1,11 +1,11 @@
-import {ButtonComponent} from './button/button.component';
+import { ButtonComponent } from './button/button.component';
 
-import {applicationConfig, Meta, StoryFn} from '@storybook/angular';
-import {importProvidersFrom} from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
-import {IconSpriteDirective} from '../icon/icon-sprite.directive';
-import {IconComponent} from '../icon/icon/icon.component';
-import {TetaSize} from "../../common/enum/teta-size.enum";
+import { applicationConfig, Meta, StoryFn } from '@storybook/angular';
+import { importProvidersFrom } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
+import { IconComponent } from '../icon/icon/icon.component';
+import { TetaSize } from '../../common/enum/teta-size.enum';
 
 export default {
   title: 'Component/Button',
@@ -17,22 +17,22 @@ export default {
   argTypes: {
     viewType: {
       options: ['rounded', 'brick', 'circle'],
-      control: {type: 'select'},
+      control: { type: 'select' },
     },
     palette: {
       options: ['primary', 'text', 'red', 'yellow', 'green'],
-      control: {type: 'select'},
+      control: { type: 'select' },
     },
     size: {
       options: [TetaSize.S, TetaSize.M, TetaSize.L],
-      control: {type: 'select'},
+      control: { type: 'select' },
     },
     view: {
-      control: {type: 'select'},
+      control: { type: 'select' },
       options: ['primary', 'ghost', 'outline'],
     },
     text: {
-      control: {type: 'text'},
+      control: { type: 'text' },
     },
   },
   args: {
@@ -53,7 +53,7 @@ export const baseButton: StoryFn = (args) => ({
   },
   props: args,
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
-       <button teta-button  [disabled]="false" [view]="view" [square]="false"  [size]="size" [viewType]="viewType" [palette]="palette">
+       <button teta-button [disabled]="false" [view]="view" [square]="false" [size]="size" [viewType]="viewType" [palette]="palette">
           <teta-icon [name]="'addCircle'"></teta-icon>
           {{text}}
        </button>
@@ -65,7 +65,7 @@ export const disabledButton: StoryFn = (args) => ({
   },
   props: args,
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
-       <button teta-button  [disabled]="true" [view]="view" [square]="false"  [size]="size" [viewType]="viewType" [palette]="palette">
+       <button teta-button [disabled]="true" [view]="view" [square]="false" [size]="size" [viewType]="viewType" [palette]="palette">
           <teta-icon [name]="'addCircle'"></teta-icon>
           {{text}}
        </button>
@@ -77,9 +77,8 @@ export const squireButton = (args) => ({
   },
   props: args,
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
-       <button teta-button  [disabled]="false" [view]="view" [square]="true"  [size]="size" [viewType]="viewType" [palette]="palette">
-          <teta-icon [name]="'addCircle'"></teta-icon>
-          {{text}}
+       <button teta-button [disabled]="false" [view]="view" [square]="true" [size]="size" [viewType]="viewType" [palette]="palette">
+          <teta-icon [name]="'star'"></teta-icon>
        </button>
 </div>`,
 });
