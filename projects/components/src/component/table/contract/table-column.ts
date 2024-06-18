@@ -49,7 +49,7 @@ export interface ITableColumnOptions extends IFilterItemOptions {
   minValue?: number;
   maxLength?: number;
   required?: boolean;
-  validators?: [ValidatorFn];
+  validators?: ValidatorFn[];
 }
 
 export class TableColumn extends FilterItem {
@@ -134,7 +134,7 @@ export class TableColumn extends FilterItem {
   /**
    * Функции валидации
    */
-  validators: [ValidatorFn];
+  validators: ValidatorFn[];
   /**
    * Инициализация из анонимного объекта
    */
