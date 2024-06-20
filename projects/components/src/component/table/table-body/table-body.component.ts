@@ -1,4 +1,4 @@
-import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
+import {CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf} from '@angular/cdk/scrolling';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,50 +13,52 @@ import {
   Type,
   ViewChild,
 } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import {combineLatest, Observable} from 'rxjs';
+import {takeWhile} from 'rxjs/operators';
 
-import { IDictionary } from '../../../common/contract/i-dictionary';
-import { IIdName } from '../../../common/contract/i-id-name';
-import { ArrayUtil } from '../../../common/util/array-util';
-import { TetaConfigService } from '../../../locale/teta-config.service';
-import { TetaLocalisation } from '../../../locale/teta-localisation';
-import { DetailComponentBase } from '../base/detail-component-base';
-import { TableColumn } from '../contract/table-column';
-import { TableRow } from '../contract/table-row';
-import { AggregationType } from '../enum/aggregation-type.enum';
-import { SelectType } from '../enum/select-type.enum';
-import { TableService } from '../service/table.service';
-import { NumberPipe } from '../../../pipe/number-pipe/number.pipe';
-import { IconComponent } from '../../icon/icon/icon.component';
-import { CellComponent } from '../cell/cell.component';
-import { SelectionCellComponent } from '../selection-cell/selection-cell.component';
-import { FormsModule } from '@angular/forms';
-import { NgTemplateOutlet, NgClass, AsyncPipe } from '@angular/common';
-import { ScrollableDirective } from '../../../directive/scrollable/scrollable.directive';
-import { ScrollableComponent } from '../../../directive/scrollable/scrollable/scrollable.component';
+import {IDictionary} from '../../../common/contract/i-dictionary';
+import {IIdName} from '../../../common/contract/i-id-name';
+import {ArrayUtil} from '../../../common/util/array-util';
+import {TetaConfigService} from '../../../locale/teta-config.service';
+import {TetaLocalisation} from '../../../locale/teta-localisation';
+import {DetailComponentBase} from '../base/detail-component-base';
+import {TableColumn} from '../contract/table-column';
+import {TableRow} from '../contract/table-row';
+import {AggregationType} from '../enum/aggregation-type.enum';
+import {SelectType} from '../enum/select-type.enum';
+import {TableService} from '../service/table.service';
+import {NumberPipe} from '../../../pipe/number-pipe/number.pipe';
+import {IconComponent} from '../../icon/icon/icon.component';
+import {CellComponent} from '../cell/cell.component';
+import {SelectionCellComponent} from '../selection-cell/selection-cell.component';
+import {FormsModule} from '@angular/forms';
+import {NgTemplateOutlet, NgClass, AsyncPipe} from '@angular/common';
+import {ScrollableDirective} from '../../../directive/scrollable/scrollable.directive';
+import {ScrollableComponent} from '../../../directive/scrollable/scrollable/scrollable.component';
+import {TableRowComponent} from "../table-row/table-row.component";
 
 @Component({
-    selector: 'teta-table-body',
-    templateUrl: './table-body.component.html',
-    styleUrls: ['./table-body.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        ScrollableComponent,
-        CdkVirtualScrollViewport,
-        CdkFixedSizeVirtualScroll,
-        ScrollableDirective,
-        CdkVirtualForOf,
-        NgTemplateOutlet,
-        FormsModule,
-        NgClass,
-        SelectionCellComponent,
-        CellComponent,
-        IconComponent,
-        AsyncPipe,
-        NumberPipe,
-    ],
+  selector: 'teta-table-body',
+  templateUrl: './table-body.component.html',
+  styleUrls: ['./table-body.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    ScrollableComponent,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    ScrollableDirective,
+    CdkVirtualForOf,
+    NgTemplateOutlet,
+    FormsModule,
+    NgClass,
+    SelectionCellComponent,
+    CellComponent,
+    IconComponent,
+    AsyncPipe,
+    NumberPipe,
+    TableRowComponent,
+  ],
 })
 export class TableBodyComponent<T> implements OnInit, OnDestroy {
   @Input() virtual: boolean;
@@ -68,7 +70,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   @Input() rowClass: (row: T, index?: number) => string;
   @Input() trackRow: (index: number, row: T) => any;
   @Input() trackColumns: (index: number, column: TableColumn) => any;
-  @ViewChild(CdkVirtualScrollViewport, { static: false })
+  @ViewChild(CdkVirtualScrollViewport, {static: false})
   viewport: CdkVirtualScrollViewport;
 
   @HostBinding('class.table-body') private readonly tableBodyClass = true;
@@ -132,7 +134,8 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     private _elementRef: ElementRef,
     private _config: TetaConfigService,
     private _cdr: ChangeDetectorRef
-  ) {}
+  ) {
+  }
 
   setActiveRow(row: T, event: MouseEvent) {
     if (!event.shiftKey && !event.ctrlKey) {
@@ -190,7 +193,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     this.removeResizeObserver();
   }
 
-  getAggregateValue(column: TableColumn) :number {
+  getAggregateValue(column: TableColumn): number {
     if (column.aggregate === AggregationType.sum) {
       return this.getSum(column.name);
     }
@@ -203,7 +206,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     if (column.aggregate === AggregationType.max) {
       return this.getMax(column.name);
     }
-    return null  ;
+    return null;
   }
 
   getAggregateText(column: TableColumn): string {
@@ -250,7 +253,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     }, 0);
   }
 
-  private getMin(columnName: string):number {
+  private getMin(columnName: string): number {
     return (this.data as any)?.reduce(
       (accum, current: TableRow<T>) =>
         accum != null && accum <= current.data[columnName]
@@ -260,7 +263,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     );
   }
 
-  private getMax(columnName: string):number {
+  private getMax(columnName: string): number {
     return (this.data as any)?.reduce(
       (accum, current) =>
         accum != null && accum >= current.data[columnName]

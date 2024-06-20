@@ -1,28 +1,29 @@
 @if (virtual && data.length > 0) {
   <teta-scrollable class="table-body-container"
-    style="padding-bottom: 12px"
-    [showScrollbars]="true"
-    >
+                   style="padding-bottom: 12px"
+                   [showScrollbars]="true"
+  >
     <cdk-virtual-scroll-viewport tetaScrollable
-      class="table-body-container"
-      (scroll)="emitScroll($event)"
-      [itemSize]="28">
-      <ng-container *cdkVirtualFor="let row of data;templateCacheSize: 0; let rowIndex = index; trackBy: trackTableRow;">
+                                 class="table-body-container"
+                                 (scroll)="emitScroll($event)"
+                                 [itemSize]="28">
+      <ng-container
+        *cdkVirtualFor="let row of data;templateCacheSize: 0; let rowIndex = index; trackBy: trackTableRow;">
         <ng-container *ngTemplateOutlet="bodyTemplate; context: {row: row, rowIndex: rowIndex}"></ng-container>
       </ng-container>
     </cdk-virtual-scroll-viewport>
   </teta-scrollable>
 } @else {
   <teta-scrollable class="table-body-container"
-    style="padding-bottom: 12px"
-    direction="column"
-    [showScrollbars]="true"
-    (scroll)="emitScroll($event)">
+                   style="padding-bottom: 12px"
+                   direction="column"
+                   [showScrollbars]="true"
+                   (scroll)="emitScroll($event)">
     <div class="table-body-container">
       @if (!data?.length) {
         <div class="column column_auto"
-          style="position: absolute; top:0; bottom:16px;left:0;right:0;"
-          >
+             style="position: absolute; top:0; bottom:16px;left:0;right:0;"
+        >
           <ng-content></ng-content>
         </div>
       }
@@ -38,26 +39,84 @@
 }
 
 <ng-template #bodyTemplate let-row="row" let-rowIndex="rowIndex">
-  <div class="table-row"
-    ngForm
-    (click)="setActiveRow(row.data, $event)"
-    [attr.data-row]="rowIndex"
-    [class.table-row_odd]="rowIndex % 2 === 1"
-    [ngClass]="rowClass ? rowClass(row.data, rowIndex) : ''"
-    [class.table-row_selected]="selectedRows && selectedRows.indexOf(row.data) >= 0"
-    [style.flex-grow]="totalFlex"
-    [style.flex-basis.px]="totalWidth"
-    [style.min-width.px]="totalWidth">
+  <!--  <div class="table-row"-->
+  <!--    ngForm-->
+  <!--    (click)="setActiveRow(row.data, $event)"-->
+  <!--    [attr.data-row]="rowIndex"-->
+  <!--    [class.table-row_odd]="rowIndex % 2 === 1"-->
+  <!--    [ngClass]="rowClass ? rowClass(row.data, rowIndex) : ''"-->
+  <!--    [class.table-row_selected]="selectedRows && selectedRows.indexOf(row.data) >= 0"-->
+  <!--    [style.flex-grow]="totalFlex"-->
+  <!--    [style.flex-basis.px]="totalWidth"-->
+  <!--    [style.min-width.px]="totalWidth">-->
+  <!--    @if (locked.length > 0) {-->
+  <!--      <div class="table-row_locked"-->
+  <!--        [style.flex-grow]="lockedFlex"-->
+  <!--        [style.flex-basis.px]="lockedWidth"-->
+  <!--        [style.min-width.px]="lockedWidth"-->
+  <!--        [style.zIndex]="row.data === activeRow ? 2 : 1">-->
+  <!--        @if (selectType === selectTypeEnum.checkBox && locked.length) {-->
+  <!--          <teta-selection-cell-->
+  <!--            [row]="row.data"-->
+  <!--          style="width: 28px;"></teta-selection-cell>-->
+  <!--        }-->
+  <!--        @for (column of locked; track trackColumns(colIndex, column); let colIndex = $index) {-->
+  <!--          <teta-cell-->
+  <!--            [attr.data-row]="rowIndex"-->
+  <!--            [attr.data-column]="column.name"-->
+  <!--            [column]="column"-->
+  <!--            [filterOptions]="dict?dict[column.name]:[]"-->
+  <!--            [dict]="dict"-->
+  <!--            [row]="row"-->
+  <!--            [ngClass]="column.cellClass"-->
+  <!--            [attr.tabindex]="0"-->
+  <!--            [style.flex-grow]="column.flex"-->
+  <!--            [style.flex-basis.px]="column.width"-->
+  <!--          ></teta-cell>-->
+  <!--        }-->
+  <!--      </div>-->
+  <!--    }-->
+  <!--    @if (selectType === selectTypeEnum.checkBox && locked.length < 1) {-->
+  <!--      <teta-selection-cell-->
+  <!--        [row]="row.data"-->
+  <!--      style="width: 28px;"></teta-selection-cell>-->
+  <!--    }-->
+  <!--    @for (column of unlocked; track trackColumns(colIndex, column); let colIndex = $index) {-->
+  <!--      <teta-cell-->
+  <!--        [attr.data-row]="rowIndex"-->
+  <!--        [attr.data-column]="column.name"-->
+  <!--        [column]="column"-->
+  <!--        [filterOptions]="dict?dict[column.name]:[]"-->
+  <!--        [dict]="dict"-->
+  <!--        [row]="row"-->
+  <!--        [ngClass]="column.cellClass"-->
+  <!--        [attr.tabindex]="0"-->
+  <!--        [style.flex-grow]="column.flex"-->
+  <!--        [style.flex-basis.px]="column.width"-->
+  <!--      ></teta-cell>-->
+  <!--    }-->
+  <!--  </div>-->
+  <teta-table-row class="table-row"
+                  ngForm
+                  [row]="row"
+                  (click)="setActiveRow(row.data, $event)"
+                  [attr.data-row]="rowIndex"
+                  [class.table-row_odd]="rowIndex % 2 === 1"
+                  [ngClass]="rowClass ? rowClass(row.data, rowIndex) : ''"
+                  [class.table-row_selected]="selectedRows && selectedRows.indexOf(row.data) >= 0"
+                  [style.flex-grow]="totalFlex"
+                  [style.flex-basis.px]="totalWidth"
+                  [style.min-width.px]="totalWidth">
     @if (locked.length > 0) {
       <div class="table-row_locked"
-        [style.flex-grow]="lockedFlex"
-        [style.flex-basis.px]="lockedWidth"
-        [style.min-width.px]="lockedWidth"
-        [style.zIndex]="row.data === activeRow ? 2 : 1">
+           [style.flex-grow]="lockedFlex"
+           [style.flex-basis.px]="lockedWidth"
+           [style.min-width.px]="lockedWidth"
+           [style.zIndex]="row.data === activeRow ? 2 : 1">
         @if (selectType === selectTypeEnum.checkBox && locked.length) {
           <teta-selection-cell
             [row]="row.data"
-          style="width: 28px;"></teta-selection-cell>
+            style="width: 28px;"></teta-selection-cell>
         }
         @for (column of locked; track trackColumns(colIndex, column); let colIndex = $index) {
           <teta-cell
@@ -78,7 +137,7 @@
     @if (selectType === selectTypeEnum.checkBox && locked.length < 1) {
       <teta-selection-cell
         [row]="row.data"
-      style="width: 28px;"></teta-selection-cell>
+        style="width: 28px;"></teta-selection-cell>
     }
     @for (column of unlocked; track trackColumns(colIndex, column); let colIndex = $index) {
       <teta-cell
@@ -94,41 +153,41 @@
         [style.flex-basis.px]="column.width"
       ></teta-cell>
     }
-  </div>
+  </teta-table-row>
 </ng-template>
 
 <ng-template #aggTemplate>
   @if (locale | async; as loc) {
     @if (aggregate) {
       <div class="table-row"
-        [class.table-row_virtual]="virtual"
-        [style.flex-grow]="totalFlex"
-        [style.flex-basis.px]="totalWidth"
-        [style.min-width.px]="totalWidth">
+           [class.table-row_virtual]="virtual"
+           [style.flex-grow]="totalFlex"
+           [style.flex-basis.px]="totalWidth"
+           [style.min-width.px]="totalWidth">
         @if (locked.length > 0) {
           <div class="table-row_locked"
-            [style.flex-grow]="lockedFlex"
-            [style.flex-basis.px]="lockedWidth"
-            [style.min-width.px]="lockedWidth">
+               [style.flex-grow]="lockedFlex"
+               [style.flex-basis.px]="lockedWidth"
+               [style.min-width.px]="lockedWidth">
             @if (selectType === selectTypeEnum.checkBox && locked.length < 1) {
               <div class="cell align-center justify-content-center"
-                style="width: 28px;"
-                >
+                   style="width: 28px;"
+              >
                 <teta-icon [name]="'sumColor'"></teta-icon>
               </div>
             }
             @for (column of locked; track trackColumns(colIndex, column); let colIndex = $index) {
               <div class="cell cell-component aggregate-cell"
-                [attr.data-column]="column.name"
-                [ngClass]="column.cellClass"
-                [attr.tabindex]="0"
-                [style.flex-grow]="column.flex"
-                [style.flex-basis.px]="column.width">
+                   [attr.data-column]="column.name"
+                   [ngClass]="column.cellClass"
+                   [attr.tabindex]="0"
+                   [style.flex-grow]="column.flex"
+                   [style.flex-basis.px]="column.width">
                 @if (column.aggregate !== aggregationType.none) {
                   <span class="cell-text cell-text_numeric font-title-3"
-                    >
-                    {{loc[getAggregateText(column)]}}:
-                    {{getAggregateValue(column) | tetaNumber : 2}}
+                  >
+                    {{ loc[getAggregateText(column)] }}:
+                    {{ getAggregateValue(column) | tetaNumber : 2 }}
                   </span>
                 }
               </div>
@@ -137,23 +196,23 @@
         }
         @if (selectType === selectTypeEnum.checkBox && locked.length < 1) {
           <div class="cell align-center justify-content-center"
-            style="width: 28px;"
-            >
+               style="width: 28px;"
+          >
             <teta-icon [name]="'sumColor'"></teta-icon>
           </div>
         }
         @for (column of unlocked; track trackColumns(colIndex, column); let colIndex = $index) {
           <div class="cell cell-component aggregate-cell"
-            [attr.data-column]="column.name"
-            [ngClass]="column.cellClass"
-            [attr.tabindex]="0"
-            [style.flex-grow]="column.flex"
-            [style.flex-basis.px]="column.width">
+               [attr.data-column]="column.name"
+               [ngClass]="column.cellClass"
+               [attr.tabindex]="0"
+               [style.flex-grow]="column.flex"
+               [style.flex-basis.px]="column.width">
             @if (column.aggregate !== aggregationType.none) {
               <span class="cell-text cell-text_numeric font-title-3"
-                >
-                {{loc[getAggregateText(column)]}}:
-                {{getAggregateValue(column) | tetaNumber : 2}}
+              >
+                {{ loc[getAggregateText(column)] }}:
+                {{ getAggregateValue(column) | tetaNumber : 2 }}
               </span>
             }
           </div>
@@ -164,9 +223,9 @@
 </ng-template>
 <ng-template #emptyRow>
   <div class="empty-table-row"
-    style="height: 0.1px"
-    [style.flex-grow]="totalFlex"
-    [style.flex-basis.px]="totalWidth"
-    [style.min-width.px]="totalWidth">
+       style="height: 0.1px"
+       [style.flex-grow]="totalFlex"
+       [style.flex-basis.px]="totalWidth"
+       [style.min-width.px]="totalWidth">
   </div>
 </ng-template>

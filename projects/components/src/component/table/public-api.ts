@@ -6,6 +6,7 @@
 export * from './table/table.component';
 export * from './table-head/table-head.component';
 export * from './table-body/table-body.component';
+export * from './table-row/table-row.component';
 export * from './head-cell-host/head-cell-host.component';
 export * from './cell/cell.component';
 export * from './cell-host/cell-host.component';
