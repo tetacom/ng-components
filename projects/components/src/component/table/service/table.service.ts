@@ -1,39 +1,39 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import objectHash from 'object-hash';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
-import { IDictionary } from '../../../common/contract/i-dictionary';
-import { IIdName } from '../../../common/contract/i-id-name';
-import { ArrayUtil } from '../../../common/util/array-util';
-import { boolOrFuncCallback } from '../../../util/bool-or-func';
-import { DateUtil } from '../../../util/date-util';
-import { DateFilter } from '../../filter/contarct/date-filter';
-import { DateFilterValue } from '../../filter/contarct/date-filter-value';
-import { FilterState } from '../../filter/contarct/filter-state';
-import { ListFilter } from '../../filter/contarct/list-filter';
-import { NumericFilter } from '../../filter/contarct/numeric-filter';
-import { NumericFilterValue } from '../../filter/contarct/numeric-filter-value';
-import { StringFilter } from '../../filter/contarct/string-filter';
-import { FilterType } from '../../filter/enum/filter-type.enum';
-import { ListFilterType } from '../../filter/enum/list-filter-type.enum';
-import { ColumnReorderEvent } from '../contract/column-reorder-event';
-import { ColumnResizeEvent } from '../contract/column-resize-event';
-import { ICellCoordinates } from '../contract/i-cell-coordinates';
-import { ICellEvent } from '../contract/i-cell-event';
+import {IDictionary} from '../../../common/contract/i-dictionary';
+import {IIdName} from '../../../common/contract/i-id-name';
+import {ArrayUtil} from '../../../common/util/array-util';
+import {boolOrFuncCallback} from '../../../util/bool-or-func';
+import {DateUtil} from '../../../util/date-util';
+import {DateFilter} from '../../filter/contarct/date-filter';
+import {DateFilterValue} from '../../filter/contarct/date-filter-value';
+import {FilterState} from '../../filter/contarct/filter-state';
+import {ListFilter} from '../../filter/contarct/list-filter';
+import {NumericFilter} from '../../filter/contarct/numeric-filter';
+import {NumericFilterValue} from '../../filter/contarct/numeric-filter-value';
+import {StringFilter} from '../../filter/contarct/string-filter';
+import {FilterType} from '../../filter/enum/filter-type.enum';
+import {ListFilterType} from '../../filter/enum/list-filter-type.enum';
+import {ColumnReorderEvent} from '../contract/column-reorder-event';
+import {ColumnResizeEvent} from '../contract/column-resize-event';
+import {ICellCoordinates} from '../contract/i-cell-coordinates';
+import {ICellEvent} from '../contract/i-cell-event';
 import {
   ICellInstance,
   ICellInstanceValue,
   IColumnRow,
 } from '../contract/i-cell-instance';
-import { ICellValue } from '../contract/i-cell-value';
-import { SortEvent } from '../contract/sort-event';
-import { TableColumn } from '../contract/table-column';
-import { TableColumnStore } from '../contract/table-column-store';
-import { TableRow } from '../contract/table-row';
-import { EditEvent } from '../enum/edit-event.enum';
-import { EditType } from '../enum/edit-type.enum';
-import { SelectType } from '../enum/select-type.enum';
-import { StateUtil } from '../util/state-util';
+import {ICellValue} from '../contract/i-cell-value';
+import {SortEvent} from '../contract/sort-event';
+import {TableColumn} from '../contract/table-column';
+import {TableColumnStore} from '../contract/table-column-store';
+import {TableRow} from '../contract/table-row';
+import {EditEvent} from '../enum/edit-event.enum';
+import {EditType} from '../enum/edit-type.enum';
+import {SelectType} from '../enum/select-type.enum';
+import {StateUtil} from '../util/state-util';
 
 @Injectable({
   providedIn: 'root',
@@ -456,7 +456,7 @@ export class TableService<T> {
         this._currentEditCell = cellEvent;
       } else {
         if (
-          boolOrFuncCallback<T>(!!this.rowEditable)(
+          boolOrFuncCallback<T>(this.rowEditable)(
             this.getRowByIndex(cellEvent?.row)?.data
           )
         ) {
@@ -477,6 +477,10 @@ export class TableService<T> {
       }
       const column = this.getColumnByName(cellEvent?.column);
       if (
+        boolOrFuncCallback<T>(this.rowEditable)(
+          this.getRowByIndex(cellEvent?.row)?.data
+        )
+        &&
         boolOrFuncCallback<IColumnRow<T>>(column?.editable)({
           row: this.getRowByIndex(cellEvent?.row)?.data,
           column: column,
@@ -773,9 +777,9 @@ export class TableService<T> {
   getCellInstance(coords: ICellCoordinates): ICellInstance<T> | null {
     return coords
       ? {
-          row: this.getRowByIndex(coords.row),
-          column: this.getColumnByName(coords.column),
-        }
+        row: this.getRowByIndex(coords.row),
+        column: this.getColumnByName(coords.column),
+      }
       : null;
   }
 
