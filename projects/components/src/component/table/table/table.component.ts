@@ -39,15 +39,21 @@ import { ContextMenuDirective } from '../../../directive/context-menu/context-me
 import { TableHeadComponent } from '../table-head/table-head.component';
 
 @Component({
-  selector: 'teta-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [TableService],
-  standalone: true,
-  imports: [TableHeadComponent, ContextMenuDirective, TableBodyComponent],
+    selector: 'teta-table',
+    templateUrl: './table.component.html',
+    styleUrls: ['./table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [TableService],
+    standalone: true,
+    imports: [
+        TableHeadComponent,
+        ContextMenuDirective,
+        TableBodyComponent,
+    ],
 })
-export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnChanges {
+export class TableComponent<T>
+  implements OnInit, OnDestroy, AfterViewInit, OnChanges
+{
   @Input() data: T[] = [];
   @Input() columns: TableColumn[] = [];
   @Input() dict: IDictionary<IIdName<any>[]>;
@@ -65,7 +71,10 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
   @Input() selectedRows: T[];
   @Input() selectType: SelectType = SelectType.mouse;
   @Input() aggregate: boolean;
-  @Input() trackRow: (index: number, row: T) => any = (index: number, row: T) => {
+  @Input() trackRow: (index: number, row: T) => any = (
+    index: number,
+    row: T
+  ) => {
     if (row['id']) {
       return row['id'];
     }
@@ -79,7 +88,7 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
   };
   @Input() editType: EditType = EditType.cell;
   @Input() editEvent: EditEvent = EditEvent.doubleClick;
-  @Input() rowEditable: (row: T) => boolean;
+  @Input() rowEditable: boolean | ((row: T) => boolean);
   @Input() rowClass: (row: T, index?: number) => string;
 
   @Input() set scrollToIndex(index: number) {
@@ -118,17 +127,22 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
   private _headElement: HTMLElement;
   private _state: FilterState;
 
-  constructor(private _svc: TableService<T>, private _elementRef: ElementRef) {
+  constructor(
+    private _svc: TableService<T>,
+    private _elementRef: ElementRef
+  ) {
     this._svc.state
       .pipe(
         takeWhile(() => this._alive),
-        filter((state) => state !== this._state)
+        filter(state => state !== this._state)
       )
       .subscribe((state: FilterState) => this.stateChange.next(state));
 
     this._svc.editCellStart
       .pipe(takeWhile(() => this._alive))
-      .subscribe((item: ICellEvent) => this.cellEditStart.emit(this._svc.getCellInstance(item)));
+      .subscribe((item: ICellEvent) =>
+        this.cellEditStart.emit(this._svc.getCellInstance(item))
+      );
 
     this._svc.editCellStop
       .pipe(takeWhile(() => this._alive))
@@ -138,7 +152,9 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
 
     this._svc.editRowStart
       .pipe(takeWhile(() => this._alive))
-      .subscribe((item: ICellEvent) => this.rowEditStart.emit(this._svc.getCellInstance(item)));
+      .subscribe((item: ICellEvent) =>
+        this.rowEditStart.emit(this._svc.getCellInstance(item))
+      );
 
     this._svc.editRowStop
       .pipe(takeWhile(() => this._alive))
@@ -146,15 +162,19 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
         this.rowEditEnd.emit(this._svc.getRowByIndex(item?.row))
       );
 
-    this._svc.selectedRows.pipe(takeWhile(() => this._alive)).subscribe((items: T[]) => {
-      this.selectedRowsList = items;
-      this.selectedRowsChange.emit(items);
-    });
+    this._svc.selectedRows
+      .pipe(takeWhile(() => this._alive))
+      .subscribe((items: T[]) => {
+        this.selectedRowsList = items;
+        this.selectedRowsChange.emit(items);
+      });
 
-    this._svc.activeRow.pipe(takeWhile(() => this._alive)).subscribe((item: T) => {
-      this.activeRow = item;
-      this.activeRowChange.emit(item);
-    });
+    this._svc.activeRow
+      .pipe(takeWhile(() => this._alive))
+      .subscribe((item: T) => {
+        this.activeRow = item;
+        this.activeRowChange.emit(item);
+      });
 
     this._svc.valueChanged
       .pipe(takeWhile(() => this._alive))
@@ -163,7 +183,9 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
       });
   }
 
-  @HostListener('document:click', ['$event']) handleClickOutsideAnyRow(event: MouseEvent) {
+  @HostListener('document:click', ['$event']) handleClickOutsideAnyRow(
+    event: MouseEvent
+  ) {
     const coordinates = this.getCoordinates(event);
     const row = this.getRow(event);
     const eventIsOnRow = this.eventIsOnRow(event);
@@ -276,7 +298,10 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
       });
       if (event.key && (event.key.length === 1 || event.key === 'Delete')) {
         const column = this._svc.getColumnByName(coordinates.column);
-        if (column.filterType !== FilterType.number || isFinite(event.key as any)) {
+        if (
+          column.filterType !== FilterType.number ||
+          isFinite(event.key as any)
+        ) {
           this.startEditRowOrCell({
             row: coordinates.row,
             column: coordinates.column,
@@ -334,7 +359,8 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
   }
 
   ngAfterViewInit(): void {
-    this._headElement = this._elementRef.nativeElement.querySelector('.table-head');
+    this._headElement =
+      this._elementRef.nativeElement.querySelector('.table-head');
   }
 
   ngOnDestroy(): void {
@@ -365,9 +391,9 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
     if (Object.prototype.hasOwnProperty.call(changes, 'data')) {
       this._svc.setData(this.data);
       this._svc.selectRows(
-        this.data?.filter((row) => {
+        this.data?.filter(row => {
           return this.selectedRows?.some(
-            (selectedRow) =>
+            selectedRow =>
               this.trackRow(this._svc.getRowIndex(selectedRow), selectedRow) ===
               this.trackRow(this._svc.getRowIndex(row), row)
           );
@@ -403,13 +429,6 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
   }
 
   private startEditRowOrCell(coordinates: ICellEvent): void {
-    if (this.rowEditable) {
-      const row = this._svc.getRowByIndex(coordinates.row);
-      if (row) {
-        if (!this.rowEditable(row.data)) return;
-      }
-    }
-
     if (this.editType === EditType.row) {
       this._svc.startEditRow(coordinates);
     }
@@ -426,9 +445,7 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
 
   private eventIsOnRow(event: Event): boolean {
     const row = event.composedPath().find((target) => {
-      return (
-        (target as HTMLElement)?.getAttribute && (target as HTMLElement)?.getAttribute('data-row')
-      );
+      return (target as HTMLElement)?.getAttribute && (target as HTMLElement)?.getAttribute('data-row');
     });
     return row && this._elementRef.nativeElement.contains(row);
   }
@@ -466,7 +483,7 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
     return null;
   }
 
-  onScroll = (event) => {
+  onScroll = event => {
     this._headElement.scrollLeft = event.target.scrollLeft;
   };
 

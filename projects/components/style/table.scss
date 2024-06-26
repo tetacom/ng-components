@@ -1,5 +1,5 @@
-@import 'util/color-util.scss';
-@import 'util/font-util.scss';
+@import "util/color-util.scss";
+@import "util/font-util.scss";
 
 .table {
   display: flex;
@@ -84,13 +84,11 @@
         }
       }
 
-      &:hover,
-      &_active {
+      &:hover, &_active {
         background: var(--color-text-20);
       }
 
-      &:hover &__menu,
-      &__menu_open {
+      &:hover &__menu, &__menu_open {
         display: flex;
       }
 
@@ -145,6 +143,7 @@
       &:hover &__resize {
         display: block;
       }
+
     }
 
     &__dropdown {
@@ -192,13 +191,8 @@
       background-color: var(--color-global-bgmain);
     }
 
-    &_selected,
-    &_selected:hover {
+    &_selected, &_selected:hover {
       background-color: var(--color-primary-10);
-    }
-
-    &_disabled {
-      color: var(--color-text-50);
     }
   }
 }
