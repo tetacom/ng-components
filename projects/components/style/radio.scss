@@ -7,7 +7,7 @@
   grid-auto-rows: max-content;
 
   &-button {
-    grid-gap: 4px;
+    grid-gap: 8px;
     display: inline-flex;
     align-items: center;
     @include getFont($fonts, 'body-3');
