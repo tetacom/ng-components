@@ -26,7 +26,9 @@
       justify-content: center;
       border-radius: 8px;
       background: var(--color-global-bgcard);
-      border: 1px solid var(--color-primary-50)
+      border: 1px solid var(--color-primary-50);
+      flex-grow: 0;
+      flex-shrink: 0;
     }
 
     &-icon:has(&-small-icon) {
