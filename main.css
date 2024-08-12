@@ -4146,7 +4146,7 @@ body {
   grid-auto-rows: max-content;
 }
 .radio-button {
-  grid-gap: 4px;
+  grid-gap: 8px;
   display: inline-flex;
   align-items: center;
   font-size: 12px;
@@ -4169,6 +4169,8 @@ body {
   border-radius: 8px;
   background: var(--color-global-bgcard);
   border: 1px solid var(--color-primary-50);
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 .radio-button-icon:has(.radio-button-small-icon) {
   background: var(--color-primary-50);
