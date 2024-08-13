@@ -32,8 +32,8 @@
 
 .text-field, .input, .textarea {
   padding: 6px 8px;
-  border: solid 1px var(--color-text-10);
-  background-color: var(--color-text-10);
+  border: solid 1px var(--color-text-5);
+  background-color: var(--color-text-5);
   background-clip:padding-box;
   color: var(--color-text-90);
   @include getFont($fonts, 'body-3');
