@@ -24,7 +24,7 @@ import {ChartService} from '../service/chart.service';
 import {ScaleService} from '../service/scale.service';
 import {ZoomService} from '../service/zoom.service';
 import {ChartContainerComponent} from '../chart-container/chart-container.component';
-import {AsyncPipe, NgIf} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {LegendComponent} from '../legend/legend.component';
 
 @Component({
@@ -38,7 +38,6 @@ import {LegendComponent} from '../legend/legend.component';
     ChartContainerComponent,
     AsyncPipe,
     LegendComponent,
-    NgIf
   ]
 })
 export class ChartComponent implements OnInit, OnDestroy {

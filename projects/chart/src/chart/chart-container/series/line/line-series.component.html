@@ -6,76 +6,72 @@
   [attr.stroke-width]="series.style?.strokeWidth"
   fill="none">
 </svg:path>
-<ng-container *ngIf="transform | async as t">
-  <svg:circle
-    *ngIf="t?.x !=null && t?.y!=null"
-    r="3"
-    [attr.fill]="series.color"
-    [attr.transform]="'translate('+ t.x +', '+ t.y +')'"
-  >
-  </svg:circle>
-</ng-container>
-<ng-container *ngIf="markers as draggablePoints">
-  <ng-container *ngIf="x && y">
-    <svg:g
-      *ngFor="let point of draggablePoints"
-      [attr.transform]="'translate(' + x(point.x) + ',' + y(point.y) + ')'">
-      <svg:g [tetaDraggablePoint]="point.marker.draggable"
-             [dragDirection]="point.marker.dragType"
-             [allowDrag]="allowDrag(point)"
-             #dragPoint="tetaDraggablePoint"
-             (moveStart)="moveStart($event, point)"
-             (moveEnd)="moveEnd($event, point);dragPoint.resetTransform();"
-             (moveProcess)="moveProcess($event, point);dragPoint.resetTransform();"
-             [class.draggable-marker]="point?.marker?.draggable">
-        <svg:circle
-          class="marker"
-          [attr.r]="point.marker.style?.radius ?? 5"
-          [attr.fill]="point.marker.style?.fill ?? 'transparent'"
-          [attr.stroke]="point.marker.style?.stroke ?? 'none'"
-          [attr.stroke-width]="point.marker.style?.strokeWidth"
-          [attr.stroke-dasharray]="point.marker.style?.strokeDasharray"
-          [attr.cx]="0"
-          [attr.cy]="0">
-        </svg:circle>
-        <ng-container *ngIf="point.marker.label?.text">
-          <svg:line
-            [attr.x1]="0"
-            [attr.y1]="0"
-            [attr.x2]="point.marker.label?.dx"
-            [attr.y2]="point.marker.label?.dy"
-            [attr.stroke]="point.marker.label?.style?.stroke ?? 'var(--color-text-90)'"
-            [attr.stroke-width]="point.marker.label?.style?.strokeWidth ?? 1"
-            [attr.stroke-dasharray]="point.marker.label?.style?.strokeDasharray ?? null">
-          </svg:line>
-          <svg:foreignObject
-            [tetaDraggablePoint]="point.marker.label?.draggable"
-            [dragDirection]="point.marker.label.dragType"
-            #labelPoint="tetaDraggablePoint"
-            (moveStart)="startLabel($event, point.marker.label)"
-            (moveProcess)="moveLabel($event, point.marker.label); labelPoint.resetTransform();"
-            (moveEnd)="labelPoint.resetTransform();"
-            [attr.width]="annotationNode?.offsetWidth ?? 0"
-            [attr.height]="annotationNode?.offsetHeight ?? 0"
-            [attr.x]="point.marker.label?.dx"
-            [attr.y]="point.marker.label?.dy"
-            class="position-absolute">
-            <div
-              #annotationNode
-              class="shadow-2 padding-2"
-              [style.color]="'var(--color-text-90)'"
-              [style.background-color]="'var(--color-global-bgcard)'"
-              [style.cursor]="'move'"
-              style="border-radius: 2px; display: inline-block;">
-              {{point.marker.label?.text}}
-            </div>
-          </svg:foreignObject>
-        </ng-container>
+@if (transform | async; as t) {
+  @if (t?.x != null && t?.y != null) {
+    <svg:circle r="3"
+                [attr.fill]="series.color"
+                [attr.transform]="'translate('+ t.x +', '+ t.y +')'">
+    </svg:circle>
+  }
+}
+@if (markers; as draggablePoints) {
+  @if (x && y) {
+    @for (point of draggablePoints; track point) {
+      <svg:g
+        [attr.transform]="'translate(' + x(point.x) + ',' + y(point.y) + ')'">
+        <svg:g [tetaDraggablePoint]="point.marker.draggable"
+               [dragDirection]="point.marker.dragType"
+               [allowDrag]="allowDrag(point)"
+               #dragPoint="tetaDraggablePoint"
+               (moveStart)="moveStart($event, point)"
+               (moveEnd)="moveEnd($event, point);dragPoint.resetTransform();"
+               (moveProcess)="moveProcess($event, point);dragPoint.resetTransform();"
+               [class.draggable-marker]="point?.marker?.draggable">
+          <svg:circle
+            class="marker"
+            [attr.r]="point.marker.style?.radius ?? 5"
+            [attr.fill]="point.marker.style?.fill ?? 'transparent'"
+            [attr.stroke]="point.marker.style?.stroke ?? 'none'"
+            [attr.stroke-width]="point.marker.style?.strokeWidth"
+            [attr.stroke-dasharray]="point.marker.style?.strokeDasharray"
+            [attr.cx]="0"
+            [attr.cy]="0">
+          </svg:circle>
+          @if (point.marker.label?.text) {
+            <svg:line
+              [attr.x1]="0"
+              [attr.y1]="0"
+              [attr.x2]="point.marker.label?.dx"
+              [attr.y2]="point.marker.label?.dy"
+              [attr.stroke]="point.marker.label?.style?.stroke ?? 'var(--color-text-90)'"
+              [attr.stroke-width]="point.marker.label?.style?.strokeWidth ?? 1"
+              [attr.stroke-dasharray]="point.marker.label?.style?.strokeDasharray ?? null">
+            </svg:line>
+            <svg:foreignObject
+              [tetaDraggablePoint]="point.marker.label?.draggable"
+              [dragDirection]="point.marker.label.dragType"
+              #labelPoint="tetaDraggablePoint"
+              (moveStart)="startLabel($event, point.marker.label)"
+              (moveProcess)="moveLabel($event, point.marker.label); labelPoint.resetTransform();"
+              (moveEnd)="labelPoint.resetTransform();"
+              [attr.width]="annotationNode?.offsetWidth ?? 0"
+              [attr.height]="annotationNode?.offsetHeight ?? 0"
+              [attr.x]="point.marker.label?.dx"
+              [attr.y]="point.marker.label?.dy"
+              class="position-absolute">
+              <div
+                #annotationNode
+                class="shadow-2 padding-2"
+                [style.color]="'var(--color-text-90)'"
+                [style.background-color]="'var(--color-global-bgcard)'"
+                [style.cursor]="'move'"
+                style="border-radius: 2px; display: inline-block;">
+                {{ point.marker.label?.text }}
+              </div>
+            </svg:foreignObject>
+          }
+        </svg:g>
       </svg:g>
-    </svg:g>
-  </ng-container>
-
-</ng-container>
-
-
-
+    }
+  }
+}

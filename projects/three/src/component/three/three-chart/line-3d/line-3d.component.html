@@ -1,6 +1,8 @@
-<ng-container *ngIf="{points:points|async}as data">
-  <ngt-mesh *ngIf="data?.points?.length">
-    <ngts-line [color]="series.color" [lineWidth]="2" [points]="data.points"></ngts-line>
-    <ngt-line-basic-material></ngt-line-basic-material>
-  </ngt-mesh>
-</ng-container>
+@if ({points: points|async}; as data) {
+  @if (data?.points?.length) {
+    <ngt-mesh>
+      <ngts-line [color]="series.color" [lineWidth]="2" [points]="data.points"></ngts-line>
+      <ngt-line-basic-material></ngt-line-basic-material>
+    </ngt-mesh>
+  }
+}

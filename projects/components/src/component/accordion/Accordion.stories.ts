@@ -1,8 +1,7 @@
 import { AccordionComponent } from './accordion/accordion.component';
 
 import { applicationConfig, Meta } from '@storybook/angular';
-import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient} from '@angular/common/http';
 import { AccordionContentDirective } from './accordion-content.directive';
 import { AccordionHeadComponent } from './accordion-head/accordion-head.component';
 import { AccordionItemComponent } from './accordion-item/accordion-item.component';
@@ -13,7 +12,7 @@ export default {
   title: 'Component/Accordion',
   decorators: [
     applicationConfig({
-      providers: [importProvidersFrom(HttpClientModule)],
+      providers: [provideHttpClient()],
     }),
   ],
   argTypes: {

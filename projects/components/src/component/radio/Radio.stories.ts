@@ -1,11 +1,9 @@
+import {RadioComponent} from './radio/radio.component';
 
-import { RadioComponent } from './radio/radio.component';
+import {FormsModule} from '@angular/forms';
 
-import { FormsModule } from '@angular/forms';
-
-import { applicationConfig, Meta } from '@storybook/angular';
-import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {applicationConfig, Meta} from '@storybook/angular';
+import {provideHttpClient} from '@angular/common/http';
 
 import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 import {RadioButtonComponent} from "./radio-button/radio-button.component";
@@ -15,7 +13,7 @@ export default {
   decorators: [
 
     applicationConfig({
-      providers: [importProvidersFrom(HttpClientModule)],
+      providers: [provideHttpClient()],
     }),
   ],
   component: RadioComponent,
@@ -26,7 +24,7 @@ export default {
 
 export const baseRadioButton = () => ({
   moduleMetadata: {
-    imports: [FormsModule,RadioButtonComponent,IconSpriteDirective],
+    imports: [FormsModule, RadioButtonComponent, IconSpriteDirective],
   },
   template: `<div class="padding-4 bg-panel-50" [tetaIconSprite]="'assets/icons.svg'">
     <teta-radio  [ngModel]="2">
@@ -37,7 +35,7 @@ export const baseRadioButton = () => ({
 });
 export const disabledRadioButton = () => ({
   moduleMetadata: {
-    imports: [FormsModule,RadioButtonComponent,IconSpriteDirective],
+    imports: [FormsModule, RadioButtonComponent, IconSpriteDirective],
   },
   template: `<div class="padding-4 bg-panel-50" [tetaIconSprite]="'assets/icons.svg'">
     <teta-radio  [ngModel]="3">

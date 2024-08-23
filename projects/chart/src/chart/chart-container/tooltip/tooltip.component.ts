@@ -17,7 +17,7 @@ import { IDisplayTooltip } from '../../model/i-display-tooltip';
 import { Series } from '../../model/series';
 import { ChartService } from '../../service/chart.service';
 import { ZoomService } from '../../service/zoom.service';
-import { AsyncPipe, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { PositionUtil } from '../../core/utils/position-util';
 import { Align } from '../../model/enum/align.enum';
 import { VerticalAlign } from '../../model/enum/vertical-align.enum';
@@ -30,8 +30,6 @@ import { VerticalAlign } from '../../model/enum/vertical-align.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
-    NgForOf,
-    NgIf,
     NgTemplateOutlet
   ]
 })

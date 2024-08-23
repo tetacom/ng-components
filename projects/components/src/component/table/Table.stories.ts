@@ -1,15 +1,10 @@
 import {EditType} from './enum/edit-type.enum';
 import {EditEvent} from './enum/edit-event.enum';
 import {SelectType} from './enum/select-type.enum';
-
-
 import {applicationConfig, Meta} from "@storybook/angular";
-import {importProvidersFrom} from "@angular/core";
-import {HttpClientModule} from "@angular/common/http";
+import {provideHttpClient} from "@angular/common/http";
 import {TableDemoComponent} from "./table-demo/table-demo/table-demo.component";
-import {IconComponent} from "../icon/icon/icon.component";
 import {IconSpriteDirective} from "../icon/icon-sprite.directive";
-import { Align } from '../../common/enum/align.enum';
 
 export default {
   title: 'Component/Table',
@@ -17,50 +12,50 @@ export default {
 
     applicationConfig({
       providers: [
-        importProvidersFrom(HttpClientModule)
+        provideHttpClient()
       ],
     }),
   ],
   argTypes: {
-    selectType:{
-      options:['SelectType.none', 'SelectType.checkBox', 'SelectType.mouse',],
-      control:{type:'select'}
+    selectType: {
+      options: ['SelectType.none', 'SelectType.checkBox', 'SelectType.mouse',],
+      control: {type: 'select'}
     },
-    editType:{
-      options:['EditType.row', 'EditType.cell'],
-      control:{type:'select'}
+    editType: {
+      options: ['EditType.row', 'EditType.cell'],
+      control: {type: 'select'}
     },
-    editEvent:{
-      options:['EditEvent.focus', 'EditEvent.click', 'EditEvent.doubleClick'],
-      control:{type:'select'}
+    editEvent: {
+      options: ['EditEvent.focus', 'EditEvent.click', 'EditEvent.doubleClick'],
+      control: {type: 'select'}
     }
 
   },
   args: {
-    selectType:'SelectType.none',
-    editType:'EditType.cell',
-    editEvent:'EditEvent.doubleClick'
+    selectType: 'SelectType.none',
+    editType: 'EditType.cell',
+    editEvent: 'EditEvent.doubleClick'
   },
   moduleMetadata: {
     imports: [],
   },
 } as Meta;
 const selectTypeMap = new Map<string, SelectType>()
-  .set('SelectType.none',SelectType.none)
+  .set('SelectType.none', SelectType.none)
   .set('SelectType.checkBox', SelectType.checkBox)
   .set('SelectType.mouse', SelectType.mouse)
 const editEventMap = new Map<string, EditEvent>()
-  .set('EditEvent.focus',EditEvent.focus)
+  .set('EditEvent.focus', EditEvent.focus)
   .set('EditEvent.click', EditEvent.click)
   .set('EditEvent.doubleClick', EditEvent.doubleClick)
 const editTypeMap = new Map<string, EditType>()
-  .set('EditType.row',EditType.row)
+  .set('EditType.row', EditType.row)
   .set('EditType.cell', EditType.cell)
 export const basicTable = (args) => ({
   moduleMetadata: {
-    imports: [TableDemoComponent,IconSpriteDirective],
+    imports: [TableDemoComponent, IconSpriteDirective],
   },
-  props: { ...args,selectTypeMap,editEventMap,editTypeMap },
+  props: {...args, selectTypeMap, editEventMap, editTypeMap},
   template: `<div [tetaIconSprite]="['assets/icons.svg', 'assets/color-icons.svg']"
                   class="bg-panel-0 padding-10"
                   style="display: flex; width: 1200px; height: 600px;">
@@ -74,9 +69,9 @@ export const basicTable = (args) => ({
 
 export const virtualTable = (args) => ({
   moduleMetadata: {
-    imports: [TableDemoComponent,IconSpriteDirective],
+    imports: [TableDemoComponent, IconSpriteDirective],
   },
-  props: { ...args,selectTypeMap,editEventMap,editTypeMap },
+  props: {...args, selectTypeMap, editEventMap, editTypeMap},
   template: `<div [tetaIconSprite]="['assets/icons.svg', 'assets/color-icons.svg']"
                   class="bg-panel-0 padding-10"
                   style="display: flex; width: 1200px; height: 600px;">

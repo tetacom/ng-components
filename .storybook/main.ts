@@ -9,14 +9,20 @@ const config: StorybookConfig = {
     "../projects/three/**/*.mdx",
     "../projects/three/**/*.stories.@(js|jsx|ts|tsx)"
   ],
+
   addons: [
     '@storybook/addon-essentials',
-    '@storybook/addon-interactions'
+    '@storybook/addon-interactions',
+    '@storybook/addon-mdx-gfm',
+    "@chromatic-com/storybook"
   ],
+
   framework: {
     name: '@storybook/angular',
     options: {},
   },
+
+  docs: {}
 };
 
 export default config;

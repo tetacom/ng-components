@@ -1,19 +1,18 @@
-import { applicationConfig, Meta } from '@storybook/angular';
-import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { IconSpriteDirective } from '../icon/icon-sprite.directive';
-import { IconComponent } from '../icon/icon/icon.component';
+import {applicationConfig, Meta} from '@storybook/angular';
+import {provideHttpClient} from '@angular/common/http';
+import {IconSpriteDirective} from '../icon/icon-sprite.directive';
+import {IconComponent} from '../icon/icon/icon.component';
 
 export default {
   title: 'Component/Chip',
   decorators: [
     applicationConfig({
-      providers: [importProvidersFrom(HttpClientModule)],
+      providers: [provideHttpClient()],
     }),
   ],
   argTypes: {
     photo: {
-      control: { type: 'text' },
+      control: {type: 'text'},
     },
   },
   args: {

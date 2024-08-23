@@ -9,7 +9,7 @@ import { Axis } from '../../core/axis/axis';
 
 import {ScaleService} from "../../service/scale.service";
 import {map, Observable} from "rxjs";
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: '[teta-y-axis]',
@@ -19,9 +19,6 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
-    NgForOf,
-    NgIf
-
   ]
 })
 export class YAxisComponent implements OnInit, AfterViewInit {

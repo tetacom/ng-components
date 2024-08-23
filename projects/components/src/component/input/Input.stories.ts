@@ -1,18 +1,11 @@
-
 import {IconComponent} from '../icon/icon/icon.component';
 
 
 import {FormsModule} from '@angular/forms';
 
 
-
-
-
-import {action} from '@storybook/addon-actions';
-
 import {applicationConfig, Meta} from "@storybook/angular";
-import {importProvidersFrom} from "@angular/core";
-import {HttpClientModule} from "@angular/common/http";
+import {provideHttpClient} from "@angular/common/http";
 import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 import {InputComponent} from "./input/input.component";
 import {TextFieldComponent} from "./text-field/text-field.component";
@@ -22,7 +15,6 @@ import {RadioComponent} from "../radio/radio/radio.component";
 import {ToggleComponent} from "../toggle/toggle/toggle.component";
 import {CheckboxComponent} from "../checkbox/checkbox/checkbox.component";
 import {RadioButtonComponent} from "../radio/radio-button/radio-button.component";
-import {SampleInputComponent} from "./sample-input/sample-input/sample-input.component";
 
 export default {
   title: 'Component/Input',
@@ -30,25 +22,25 @@ export default {
 
     applicationConfig({
       providers: [
-        importProvidersFrom(HttpClientModule)
+        provideHttpClient()
       ],
     }),
   ],
-  argTypes:{
-    horizontal:{
-      control:{type:'boolean'}
-    },viewType:{
-      options:['rounded', 'brick', 'circle'],
-      control:{type:'select'}
+  argTypes: {
+    horizontal: {
+      control: {type: 'boolean'}
+    }, viewType: {
+      options: ['rounded', 'brick', 'circle'],
+      control: {type: 'select'}
     },
-    label:{
-      control:{type:'text'}
+    label: {
+      control: {type: 'text'}
     },
   },
-  args:{
-    viewType:'rounded',
-    label:'label',
-    horizontal:false,
+  args: {
+    viewType: 'rounded',
+    label: 'label',
+    horizontal: false,
   },
 
   component: IconComponent,
@@ -61,10 +53,10 @@ export default {
 export const basicInput = (args) => ({
   moduleMetadata: {
     imports: [
-    FormsModule,IconSpriteDirective,InputComponent,TextFieldComponent,DatePickerComponent,SelectComponent,RadioComponent,ToggleComponent,CheckboxComponent,RadioButtonComponent
-],
+      FormsModule, IconSpriteDirective, InputComponent, TextFieldComponent, DatePickerComponent, SelectComponent, RadioComponent, ToggleComponent, CheckboxComponent, RadioButtonComponent
+    ],
   },
-  props:args,
+  props: args,
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="border border-text-10 padding-3" style="width: 500px;">
   <div class="form-container">
     <div class="form-row">
@@ -89,10 +81,10 @@ export const basicInput = (args) => ({
 export const disabledInput = (args) => ({
   moduleMetadata: {
     imports: [
-      FormsModule,IconSpriteDirective,InputComponent,TextFieldComponent,DatePickerComponent,SelectComponent,RadioComponent,ToggleComponent,CheckboxComponent,RadioButtonComponent
+      FormsModule, IconSpriteDirective, InputComponent, TextFieldComponent, DatePickerComponent, SelectComponent, RadioComponent, ToggleComponent, CheckboxComponent, RadioButtonComponent
     ],
   },
-  props:args,
+  props: args,
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="border border-text-10 padding-3" style="width: 500px;">
     <div class="form-container">
     <div class="form-row">
@@ -117,10 +109,10 @@ export const disabledInput = (args) => ({
 export const invalidInput = (args) => ({
   moduleMetadata: {
     imports: [
-      FormsModule,IconSpriteDirective,InputComponent,TextFieldComponent,DatePickerComponent,SelectComponent,RadioComponent,ToggleComponent,CheckboxComponent,RadioButtonComponent
+      FormsModule, IconSpriteDirective, InputComponent, TextFieldComponent, DatePickerComponent, SelectComponent, RadioComponent, ToggleComponent, CheckboxComponent, RadioButtonComponent
     ],
   },
-  props:args,
+  props: args,
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="border border-text-10 padding-3" style="width: 500px;">
     <div class="form-container">
     <div class="form-row">

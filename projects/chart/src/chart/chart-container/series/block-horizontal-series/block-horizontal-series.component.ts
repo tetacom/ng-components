@@ -13,7 +13,7 @@ import { FillType } from '../../../model/enum/fill-type';
 import { ChartService } from '../../../service/chart.service';
 import { ScaleService } from '../../../service/scale.service';
 import { ZoomService } from '../../../service/zoom.service';
-import { AsyncPipe, NgForOf, NgIf, NgStyle } from '@angular/common';
+import { AsyncPipe, NgStyle } from '@angular/common';
 
 @Component({
   selector: 'svg:svg[teta-block-horizontal-series]',
@@ -23,8 +23,7 @@ import { AsyncPipe, NgForOf, NgIf, NgStyle } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
-    NgIf,NgStyle,
-    NgForOf
+    NgStyle,
   ]
 })
 export class BlockHorizontalSeriesComponent<T extends BasePoint>

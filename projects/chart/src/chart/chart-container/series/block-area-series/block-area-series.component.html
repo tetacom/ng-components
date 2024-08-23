@@ -1,24 +1,26 @@
-<ng-container *ngIf="{
+@if ({
   y: y | async,
   x: x | async,
   points: displayPoints | async
-} as data">
-  <svg:defs *ngIf="series?.fillType === fillType.gradient">
-    <svg:linearGradient [id]="'gradient-fill-' + id"
-                        gradientUnits="userSpaceOnUse"
-                        x1="0%"
-                        [attr.y1]="config?.inverted ? '0%' : '100%'"
-                        [attr.x2]="config?.inverted ? '100%' : '0%'"
-                        y2="0%">
-      <svg:stop offset="0%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0"></svg:stop>
-      <svg:stop offset="5%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.1"></svg:stop>
-      <svg:stop offset="20%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.2"></svg:stop>
-      <svg:stop offset="60%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.5"></svg:stop>
-      <svg:stop offset="100%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.9"></svg:stop>
-    </svg:linearGradient>
-  </svg:defs>
-  <ng-container *ngIf="data.x && data.y">
-    <ng-container *ngFor="let point of data.points">
+}; as data) {
+  @if (series?.fillType === fillType.gradient) {
+    <svg:defs>
+      <svg:linearGradient [id]="'gradient-fill-' + id"
+                          gradientUnits="userSpaceOnUse"
+                          x1="0%"
+                          [attr.y1]="config?.inverted ? '0%' : '100%'"
+                          [attr.x2]="config?.inverted ? '100%' : '0%'"
+                          y2="0%">
+        <svg:stop offset="0%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0"></svg:stop>
+        <svg:stop offset="5%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.1"></svg:stop>
+        <svg:stop offset="20%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.2"></svg:stop>
+        <svg:stop offset="60%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.5"></svg:stop>
+        <svg:stop offset="100%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.9"></svg:stop>
+      </svg:linearGradient>
+    </svg:defs>
+  }
+  @if (data.x && data.y) {
+    @for (point of data.points; track point) {
       <svg:g (mouseenter)="mouseenter(point)"
              (mouseleave)="mouseleave(point)">
         @if (!!config.inverted) {
@@ -54,12 +56,7 @@
                     text-anchor="middle">{{ point.text }}
           </svg:text>
         }
-
-
-        <!--      <svg:line x1="0" x2="100%" [attr.y1]="data.y(point.y)" [attr.y2]="data.y(point.y)" [attr.stroke]="point.iconId ? 'var(&#45;&#45;color-text-10)' : point.color ?? series.color"></svg:line>-->
-        <!--      <svg:line x1="0" x2="100%" [attr.y1]="data.y(point.y1)" [attr.y2]="data.y(point.y1)" [attr.stroke]="point.iconId ? 'var(&#45;&#45;color-text-10)' : point.color ?? series.color"></svg:line>-->
-
       </svg:g>
-    </ng-container>
-  </ng-container>
-</ng-container>
+    }
+  }
+}

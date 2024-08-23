@@ -1,18 +1,16 @@
-
-import { ModalSamplesModule } from './modal-samples/modal-samples.module';
-import { ModalFromComponentComponent } from './modal-samples/modal-from-component/modal-from-component.component';
-import { ModalFromTemplateComponent } from './modal-samples/modal-from-template/modal-from-template.component';
-import { AlertSampleComponent } from './modal-samples/alert-sample/alert-sample.component';
-import { applicationConfig, Meta, StoryFn } from '@storybook/angular';
-import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {ModalSamplesModule} from './modal-samples/modal-samples.module';
+import {ModalFromComponentComponent} from './modal-samples/modal-from-component/modal-from-component.component';
+import {ModalFromTemplateComponent} from './modal-samples/modal-from-template/modal-from-template.component';
+import {AlertSampleComponent} from './modal-samples/alert-sample/alert-sample.component';
+import {applicationConfig, Meta, StoryFn} from '@storybook/angular';
+import {provideHttpClient} from '@angular/common/http';
 
 export default {
   title: 'Component/Modal',
   decorators: [
 
     applicationConfig({
-      providers: [importProvidersFrom(HttpClientModule)],
+      providers: [provideHttpClient()],
     }),
   ],
   moduleMetadata: {

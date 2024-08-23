@@ -7,15 +7,15 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { SeriesBaseComponent } from '../../../base/series-base.component';
-import { BasePoint } from '../../../model/base-point';
-import { ChartService } from '../../../service/chart.service';
-import { ScaleService } from '../../../service/scale.service';
-import { ZoomService } from '../../../service/zoom.service';
-import { map, Observable } from 'rxjs';
-import { SeriesType } from '../../../model/enum/series-type';
+import {SeriesBaseComponent} from '../../../base/series-base.component';
+import {BasePoint} from '../../../model/base-point';
+import {ChartService} from '../../../service/chart.service';
+import {ScaleService} from '../../../service/scale.service';
+import {ZoomService} from '../../../service/zoom.service';
+import {map, Observable} from 'rxjs';
+import {SeriesType} from '../../../model/enum/series-type';
 import * as d3 from 'd3';
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'svg:svg[teta-bar-series]',
@@ -25,14 +25,11 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
-    NgForOf,
-    NgIf
   ]
 })
 export class BarSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
-  implements OnInit, OnChanges
-{
+  implements OnInit, OnChanges {
 
   x: Observable<any>;
   x1: Observable<any>;
@@ -101,7 +98,8 @@ export class BarSeriesComponent<T extends BasePoint>
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {}
+  ngOnChanges(changes: SimpleChanges) {
+  }
 
   isNumber(value: any): value is number {
     return typeof value === 'number'

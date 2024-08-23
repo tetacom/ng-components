@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {ScaleService} from "../../service/scale.service";
 import {map, Observable, tap} from "rxjs";
 import {ChartService} from "../../service/chart.service";
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: '[teta-crosshair]',
@@ -11,7 +11,6 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
   standalone: true,
   imports: [
     AsyncPipe,
-    NgIf
   ]
 })
 export class CrosshairComponent implements OnInit {

@@ -1,17 +1,14 @@
-
 import {SidebarComponent} from './sidebar/sidebar.component';
 
 import {SidebarPosition} from './sidebar-position.enum';
 
 
 import {applicationConfig, Meta} from "@storybook/angular";
-import {importProvidersFrom} from "@angular/core";
-import {HttpClientModule} from "@angular/common/http";
+import {provideHttpClient} from "@angular/common/http";
 import {IconComponent} from "../icon/icon/icon.component";
 import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 import {ButtonComponent} from "../button/button/button.component";
-import { Align } from '../../common/enum/align.enum';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 export default {
   title: 'Component/Sidebar',
@@ -19,22 +16,22 @@ export default {
 
     applicationConfig({
       providers: [
-        importProvidersFrom(HttpClientModule)
+        provideHttpClient()
       ],
     }),
   ],
   argTypes: {
     backdrop: {
-      control: { type: 'boolean' }
+      control: {type: 'boolean'}
     },
     position: {
       options: ['SidebarPosition.left', 'SidebarPosition.bottom', 'SidebarPosition.top', 'SidebarPosition.right'],
-      control: { type: 'select' }
+      control: {type: 'select'}
     },
   },
   args: {
-    backdrop:false,
-    position:'SidebarPosition.left'
+    backdrop: false,
+    position: 'SidebarPosition.left'
   },
   component: SidebarComponent,
   moduleMetadata: {
@@ -48,7 +45,7 @@ const sidebarPositionMap = new Map<string, SidebarPosition>()
   .set('SidebarPosition.right', SidebarPosition.right);
 export const basic = (args) => ({
   moduleMetadata: {
-    imports: [SidebarComponent,ButtonComponent,IconComponent,IconSpriteDirective,BrowserAnimationsModule]
+    imports: [SidebarComponent, ButtonComponent, IconComponent, IconSpriteDirective, BrowserAnimationsModule]
   },
   props: {
     ...args,

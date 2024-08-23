@@ -10,7 +10,7 @@ import * as d3 from 'd3';
 import {lastValueFrom, map, Observable, take} from 'rxjs';
 import {ScaleService} from '../../service/scale.service';
 import {ChartService} from '../../service/chart.service';
-import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: '[teta-annotation]',
@@ -18,7 +18,6 @@ import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
   styleUrls: ['./annotation.component.scss'],
   standalone: true,
   imports: [
-    NgIf,
     NgTemplateOutlet,
     AsyncPipe
   ],

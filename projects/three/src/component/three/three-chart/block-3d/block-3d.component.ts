@@ -13,7 +13,7 @@ import {Texture} from 'three';
 import {Base3dSeriesComponent} from '../base-3d-series/base3d-series.component';
 import {Block3dPoint} from '../model/block3d-point';
 import {Chart3dService} from '../service/chart-3d.service';
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 
 extend(THREE);
 
@@ -22,7 +22,7 @@ extend(THREE);
   templateUrl: './block-3d.component.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgtArgs, NgtsText, NgIf, AsyncPipe, NgForOf],
+  imports: [NgtArgs, NgtsText, AsyncPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class Block3dComponent<T extends Block3dPoint>
@@ -52,7 +52,7 @@ export class Block3dComponent<T extends Block3dPoint>
     const min = Math.min(y, y1);
     const height = Math.abs(max - min);
     const icon = iconId ? document.querySelector(`#${iconId}`) : null;
-    const svgString =icon? `<svg width='100' height='100' viewBox='0 0 16 16' fill='none'  xmlns='http://www.w3.org/2000/svg'>${icon?.innerHTML}</svg>`:null;
+    const svgString = icon ? `<svg width='100' height='100' viewBox='0 0 16 16' fill='none'  xmlns='http://www.w3.org/2000/svg'>${icon?.innerHTML}</svg>` : null;
     const loader = new THREE.TextureLoader();
     const texture = loader.load(
       `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgString)}`

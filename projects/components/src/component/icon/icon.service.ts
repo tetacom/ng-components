@@ -1,6 +1,6 @@
 import {Inject, Injectable, Renderer2, RendererFactory2} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
-import {HttpBackend, HttpClient} from '@angular/common/http';
+import { HttpBackend, HttpClient } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 

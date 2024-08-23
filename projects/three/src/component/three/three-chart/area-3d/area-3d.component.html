@@ -1,6 +1,6 @@
 <ngt-mesh>
   <ngt-mesh-basic-material [side]="THREE.DoubleSide"></ngt-mesh-basic-material>
-  <ng-container *ngFor="let rect of area">
+  @for (rect of area; track rect) {
     <ngt-primitive *args="[rect]"></ngt-primitive>
-  </ng-container>
+  }
 </ngt-mesh>

@@ -10,7 +10,7 @@ import {IChartConfig} from "../../model/i-chart-config";
 import {ChartService} from "../../service/chart.service";
 import {generateTicks} from "../../core/utils/generate-ticks";
 import {IScalesMap} from "../../model/i-scales-map";
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: '[teta-gridlines]',
@@ -20,8 +20,6 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
-    NgForOf,
-    NgIf
   ]
 })
 export class GridlinesComponent implements AfterViewInit {

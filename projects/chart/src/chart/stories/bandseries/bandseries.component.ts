@@ -5,15 +5,13 @@ import {ChartService} from '../../service/chart.service';
 import {ScaleService} from "../../service/scale.service";
 import {ZoomService} from "../../service/zoom.service";
 import {map, Observable} from "rxjs";
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'svg:svg[teta-bandseries]',
   templateUrl: './bandseries.component.html',
   standalone:true,
   imports: [
-    NgForOf,
-    NgIf,
     AsyncPipe
   ],
   styleUrls: ['./bandseries.component.scss']

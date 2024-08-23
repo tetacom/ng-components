@@ -1,12 +1,10 @@
 // eslint-disable-next-line id-blacklist
 
 
-
 import {DividerComponent} from "./divider/divider.component";
 import {applicationConfig, Meta} from "@storybook/angular";
-import {importProvidersFrom} from "@angular/core";
-import {HttpClientModule} from "@angular/common/http";
-import {IconComponent} from "../icon/icon/icon.component";
+import {provideHttpClient} from "@angular/common/http";
+
 import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 
 export default {
@@ -15,7 +13,7 @@ export default {
 
     applicationConfig({
       providers: [
-        importProvidersFrom(HttpClientModule)
+        provideHttpClient()
       ],
     }),
   ],

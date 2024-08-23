@@ -1,7 +1,5 @@
-
-import { applicationConfig, Meta } from '@storybook/angular';
-import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {applicationConfig, Meta} from '@storybook/angular';
+import {provideHttpClient} from '@angular/common/http';
 import {IconComponent} from "../icon/icon/icon.component";
 import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 
@@ -9,14 +7,14 @@ export default {
   title: 'Component/Tag',
   decorators: [
     applicationConfig({
-      providers: [importProvidersFrom(HttpClientModule)],
+      providers: [provideHttpClient()],
     }),
   ],
 } as Meta;
 
 export const sample = () => ({
   moduleMetadata: {
-    imports: [IconComponent,IconSpriteDirective],
+    imports: [IconComponent, IconSpriteDirective],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="padding-10">
 <div class="column gap-8">

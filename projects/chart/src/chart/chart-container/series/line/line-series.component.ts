@@ -11,7 +11,7 @@ import {BasePoint} from '../../../model/base-point';
 import {ScaleService} from '../../../service/scale.service';
 import {ZoomService} from '../../../service/zoom.service';
 import {LinearSeriesBase} from '../linear-series-base';
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { DraggablePointDirective } from '../../../directives/draggable-point.directive';
 
 @Component({
@@ -22,9 +22,7 @@ import { DraggablePointDirective } from '../../../directives/draggable-point.dir
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
-    NgForOf,
     DraggablePointDirective,
-    NgIf
   ]
 })
 export class LineSeriesComponent<T extends BasePoint>

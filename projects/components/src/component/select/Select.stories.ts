@@ -1,65 +1,63 @@
-import { Align } from '../../common/enum/align.enum';
-import { VerticalAlign } from '../../common/enum/vertical-align.enum';
-import { SelectComponent } from './select/select.component';
+import {Align} from '../../common/enum/align.enum';
+import {VerticalAlign} from '../../common/enum/vertical-align.enum';
+import {SelectComponent} from './select/select.component';
 
 import * as faker from 'faker';
-import { iconsList } from '../icon/icons-list';
 
-import { FormsModule } from '@angular/forms';
-import { applicationConfig, Meta } from '@storybook/angular';
-import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { IconSpriteDirective } from '../icon/icon-sprite.directive';
-import { SelectOptionDirective } from './select-option.directive';
-import { SelectValueDirective } from './select-value.directive';
+import {FormsModule} from '@angular/forms';
+import {applicationConfig, Meta} from '@storybook/angular';
+import {provideHttpClient} from '@angular/common/http';
+import {IconSpriteDirective} from '../icon/icon-sprite.directive';
+import {SelectOptionDirective} from './select-option.directive';
+import {SelectValueDirective} from './select-value.directive';
 
 export default {
   title: 'Component/Select',
   decorators: [
 
     applicationConfig({
-      providers: [importProvidersFrom(HttpClientModule)]
+      providers: [provideHttpClient()]
     })
   ],
   argTypes: {
     align: {
       options: ['Align.left', ' Align.right', 'Align.center', 'Align.auto'],
-      control: { type: 'select' }
+      control: {type: 'select'}
     }, verticalAlign: {
       options: ['VerticalAlign.bottom', 'VerticalAlign.top', 'VerticalAlign.center', 'VerticalAlign.auto', 'VerticalAlign.innerAuto', 'VerticalAlign.innerBottom', 'VerticalAlign.innerTop'],
-      control: { type: 'select' }
+      control: {type: 'select'}
     },
     viewType: {
       options: ['rounded', 'brick', 'circle'],
-      control: { type: 'select' }
+      control: {type: 'select'}
     },
     allowNull: {
-      control: { type: 'boolean' }
+      control: {type: 'boolean'}
     },
     virtual: {
-      control: { type: 'boolean' }
+      control: {type: 'boolean'}
     },
     autoClose: {
-    control:{type:'boolean'}
+      control: {type: 'boolean'}
     },
-    autoCloseIgnore:{
+    autoCloseIgnore: {
       options: [
         'esc',
         'enter',
         'inside',
         'outside'
       ],
-        control: { type: 'multi-select' }
+      control: {type: 'multi-select'}
     }
   },
   args: {
     viewType: 'rounded',
-    verticalAlign:'VerticalAlign.auto',
-    align:'Align.auto',
-    allowNull:true,
-    autoClose:true,
-    virtual:false,
-    autoCloseIgnore:['esc',],
+    verticalAlign: 'VerticalAlign.auto',
+    align: 'Align.auto',
+    allowNull: true,
+    autoClose: true,
+    virtual: false,
+    autoCloseIgnore: ['esc',],
   },
   component: SelectComponent,
   moduleMetadata: {
@@ -92,7 +90,7 @@ const valignMap = new Map<string, VerticalAlign>()
   .set('VerticalAlign.innerTop', VerticalAlign.innerTop);
 export const singleSelect = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, IconSpriteDirective,SelectComponent, SelectOptionDirective, SelectValueDirective]
+    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective]
   },
   props: {
     ...args,
@@ -131,7 +129,7 @@ export const singleSelect = (args) => ({
 
 export const singleSelectWithSearch = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, IconSpriteDirective,SelectComponent, SelectOptionDirective, SelectValueDirective]
+    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective]
   },
   props: {
     ...args,
@@ -170,7 +168,7 @@ export const singleSelectWithSearch = (args) => ({
 
 export const disabledSelect = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, IconSpriteDirective,SelectComponent, SelectOptionDirective, SelectValueDirective]
+    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective]
   },
   props: {
     ...args,
@@ -209,7 +207,7 @@ export const disabledSelect = (args) => ({
 
 export const invalidSelect = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, IconSpriteDirective,SelectComponent, SelectOptionDirective, SelectValueDirective]
+    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective]
   },
   props: {
     ...args,
@@ -248,13 +246,13 @@ export const invalidSelect = (args) => ({
 
 export const multipleSelect = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, IconSpriteDirective,SelectComponent, SelectOptionDirective, SelectValueDirective]
+    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective]
   },
   props: {
     ...args,
     valignMap,
     alignMap,
-    selected:[],
+    selected: [],
     icon: 'user',
     options: getOptions(1000)
   },
