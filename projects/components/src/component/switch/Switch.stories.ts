@@ -1,11 +1,8 @@
+import {SwitchComponent} from './switch/switch.component';
 
-import { SwitchComponent } from './switch/switch.component';
-
-import { action } from '@storybook/addon-actions';
-import { FormsModule } from '@angular/forms';
-import { applicationConfig, Meta } from '@storybook/angular';
-import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {FormsModule} from '@angular/forms';
+import {applicationConfig, Meta} from '@storybook/angular';
+import {provideHttpClient} from '@angular/common/http';
 import {SwitchButtonComponent} from "./switch-button/switch-button.component";
 import {IconComponent} from "../icon/icon/icon.component";
 import {IconSpriteDirective} from "../icon/icon-sprite.directive";
@@ -15,28 +12,28 @@ export default {
   decorators: [
 
     applicationConfig({
-      providers: [importProvidersFrom(HttpClientModule)],
+      providers: [provideHttpClient()],
     }),
 
   ],
   argTypes: {
     backdrop: {
-      control: { type: 'boolean' }
+      control: {type: 'boolean'}
     },
-    palette:{
-      options:['primary', 'text', 'red', 'yellow', 'green'],
-      control:{type:'select'}
+    palette: {
+      options: ['primary', 'text', 'red', 'yellow', 'green'],
+      control: {type: 'select'}
     },
     viewType: {
       options: ['rounded', 'brick', 'circle'],
-      control: { type: 'select' },
+      control: {type: 'select'},
     },
 
   },
   args: {
-    backdrop:false,
-    palette:'primary',
-    viewType:'rounded'
+    backdrop: false,
+    palette: 'primary',
+    viewType: 'rounded'
   },
   component: SwitchComponent,
   moduleMetadata: {
@@ -46,7 +43,7 @@ export default {
 
 export const switchSample = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule,SwitchButtonComponent,SwitchComponent,IconComponent,IconSpriteDirective],
+    imports: [FormsModule, SwitchButtonComponent, SwitchComponent, IconComponent, IconSpriteDirective],
   },
   props: {
     ...args,
@@ -55,8 +52,10 @@ export const switchSample = (args) => ({
   },
   template: `<teta-switch  [viewType]="viewType"  [tetaIconSprite]="'assets/icons.svg'"
                           [ngModel]="model">
-  <teta-switch-button *ngFor="let val of values" [value]="val">
-    <teta-icon [name]="'settings'" class="margin-right-2"></teta-icon> {{val}}
-  </teta-switch-button>
+  @for(val of values; track val;) {
+    <teta-switch-button [value]="val">
+      <teta-icon [name]="'settings'" class="margin-right-2"></teta-icon> {{val}}
+    </teta-switch-button>
+  }
 </teta-switch>`,
 });

@@ -1,11 +1,16 @@
-<ng-container *ngIf="{x: x | async, ticks: ticks | async} as data">
-  <svg:g text-anchor="middle" *ngFor="let tick of data.ticks" [attr.transform]="'translate('+ data.x(tick) +', 0)'">
-    <text fill="var(--color-text-70)" [attr.dy]="axis.options.opposite ? '-0.71em' : '0.71em'" [attr.y]="axis.options.opposite ? 0 : 9">{{ this.axis.options.tickFormat ? this.axis.options.tickFormat(tick) : this.axis.defaultFormatter()(tick) }}</text>
-    <line stroke="var(--color-text-30)" [attr.y2]="axis.options.opposite ? -6 : 6"></line>
-  </svg:g>
-
+@if ({x: x | async, ticks: ticks | async}; as data) {
+  @for (tick of data.ticks; track tick) {
+    <svg:g text-anchor="middle" [attr.transform]="'translate('+ data.x(tick) +', 0)'">
+      <text fill="var(--color-text-70)" [attr.dy]="axis.options.opposite ? '-0.71em' : '0.71em'"
+            [attr.y]="axis.options.opposite ? 0 : 9">
+        {{ this.axis.options.tickFormat ? this.axis.options.tickFormat(tick) : this.axis.defaultFormatter()(tick) }}
+      </text>
+      <line stroke="var(--color-text-30)" [attr.y2]="axis.options.opposite ? -6 : 6"></line>
+    </svg:g>
+  }
   <svg:g class="label-axis font-caption" [attr.transform]="getLabelTransform()">
-    <text fill="var(--color-text-70)"  text-anchor="middle" dominant-baseline="middle">{{ axis.options.title }}</text>
+    <text fill="var(--color-text-70)" text-anchor="middle" dominant-baseline="middle">
+      {{ axis.options.title }}
+    </text>
   </svg:g>
-</ng-container>
-
+}

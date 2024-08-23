@@ -8,25 +8,27 @@
   [attr.y]='axis.orientation === orientation.y ? (axis.options.inverted === true ? from : to) : null'
   [attr.x]='axis.orientation === orientation.x ? (axis.options.inverted === true ? to : from) : null'>
 </svg:rect>
-<svg:text
-  *ngIf='axis.orientation === orientation.x'
-  text-anchor='middle'
-  dominant-baseline='middle'
-  class='label font-caption fill-text-90'
-  [attr.x]='getTextPosition()'
-  [attr.transform]="'rotate(-90, '+ getTextPosition() +',' + height / 2 + ')'"
-  [attr.y]='height / 2'>{{plotBand.label}}
-</svg:text>
-<svg:text
-  *ngIf='axis.orientation === orientation.y'
-  text-anchor='middle'
-  class='label font-caption fill-text-90'
-  dominant-baseline='central'
-  [attr.x]='getTextPosition()'
-  [attr.y]='width / 2'>{{plotBand.label}}
-</svg:text>
-<ng-container *ngIf='plotBand.resizable'>
-  <ng-container *ngIf='plotBand.showGrabbers'>
+@if (axis.orientation === orientation.x) {
+  <svg:text
+    text-anchor='middle'
+    dominant-baseline='middle'
+    class='label font-caption fill-text-90'
+    [attr.x]='getTextPosition()'
+    [attr.transform]="'rotate(-90, '+ getTextPosition() +',' + height / 2 + ')'"
+    [attr.y]='height / 2'>{{ plotBand.label }}
+  </svg:text>
+}
+@if (axis.orientation === orientation.y) {
+  <svg:text
+    text-anchor='middle'
+    class='label font-caption fill-text-90'
+    dominant-baseline='central'
+    [attr.x]='getTextPosition()'
+    [attr.y]='width / 2'>{{ plotBand.label }}
+  </svg:text>
+}
+@if (plotBand.resizable) {
+  @if (plotBand.showGrabbers) {
     <svg:line class='display-grabber'
               [attr.stroke]="plotBand.style?.grabbers?.stroke || 'var(--color-text-50)'"
               [attr.stroke-width]='plotBand.style?.grabbers?.strokeWidth || 4'
@@ -47,7 +49,7 @@
               [attr.y1]='axis.orientation === orientation.x ? 0 : to'
               [attr.y2]='axis.orientation === orientation.x ? height : to'>
     </svg:line>
-  </ng-container>
+  }
   <svg:line class='grabber'
             [class.x-grabber]='axis.orientation === orientation.x'
             [class.y-grabber]='axis.orientation === orientation.y'
@@ -74,4 +76,4 @@
             [attr.y1]='axis.orientation === orientation.x ? 0 : to'
             [attr.y2]='axis.orientation === orientation.x ? height : to'>
   </svg:line>
-</ng-container>
+}

@@ -1,34 +1,35 @@
-<ng-container *ngIf="{
+@if ({
   x: x | async,
   x1: x1 | async,
   y: y | async,
   barSeriesCount: barSeriesCount | async
-} as data">
-  <ng-container *ngIf="data.x && data.y">
-    <ng-container *ngIf="data.barSeriesCount > 1">
-      <svg:rect
-        *ngFor="let point of series.data"
-        (mouseenter)="mouseenter(point)"
-        (mouseleave)="mouseleave(point)"
-        [attr.x]="data.x(point.x) + ((isNumber(series.id) ? series.id : 0) * data.x1.bandwidth() / data.barSeriesCount)"
-        [attr.y]="point.y > 0 ? data.y(point.y) : data.y(0)"
-        [attr.width]="data.x1.bandwidth() / data.barSeriesCount"
-        [attr.height]="Math.abs(data.y(point.y) - data.y(0))"
-        [attr.fill]="series.color"
-      ></svg:rect>
-    </ng-container>
-    <ng-container *ngIf="data.barSeriesCount === 1">
-      <svg:rect
-        *ngFor="let point of series.data"
-        (mouseenter)="mouseenter(point)"
-        (mouseleave)="mouseleave(point)"
-        [attr.x]="data.x(point.x)"
-        [attr.y]="point.y > 0 ? data.y(point.y) : data.y(0)"
-        [attr.width]="data.x1.bandwidth()"
-        [attr.height]="Math.abs(data.y(point.y) - data.y(0))"
-        [attr.fill]="point.color ?? series.color"
-      ></svg:rect>
-    </ng-container>
-  </ng-container>
-</ng-container>
-
+}; as data) {
+  @if (data.x && data.y) {
+    @if (data.barSeriesCount > 1) {
+      @for (point of series.data; track point; ) {
+        <svg:rect
+          (mouseenter)="mouseenter(point)"
+          (mouseleave)="mouseleave(point)"
+          [attr.x]="data.x(point.x) + ((isNumber(series.id) ? series.id : 0) * data.x1.bandwidth() / data.barSeriesCount)"
+          [attr.y]="point.y > 0 ? data.y(point.y) : data.y(0)"
+          [attr.width]="data.x1.bandwidth() / data.barSeriesCount"
+          [attr.height]="Math.abs(data.y(point.y) - data.y(0))"
+          [attr.fill]="series.color"
+        ></svg:rect>
+      }
+    }
+    @if (data.barSeriesCount === 1) {
+      @for (point of series.data; track point; ) {
+        <svg:rect
+          (mouseenter)="mouseenter(point)"
+          (mouseleave)="mouseleave(point)"
+          [attr.x]="data.x(point.x)"
+          [attr.y]="point.y > 0 ? data.y(point.y) : data.y(0)"
+          [attr.width]="data.x1.bandwidth()"
+          [attr.height]="Math.abs(data.y(point.y) - data.y(0))"
+          [attr.fill]="point.color ?? series.color"
+        ></svg:rect>
+      }
+    }
+  }
+}

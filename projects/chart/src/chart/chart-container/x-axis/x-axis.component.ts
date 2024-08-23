@@ -10,7 +10,7 @@ import {ScaleService} from '../../service/scale.service';
 import {getTextWidth} from '../../core/utils/get-text-width';
 import * as d3 from 'd3';
 import {ChartService} from '../../service/chart.service';
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: '[teta-x-axis]',
@@ -20,8 +20,6 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
-    NgForOf,
-    NgIf
   ]
 })
 export class XAxisComponent implements OnInit, OnChanges, OnDestroy {

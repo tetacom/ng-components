@@ -1,26 +1,27 @@
-<ng-container *ngIf="{
+@if ({
   size: size | async,
   config: config | async,
   scales: scales | async,
   plotBands: plotBands | async,
   visibleRect: visibleRect | async
-} as data" xmlns:svg="http://www.w3.org/1999/html">
-  <teta-tooltip *ngIf="data.config?.tooltip?.enable"
-                [size]="data.size"
-                [config]="data.config"></teta-tooltip>
-  <ng-container *ngIf="data.size?.height > 0
-                      && data.size?.width > 0
-                      && data.visibleRect?.height > 0
-                      && data.visibleRect?.width > 0
-                      && data.scales?.x.size === data.config.xAxis.length
-                      && data.scales?.y.size === data.config.yAxis.length">
+}; as data) {
+  @if (data.config?.tooltip?.enable) {
+    <teta-tooltip [size]="data.size"
+                  [config]="data.config"></teta-tooltip>
+  }
+  @if (data.size?.height > 0
+  && data.size?.width > 0
+  && data.visibleRect?.height > 0
+  && data.visibleRect?.width > 0
+  && data.scales?.x.size === data.config.xAxis.length
+  && data.scales?.y.size === data.config.yAxis.length) {
     <svg height="100%" width="100%" class="position-absolute">
       <g class="y-axis-container">
-        <ng-container *ngFor="let item of data.scales.y | keyvalue; trackBy: identify">
-          <ng-container *ngIf="item.value.selfSize > 0
-                                && item.value.options.visible
-                                && data.scales.x.size > 0
-                                && data.scales.y.size > 0">
+        @for (item of data.scales.y | keyvalue; track item.value.index) {
+          @if (item.value.selfSize > 0
+          && item.value.options.visible
+          && data.scales.x.size > 0
+          && data.scales.y.size > 0) {
             <g
               teta-y-axis
               [axis]="item.value"
@@ -37,13 +38,12 @@
               [attr.height]="data.visibleRect.height"
               [attr.width]="item.value.selfSize"
               [attr.transform]="getTranslate(item.value, data.size) | async"></rect>
-          </ng-container>
-
-        </ng-container>
+          }
+        }
       </g>
       <g class="x-axis-container">
-        <ng-container *ngFor="let item of data.scales.x | keyvalue; trackBy: identify">
-          <ng-container *ngIf="item.value.options.visible && data.scales.x.size > 0 && data.scales.y.size > 0">
+        @for (item of data.scales.x | keyvalue; track item.value.index) {
+          @if (item.value.options.visible && data.scales.x.size > 0 && data.scales.y.size > 0) {
             <g
               teta-x-axis
               [axis]="item.value"
@@ -60,18 +60,17 @@
               [attr.width]="data.visibleRect.width"
               [attr.height]="item.value.selfSize"
               [attr.transform]="getTranslate(item.value, data.size) | async"></rect>
-          </ng-container>
-        </ng-container>
+          }
+        }
       </g>
     </svg>
-  </ng-container>
-  <ng-container
-    *ngIf="data.size?.height > 0
-          && data.size?.width > 0
-          && data.visibleRect?.height > 0
-          && data.visibleRect?.width > 0
-          && data.scales?.x.size === data.config.xAxis.length
-          && data.scales?.y.size === data.config.yAxis.length">
+  }
+  @if (data.size?.height > 0
+  && data.size?.width > 0
+  && data.visibleRect?.height > 0
+  && data.visibleRect?.width > 0
+  && data.scales?.x.size === data.config.xAxis.length
+  && data.scales?.y.size === data.config.yAxis.length) {
     <svg
       tetaZoomable
       tetaBrushable
@@ -87,52 +86,63 @@
       (click)="click($event, data.scales.x, data.scales.y)"
       (mouseleave)="mouseLeave($event)"
       (mousemove)="mouseMove($event)">
-      <g class="gridlines"
-         teta-gridlines
-         *ngIf="data.config.gridLines?.enable !== false"
-         [size]="data.size"></g>
+      @if (data.config.gridLines?.enable !== false) {
+        <g class="gridlines"
+           teta-gridlines
+           [size]="data.size"></g>
+      }
       <g class="x-axis-plotband-container">
-          <g teta-plot-band *ngFor="let plotBand of data.plotBands"
+        @for (plotBand of data.plotBands; track plotBand) {
+          <g teta-plot-band
              [plotBand]="plotBand.plotBand"
              [scale]="plotBand.axis.scale"
              [size]="data.visibleRect"
              [axis]="plotBand.axis"></g>
+        }
       </g>
       <g class="series-container">
-        <ng-container *ngFor="let series of data.config.series;">
-          <g teta-series-host
-             *ngIf="series.visible"
-             [config]="data.config"
-             [series]="series"></g>
-        </ng-container>
+        @for (series of data.config.series; track series; ) {
+          @if (series.visible) {
+            <g teta-series-host
+               [config]="data.config"
+               [series]="series"></g>
+          }
+        }
       </g>
       <g class="x-axis-plotline-container">
-        <ng-container *ngFor="let axis of data.config.xAxis; let i = index">
-          <g teta-plot-line *ngFor="let plotLine of axis.plotLines"
-             [plotLine]="plotLine"
-             [scale]="data.scales.x.get(i).scale"
-             [size]="data.size"
-             [axis]="data.scales.x.get(i)"></g>
-        </ng-container>
+        @for (axis of data.config.xAxis; let i = $index; track axis) {
+          @for (plotLine of axis.plotLines; track plotLine) {
+            <g teta-plot-line
+               [plotLine]="plotLine"
+               [scale]="data.scales.x.get(i).scale"
+               [size]="data.size"
+               [axis]="data.scales.x.get(i)"></g>
+          }
+        }
       </g>
       <g class="y-axis-plotline-container">
-        <ng-container *ngFor="let axis of data.config.yAxis; let i = index">
-          <g teta-plot-line *ngFor="let plotLine of axis.plotLines"
-             [plotLine]="plotLine"
-             [scale]="data.scales.y.get(i).scale"
-             [size]="data.size"
-             [axis]="data.scales.y.get(i)"></g>
-        </ng-container>
+        @for (axis of data.config.yAxis; let i = $index; track axis; ) {
+          @for (plotLine of axis.plotLines; track plotLine) {
+            <g teta-plot-line
+               [plotLine]="plotLine"
+               [scale]="data.scales.y.get(i).scale"
+               [size]="data.size"
+               [axis]="data.scales.y.get(i)"></g>
+          }
+        }
       </g>
       <g class="annotations">
-        <g teta-annotation
-           [visibleRect]="data.visibleRect"
-           *ngFor="let annotation of data.config.annotations"
-           [annotation]="annotation"></g>
+        @for (annotation of data.config.annotations; track annotation) {
+          <g teta-annotation
+             [visibleRect]="data.visibleRect"
+             [annotation]="annotation"></g>
+        }
       </g>
-      <g class="crosshair" *ngIf="data.config.tooltip?.showCrosshair">
-        <g teta-crosshair [size]="data.visibleRect"></g>
-      </g>
+      @if (data.config.tooltip?.showCrosshair) {
+        <g class="crosshair">
+          <g teta-crosshair [size]="data.visibleRect"></g>
+        </g>
+      }
     </svg>
-  </ng-container>
-</ng-container>
+  }
+}

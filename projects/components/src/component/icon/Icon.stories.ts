@@ -2,8 +2,7 @@ import { IconComponent } from './icon/icon.component';
 
 import { coloredIconsList, fileIconsList, iconsList, lithotypeIconsList } from './icons-list';
 import { applicationConfig, Meta } from '@storybook/angular';
-import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient} from '@angular/common/http';
 import { IconSpriteDirective } from './icon-sprite.directive';
 import { TetaSize } from '@tetacom/ng-components';
 
@@ -11,7 +10,7 @@ export default {
   title: 'Component/Icon',
   decorators: [
     applicationConfig({
-      providers: [importProvidersFrom(HttpClientModule)],
+      providers: [provideHttpClient()],
     }),
   ],
   component: IconComponent,
@@ -50,10 +49,12 @@ export const icons = (args) => ({
             <div [tetaIconSprite]="'assets/icons.svg'">
                 <h1 style="margin-bottom: 1em">Обычые иконки без заливки</h1>
                 <div style="display: grid;  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px;">
-                  <div *ngFor="let icon of icons" class="font-body-3" style="display: flex; align-items: center;">
-                    <teta-icon [name]="icon" [palette]="palette" [size]="size"></teta-icon>
-                    <span class="padding-left-4">{{icon}}</span>
-                  </div>
+                    @for(icon of icons) {
+                      <div class="font-body-3" style="display: flex; align-items: center;">
+                        <teta-icon [name]="icon" [palette]="palette" [size]="size"></teta-icon>
+                        <span class="padding-left-4">{{icon}}</span>
+                      </div>
+                    }
                 </div>
             </div>`,
 });
@@ -70,10 +71,12 @@ export const coloredIcons = (args) => ({
             <div [tetaIconSprite]="'assets/color-icons.svg'">
                 <h1 style="margin-bottom: 1em">Цветные иконки</h1>
                 <div style="display: grid;  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px;">
-                  <div *ngFor="let icon of icons" style="display: flex; align-items: center;" class="font-body-3">
-                    <teta-icon [name]="icon" [palette]="palette" [size]="size"></teta-icon>
-                    <span class="padding-left-4">{{icon}}</span>
-                  </div>
+                  @for(icon of icons; track icon) {
+                    <div style="display: flex; align-items: center;" class="font-body-3">
+                      <teta-icon [name]="icon" [palette]="palette" [size]="size"></teta-icon>
+                      <span class="padding-left-4">{{icon}}</span>
+                    </div>
+                  }
                 </div>
             </div>`,
 });
@@ -89,10 +92,12 @@ export const fileIcons = (args) => ({
             <div [tetaIconSprite]="'assets/file-icons.svg'">
                 <h1 style="margin-bottom: 1em">Иконки с типами файлов</h1>
                 <div style="display: grid;  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px;">
-                  <div *ngFor="let icon of icons" style="display: flex; align-items: center;" class="font-body-3">
-                    <teta-icon [name]="icon" [palette]="palette" [size]="size"></teta-icon>
-                    <span class="padding-left-4">{{icon}}</span>
-                  </div>
+                  @for(icon of icons; track icon) {
+                    <div style="display: flex; align-items: center;" class="font-body-3">
+                      <teta-icon [name]="icon" [palette]="palette" [size]="size"></teta-icon>
+                      <span class="padding-left-4">{{icon}}</span>
+                    </div>
+                  }
                 </div>
             </div>`,
 });
@@ -109,10 +114,12 @@ export const lithotypeIcons = (args) => ({
             <div [tetaIconSprite]="'assets/lithotype-icons.svg'">
                 <h1 style="margin-bottom: 1em">Иконки с типами файлов</h1>
                 <div style="display: grid;  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px;">
-                  <div *ngFor="let icon of icons" style="display: flex; align-items: center;" class="font-body-3">
-                    <teta-icon [name]="icon" [palette]="palette" [size]="size"></teta-icon>
-                    <span class="padding-left-4">{{icon}}</span>
-                  </div>
+                  @for(icon of icons; track icon) {
+                    <div style="display: flex; align-items: center;" class="font-body-3">
+                      <teta-icon [name]="icon" [palette]="palette" [size]="size"></teta-icon>
+                      <span class="padding-left-4">{{icon}}</span>
+                    </div>
+                  }
                 </div>
             </div>`,
 });

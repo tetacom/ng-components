@@ -15,7 +15,6 @@ import { AxisOrientation } from '../../model/enum/axis-orientation';
 import { IChartEvent } from '../../model/i-chart-event';
 import { PlotBand } from '../../model/plot-band';
 import { ChartService } from '../../service/chart.service';
-import { NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: '[teta-plot-band]',
@@ -23,7 +22,6 @@ import { NgForOf, NgIf } from '@angular/common';
   styleUrls: ['./plot-band.component.scss'],
   standalone:true,
   imports:[
-    NgIf
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,9 +1,8 @@
 // eslint-disable-next-line id-blacklist
-import { DelimiterComponent } from './delimiter/delimiter.component';
+import {DelimiterComponent} from './delimiter/delimiter.component';
 
-import { applicationConfig, Meta } from '@storybook/angular';
-import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {applicationConfig, Meta} from '@storybook/angular';
+import {provideHttpClient} from '@angular/common/http';
 import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 import {IconComponent} from "../icon/icon/icon.component";
 import {ButtonComponent} from "../button/button/button.component";
@@ -13,7 +12,7 @@ export default {
   decorators: [
 
     applicationConfig({
-      providers: [importProvidersFrom(HttpClientModule)],
+      providers: [provideHttpClient()],
     }),
   ],
   component: DelimiterComponent,
@@ -24,7 +23,7 @@ export default {
 
 export const vertical = () => ({
   moduleMetadata: {
-    imports: [IconSpriteDirective,IconComponent,ButtonComponent],
+    imports: [IconSpriteDirective, IconComponent, ButtonComponent],
   },
   template: `<div class="padding-4 bg-panel-50 row align-center gap-4" style="position: absolute; top: 50%;" [tetaIconSprite]="'assets/icons.svg'">
     <button teta-button [palette]="'primary'">
@@ -43,7 +42,7 @@ export const vertical = () => ({
 
 export const horizontal = () => ({
   moduleMetadata: {
-    imports: [IconSpriteDirective,IconComponent,ButtonComponent],
+    imports: [IconSpriteDirective, IconComponent, ButtonComponent],
   },
   template: `<div class="padding-4 bg-panel-50" style="position: absolute; top: 50%;" [tetaIconSprite]="'assets/icons.svg'">
     <button teta-button [palette]="'primary'">

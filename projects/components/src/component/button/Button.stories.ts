@@ -1,8 +1,7 @@
 import {ButtonComponent} from './button/button.component';
 
 import {applicationConfig, Meta, StoryFn} from '@storybook/angular';
-import {importProvidersFrom} from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+import {provideHttpClient} from '@angular/common/http';
 import {IconSpriteDirective} from '../icon/icon-sprite.directive';
 import {IconComponent} from '../icon/icon/icon.component';
 import {TetaSize} from "../../common/enum/teta-size.enum";
@@ -11,7 +10,7 @@ export default {
   title: 'Component/Button',
   decorators: [
     applicationConfig({
-      providers: [importProvidersFrom(HttpClientModule)],
+      providers: [provideHttpClient()],
     }),
   ],
   argTypes: {
@@ -105,27 +104,43 @@ export const allButtonTypes: StoryFn = () => ({
         <p>Ghost</p>
     </div>
         <div class="row gap-20">
-            <div *ngFor="let palette of palettes;let i=index" class="column" style="grid-gap: 20px">
-            <p class="font-body-3">{{types[i]}}</p>
-                <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette">
-                  <teta-icon *ngIf="leftIcon" [name]="'addCircle'"></teta-icon>
-                  {{text}}
-                  <teta-icon *ngIf="rightIcon" [name]="'user'"></teta-icon>
-                </button>
-                <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette" [square]="true">
-                  <teta-icon *ngIf="leftIcon" [name]="'addCircle'"></teta-icon>
-                </button>
-                <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette" [view]="'outline'">
-                  <teta-icon *ngIf="leftIcon" [name]="'addCircle'"></teta-icon>
-                  {{text}}
-                  <teta-icon *ngIf="rightIcon" [name]="'user'"></teta-icon>
-                </button>
-                <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette" [view]="'ghost'">
-                  <teta-icon *ngIf="leftIcon" [name]="'addCircle'"></teta-icon>
-                  {{text}}
-                  <teta-icon *ngIf="rightIcon" [name]="'user'"></teta-icon>
-                </button>
-            </div>
+            @for(palette of palettes;let i=$index; track $index;) {
+                <div class="column" style="grid-gap: 20px">
+                  <p class="font-body-3">{{types[i]}}</p>
+                  <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette">
+                    @if(leftIcon) {
+                        <teta-icon [name]="'addCircle'"></teta-icon>
+                    }
+                    {{text}}
+                    @if(rightIcon) {
+                        <teta-icon [name]="'user'"></teta-icon>
+                    }
+                  </button>
+                  <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette" [square]="true">
+                    @if(leftIcon) {
+                        <teta-icon [name]="'addCircle'"></teta-icon>
+                    }
+                  </button>
+                  <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette" [view]="'outline'">
+                    @if(leftIcon) {
+                        <teta-icon [name]="'addCircle'"></teta-icon>
+                    }
+                    {{text}}
+                    @if(rightIcon) {
+                        <teta-icon [name]="'user'"></teta-icon>
+                    }
+                  </button>
+                  <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette" [view]="'ghost'">
+                    @if(leftIcon) {
+                        <teta-icon [name]="'addCircle'"></teta-icon>
+                    }
+                    {{text}}
+                    @if(rightIcon) {
+                        <teta-icon [name]="'user'"></teta-icon>
+                    }
+                  </button>
+              </div>
+            }
         </div>
 </div>`,
 });

@@ -1,21 +1,24 @@
-<ng-container *ngIf="{
+@if ({
   hasSeriesData: hasSeriesData | async,
   svcConfig: svcConfig | async
-} as data">
-  <ng-container *ngIf="data.hasSeriesData === true else noData">
+}; as data) {
+  @if (data.hasSeriesData === true) {
     <div class="column column_auto">
       <teta-chart-container class="chart-container position-relative"></teta-chart-container>
     </div>
-    <teta-legend *ngIf="data.svcConfig.legend?.enable === true" [series]="data.svcConfig.series"></teta-legend>
-  </ng-container>
-</ng-container>
-<ng-template #noData>
-  <div class="column column_auto justify-content-center">
+    @if (data.svcConfig.legend?.enable === true) {
+      <teta-legend [series]="data.svcConfig.series"></teta-legend>
+    }
+  } @else {
+    <div class="column column_auto justify-content-center">
     <span class="font-body-3 color-text-40 overflow-hidden text-overflow-ellipsis nowrap text-align-center">
       <div #ref><ng-content></ng-content></div>
-      <span *ngIf="!ref.hasChildNodes()">
-        No data
-      </span>
+      @if (!ref.hasChildNodes()) {
+        <span>
+          No data
+        </span>
+      }
     </span>
-  </div>
-</ng-template>
+    </div>
+  }
+}

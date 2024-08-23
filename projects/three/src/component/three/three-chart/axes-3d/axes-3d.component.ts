@@ -6,16 +6,16 @@ import {
   Input,
   OnDestroy,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NgtsText } from 'angular-three-soba/abstractions';
+import {CommonModule} from '@angular/common';
+import {NgtsText} from 'angular-three-soba/abstractions';
 import * as d3 from 'd3';
 import * as THREE from 'three';
-import { Euler } from 'three';
-import { extend } from 'angular-three';
-import { Axis3dPoint } from '../model/axis-3d-point';
-import { Chart3dService } from '../service/chart-3d.service';
-import { combineLatest, map, Observable, takeWhile } from 'rxjs';
-import { Axes3dMinMax } from '../model/axes-3d-min-max';
+import {Euler} from 'three';
+import {extend} from 'angular-three';
+import {Axis3dPoint} from '../model/axis-3d-point';
+import {Chart3dService} from '../service/chart-3d.service';
+import {combineLatest, map, Observable, takeWhile} from 'rxjs';
+import {Axes3dMinMax} from '../model/axes-3d-min-max';
 
 extend(THREE);
 
@@ -37,6 +37,7 @@ export class Axes3dComponent implements OnDestroy {
   private _alive = true;
 
   protected readonly chartService = inject(Chart3dService);
+
   constructor() {
     this.axes = combineLatest([
       this.chartService.scales,
@@ -51,16 +52,17 @@ export class Axes3dComponent implements OnDestroy {
 
   createAxes(scales, minMax: Axes3dMinMax) {
     const axisZ = this.generateTicks(minMax.z, 12).map(_ => {
-      return { value: _.toFixed(1), position: scales.z(_) };
+      return {value: _.toFixed(1), position: scales.z(_)};
     });
     const axisY = this.generateTicks(minMax.y, 12).map(_ => {
-      return { value: _.toFixed(1), position: scales.y(_) };
+      return {value: _.toFixed(1), position: scales.y(_)};
     });
     const axisX = this.generateTicks(minMax.x, 4).map(_ => {
-      return { value: _.toFixed(1), position: scales.x(_) };
+      return {value: _.toFixed(1), position: scales.x(_)};
     });
-    return { z: axisZ, y: axisY, x: axisX };
+    return {z: axisZ, y: axisY, x: axisX};
   }
+
   generateTicks(extremes: number[], count = 10) {
     const [min, max] = extremes;
     const tickStep = (max - min) / count;
@@ -71,9 +73,7 @@ export class Axes3dComponent implements OnDestroy {
 
     return ticks;
   }
-  trackBy(i) {
-    return i;
-  }
+
   ngOnDestroy(): void {
     this._alive = false;
   }

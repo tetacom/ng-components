@@ -14,14 +14,13 @@ import {ScaleService} from '../../service/scale.service';
 import * as d3 from 'd3';
 import {IChartEvent} from '../../model/i-chart-event';
 import {ChartService} from '../../service/chart.service';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: '[teta-plot-line]',
   templateUrl: './plotline.component.html',
   styleUrls: ['./plotline.component.scss'],
   standalone:true,
-  imports:[NgIf],
+  imports:[],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlotlineComponent implements OnInit, OnDestroy {

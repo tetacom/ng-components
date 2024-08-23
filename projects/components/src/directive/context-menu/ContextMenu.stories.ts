@@ -1,10 +1,6 @@
 import {PopupContentComponent} from '../../component/dynamic-component/popup-content/popup-content.component';
-
-import {Align} from '../../common/enum/align.enum';
-import {VerticalAlign} from '../../common/enum/vertical-align.enum';
 import {applicationConfig, Meta} from "@storybook/angular";
-import {importProvidersFrom} from "@angular/core";
-import {HttpClientModule} from "@angular/common/http";
+import {provideHttpClient} from "@angular/common/http";
 import {ButtonComponent} from "../../component/button/button/button.component";
 import {IconComponent} from "../../component/icon/icon/icon.component";
 import {IconSpriteDirective} from "../../component/icon/icon-sprite.directive";
@@ -15,7 +11,7 @@ export default {
   decorators: [
     applicationConfig({
       providers: [
-        importProvidersFrom(HttpClientModule)
+        provideHttpClient()
       ],
     }),
   ],
@@ -23,7 +19,7 @@ export default {
 
 export const basicContextMenu = () => ({
   moduleMetadata: {
-    imports: [ButtonComponent,IconComponent,IconSpriteDirective,ContextMenuDirective],
+    imports: [ButtonComponent, IconComponent, IconSpriteDirective, ContextMenuDirective],
     entryComponents: [PopupContentComponent],
   },
   // props: {

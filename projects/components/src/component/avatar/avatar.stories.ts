@@ -1,55 +1,53 @@
-
 import {AvatarComponent} from "./avatar/avatar.component";
 
 import {applicationConfig, Meta} from "@storybook/angular";
-import {importProvidersFrom} from "@angular/core";
-import {HttpClientModule} from "@angular/common/http";
+import {provideHttpClient} from "@angular/common/http";
 
 export default {
   title: 'Component/Avatar',
-  decorators:[
+  decorators: [
     applicationConfig({
       providers: [
-        importProvidersFrom(HttpClientModule)
+        provideHttpClient()
       ],
     }),
   ],
-  argTypes:{
-   viewType:{
-     control:{type:'select'},
-     options:['rounded','circle','brick']
-   },
-    size:{
-     control:{type:'select'},
-      options:['24' , '28' , '32' , '44' , '64' , '128', '200']
+  argTypes: {
+    viewType: {
+      control: {type: 'select'},
+      options: ['rounded', 'circle', 'brick']
     },
-    name:{
-      control:{type:'text'},
+    size: {
+      control: {type: 'select'},
+      options: ['24', '28', '32', '44', '64', '128', '200']
     },
-    photo:{
-      control:{type:'text'},
+    name: {
+      control: {type: 'text'},
     },
-    id:{
-     control:{type:'number'}
+    photo: {
+      control: {type: 'text'},
+    },
+    id: {
+      control: {type: 'number'}
     }
   },
-  args:{
-    viewType:'circle',
-    name:'AA',
-    size:'64',
-    id:2,
-    photo:'https://cdn.vox-cdn.com/thumbor/WR9hE8wvdM4hfHysXitls9_bCZI=/0x0:1192x795/1400x1400/filters:focal(596x398:597x399)/cdn.vox-cdn.com/uploads/chorus_asset/file/22312759/rickroll_4k.jpg'
+  args: {
+    viewType: 'circle',
+    name: 'AA',
+    size: '64',
+    id: 2,
+    photo: 'https://cdn.vox-cdn.com/thumbor/WR9hE8wvdM4hfHysXitls9_bCZI=/0x0:1192x795/1400x1400/filters:focal(596x398:597x399)/cdn.vox-cdn.com/uploads/chorus_asset/file/22312759/rickroll_4k.jpg'
   },
   component: AvatarComponent,
   moduleMetadata: {
     imports: []
   }
 } as Meta;
-export const baseAvatar= (args) => ({
+export const baseAvatar = (args) => ({
   moduleMetadata: {
     imports: [],
   },
-  props:args,
+  props: args,
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="font-body-3 padding-3 bg-global-bgcard row gap-20">
              <div class="column gap-12 align-center">
                 <teta-avatar [photo]="photo" [id]="id" [name]="name" [size]="size" [viewType]="viewType"></teta-avatar>

@@ -1,29 +1,25 @@
+import {ToggleComponent} from './toggle/toggle.component';
 
-import { action } from '@storybook/addon-actions';
-
-import { ToggleComponent } from './toggle/toggle.component';
-
-import { FormsModule } from '@angular/forms';
-import { applicationConfig, Meta } from '@storybook/angular';
-import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { IconSpriteDirective } from '../icon/icon-sprite.directive';
+import {FormsModule} from '@angular/forms';
+import {applicationConfig, Meta} from '@storybook/angular';
+import {provideHttpClient} from '@angular/common/http';
+import {IconSpriteDirective} from '../icon/icon-sprite.directive';
 
 export default {
   title: 'Component/Toggle',
   decorators: [
 
     applicationConfig({
-      providers: [importProvidersFrom(HttpClientModule)],
+      providers: [provideHttpClient()],
     }),
   ],
-  argTypes:{
-    text:{
-       control:{type:'text'}
+  argTypes: {
+    text: {
+      control: {type: 'text'}
     },
   },
-  args:{
-    text:'text'
+  args: {
+    text: 'text'
   },
   component: ToggleComponent,
   moduleMetadata: {
@@ -35,7 +31,7 @@ export const baseToggle = (args) => ({
   moduleMetadata: {
     imports: [FormsModule, IconSpriteDirective],
   },
-  props:args,
+  props: args,
   template: `<teta-toggle [tetaIconSprite]="'assets/icons.svg'"
               [ngModel]="value"
               (ngModelChange)="setValue($event)">
@@ -47,7 +43,7 @@ export const disabledToggle = (args) => ({
   moduleMetadata: {
     imports: [FormsModule, IconSpriteDirective],
   },
-  props:args,
+  props: args,
   template: `<teta-toggle [tetaIconSprite]="'assets/icons.svg'"
                [disabled]="true"
               [ngModel]="value"

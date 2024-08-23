@@ -1,12 +1,10 @@
-
 import {CheckboxComponent} from './checkbox/checkbox.component';
 
 import {FormsModule} from '@angular/forms';
 import {applicationConfig, Meta} from "@storybook/angular";
 import {CommonModule} from "@angular/common";
-import {importProvidersFrom} from "@angular/core";
-import {HttpClientModule} from "@angular/common/http";
-import { IconSpriteDirective } from '../icon/icon-sprite.directive';
+import {provideHttpClient} from "@angular/common/http";
+import {IconSpriteDirective} from '../icon/icon-sprite.directive';
 
 export default {
   title: 'Component/Checkbox',
@@ -14,22 +12,22 @@ export default {
 
     applicationConfig({
       providers: [
-        importProvidersFrom(HttpClientModule)
+        provideHttpClient()
       ],
     }),
   ],
-  argTypes:{
-    text:{
-      control:{type:'text'}
+  argTypes: {
+    text: {
+      control: {type: 'text'}
     },
-    labelPosition:{
-      options:['left','right'],
-      control:{type:'select'}
+    labelPosition: {
+      options: ['left', 'right'],
+      control: {type: 'select'}
     }
   },
-  args:{
-    text:'text text',
-    labelPosition:'left'
+  args: {
+    text: 'text text',
+    labelPosition: 'left'
   },
   component: CheckboxComponent,
   moduleMetadata: {
@@ -41,7 +39,7 @@ export const defaultCheckbox = (args) => ({
   moduleMetadata: {
     imports: [FormsModule, CommonModule, IconSpriteDirective],
   },
-  props:args,
+  props: args,
   template: `
 <div class="column gap-8">
 <teta-checkbox [tetaIconSprite]="'assets/icons.svg'" [labelPosition]="labelPosition"
@@ -59,7 +57,7 @@ export const disabledCheckbox = (args) => ({
   moduleMetadata: {
     imports: [FormsModule, CommonModule, IconSpriteDirective],
   },
-  props:args,
+  props: args,
   template: `
 <div class="column gap-8">
 <teta-checkbox [tetaIconSprite]="'assets/icons.svg'" [labelPosition]="labelPosition"
@@ -78,7 +76,7 @@ export const checkboxWithNull = (args) => ({
   moduleMetadata: {
     imports: [FormsModule, CommonModule, IconSpriteDirective],
   },
-  props:args,
+  props: args,
   template: `
 <div class="column gap-8">
 <teta-checkbox [tetaIconSprite]="'assets/icons.svg'" [labelPosition]="labelPosition"
@@ -125,9 +123,11 @@ export const list = (args) => ({
                   [allowNull]="true"
                   [binary]="true">Выбрать все</teta-checkbox>
 </div>
-<div *ngFor="let num of values" style="display:flex; align-items: center;" class="font-body-3 margin-bottom-2">
-  <teta-checkbox [labelPosition]="labelPosition" [palette]="palette" [ngModel]="result" (ngModelChange)="result = $event;setValue($event)" [value]="num">
-    {{text+num}}
-  </teta-checkbox>
-</div>`,
+@for(num of values; track num;) {
+  <div style="display:flex; align-items: center;" class="font-body-3 margin-bottom-2">
+    <teta-checkbox [labelPosition]="labelPosition" [palette]="palette" [ngModel]="result" (ngModelChange)="result = $event;setValue($event)" [value]="num">
+      {{text+num}}
+    </teta-checkbox>
+  </div>
+}`,
 });

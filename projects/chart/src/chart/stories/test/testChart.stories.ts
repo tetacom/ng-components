@@ -1,6 +1,5 @@
 import {applicationConfig, Meta} from "@storybook/angular";
-import {importProvidersFrom} from "@angular/core";
-import {HttpClientModule} from "@angular/common/http";
+import {provideHttpClient} from "@angular/common/http";
 import {IconSpriteDirective, ButtonComponent} from '@tetacom/ng-components';
 import {TestChartComponent} from "./test-chart.component";
 
@@ -9,7 +8,7 @@ export default {
   decorators: [
     applicationConfig({
       providers: [
-        importProvidersFrom(HttpClientModule)
+        provideHttpClient()
       ],
     }),
   ],
@@ -24,8 +23,7 @@ export const testChart = () => ({
     imports: [TestChartComponent, IconSpriteDirective, ButtonComponent],
   },
 
-  props: {
-  },
+  props: {},
   template: `
 
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']"

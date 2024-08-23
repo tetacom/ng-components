@@ -1,10 +1,9 @@
 // eslint-disable-next-line id-blacklist
-import { FileUploadAreaComponent } from './file-upload-area/file-upload-area.component';
+import {FileUploadAreaComponent} from './file-upload-area/file-upload-area.component';
 
 
-import { applicationConfig, Meta } from '@storybook/angular';
-import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {applicationConfig, Meta} from '@storybook/angular';
+import {provideHttpClient} from '@angular/common/http';
 import {IconSpriteDirective} from "../icon/icon-sprite.directive";
 
 export default {
@@ -12,7 +11,7 @@ export default {
   decorators: [
 
     applicationConfig({
-      providers: [importProvidersFrom(HttpClientModule)],
+      providers: [provideHttpClient()],
     }),
   ],
   component: FileUploadAreaComponent,

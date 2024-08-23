@@ -1,17 +1,15 @@
-
 import {ChartComponent} from '../chart/chart.component';
 import {createBandChart, createChart, createDragChart} from './story-helper';
 import {applicationConfig, Meta} from "@storybook/angular";
-import {importProvidersFrom} from "@angular/core";
-import {HttpClientModule} from "@angular/common/http";
-import { IconSpriteDirective,ButtonComponent } from '@tetacom/ng-components';
+import {provideHttpClient} from "@angular/common/http";
+import {IconSpriteDirective, ButtonComponent} from '@tetacom/ng-components';
 
 export default {
   title: 'Component/Chart',
   decorators: [
     applicationConfig({
       providers: [
-        importProvidersFrom(HttpClientModule)
+        provideHttpClient()
       ],
     }),
   ],
@@ -23,7 +21,7 @@ export default {
 
 export const basicChart = () => ({
   moduleMetadata: {
-    imports: [ChartComponent,IconSpriteDirective,ButtonComponent],
+    imports: [ChartComponent, IconSpriteDirective, ButtonComponent],
   },
 
   props: {
@@ -66,7 +64,7 @@ export const basicChart = () => ({
 
 export const draggableChart = () => ({
   moduleMetadata: {
-    imports: [ChartComponent,IconSpriteDirective,ButtonComponent],
+    imports: [ChartComponent, IconSpriteDirective, ButtonComponent],
   },
 
   props: {
@@ -85,7 +83,7 @@ export const draggableChart = () => ({
 
 export const bandChart = () => ({
   moduleMetadata: {
-    imports: [ChartComponent,IconSpriteDirective],
+    imports: [ChartComponent, IconSpriteDirective],
   },
 
   props: {

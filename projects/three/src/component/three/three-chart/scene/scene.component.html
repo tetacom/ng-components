@@ -1,4 +1,4 @@
-<ng-container *ngIf='{data:data|async} as config'>
+@if ({data: data|async}; as config) {
   <ngt-scene>
     <ngts-orbit-controls [minAzimuthAngle]='0'
                          [maxAzimuthAngle]='Math.PI/2'
@@ -7,10 +7,8 @@
                          (change)='setRotation()'></ngts-orbit-controls>
   </ngt-scene>
   <teta-area-3d></teta-area-3d>
-  <ng-container *ngFor='let s of config.data?.series;'>
+  @for (s of config.data?.series; track s) {
     <div teta-series-3d-host [series]='s'></div>
-  </ng-container>
+  }
   <teta-axes-3d [rotation]='rotation'></teta-axes-3d>
-</ng-container>
-
-
+}

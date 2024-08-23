@@ -1,11 +1,18 @@
-<ng-container *ngIf="y | async as scale">
-  <svg:g [attr.text-anchor]="axis.options.opposite ? 'start' : 'end'" *ngFor="let tick of scale.ticks()" [attr.transform]="'translate(0, '+ scale(tick) +')'">
-    <text fill="var(--color-text-70)" dy="0.32em" [attr.x]="axis.options.opposite ? 10 : -9">{{ this.axis.options.tickFormat ? this.axis.options.tickFormat(tick) : this.axis.defaultFormatter()(tick) }}</text>
-    <line stroke="var(--color-text-30)" [attr.x2]="axis.options.opposite ? 6 : -6"></line>
-  </svg:g>
-
+@if (y | async; as scale) {
+  @for (tick of scale.ticks(); track tick) {
+    <svg:g [attr.text-anchor]="axis.options.opposite ? 'start' : 'end'"
+           [attr.transform]="'translate(0, '+ scale(tick) +')'">
+      <text fill="var(--color-text-70)" dy="0.32em"
+            [attr.x]="axis.options.opposite ? 10 : -9">
+        {{ this.axis.options.tickFormat ? this.axis.options.tickFormat(tick) : this.axis.defaultFormatter()(tick) }}
+      </text>
+      <line stroke="var(--color-text-30)" [attr.x2]="axis.options.opposite ? 6 : -6"></line>
+    </svg:g>
+  }
   <svg:g class="label-axis font-caption" [attr.transform]="getLabelTransform()">
-    <text [attr.dy]="axis.options.opposite ? '-4px' : '4px'" text-anchor="middle" [attr.dominant-baseline]="axis.options.opposite ? 'auto' : 'hanging'">{{ axis.options.title }}</text>
+    <text [attr.dy]="axis.options.opposite ? '-4px' : '4px'" text-anchor="middle"
+          [attr.dominant-baseline]="axis.options.opposite ? 'auto' : 'hanging'">
+      {{ axis.options.title }}
+    </text>
   </svg:g>
-</ng-container>
-
+}

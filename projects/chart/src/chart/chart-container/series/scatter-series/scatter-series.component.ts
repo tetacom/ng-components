@@ -5,7 +5,7 @@ import {map, Observable} from 'rxjs';
 import {ChartService} from '../../../service/chart.service';
 import {ScaleService} from '../../../service/scale.service';
 import {ZoomService} from '../../../service/zoom.service';
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'svg:svg[teta-scatter-series]',
@@ -13,8 +13,6 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
   styleUrls: ['./scatter-series.component.scss'],
   standalone: true,
   imports: [
-    NgForOf,
-    NgIf,
     AsyncPipe
   ],
   changeDetection: ChangeDetectionStrategy.OnPush

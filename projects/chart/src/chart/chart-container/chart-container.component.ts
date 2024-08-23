@@ -31,7 +31,7 @@ import { TooltipComponent } from './tooltip/tooltip.component';
 import { XAxisComponent } from './x-axis/x-axis.component';
 import { ZoomableDirective } from '../directives/zoomable.directive';
 import { YAxisComponent } from './y-axis/y-axis.component';
-import { AsyncPipe, KeyValuePipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, KeyValuePipe } from '@angular/common';
 import { PlotBandComponent } from './plotband/plot-band.component';
 import { GridlinesComponent } from './gridlines/gridlines.component';
 import { SeriesHostComponent } from './series-host/series-host.component';
@@ -66,8 +66,6 @@ type DisplayPlotBand = {
     AnnotationComponent,
     CrosshairComponent,
     BrushableDirective,
-    NgForOf,
-    NgIf
   ]
 })
 export class ChartContainerComponent implements AfterViewInit, OnDestroy {
@@ -291,10 +289,6 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
         return 'translate(0, 0)';
       })
     );
-  }
-
-  identify(index, item) {
-    return item.value.index;
   }
 
   click(
