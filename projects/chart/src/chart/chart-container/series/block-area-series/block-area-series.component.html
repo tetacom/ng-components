@@ -20,7 +20,7 @@
     </svg:defs>
   }
   @if (data.x && data.y) {
-    @for (point of data.points; track $index) {
+    @for (point of data.points; track point) {
       <svg:g (mouseenter)="mouseenter(point)"
              (mouseleave)="mouseleave(point)">
         @if (!!config.inverted) {

@@ -6,7 +6,7 @@
 }; as data) {
   @if (data.x && data.y) {
     @if (data.barSeriesCount > 1) {
-      @for (point of series.data; track $index; ) {
+      @for (point of series.data; track point; ) {
         <svg:rect
           (mouseenter)="mouseenter(point)"
           (mouseleave)="mouseleave(point)"
@@ -19,7 +19,7 @@
       }
     }
     @if (data.barSeriesCount === 1) {
-      @for (point of series.data; track $index; ) {
+      @for (point of series.data; track point; ) {
         <svg:rect
           (mouseenter)="mouseenter(point)"
           (mouseleave)="mouseleave(point)"

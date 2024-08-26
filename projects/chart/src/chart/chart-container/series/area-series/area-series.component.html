@@ -38,7 +38,7 @@
   }
 }
 @if (markers; as draggablePoints) {
-  @for (point of draggablePoints; track $index; ) {
+  @for (point of draggablePoints; track point; ) {
     <svg:circle
       class="marker"
       [class.draggable-marker]="point?.marker?.draggable"
