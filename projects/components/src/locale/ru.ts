@@ -1,4 +1,4 @@
-import { TetaLocalisation } from './teta-localisation';
+import {TetaLocalisation} from './teta-localisation';
 
 export const ruLocale: TetaLocalisation = {
   apply: 'Применить',
@@ -28,7 +28,7 @@ export const ruLocale: TetaLocalisation = {
   search: 'Поиск',
   notFound: 'Не найдено',
   selected: 'Выбрано',
-  selectYear:'Выберите год',
+  selectYear: 'Выберите год',
   notSelected: 'Не выбрано',
   yes: 'Да',
   no: 'Нет',
