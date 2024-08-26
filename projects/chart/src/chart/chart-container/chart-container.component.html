@@ -92,7 +92,7 @@
            [size]="data.size"></g>
       }
       <g class="x-axis-plotband-container">
-        @for (plotBand of data.plotBands; track plotBand) {
+        @for (plotBand of data.plotBands; track $index) {
           <g teta-plot-band
              [plotBand]="plotBand.plotBand"
              [scale]="plotBand.axis.scale"
@@ -101,7 +101,7 @@
         }
       </g>
       <g class="series-container">
-        @for (series of data.config.series; track series; ) {
+        @for (series of data.config.series; track $index; ) {
           @if (series.visible) {
             <g teta-series-host
                [config]="data.config"
@@ -111,7 +111,7 @@
       </g>
       <g class="x-axis-plotline-container">
         @for (axis of data.config.xAxis; let i = $index; track axis) {
-          @for (plotLine of axis.plotLines; track plotLine) {
+          @for (plotLine of axis.plotLines; track $index) {
             <g teta-plot-line
                [plotLine]="plotLine"
                [scale]="data.scales.x.get(i).scale"
@@ -121,7 +121,7 @@
         }
       </g>
       <g class="y-axis-plotline-container">
-        @for (axis of data.config.yAxis; let i = $index; track axis; ) {
+        @for (axis of data.config.yAxis; let i = $index; track i; ) {
           @for (plotLine of axis.plotLines; track plotLine) {
             <g teta-plot-line
                [plotLine]="plotLine"
@@ -132,7 +132,7 @@
         }
       </g>
       <g class="annotations">
-        @for (annotation of data.config.annotations; track annotation) {
+        @for (annotation of data.config.annotations; track $index) {
           <g teta-annotation
              [visibleRect]="data.visibleRect"
              [annotation]="annotation"></g>

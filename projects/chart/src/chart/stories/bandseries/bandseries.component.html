@@ -1,5 +1,5 @@
 @if ({x: x | async, y: y | async}; as scales) {
-  @for (band of _series.data; track band) {
+  @for (band of _series.data; track $index) {
     <svg:rect [attr.x]="scales.x(band.x)"
               [attr.y]="scales.y(band.y) - scales.y.bandwidth() / 2"
               [attr.width]="scales.x(band.x1) - scales.x(band.x)"

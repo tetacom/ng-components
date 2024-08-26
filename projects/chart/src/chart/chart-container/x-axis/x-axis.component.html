@@ -1,5 +1,5 @@
 @if ({x: x | async, ticks: ticks | async}; as data) {
-  @for (tick of data.ticks; track tick) {
+  @for (tick of data.ticks; track $index) {
     <svg:g text-anchor="middle" [attr.transform]="'translate('+ data.x(tick) +', 0)'">
       <text fill="var(--color-text-70)" [attr.dy]="axis.options.opposite ? '-0.71em' : '0.71em'"
             [attr.y]="axis.options.opposite ? 0 : 9">

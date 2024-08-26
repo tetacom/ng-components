@@ -16,7 +16,7 @@
 }
 @if (markers; as draggablePoints) {
   @if (x && y) {
-    @for (point of draggablePoints; track point) {
+    @for (point of draggablePoints; track $index) {
       <svg:g
         [attr.transform]="'translate(' + x(point.x) + ',' + y(point.y) + ')'">
         <svg:g [tetaDraggablePoint]="point.marker.draggable"

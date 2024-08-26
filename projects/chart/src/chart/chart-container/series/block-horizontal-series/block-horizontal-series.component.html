@@ -19,7 +19,7 @@
     </svg:defs>
   }
   @if (data.x && data.y) {
-    @for (point of data.points; track point) {
+    @for (point of data.points; track $index) {
       <svg:g (mouseenter)="mouseenter(point)"
              (mouseleave)="mouseleave(point)">
         <svg:rect

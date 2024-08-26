@@ -1,5 +1,5 @@
 @if (y | async; as scale) {
-  @for (tick of scale.ticks(); track tick) {
+  @for (tick of scale.ticks(); track $index) {
     <svg:g [attr.text-anchor]="axis.options.opposite ? 'start' : 'end'"
            [attr.transform]="'translate(0, '+ scale(tick) +')'">
       <text fill="var(--color-text-70)" dy="0.32em"
