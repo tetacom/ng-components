@@ -5,14 +5,15 @@ import {applicationConfig, Meta} from "@storybook/angular";
 import {provideHttpClient} from "@angular/common/http";
 import {TableDemoComponent} from "./table-demo/table-demo/table-demo.component";
 import {IconSpriteDirective} from "../icon/icon-sprite.directive";
+import {provideAnimations} from "@angular/platform-browser/animations";
 
 export default {
   title: 'Component/Table',
   decorators: [
-
     applicationConfig({
       providers: [
-        provideHttpClient()
+        provideHttpClient(),
+        provideAnimations()
       ],
     }),
   ],
