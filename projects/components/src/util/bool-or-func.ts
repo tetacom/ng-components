@@ -1,8 +1,6 @@
 import { isFunction } from './is-function';
 
-export function boolOrFuncCallback<M>(
-  variable: boolean | ((row: M | undefined) => boolean)
-) {
+export function boolOrFuncCallback<M>(variable: boolean | ((row: M | undefined) => boolean)) {
   return (args: M) => {
     if (typeof variable === 'boolean') {
       return variable;

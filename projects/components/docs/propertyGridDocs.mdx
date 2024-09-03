@@ -1,135 +1,193 @@
-import {Meta} from "@storybook/blocks";
-import PropertyGridStories from "../src/component/property-grid/PropertyGrid.stories";
+import { Meta } from '@storybook/blocks';
+import PropertyGridStories from '../src/component/property-grid/PropertyGrid.stories';
 
-<Meta of={PropertyGridStories}/>
+<Meta of={PropertyGridStories} />
 
-<div class='column gap-24'>
+<div class="column gap-24">
   <h1>Property grid</h1>
-  <div class='column'>
-    <p>Property grid (сетка свойств) - это элемент пользовательского интерфейса в программировании, который предоставляет способ отображения и редактирования свойств объектов. Это особенно полезно при создании приложений с графическим интерфейсом, где пользователь может настраивать параметры объектов или элементов интерфейса.</p>
+  <div class="column">
+    <p>
+      Property grid (сетка свойств) - это элемент пользовательского интерфейса в программировании, который предоставляет
+      способ отображения и редактирования свойств объектов. Это особенно полезно при создании приложений с графическим
+      интерфейсом, где пользователь может настраивать параметры объектов или элементов интерфейса.
+    </p>
   </div>
   <h3>Как использовать</h3>
-  <div class='column'>
-    <p>Для начала нужно создать <code> &lt;teta-property-grid&gt;</code>.</p>
+  <div class="column">
+    <p>
+      Для начала нужно создать <code> &lt;teta-property-grid&gt;</code>.
+    </p>
     <p>Для создания сетки свойств в компонент необходимо передать свойства:</p>
     <ul>
-      <li><code>item</code> - данные для формирования сетки.</li>
-      <li><code>columns</code> - каркас данных для сетки.</li>
+      <li>
+        <code>item</code> - данные для формирования сетки.
+      </li>
+      <li>
+        <code>columns</code> - каркас данных для сетки.
+      </li>
     </ul>
-    <p><code>columns</code> принимает в себя массив объектов типа <code>TableColumn</code>. Он состоит из:</p>
+    <p>
+      <code>columns</code> принимает в себя массив объектов типа <code>TableColumn</code>. Он состоит из:
+    </p>
     <ul>
-      <li><code>width</code> - ширина  блока</li>
-      <li><code>filterType</code> - тип поля (select,datepicker,string и т.д.)</li>
-      <li><code>unit</code> - единицы измерения</li>
-      <li><code>unitMeasureParameterId</code> - id измеряемого параметра </li>
-      <li><code>unitId</code> - id единицы измерения</li>
-      <li><code>editable</code> - флаг включения/отключения редактирования поля</li>
-      <li><code>defaultValue</code> - данные которые будут выводится при отсутствии данных.</li>
-      <li><code>maxValue</code> - максимальное значение в поле</li>
-      <li><code>minValue</code> - минимальное значение в поле</li>
-      <li><code>required</code> - флаг обязательности ввода данных в поле</li>
-      <li><code>validators</code> - валидаторы для полей</li>
-      <li><code>name</code> - название поля</li>
-      <li><code>caption</code> - описание поля</li>
-      <li><code>hint</code> - указанный текст появляется при наведении описание поля.</li>
-      <li><code>strict</code> - строгое сравнение </li>
+      <li>
+        <code>width</code> - ширина блока
+      </li>
+      <li>
+        <code>filterType</code> - тип поля (select,datepicker,string и т.д.)
+      </li>
+      <li>
+        <code>unit</code> - единицы измерения
+      </li>
+      <li>
+        <code>unitMeasureParameterId</code> - id измеряемого параметра{' '}
+      </li>
+      <li>
+        <code>unitId</code> - id единицы измерения
+      </li>
+      <li>
+        <code>editable</code> - флаг включения/отключения редактирования поля
+      </li>
+      <li>
+        <code>defaultValue</code> - данные которые будут выводится при отсутствии данных.
+      </li>
+      <li>
+        <code>maxValue</code> - максимальное значение в поле
+      </li>
+      <li>
+        <code>minValue</code> - минимальное значение в поле
+      </li>
+      <li>
+        <code>required</code> - флаг обязательности ввода данных в поле
+      </li>
+      <li>
+        <code>validators</code> - валидаторы для полей
+      </li>
+      <li>
+        <code>name</code> - название поля
+      </li>
+      <li>
+        <code>caption</code> - описание поля
+      </li>
+      <li>
+        <code>hint</code> - указанный текст появляется при наведении описание поля.
+      </li>
+      <li>
+        <code>strict</code> - строгое сравнение{' '}
+      </li>
     </ul>
-    <p>При выборе листа в качестве типа поля, то необходимо добавить свойство <code>dict</code>, которое отвечает за отображаемые элементы списка.</p>
-    <p>Также можно сделать кастомное отображение сетки по названию свойства в форме при помощи директивы <code>tetaPropertyGridItemDescription</code>.</p>
+    <p>
+      При выборе листа в качестве типа поля, то необходимо добавить свойство <code>dict</code>, которое отвечает за
+      отображаемые элементы списка.
+    </p>
+    <p>
+      Также можно сделать кастомное отображение сетки по названию свойства в форме при помощи директивы{' '}
+      <code>tetaPropertyGridItemDescription</code>.
+    </p>
   </div>
   <h3>Пример кода кастомной сетки</h3>
-  <p><pre><code>&lt;teta-property-grid class="scrollable padding-h-3 row_auto" style="width: 100%" (controlValueChange)="save($event)" [item]="item" [horizontal]="true" [columns]="columns" [dict]="dict"&gt;
-    &nbsp;&nbsp;&lt;ng-template [tetaPropertyGridItemDescription]="'ram'" let-control&gt;
-    &nbsp;&nbsp;&nbsp;&nbsp;&lt;input [formControl]="control" class="input" /&gt;
-    &nbsp;&nbsp;&lt;/ng-template&gt;
-    &nbsp;&lt;/teta-property-grid&gt;</code></pre></p>
+  <p>
+    <pre>
+      <code>
+        &lt;teta-property-grid class="scrollable padding-h-3 row_auto" style="width: 100%"
+        (controlValueChange)="save($event)" [item]="item" [horizontal]="true" [columns]="columns" [dict]="dict"&gt;
+        &nbsp;&nbsp;&lt;ng-template [tetaPropertyGridItemDescription]="'ram'" let-control&gt;
+        &nbsp;&nbsp;&nbsp;&nbsp;&lt;input [formControl]="control" class="input" /&gt; &nbsp;&nbsp;&lt;/ng-template&gt;
+        &nbsp;&lt;/teta-property-grid&gt;
+      </code>
+    </pre>
+  </p>
   <h3>Свойства</h3>
   <table>
     <thead>
-    <tr>
-      <th>Свойство</th>
-      <th>Tип</th>
-      <th>Описание</th>
-    </tr>
+      <tr>
+        <th>Свойство</th>
+        <th>Tип</th>
+        <th>Описание</th>
+      </tr>
     </thead>
     <tbody>
-    <tr>
-      <td class='text-align-center'>
-        <p>item</p>
-      </td>
-      <td class='text-align-center'>
-        <code>any</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Данные для формирования сетки.</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>columns</p>
-      </td>
-      <td class='text-align-center'>
-        <code>TableColumns[]</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Шаблон сетки</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>horizontal</p>
-      </td>
-      <td class='text-align-center'>
-        <code>boolean</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Флаг для отображения сетки горизотально</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>hideNonEditable</p>
-      </td>
-      <td class='text-align-center'>
-        <code>boolean</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Флаг для скрытия нередактируемых полей</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>decimalPart</p>
-      </td>
-      <td class='text-align-center'>
-        <code>number</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Количество знаков после запятой</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>controlValueChange</p>
-      </td>
-      <td class='text-align-center'>
-        <code>function</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Функция,которая срабатывает при изменении поля сетки.</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>dict</p>
-      </td>
-      <td class='text-align-center'>
-        <code>any[]</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Массив выбираемых элементов. Каждое свойство имеет название, которое должно совпадать с соответствующим свойством в <code>data</code>. В качестве значения принимает массив объектов id,name.Требуется если вы добавляете сетку типа лист.</p>
-      </td>
-    </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>item</p>
+        </td>
+        <td class="text-align-center">
+          <code>any</code>
+        </td>
+        <td class="text-align-center">
+          <p>Данные для формирования сетки.</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>columns</p>
+        </td>
+        <td class="text-align-center">
+          <code>TableColumns[]</code>
+        </td>
+        <td class="text-align-center">
+          <p>Шаблон сетки</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>horizontal</p>
+        </td>
+        <td class="text-align-center">
+          <code>boolean</code>
+        </td>
+        <td class="text-align-center">
+          <p>Флаг для отображения сетки горизотально</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>hideNonEditable</p>
+        </td>
+        <td class="text-align-center">
+          <code>boolean</code>
+        </td>
+        <td class="text-align-center">
+          <p>Флаг для скрытия нередактируемых полей</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>decimalPart</p>
+        </td>
+        <td class="text-align-center">
+          <code>number</code>
+        </td>
+        <td class="text-align-center">
+          <p>Количество знаков после запятой</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>controlValueChange</p>
+        </td>
+        <td class="text-align-center">
+          <code>function</code>
+        </td>
+        <td class="text-align-center">
+          <p>Функция,которая срабатывает при изменении поля сетки.</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>dict</p>
+        </td>
+        <td class="text-align-center">
+          <code>any[]</code>
+        </td>
+        <td class="text-align-center">
+          <p>
+            Массив выбираемых элементов. Каждое свойство имеет название, которое должно совпадать с соответствующим
+            свойством в <code>data</code>. В качестве значения принимает массив объектов id,name.Требуется если вы
+            добавляете сетку типа лист.
+          </p>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>

@@ -30,13 +30,7 @@ extend(THREE);
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NgtStore],
-  imports: [
-    NgtCanvas,
-    SceneComponent,
-    CommonModule,
-    CanvasComponent,
-    Canvas3dHost,
-  ],
+  imports: [NgtCanvas, SceneComponent, CommonModule, CanvasComponent, Canvas3dHost],
 })
 export class ThreeChartComponent implements OnInit, OnChanges {
   @Input() data: I3dChartConfig;

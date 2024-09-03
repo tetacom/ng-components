@@ -16,5 +16,5 @@ export enum AvatarColorEnum {
   cerise,
   iris,
   caribbean,
-  poisonous
+  poisonous,
 }

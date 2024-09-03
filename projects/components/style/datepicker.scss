@@ -1,9 +1,9 @@
-@import "util/font-util.scss";
-@import "util/shadow-util.scss";
-@import "util/color-util.scss";
-@import "presets/view-types.scss";
+@import 'util/font-util.scss';
+@import 'util/shadow-util.scss';
+@import 'util/color-util.scss';
+@import 'presets/view-types.scss';
 
-.daterange{
+.daterange {
   display: inline-flex;
   width: 200px;
   min-width: 0;
@@ -17,8 +17,8 @@
 
   @include getView('base');
 
-  &-time{
-   width: 160px;
+  &-time {
+    width: 160px;
   }
 
   &-wide {
@@ -67,7 +67,8 @@
     border-radius: 0;
   }
 
-  &:focus &-head, &_open &-head {
+  &:focus &-head,
+  &_open &-head {
     border-color: var(--color-primary-50);
   }
 
@@ -124,8 +125,6 @@
         background-color: var(--color-primary-50);
       }
     }
-
-
   }
 
   &-content {

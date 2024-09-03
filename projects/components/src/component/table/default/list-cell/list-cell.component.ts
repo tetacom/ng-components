@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 
 import { IIdName } from '../../../../common/contract/i-id-name';
 import { VerticalAlign } from '../../../../common/enum/vertical-align.enum';
@@ -15,26 +9,19 @@ import { TableService } from '../../service/table.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'teta-list-cell',
-    templateUrl: './list-cell.component.html',
-    styleUrls: ['./list-cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        SelectComponent,
-        FormsModule,
-        ReactiveFormsModule,
-    ],
+  selector: 'teta-list-cell',
+  templateUrl: './list-cell.component.html',
+  styleUrls: ['./list-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [SelectComponent, FormsModule, ReactiveFormsModule],
 })
-export class ListCellComponent<T>
-  extends CellComponentBase<T>
-  implements OnInit
-{
+export class ListCellComponent<T> extends CellComponentBase<T> implements OnInit {
   get displayFilterOptions(): IIdName<any>[] {
     if (this.column?.parentName?.length > 0) {
       const parentValue = this.row.data[this.column.parentName];
       if (parentValue) {
-        return this.filterOptions.filter(_ => _.parentId === parentValue);
+        return this.filterOptions.filter((_) => _.parentId === parentValue);
       }
     }
     return this.filterOptions;
@@ -44,10 +31,7 @@ export class ListCellComponent<T>
 
   verticalAlign = VerticalAlign;
 
-  constructor(
-    protected override svc: TableService<T>,
-    protected override cdr: ChangeDetectorRef
-  ) {
+  constructor(protected override svc: TableService<T>, protected override cdr: ChangeDetectorRef) {
     super(svc, cdr);
   }
 
@@ -69,14 +53,10 @@ export class ListCellComponent<T>
   }
 
   protected getValue(value) {
-    if (
-      this.filterOptions === null ||
-      this.filterOptions === undefined ||
-      !(this.filterOptions instanceof Array)
-    ) {
+    if (this.filterOptions === null || this.filterOptions === undefined || !(this.filterOptions instanceof Array)) {
       return '';
     }
-    const item = this.filterOptions.find(option => option.id === value);
+    const item = this.filterOptions.find((option) => option.id === value);
     if (item === null || item === undefined) {
       return '';
     }

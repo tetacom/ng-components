@@ -8,9 +8,8 @@ describe('DefaultHeadCellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [DefaultHeadCellComponent]
-})
-    .compileComponents();
+      imports: [DefaultHeadCellComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

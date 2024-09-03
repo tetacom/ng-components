@@ -8,9 +8,8 @@ describe('TableBodyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [TableBodyComponent]
-})
-    .compileComponents();
+      imports: [TableBodyComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

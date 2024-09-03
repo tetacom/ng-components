@@ -1,18 +1,18 @@
-import {Series} from './series';
-import {BasePoint} from './base-point';
-import {AxisOptions} from './axis-options';
-import {ZoomType} from './enum/zoom-type';
-import {TooltipOptions} from './tooltip-options';
-import {ChartBounds} from './chart-bounds';
-import {BrushType} from './enum/brush-type';
-import {Annotation} from './annotation';
-import {ZoomBehaviorType} from './enum/zoom-behavior-type';
+import { Series } from './series';
+import { BasePoint } from './base-point';
+import { AxisOptions } from './axis-options';
+import { ZoomType } from './enum/zoom-type';
+import { TooltipOptions } from './tooltip-options';
+import { ChartBounds } from './chart-bounds';
+import { BrushType } from './enum/brush-type';
+import { Annotation } from './annotation';
+import { ZoomBehaviorType } from './enum/zoom-behavior-type';
 
 export interface IChartConfig {
   name?: string;
   id?: string;
   series?: Series<BasePoint>[];
-  noDataText?: 'No data',
+  noDataText?: 'No data';
   zoom?: {
     enable: boolean;
     type: ZoomType;
@@ -23,11 +23,11 @@ export interface IChartConfig {
     max?: number;
     limitTranslateByData?: boolean;
     limitZoomByData?: boolean;
-    zoomBehavior?: ZoomBehaviorType,
-    wheelDelta?: (event: WheelEvent) => number,
+    zoomBehavior?: ZoomBehaviorType;
+    wheelDelta?: (event: WheelEvent) => number;
     minTranslate?: number;
     maxTranslate?: number;
-    wheelFilter?: (event: WheelEvent) => boolean
+    wheelFilter?: (event: WheelEvent) => boolean;
   };
   brush?: {
     enable?: boolean;
@@ -35,7 +35,7 @@ export interface IChartConfig {
     from?: number;
     to?: number;
     min?: number;
-    max?: number
+    max?: number;
   };
   legend?: {
     enable?: boolean;
@@ -51,11 +51,11 @@ export interface IChartConfig {
     showX?: boolean;
     showY?: boolean;
     x?: {
-      ticksCount?: number
-    },
+      ticksCount?: number;
+    };
     y?: {
-      ticksCount?: number
-    }
+      ticksCount?: number;
+    };
   };
   width?: number;
   height?: number;

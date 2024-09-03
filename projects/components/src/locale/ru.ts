@@ -1,4 +1,4 @@
-import {TetaLocalisation} from './teta-localisation';
+import { TetaLocalisation } from './teta-localisation';
 
 export const ruLocale: TetaLocalisation = {
   apply: 'Применить',
@@ -46,14 +46,6 @@ export const ruLocale: TetaLocalisation = {
     'Ноябрь',
     'Декабрь',
   ],
-  days: [
-    'Воскресенье',
-    'Понедельник',
-    'Вторник',
-    'Среда',
-    'Четверг',
-    'Пятниуа',
-    'Суббота',
-  ],
+  days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятниуа', 'Суббота'],
   daysShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
 };

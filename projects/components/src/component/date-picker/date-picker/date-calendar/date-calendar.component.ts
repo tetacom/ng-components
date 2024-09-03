@@ -6,7 +6,8 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  Output, SimpleChanges,
+  Output,
+  SimpleChanges,
 } from '@angular/core';
 import dayjs from 'dayjs';
 import { combineLatest, filter, map, takeWhile } from 'rxjs';
@@ -14,7 +15,7 @@ import { combineLatest, filter, map, takeWhile } from 'rxjs';
 import { viewType } from '../../../../common/model/view-type.model';
 import { BaseCalendar } from '../../base-calendar';
 import { DayModel } from '../../model/day-model';
-import {TetaLocalisation} from "../../../../locale/teta-localisation";
+import { TetaLocalisation } from '../../../../locale/teta-localisation';
 import { AsyncPipe } from '@angular/common';
 import { YearPickerComponent } from '../../year-picker/year-picker.component';
 import { MonthPickerComponent } from '../../month-picker/month-picker.component';
@@ -23,26 +24,17 @@ import { IconComponent } from '../../../icon/icon/icon.component';
 import { ButtonComponent } from '../../../button/button/button.component';
 
 @Component({
-    selector: 'teta-date-calendar',
-    templateUrl: './date-calendar.component.html',
-    styleUrls: ['./date-calendar.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        ButtonComponent,
-        IconComponent,
-        DayPickerComponent,
-        MonthPickerComponent,
-        YearPickerComponent,
-        AsyncPipe,
-    ],
+  selector: 'teta-date-calendar',
+  templateUrl: './date-calendar.component.html',
+  styleUrls: ['./date-calendar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ButtonComponent, IconComponent, DayPickerComponent, MonthPickerComponent, YearPickerComponent, AsyncPipe],
 })
-export class DateCalendarComponent
-  extends BaseCalendar
-  implements OnChanges, OnDestroy {
+export class DateCalendarComponent extends BaseCalendar implements OnChanges, OnDestroy {
   @Input() selectedDate: Date | string | number = new Date();
   @Input() open: boolean;
-  @Input() locale:TetaLocalisation
+  @Input() locale: TetaLocalisation;
   @Input() viewType: viewType;
   @Input() min: Date | string | number;
   @Input() isDateNull: boolean;
@@ -55,10 +47,7 @@ export class DateCalendarComponent
     combineLatest([this.currentYear, this.currentMonth, this.minMax])
       .pipe(
         takeWhile(() => this.alive),
-        filter(
-          ([currentYear, currentMonth]) =>
-            currentMonth !== null && currentYear !== null
-        ),
+        filter(([currentYear, currentMonth]) => currentMonth !== null && currentYear !== null),
         map(([year, month, minMax]) => {
           return this.generateCalendar(
             dayjs(new Date(this.selectedDate)).locale('ru', { weekStart: 1 }),
@@ -68,9 +57,8 @@ export class DateCalendarComponent
           );
         })
       )
-      .subscribe(_ => {
+      .subscribe((_) => {
         this.calendar = _;
       });
   }
-
 }

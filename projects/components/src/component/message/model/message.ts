@@ -1,12 +1,12 @@
-import {TemplateRef} from '@angular/core';
-import {viewType} from "../../../common/model/view-type.model";
+import { TemplateRef } from '@angular/core';
+import { viewType } from '../../../common/model/view-type.model';
 
 export class Message {
   name: string | null | undefined;
   title: string | null | undefined;
   text: string | null | undefined;
   infinite: boolean;
-  viewType?: viewType = "rounded";
+  viewType?: viewType = 'rounded';
   duration = 10000;
   className: string[] | null | undefined;
   palette = 'primary';

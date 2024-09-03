@@ -1,19 +1,26 @@
 <div class="datepicker-week font-caption">
   @for (day of dayOrder; track day) {
-    <p class="datepicker-day">
-      {{day}}
-    </p>
+  <p class="datepicker-day">
+    {{ day }}
+  </p>
   }
 </div>
 <div class="datepicker-picker color-text-90 font-body-3">
   @for (day of calendar; track day) {
-    <div [class]="getRangeActiveClass(day)+' datepicker-date font-body-3 datepicker_'+viewType"
-      (mouseenter)="hover(day.date)"
-      (click)="pickDate(day)"
-         [ngClass]="{'datepicker-date_active':day.selected||(day.date===hoveredDate&&range&&!range.to),'datepicker-date-range_hover':range&&isHoveredRange(day),
-         'datepicker-date_disabled':day.disabled,'color-text-30':day.disabled||(!range&&!day.isCurrentMonth),'datepicker-date-range_disabled':!day.isCurrentMonth&&range,'datepicker-date-range_active':isActiveRange(day)}">
-      <teta-day-item [day]="day"></teta-day-item>
-    </div>
+  <div
+    [class]="getRangeActiveClass(day) + ' datepicker-date font-body-3 datepicker_' + viewType"
+    (mouseenter)="hover(day.date)"
+    (click)="pickDate(day)"
+    [ngClass]="{
+      'datepicker-date_active': day.selected || (day.date === hoveredDate && range && !range.to),
+      'datepicker-date-range_hover': range && isHoveredRange(day),
+      'datepicker-date_disabled': day.disabled,
+      'color-text-30': day.disabled || (!range && !day.isCurrentMonth),
+      'datepicker-date-range_disabled': !day.isCurrentMonth && range,
+      'datepicker-date-range_active': isActiveRange(day)
+    }"
+  >
+    <teta-day-item [day]="day"></teta-day-item>
+  </div>
   }
 </div>
-

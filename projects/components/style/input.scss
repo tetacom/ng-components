@@ -1,6 +1,6 @@
-@import "util/color-util.scss";
-@import "util/font-util.scss";
-@import "presets/view-types.scss";
+@import 'util/color-util.scss';
+@import 'util/font-util.scss';
+@import 'presets/view-types.scss';
 
 .form-container {
   display: flex;
@@ -30,11 +30,13 @@
   background: var(--color-global-bgcard);
 }
 
-.text-field, .input, .textarea {
+.text-field,
+.input,
+.textarea {
   padding: 6px 8px;
   border: solid 1px var(--color-text-5);
   background-color: var(--color-text-5);
-  background-clip:padding-box;
+  background-clip: padding-box;
   color: var(--color-text-90);
   @include getFont($fonts, 'body-3');
   display: flex;
@@ -46,7 +48,6 @@
   transition: border-color 0.4s, background-color 0.4s;
 
   @include getView('field');
-
 
   &_invalid {
     border-color: var(--color-red-50);
@@ -62,7 +63,8 @@
     color: var(--color-text-40);
   }
 
-  &:focus-within, &:focus {
+  &:focus-within,
+  &:focus {
     border-color: var(--color-primary-50);
   }
 
@@ -76,7 +78,9 @@
     }
   }
 
-  &:disabled, &[disabled], &_disabled {
+  &:disabled,
+  &[disabled],
+  &_disabled {
     border: 0;
     background: var(--color-text-5);
     color: var(--color-text-20);
@@ -104,7 +108,8 @@
   }
 }
 
-.text-field, .input {
+.text-field,
+.input {
   height: 28px;
 }
 

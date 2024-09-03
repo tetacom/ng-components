@@ -8,9 +8,8 @@ describe('CrosshairComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CrosshairComponent ]
-    })
-    .compileComponents();
+      declarations: [CrosshairComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

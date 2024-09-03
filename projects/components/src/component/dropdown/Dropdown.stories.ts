@@ -1,22 +1,21 @@
 // eslint-disable-next-line id-blacklist
-import {Align} from '../../common/enum/align.enum';
-import {VerticalAlign} from '../../common/enum/vertical-align.enum';
+import { Align } from '../../common/enum/align.enum';
+import { VerticalAlign } from '../../common/enum/vertical-align.enum';
 
-import {applicationConfig, Meta} from '@storybook/angular';
-import {provideHttpClient} from '@angular/common/http';
-import {DropdownComponent} from "./dropdown/dropdown.component";
-import {DropdownHeadDirective} from "./dropdown-head.directive";
-import {DropdownContentDirective} from "./dropdown-content.directive";
-import {ScrollableComponent} from "../../directive/scrollable/scrollable/scrollable.component";
-import {DropdownDirective} from "./dropdown.directive";
-import {ButtonComponent} from "../button/button/button.component";
-import {IconSpriteDirective} from "../icon/icon-sprite.directive";
-import {IconComponent} from "../icon/icon/icon.component";
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { DropdownComponent } from './dropdown/dropdown.component';
+import { DropdownHeadDirective } from './dropdown-head.directive';
+import { DropdownContentDirective } from './dropdown-content.directive';
+import { ScrollableComponent } from '../../directive/scrollable/scrollable/scrollable.component';
+import { DropdownDirective } from './dropdown.directive';
+import { ButtonComponent } from '../button/button/button.component';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
+import { IconComponent } from '../icon/icon/icon.component';
 
 export default {
   title: 'Component/Dropdown',
   decorators: [
-
     applicationConfig({
       providers: [provideHttpClient()],
     }),
@@ -27,25 +26,33 @@ export default {
   argTypes: {
     align: {
       options: ['Align.left', ' Align.right', 'Align.center', 'Align.auto'],
-      control: {type: 'select'}
+      control: { type: 'select' },
     },
     verticalAlign: {
-      options: ['VerticalAlign.bottom', 'VerticalAlign.top', 'VerticalAlign.center', 'VerticalAlign.auto', 'VerticalAlign.innerAuto', 'VerticalAlign.innerBottom', 'VerticalAlign.innerTop'],
-      control: {type: 'select'}
+      options: [
+        'VerticalAlign.bottom',
+        'VerticalAlign.top',
+        'VerticalAlign.center',
+        'VerticalAlign.auto',
+        'VerticalAlign.innerAuto',
+        'VerticalAlign.innerBottom',
+        'VerticalAlign.innerTop',
+      ],
+      control: { type: 'select' },
     },
     viewType: {
       options: ['rounded', 'brick', 'circle'],
-      control: {type: 'select'}
+      control: { type: 'select' },
     },
     allowNull: {
-      control: {type: 'boolean'}
+      control: { type: 'boolean' },
     },
     autoClose: {
-      control: {type: 'boolean'}
+      control: { type: 'boolean' },
     },
     transform: {
-      control: {type: 'boolean'}
-    }
+      control: { type: 'boolean' },
+    },
   },
   args: {
     viewType: 'rounded',
@@ -60,7 +67,7 @@ const alignMap = new Map<string, Align>()
   .set('Align.left', Align.left)
   .set('Align.auto', Align.auto)
   .set('Align.center', Align.center)
-  .set('Align.right', Align.right)
+  .set('Align.right', Align.right);
 const valignMap = new Map<string, VerticalAlign>()
   .set('VerticalAlign.bottom', VerticalAlign.bottom)
   .set('VerticalAlign.top', VerticalAlign.top)
@@ -69,11 +76,20 @@ const valignMap = new Map<string, VerticalAlign>()
   .set('VerticalAlign.innerAuto', VerticalAlign.innerAuto)
   .set('VerticalAlign.innerBottom', VerticalAlign.innerBottom)
   .set('VerticalAlign.innerTop', VerticalAlign.innerTop);
-export const baseDropdown = args => ({
+export const baseDropdown = (args) => ({
   moduleMetadata: {
-    imports: [DropdownComponent, DropdownHeadDirective, DropdownContentDirective, ScrollableComponent, DropdownDirective, ButtonComponent, IconSpriteDirective, IconComponent],
+    imports: [
+      DropdownComponent,
+      DropdownHeadDirective,
+      DropdownContentDirective,
+      ScrollableComponent,
+      DropdownDirective,
+      ButtonComponent,
+      IconSpriteDirective,
+      IconComponent,
+    ],
   },
-  props: {...args, valignMap, alignMap},
+  props: { ...args, valignMap, alignMap },
   template: `<div class="padding-10 bg-panel-50 row"
                   style="width: 800px;"
                   [style.transform]="transform ? 'translate(100px, 100px)' : ''"
@@ -113,11 +129,20 @@ export const baseDropdown = args => ({
     </teta-scrollable>
   </div>`,
 });
-export const disabledDropdown = args => ({
+export const disabledDropdown = (args) => ({
   moduleMetadata: {
-    imports: [DropdownComponent, DropdownHeadDirective, DropdownContentDirective, ScrollableComponent, DropdownDirective, ButtonComponent, IconSpriteDirective, IconComponent],
+    imports: [
+      DropdownComponent,
+      DropdownHeadDirective,
+      DropdownContentDirective,
+      ScrollableComponent,
+      DropdownDirective,
+      ButtonComponent,
+      IconSpriteDirective,
+      IconComponent,
+    ],
   },
-  props: {...args, valignMap, alignMap},
+  props: { ...args, valignMap, alignMap },
   template: `<div class="padding-10 bg-panel-50 row"
                   style="width: 800px;"
                   [style.transform]="transform ? 'translate(100px, 100px)' : ''"

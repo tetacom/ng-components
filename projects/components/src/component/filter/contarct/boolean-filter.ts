@@ -1,4 +1,4 @@
-import {FilterBase} from '../base/filter-base';
+import { FilterBase } from '../base/filter-base';
 
 export class BooleanFilter extends FilterBase<boolean> {
   constructor(options?: { value?: boolean; field: string; name: string }) {

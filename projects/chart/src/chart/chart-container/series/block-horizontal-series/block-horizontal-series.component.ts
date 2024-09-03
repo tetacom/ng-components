@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit } from '@angular/core';
 import { filter, map, Observable } from 'rxjs';
 
 import { SeriesBaseComponent } from '../../../base/series-base.component';
@@ -21,15 +15,9 @@ import { AsyncPipe, NgStyle } from '@angular/common';
   styleUrls: ['./block-horizontal-series.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    AsyncPipe,
-    NgStyle,
-  ]
+  imports: [AsyncPipe, NgStyle],
 })
-export class BlockHorizontalSeriesComponent<T extends BasePoint>
-  extends SeriesBaseComponent<T>
-  implements OnInit
-{
+export class BlockHorizontalSeriesComponent<T extends BasePoint> extends SeriesBaseComponent<T> implements OnInit {
   x: Observable<any>;
   y: Observable<any>;
   displayPoints: Observable<BasePoint[]>;
@@ -49,27 +37,17 @@ export class BlockHorizontalSeriesComponent<T extends BasePoint>
   }
 
   override ngOnInit(): void {
-    this.x = this.scaleService.scales.pipe(
-      map(_ => _.x.get(this.series.xAxisIndex)?.scale)
-    );
-    this.y = this.scaleService.scales.pipe(
-      map(_ => _.y.get(this.series.yAxisIndex)?.scale)
-    );
+    this.x = this.scaleService.scales.pipe(map((_) => _.x.get(this.series.xAxisIndex)?.scale));
+    this.y = this.scaleService.scales.pipe(map((_) => _.y.get(this.series.yAxisIndex)?.scale));
 
     this.displayPoints = this.x.pipe(
-      filter(y => y),
-      map(y => {
+      filter((y) => y),
+      map((y) => {
         return this.series.data.filter((point, index, arr) => {
           const [min, max] = y.domain();
           return (
-            (point.x >= min ||
-              point.x1 >= min ||
-              arr[index + 1]?.x >= min ||
-              arr[index + 1]?.x1 >= min) &&
-            (point.x <= max ||
-              point.x1 <= max ||
-              arr[index - 1]?.x <= max ||
-              arr[index - 1]?.x1 <= max)
+            (point.x >= min || point.x1 >= min || arr[index + 1]?.x >= min || arr[index + 1]?.x1 >= min) &&
+            (point.x <= max || point.x1 <= max || arr[index - 1]?.x <= max || arr[index - 1]?.x1 <= max)
           );
         });
       })

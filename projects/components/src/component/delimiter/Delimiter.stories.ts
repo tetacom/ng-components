@@ -1,16 +1,15 @@
 // eslint-disable-next-line id-blacklist
-import {DelimiterComponent} from './delimiter/delimiter.component';
+import { DelimiterComponent } from './delimiter/delimiter.component';
 
-import {applicationConfig, Meta} from '@storybook/angular';
-import {provideHttpClient} from '@angular/common/http';
-import {IconSpriteDirective} from "../icon/icon-sprite.directive";
-import {IconComponent} from "../icon/icon/icon.component";
-import {ButtonComponent} from "../button/button/button.component";
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
+import { IconComponent } from '../icon/icon/icon.component';
+import { ButtonComponent } from '../button/button/button.component';
 
 export default {
   title: 'Component/Delimiter',
   decorators: [
-
     applicationConfig({
       providers: [provideHttpClient()],
     }),

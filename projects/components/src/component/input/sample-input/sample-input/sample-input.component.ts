@@ -4,16 +4,11 @@ import { TextFieldComponent } from '../../text-field/text-field.component';
 import { InputComponent } from '../../input/input.component';
 
 @Component({
-    selector: 'teta-sample-input',
-    templateUrl: './sample-input.component.html',
-    styleUrls: ['./sample-input.component.scss'],
-    standalone: true,
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        InputComponent,
-        TextFieldComponent,
-    ],
+  selector: 'teta-sample-input',
+  templateUrl: './sample-input.component.html',
+  styleUrls: ['./sample-input.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, InputComponent, TextFieldComponent],
 })
 export class SampleInputComponent implements OnInit {
   form: UntypedFormGroup;
@@ -33,7 +28,7 @@ export class SampleInputComponent implements OnInit {
       }),
     });
 
-    this.form.valueChanges.subscribe(changes => {
+    this.form.valueChanges.subscribe((changes) => {
       console.log('changes', changes);
     });
   }

@@ -26,7 +26,7 @@ export class Axis {
     .set(ScaleType.symlog, d3.format('~s'))
     .set(ScaleType.pow, d3.format('~s'))
     .set(ScaleType.sqrt, d3.format('~s'))
-    .set(ScaleType.band, _ => {
+    .set(ScaleType.band, (_) => {
       return _;
     });
 
@@ -52,11 +52,7 @@ export class Axis {
    * @param {number} index
    * New generated axis
    */
-  public static createAxis(
-    orientation: AxisOrientation,
-    config: IChartConfig,
-    index: number
-  ): Axis {
+  public static createAxis(orientation: AxisOrientation, config: IChartConfig, index: number): Axis {
     const axis = new Axis(config);
     axis.setLocate(orientation);
     axis.setIndex(index);
@@ -93,9 +89,7 @@ export class Axis {
    */
   public linkedSeries(): Array<Series<BasePoint>> {
     const linkedFilter = (serie: Series<BasePoint>) =>
-      serie[
-        this._orientation === AxisOrientation.y ? 'yAxisIndex' : 'xAxisIndex'
-      ] === this._index;
+      serie[this._orientation === AxisOrientation.y ? 'yAxisIndex' : 'xAxisIndex'] === this._index;
 
     return this.chartConfig?.series.filter(linkedFilter);
   }
@@ -129,9 +123,7 @@ export class Axis {
 
   private setOptions(): void {
     const options =
-      this.orientation === AxisOrientation.x
-        ? this.chartConfig.xAxis[this.index]
-        : this.chartConfig.yAxis[this.index];
+      this.orientation === AxisOrientation.x ? this.chartConfig.xAxis[this.index] : this.chartConfig.yAxis[this.index];
 
     this._options = options;
   }

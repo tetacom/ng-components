@@ -24,8 +24,7 @@ export const formatNumber = (
     decimalLength += firstDigitIndex;
   }
   const precision = Math.min(getPrecision(value), Math.floor(decimalLength));
-  const result =
-    '\\d(?=(\\d{' + chunkLength + '})+' + (precision > 0 ? '\\D' : '$') + ')';
+  const result = '\\d(?=(\\d{' + chunkLength + '})+' + (precision > 0 ? '\\D' : '$') + ')';
   const num = value.toFixed(precision);
   return (decimalDelimiter ? num.replace('.', decimalDelimiter) : num).replace(
     new RegExp(result, 'g'),
@@ -33,5 +32,4 @@ export const formatNumber = (
   );
 };
 
-export const prependZero = (input: number, length: number) =>
-  ('0'.repeat(length) + input).slice(-length);
+export const prependZero = (input: number, length: number) => ('0'.repeat(length) + input).slice(-length);

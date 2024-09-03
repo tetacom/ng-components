@@ -1,8 +1,8 @@
-import {Directive, ElementRef, Input} from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 
 @Directive({
-    selector: '[tetaHighlight]',
-    standalone: true,
+  selector: '[tetaHighlight]',
+  standalone: true,
 })
 export class HighlightDirective {
   @Input() set tetaHighlight(text: string) {
@@ -18,7 +18,7 @@ export class HighlightDirective {
         .toLowerCase()
         .replace(pattern, '\\$&')
         .split(' ')
-        .filter(t => t.length > 0)
+        .filter((t) => t.length > 0)
         .join('|');
       this._initialElement = this.elementRef.nativeElement.innerHTML;
       this.recursiveReplaceNode(this.elementRef.nativeElement.childNodes, searchWithOutRegExp);
@@ -27,8 +27,7 @@ export class HighlightDirective {
 
   private _initialElement = null;
 
-  constructor(private elementRef: ElementRef) {
-  }
+  constructor(private elementRef: ElementRef) {}
 
   private recursiveReplaceNode(nodes: NodeListOf<ChildNode>, searchWithOutRegExp: string): boolean {
     let match = false;
@@ -36,7 +35,7 @@ export class HighlightDirective {
     nodes.forEach((node: ChildNode) => {
       cacheNodes.push(node);
     });
-    cacheNodes.forEach(node => {
+    cacheNodes.forEach((node) => {
       if (node.nodeType === 3) {
         if (node.nodeValue && node.nodeValue.search(new RegExp(searchWithOutRegExp, 'i')) > -1) {
           match = true;
@@ -55,8 +54,10 @@ export class HighlightDirective {
       return;
     }
     const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = textNode.nodeValue
-      .replace(new RegExp(searchWithOutRegExp, 'gi'), match => `<mark>${match}</mark>`);
+    tempDiv.innerHTML = textNode.nodeValue.replace(
+      new RegExp(searchWithOutRegExp, 'gi'),
+      (match) => `<mark>${match}</mark>`
+    );
 
     const parentNode = textNode.parentNode;
     if (parentNode) {

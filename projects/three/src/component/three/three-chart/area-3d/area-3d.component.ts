@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  CUSTOM_ELEMENTS_SCHEMA,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as THREE from 'three';
 import { GridHelper } from 'three';
@@ -39,30 +34,17 @@ export class Area3dComponent implements OnInit {
     return mainGrid;
   }
 
-  createGrid(
-    gridsCount: number,
-    gridSize: number,
-    rectsInGrid: number,
-    direction: 'vertical' | 'horizontal'
-  ) {
+  createGrid(gridsCount: number, gridSize: number, rectsInGrid: number, direction: 'vertical' | 'horizontal') {
     const plane: GridHelper[] = [];
     for (let p = 0; p <= gridsCount - 1; p++) {
       plane[p] = new THREE.GridHelper(gridSize, rectsInGrid, '#666', '#666');
       plane[p].renderOrder = -1;
       switch (direction) {
         case 'horizontal':
-          plane[p].position.set(
-            gridSize / 2,
-            -50,
-            gridSize * p + gridSize / 2 - 50
-          );
+          plane[p].position.set(gridSize / 2, -50, gridSize * p + gridSize / 2 - 50);
           break;
         case 'vertical':
-          plane[p].position.set(
-            gridSize / 2,
-            gridSize * p + gridSize / 2 - 50,
-            -50
-          );
+          plane[p].position.set(gridSize / 2, gridSize * p + gridSize / 2 - 50, -50);
           plane[p].rotateZ(Math.PI / 2);
           plane[p].rotateX(Math.PI / 2);
           break;

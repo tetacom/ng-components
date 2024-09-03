@@ -1,39 +1,36 @@
-import {SwitchComponent} from './switch/switch.component';
+import { SwitchComponent } from './switch/switch.component';
 
-import {FormsModule} from '@angular/forms';
-import {applicationConfig, Meta} from '@storybook/angular';
-import {provideHttpClient} from '@angular/common/http';
-import {SwitchButtonComponent} from "./switch-button/switch-button.component";
-import {IconComponent} from "../icon/icon/icon.component";
-import {IconSpriteDirective} from "../icon/icon-sprite.directive";
+import { FormsModule } from '@angular/forms';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { SwitchButtonComponent } from './switch-button/switch-button.component';
+import { IconComponent } from '../icon/icon/icon.component';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
 
 export default {
   title: 'Component/Switch',
   decorators: [
-
     applicationConfig({
       providers: [provideHttpClient()],
     }),
-
   ],
   argTypes: {
     backdrop: {
-      control: {type: 'boolean'}
+      control: { type: 'boolean' },
     },
     palette: {
       options: ['primary', 'text', 'red', 'yellow', 'green'],
-      control: {type: 'select'}
+      control: { type: 'select' },
     },
     viewType: {
       options: ['rounded', 'brick', 'circle'],
-      control: {type: 'select'},
+      control: { type: 'select' },
     },
-
   },
   args: {
     backdrop: false,
     palette: 'primary',
-    viewType: 'rounded'
+    viewType: 'rounded',
   },
   component: SwitchComponent,
   moduleMetadata: {

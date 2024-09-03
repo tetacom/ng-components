@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { map, Observable } from 'rxjs';
 
@@ -22,14 +15,11 @@ import { AsyncPipe } from '@angular/common';
   selector: 'svg:svg[teta-area-series]',
   templateUrl: './area-series.component.html',
   styleUrls: ['./area-series.component.scss'],
-  standalone:true,
+  standalone: true,
   imports: [AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AreaSeriesComponent<T extends BasePoint>
-  extends LinearSeriesBase<T>
-  implements OnInit, OnDestroy
-{
+export class AreaSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T> implements OnInit, OnDestroy {
   areaPath: Observable<string>;
 
   fillDirection = FillDirection;
@@ -50,7 +40,7 @@ export class AreaSeriesComponent<T extends BasePoint>
   override ngOnInit() {
     super.ngOnInit();
     this.areaPath = this.scaleService.scales.pipe(
-      map(data => {
+      map((data) => {
         const { x, y } = data;
 
         this.x = x.get(this.series.xAxisIndex)?.scale;
@@ -62,25 +52,15 @@ export class AreaSeriesComponent<T extends BasePoint>
 
         const area = d3
           .area<BasePoint>()
-          .defined(
-            point =>
-              point.x !== null &&
-              point.y !== null &&
-              !isNaN(point.x) &&
-              !isNaN(point.y)
-          );
+          .defined((point) => point.x !== null && point.y !== null && !isNaN(point.x) && !isNaN(point.y));
 
         area
-          .x1(_ =>
-            _.x1 !== null && _.x1 !== undefined ? this.x(_.x1) : this.x(0)
-          )
-          .x0(_ => this.x(_.x))
+          .x1((_) => (_.x1 !== null && _.x1 !== undefined ? this.x(_.x1) : this.x(0)))
+          .x0((_) => this.x(_.x))
 
-          .y(_ => this.y(_.y));
+          .y((_) => this.y(_.y));
 
-        const filter = this.defaultClipPointsMapping.get(
-          this.series.clipPointsDirection
-        );
+        const filter = this.defaultClipPointsMapping.get(this.series.clipPointsDirection);
         let filteredData = this.series.data;
 
         if (this.series.clipPointsDirection === ClipPointsDirection.x) {

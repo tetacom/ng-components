@@ -7,39 +7,32 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import {StringFilter} from '../contarct/string-filter';
-import {FilterState} from '../contarct/filter-state';
-import {FilterBase} from '../base/filter-base';
-import {FilterComponentBase} from '../base/filter-component-base';
-import {FilterItem} from '../contarct/filter-item';
-import {IIdName} from '../../../common/contract/i-id-name';
-import {TetaConfigService} from '../../../locale/teta-config.service';
-import {Observable} from 'rxjs';
-import {TetaLocalisation} from '../../../locale/teta-localisation';
+import { StringFilter } from '../contarct/string-filter';
+import { FilterState } from '../contarct/filter-state';
+import { FilterBase } from '../base/filter-base';
+import { FilterComponentBase } from '../base/filter-component-base';
+import { FilterItem } from '../contarct/filter-item';
+import { IIdName } from '../../../common/contract/i-id-name';
+import { TetaConfigService } from '../../../locale/teta-config.service';
+import { Observable } from 'rxjs';
+import { TetaLocalisation } from '../../../locale/teta-localisation';
 import { AsyncPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputComponent } from '../../input/input/input.component';
 
 @Component({
-    selector: 'teta-string-filter',
-    templateUrl: './string-filter.component.html',
-    styleUrls: ['./string-filter.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        InputComponent,
-        FormsModule,
-        AsyncPipe,
-    ],
+  selector: 'teta-string-filter',
+  templateUrl: './string-filter.component.html',
+  styleUrls: ['./string-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [InputComponent, FormsModule, AsyncPipe],
 })
-export class StringFilterComponent<T>
-  extends FilterComponentBase<T>
-  implements OnInit {
+export class StringFilterComponent<T> extends FilterComponentBase<T> implements OnInit {
   @Input() column: FilterItem;
   @Input() data: T[];
   @Input() filterOptions: IIdName<any>[] = [];
-  @Output() filterChanged: EventEmitter<FilterBase<string>> =
-    new EventEmitter<FilterBase<string>>();
+  @Output() filterChanged: EventEmitter<FilterBase<string>> = new EventEmitter<FilterBase<string>>();
 
   filter: StringFilter;
   state$: FilterState;
@@ -56,23 +49,19 @@ export class StringFilterComponent<T>
   }
   locale: Observable<TetaLocalisation>;
 
-  constructor(private changeDetector: ChangeDetectorRef,
-              private _config: TetaConfigService) {
+  constructor(private changeDetector: ChangeDetectorRef, private _config: TetaConfigService) {
     super();
     this.locale = this._config.locale;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   setFilter() {
     this.filterChanged.emit(this.filter);
   }
 
   private getFilter(): StringFilter {
-    let filter = this.state.stringFilters.find(
-      (f) => f.field === this.column.filterField
-    );
+    let filter = this.state.stringFilters.find((f) => f.field === this.column.filterField);
     if (!filter) {
       filter = this.state.addStringFilter(
         new StringFilter({

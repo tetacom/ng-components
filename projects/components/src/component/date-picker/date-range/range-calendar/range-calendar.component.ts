@@ -10,13 +10,13 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import dayjs from 'dayjs';
-import {combineLatest, filter, map, shareReplay, takeWhile} from 'rxjs';
+import { combineLatest, filter, map, shareReplay, takeWhile } from 'rxjs';
 
-import {viewType} from '../../../../common/model/view-type.model';
-import {BaseCalendar} from '../../base-calendar';
-import {DayModel} from '../../model/day-model';
-import {DateFromToModel} from '../../model/from-to.model';
-import {TetaLocalisation} from "../../../../locale/teta-localisation";
+import { viewType } from '../../../../common/model/view-type.model';
+import { BaseCalendar } from '../../base-calendar';
+import { DayModel } from '../../model/day-model';
+import { DateFromToModel } from '../../model/from-to.model';
+import { TetaLocalisation } from '../../../../locale/teta-localisation';
 import { YearPickerComponent } from '../../year-picker/year-picker.component';
 import { MonthPickerComponent } from '../../month-picker/month-picker.component';
 import { DayPickerComponent } from '../../day-picker/day-picker.component';
@@ -25,24 +25,22 @@ import { NgClass, AsyncPipe } from '@angular/common';
 import { ButtonComponent } from '../../../button/button/button.component';
 
 @Component({
-    selector: 'teta-range-calendar',
-    templateUrl: './range-calendar.component.html',
-    styleUrls: ['./range-calendar.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        ButtonComponent,
-        NgClass,
-        IconComponent,
-        DayPickerComponent,
-        MonthPickerComponent,
-        YearPickerComponent,
-        AsyncPipe,
-    ],
+  selector: 'teta-range-calendar',
+  templateUrl: './range-calendar.component.html',
+  styleUrls: ['./range-calendar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    ButtonComponent,
+    NgClass,
+    IconComponent,
+    DayPickerComponent,
+    MonthPickerComponent,
+    YearPickerComponent,
+    AsyncPipe,
+  ],
 })
-export class RangeCalendarComponent
-  extends BaseCalendar
-  implements OnChanges, OnDestroy {
+export class RangeCalendarComponent extends BaseCalendar implements OnChanges, OnDestroy {
   @Input() locale: TetaLocalisation;
   @Input() open: boolean;
   @Input() date: DateFromToModel;
@@ -70,25 +68,19 @@ export class RangeCalendarComponent
     combineLatest([this.currentYear, this.currentMonth, this.minMax])
       .pipe(
         takeWhile(() => this.alive),
-        shareReplay({bufferSize: 1, refCount: false}),
-        filter(
-          ([currentYear, currentMonth]) =>
-            currentMonth !== null && currentYear !== null
-        ),
+        shareReplay({ bufferSize: 1, refCount: false }),
+        filter(([currentYear, currentMonth]) => currentMonth !== null && currentYear !== null),
         map(([year, month, minMax]) => {
-          const {availableYear, availableMonth} = this.getAvailableMonthYear(
-            month + 1,
-            year
-          );
+          const { availableYear, availableMonth } = this.getAvailableMonthYear(month + 1, year);
           return {
             currentMonth: this.generateCalendar(
-              dayjs(new Date(this.selectedDate.from || new Date())).locale('ru', {weekStart: 1}),
+              dayjs(new Date(this.selectedDate.from || new Date())).locale('ru', { weekStart: 1 }),
               year,
               month,
               minMax
             ),
             nextMonth: this.generateCalendar(
-              dayjs(new Date(this.selectedDate.from || new Date())).locale('ru', {weekStart: 1}),
+              dayjs(new Date(this.selectedDate.from || new Date())).locale('ru', { weekStart: 1 }),
               availableYear,
               availableMonth,
               minMax
@@ -96,7 +88,7 @@ export class RangeCalendarComponent
           };
         })
       )
-      .subscribe(_ => {
+      .subscribe((_) => {
         this.calendar = _;
       });
   }
@@ -117,11 +109,11 @@ export class RangeCalendarComponent
       }
     }
 
-    return {from: dateFrom, to: dateTo};
+    return { from: dateFrom, to: dateTo };
   }
 
   override isSelected(d: Date, selectedDate: Date) {
-    const {from, to} = this.getFromTo();
+    const { from, to } = this.getFromTo();
     return this.checkSelected(d, from) || this.checkSelected(d, to);
   }
 
@@ -132,20 +124,14 @@ export class RangeCalendarComponent
     return isSelectedDate && isSelectedMonth && isSelectedYear;
   }
 
-  isFirstDaySuitable(m: number, y: number, max: string|number|Date) {
-    const {availableYear, availableMonth} = this.getAvailableMonthYear(m, y);
-    return this.isSuitableMaxDate(
-      dayjs(new Date(availableYear, availableMonth)).startOf('month').toDate(),
-      max
-    );
+  isFirstDaySuitable(m: number, y: number, max: string | number | Date) {
+    const { availableYear, availableMonth } = this.getAvailableMonthYear(m, y);
+    return this.isSuitableMaxDate(dayjs(new Date(availableYear, availableMonth)).startOf('month').toDate(), max);
   }
 
-  isLastDaySuitable(m: number, y: number, min: string|number|Date) {
-    const {availableYear, availableMonth} = this.getAvailableMonthYear(m, y);
-    return this.isSuitableMinDate(
-      dayjs(new Date(availableYear, availableMonth)).endOf('month').toDate(),
-      min
-    );
+  isLastDaySuitable(m: number, y: number, min: string | number | Date) {
+    const { availableYear, availableMonth } = this.getAvailableMonthYear(m, y);
+    return this.isSuitableMinDate(dayjs(new Date(availableYear, availableMonth)).endOf('month').toDate(), min);
   }
 
   override ngOnChanges(changes: SimpleChanges): void {

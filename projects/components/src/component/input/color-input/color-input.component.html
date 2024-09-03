@@ -1,7 +1,9 @@
-<input type='color'
-       #input
-       [disabled]='disabled'
-       (blur)='emitBlur();'
-       [ngModel]="getHexColor(value)"
-       (ngModelChange)="value = $event;onChange($event)"
-       [ngModelOptions]='{updateOn: "blur"}'/>
+<input
+  type="color"
+  #input
+  [disabled]="disabled"
+  (blur)="emitBlur()"
+  [ngModel]="getHexColor(value)"
+  (ngModelChange)="value = $event; onChange($event)"
+  [ngModelOptions]="{ updateOn: 'blur' }"
+/>

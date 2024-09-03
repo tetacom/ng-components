@@ -1,10 +1,17 @@
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit} from '@angular/core';
-import {BasePoint} from '../../../model/base-point';
-import {SeriesBaseComponent} from '../../../base/series-base.component';
-import {map, Observable} from 'rxjs';
-import {ChartService} from '../../../service/chart.service';
-import {ScaleService} from '../../../service/scale.service';
-import {ZoomService} from '../../../service/zoom.service';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+} from '@angular/core';
+import { BasePoint } from '../../../model/base-point';
+import { SeriesBaseComponent } from '../../../base/series-base.component';
+import { map, Observable } from 'rxjs';
+import { ChartService } from '../../../service/chart.service';
+import { ScaleService } from '../../../service/scale.service';
+import { ZoomService } from '../../../service/zoom.service';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
@@ -12,14 +19,13 @@ import { AsyncPipe } from '@angular/common';
   templateUrl: './scatter-series.component.html',
   styleUrls: ['./scatter-series.component.scss'],
   standalone: true,
-  imports: [
-    AsyncPipe
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [AsyncPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScatterSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>
-  implements OnInit, AfterViewInit {
+  implements OnInit, AfterViewInit
+{
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
   display: Observable<number>;
   path: Observable<string>;
@@ -37,12 +43,11 @@ export class ScatterSeriesComponent<T extends BasePoint>
   }
 
   override ngOnInit(): void {
-    this.x = this.scaleService.scales.pipe(map(_ => _.x.get(this.series.xAxisIndex)?.scale));
-    this.y = this.scaleService.scales.pipe(map(_ => _.y.get(this.series.yAxisIndex)?.scale));
+    this.x = this.scaleService.scales.pipe(map((_) => _.x.get(this.series.xAxisIndex)?.scale));
+    this.y = this.scaleService.scales.pipe(map((_) => _.y.get(this.series.yAxisIndex)?.scale));
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   mouseenter(point: BasePoint) {
     this.svc.setTooltip({

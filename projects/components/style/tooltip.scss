@@ -1,6 +1,6 @@
-@import "util/shadow-util.scss";
-@import "util/color-util.scss";
-@import "presets/view-types.scss";
+@import 'util/shadow-util.scss';
+@import 'util/color-util.scss';
+@import 'presets/view-types.scss';
 
 .tooltip {
   @include shadow(1);
@@ -12,7 +12,8 @@
   color: var(--color-text-50);
   @include getView('base');
 
-  &::before, &::after {
+  &::before,
+  &::after {
     position: absolute;
     display: block;
     content: '';

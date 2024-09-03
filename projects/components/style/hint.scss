@@ -1,6 +1,6 @@
-@import "util/shadow-util.scss";
-@import "util/color-util.scss";
-@import "presets/view-types.scss";
+@import 'util/shadow-util.scss';
+@import 'util/color-util.scss';
+@import 'presets/view-types.scss';
 .hint {
   box-shadow: var(--shadow-1);
   padding: 8px;

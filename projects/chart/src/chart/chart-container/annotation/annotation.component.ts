@@ -1,15 +1,18 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
-  ElementRef, HostListener,
-  Input, OnDestroy,
+  ElementRef,
+  HostListener,
+  Input,
+  OnDestroy,
   ViewChild,
 } from '@angular/core';
-import {Annotation} from '../../model/annotation';
+import { Annotation } from '../../model/annotation';
 import * as d3 from 'd3';
-import {lastValueFrom, map, Observable, take} from 'rxjs';
-import {ScaleService} from '../../service/scale.service';
-import {ChartService} from '../../service/chart.service';
+import { lastValueFrom, map, Observable, take } from 'rxjs';
+import { ScaleService } from '../../service/scale.service';
+import { ChartService } from '../../service/chart.service';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 
 @Component({
@@ -17,11 +20,8 @@ import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
   templateUrl: './annotation.component.html',
   styleUrls: ['./annotation.component.scss'],
   standalone: true,
-  imports: [
-    NgTemplateOutlet,
-    AsyncPipe
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [NgTemplateOutlet, AsyncPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnnotationComponent implements OnDestroy {
   @Input() visibleRect: DOMRect;
@@ -34,7 +34,7 @@ export class AnnotationComponent implements OnDestroy {
     return this._annotation;
   }
 
-  @ViewChild('annotationNode', {static: false})
+  @ViewChild('annotationNode', { static: false })
   set node(node: ElementRef) {
     this._node = node;
     this.init();
@@ -52,10 +52,7 @@ export class AnnotationComponent implements OnDestroy {
   private _annotation: Annotation;
   private _node: ElementRef;
 
-  constructor(
-    private scaleService: ScaleService,
-    private cdr: ChangeDetectorRef,
-    private chartService: ChartService) {
+  constructor(private scaleService: ScaleService, private cdr: ChangeDetectorRef, private chartService: ChartService) {
     this.x = this.scaleService.scales.pipe(map((_) => _.x.get(this.annotation.xAxisIndex ?? 0)?.scale));
     this.y = this.scaleService.scales.pipe(map((_) => _.y.get(this.annotation.yAxisIndex ?? 0)?.scale));
     this.drag = d3.drag();
@@ -64,24 +61,22 @@ export class AnnotationComponent implements OnDestroy {
   @HostListener('click', ['$event']) click(event: MouseEvent) {
     this.chartService.emitAnnotation({
       event,
-      target: this.annotation
+      target: this.annotation,
     });
   }
 
   @HostListener('contextmenu', ['$event']) contextMenu(event: MouseEvent) {
     this.chartService.emitAnnotation({
       event,
-      target: this.annotation
+      target: this.annotation,
     });
   }
-
 
   ngOnDestroy() {
     this.drag.on('drag end', null);
   }
 
   private init() {
-
     d3.select(this.node.nativeElement).datum(this.annotation);
 
     const offsetPx = 10;
@@ -89,7 +84,6 @@ export class AnnotationComponent implements OnDestroy {
 
     if (this.annotation.draggable) {
       this.drag.on('drag end', async (event, d: Annotation) => {
-
         const x = await lastValueFrom(this.x.pipe(take(1)));
         const y = await lastValueFrom(this.y.pipe(take(1)));
 
@@ -97,7 +91,7 @@ export class AnnotationComponent implements OnDestroy {
         d.dy += event.dy;
 
         // x constraint
-        if ((d.dx + x(d.point.x) - offsetPx) <= 0) {
+        if (d.dx + x(d.point.x) - offsetPx <= 0) {
           d.dx = -x(d.point.x) + offsetPx;
         }
 
@@ -106,18 +100,18 @@ export class AnnotationComponent implements OnDestroy {
         }
 
         // y constraint
-        if ((d.dy + y(d.point.y) - offsetPx) <= 0) {
+        if (d.dy + y(d.point.y) - offsetPx <= 0) {
           d.dy = -y(d.point.y) + offsetPx;
         }
 
         if (d.dy + y(d.point.y) + nodeRect.height - offsetPx >= this.visibleRect.height) {
-          d.dy = Math.abs(y(d.point.y) - this.visibleRect.height) - nodeRect.height +offsetPx;
+          d.dy = Math.abs(y(d.point.y) - this.visibleRect.height) - nodeRect.height + offsetPx;
         }
 
         this.cdr.detectChanges();
         this.chartService.emitMoveAnnotation({
           event,
-          target: d
+          target: d,
         });
       });
 

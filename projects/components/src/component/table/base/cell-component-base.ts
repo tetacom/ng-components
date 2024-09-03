@@ -1,17 +1,5 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  HostBinding,
-  inject,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  ControlContainer,
-  FormControl,
-  FormGroup,
-  NgForm,
-} from '@angular/forms';
+import { ChangeDetectorRef, Component, HostBinding, inject, OnDestroy, OnInit } from '@angular/core';
+import { ControlContainer, FormControl, FormGroup, NgForm } from '@angular/forms';
 import { takeWhile } from 'rxjs/operators';
 
 import { IDictionary } from '../../../common/contract/i-dictionary';
@@ -100,10 +88,7 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
 
   protected _alive = true;
 
-  protected constructor(
-    protected svc: TableService<T>,
-    protected cdr: ChangeDetectorRef
-  ) {}
+  protected constructor(protected svc: TableService<T>, protected cdr: ChangeDetectorRef) {}
 
   ngOnDestroy(): void {
     this._alive = false;
@@ -112,64 +97,46 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.init();
 
-    this.formGroup?.controls[this.column.name]?.valueChanges
-      .pipe(takeWhile(() => this._alive))
-      .subscribe(value => {
-        this.formGroup.updateValueAndValidity();
-        this.row.valid = this.formGroup?.valid;
-        this.row.data[this.column.name] = this.control.value;
-        this.svc.changeValue({
-          column: this.column.name,
-          row: this.index,
-        });
+    this.formGroup?.controls[this.column.name]?.valueChanges.pipe(takeWhile(() => this._alive)).subscribe((value) => {
+      this.formGroup.updateValueAndValidity();
+      this.row.valid = this.formGroup?.valid;
+      this.row.data[this.column.name] = this.control.value;
+      this.svc.changeValue({
+        column: this.column.name,
+        row: this.index,
       });
+    });
   }
 
   private init(): void {
-    this.svc.editRowStart
-      .pipe(takeWhile(_ => this._alive))
-      .subscribe((cell: ICellCoordinates) => {
-        if (this.index === cell?.row && !this._edit) {
-          this.start(cell, 'row');
-        }
-        if (this.index !== cell?.row && this._edit) {
-          this.stop();
-        }
-      });
+    this.svc.editRowStart.pipe(takeWhile((_) => this._alive)).subscribe((cell: ICellCoordinates) => {
+      if (this.index === cell?.row && !this._edit) {
+        this.start(cell, 'row');
+      }
+      if (this.index !== cell?.row && this._edit) {
+        this.stop();
+      }
+    });
 
-    this.svc.editCellStart
-      .pipe(takeWhile(_ => this._alive))
-      .subscribe((cell: ICellCoordinates) => {
-        if (
-          this.index === cell?.row &&
-          this.column.name === cell?.column &&
-          !this._edit
-        ) {
-          this.start(cell, 'cell');
-        }
-        if (
-          (this.index !== cell?.row || this.column.name !== cell?.column) &&
-          this._edit
-        ) {
-          this.stop();
-        }
-      });
+    this.svc.editCellStart.pipe(takeWhile((_) => this._alive)).subscribe((cell: ICellCoordinates) => {
+      if (this.index === cell?.row && this.column.name === cell?.column && !this._edit) {
+        this.start(cell, 'cell');
+      }
+      if ((this.index !== cell?.row || this.column.name !== cell?.column) && this._edit) {
+        this.stop();
+      }
+    });
 
-    this.svc.valueSet
-      .pipe(takeWhile(_ => this._alive))
-      .subscribe((cellValue: ICellValue) => {
-        if (
-          this.index === cellValue.row &&
-          this.column.name === cellValue.column
-        ) {
-          this.row.data[this.column.name] = cellValue.value;
-          this.setupControl();
-          this.formGroup.updateValueAndValidity();
-          this.row.valid = this.formGroup.valid;
-          this.cdr.detectChanges();
-          this.cdr.markForCheck();
-        }
-      });
+    this.svc.valueSet.pipe(takeWhile((_) => this._alive)).subscribe((cellValue: ICellValue) => {
+      if (this.index === cellValue.row && this.column.name === cellValue.column) {
+        this.row.data[this.column.name] = cellValue.value;
+        this.setupControl();
+        this.formGroup.updateValueAndValidity();
+        this.row.valid = this.formGroup.valid;
+        this.cdr.detectChanges();
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   abstract startEdit(initiator: ICellCoordinates, type: 'cell' | 'row'): void;
@@ -181,10 +148,7 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       return;
     }
     if (!this.control) {
-      this.formGroup.registerControl(
-        this.column.name,
-        FormsUtil.initControlFromColumn(this.column, this.row?.data)
-      );
+      this.formGroup.registerControl(this.column.name, FormsUtil.initControlFromColumn(this.column, this.row?.data));
     } else {
       this.control.patchValue(this.row?.data[this.column.name], {
         emitEvent: false,

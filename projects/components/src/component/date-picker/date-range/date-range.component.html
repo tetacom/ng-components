@@ -1,41 +1,62 @@
 @if ({selectedDate:selectedDate|async};as data) {
-  <teta-dropdown [appendToBody]="appendToBody" [backdrop]="backdrop"
-    class='row row_auto'
-    [(open)]="open" (openChange)="openChange($event)" [viewType]="viewType"
-    [disabled]="disabled" [verticalAlign]="verticalAlign" [align]="align"
-    [autoCloseIgnore]="['esc', 'inside','enter']">
-    <div tetaDropdownHead
-      [class]="'datepicker-head font-body-3 gap-8 datepicker_'+viewType"
-      [ngClass]="{'datepicker-head_invalid':invalid,'datepicker-head_disabled':disabled}">
-      <teta-input class="row row_auto flex">
-        <div [class]="'row_auto row datepicker_'+viewType">
-          <div class="row row_auto position-relative font-body-3 align-center">
-            <input [ngClass]="{'color-text-90':!disabled}" [disabled]="disabled" #input style="z-index: 1"
-              class="border-0 color-text-90" (keydown)="checkEnter($event)"
-              [(ngModel)]="inputText" (ngModelChange)="changeInput($event)"
-              [maskito]="maskitoOptions">
-              @if (data.selectedDate||allowNull) {
-                <div (click)="input.focus()" class="position-absolute color-text-10"
-                style="cursor: text;user-select: none">{{placeholder}}</div>
-              }
-            </div>
-            <teta-icon [name]="'calendar'" [palette]="'text'"></teta-icon>
+<teta-dropdown
+  [appendToBody]="appendToBody"
+  [backdrop]="backdrop"
+  class="row row_auto"
+  [(open)]="open"
+  (openChange)="openChange($event)"
+  [viewType]="viewType"
+  [disabled]="disabled"
+  [verticalAlign]="verticalAlign"
+  [align]="align"
+  [autoCloseIgnore]="['esc', 'inside', 'enter']"
+>
+  <div
+    tetaDropdownHead
+    [class]="'datepicker-head font-body-3 gap-8 datepicker_' + viewType"
+    [ngClass]="{ 'datepicker-head_invalid': invalid, 'datepicker-head_disabled': disabled }"
+  >
+    <teta-input class="row row_auto flex">
+      <div [class]="'row_auto row datepicker_' + viewType">
+        <div class="row row_auto position-relative font-body-3 align-center">
+          <input
+            [ngClass]="{ 'color-text-90': !disabled }"
+            [disabled]="disabled"
+            #input
+            style="z-index: 1"
+            class="border-0 color-text-90"
+            (keydown)="checkEnter($event)"
+            [(ngModel)]="inputText"
+            (ngModelChange)="changeInput($event)"
+            [maskito]="maskitoOptions"
+          />
+          @if (data.selectedDate||allowNull) {
+          <div (click)="input.focus()" class="position-absolute color-text-10" style="cursor: text; user-select: none">
+            {{ placeholder }}
           </div>
-        </teta-input>
+          }
+        </div>
+        <teta-icon [name]="'calendar'" [palette]="'text'"></teta-icon>
       </div>
-      <div tetaDropdownContent class="scrollable" (click)="$event.preventDefault()">
-        @if (open) {
-          <div class="row">
-            <teta-range-calendar [isDateNull]="date===null||(date?.from===null&&date?.to===null)" [open]="open"
-              [max]="maxDate"
-              [allowNull]="allowNull"
-              [min]="minDate"
-              (setDate)="changeSelectedDate($event,data.selectedDate)"
-              [selectedDate]="data.selectedDate"
-              [date]="date"
-            [viewType]="viewType" [locale]="locale|async"></teta-range-calendar>
-          </div>
-        }
-      </div>
-    </teta-dropdown>
-  }
+    </teta-input>
+  </div>
+  <div tetaDropdownContent class="scrollable" (click)="$event.preventDefault()">
+    @if (open) {
+    <div class="row">
+      <teta-range-calendar
+        [isDateNull]="date === null || (date?.from === null && date?.to === null)"
+        [open]="open"
+        [max]="maxDate"
+        [allowNull]="allowNull"
+        [min]="minDate"
+        (setDate)="changeSelectedDate($event, data.selectedDate)"
+        [selectedDate]="data.selectedDate"
+        [date]="date"
+        [viewType]="viewType"
+        [locale]="locale | async"
+      ></teta-range-calendar>
+    </div>
+    }
+  </div>
+</teta-dropdown>
+}

@@ -6,5 +6,5 @@ export * from './tooltip-tracking';
 export * from './zoom-type';
 export * from './scale-type';
 export * from './fill-type';
-export * from './zoom-behavior-type'
-export * from './clip-points-direction'
+export * from './zoom-behavior-type';
+export * from './clip-points-direction';

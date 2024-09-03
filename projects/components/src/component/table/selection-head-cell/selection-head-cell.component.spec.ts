@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {SelectionHeadCellComponent} from './selection-head-cell.component';
+import { SelectionHeadCellComponent } from './selection-head-cell.component';
 
 describe('SelectionHeadCellComponent', () => {
   let component: SelectionHeadCellComponent<any>;
@@ -8,9 +8,8 @@ describe('SelectionHeadCellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [SelectionHeadCellComponent]
-})
-      .compileComponents();
+      imports: [SelectionHeadCellComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

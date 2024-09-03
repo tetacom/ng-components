@@ -8,9 +8,8 @@ describe('PlotbandComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlotBandComponent ]
-    })
-    .compileComponents();
+      declarations: [PlotBandComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -8,7 +8,7 @@ describe('DComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CanvasComponent]
+      imports: [CanvasComponent],
     });
     fixture = TestBed.createComponent(CanvasComponent);
     component = fixture.componentInstance;

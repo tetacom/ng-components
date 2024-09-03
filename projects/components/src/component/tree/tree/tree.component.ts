@@ -2,40 +2,43 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild, ElementRef,
+  ContentChild,
+  ElementRef,
   EventEmitter,
   HostBinding,
-  Input, NgZone,
+  Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges, ViewChild,
+  SimpleChanges,
+  ViewChild,
 } from '@angular/core';
-import {ITreeData} from '../../../common/contract/i-tree-data';
-import {TreeService} from '../tree.service';
-import {TetaTemplateDirective} from '../../../directive/teta-template/teta-template.directive';
-import {filter, takeWhile} from 'rxjs/operators';
-import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from "@angular/cdk/scrolling";
+import { ITreeData } from '../../../common/contract/i-tree-data';
+import { TreeService } from '../tree.service';
+import { TetaTemplateDirective } from '../../../directive/teta-template/teta-template.directive';
+import { filter, takeWhile } from 'rxjs/operators';
+import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
 import { TreeItemComponent } from '../tree-item/tree-item.component';
 import { ScrollableDirective } from '../../../directive/scrollable/scrollable.directive';
 import { ScrollableComponent } from '../../../directive/scrollable/scrollable/scrollable.component';
 
 @Component({
-    selector: 'teta-tree',
-    templateUrl: './tree.component.html',
-    styleUrls: ['./tree.component.scss'],
-    providers: [TreeService],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        ScrollableComponent,
-        CdkVirtualScrollViewport,
-        CdkFixedSizeVirtualScroll,
-        ScrollableDirective,
-        CdkVirtualForOf,
-        TreeItemComponent,
-    ],
+  selector: 'teta-tree',
+  templateUrl: './tree.component.html',
+  styleUrls: ['./tree.component.scss'],
+  providers: [TreeService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    ScrollableComponent,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    ScrollableDirective,
+    CdkVirtualForOf,
+    TreeItemComponent,
+  ],
 })
 export class TreeComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
@@ -58,13 +61,12 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
     this._service.setOpenItems(items);
   }
 
-  @Output() service: EventEmitter<TreeService> =
-    new EventEmitter<TreeService>();
+  @Output() service: EventEmitter<TreeService> = new EventEmitter<TreeService>();
   @Output() openItemsChange = new EventEmitter();
 
-  @ViewChild(CdkVirtualScrollViewport, {static: false}) viewport: CdkVirtualScrollViewport;
+  @ViewChild(CdkVirtualScrollViewport, { static: false }) viewport: CdkVirtualScrollViewport;
 
-  @ContentChild(TetaTemplateDirective, {static: true})
+  @ContentChild(TetaTemplateDirective, { static: true })
   template: TetaTemplateDirective;
   childPadding: boolean;
   displayData: ITreeData[];
@@ -74,10 +76,12 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
   private _alive = true;
   private _obs: ResizeObserver;
 
-  constructor(private _service: TreeService,
-              private _elementRef: ElementRef,
-              private _cdr: ChangeDetectorRef,
-              private _zone: NgZone) {
+  constructor(
+    private _service: TreeService,
+    private _elementRef: ElementRef,
+    private _cdr: ChangeDetectorRef,
+    private _zone: NgZone
+  ) {
     this._service.openItems
       .pipe(
         takeWhile((_) => this._alive),
@@ -115,20 +119,17 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this._alive = false;
-    this.removeResizeObserver()
+    this.removeResizeObserver();
   }
 
   ngAfterViewInit() {
-    this._service.scrollToIndex.pipe(
-      takeWhile(() => this._alive)
-    ).subscribe((index) => {
-
+    this._service.scrollToIndex.pipe(takeWhile(() => this._alive)).subscribe((index) => {
       this._zone.runOutsideAngular(() => {
         setTimeout(() => {
-          this.viewport?.scrollToIndex(index, 'smooth')
-        })
-      })
-    })
+          this.viewport?.scrollToIndex(index, 'smooth');
+        });
+      });
+    });
   }
 
   trackRow = (index: number, item: ITreeData): any => {
@@ -138,11 +139,8 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
     return index;
   };
 
-
   private hasChildren(data: ITreeData[]): boolean {
-    return data?.some(
-      (_) => _[this.childNodeName]?.length > 0
-    );
+    return data?.some((_) => _[this.childNodeName]?.length > 0);
   }
 
   private getDisplayData(data: ITreeData[], level: number) {
@@ -150,8 +148,10 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
     data?.forEach((item: ITreeData) => {
       item['level'] = level;
       result.push(item);
-      if (item[this.childNodeName]?.length > 0
-        && this._openItems?.find((openItem) => this.compareItems(openItem) === this.compareItems(item))) {
+      if (
+        item[this.childNodeName]?.length > 0 &&
+        this._openItems?.find((openItem) => this.compareItems(openItem) === this.compareItems(item))
+      ) {
         result.push(...this.getDisplayData(item[this.childNodeName], level + 1));
       }
     });

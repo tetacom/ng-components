@@ -1,77 +1,117 @@
-@if ({currentMonth:currentMonth|async,currentYear:currentYear|async,selectedPicker:selectedPicker|async,minMax:minMax|async}; as data) {
-  <div
-    class="datepicker-content overflow-y-auto"
-    >
-    @if (data.selectedPicker==='day') {
-      <div class="row " (wheel)="scrollMonth($event,data.currentMonth,data.currentYear)">
-        <div class="padding-h-3 padding-v-2">
-          <div class="row align-center justify-content-between">
-            <teta-button
-              [ngClass]="{'datepicker-arrow_hidden':!isLastDaySuitable(data.currentMonth-1,data.currentYear,min)}"
-              [class]="'change-month-button datepicker_'+viewType" [square]="true"
-              (click)="changeMonth(data.currentMonth-1,data.currentYear)"
-              palette="text"
-              view="ghost">
-              <teta-icon name="arrowLeftKey" [palette]="'text'"></teta-icon>
-            </teta-button>
-            <div class="row gap-4 font-button-2 align-center padding-left-1">
-              <p> {{getMothName(data.currentMonth)}}</p>
-              <button [class]="'datepicker_'+viewType" teta-button view="ghost" palette="text"
-              (click)="selectPicker('year')">{{data.currentYear}}</button>
-            </div>
-            <teta-button [square]="true" [class]="'change-month-button datepicker-arrow_hidden datepicker_'+viewType"
-              palette="text"
-              view="ghost">
-              <teta-icon name="arrowRightKey" [palette]="'text'"></teta-icon>
-            </teta-button>
-          </div>
-          <div>
-            <teta-day-picker [(hoveredDate)]="hoveredDate" [range]="getFromTo()" [viewType]="viewType"
-              (selectDate)="selectDate($event)" [locale]="locale"
-            [calendar]="calendar.currentMonth"></teta-day-picker>
-          </div>
+@if
+({currentMonth:currentMonth|async,currentYear:currentYear|async,selectedPicker:selectedPicker|async,minMax:minMax|async};
+as data) {
+<div class="datepicker-content overflow-y-auto">
+  @if (data.selectedPicker==='day') {
+  <div class="row" (wheel)="scrollMonth($event, data.currentMonth, data.currentYear)">
+    <div class="padding-h-3 padding-v-2">
+      <div class="row align-center justify-content-between">
+        <teta-button
+          [ngClass]="{ 'datepicker-arrow_hidden': !isLastDaySuitable(data.currentMonth - 1, data.currentYear, min) }"
+          [class]="'change-month-button datepicker_' + viewType"
+          [square]="true"
+          (click)="changeMonth(data.currentMonth - 1, data.currentYear)"
+          palette="text"
+          view="ghost"
+        >
+          <teta-icon name="arrowLeftKey" [palette]="'text'"></teta-icon>
+        </teta-button>
+        <div class="row gap-4 font-button-2 align-center padding-left-1">
+          <p>{{ getMothName(data.currentMonth) }}</p>
+          <button
+            [class]="'datepicker_' + viewType"
+            teta-button
+            view="ghost"
+            palette="text"
+            (click)="selectPicker('year')"
+          >
+            {{ data.currentYear }}
+          </button>
         </div>
-        @if (getAvailableMonthYear(data.currentMonth+1,data.currentYear); as availableMonthYear) {
-          <div class="padding-h-3 padding-v-2"
-            >
-            <div class="row align-center justify-content-between">
-              <teta-button [square]="true" [class]="'change-month-button datepicker-arrow_hidden datepicker_'+viewType"
-                palette="text"
-                view="ghost">
-                <teta-icon name="arrowLeftKey" [palette]="'text'"></teta-icon>
-              </teta-button>
-              <div class="row gap-4 font-button-2 align-center padding-left-1">
-                <p>{{getMothName(availableMonthYear.availableMonth)}}</p>
-                <button [class]="'datepicker_'+viewType" teta-button view="ghost" palette="text"
-                (click)="selectPicker('year')">{{availableMonthYear.availableYear}}</button>
-              </div>
-              <teta-button [square]="true"
-                [ngClass]="{'datepicker-arrow_hidden': !isFirstDaySuitable(data.currentMonth+2,data.currentYear,max)}"
-                [class]="'change-month-button datepicker_'+viewType"
-                (click)="changeMonth(data.currentMonth+1,data.currentYear)"
-                palette="text"
-                view="ghost">
-                <teta-icon name="arrowRightKey" [palette]="'text'"></teta-icon>
-              </teta-button>
-            </div>
-            <div>
-              <teta-day-picker [(hoveredDate)]="hoveredDate" [range]="getFromTo()" [viewType]="viewType"
-                (selectDate)="selectDate($event)" [locale]="locale"
-              [calendar]="calendar.nextMonth"></teta-day-picker>
-            </div>
-          </div>
-        }
+        <teta-button
+          [square]="true"
+          [class]="'change-month-button datepicker-arrow_hidden datepicker_' + viewType"
+          palette="text"
+          view="ghost"
+        >
+          <teta-icon name="arrowRightKey" [palette]="'text'"></teta-icon>
+        </teta-button>
       </div>
-    }
-    @if (data.selectedPicker==='month') {
-      <teta-month-picker [localeMoths]="locale.months" [currentYear]="data.currentYear" (changeYear)="setYear($event)"
-        [selectedMonth]="data.currentMonth" [viewType]="viewType"
-      (selectMonth)="selectMonth($event)"></teta-month-picker>
-    }
-    @if (data.selectedPicker==='year') {
-      <teta-year-picker [minMax]="data.minMax" [locale]="locale" [viewType]="viewType" (selectYear)="selectYear($event)"
-      [selectedYear]="data.currentYear"></teta-year-picker>
+      <div>
+        <teta-day-picker
+          [(hoveredDate)]="hoveredDate"
+          [range]="getFromTo()"
+          [viewType]="viewType"
+          (selectDate)="selectDate($event)"
+          [locale]="locale"
+          [calendar]="calendar.currentMonth"
+        ></teta-day-picker>
+      </div>
+    </div>
+    @if (getAvailableMonthYear(data.currentMonth+1,data.currentYear); as availableMonthYear) {
+    <div class="padding-h-3 padding-v-2">
+      <div class="row align-center justify-content-between">
+        <teta-button
+          [square]="true"
+          [class]="'change-month-button datepicker-arrow_hidden datepicker_' + viewType"
+          palette="text"
+          view="ghost"
+        >
+          <teta-icon name="arrowLeftKey" [palette]="'text'"></teta-icon>
+        </teta-button>
+        <div class="row gap-4 font-button-2 align-center padding-left-1">
+          <p>{{ getMothName(availableMonthYear.availableMonth) }}</p>
+          <button
+            [class]="'datepicker_' + viewType"
+            teta-button
+            view="ghost"
+            palette="text"
+            (click)="selectPicker('year')"
+          >
+            {{ availableMonthYear.availableYear }}
+          </button>
+        </div>
+        <teta-button
+          [square]="true"
+          [ngClass]="{ 'datepicker-arrow_hidden': !isFirstDaySuitable(data.currentMonth + 2, data.currentYear, max) }"
+          [class]="'change-month-button datepicker_' + viewType"
+          (click)="changeMonth(data.currentMonth + 1, data.currentYear)"
+          palette="text"
+          view="ghost"
+        >
+          <teta-icon name="arrowRightKey" [palette]="'text'"></teta-icon>
+        </teta-button>
+      </div>
+      <div>
+        <teta-day-picker
+          [(hoveredDate)]="hoveredDate"
+          [range]="getFromTo()"
+          [viewType]="viewType"
+          (selectDate)="selectDate($event)"
+          [locale]="locale"
+          [calendar]="calendar.nextMonth"
+        ></teta-day-picker>
+      </div>
+    </div>
     }
   </div>
+  } @if (data.selectedPicker==='month') {
+  <teta-month-picker
+    [localeMoths]="locale.months"
+    [currentYear]="data.currentYear"
+    (changeYear)="setYear($event)"
+    [selectedMonth]="data.currentMonth"
+    [viewType]="viewType"
+    (selectMonth)="selectMonth($event)"
+  ></teta-month-picker>
+  } @if (data.selectedPicker==='year') {
+  <teta-year-picker
+    [minMax]="data.minMax"
+    [locale]="locale"
+    [viewType]="viewType"
+    (selectYear)="selectYear($event)"
+    [selectedYear]="data.currentYear"
+  ></teta-year-picker>
+  }
+</div>
 }
-

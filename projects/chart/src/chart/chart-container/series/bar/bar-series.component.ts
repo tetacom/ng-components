@@ -7,15 +7,15 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import {SeriesBaseComponent} from '../../../base/series-base.component';
-import {BasePoint} from '../../../model/base-point';
-import {ChartService} from '../../../service/chart.service';
-import {ScaleService} from '../../../service/scale.service';
-import {ZoomService} from '../../../service/zoom.service';
-import {map, Observable} from 'rxjs';
-import {SeriesType} from '../../../model/enum/series-type';
+import { SeriesBaseComponent } from '../../../base/series-base.component';
+import { BasePoint } from '../../../model/base-point';
+import { ChartService } from '../../../service/chart.service';
+import { ScaleService } from '../../../service/scale.service';
+import { ZoomService } from '../../../service/zoom.service';
+import { map, Observable } from 'rxjs';
+import { SeriesType } from '../../../model/enum/series-type';
 import * as d3 from 'd3';
-import {AsyncPipe} from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'svg:svg[teta-bar-series]',
@@ -23,14 +23,9 @@ import {AsyncPipe} from '@angular/common';
   styleUrls: ['./bar-series.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    AsyncPipe,
-  ]
+  imports: [AsyncPipe],
 })
-export class BarSeriesComponent<T extends BasePoint>
-  extends SeriesBaseComponent<T>
-  implements OnInit, OnChanges {
-
+export class BarSeriesComponent<T extends BasePoint> extends SeriesBaseComponent<T> implements OnInit, OnChanges {
   x: Observable<any>;
   x1: Observable<any>;
   y: Observable<any>;
@@ -52,10 +47,7 @@ export class BarSeriesComponent<T extends BasePoint>
   override ngOnInit(): void {
     this.barSeriesCount = this.svc.config.pipe(
       map((_) => {
-        const count = _.series.filter(
-          (_) =>
-            _.type === SeriesType.bar && _.xAxisIndex === this.series.xAxisIndex
-        );
+        const count = _.series.filter((_) => _.type === SeriesType.bar && _.xAxisIndex === this.series.xAxisIndex);
 
         return count.length;
       })
@@ -67,21 +59,13 @@ export class BarSeriesComponent<T extends BasePoint>
         const range = x.range();
         const domain = this.series.data.map((_) => _.x);
 
-        return d3
-          .scaleBand<number>()
-          .range([0, range[1]])
-          .domain(domain)
-          .padding(0.1);
+        return d3.scaleBand<number>().range([0, range[1]]).domain(domain).padding(0.1);
       })
     );
 
-    this.x = this.scaleService.scales.pipe(
-      map((_) => _.x.get(this.series.xAxisIndex)?.scale)
-    );
+    this.x = this.scaleService.scales.pipe(map((_) => _.x.get(this.series.xAxisIndex)?.scale));
 
-    this.y = this.scaleService.scales.pipe(
-      map((_) => _.y.get(this.series.yAxisIndex)?.scale)
-    );
+    this.y = this.scaleService.scales.pipe(map((_) => _.y.get(this.series.yAxisIndex)?.scale));
   }
 
   mouseenter(point: BasePoint) {
@@ -98,10 +82,9 @@ export class BarSeriesComponent<T extends BasePoint>
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-  }
+  ngOnChanges(changes: SimpleChanges) {}
 
   isNumber(value: any): value is number {
-    return typeof value === 'number'
+    return typeof value === 'number';
   }
 }

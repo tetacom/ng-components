@@ -1,10 +1,7 @@
 import { Type } from '@angular/core';
 import { ValidatorFn } from '@angular/forms';
 
-import {
-  FilterItem,
-  IFilterItemOptions,
-} from '../../filter/contarct/filter-item';
+import { FilterItem, IFilterItemOptions } from '../../filter/contarct/filter-item';
 import { FilterType } from '../../filter/enum/filter-type.enum';
 import { ListFilterType } from '../../filter/enum/list-filter-type.enum';
 import { StringFilterType } from '../../filter/enum/string-filter-type.enum';
@@ -160,7 +157,7 @@ export class TableColumn extends FilterItem {
     this.minValue = options?.minValue;
     this.maxLength = options?.maxLength;
     this.required = options?.required;
-    this.columns = options?.columns?.map(x => new TableColumn(x)) ?? [];
+    this.columns = options?.columns?.map((x) => new TableColumn(x)) ?? [];
     this.validators = options?.validators;
   }
 }

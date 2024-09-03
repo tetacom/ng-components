@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {StringCellComponent} from './string-cell.component';
+import { StringCellComponent } from './string-cell.component';
 
 describe('StringCellComponent', () => {
   let component: StringCellComponent<any>;
@@ -8,9 +8,8 @@ describe('StringCellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [StringCellComponent]
-})
-      .compileComponents();
+      imports: [StringCellComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

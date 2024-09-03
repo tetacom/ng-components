@@ -1,16 +1,9 @@
-import {
-  Directive,
-  ElementRef,
-  EventEmitter,
-  Input, NgZone,
-  OnDestroy,
-  Output,
-} from '@angular/core';
-import {DomUtil} from '../../common/util/dom-util';
+import { Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output } from '@angular/core';
+import { DomUtil } from '../../common/util/dom-util';
 
 @Directive({
-    selector: '[tetaClickOutside]',
-    standalone: true,
+  selector: '[tetaClickOutside]',
+  standalone: true,
 })
 export class ClickOutsideDirective implements OnDestroy {
   @Output() clickOutside = new EventEmitter<MouseEvent>();
@@ -36,8 +29,7 @@ export class ClickOutsideDirective implements OnDestroy {
     return this._handleEvents;
   }
 
-  constructor(private _elementRef: ElementRef, private _ngZone: NgZone) {
-  }
+  constructor(private _elementRef: ElementRef, private _ngZone: NgZone) {}
 
   ngOnDestroy(): void {
     this.removeListener();
@@ -59,10 +51,7 @@ export class ClickOutsideDirective implements OnDestroy {
     if (!this._handleEvents) {
       return;
     }
-    const clickedInside = DomUtil.clickedInside(
-      this._elementRef.nativeElement,
-      click
-    );
+    const clickedInside = DomUtil.clickedInside(this._elementRef.nativeElement, click);
     if (!clickedInside) {
       this.clickOutside.emit(click);
     }

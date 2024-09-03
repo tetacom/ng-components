@@ -23,13 +23,10 @@ import { PositionUtil } from '../../common/util/position-util';
 import { DynamicContentBaseDirective } from '../dynamic-content-base.directive';
 
 @Directive({
-    selector: '[tetaHint]',
-    standalone: true,
+  selector: '[tetaHint]',
+  standalone: true,
 })
-export class HintDirective
-  extends DynamicContentBaseDirective
-  implements OnDestroy
-{
+export class HintDirective extends DynamicContentBaseDirective implements OnDestroy {
   /**
    * Строка, шаблон или компонент для создания контекстного меню
    */
@@ -79,11 +76,7 @@ export class HintDirective
 
   @HostListener('click', ['$event'])
   click(event: MouseEvent): void {
-    if (
-      this._open &&
-      this._componentRef &&
-      DomUtil.clickedInside(this._componentRef.location.nativeElement, event)
-    ) {
+    if (this._open && this._componentRef && DomUtil.clickedInside(this._componentRef.location.nativeElement, event)) {
       event.stopPropagation();
     }
   }
@@ -91,8 +84,7 @@ export class HintDirective
   protected setPosition() {
     if (this._componentRef && this._open) {
       if (!this._componentRect) {
-        this._componentRect =
-          this._componentRef.location.nativeElement.getBoundingClientRect();
+        this._componentRect = this._componentRef.location.nativeElement.getBoundingClientRect();
       }
       const position = PositionUtil.getPosition(
         this._elementRef.nativeElement.getBoundingClientRect(),
@@ -102,27 +94,16 @@ export class HintDirective
         0,
         4
       );
-      PositionUtil.setElementPosition(
-        this._componentRef.location.nativeElement,
-        position
-      );
+      PositionUtil.setElementPosition(this._componentRef.location.nativeElement, position);
     }
   }
 
   private createHint(): void {
-    if (
-      !this._dynamicContent ||
-      (this.overflownOnly &&
-        !DomUtil.isOverflown(this._elementRef.nativeElement))
-    ) {
+    if (!this._dynamicContent || (this.overflownOnly && !DomUtil.isOverflown(this._elementRef.nativeElement))) {
       return;
     }
     this._componentRef = this.createContentRef();
-    this._componentRef.instance.className = [
-      ...ArrayUtil.asArray(this.className),
-      'hint ',
-      'hint_' + this.viewType,
-    ];
+    this._componentRef.instance.className = [...ArrayUtil.asArray(this.className), 'hint ', 'hint_' + this.viewType];
   }
 
   override ngOnDestroy() {

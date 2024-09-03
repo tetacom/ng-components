@@ -8,9 +8,8 @@ describe('PropertyGridComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [PropertyGridComponent]
-})
-    .compileComponents();
+      imports: [PropertyGridComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

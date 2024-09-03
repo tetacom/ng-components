@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TableHeadGroupComponent} from './table-head-group.component';
+import { TableHeadGroupComponent } from './table-head-group.component';
 
 describe('TableHeadGroupComponent', () => {
   let component: TableHeadGroupComponent<any>;
@@ -8,9 +8,8 @@ describe('TableHeadGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [TableHeadGroupComponent]
-})
-      .compileComponents();
+      imports: [TableHeadGroupComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

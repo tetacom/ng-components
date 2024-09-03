@@ -8,9 +8,8 @@ describe('FormGroupTitleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [FormGroupTitleComponent]
-})
-    .compileComponents();
+      imports: [FormGroupTitleComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

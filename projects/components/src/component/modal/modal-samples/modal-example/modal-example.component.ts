@@ -8,17 +8,12 @@ import { ButtonComponent } from '../../../button/button/button.component';
 import { ToolbarComponent } from '../../../toolbar/toolbar/toolbar.component';
 
 @Component({
-    selector: 'teta-modal-example',
-    templateUrl: './modal-example.component.html',
-    styleUrls: ['./modal-example.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        ToolbarComponent,
-        ButtonComponent,
-        IconComponent,
-        FormsModule,
-    ],
+  selector: 'teta-modal-example',
+  templateUrl: './modal-example.component.html',
+  styleUrls: ['./modal-example.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ToolbarComponent, ButtonComponent, IconComponent, FormsModule],
 })
 export class ModalExampleComponent implements OnInit {
   closeReason = ModalCloseReason;

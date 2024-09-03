@@ -1,7 +1,5 @@
 @if (data?.series?.length) {
-  <ngt-canvas [sceneGraph]="scene"
-              [camera]="camera">
-  </ngt-canvas>
+<ngt-canvas [sceneGraph]="scene" [camera]="camera"> </ngt-canvas>
 } @else {
-  <p>{{ data?.noDataText || 'no data' }}</p>
+<p>{{ data?.noDataText || 'no data' }}</p>
 }

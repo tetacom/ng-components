@@ -1,17 +1,17 @@
-import {EmbeddedViewRef, Inject, Injectable, Renderer2, RendererFactory2} from '@angular/core';
-import {DragInstance} from './model/drag-instance';
-import {DragSelection} from './model/drag-selection';
-import {DragContainerInstance} from './model/drag-container-instance';
-import {Point} from './model/point';
-import {DOCUMENT} from '@angular/common';
-import {BehaviorSubject, fromEvent, merge, Observable, Subject, tap} from 'rxjs';
-import {filter, withLatestFrom} from 'rxjs/operators';
-import {DragProcess} from './model/drag-process';
-import {DropTarget} from './model/drop-target';
-import {DropEvent} from './model/drop-event';
+import { EmbeddedViewRef, Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { DragInstance } from './model/drag-instance';
+import { DragSelection } from './model/drag-selection';
+import { DragContainerInstance } from './model/drag-container-instance';
+import { Point } from './model/point';
+import { DOCUMENT } from '@angular/common';
+import { BehaviorSubject, fromEvent, merge, Observable, Subject, tap } from 'rxjs';
+import { filter, withLatestFrom } from 'rxjs/operators';
+import { DragProcess } from './model/drag-process';
+import { DropTarget } from './model/drop-target';
+import { DropEvent } from './model/drop-event';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DragDropService<T> {
   selection: DragSelection<T>;
@@ -26,49 +26,43 @@ export class DragDropService<T> {
   private _previewRef: EmbeddedViewRef<any>;
   private dropped$ = new Subject<DropEvent<T>>();
 
-  constructor(@Inject(DOCUMENT) private _document: Document,
-              private _rendererFactory: RendererFactory2) {
+  constructor(@Inject(DOCUMENT) private _document: Document, private _rendererFactory: RendererFactory2) {
     this._renderer = this._rendererFactory.createRenderer(null, null);
     this.dropTarget = this.dropTarget$.asObservable();
     this.dropped = this.dropped$.asObservable();
-    merge(
-      fromEvent<MouseEvent>(this._document, 'mousemove'),
-      fromEvent<MouseEvent>(this._document, 'touchmove')
-    ).pipe(
-      filter(() => {
-        return this.startPosition != null;
-      })
-    ).subscribe((event: MouseEvent) => {
-      if (!this.dragProcess && this.getDelta(event) > this._delta) {
-        this.startProcess();
-      }
-      if (this.dragProcess && this._preview) {
-        this.movePreview(event);
-      }
-    });
-
-    merge(
-      fromEvent<MouseEvent>(this._document, 'mouseup'),
-      fromEvent<MouseEvent>(this._document, 'touchend')
-    ).pipe(
-      withLatestFrom(this.dropTarget)
-    ).subscribe((data: [MouseEvent, DropTarget<T>]) => {
-      const [event, target] = data;
-      if (target) {
-        this.dropped$.next({
-          target,
-          container: this.dragProcess.selection.container,
-          data: [...this.dragProcess.selection.items]
-        });
-        this.cancelDrag();
-      }
-      this.stopProcess();
-    });
-
-    merge(fromEvent(this._document, 'visibilitychange'), fromEvent(window, 'blur'))
-      .subscribe(() => {
-        this.cancelDrag();
+    merge(fromEvent<MouseEvent>(this._document, 'mousemove'), fromEvent<MouseEvent>(this._document, 'touchmove'))
+      .pipe(
+        filter(() => {
+          return this.startPosition != null;
+        })
+      )
+      .subscribe((event: MouseEvent) => {
+        if (!this.dragProcess && this.getDelta(event) > this._delta) {
+          this.startProcess();
+        }
+        if (this.dragProcess && this._preview) {
+          this.movePreview(event);
+        }
       });
+
+    merge(fromEvent<MouseEvent>(this._document, 'mouseup'), fromEvent<MouseEvent>(this._document, 'touchend'))
+      .pipe(withLatestFrom(this.dropTarget))
+      .subscribe((data: [MouseEvent, DropTarget<T>]) => {
+        const [event, target] = data;
+        if (target) {
+          this.dropped$.next({
+            target,
+            container: this.dragProcess.selection.container,
+            data: [...this.dragProcess.selection.items],
+          });
+          this.cancelDrag();
+        }
+        this.stopProcess();
+      });
+
+    merge(fromEvent(this._document, 'visibilitychange'), fromEvent(window, 'blur')).subscribe(() => {
+      this.cancelDrag();
+    });
   }
 
   setDropTarget(target: DropTarget<T>) {
@@ -87,7 +81,7 @@ export class DragDropService<T> {
     }
     this.selection = {
       container,
-      items: [instance]
+      items: [instance],
     };
   }
 
@@ -120,7 +114,7 @@ export class DragDropService<T> {
 
   startProcess() {
     this.dragProcess = {
-      selection: this.selection
+      selection: this.selection,
     };
     this._document.body.style.cursor = 'copy';
     this._preview = this.createPreview();
@@ -140,10 +134,12 @@ export class DragDropService<T> {
   private createPreview() {
     if (this.dragProcess.selection.container.previewTemplate) {
       this._previewRef = this.dragProcess.selection.container.viewContainer.createEmbeddedView(
-        this.dragProcess.selection.container.previewTemplate, {
+        this.dragProcess.selection.container.previewTemplate,
+        {
           $implicit: this.dragProcess.selection.items,
-          data: this.dragProcess.selection.items
-        });
+          data: this.dragProcess.selection.items,
+        }
+      );
       const preview = this._renderer.createElement('div');
       this._renderer.setStyle(preview, 'position', 'fixed');
       this._renderer.setStyle(preview, 'pointer-events', 'none');

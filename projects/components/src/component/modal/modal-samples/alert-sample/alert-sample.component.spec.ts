@@ -8,9 +8,8 @@ describe('AlertSampleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AlertSampleComponent]
-})
-    .compileComponents();
+      imports: [AlertSampleComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,4 +1,4 @@
-import {TableColumn} from '../contract/table-column';
+import { TableColumn } from '../contract/table-column';
 
 export abstract class DetailComponentBase<T> {
   /**

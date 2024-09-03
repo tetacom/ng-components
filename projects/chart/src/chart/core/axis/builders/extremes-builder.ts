@@ -7,12 +7,9 @@ import { IBuilder } from '../../../model/i-builder';
 import { Axis } from '../axis';
 
 export class ExtremesBuilder implements IBuilder<Axis, number[] | string[]> {
-  private extentAccessorMap = new Map<
-    AxisOrientation,
-    (point: BasePoint) => number
-  >()
-    .set(AxisOrientation.x, _ => _.x)
-    .set(AxisOrientation.y, _ => _.y);
+  private extentAccessorMap = new Map<AxisOrientation, (point: BasePoint) => number>()
+    .set(AxisOrientation.x, (_) => _.x)
+    .set(AxisOrientation.y, (_) => _.y);
 
   private extremes: number[] | string[] = [0, 1];
 
@@ -43,11 +40,7 @@ export class ExtremesBuilder implements IBuilder<Axis, number[] | string[]> {
     if (hasMax) {
       extremes[1] = options?.max;
     }
-    if (
-      typeof extremes[0] === 'number' &&
-      typeof extremes[1] === 'number' &&
-      extremes[0] === extremes[1]
-    ) {
+    if (typeof extremes[0] === 'number' && typeof extremes[1] === 'number' && extremes[0] === extremes[1]) {
       extremes[0] = extremes[0] - 1;
       extremes[1] = extremes[1] + 1;
     }

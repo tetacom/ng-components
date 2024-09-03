@@ -1,11 +1,11 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'teta-file-item',
-    templateUrl: './file-item.component.html',
-    styleUrls: ['./file-item.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'teta-file-item',
+  templateUrl: './file-item.component.html',
+  styleUrls: ['./file-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class FileItemComponent implements OnInit {
   constructor() {}

@@ -1,17 +1,14 @@
-import {ExpandItemComponent} from "./expand-item/expand-item.component";
+import { ExpandItemComponent } from './expand-item/expand-item.component';
 
-import {applicationConfig, Meta} from "@storybook/angular";
-import {provideHttpClient} from "@angular/common/http";
-import {IconSpriteDirective} from "../icon/icon-sprite.directive";
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
 
 export default {
   title: 'Component/Expand',
   decorators: [
-
     applicationConfig({
-      providers: [
-        provideHttpClient()
-      ],
+      providers: [provideHttpClient()],
     }),
   ],
   component: ExpandItemComponent,

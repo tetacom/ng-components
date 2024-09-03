@@ -1,4 +1,4 @@
-@import "./common.scss";
+@import './common.scss';
 
 .border {
   border-style: solid;
@@ -11,7 +11,7 @@
   }
   @for $radius from 0 through 12 {
     &-radius-#{$radius} {
-      border-radius: 1px * $radius!important;
+      border-radius: 1px * $radius !important;
     }
   }
 

@@ -1,4 +1,4 @@
-@import "util/color-util.scss";
+@import 'util/color-util.scss';
 
 .resize {
   &-panel {
@@ -13,11 +13,14 @@
     fill: var(--color-text-20);
     z-index: 10;
 
-    &_active, &:hover {
+    &_active,
+    &:hover {
       fill: var(--color-text-90);
     }
 
-    &_left, &_right, &_vertical {
+    &_left,
+    &_right,
+    &_vertical {
       height: 100%;
       top: 0;
     }
@@ -30,7 +33,8 @@
       left: 100%;
     }
 
-    &_top, &_bottom {
+    &_top,
+    &_bottom {
       width: 100%;
       left: 0;
     }
@@ -45,11 +49,13 @@
   }
 
   &-drag {
-    &_horizontal:hover, &_horizontal#{&}_active {
+    &_horizontal:hover,
+    &_horizontal#{&}_active {
       cursor: row-resize;
     }
 
-    &_vertical:hover, &_vertical#{&}_active {
+    &_vertical:hover,
+    &_vertical#{&}_active {
       cursor: col-resize;
     }
   }

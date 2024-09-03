@@ -1,12 +1,8 @@
-import {FilterBase} from '../base/filter-base';
-import {DateFilterValue} from './date-filter-value';
+import { FilterBase } from '../base/filter-base';
+import { DateFilterValue } from './date-filter-value';
 
 export class DateFilter extends FilterBase<DateFilterValue> {
-  constructor(options?: {
-    value?: DateFilterValue;
-    field: string;
-    name: string;
-  }) {
+  constructor(options?: { value?: DateFilterValue; field: string; name: string }) {
     super(options);
     if (options) {
       this.value = new DateFilterValue(options.value);

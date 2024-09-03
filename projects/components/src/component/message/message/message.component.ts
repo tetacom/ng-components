@@ -9,22 +9,18 @@ import {
   OnDestroy,
   Output,
 } from '@angular/core';
-import {Message} from '../model/message';
+import { Message } from '../model/message';
 import { NgTemplateOutlet } from '@angular/common';
 import { IconComponent } from '../../icon/icon/icon.component';
 import { ButtonComponent } from '../../button/button/button.component';
 
 @Component({
-    selector: 'teta-message',
-    templateUrl: './message.component.html',
-    styleUrls: ['./message.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        ButtonComponent,
-        IconComponent,
-        NgTemplateOutlet,
-    ],
+  selector: 'teta-message',
+  templateUrl: './message.component.html',
+  styleUrls: ['./message.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ButtonComponent, IconComponent, NgTemplateOutlet],
 })
 export class MessageComponent implements AfterViewInit, OnDestroy {
   @Input() message: Message;
@@ -41,14 +37,13 @@ export class MessageComponent implements AfterViewInit, OnDestroy {
     if (this.message.palette) {
       result.push(`message-${this.message.palette}`);
     }
-    result.push('message_' + this.message.viewType)
+    result.push('message_' + this.message.viewType);
     return result.join(' ');
   }
 
   timeout: any;
 
-  constructor() {
-  }
+  constructor() {}
 
   @HostListener('mouseleave')
   init() {

@@ -1,4 +1,4 @@
-import {StringUtil} from '../../../util/string-util';
+import { StringUtil } from '../../../util/string-util';
 
 export class SortParam {
   /**
@@ -17,11 +17,7 @@ export class SortParam {
   /**
    * Инициализация из анонимного объекта
    */
-  constructor(options?: {
-    field?: string;
-    asc?: boolean;
-    order?: number;
-  }) {
+  constructor(options?: { field?: string; asc?: boolean; order?: number }) {
     if (options) {
       this.field = StringUtil.firstLetterToLower(options.field || this.field);
       this.asc = options.asc || false;

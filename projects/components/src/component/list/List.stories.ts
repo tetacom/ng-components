@@ -1,17 +1,15 @@
-import {applicationConfig, Meta} from "@storybook/angular";
-import {provideHttpClient} from "@angular/common/http";
-import {IconComponent} from "../icon/icon/icon.component";
-import {IconSpriteDirective} from "../icon/icon-sprite.directive";
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { IconComponent } from '../icon/icon/icon.component';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
 
 export default {
   title: 'Component/List',
   decorators: [
     applicationConfig({
-      providers: [
-        provideHttpClient()
-      ],
+      providers: [provideHttpClient()],
     }),
-  ]
+  ],
 } as Meta;
 
 export const basicList = () => ({

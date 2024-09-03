@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, inject, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {ControlContainer, FormControl, FormGroup, NgForm, UntypedFormControl} from "@angular/forms";
-import {TableRow} from "../contract/table-row";
+import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ControlContainer, FormControl, FormGroup, NgForm, UntypedFormControl } from '@angular/forms';
+import { TableRow } from '../contract/table-row';
 
 @Component({
   selector: 'teta-table-row',
@@ -8,7 +8,7 @@ import {TableRow} from "../contract/table-row";
   imports: [],
   templateUrl: './table-row.component.html',
   styleUrl: './table-row.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableRowComponent<T> implements OnChanges {
   @Input() row: TableRow<T>;
@@ -31,17 +31,11 @@ export class TableRowComponent<T> implements OnChanges {
     return null;
   }
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (!this.control) {
-      this.formGroup.registerControl(
-        'id',
-        new UntypedFormControl(
-          this.row?.data['id']
-        )
-      );
+      this.formGroup.registerControl('id', new UntypedFormControl(this.row?.data['id']));
     } else {
       this.control.patchValue(this.row?.data['id'], {
         emitEvent: false,

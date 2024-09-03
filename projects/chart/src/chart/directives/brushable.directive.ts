@@ -2,22 +2,25 @@ import {
   AfterViewInit,
   Directive,
   ElementRef,
-  Input, NgZone, OnChanges, OnDestroy,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import {IChartConfig} from '../model/i-chart-config';
-import {BrushService} from '../service/brush.service';
-import {ChartService} from '../service/chart.service';
-import {Axis} from '../core/axis/axis';
-import {BrushType} from '../model/enum/brush-type';
+import { IChartConfig } from '../model/i-chart-config';
+import { BrushService } from '../service/brush.service';
+import { ChartService } from '../service/chart.service';
+import { Axis } from '../core/axis/axis';
+import { BrushType } from '../model/enum/brush-type';
 import * as d3 from 'd3';
-import {BrushMessage} from '../model/i-broadcast-message';
-import {filter, takeWhile} from 'rxjs';
+import { BrushMessage } from '../model/i-broadcast-message';
+import { filter, takeWhile } from 'rxjs';
 
 @Directive({
   selector: '[tetaBrushable]',
-  standalone:true
+  standalone: true,
 })
 export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnChanges {
   @Input() config: IChartConfig;
@@ -41,18 +44,17 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
   }
 
   ngOnInit() {
-    this.brushService.brushDomain.pipe(
-      takeWhile(() => this._alive),
-      filter((brush) => brush.chartId !== this.config.id)
-    ).subscribe((brush) => {
-      this._container.call(
-        this.brush.move,
-        [
-          Math.floor(brush.selection[0]),
-          Math.floor(brush.selection[1]),
-        ].map(this.axis.scale)
-      );
-    });
+    this.brushService.brushDomain
+      .pipe(
+        takeWhile(() => this._alive),
+        filter((brush) => brush.chartId !== this.config.id)
+      )
+      .subscribe((brush) => {
+        this._container.call(
+          this.brush.move,
+          [Math.floor(brush.selection[0]), Math.floor(brush.selection[1])].map(this.axis.scale)
+        );
+      });
   }
 
   ngOnDestroy() {
@@ -60,11 +62,11 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
   }
 
   ngAfterViewInit() {
-    if(this.config?.brush?.enable) {
+    if (this.config?.brush?.enable) {
       const brushMessage = new BrushMessage({
         chartId: this.config.id,
         selection: [this.config?.brush?.from, this.config?.brush?.to],
-        mode: 'init'
+        mode: 'init',
       });
       this.brushService.setBrush(brushMessage);
     }
@@ -76,10 +78,7 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
     }
 
     if (this.config?.brush?.enable) {
-      this.applyBrush(
-        this.config,
-        this.axis.scale
-      );
+      this.applyBrush(this.config, this.axis.scale);
     }
   }
 
@@ -93,76 +92,45 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
           const [from, to] = _.selection as number[];
           if (to - from === 0) {
             const selection: number[] =
-              this.selection?.map(brushScale) ??
-              [config.brush?.from, config.brush?.to].map(brushScale);
+              this.selection?.map(brushScale) ?? [config.brush?.from, config.brush?.to].map(brushScale);
             const halfBrushHeight = (selection[1] - selection[0]) / 2;
-            const invertedSelection: number[] = [
-              from - halfBrushHeight,
-              to + halfBrushHeight,
-            ].map(brushScale.invert);
+            const invertedSelection: number[] = [from - halfBrushHeight, to + halfBrushHeight].map(brushScale.invert);
 
-            if (
-              invertedSelection[1] - invertedSelection[0] >
-              config.brush?.max
-            ) {
+            if (invertedSelection[1] - invertedSelection[0] > config.brush?.max) {
               this._container.call(
                 this.brush.move,
-                [
-                  Math.floor(invertedSelection[0]),
-                  Math.floor(invertedSelection[0] + config.brush?.max),
-                ].map(brushScale)
+                [Math.floor(invertedSelection[0]), Math.floor(invertedSelection[0] + config.brush?.max)].map(brushScale)
               );
               return;
             }
 
-            if (
-              invertedSelection[1] - invertedSelection[0] <
-              config.brush?.min
-            ) {
+            if (invertedSelection[1] - invertedSelection[0] < config.brush?.min) {
               this._container.call(
                 this.brush.move,
-                [
-                  Math.floor(invertedSelection[0]),
-                  Math.ceil(invertedSelection[0] + config.brush?.min),
-                ].map(brushScale)
+                [Math.floor(invertedSelection[0]), Math.ceil(invertedSelection[0] + config.brush?.min)].map(brushScale)
               );
               return;
             }
 
-            this._container.call(this.brush.move, [
-              from - halfBrushHeight,
-              to + halfBrushHeight,
-            ]);
+            this._container.call(this.brush.move, [from - halfBrushHeight, to + halfBrushHeight]);
             return;
           }
 
-          if (
-            brushScale.invert(to) - brushScale.invert(from) >
-            config.brush?.max
-          ) {
+          if (brushScale.invert(to) - brushScale.invert(from) > config.brush?.max) {
             this._container.call(
               this.brush.move,
               this.selection
-                ? [
-                  this.selection[0],
-                  this.selection[0] + config.brush?.max,
-                ].map(brushScale)
+                ? [this.selection[0], this.selection[0] + config.brush?.max].map(brushScale)
                 : [config.brush?.from, config.brush?.to].map(brushScale)
             );
             return;
           }
 
-          if (
-            brushScale.invert(to) - brushScale.invert(from) <
-            config.brush?.min
-          ) {
+          if (brushScale.invert(to) - brushScale.invert(from) < config.brush?.min) {
             this._container.call(
               this.brush.move,
               this.selection
-                ? [
-                  this.selection[0],
-                  this.selection[0] + config.brush?.min,
-                ].map(brushScale)
+                ? [this.selection[0], this.selection[0] + config.brush?.min].map(brushScale)
                 : [config.brush?.from, config.brush?.to].map(brushScale)
             );
             return;
@@ -175,7 +143,7 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
           const brushMessage = new BrushMessage({
             chartId: this.config.id,
             selection: [brushScale.invert(from), brushScale.invert(to)],
-            mode: _.mode
+            mode: _.mode,
           });
           this.brushService.setBrush(brushMessage);
         }
@@ -197,9 +165,7 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
 
           this._container.call(
             this.brush.move,
-            this.selection
-              ? this.selection.map(brushScale)
-              : domain.map(brushScale),
+            this.selection ? this.selection.map(brushScale) : domain.map(brushScale),
             {}
           );
         }, 0);

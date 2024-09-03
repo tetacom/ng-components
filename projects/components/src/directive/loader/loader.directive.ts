@@ -1,18 +1,10 @@
 import { DOCUMENT } from '@angular/common';
-import {
-  Directive,
-  ElementRef,
-  Inject,
-  Input,
-  NgZone,
-  OnDestroy,
-  Renderer2,
-} from '@angular/core';
+import { Directive, ElementRef, Inject, Input, NgZone, OnDestroy, Renderer2 } from '@angular/core';
 import { takeWhile } from 'rxjs/operators';
 
 @Directive({
-    selector: '[tetaLoader]',
-    standalone: true,
+  selector: '[tetaLoader]',
+  standalone: true,
 })
 export class LoaderDirective implements OnDestroy {
   @Input() appendToBody = false;
@@ -45,7 +37,7 @@ export class LoaderDirective implements OnDestroy {
     protected _zone: NgZone
   ) {
     this._element = this._elementRef.nativeElement;
-    this._zone.onStable.pipe(takeWhile(_ => this._alive)).subscribe(_ => {
+    this._zone.onStable.pipe(takeWhile((_) => this._alive)).subscribe((_) => {
       if (this._loading && this._loader) {
         this.setPosition();
       }
@@ -69,16 +61,10 @@ export class LoaderDirective implements OnDestroy {
     }
 
     if (this.mask) {
-      this._renderer.appendChild(
-        this.appendToBody ? this._document.body : this._element,
-        this._mask
-      );
+      this._renderer.appendChild(this.appendToBody ? this._document.body : this._element, this._mask);
     }
 
-    this._renderer.appendChild(
-      this.appendToBody ? this._document.body : this._element,
-      this._loader
-    );
+    this._renderer.appendChild(this.appendToBody ? this._document.body : this._element, this._loader);
     this.setPosition();
   }
 
@@ -93,15 +79,7 @@ export class LoaderDirective implements OnDestroy {
 
   private setPosition() {
     const position = this._element.getBoundingClientRect();
-    this._renderer.setStyle(
-      this._loader,
-      'top',
-      `${position.y + position.height / 2}px`
-    );
-    this._renderer.setStyle(
-      this._loader,
-      'left',
-      `${position.x + +position.width / 2}px`
-    );
+    this._renderer.setStyle(this._loader, 'top', `${position.y + position.height / 2}px`);
+    this._renderer.setStyle(this._loader, 'left', `${position.x + +position.width / 2}px`);
   }
 }

@@ -8,9 +8,8 @@ describe('ListCellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [ListCellComponent]
-})
-    .compileComponents();
+      imports: [ListCellComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

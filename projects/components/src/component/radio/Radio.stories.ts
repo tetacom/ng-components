@@ -1,17 +1,16 @@
-import {RadioComponent} from './radio/radio.component';
+import { RadioComponent } from './radio/radio.component';
 
-import {FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
-import {applicationConfig, Meta} from '@storybook/angular';
-import {provideHttpClient} from '@angular/common/http';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
 
-import {IconSpriteDirective} from "../icon/icon-sprite.directive";
-import {RadioButtonComponent} from "./radio-button/radio-button.component";
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
+import { RadioButtonComponent } from './radio-button/radio-button.component';
 
 export default {
   title: 'Component/Radio',
   decorators: [
-
     applicationConfig({
       providers: [provideHttpClient()],
     }),
@@ -44,4 +43,3 @@ export const disabledRadioButton = () => ({
     </teta-radio>
   </div>`,
 });
-

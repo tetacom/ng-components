@@ -4,11 +4,11 @@ import { ButtonComponent } from '../../../button/button/button.component';
 import { IconSpriteDirective } from '../../../icon/icon-sprite.directive';
 
 @Component({
-    selector: 'teta-alert-sample',
-    templateUrl: './alert-sample.component.html',
-    styleUrls: ['./alert-sample.component.scss'],
-    standalone: true,
-    imports: [IconSpriteDirective, ButtonComponent],
+  selector: 'teta-alert-sample',
+  templateUrl: './alert-sample.component.html',
+  styleUrls: ['./alert-sample.component.scss'],
+  standalone: true,
+  imports: [IconSpriteDirective, ButtonComponent],
 })
 export class AlertSampleComponent implements OnInit {
   constructor(private _dialog: DialogService) {}
@@ -24,11 +24,9 @@ export class AlertSampleComponent implements OnInit {
   }
 
   dialog2() {
-    this._dialog
-      .confirm('Some alert text', 'Edit', 'edit', 'red')
-      .subscribe((_) => {
-        alert(_.toString());
-      });
+    this._dialog.confirm('Some alert text', 'Edit', 'edit', 'red').subscribe((_) => {
+      alert(_.toString());
+    });
   }
 
   ngOnInit(): void {}

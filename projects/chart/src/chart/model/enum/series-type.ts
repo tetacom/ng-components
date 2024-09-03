@@ -4,5 +4,5 @@ export enum SeriesType {
   area,
   scatter,
   block,
-  blockArea
+  blockArea,
 }

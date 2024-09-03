@@ -1,6 +1,6 @@
-@import "util/color-util.scss";
-@import "util/font-util.scss";
-@import "presets/view-types.scss";
+@import 'util/color-util.scss';
+@import 'util/font-util.scss';
+@import 'presets/view-types.scss';
 
 .select {
   display: inline-flex;
@@ -72,7 +72,8 @@
     }
   }
 
-  &:focus:not(&_disabled) &-head, &_open &-head {
+  &:focus:not(&_disabled) &-head,
+  &_open &-head {
     border-color: var(--color-primary-50);
   }
 

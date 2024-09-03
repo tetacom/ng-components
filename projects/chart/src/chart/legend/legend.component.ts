@@ -1,19 +1,14 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostBinding,
-  Input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 import { Series } from '../model/series';
 import { BasePoint } from '../model/base-point';
 import { SeriesType } from '../model/enum/series-type';
-import {ChartService} from "../service/chart.service";
+import { ChartService } from '../service/chart.service';
 
 @Component({
   selector: 'teta-legend',
   templateUrl: './legend.component.html',
   styleUrls: ['./legend.component.scss'],
-  standalone:true,
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LegendComponent {
@@ -35,6 +30,6 @@ export class LegendComponent {
   }
 
   click(serie: Series<BasePoint>) {
-   this.chartService.toggleVisibilitySeries([serie.id]);
+    this.chartService.toggleVisibilitySeries([serie.id]);
   }
 }

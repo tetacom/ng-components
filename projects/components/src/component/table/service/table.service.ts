@@ -1,39 +1,35 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import objectHash from 'object-hash';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
-import {IDictionary} from '../../../common/contract/i-dictionary';
-import {IIdName} from '../../../common/contract/i-id-name';
-import {ArrayUtil} from '../../../common/util/array-util';
-import {boolOrFuncCallback} from '../../../util/bool-or-func';
-import {DateUtil} from '../../../util/date-util';
-import {DateFilter} from '../../filter/contarct/date-filter';
-import {DateFilterValue} from '../../filter/contarct/date-filter-value';
-import {FilterState} from '../../filter/contarct/filter-state';
-import {ListFilter} from '../../filter/contarct/list-filter';
-import {NumericFilter} from '../../filter/contarct/numeric-filter';
-import {NumericFilterValue} from '../../filter/contarct/numeric-filter-value';
-import {StringFilter} from '../../filter/contarct/string-filter';
-import {FilterType} from '../../filter/enum/filter-type.enum';
-import {ListFilterType} from '../../filter/enum/list-filter-type.enum';
-import {ColumnReorderEvent} from '../contract/column-reorder-event';
-import {ColumnResizeEvent} from '../contract/column-resize-event';
-import {ICellCoordinates} from '../contract/i-cell-coordinates';
-import {ICellEvent} from '../contract/i-cell-event';
-import {
-  ICellInstance,
-  ICellInstanceValue,
-  IColumnRow,
-} from '../contract/i-cell-instance';
-import {ICellValue} from '../contract/i-cell-value';
-import {SortEvent} from '../contract/sort-event';
-import {TableColumn} from '../contract/table-column';
-import {TableColumnStore} from '../contract/table-column-store';
-import {TableRow} from '../contract/table-row';
-import {EditEvent} from '../enum/edit-event.enum';
-import {EditType} from '../enum/edit-type.enum';
-import {SelectType} from '../enum/select-type.enum';
-import {StateUtil} from '../util/state-util';
+import { IDictionary } from '../../../common/contract/i-dictionary';
+import { IIdName } from '../../../common/contract/i-id-name';
+import { ArrayUtil } from '../../../common/util/array-util';
+import { boolOrFuncCallback } from '../../../util/bool-or-func';
+import { DateUtil } from '../../../util/date-util';
+import { DateFilter } from '../../filter/contarct/date-filter';
+import { DateFilterValue } from '../../filter/contarct/date-filter-value';
+import { FilterState } from '../../filter/contarct/filter-state';
+import { ListFilter } from '../../filter/contarct/list-filter';
+import { NumericFilter } from '../../filter/contarct/numeric-filter';
+import { NumericFilterValue } from '../../filter/contarct/numeric-filter-value';
+import { StringFilter } from '../../filter/contarct/string-filter';
+import { FilterType } from '../../filter/enum/filter-type.enum';
+import { ListFilterType } from '../../filter/enum/list-filter-type.enum';
+import { ColumnReorderEvent } from '../contract/column-reorder-event';
+import { ColumnResizeEvent } from '../contract/column-resize-event';
+import { ICellCoordinates } from '../contract/i-cell-coordinates';
+import { ICellEvent } from '../contract/i-cell-event';
+import { ICellInstance, ICellInstanceValue, IColumnRow } from '../contract/i-cell-instance';
+import { ICellValue } from '../contract/i-cell-value';
+import { SortEvent } from '../contract/sort-event';
+import { TableColumn } from '../contract/table-column';
+import { TableColumnStore } from '../contract/table-column-store';
+import { TableRow } from '../contract/table-row';
+import { EditEvent } from '../enum/edit-event.enum';
+import { EditType } from '../enum/edit-type.enum';
+import { SelectType } from '../enum/select-type.enum';
+import { StateUtil } from '../util/state-util';
 
 @Injectable({
   providedIn: 'root',
@@ -76,19 +72,14 @@ export class TableService<T> {
   private initialColumnsHash = '';
   private initialColumns: TableColumn[] = [];
   private displayColumns: TableColumn[] = [];
-  private _columns: BehaviorSubject<TableColumn[]> = new BehaviorSubject<
-    TableColumn[]
-  >([]);
+  private _columns: BehaviorSubject<TableColumn[]> = new BehaviorSubject<TableColumn[]>([]);
   private _hiddenColumns = new BehaviorSubject<string[]>([]);
-  private _displayData: BehaviorSubject<TableRow<T>[]> = new BehaviorSubject<
-    TableRow<T>[]
-  >([]);
-  private _dict: BehaviorSubject<IDictionary<IIdName<any>[]>> =
-    new BehaviorSubject<IDictionary<IIdName<any>[]>>({});
-  private _filterOptions: BehaviorSubject<IDictionary<IIdName<any>[]>> =
-    new BehaviorSubject<IDictionary<IIdName<any>[]>>({});
-  private _state: BehaviorSubject<FilterState> =
-    new BehaviorSubject<FilterState>(new FilterState());
+  private _displayData: BehaviorSubject<TableRow<T>[]> = new BehaviorSubject<TableRow<T>[]>([]);
+  private _dict: BehaviorSubject<IDictionary<IIdName<any>[]>> = new BehaviorSubject<IDictionary<IIdName<any>[]>>({});
+  private _filterOptions: BehaviorSubject<IDictionary<IIdName<any>[]>> = new BehaviorSubject<
+    IDictionary<IIdName<any>[]>
+  >({});
+  private _state: BehaviorSubject<FilterState> = new BehaviorSubject<FilterState>(new FilterState());
   private _cookieName?: string;
   private _hiddenCookieName?: string;
   private _columnsCookieName?: string;
@@ -134,7 +125,7 @@ export class TableService<T> {
   setData(data: T[]): void {
     this._displayData.next(
       data?.map(
-        item =>
+        (item) =>
           new TableRow<T>({
             data: item,
           })
@@ -151,13 +142,8 @@ export class TableService<T> {
   }
 
   setColumns(columns: TableColumn[]): void {
-    this.initialColumns = columns ? columns.map(_ => new TableColumn(_)) : [];
-    const excludeKeys = [
-      'editable',
-      'cellComponent',
-      'headCellComponent',
-      'headDropdownConfig',
-    ];
+    this.initialColumns = columns ? columns.map((_) => new TableColumn(_)) : [];
+    const excludeKeys = ['editable', 'cellComponent', 'headCellComponent', 'headDropdownConfig'];
     this.initialColumnsHash = objectHash(this.initialColumns, {
       algorithm: 'sha1',
       ignoreUnknown: true,
@@ -190,7 +176,7 @@ export class TableService<T> {
         this._columnsCookieName,
         JSON.stringify({
           hash: this.initialColumnsHash,
-          columns: this.displayColumns.map(_ => new TableColumnStore(_)),
+          columns: this.displayColumns.map((_) => new TableColumnStore(_)),
         })
       );
     }
@@ -203,15 +189,13 @@ export class TableService<T> {
   }
 
   setDisplayColumns(columns: TableColumn[]): void {
-    this.displayColumns = columns ? columns.map(_ => new TableColumn(_)) : [];
+    this.displayColumns = columns ? columns.map((_) => new TableColumn(_)) : [];
     this._columns.next(this.displayColumns);
   }
 
   restoreColumns() {
     if (this._columnsCookieName) {
-      const savedColumns = JSON.parse(
-        localStorage.getItem(this._columnsCookieName)
-      );
+      const savedColumns = JSON.parse(localStorage.getItem(this._columnsCookieName));
       if (savedColumns && savedColumns.hash === this.initialColumnsHash) {
         return this.restoreColumnsState(savedColumns.columns);
       }
@@ -221,11 +205,7 @@ export class TableService<T> {
 
   restoreColumnsState(columns: TableColumnStore[]) {
     return columns.map((column: TableColumnStore) => {
-      const found = ArrayUtil.findRecursive(
-        this.initialColumns,
-        item => item.name === column.name,
-        'columns'
-      );
+      const found = ArrayUtil.findRecursive(this.initialColumns, (item) => item.name === column.name, 'columns');
       const resultColumn = new TableColumn(found);
       resultColumn.width = column.width;
       resultColumn.flex = column.flex;
@@ -252,15 +232,8 @@ export class TableService<T> {
 
   restoreState(): void {
     let state: FilterState;
-    if (
-      this._cookieName &&
-      this._cookieName?.length > 0 &&
-      FilterState.restore(this._cookieName)
-    ) {
-      let newState = Object.assign(
-        this._state.value,
-        FilterState.restore(this._cookieName)
-      );
+    if (this._cookieName && this._cookieName?.length > 0 && FilterState.restore(this._cookieName)) {
+      let newState = Object.assign(this._state.value, FilterState.restore(this._cookieName));
       newState = DateUtil.convertDateStringsToDates(newState);
       state = new FilterState(newState);
     } else {
@@ -271,16 +244,12 @@ export class TableService<T> {
 
   saveHiddenColumns(hiddenColumns: string[]): void {
     if (this._hiddenCookieName) {
-      localStorage.setItem(
-        this._hiddenCookieName,
-        JSON.stringify(hiddenColumns)
-      );
+      localStorage.setItem(this._hiddenCookieName, JSON.stringify(hiddenColumns));
     }
   }
 
   restoreHiddenColumns(): void {
-    const hiddenColumns =
-      localStorage.getItem(this._hiddenCookieName ?? '') || '[]';
+    const hiddenColumns = localStorage.getItem(this._hiddenCookieName ?? '') || '[]';
     this._hiddenColumns.next(JSON.parse(hiddenColumns));
   }
 
@@ -377,13 +346,11 @@ export class TableService<T> {
       (a, b) => Number(b.locked) - Number(a.locked)
     );
     const index = flat.indexOf(column);
-    const previous = flat.slice(0, index).filter(_ => _.flex > 0);
+    const previous = flat.slice(0, index).filter((_) => _.flex > 0);
     if (previous?.length > 0) {
       const tableElement = this.getTableElement(element);
       previous.forEach((item: TableColumn) => {
-        const itemCol = tableElement?.querySelector(
-          `teta-head-cell[data-column="${item.name}"]`
-        ) as HTMLElement;
+        const itemCol = tableElement?.querySelector(`teta-head-cell[data-column="${item.name}"]`) as HTMLElement;
         if (itemCol) {
           item.flex = 0;
           item.width = itemCol.clientWidth;
@@ -411,9 +378,7 @@ export class TableService<T> {
   autosizeAllColumns(target: HTMLElement) {
     const tableElement = this.getTableElement(target);
     const flat = ArrayUtil.flatten(this.displayColumns, 'columns', true);
-    flat.forEach(col =>
-      this.setColumnAutoWidth(col, tableElement as HTMLElement)
-    );
+    flat.forEach((col) => this.setColumnAutoWidth(col, tableElement as HTMLElement));
     this._columns.next(this.displayColumns);
     this.saveColumnsState();
   }
@@ -455,11 +420,7 @@ export class TableService<T> {
         this._editRowStart.next(cellEvent);
         this._currentEditCell = cellEvent;
       } else {
-        if (
-          boolOrFuncCallback<T>(this.rowEditable)(
-            this.getRowByIndex(cellEvent?.row)?.data
-          )
-        ) {
+        if (boolOrFuncCallback<T>(this.rowEditable)(this.getRowByIndex(cellEvent?.row)?.data)) {
           this._editRowStart.next(cellEvent);
           this._currentEditCell = cellEvent;
         }
@@ -468,19 +429,13 @@ export class TableService<T> {
   }
 
   startEditCell(cellEvent: ICellEvent): void {
-    if (
-      this._currentEditCell?.column !== cellEvent?.column ||
-      this._currentEditCell?.row !== cellEvent?.row
-    ) {
+    if (this._currentEditCell?.column !== cellEvent?.column || this._currentEditCell?.row !== cellEvent?.row) {
       if (this._currentEditCell != null) {
         this._editCellStop.next(this._currentEditCell);
       }
       const column = this.getColumnByName(cellEvent?.column);
       if (
-        boolOrFuncCallback<T>(this.rowEditable)(
-          this.getRowByIndex(cellEvent?.row)?.data
-        )
-        &&
+        boolOrFuncCallback<T>(this.rowEditable)(this.getRowByIndex(cellEvent?.row)?.data) &&
         boolOrFuncCallback<IColumnRow<T>>(column?.editable)({
           row: this.getRowByIndex(cellEvent?.row)?.data,
           column: column,
@@ -489,10 +444,7 @@ export class TableService<T> {
         this._editCellStart.next(cellEvent);
         this._currentEditCell = cellEvent;
         const key = (cellEvent?.event as KeyboardEvent)?.key;
-        if (
-          key &&
-          (key.length === 1 || (key === 'Delete' && !column.required))
-        ) {
+        if (key && (key.length === 1 || (key === 'Delete' && !column.required))) {
           this.clearValue(cellEvent);
         }
       }
@@ -509,23 +461,23 @@ export class TableService<T> {
 
   selectOrDeselectRow(row: T): void {
     if (this._selectedRows.value.indexOf(row) >= 0) {
-      this._selectedRows.next(this._selectedRows.value.filter(_ => _ !== row));
+      this._selectedRows.next(this._selectedRows.value.filter((_) => _ !== row));
     } else {
       this._selectedRows.next([...this._selectedRows.value, row]);
     }
   }
 
   selectRange(row: T): void {
-    const index = this._displayData.value.findIndex(_ => _.data === row);
+    const index = this._displayData.value.findIndex((_) => _.data === row);
     let minIndex = this._selectedRows.value.reduce((prev, curr) => {
-      const newIndex = this._displayData.value.findIndex(_ => _.data === curr);
+      const newIndex = this._displayData.value.findIndex((_) => _.data === curr);
       if (newIndex < prev) {
         return newIndex;
       }
       return prev;
     }, this._displayData.value.length);
     let maxIndex = this._selectedRows.value.reduce((prev, curr) => {
-      const newIndex = this._displayData.value.findIndex(_ => _.data === curr);
+      const newIndex = this._displayData.value.findIndex((_) => _.data === curr);
       if (newIndex > prev) {
         return newIndex;
       }
@@ -540,9 +492,7 @@ export class TableService<T> {
     if (minIndex < index && index < maxIndex) {
       maxIndex = index;
     }
-    this._selectedRows.next([
-      ...this._displayData.value.slice(minIndex, maxIndex + 1).map(_ => _.data),
-    ]);
+    this._selectedRows.next([...this._displayData.value.slice(minIndex, maxIndex + 1).map((_) => _.data)]);
   }
 
   selectRow(row: T): void {
@@ -556,11 +506,11 @@ export class TableService<T> {
     if (this.selectType === SelectType.none) {
       return;
     }
-    this._selectedRows.next(this._selectedRows.value.filter(_ => _ !== row));
+    this._selectedRows.next(this._selectedRows.value.filter((_) => _ !== row));
   }
 
   selectAll() {
-    this._selectedRows.next(this._displayData.value.map(_ => _.data));
+    this._selectedRows.next(this._displayData.value.map((_) => _.data));
   }
 
   deselectAll() {
@@ -571,17 +521,10 @@ export class TableService<T> {
     if (
       this._displayData.value?.length &&
       this._selectedRows.value?.length &&
-      this._displayData.value.every(
-        _ =>
-          this._selectedRows.value.findIndex(selected => selected === _.data) >=
-          0
-      )
+      this._displayData.value.every((_) => this._selectedRows.value.findIndex((selected) => selected === _.data) >= 0)
     ) {
       return true;
-    } else if (
-      this._selectedRows.value == null ||
-      this._selectedRows.value.length === 0
-    ) {
+    } else if (this._selectedRows.value == null || this._selectedRows.value.length === 0) {
       return false;
     }
     return null;
@@ -604,10 +547,7 @@ export class TableService<T> {
   setValue(cellValue: ICellInstanceValue<T>): void;
   setValue(cellValue: ICellValue | ICellInstanceValue<T>): void {
     let value: ICellValue;
-    if (
-      typeof cellValue.row === 'object' &&
-      typeof cellValue.column === 'object'
-    ) {
+    if (typeof cellValue.row === 'object' && typeof cellValue.column === 'object') {
       value = {
         row: this.getRowIndex(cellValue.row.data),
         column: cellValue.column.name,
@@ -627,7 +567,7 @@ export class TableService<T> {
   }
 
   getRowIndex(row: T) {
-    return this._displayData.value.findIndex(_ => _.data === row);
+    return this._displayData.value.findIndex((_) => _.data === row);
   }
 
   getEventCell(event: Event): HTMLElement | null {
@@ -678,9 +618,7 @@ export class TableService<T> {
 
   getNextCell(coords: ICellCoordinates): ICellCoordinates | null {
     const columns = this.getFlatColumns();
-    let colIndex = columns.findIndex(
-      (col: TableColumn) => col.name === coords?.column
-    );
+    let colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column);
     let rowIndex = coords?.row;
     if (colIndex >= 0 && rowIndex >= 0) {
       if (colIndex === columns.length - 1) {
@@ -699,9 +637,7 @@ export class TableService<T> {
 
   getPreviousCell(coords: ICellCoordinates): ICellCoordinates | null {
     const columns = this.getFlatColumns();
-    let colIndex = columns.findIndex(
-      (col: TableColumn) => col.name === coords?.column
-    );
+    let colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column);
     let rowIndex = coords?.row;
     if (colIndex >= 0 && rowIndex >= 0) {
       if (colIndex === 0) {
@@ -720,15 +656,9 @@ export class TableService<T> {
 
   getNextRowCell(coords: ICellCoordinates): ICellCoordinates | null {
     const columns = this.getFlatColumns();
-    const colIndex = columns.findIndex(
-      (col: TableColumn) => col.name === coords?.column
-    );
+    const colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column);
     const rowIndex = coords?.row;
-    if (
-      colIndex >= 0 &&
-      rowIndex >= 0 &&
-      rowIndex < this._displayData.value.length - 1
-    ) {
+    if (colIndex >= 0 && rowIndex >= 0 && rowIndex < this._displayData.value.length - 1) {
       return {
         column: columns[colIndex]?.name,
         row: rowIndex + 1,
@@ -739,9 +669,7 @@ export class TableService<T> {
 
   getPreviousRowCell(coords: ICellCoordinates) {
     const columns = this.getFlatColumns();
-    const colIndex = columns.findIndex(
-      (col: TableColumn) => col.name === coords?.column
-    );
+    const colIndex = columns.findIndex((col: TableColumn) => col.name === coords?.column);
     const rowIndex = coords?.row;
     if (colIndex >= 0 && rowIndex > 1) {
       return {
@@ -753,11 +681,7 @@ export class TableService<T> {
   }
 
   getColumnByName(columnName: string) {
-    return ArrayUtil.findRecursive(
-      this.displayColumns,
-      iterableNode => columnName === iterableNode.name,
-      'columns'
-    );
+    return ArrayUtil.findRecursive(this.displayColumns, (iterableNode) => columnName === iterableNode.name, 'columns');
   }
 
   scrollToIndex(index: number) {
@@ -766,34 +690,27 @@ export class TableService<T> {
   }
 
   getVisibleColumns() {
-    const visible = ArrayUtil.flatten(
-      this._columns.value,
-      'columns',
-      true
-    ).filter(_ => this._hiddenColumns.value.indexOf(_.name) < 0);
+    const visible = ArrayUtil.flatten(this._columns.value, 'columns', true).filter(
+      (_) => this._hiddenColumns.value.indexOf(_.name) < 0
+    );
     return visible.sort((a, b) => Number(b.locked) - Number(a.locked));
   }
 
   getCellInstance(coords: ICellCoordinates): ICellInstance<T> | null {
     return coords
       ? {
-        row: this.getRowByIndex(coords.row),
-        column: this.getColumnByName(coords.column),
-      }
+          row: this.getRowByIndex(coords.row),
+          column: this.getColumnByName(coords.column),
+        }
       : null;
   }
 
   private getFlatColumns() {
-    return ArrayUtil.flatten(this.displayColumns, 'columns', true).sort(
-      (a, b) => Number(b.locked) - Number(a.locked)
-    );
+    return ArrayUtil.flatten(this.displayColumns, 'columns', true).sort((a, b) => Number(b.locked) - Number(a.locked));
   }
 
-  private findParent(
-    column: TableColumn,
-    columns: TableColumn[]
-  ): TableColumn[] | null {
-    const found = columns.find(x => x.name === column.name);
+  private findParent(column: TableColumn, columns: TableColumn[]): TableColumn[] | null {
+    const found = columns.find((x) => x.name === column.name);
     if (found !== null && found !== undefined) {
       return columns;
     }
@@ -809,11 +726,8 @@ export class TableService<T> {
     return null;
   }
 
-  private findParentColumn(
-    column: TableColumn,
-    columns: TableColumn[]
-  ): TableColumn | null {
-    const found = columns.find(x => x.columns.indexOf(column) >= 0);
+  private findParentColumn(column: TableColumn, columns: TableColumn[]): TableColumn | null {
+    const found = columns.find((x) => x.columns.indexOf(column) >= 0);
     if (found !== null && found !== undefined) {
       return found;
     }
@@ -834,19 +748,15 @@ export class TableService<T> {
   }
 
   private setColumnAutoWidth(column: TableColumn, table: HTMLElement) {
-    const cells = table.querySelectorAll(
-      `teta-cell[data-column="${column.name}"] .cell-text`
-    );
+    const cells = table.querySelectorAll(`teta-cell[data-column="${column.name}"] .cell-text`);
     let maxWidth = 0;
-    cells.forEach(cell => {
+    cells.forEach((cell) => {
       if (cell.scrollWidth > maxWidth) {
         maxWidth = cell.scrollWidth;
       }
     });
-    const aggCells = table.querySelectorAll(
-      `.aggregate-cell[data-column="${column.name}"] .cell-text`
-    );
-    aggCells?.forEach(cell => {
+    const aggCells = table.querySelectorAll(`.aggregate-cell[data-column="${column.name}"] .cell-text`);
+    aggCells?.forEach((cell) => {
       if (cell.scrollWidth > maxWidth) {
         maxWidth = cell.scrollWidth;
       }

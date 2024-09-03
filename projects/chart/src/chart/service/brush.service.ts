@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {Observable, ReplaySubject} from 'rxjs';
-import {BrushMessage} from '../model/i-broadcast-message';
+import { Injectable } from '@angular/core';
+import { Observable, ReplaySubject } from 'rxjs';
+import { BrushMessage } from '../model/i-broadcast-message';
 
 @Injectable({
   providedIn: 'root',

@@ -2,7 +2,7 @@ import { IconComponent } from './icon/icon.component';
 
 import { coloredIconsList, fileIconsList, iconsList, lithotypeIconsList } from './icons-list';
 import { applicationConfig, Meta } from '@storybook/angular';
-import { provideHttpClient} from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { IconSpriteDirective } from './icon-sprite.directive';
 import { TetaSize } from '@tetacom/ng-components';
 

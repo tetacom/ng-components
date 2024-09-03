@@ -1,21 +1,21 @@
 // eslint-disable-next-line id-blacklist
-import {Meta} from "@storybook/angular";
-import {ResizePanelComponent} from "./resize-panel/resize-panel.component";
+import { Meta } from '@storybook/angular';
+import { ResizePanelComponent } from './resize-panel/resize-panel.component';
 
 export default {
   title: 'Component/ResizePanel',
-  argTypes:{
-    minSize:{
-      control:{type:'number'}
+  argTypes: {
+    minSize: {
+      control: { type: 'number' },
     },
-    maxSize:{
-      control:{type:'number'}
-    }
+    maxSize: {
+      control: { type: 'number' },
+    },
   },
-  args:{
-    minSize:50,
-    maxSize:500
-  }
+  args: {
+    minSize: 50,
+    maxSize: 500,
+  },
 } as Meta;
 
 export const vertical = (args) => ({
@@ -23,7 +23,7 @@ export const vertical = (args) => ({
     imports: [ResizePanelComponent],
   },
   props: {
-    maxSize:args
+    maxSize: args,
   },
   template: `<div class="bg-panel-50 padding-10 margin-10">
                 <div class="row bg-white-50"
@@ -48,7 +48,7 @@ export const horizontal = (args) => ({
     imports: [ResizePanelComponent],
   },
   props: {
-    maxSize:args
+    maxSize: args,
   },
   template: `<div class="bg-panel-50 padding-10 margin-10">
                 <div class="column bg-white-50"

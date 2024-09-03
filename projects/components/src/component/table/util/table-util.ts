@@ -1,13 +1,13 @@
-import {TableColumn} from '../contract/table-column';
-import {ArrayUtil} from '../../../common/util/array-util';
-import {SortParam} from '../../filter/contarct/sort-param';
-import {ListFilterType} from '../../filter/enum/list-filter-type.enum';
-import {ListFilter} from '../../filter/contarct/list-filter';
-import {NumericFilter} from '../../filter/contarct/numeric-filter';
-import {DateFilter} from '../../filter/contarct/date-filter';
-import {StringFilterType} from '../../filter/enum/string-filter-type.enum';
-import {StringFilter} from '../../filter/contarct/string-filter';
-import {FilterState} from '../../filter/contarct/filter-state';
+import { TableColumn } from '../contract/table-column';
+import { ArrayUtil } from '../../../common/util/array-util';
+import { SortParam } from '../../filter/contarct/sort-param';
+import { ListFilterType } from '../../filter/enum/list-filter-type.enum';
+import { ListFilter } from '../../filter/contarct/list-filter';
+import { NumericFilter } from '../../filter/contarct/numeric-filter';
+import { DateFilter } from '../../filter/contarct/date-filter';
+import { StringFilterType } from '../../filter/enum/string-filter-type.enum';
+import { StringFilter } from '../../filter/contarct/string-filter';
+import { FilterState } from '../../filter/contarct/filter-state';
 
 export class TableUtil {
   public static getColumnLeaves(column: TableColumn): TableColumn[] | null {
@@ -87,12 +87,14 @@ export class TableUtil {
   static filterDate<T>(data: T[], filter: DateFilter): T[] {
     const filterDate = (row: T) => {
       const item = row as any;
-      return (filter.value.lessThan === null || filter.value.lessThan === undefined
+      return (
+        (filter.value.lessThan === null || filter.value.lessThan === undefined
           ? true
           : filter.value.lessThan?.getTime() >= item[filter.field]?.getTime()) &&
         (filter.value.greaterThan === null || filter.value.greaterThan === undefined
           ? true
-          : filter.value.greaterThan?.getTime() <= item[filter.field]?.getTime());
+          : filter.value.greaterThan?.getTime() <= item[filter.field]?.getTime())
+      );
     };
     return data.filter(filterDate);
   }
@@ -100,15 +102,23 @@ export class TableUtil {
   static filterNumber<T>(data: T[], filter: NumericFilter): T[] {
     const filterNumber = (row: T) => {
       const item = row as any;
-      return (filter.value.lessThan === null || filter.value.lessThan === undefined || filter.value.lessThan?.toString() === ''
+      return (
+        (filter.value.lessThan === null ||
+        filter.value.lessThan === undefined ||
+        filter.value.lessThan?.toString() === ''
           ? true
           : filter.value.lessThan >= item[filter.field]) &&
-        (filter.value.greaterThan === null || filter.value.greaterThan === undefined || filter.value.greaterThan?.toString() === ''
+        (filter.value.greaterThan === null ||
+        filter.value.greaterThan === undefined ||
+        filter.value.greaterThan?.toString() === ''
           ? true
           : filter.value.greaterThan <= item[filter.field]) &&
-        (filter.value.equalsTo === null || filter.value.equalsTo === undefined || filter.value.equalsTo?.toString() === ''
+        (filter.value.equalsTo === null ||
+        filter.value.equalsTo === undefined ||
+        filter.value.equalsTo?.toString() === ''
           ? true
-          : filter.value.equalsTo === item[filter.field]);
+          : filter.value.equalsTo === item[filter.field])
+      );
     };
     return data.filter(filterNumber);
   }
@@ -133,12 +143,12 @@ export class TableUtil {
   }
 
   static desc(field: string) {
-    const res = (a: any, b: any) => a[field] > b[field] ? -1 : 1;
+    const res = (a: any, b: any) => (a[field] > b[field] ? -1 : 1);
     return res;
   }
 
   static asc(field: string) {
-    const res = (a: any, b: any) => a[field] < b[field] ? -1 : 1;
+    const res = (a: any, b: any) => (a[field] < b[field] ? -1 : 1);
     return res;
   }
 }

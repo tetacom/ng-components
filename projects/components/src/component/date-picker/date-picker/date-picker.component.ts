@@ -7,18 +7,17 @@ import {
   EventEmitter,
   forwardRef,
   HostBinding,
-  Input, OnChanges,
+  Input,
+  OnChanges,
   OnInit,
-  Output, SimpleChanges,
+  Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
-import {
-  maskitoDateOptionsGenerator,
-  maskitoDateTimeOptionsGenerator,
-} from '@maskito/kit';
+import { maskitoDateOptionsGenerator, maskitoDateTimeOptionsGenerator } from '@maskito/kit';
 import dayjs from 'dayjs';
-import {lastValueFrom, Observable, ReplaySubject, take} from 'rxjs';
+import { lastValueFrom, Observable, ReplaySubject, take } from 'rxjs';
 
 import { Align } from '../../../common/enum/align.enum';
 import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
@@ -26,7 +25,7 @@ import { viewType } from '../../../common/model/view-type.model';
 import { BasePicker } from '../base-picker';
 import { DatePeriod } from '../model/date-period';
 import { TetaConfigService } from '../../../locale/teta-config.service';
-import {TetaLocalisation} from "../../../locale/teta-localisation";
+import { TetaLocalisation } from '../../../locale/teta-localisation';
 import { DateCalendarComponent } from './date-calendar/date-calendar.component';
 import { DropdownContentDirective } from '../../dropdown/dropdown-content.directive';
 import { IconComponent } from '../../icon/icon/icon.component';
@@ -42,29 +41,26 @@ export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-    selector: 'teta-date-picker',
-    templateUrl: './date-picker.component.html',
-    styleUrls: ['./date-picker.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [DATE_PICKER_CONTROL_VALUE_ACCESSOR, DatePipe],
-    standalone: true,
-    imports: [
-        DropdownComponent,
-        DropdownHeadDirective,
-        NgClass,
-        InputComponent,
-        FormsModule,
-        MaskitoModule,
-        IconComponent,
-        DropdownContentDirective,
-        DateCalendarComponent,
-        AsyncPipe,
-    ],
+  selector: 'teta-date-picker',
+  templateUrl: './date-picker.component.html',
+  styleUrls: ['./date-picker.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DATE_PICKER_CONTROL_VALUE_ACCESSOR, DatePipe],
+  standalone: true,
+  imports: [
+    DropdownComponent,
+    DropdownHeadDirective,
+    NgClass,
+    InputComponent,
+    FormsModule,
+    MaskitoModule,
+    IconComponent,
+    DropdownContentDirective,
+    DateCalendarComponent,
+    AsyncPipe,
+  ],
 })
-export class DatePickerComponent
-  extends BasePicker
-  implements OnInit, ControlValueAccessor,OnChanges
-{
+export class DatePickerComponent extends BasePicker implements OnInit, ControlValueAccessor, OnChanges {
   @Input() date: Date | string | number = null;
   public locale: Observable<TetaLocalisation>;
   @Input() showTime = false;
@@ -88,8 +84,7 @@ export class DatePickerComponent
 
   @ViewChild('input') input: ElementRef;
   @Output() selectDate: EventEmitter<Date> = new EventEmitter<Date>();
-  public selectedDate: ReplaySubject<Date | string | number> =
-    new ReplaySubject<Date | string | number>(1);
+  public selectedDate: ReplaySubject<Date | string | number> = new ReplaySubject<Date | string | number>(1);
   public mask = '';
   @HostBinding('class.datepicker') private readonly classDatepicker = true;
   @HostBinding('class.datepicker-time') get dateTimeClass() {
@@ -117,15 +112,15 @@ export class DatePickerComponent
     this.prepareInput(true);
   }
 
-  async prepareInput(isFirstRender?:boolean) {
+  async prepareInput(isFirstRender?: boolean) {
     const config = await lastValueFrom(this.localeService.locale.pipe(take(1)));
     const str = this.date ? this.getLocaleString(this.date) : '';
     let option;
     const setMinMax = () => {
-      if (this.minDate&&!isFirstRender) {
+      if (this.minDate && !isFirstRender) {
         option.min = dayjs(new Date(this.minDate)).startOf('day');
       }
-      if (this.maxDate&&!isFirstRender) {
+      if (this.maxDate && !isFirstRender) {
         option.max = dayjs(new Date(this.maxDate)).endOf('day');
       }
     };
@@ -151,24 +146,22 @@ export class DatePickerComponent
   }
 
   onBlur() {
-      if (this.allowNull && this.inputText.trim() === '') {
-        this.setDate(null);
-        this.emitValue(null);
-      } else {
-        const val = this.inputText.split(',');
-        const { day, year, month } = this.getDateFromStr(val[0]);
-        const { mins, hours } = this.getTimeFromStr(val[1]);
-        if (day && year && month) {
-          let date = new Date(year, month - 1, day);
-          if (this.showTime) {
-            date = new Date(date.setHours(hours || 0, mins || 0));
-          }
-          this.changeSelectedDate(
-            this.getAvailableDate(this.minDate, this.maxDate, date)
-          );
-        } else {
-          this.setDate(this.date);
+    if (this.allowNull && this.inputText.trim() === '') {
+      this.setDate(null);
+      this.emitValue(null);
+    } else {
+      const val = this.inputText.split(',');
+      const { day, year, month } = this.getDateFromStr(val[0]);
+      const { mins, hours } = this.getTimeFromStr(val[1]);
+      if (day && year && month) {
+        let date = new Date(year, month - 1, day);
+        if (this.showTime) {
+          date = new Date(date.setHours(hours || 0, mins || 0));
         }
+        this.changeSelectedDate(this.getAvailableDate(this.minDate, this.maxDate, date));
+      } else {
+        this.setDate(this.date);
+      }
     }
   }
 
@@ -184,8 +177,7 @@ export class DatePickerComponent
     }
   }
 
-  onChange(date: Date) {
-  }
+  onChange(date: Date) {}
 
   registerOnChange(fn: (date: Date) => any): void {
     this.onChange = fn;
@@ -209,6 +201,6 @@ export class DatePickerComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.prepareInput(false)
+    this.prepareInput(false);
   }
 }

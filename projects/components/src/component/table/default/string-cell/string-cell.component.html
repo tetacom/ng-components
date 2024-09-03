@@ -1,17 +1,20 @@
-<span [style.display]="edit ? 'none' : 'block'"
+<span
+  [style.display]="edit ? 'none' : 'block'"
   class="cell-text"
   [tetaHint]="row[column.name]"
   [align]="align.auto"
   [appendToBody]="true"
   [overflownOnly]="true"
-  [class.cell-text_disabled]="!editable">
-  {{control.value}}
+  [class.cell-text_disabled]="!editable"
+>
+  {{ control.value }}
 </span>
 @if (edit) {
-  <input #input
-    type="text"
-    class="input row_auto border-radius-0"
-    (keydown.enter)='input.blur()'
-    [formControl]='control'/>
+<input
+  #input
+  type="text"
+  class="input row_auto border-radius-0"
+  (keydown.enter)="input.blur()"
+  [formControl]="control"
+/>
 }
-

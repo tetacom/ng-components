@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, takeWhile } from 'rxjs/operators';
 
@@ -27,22 +20,22 @@ import { FormsModule } from '@angular/forms';
 import { CheckboxComponent } from '../../../checkbox/checkbox/checkbox.component';
 
 @Component({
-    selector: 'teta-visibility-dropdown-tab',
-    templateUrl: './visibility-dropdown-tab.component.html',
-    styleUrls: ['./visibility-dropdown-tab.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        CheckboxComponent,
-        FormsModule,
-        ScrollableComponent,
-        TreeComponent,
-        TetaTemplateDirective,
-        TreeItemToggleComponent,
-        ToolbarComponent,
-        ButtonComponent,
-        AsyncPipe,
-    ],
+  selector: 'teta-visibility-dropdown-tab',
+  templateUrl: './visibility-dropdown-tab.component.html',
+  styleUrls: ['./visibility-dropdown-tab.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CheckboxComponent,
+    FormsModule,
+    ScrollableComponent,
+    TreeComponent,
+    TetaTemplateDirective,
+    TreeItemToggleComponent,
+    ToolbarComponent,
+    ButtonComponent,
+    AsyncPipe,
+  ],
 })
 export class VisibilityDropdownTabComponent<T> implements OnDestroy {
   @Input() columns: ITreeData[];
@@ -56,7 +49,7 @@ export class VisibilityDropdownTabComponent<T> implements OnDestroy {
 
   get openItems() {
     if (this._openItems == null) {
-      this._openItems = this.columns.map(_ => _);
+      this._openItems = this.columns.map((_) => _);
     }
     return this._openItems;
   }
@@ -81,10 +74,10 @@ export class VisibilityDropdownTabComponent<T> implements OnDestroy {
     this.locale = this._config.locale;
     this._svc.hiddenColumns
       .pipe(
-        takeWhile(_ => this._alive),
-        map(_ => [..._])
+        takeWhile((_) => this._alive),
+        map((_) => [..._])
       )
-      .subscribe(_ => {
+      .subscribe((_) => {
         this.hiddenColumns = _;
       });
   }
@@ -98,7 +91,7 @@ export class VisibilityDropdownTabComponent<T> implements OnDestroy {
       return true;
     }
     const columns = ArrayUtil.flatten(this.columns, 'columns');
-    const notHidden = columns.find(_ => this.hiddenColumns.indexOf(_.name) < 0);
+    const notHidden = columns.find((_) => this.hiddenColumns.indexOf(_.name) < 0);
     if (!notHidden) {
       return false;
     }
@@ -109,9 +102,7 @@ export class VisibilityDropdownTabComponent<T> implements OnDestroy {
     if (value) {
       this.hiddenColumns = [];
     } else {
-      this.hiddenColumns = ArrayUtil.flatten(this.columns, 'columns').map(
-        _ => _.name
-      );
+      this.hiddenColumns = ArrayUtil.flatten(this.columns, 'columns').map((_) => _.name);
     }
   }
 
@@ -119,35 +110,27 @@ export class VisibilityDropdownTabComponent<T> implements OnDestroy {
     this._svc.setHiddenColumns(this.hiddenColumns);
   }
 
-  compareItems = (item: any) => item.name ;
+  compareItems = (item: any) => item.name;
 
   setColumnVisibility(item: TableColumn, visible: boolean) {
     this.setChildrenVisibility(item, visible, this.hiddenColumns);
     this.setParentsVisibility(item, visible, this.hiddenColumns);
   }
 
-  setChildrenVisibility = (
-    column: TableColumn,
-    visible: boolean,
-    hiddenColumns: string[]
-  ) => {
+  setChildrenVisibility = (column: TableColumn, visible: boolean, hiddenColumns: string[]) => {
     if (visible) {
       this.showColumn(column, hiddenColumns);
     } else {
       this.hideColumn(column, hiddenColumns);
     }
     if (column.columns) {
-      column.columns.forEach(x => {
+      column.columns.forEach((x) => {
         this.setChildrenVisibility(x, visible, hiddenColumns);
       });
     }
   };
 
-  setParentsVisibility = (
-    column: TableColumn,
-    visible: boolean,
-    hiddenColumns: string[]
-  ) => {
+  setParentsVisibility = (column: TableColumn, visible: boolean, hiddenColumns: string[]) => {
     if (!visible) {
       this.hideParents(column, hiddenColumns);
     } else {
@@ -169,7 +152,7 @@ export class VisibilityDropdownTabComponent<T> implements OnDestroy {
       parent &&
       !this.columnIsHidden(parent) &&
       parent.columns &&
-      parent.columns.every(_ => this.columnIsHidden(_))
+      parent.columns.every((_) => this.columnIsHidden(_))
     ) {
       this.hideColumn(parent, hiddenColumns);
       this.hideParents(parent, hiddenColumns);
@@ -184,15 +167,8 @@ export class VisibilityDropdownTabComponent<T> implements OnDestroy {
     hiddenColumns.splice(hiddenColumns.indexOf(column.name), 1);
   }
 
-  private findParentColumn(
-    column: TableColumn,
-    columns: TableColumn[]
-  ): TableColumn | null {
-    return ArrayUtil.findRecursive(
-      columns,
-      iterableNode => iterableNode.columns?.indexOf(column) >= 0,
-      'columns'
-    );
+  private findParentColumn(column: TableColumn, columns: TableColumn[]): TableColumn | null {
+    return ArrayUtil.findRecursive(columns, (iterableNode) => iterableNode.columns?.indexOf(column) >= 0, 'columns');
   }
 
   ngOnDestroy(): void {

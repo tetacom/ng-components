@@ -1,51 +1,45 @@
-import {Directive, ElementRef, EventEmitter, HostListener, Input, Output} from '@angular/core';
-import {DragPointType} from '../model/enum/drag-point-type';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { DragPointType } from '../model/enum/drag-point-type';
 
 @Directive({
   selector: '[tetaDraggablePoint]',
   exportAs: 'tetaDraggablePoint',
-  standalone:true
+  standalone: true,
 })
 export class DraggablePointDirective {
   @Input() tetaDraggablePoint: boolean;
   @Input() dragDirection: DragPointType;
-  @Input() allowDrag: (point: {
-    x: number,
-    y: number,
-    deltaX: number,
-    deltaY: number
-  }) => boolean;
+  @Input() allowDrag: (point: { x: number; y: number; deltaX: number; deltaY: number }) => boolean;
 
   private startPosition: {
-    x: number,
+    x: number;
     y: number;
   };
 
   private transformCache: {
-    x: number,
+    x: number;
     y: number;
   };
 
-  constructor(private _elementRef: ElementRef) {
-  }
+  constructor(private _elementRef: ElementRef) {}
 
   @Output() moveStart = new EventEmitter<{
-    x: number,
-    y: number
+    x: number;
+    y: number;
   }>();
 
   @Output() moveProcess = new EventEmitter<{
-    x: number,
-    y: number,
-    deltaX: number,
-    deltaY: number
+    x: number;
+    y: number;
+    deltaX: number;
+    deltaY: number;
   }>();
 
   @Output() moveEnd = new EventEmitter<{
-    x: number,
-    y: number,
-    deltaX: number,
-    deltaY: number
+    x: number;
+    y: number;
+    deltaX: number;
+    deltaY: number;
   }>();
 
   @HostListener('mousedown', ['$event'])
@@ -58,7 +52,7 @@ export class DraggablePointDirective {
     event.preventDefault();
     this.startPosition = {
       x: event.x,
-      y: event.y
+      y: event.y,
     };
     this.moveStart.emit(this.startPosition);
   }
@@ -75,12 +69,15 @@ export class DraggablePointDirective {
       if (this.dragDirection === DragPointType.y) {
         deltaX = 0;
       }
-      if (this.allowDrag && !this.allowDrag({
-        x: event.x,
-        y: event.y,
-        deltaX,
-        deltaY
-      })) {
+      if (
+        this.allowDrag &&
+        !this.allowDrag({
+          x: event.x,
+          y: event.y,
+          deltaX,
+          deltaY,
+        })
+      ) {
         this.startPosition = null;
         return;
       }
@@ -90,14 +87,14 @@ export class DraggablePointDirective {
       } else {
         this.transformCache = {
           x: deltaX,
-          y: deltaY
+          y: deltaY,
         };
       }
       this.moveEnd.emit({
         x: event.x,
         y: event.y,
         deltaX,
-        deltaY
+        deltaY,
       });
     }
     this.startPosition = null;
@@ -113,12 +110,15 @@ export class DraggablePointDirective {
         deltaX = this.transformCache.x + deltaX;
         deltaY = this.transformCache.y + deltaY;
       }
-      if (this.allowDrag && !this.allowDrag({
-        x: event.x,
-        y: event.y,
-        deltaX,
-        deltaY
-      })) {
+      if (
+        this.allowDrag &&
+        !this.allowDrag({
+          x: event.x,
+          y: event.y,
+          deltaX,
+          deltaY,
+        })
+      ) {
         return;
       }
       if (this.dragDirection === DragPointType.x) {
@@ -134,7 +134,7 @@ export class DraggablePointDirective {
         x: event.x,
         y: event.y,
         deltaX,
-        deltaY
+        deltaY,
       });
     }
   }

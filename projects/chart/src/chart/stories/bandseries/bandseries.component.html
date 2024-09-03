@@ -1,17 +1,18 @@
-@if ({x: x | async, y: y | async}; as scales) {
-  @for (band of _series.data; track band) {
-    <svg:rect [attr.x]="scales.x(band.x)"
-              [attr.y]="scales.y(band.y) - scales.y.bandwidth() / 2"
-              [attr.width]="scales.x(band.x1) - scales.x(band.x)"
-              fill="red"
-              [attr.height]="scales.y.bandwidth()">
-    </svg:rect>
-    <svg:text
-      text-anchor="middle"
-      dominant-baseline="middle"
-      class="label font-caption fill-text-90"
-      [attr.x]="scales.x(band.x) + (scales.x(band.x1) - scales.x(band.x)) / 2"
-      [attr.y]="scales.y(band.y)">{{ band.y }}
-    </svg:text>
-  }
-}
+@if ({x: x | async, y: y | async}; as scales) { @for (band of _series.data; track band) {
+<svg:rect
+  [attr.x]="scales.x(band.x)"
+  [attr.y]="scales.y(band.y) - scales.y.bandwidth() / 2"
+  [attr.width]="scales.x(band.x1) - scales.x(band.x)"
+  fill="red"
+  [attr.height]="scales.y.bandwidth()"
+></svg:rect>
+<svg:text
+  text-anchor="middle"
+  dominant-baseline="middle"
+  class="label font-caption fill-text-90"
+  [attr.x]="scales.x(band.x) + (scales.x(band.x1) - scales.x(band.x)) / 2"
+  [attr.y]="scales.y(band.y)"
+>
+  {{ band.y }}
+</svg:text>
+} }

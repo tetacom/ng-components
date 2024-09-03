@@ -1,7 +1,3 @@
 @for (message of messages; track message; let i = $index) {
-  <teta-message
-    (closed)="closedItem($event)"
-    [message]="message"
-    [index]="i">
-  </teta-message>
+<teta-message (closed)="closedItem($event)" [message]="message" [index]="i"> </teta-message>
 }

@@ -9,5 +9,5 @@ export * from './chart/legend/legend.component';
 export * from './chart/model/public-api';
 export * from './chart/chart-container/series/public-api';
 export * from './chart/core/axis/axis';
-export * from './chart/core/utils/public-api'
-export * from './observable/public-api'
+export * from './chart/core/utils/public-api';
+export * from './observable/public-api';

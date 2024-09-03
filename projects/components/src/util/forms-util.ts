@@ -17,7 +17,7 @@ import { TableColumn } from '../component/table/contract/table-column';
 export class FormsUtil {
   static validateAllFormFields(formGroup: UntypedFormGroup) {
     formGroup.updateValueAndValidity();
-    Object.keys(formGroup.controls).forEach(field => {
+    Object.keys(formGroup.controls).forEach((field) => {
       const control = formGroup.get(field);
       if (control instanceof UntypedFormControl) {
         control.markAsTouched({ onlySelf: true });
@@ -29,43 +29,26 @@ export class FormsUtil {
   }
 
   static controlIsInvalid(formGroup: UntypedFormGroup, controlName: string) {
-    return (
-      formGroup.controls[controlName]?.invalid &&
-      formGroup.controls[controlName]?.dirty
-    );
+    return formGroup.controls[controlName]?.invalid && formGroup.controls[controlName]?.dirty;
   }
 
-  static getControlErrors(
-    formGroup: UntypedFormGroup,
-    controlName: string
-  ): string[] {
+  static getControlErrors(formGroup: UntypedFormGroup, controlName: string): string[] {
     if (FormsUtil.controlIsInvalid(formGroup, controlName)) {
       return Object.keys(formGroup.controls[controlName]?.errors);
     }
     return [];
   }
 
-  static matchValuesValidator(
-    matchTo: string
-  ): (control: AbstractControl) => ValidationErrors | null {
+  static matchValuesValidator(matchTo: string): (control: AbstractControl) => ValidationErrors | null {
     return (control: AbstractControl): ValidationErrors | null =>
-      !!control.parent &&
-      !!control.parent.value &&
-      control.value === control.parent.controls[matchTo].value
+      !!control.parent && !!control.parent.value && control.value === control.parent.controls[matchTo].value
         ? null
         : { isMatching: false };
   }
 
-  static requiredIf(
-    value: boolean
-  ): (control: AbstractControl) => ValidationErrors | null {
+  static requiredIf(value: boolean): (control: AbstractControl) => ValidationErrors | null {
     return (control: AbstractControl): ValidationErrors | null =>
-      !!control.parent &&
-      !!control.parent.value &&
-      control.value != null &&
-      value
-        ? null
-        : { isMatching: false };
+      !!control.parent && !!control.parent.value && control.value != null && value ? null : { isMatching: false };
   }
 
   static initFormFromColumns(columns: TableColumn[], dataItem: any) {
@@ -87,10 +70,7 @@ export class FormsUtil {
       {
         validators: FormsUtil.getValidators(column),
         updateOn:
-          column.filterType === FilterType.number ||
-          column.filterType === FilterType.string
-            ? 'blur'
-            : 'change',
+          column.filterType === FilterType.number || column.filterType === FilterType.string ? 'blur' : 'change',
       }
     );
   }

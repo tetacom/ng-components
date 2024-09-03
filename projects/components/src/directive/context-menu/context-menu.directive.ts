@@ -22,13 +22,10 @@ import { PositionUtil } from '../../common/util/position-util';
 import { DynamicContentBaseDirective } from '../dynamic-content-base.directive';
 
 @Directive({
-    selector: '[tetaContextMenu]',
-    standalone: true,
+  selector: '[tetaContextMenu]',
+  standalone: true,
 })
-export class ContextMenuDirective
-  extends DynamicContentBaseDirective
-  implements OnDestroy
-{
+export class ContextMenuDirective extends DynamicContentBaseDirective implements OnDestroy {
   /**
    * Строка, шаблон или компонент для создания контекстного меню
    */
@@ -70,10 +67,7 @@ export class ContextMenuDirective
 
   @HostListener('click', ['$event'])
   click(event: MouseEvent): void {
-    if (
-      this._componentRef &&
-      DomUtil.clickedInside(this._componentRef.location.nativeElement, event)
-    ) {
+    if (this._componentRef && DomUtil.clickedInside(this._componentRef.location.nativeElement, event)) {
       event.preventDefault();
       event.stopPropagation();
     }
@@ -85,10 +79,7 @@ export class ContextMenuDirective
     if (
       this._open &&
       this._componentRef &&
-      (!DomUtil.clickedInside(
-        this._componentRef.location.nativeElement,
-        event
-      ) ||
+      (!DomUtil.clickedInside(this._componentRef.location.nativeElement, event) ||
         this.autoCloseIgnore.indexOf('inside') < 0)
     ) {
       this.destroyContentRef();
@@ -104,7 +95,7 @@ export class ContextMenuDirective
     window.removeEventListener('scroll', this.scrollListener, true);
   }
 
-  private scrollListener = event => {
+  private scrollListener = (event) => {
     if (
       this._open &&
       this._componentRef &&
@@ -134,10 +125,7 @@ export class ContextMenuDirective
         this.align,
         this.verticalAlign
       );
-      PositionUtil.setElementPosition(
-        this._componentRef.location.nativeElement,
-        position
-      );
+      PositionUtil.setElementPosition(this._componentRef.location.nativeElement, position);
     }
   }
 
@@ -147,10 +135,7 @@ export class ContextMenuDirective
     }
     this._eventPoint = event;
     this._componentRef = this.createContentRef();
-    this._componentRef.instance.className = [
-      ...ArrayUtil.asArray(this.className),
-      'context-menu',
-    ];
+    this._componentRef.instance.className = [...ArrayUtil.asArray(this.className), 'context-menu'];
     this.openChange.emit(true);
   }
 }

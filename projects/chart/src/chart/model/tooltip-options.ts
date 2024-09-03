@@ -1,6 +1,6 @@
 import { TooltipTracking } from './enum/tooltip-tracking';
 import { IDisplayTooltip } from './i-display-tooltip';
-import {TemplateRef} from "@angular/core";
+import { TemplateRef } from '@angular/core';
 
 export interface TooltipOptions {
   enable?: boolean;
@@ -11,7 +11,7 @@ export interface TooltipOptions {
   template?: TemplateRef<IDisplayTooltip[]>;
   format?: (data: IDisplayTooltip[]) => string;
   padding?: {
-    x?: number,
-    y?: number
-  }
+    x?: number;
+    y?: number;
+  };
 }

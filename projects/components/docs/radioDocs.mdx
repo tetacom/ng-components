@@ -1,106 +1,118 @@
-import {Meta} from "@storybook/blocks";
-import RadioStories from "../src/component/radio/Radio.stories";
+import { Meta } from '@storybook/blocks';
+import RadioStories from '../src/component/radio/Radio.stories';
 
-<Meta of={RadioStories}/>
+<Meta of={RadioStories} />
 
-<div class='column gap-24'>
+<div class="column gap-24">
   <h1>Радиокнопка</h1>
-  <div class='column'>
+  <div class="column">
     <p>Radiobutton (радиокнопка) — компонент, который используется для выбора одного значения из нескольких.</p>
   </div>
   <h3>Функции</h3>
-  <div class='column'>
-    <p>радиокнопку используют, когда вариантов выбора немного и стараются не задавать им два значения. Разрешено
-      использовать не более трех радиокнопок.</p>
-    <p>В качестве навигации их использовать не стоит, так как для этого лучше подходят табы (ссылка), навигационные
-      панели и группу выбора.</p>
+  <div class="column">
+    <p>
+      радиокнопку используют, когда вариантов выбора немного и стараются не задавать им два значения. Разрешено
+      использовать не более трех радиокнопок.
+    </p>
+    <p>
+      В качестве навигации их использовать не стоит, так как для этого лучше подходят табы (ссылка), навигационные
+      панели и группу выбора.
+    </p>
     <p>При клике пользователь переводит радиокнопку из состояния False в Active.</p>
   </div>
   <h3>Как использовать</h3>
-  <div class='column'>
-    <p>Создаем обертку для наших радиокнопок при помощи <code>teta-radio</code>. радиокнопки которые лежат внутри
-      будут объединены в лист радиокнопок, т.е. среди них может быть выделен только один.</p>
-    <p>Для создания радиокнопки нужно использовать <code>teta-radio-button</code>. Свойство <code>value</code>- своеобразный id для листа с радиокнопками</p>
-    <p>Для взаимодействия с листом радиокнопок, нужно передавать в компонент <code>teta-radio</code> свойство <code>ngModel</code> со значением свойства <code>value</code> выбранного <code>teta-radio-button</code></p>
+  <div class="column">
+    <p>
+      Создаем обертку для наших радиокнопок при помощи <code>teta-radio</code>. радиокнопки которые лежат внутри будут
+      объединены в лист радиокнопок, т.е. среди них может быть выделен только один.
+    </p>
+    <p>
+      Для создания радиокнопки нужно использовать <code>teta-radio-button</code>. Свойство <code>value</code>-
+      своеобразный id для листа с радиокнопками
+    </p>
+    <p>
+      Для взаимодействия с листом радиокнопок, нужно передавать в компонент <code>teta-radio</code> свойство{' '}
+      <code>ngModel</code> со значением свойства <code>value</code> выбранного <code>teta-radio-button</code>
+    </p>
   </div>
   <h3>Свойства</h3>
   <h4>teta-radio</h4>
   <table>
     <thead>
-    <tr>
-      <th>Свойство</th>
-      <th>Tип</th>
-      <th>Описание</th>
-    </tr>
+      <tr>
+        <th>Свойство</th>
+        <th>Tип</th>
+        <th>Описание</th>
+      </tr>
     </thead>
     <tbody>
-    <tr>
-      <td class='text-align-center'>
-        <p>inline</p>
-      </td>
-      <td class='text-align-center'>
-        <code>boolean</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Выстраивает радиокнопки в линию</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>disabled</p>
-      </td>
-      <td class='text-align-center'>
-        <code>boolean</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Отключает взаимодействие со всем листом радиокнопок</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>value</p>
-      </td>
-      <td class='text-align-center'>
-        <code>number</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Свойство для взаимодействия с листом радиокнопок (аналог ngModel)</p>
-      </td>
-    </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>inline</p>
+        </td>
+        <td class="text-align-center">
+          <code>boolean</code>
+        </td>
+        <td class="text-align-center">
+          <p>Выстраивает радиокнопки в линию</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>disabled</p>
+        </td>
+        <td class="text-align-center">
+          <code>boolean</code>
+        </td>
+        <td class="text-align-center">
+          <p>Отключает взаимодействие со всем листом радиокнопок</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>value</p>
+        </td>
+        <td class="text-align-center">
+          <code>number</code>
+        </td>
+        <td class="text-align-center">
+          <p>Свойство для взаимодействия с листом радиокнопок (аналог ngModel)</p>
+        </td>
+      </tr>
     </tbody>
   </table>
   <h4>teta-radio-button</h4>
   <table>
     <thead>
-    <tr>
-      <th>Свойство</th>
-      <th>Tип</th>
-      <th>Описание</th>
-    </tr>
+      <tr>
+        <th>Свойство</th>
+        <th>Tип</th>
+        <th>Описание</th>
+      </tr>
     </thead>
     <tbody>
-    <tr>
-      <td class='text-align-center'>
-        <p>value</p>
-      </td>
-      <td class='text-align-center'>
-        <code>number</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Свойство, которое является id радиокнопки. Испорльзуется при выборе радиокнопки.</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>disabled</p>
-      </td>
-      <td class='text-align-center'>
-        <code>boolean</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Отключает взаимодействие с радиокнопкой</p>
-      </td>
-    </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>value</p>
+        </td>
+        <td class="text-align-center">
+          <code>number</code>
+        </td>
+        <td class="text-align-center">
+          <p>Свойство, которое является id радиокнопки. Испорльзуется при выборе радиокнопки.</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>disabled</p>
+        </td>
+        <td class="text-align-center">
+          <code>boolean</code>
+        </td>
+        <td class="text-align-center">
+          <p>Отключает взаимодействие с радиокнопкой</p>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
