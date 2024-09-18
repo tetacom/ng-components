@@ -254,7 +254,9 @@ html {
   font-size: 10px;
 }
 
-*, *::after, *::before {
+*,
+*::after,
+*::before {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -3227,7 +3229,9 @@ a {
   background: var(--color-global-bgcard);
 }
 
-.text-field, .input, .textarea {
+.text-field,
+.input,
+.textarea {
   padding: 6px 8px;
   border: solid 1px var(--color-text-5);
   background-color: var(--color-text-5);
@@ -3248,57 +3252,98 @@ a {
   transition: border-color 0.4s, background-color 0.4s;
   border-radius: var(--radius-field-round);
 }
-.text-field_brick, .input_brick, .textarea_brick {
+.text-field_brick,
+.input_brick,
+.textarea_brick {
   border-radius: var(--radius-field-brick);
 }
-.text-field_circle, .input_circle, .textarea_circle {
+.text-field_circle,
+.input_circle,
+.textarea_circle {
   border-radius: var(--radius-field-circle);
 }
-.text-field_rounded, .input_rounded, .textarea_rounded {
+.text-field_rounded,
+.input_rounded,
+.textarea_rounded {
   border-radius: var(--radius-field-round);
 }
-.text-field_invalid, .input_invalid, .textarea_invalid {
+.text-field_invalid,
+.input_invalid,
+.textarea_invalid {
   border-color: var(--color-red-50);
 }
-.text-field_required::after, .input_required::after, .textarea_required::after {
+.text-field_required::after,
+.input_required::after,
+.textarea_required::after {
   margin-left: 4px;
   content: "*";
   color: var(--color-red-50);
 }
-.text-field::placeholder, .input::placeholder, .textarea::placeholder {
+.text-field::placeholder,
+.input::placeholder,
+.textarea::placeholder {
   color: var(--color-text-40);
 }
-.text-field:focus-within, .text-field:focus, .input:focus-within, .input:focus, .textarea:focus-within, .textarea:focus {
+.text-field:focus-within, .text-field:focus,
+.input:focus-within,
+.input:focus,
+.textarea:focus-within,
+.textarea:focus {
   border-color: var(--color-primary-50);
 }
-.text-field:focus-within::placeholder, .input:focus-within::placeholder, .textarea:focus-within::placeholder {
+.text-field:focus-within::placeholder,
+.input:focus-within::placeholder,
+.textarea:focus-within::placeholder {
   color: var(--color-text-20);
 }
-.text-field:focus-within input::placeholder, .input:focus-within input::placeholder, .textarea:focus-within input::placeholder {
+.text-field:focus-within input::placeholder,
+.input:focus-within input::placeholder,
+.textarea:focus-within input::placeholder {
   color: var(--color-text-20);
 }
-.text-field:disabled, .text-field[disabled], .text-field_disabled, .input:disabled, .input[disabled], .input_disabled, .textarea:disabled, .textarea[disabled], .textarea_disabled {
+.text-field:disabled, .text-field[disabled], .text-field_disabled,
+.input:disabled,
+.input[disabled],
+.input_disabled,
+.textarea:disabled,
+.textarea[disabled],
+.textarea_disabled {
   border: 0;
   background: var(--color-text-5);
   color: var(--color-text-20);
 }
-.text-field:hover:not([disabled]):not(.text-field_disabled, .input_disabled, .textarea_disabled):not(:focus-within), .input:hover:not([disabled]):not(.text-field_disabled, .input_disabled, .textarea_disabled):not(:focus-within), .textarea:hover:not([disabled]):not(.text-field_disabled, .input_disabled, .textarea_disabled):not(:focus-within) {
+.text-field:hover:not([disabled]):not(.text-field_disabled,
+.input_disabled,
+.textarea_disabled):not(:focus-within),
+.input:hover:not([disabled]):not(.text-field_disabled,
+.input_disabled,
+.textarea_disabled):not(:focus-within),
+.textarea:hover:not([disabled]):not(.text-field_disabled,
+.input_disabled,
+.textarea_disabled):not(:focus-within) {
   border-color: var(--color-text-10);
   background-color: var(--color-text-10);
 }
-.text-field .close-icon, .input .close-icon, .textarea .close-icon {
+.text-field .close-icon,
+.input .close-icon,
+.textarea .close-icon {
   display: none;
   right: 4px;
 }
-.text-field .close-icon:hover, .input .close-icon:hover, .textarea .close-icon:hover {
+.text-field .close-icon:hover,
+.input .close-icon:hover,
+.textarea .close-icon:hover {
   cursor: pointer;
   display: flex;
 }
-.text-field:focus-within .close-icon, .input:focus-within .close-icon, .textarea:focus-within .close-icon {
+.text-field:focus-within .close-icon,
+.input:focus-within .close-icon,
+.textarea:focus-within .close-icon {
   display: flex;
 }
 
-.text-field, .input {
+.text-field,
+.input {
   height: 28px;
 }
 
@@ -6285,6 +6330,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 1.5px;
 }
-.divider div:first-child, .divider div:last-child {
+.divider div:first-child,
+.divider div:last-child {
   flex-grow: 1;
 }
