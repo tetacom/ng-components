@@ -1,17 +1,20 @@
 @if (label?.length > 0) {
-  <div class="font-caption color-text-70 align-center row nowrap overflow-hidden text-overflow-ellipsis"
-    [class.row_6]="horizontal"
-    [class.text-field_required]="required"
-    >
-    <span class="overflow-hidden text-overflow-ellipsis"
-      [tetaHint]="hint ?? label"
-      [align]="align.left"
-      [overflownOnly]="!hint || hint === label">
-      {{label}}
-    </span>
-  </div>
+<div
+  class="font-caption color-text-70 align-center row nowrap overflow-hidden text-overflow-ellipsis"
+  [class.row_6]="horizontal"
+  [class.text-field_required]="required"
+>
+  <span
+    class="overflow-hidden text-overflow-ellipsis"
+    [tetaHint]="hint ?? label"
+    [align]="align.left"
+    [overflownOnly]="!hint || hint === label"
+  >
+    {{ label }}
+  </span>
+</div>
 }
-<div [class]="'input-container input_'+viewType" [class.row_6]="horizontal">
+<div [class]="'input-container input_' + viewType" [class.row_6]="horizontal">
   <ng-content></ng-content>
   <div class="input-message font-error-message font-caption">
     <ng-content select="message"></ng-content>

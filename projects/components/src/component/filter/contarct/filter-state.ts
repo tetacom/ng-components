@@ -26,33 +26,23 @@ export class FilterState {
   }) {
     if (options) {
       if (options.stringFilters && options.stringFilters.length) {
-        this.stringFilters = options.stringFilters.map(
-          (x: any) => new StringFilter(x)
-        );
+        this.stringFilters = options.stringFilters.map((x: any) => new StringFilter(x));
       }
 
       if (options.booleanFilters && options.booleanFilters.length) {
-        this.booleanFilters = options.booleanFilters.map(
-          (x: any) => new BooleanFilter(x)
-        );
+        this.booleanFilters = options.booleanFilters.map((x: any) => new BooleanFilter(x));
       }
 
       if (options.numericFilters && options.numericFilters.length) {
-        this.numericFilters = options.numericFilters.map(
-          (x: any) => new NumericFilter(x)
-        );
+        this.numericFilters = options.numericFilters.map((x: any) => new NumericFilter(x));
       }
 
       if (options.dateFilters && options.dateFilters.length) {
-        this.dateFilters = options.dateFilters.map(
-          (x: any) => new DateFilter(x)
-        );
+        this.dateFilters = options.dateFilters.map((x: any) => new DateFilter(x));
       }
 
       if (options.listFilters && options.listFilters.length) {
-        this.listFilters = options.listFilters.map(
-          (x: any) => new ListFilter(x)
-        );
+        this.listFilters = options.listFilters.map((x: any) => new ListFilter(x));
       }
 
       if (options.sortParams && options.sortParams.length) {

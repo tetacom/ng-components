@@ -8,9 +8,8 @@ describe('AccordionHeadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AccordionHeadComponent]
-})
-    .compileComponents();
+      imports: [AccordionHeadComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

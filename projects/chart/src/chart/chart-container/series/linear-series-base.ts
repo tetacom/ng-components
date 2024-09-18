@@ -1,20 +1,6 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-import {
-  BehaviorSubject,
-  combineLatest,
-  map,
-  Observable,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, tap, withLatestFrom } from 'rxjs';
 
 import { SeriesBaseComponent } from '../../base/series-base.component';
 import { BasePoint } from '../../model/base-point';
@@ -28,18 +14,12 @@ import { ZoomService } from '../../service/zoom.service';
 
 @Component({
   template: '',
-  standalone:true,
+  standalone: true,
 })
-export class LinearSeriesBase<T extends BasePoint>
-  extends SeriesBaseComponent<T>
-  implements OnInit, OnDestroy
-{
+export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T> implements OnInit, OnDestroy {
   public defaultClipPointsMapping: Map<
     ClipPointsDirection,
-    (
-      min: number,
-      max: number
-    ) => (point: BasePoint, idx: number, arr: Array<BasePoint>) => {}
+    (min: number, max: number) => (point: BasePoint, idx: number, arr: Array<BasePoint>) => {}
   > = new Map();
 
   transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
@@ -57,12 +37,7 @@ export class LinearSeriesBase<T extends BasePoint>
     this.__series = series;
 
     this.markers = this.__series.data?.filter(
-      _ =>
-        _?.marker &&
-        _?.x !== undefined &&
-        _?.y !== undefined &&
-        _?.x !== null &&
-        _?.y !== null
+      (_) => _?.marker && _?.x !== undefined && _?.y !== undefined && _?.x !== null && _?.y !== null
     );
   }
 
@@ -81,39 +56,35 @@ export class LinearSeriesBase<T extends BasePoint>
   }
 
   override ngOnInit(): void {
-    const filterX =
-      (min: number, max: number) =>
-      (point: BasePoint, idx: number, arr: Array<BasePoint>) => {
-        const bigger = min > max ? min : max;
-        const smaller = min > max ? max : min;
-        return (
-          (point.x <= bigger ||
-            point.x1 <= bigger ||
-            (arr[idx - 1] && arr[idx - 1].x <= bigger) ||
-            (arr[idx - 1] && arr[idx - 1].x1 <= bigger)) &&
-          (point.x >= smaller ||
-            point.x1 >= smaller ||
-            (arr[idx + 1] && arr[idx + 1].x >= smaller) ||
-            (arr[idx + 1] && arr[idx + 1].x1 >= smaller))
-        );
-      };
+    const filterX = (min: number, max: number) => (point: BasePoint, idx: number, arr: Array<BasePoint>) => {
+      const bigger = min > max ? min : max;
+      const smaller = min > max ? max : min;
+      return (
+        (point.x <= bigger ||
+          point.x1 <= bigger ||
+          (arr[idx - 1] && arr[idx - 1].x <= bigger) ||
+          (arr[idx - 1] && arr[idx - 1].x1 <= bigger)) &&
+        (point.x >= smaller ||
+          point.x1 >= smaller ||
+          (arr[idx + 1] && arr[idx + 1].x >= smaller) ||
+          (arr[idx + 1] && arr[idx + 1].x1 >= smaller))
+      );
+    };
 
-    const filterY =
-      (min: number, max: number) =>
-      (point: BasePoint, idx: number, arr: Array<BasePoint>) => {
-        const bigger = min > max ? min : max;
-        const smaller = min > max ? max : min;
-        return (
-          (point.y <= bigger ||
-            point.y1 <= bigger ||
-            (arr[idx - 1] && arr[idx - 1].y <= bigger) ||
-            (arr[idx - 1] && arr[idx - 1].y1 <= bigger)) &&
-          (point.y >= smaller ||
-            point.y1 >= smaller ||
-            (arr[idx + 1] && arr[idx + 1].y >= smaller) ||
-            (arr[idx + 1] && arr[idx + 1].y1 >= smaller))
-        );
-      };
+    const filterY = (min: number, max: number) => (point: BasePoint, idx: number, arr: Array<BasePoint>) => {
+      const bigger = min > max ? min : max;
+      const smaller = min > max ? max : min;
+      return (
+        (point.y <= bigger ||
+          point.y1 <= bigger ||
+          (arr[idx - 1] && arr[idx - 1].y <= bigger) ||
+          (arr[idx - 1] && arr[idx - 1].y1 <= bigger)) &&
+        (point.y >= smaller ||
+          point.y1 >= smaller ||
+          (arr[idx + 1] && arr[idx + 1].y >= smaller) ||
+          (arr[idx + 1] && arr[idx + 1].y1 >= smaller))
+      );
+    };
 
     this.defaultClipPointsMapping.set(ClipPointsDirection.x, filterX);
     this.defaultClipPointsMapping.set(ClipPointsDirection.y, filterY);
@@ -123,11 +94,7 @@ export class LinearSeriesBase<T extends BasePoint>
       map((data: [PointerEvent, IScalesMap]) => {
         const [event, { x, y }] = data;
 
-        return this.getTransform(
-          event,
-          x.get(this.series.xAxisIndex).scale,
-          y.get(this.series.yAxisIndex).scale
-        );
+        return this.getTransform(event, x.get(this.series.xAxisIndex).scale, y.get(this.series.yAxisIndex).scale);
       }),
       tap(() => setTimeout(() => this.cdr.detectChanges()))
     );
@@ -142,14 +109,12 @@ export class LinearSeriesBase<T extends BasePoint>
           return '';
         }
 
-        const filter = this.defaultClipPointsMapping.get(
-          this.series.clipPointsDirection
-        );
+        const filter = this.defaultClipPointsMapping.get(this.series.clipPointsDirection);
 
         const line = d3
           .line<BasePoint>()
           .defined(
-            point =>
+            (point) =>
               point.x !== null &&
               point.y !== null &&
               point.x !== undefined &&
@@ -157,8 +122,8 @@ export class LinearSeriesBase<T extends BasePoint>
               !isNaN(point.x) &&
               !isNaN(point.y)
           )
-          .x(point => this.x(point.x))
-          .y(point => this.y(point.y));
+          .x((point) => this.x(point.x))
+          .y((point) => this.y(point.y));
 
         let filteredData = this.series.data;
 
@@ -194,27 +159,14 @@ export class LinearSeriesBase<T extends BasePoint>
 
   ngAfterViewInit() {}
 
-  getTransform(
-    event: any,
-    scaleX: any,
-    scaleY: any
-  ): Pick<BasePoint, 'x' | 'y'> {
+  getTransform(event: any, scaleX: any, scaleY: any): Pick<BasePoint, 'x' | 'y'> {
     if (event.type === 'mouseleave') {
       return null;
     }
     const mouse = [event?.offsetX, event?.offsetY];
 
     const tooltipTracking = this.config?.tooltip?.tracking;
-    const lineIntersection = (
-      p0_x,
-      p0_y,
-      p1_x,
-      p1_y,
-      p2_x,
-      p2_y,
-      p3_x,
-      p3_y
-    ) => {
+    const lineIntersection = (p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y) => {
       const rV = {} as any;
       let s1_x, s1_y, s2_x, s2_y;
       s1_x = p1_x - p0_x;
@@ -223,12 +175,8 @@ export class LinearSeriesBase<T extends BasePoint>
       s2_y = p3_y - p2_y;
 
       let s, t;
-      s =
-        (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) /
-        (-s2_x * s1_y + s1_x * s2_y);
-      t =
-        (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) /
-        (-s2_x * s1_y + s1_x * s2_y);
+      s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / (-s2_x * s1_y + s1_x * s2_y);
+      t = (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / (-s2_x * s1_y + s1_x * s2_y);
 
       if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {
         // Collision detected
@@ -261,14 +209,7 @@ export class LinearSeriesBase<T extends BasePoint>
       );
       const x = scaleX.invert(intersect.x);
       const y = scaleY.invert(intersect.y);
-      if (
-        x !== null &&
-        x !== undefined &&
-        !isNaN(x) &&
-        y !== null &&
-        y !== undefined &&
-        !isNaN(y)
-      ) {
+      if (x !== null && x !== undefined && !isNaN(x) && y !== null && y !== undefined && !isNaN(y)) {
         this.svc.setTooltip({
           point: {
             x: scaleX.invert(intersect.x),
@@ -313,14 +254,7 @@ export class LinearSeriesBase<T extends BasePoint>
       const x = scaleX.invert(intersect.x);
       const y = scaleY.invert(intersect.y);
 
-      if (
-        x !== null &&
-        x !== undefined &&
-        !isNaN(x) &&
-        y !== null &&
-        y !== undefined &&
-        !isNaN(y)
-      ) {
+      if (x !== null && x !== undefined && !isNaN(x) && y !== null && y !== undefined && !isNaN(y)) {
         this.svc.setTooltip({
           point: {
             x: scaleX.invert(intersect.x),
@@ -340,6 +274,6 @@ export class LinearSeriesBase<T extends BasePoint>
         y: intersect.y,
       };
     }
-    return  null
+    return null;
   }
 }

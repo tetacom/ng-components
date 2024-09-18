@@ -34,27 +34,16 @@ export class Series3dHost<T extends Base3dThreePoint> implements OnInit {
   constructor(private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit(): void {
-    if (
-      !Object.prototype.isPrototypeOf.call(
-        Base3dSeriesComponent,
-        this.series.component
-      )
-    ) {
+    if (!Object.prototype.isPrototypeOf.call(Base3dSeriesComponent, this.series.component)) {
       this.series.component = this.seriesMap.get(this.series.type);
     }
-    this._componentRef = this.viewContainerRef.createComponent(
-      this.series.component
-    );
+    this._componentRef = this.viewContainerRef.createComponent(this.series.component);
 
     this._componentRef.instance.series = this.series;
     this._init = true;
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (
-      this._init &&
-      (Object.prototype.hasOwnProperty.call(changes, 'series') ||
-        changes.hasOwnProperty('config'))
-    ) {
+    if (this._init && (Object.prototype.hasOwnProperty.call(changes, 'series') || changes.hasOwnProperty('config'))) {
       this._componentRef.instance.series = this.series;
       this._componentRef.injector.get(ChangeDetectorRef).detectChanges();
     }

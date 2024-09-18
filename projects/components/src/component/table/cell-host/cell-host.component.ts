@@ -19,12 +19,12 @@ import { TableColumn } from '../contract/table-column';
 import { TableRow } from '../contract/table-row';
 
 @Component({
-    selector: 'teta-cell-host',
-    template: '',
-    styleUrls: ['./cell-host.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    viewProviders: [FormsUtil.formProvider],
-    standalone: true,
+  selector: 'teta-cell-host',
+  template: '',
+  styleUrls: ['./cell-host.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [FormsUtil.formProvider],
+  standalone: true,
 })
 export class CellHostComponent<T> implements OnInit, OnChanges {
   @Input() column: TableColumn;
@@ -37,17 +37,10 @@ export class CellHostComponent<T> implements OnInit, OnChanges {
   constructor(private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit(): void {
-    if (
-      !Object.prototype.isPrototypeOf.call(
-        CellComponentBase,
-        this.column.cellComponent
-      )
-    ) {
+    if (!Object.prototype.isPrototypeOf.call(CellComponentBase, this.column.cellComponent)) {
       this.column.cellComponent = getCellComponent(this.column);
     }
-    this._componentRef = this.viewContainerRef.createComponent(
-      this.column.cellComponent
-    );
+    this._componentRef = this.viewContainerRef.createComponent(this.column.cellComponent);
     this._componentRef.instance.column = this.column;
     this._componentRef.instance.row = this.row;
     this._componentRef.instance.filterOptions = this.filterOptions;

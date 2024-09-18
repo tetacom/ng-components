@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {NumericCellComponent} from './numeric-cell.component';
+import { NumericCellComponent } from './numeric-cell.component';
 
 describe('NumericCellComponent', () => {
   let component: NumericCellComponent<any>;
@@ -8,9 +8,8 @@ describe('NumericCellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [NumericCellComponent]
-})
-      .compileComponents();
+      imports: [NumericCellComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

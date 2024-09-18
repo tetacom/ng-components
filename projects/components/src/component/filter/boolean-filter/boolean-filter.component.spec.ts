@@ -8,9 +8,8 @@ describe('BooleanFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [BooleanFilterComponent]
-})
-    .compileComponents();
+      imports: [BooleanFilterComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,20 +1,5 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  NgZone,
-  OnDestroy,
-} from '@angular/core';
-import {
-  animationFrameScheduler,
-  combineLatest,
-  map,
-  Observable,
-  observeOn,
-  shareReplay,
-  withLatestFrom,
-} from 'rxjs';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, NgZone, OnDestroy } from '@angular/core';
+import { animationFrameScheduler, combineLatest, map, Observable, observeOn, shareReplay, withLatestFrom } from 'rxjs';
 
 import { Axis } from '../core/axis/axis';
 import { BasePoint } from '../model/base-point';
@@ -66,7 +51,7 @@ type DisplayPlotBand = {
     AnnotationComponent,
     CrosshairComponent,
     BrushableDirective,
-  ]
+  ],
 })
 export class ChartContainerComponent implements AfterViewInit, OnDestroy {
   config: Observable<IChartConfig>;
@@ -78,22 +63,9 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
   plotBands: Observable<DisplayPlotBand[]>;
 
   private _observer: ResizeObserver;
-  private filterPositionMap = new Map<
-    Opposite,
-    (axis: Axis) => (_: Axis) => boolean
-  >()
-    .set(
-      true,
-      axis => (_: Axis) =>
-        _.options.opposite && _.options.visible && axis.index <= _.index
-    )
-    .set(
-      false,
-      axis => (_: Axis) =>
-        _.options.opposite !== true &&
-        _.options.visible &&
-        _.index <= axis.index
-    );
+  private filterPositionMap = new Map<Opposite, (axis: Axis) => (_: Axis) => boolean>()
+    .set(true, (axis) => (_: Axis) => _.options.opposite && _.options.visible && axis.index <= _.index)
+    .set(false, (axis) => (_: Axis) => _.options.opposite !== true && _.options.visible && _.index <= axis.index);
 
   constructor(
     private _svc: ChartService,
@@ -117,7 +89,7 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
       map(([config, scales]) => {
         const bands: DisplayPlotBand[] = [];
         config.xAxis?.forEach((axis, index) => {
-          axis.plotBands?.forEach(band => {
+          axis.plotBands?.forEach((band) => {
             bands.push({
               plotBand: band,
               axis: scales.x.get(index),
@@ -125,7 +97,7 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
           });
         });
         config.yAxis?.forEach((axis, index) => {
-          axis.plotBands?.forEach(band => {
+          axis.plotBands?.forEach((band) => {
             bands.push({
               plotBand: band,
               axis: scales.y.get(index),
@@ -142,8 +114,7 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
       map((data: [IScalesMap, IChartConfig]) => {
         const [{ x, y }, config] = data;
 
-        return config.brush?.type === BrushType.x ||
-          config?.zoom?.type === ZoomType.x
+        return config.brush?.type === BrushType.x || config?.zoom?.type === ZoomType.x
           ? x.get(0)?.scale
           : y.get(0)?.scale;
       }),
@@ -153,45 +124,25 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
       })
     );
 
-    this.visibleRect = combineLatest([
-      this.size,
-      this.scales,
-      this.config,
-    ]).pipe(
+    this.visibleRect = combineLatest([this.size, this.scales, this.config]).pipe(
       map((data: [DOMRect, IScalesMap, IChartConfig]) => {
         const [size, { x, y }, config] = data;
         const yAxesArray = Array.from(y.values());
         const xAxesArray = Array.from(x.values());
-        const left = yAxesArray
-          .filter(_ => _.options.opposite !== true && _.options.visible)
-          .reduce(this.sumSize, 0);
+        const left = yAxesArray.filter((_) => _.options.opposite !== true && _.options.visible).reduce(this.sumSize, 0);
 
-        const right = yAxesArray
-          .filter(_ => _.options.opposite && _.options.visible)
-          .reduce(this.sumSize, 0);
+        const right = yAxesArray.filter((_) => _.options.opposite && _.options.visible).reduce(this.sumSize, 0);
 
         const bottom = xAxesArray
-          .filter(_ => _.options.opposite !== true && _.options.visible)
+          .filter((_) => _.options.opposite !== true && _.options.visible)
           .reduce(this.sumSize, 0);
 
-        const top = xAxesArray
-          .filter(_ => _.options.opposite && _.options.visible)
-          .reduce(this.sumSize, 0);
+        const top = xAxesArray.filter((_) => _.options.opposite && _.options.visible).reduce(this.sumSize, 0);
         return {
           x: left + config.bounds?.left,
           y: top + config.bounds?.top,
-          width:
-            size.width -
-            left -
-            right -
-            config.bounds?.left -
-            config.bounds?.right,
-          height:
-            size.height -
-            top -
-            bottom -
-            config.bounds?.top -
-            config.bounds?.bottom,
+          width: size.width - left - right - config.bounds?.left - config.bounds?.right,
+          height: size.height - top - bottom - config.bounds?.top - config.bounds?.bottom,
         };
       }),
       tetaZoneFull(this._zone),
@@ -243,19 +194,10 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
         const oppositeOffsetX = xAxesArray.filter(oppositeFilter(axis));
         const nonOppositeOffsetX = xAxesArray.filter(nonOppositeFilter(axis));
 
-        const oppositeTranslateY = oppositeOffsetY.reduce(
-          (acc, curr) => acc + curr.selfSize,
-          config.bounds?.right
-        );
-        const nonOppisteTranslateY = nonOppositeOffsetY.reduce(
-          (acc, curr) => acc + curr.selfSize,
-          config.bounds?.left
-        );
+        const oppositeTranslateY = oppositeOffsetY.reduce((acc, curr) => acc + curr.selfSize, config.bounds?.right);
+        const nonOppisteTranslateY = nonOppositeOffsetY.reduce((acc, curr) => acc + curr.selfSize, config.bounds?.left);
 
-        const oppositeTranslateX = oppositeOffsetX.reduce(
-          (acc, curr) => acc + curr.selfSize,
-          config.bounds?.top
-        );
+        const oppositeTranslateX = oppositeOffsetX.reduce((acc, curr) => acc + curr.selfSize, config.bounds?.top);
 
         const nonOppisteTranslateX = nonOppositeOffsetX.reduce(
           (acc, curr) => acc + curr.selfSize,
@@ -263,27 +205,21 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
         );
 
         const left = yAxesArray
-          .filter(_ => _.options.visible && _.options.opposite !== true)
+          .filter((_) => _.options.visible && _.options.opposite !== true)
           .reduce((acc, curr) => acc + curr.selfSize, config.bounds?.left);
 
         const top = xAxesArray
-          .filter(_ => _.options.visible && _.options.opposite === true)
+          .filter((_) => _.options.visible && _.options.opposite === true)
           .reduce((acc, curr) => acc + curr.selfSize, config.bounds?.top);
 
         if (axis.orientation === AxisOrientation.x) {
           return `translate(${left}, ${
-            axis.options.opposite
-              ? oppositeTranslateX
-              : size.height - nonOppisteTranslateX
+            axis.options.opposite ? oppositeTranslateX : size.height - nonOppisteTranslateX
           })`;
         }
 
         if (axis.orientation === AxisOrientation.y) {
-          return `translate(${
-            axis.options.opposite
-              ? size.width - oppositeTranslateY
-              : nonOppisteTranslateY
-          }, ${top})`;
+          return `translate(${axis.options.opposite ? size.width - oppositeTranslateY : nonOppisteTranslateY}, ${top})`;
         }
 
         return 'translate(0, 0)';
@@ -291,11 +227,7 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
     );
   }
 
-  click(
-    event: MouseEvent,
-    xScales: Map<number, Axis>,
-    yScales: Map<number, Axis>
-  ) {
+  click(event: MouseEvent, xScales: Map<number, Axis>, yScales: Map<number, Axis>) {
     const x = xScales.get(0)?.scale;
     const y = yScales.get(0)?.scale;
     this._svc.emitChartClick({
@@ -307,11 +239,7 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  contextMenu(
-    event: MouseEvent,
-    xScales: Map<number, Axis>,
-    yScales: Map<number, Axis>
-  ) {
+  contextMenu(event: MouseEvent, xScales: Map<number, Axis>, yScales: Map<number, Axis>) {
     const x = xScales.get(0)?.scale;
     const y = yScales.get(0)?.scale;
     this._svc.emitChartContextMenu({

@@ -1,21 +1,14 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ComponentRef,
-  Input,
-  OnInit,
-  ViewContainerRef,
-} from '@angular/core';
-import {HeadCellComponentBase} from '../base/head-cell-component-base';
-import {TableColumn} from '../contract/table-column';
-import {DefaultHeadCellComponent} from '../default/default-head-cell/default-head-cell.component';
+import { ChangeDetectionStrategy, Component, ComponentRef, Input, OnInit, ViewContainerRef } from '@angular/core';
+import { HeadCellComponentBase } from '../base/head-cell-component-base';
+import { TableColumn } from '../contract/table-column';
+import { DefaultHeadCellComponent } from '../default/default-head-cell/default-head-cell.component';
 
 @Component({
-    selector: 'teta-head-cell-host',
-    template: '',
-    styleUrls: ['./head-cell-host.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'teta-head-cell-host',
+  template: '',
+  styleUrls: ['./head-cell-host.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class HeadCellHostComponent<T> implements OnInit {
   private _column: TableColumn;
@@ -61,17 +54,13 @@ export class HeadCellHostComponent<T> implements OnInit {
     return this._data;
   }
 
-  constructor(
-    private viewContainerRef: ViewContainerRef
-  ) {
-  }
+  constructor(private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit(): void {
     if (!HeadCellComponentBase.isPrototypeOf(this.column.headCellComponent)) {
       this.column.headCellComponent = DefaultHeadCellComponent;
     }
-    this.componentRef =
-      this.viewContainerRef.createComponent<HeadCellComponentBase<T>>(this.column.headCellComponent);
+    this.componentRef = this.viewContainerRef.createComponent<HeadCellComponentBase<T>>(this.column.headCellComponent);
     this.componentRef.instance.column = this.column;
     this.componentRef.instance.columns = this.columns;
     this.componentRef.instance.data = this.data;

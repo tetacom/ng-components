@@ -1,9 +1,9 @@
-import {applicationConfig, Meta} from '@storybook/angular';
-import {provideHttpClient} from '@angular/common/http';
-import {ThreeChartComponent} from './three-chart/three-chart.component';
-import {Series3dType} from './three-chart/model/enum/series-3d-type';
-import {CustomSeriesComponent} from './custom-series/custom-series.component';
-import {IconSpriteDirective} from '@tetacom/ng-components';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { ThreeChartComponent } from './three-chart/three-chart.component';
+import { Series3dType } from './three-chart/model/enum/series-3d-type';
+import { CustomSeriesComponent } from './custom-series/custom-series.component';
+import { IconSpriteDirective } from '@tetacom/ng-components';
 
 export default {
   title: 'Component/Three',
@@ -30,18 +30,18 @@ export const lithotypeChart = () => ({
           type: Series3dType.line,
           color: 'red',
           data: [
-            {x: 0, y: 0, z: 0},
-            {x: 0, y: 50, z: 2000},
+            { x: 0, y: 0, z: 0 },
+            { x: 0, y: 50, z: 2000 },
           ],
         },
         {
           type: Series3dType.line,
           color: 'red',
           data: [
-            {x: 0, y: 0, z: 0},
-            {x: 0, y: 70, z: 2000},
-            {x: 50, y: 700, z: 100},
-            {x: 150, y: 1700, z: 1200},
+            { x: 0, y: 0, z: 0 },
+            { x: 0, y: 70, z: 2000 },
+            { x: 50, y: 700, z: 100 },
+            { x: 150, y: 1700, z: 1200 },
           ],
         },
         {
@@ -100,7 +100,7 @@ export const customSeries = () => ({
           type: Series3dType.line,
           color: 'red',
           component: CustomSeriesComponent,
-          data: [{x: 500, y: 555, z: 333}],
+          data: [{ x: 500, y: 555, z: 333 }],
         },
       ],
     },

@@ -1,4 +1,4 @@
-@import "util/color-util.scss";
+@import 'util/color-util.scss';
 
 .skeleton-pulse {
   height: 100%;
@@ -9,11 +9,10 @@
 
   @keyframes pulse {
     0% {
-      background-position: 0% 0%
+      background-position: 0% 0%;
     }
     100% {
-      background-position: -135% 0%
+      background-position: -135% 0%;
     }
   }
-
 }

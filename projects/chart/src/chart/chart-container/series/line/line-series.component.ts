@@ -1,16 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {ChartService} from '../../../service/chart.service';
-import {BasePoint} from '../../../model/base-point';
-import {ScaleService} from '../../../service/scale.service';
-import {ZoomService} from '../../../service/zoom.service';
-import {LinearSeriesBase} from '../linear-series-base';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { ChartService } from '../../../service/chart.service';
+import { BasePoint } from '../../../model/base-point';
+import { ScaleService } from '../../../service/scale.service';
+import { ZoomService } from '../../../service/zoom.service';
+import { LinearSeriesBase } from '../linear-series-base';
 import { AsyncPipe } from '@angular/common';
 import { DraggablePointDirective } from '../../../directives/draggable-point.directive';
 
@@ -20,30 +13,24 @@ import { DraggablePointDirective } from '../../../directives/draggable-point.dir
   styleUrls: ['./line-series.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    AsyncPipe,
-    DraggablePointDirective,
-  ]
+  imports: [AsyncPipe, DraggablePointDirective],
 })
-export class LineSeriesComponent<T extends BasePoint>
-  extends LinearSeriesBase<T>
-  implements OnInit, OnDestroy {
-
+export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T> implements OnInit, OnDestroy {
   constructor(
     protected override svc: ChartService,
     protected override cdr: ChangeDetectorRef,
     protected override scaleService: ScaleService,
     protected override zoomService: ZoomService,
-    protected override element: ElementRef,
+    protected override element: ElementRef
   ) {
     super(svc, cdr, scaleService, zoomService, element);
   }
 
-  private start: { x: number, y: number };
-  private labelStart: { dx: number, dy: number };
+  private start: { x: number; y: number };
+  private labelStart: { dx: number; dy: number };
 
   moveStart(event, point) {
-    this.start = {x: point.x, y: point.y};
+    this.start = { x: point.x, y: point.y };
   }
 
   moveEnd(event, point) {
@@ -52,7 +39,7 @@ export class LineSeriesComponent<T extends BasePoint>
     this._update.next();
     const emitEvent = {
       type: 'end',
-      sourceEvent: event
+      sourceEvent: event,
     };
     this.svc.emitPoint({
       target: {
@@ -69,7 +56,7 @@ export class LineSeriesComponent<T extends BasePoint>
     this._update.next();
     const emitEvent = {
       type: 'drag',
-      sourceEvent: event
+      sourceEvent: event,
     };
     this.svc.emitPoint({
       target: {
@@ -81,7 +68,7 @@ export class LineSeriesComponent<T extends BasePoint>
   }
 
   startLabel(event, label) {
-    this.labelStart = {dx: label.dx, dy: label.dy};
+    this.labelStart = { dx: label.dx, dy: label.dy };
   }
 
   moveLabel(event, label) {

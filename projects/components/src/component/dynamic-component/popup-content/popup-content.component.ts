@@ -1,29 +1,19 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostBinding,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
 import { ArrayUtil } from '../../../common/util/array-util';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
-    selector: 'teta-popup-content',
-    templateUrl: './popup-content.component.html',
-    styleUrls: ['./popup-content.component.scss'],
-    animations: [
-        trigger('dialog', [
-            transition('void => *', [
-                style({ opacity: '0' }),
-                animate(200, style({ opacity: '1' })),
-            ]),
-            transition('* => void', [animate(200, style({ opacity: '0' }))]),
-        ]),
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'teta-popup-content',
+  templateUrl: './popup-content.component.html',
+  styleUrls: ['./popup-content.component.scss'],
+  animations: [
+    trigger('dialog', [
+      transition('void => *', [style({ opacity: '0' }), animate(200, style({ opacity: '1' }))]),
+      transition('* => void', [animate(200, style({ opacity: '0' }))]),
+    ]),
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class PopupContentComponent implements OnInit, OnDestroy {
   @HostBinding('@dialog') dialog = true;

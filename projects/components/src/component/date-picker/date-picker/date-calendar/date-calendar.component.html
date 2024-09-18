@@ -1,44 +1,72 @@
 @if ({currentMonth:currentMonth|async,currentYear:currentYear|async,selectedPicker:selectedPicker|async}; as data) {
-  <div
-    class="datepicker-content overflow-y-auto"
-    >
-    @if (data.selectedPicker==='day') {
-      <div class="padding-h-3 padding-v-2" (wheel)="scrollMonth($event,data.currentMonth,data.currentYear)">
-        <div class="row align-center justify-content-between">
-          <teta-button [class]="'change-month-button datepicker_'+viewType" [square]="true"
-            (click)="changeMonth(data.currentMonth-1,data.currentYear)"
-            palette="text"
-            view="ghost">
-            <teta-icon name="arrowLeftKey" [palette]="'text'"></teta-icon>
-          </teta-button>
-          <div class="row gap-4 font-button-2 ">
-            <button [class]="'datepicker_'+viewType " teta-button view="ghost" palette="text"
-            (click)="selectPicker('month')"> {{getMothName(data.currentMonth)}}</button>
-            <button [class]="'datepicker_'+viewType" teta-button view="ghost" palette="text"
-            (click)="selectPicker('year')">{{data.currentYear}}</button>
-          </div>
-          <teta-button [square]="true" [class]="'change-month-button datepicker_'+viewType"
-            (click)="changeMonth(data.currentMonth+1,data.currentYear)"
-            palette="text"
-            view="ghost">
-            <teta-icon name="arrowRightKey" [palette]="'text'"></teta-icon>
-          </teta-button>
-        </div>
-        <div>
-          <teta-day-picker [viewType]="viewType" (selectDate)="selectDate($event)" [locale]="locale"
-          [calendar]="calendar"></teta-day-picker>
-        </div>
+<div class="datepicker-content overflow-y-auto">
+  @if (data.selectedPicker==='day') {
+  <div class="padding-h-3 padding-v-2" (wheel)="scrollMonth($event, data.currentMonth, data.currentYear)">
+    <div class="row align-center justify-content-between">
+      <teta-button
+        [class]="'change-month-button datepicker_' + viewType"
+        [square]="true"
+        (click)="changeMonth(data.currentMonth - 1, data.currentYear)"
+        palette="text"
+        view="ghost"
+      >
+        <teta-icon name="arrowLeftKey" [palette]="'text'"></teta-icon>
+      </teta-button>
+      <div class="row gap-4 font-button-2">
+        <button
+          [class]="'datepicker_' + viewType"
+          teta-button
+          view="ghost"
+          palette="text"
+          (click)="selectPicker('month')"
+        >
+          {{ getMothName(data.currentMonth) }}
+        </button>
+        <button
+          [class]="'datepicker_' + viewType"
+          teta-button
+          view="ghost"
+          palette="text"
+          (click)="selectPicker('year')"
+        >
+          {{ data.currentYear }}
+        </button>
       </div>
-    }
-    @if (data.selectedPicker==='month') {
-      <teta-month-picker [localeMoths]="locale.months" [currentYear]="data.currentYear" (changeYear)="setYear($event)"
-        [selectedMonth]="data.currentMonth" [viewType]="viewType"
-      (selectMonth)="selectMonth($event)"></teta-month-picker>
-    }
-    @if (data.selectedPicker==='year') {
-      <teta-year-picker [locale]="locale" [viewType]="viewType" (selectYear)="selectYear($event)"
-      [selectedYear]="data.currentYear"></teta-year-picker>
-    }
+      <teta-button
+        [square]="true"
+        [class]="'change-month-button datepicker_' + viewType"
+        (click)="changeMonth(data.currentMonth + 1, data.currentYear)"
+        palette="text"
+        view="ghost"
+      >
+        <teta-icon name="arrowRightKey" [palette]="'text'"></teta-icon>
+      </teta-button>
+    </div>
+    <div>
+      <teta-day-picker
+        [viewType]="viewType"
+        (selectDate)="selectDate($event)"
+        [locale]="locale"
+        [calendar]="calendar"
+      ></teta-day-picker>
+    </div>
   </div>
+  } @if (data.selectedPicker==='month') {
+  <teta-month-picker
+    [localeMoths]="locale.months"
+    [currentYear]="data.currentYear"
+    (changeYear)="setYear($event)"
+    [selectedMonth]="data.currentMonth"
+    [viewType]="viewType"
+    (selectMonth)="selectMonth($event)"
+  ></teta-month-picker>
+  } @if (data.selectedPicker==='year') {
+  <teta-year-picker
+    [locale]="locale"
+    [viewType]="viewType"
+    (selectYear)="selectYear($event)"
+    [selectedYear]="data.currentYear"
+  ></teta-year-picker>
+  }
+</div>
 }
-

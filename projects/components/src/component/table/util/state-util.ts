@@ -1,8 +1,8 @@
-import {FilterState} from '../../filter/contarct/filter-state';
-import {TableColumn} from '../contract/table-column';
-import {SortParam} from '../../filter/contarct/sort-param';
-import {FilterType} from '../../filter/enum/filter-type.enum';
-import {SortEvent} from '../contract/sort-event';
+import { FilterState } from '../../filter/contarct/filter-state';
+import { TableColumn } from '../contract/table-column';
+import { SortParam } from '../../filter/contarct/sort-param';
+import { FilterType } from '../../filter/enum/filter-type.enum';
+import { SortEvent } from '../contract/sort-event';
 
 export class StateUtil {
   static hasSortedColumns(state: FilterState): boolean {
@@ -11,16 +11,10 @@ export class StateUtil {
 
   static hasFilteredColumns(state: FilterState): boolean {
     let hasFilters = false;
-    if (
-      state.stringFilters &&
-      state.stringFilters.some((filter) => filter.value && filter.value.length)
-    ) {
+    if (state.stringFilters && state.stringFilters.some((filter) => filter.value && filter.value.length)) {
       hasFilters = true;
     }
-    if (
-      state.listFilters &&
-      state.listFilters.some((filter) => filter.value && filter.value.length)
-    ) {
+    if (state.listFilters && state.listFilters.some((filter) => filter.value && filter.value.length)) {
       hasFilters = true;
     }
     if (
@@ -29,12 +23,9 @@ export class StateUtil {
         (filter) =>
           filter &&
           filter.value &&
-          ((filter.value.lessThan !== null &&
-              filter.value.lessThan !== undefined) ||
-            (filter.value.greaterThan !== null &&
-              filter.value.greaterThan !== undefined) ||
-            (filter.value.equalsTo !== null &&
-              filter.value.equalsTo !== undefined))
+          ((filter.value.lessThan !== null && filter.value.lessThan !== undefined) ||
+            (filter.value.greaterThan !== null && filter.value.greaterThan !== undefined) ||
+            (filter.value.equalsTo !== null && filter.value.equalsTo !== undefined))
       )
     ) {
       hasFilters = true;
@@ -45,10 +36,8 @@ export class StateUtil {
         (filter) =>
           filter &&
           filter.value &&
-          ((filter.value.lessThan !== null &&
-              filter.value.lessThan !== undefined) ||
-            (filter.value.greaterThan !== null &&
-              filter.value.greaterThan !== undefined))
+          ((filter.value.lessThan !== null && filter.value.lessThan !== undefined) ||
+            (filter.value.greaterThan !== null && filter.value.greaterThan !== undefined))
       )
     ) {
       hasFilters = true;
@@ -57,10 +46,7 @@ export class StateUtil {
     return hasFilters;
   }
 
-  static getSortState(
-    state: FilterState,
-    column: TableColumn
-  ): SortParam | null {
+  static getSortState(state: FilterState, column: TableColumn): SortParam | null {
     if (state?.sortParams && state.sortParams.length) {
       const param = state.sortParams.find((x) => x.field === column.sortField);
       if (param) {
@@ -78,9 +64,7 @@ export class StateUtil {
     switch (column.filterType) {
       case FilterType.string:
         if (state?.stringFilters) {
-          const filter = state.stringFilters.find(
-            (x) => x.field === column.filterField
-          );
+          const filter = state.stringFilters.find((x) => x.field === column.filterField);
           if (filter && filter.value && filter.value.length) {
             filtered = true;
           }
@@ -88,9 +72,7 @@ export class StateUtil {
         break;
       case FilterType.list:
         if (state?.listFilters) {
-          const filter = state.listFilters.find(
-            (x) => x.field === column.filterField
-          );
+          const filter = state.listFilters.find((x) => x.field === column.filterField);
           if (filter && filter.value && filter.value.length) {
             filtered = true;
           }
@@ -98,18 +80,13 @@ export class StateUtil {
         break;
       case FilterType.number:
         if (state?.numericFilters) {
-          const filter = state.numericFilters.find(
-            (x) => x.field === column.filterField
-          );
+          const filter = state.numericFilters.find((x) => x.field === column.filterField);
           if (
             filter &&
             filter.value &&
-            ((filter.value.lessThan !== null &&
-                filter.value.lessThan !== undefined) ||
-              (filter.value.greaterThan !== null &&
-                filter.value.greaterThan !== undefined) ||
-              (filter.value.equalsTo !== null &&
-                filter.value.equalsTo !== undefined))
+            ((filter.value.lessThan !== null && filter.value.lessThan !== undefined) ||
+              (filter.value.greaterThan !== null && filter.value.greaterThan !== undefined) ||
+              (filter.value.equalsTo !== null && filter.value.equalsTo !== undefined))
           ) {
             filtered = true;
           }
@@ -117,16 +94,12 @@ export class StateUtil {
         break;
       case FilterType.date:
         if (state?.dateFilters) {
-          const filter = state.dateFilters.find(
-            (x) => x.field === column.filterField
-          );
+          const filter = state.dateFilters.find((x) => x.field === column.filterField);
           if (
             filter &&
             filter.value &&
-            ((filter.value.lessThan !== null &&
-                filter.value.lessThan !== undefined) ||
-              (filter.value.greaterThan !== null &&
-                filter.value.greaterThan !== undefined))
+            ((filter.value.lessThan !== null && filter.value.lessThan !== undefined) ||
+              (filter.value.greaterThan !== null && filter.value.greaterThan !== undefined))
           ) {
             filtered = true;
           }
@@ -139,16 +112,12 @@ export class StateUtil {
   static sortColumn(sortEvent: SortEvent, state: FilterState): FilterState {
     const column = sortEvent.column;
     const shiftKey = sortEvent.shiftKey;
-    const sort = state.sortParams.find(
-      (sortParam: SortParam) => sortParam.field === column.sortField
-    );
+    const sort = state.sortParams.find((sortParam: SortParam) => sortParam.field === column.sortField);
     if (sort === null || sort === undefined) {
       if (!shiftKey) {
         state.sortParams.length = 0;
       }
-      state.sortParams.push(
-        new SortParam({field: column.sortField, asc: true, order: 0})
-      );
+      state.sortParams.push(new SortParam({ field: column.sortField, asc: true, order: 0 }));
     } else {
       if (!sort.asc) {
         state.sortParams = StateUtil.clearSortParam(sort, state.sortParams);
@@ -173,18 +142,14 @@ export class StateUtil {
   static sort(sortEvent: SortEvent, state: FilterState, asc: boolean) {
     const column = sortEvent.column;
     const shiftKey = sortEvent.shiftKey;
-    const sort = state.sortParams.find(
-      (sortParam: SortParam) => sortParam.field === column.sortField
-    );
+    const sort = state.sortParams.find((sortParam: SortParam) => sortParam.field === column.sortField);
     if (sort) {
       state.sortParams = StateUtil.clearSortParam(sort, state.sortParams);
     }
     if (!shiftKey) {
       state.sortParams.length = 0;
     }
-    state.sortParams.push(
-      new SortParam({field: column.sortField, asc: asc, order: 0})
-    );
+    state.sortParams.push(new SortParam({ field: column.sortField, asc: asc, order: 0 }));
     return new FilterState(state);
   }
 
@@ -195,9 +160,7 @@ export class StateUtil {
   }
 
   static clearSort(column: TableColumn, state: FilterState): FilterState {
-    state.sortParams = state.sortParams.filter(
-      (_) => _.field !== column.sortField
-    );
+    state.sortParams = state.sortParams.filter((_) => _.field !== column.sortField);
     return new FilterState(state);
   }
 

@@ -14,36 +14,29 @@ import { FilterState } from '../contarct/filter-state';
 import { FilterItem } from '../contarct/filter-item';
 import { NumericFilterValue } from '../contarct/numeric-filter-value';
 import { IIdName } from '../../../common/contract/i-id-name';
-import {TetaConfigService} from '../../../locale/teta-config.service';
-import {Observable} from 'rxjs';
-import {TetaLocalisation} from '../../../locale/teta-localisation';
+import { TetaConfigService } from '../../../locale/teta-config.service';
+import { Observable } from 'rxjs';
+import { TetaLocalisation } from '../../../locale/teta-localisation';
 import { AsyncPipe } from '@angular/common';
 import { OnlyNumberDirective } from '../../../directive/only-number/only-number.directive';
 import { FormsModule } from '@angular/forms';
 import { InputComponent } from '../../input/input/input.component';
 
 @Component({
-    selector: 'teta-numeric-filter',
-    templateUrl: './numeric-filter.component.html',
-    styleUrls: ['./numeric-filter.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        InputComponent,
-        FormsModule,
-        OnlyNumberDirective,
-        AsyncPipe,
-    ],
+  selector: 'teta-numeric-filter',
+  templateUrl: './numeric-filter.component.html',
+  styleUrls: ['./numeric-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [InputComponent, FormsModule, OnlyNumberDirective, AsyncPipe],
 })
-export class NumericFilterComponent<T>
-  extends FilterComponentBase<T>
-  implements OnInit
-{
+export class NumericFilterComponent<T> extends FilterComponentBase<T> implements OnInit {
   @Input() column: FilterItem;
   @Input() data: T[];
   @Input() filterOptions: IIdName<any>[] = [];
-  @Output() filterChanged: EventEmitter<FilterBase<NumericFilterValue>> =
-    new EventEmitter<FilterBase<NumericFilterValue>>();
+  @Output() filterChanged: EventEmitter<FilterBase<NumericFilterValue>> = new EventEmitter<
+    FilterBase<NumericFilterValue>
+  >();
 
   filter: NumericFilter;
 
@@ -61,8 +54,7 @@ export class NumericFilterComponent<T>
   }
   locale: Observable<TetaLocalisation>;
 
-  constructor(private changeDetector: ChangeDetectorRef,
-              private _config: TetaConfigService) {
+  constructor(private changeDetector: ChangeDetectorRef, private _config: TetaConfigService) {
     super();
     this.locale = this._config.locale;
   }
@@ -72,9 +64,7 @@ export class NumericFilterComponent<T>
   }
 
   private getFilter(): NumericFilter {
-    let filter = this.state.numericFilters?.find(
-      (f) => f.field === this.column.filterField
-    );
+    let filter = this.state.numericFilters?.find((f) => f.field === this.column.filterField);
     if (filter === null || filter === undefined) {
       filter = this.state.addNumericFilter(
         new NumericFilter({

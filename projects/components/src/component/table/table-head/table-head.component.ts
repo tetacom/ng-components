@@ -19,12 +19,12 @@ import { TableHeadGroupComponent } from '../table-head-group/table-head-group.co
 import { SelectionHeadCellComponent } from '../selection-head-cell/selection-head-cell.component';
 
 @Component({
-    selector: 'teta-table-head',
-    templateUrl: './table-head.component.html',
-    styleUrls: ['./table-head.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [SelectionHeadCellComponent, TableHeadGroupComponent],
+  selector: 'teta-table-head',
+  templateUrl: './table-head.component.html',
+  styleUrls: ['./table-head.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [SelectionHeadCellComponent, TableHeadGroupComponent],
 })
 export class TableHeadComponent<T> implements OnInit, OnDestroy {
   @Input() selectType: SelectType;
@@ -50,23 +50,16 @@ export class TableHeadComponent<T> implements OnInit, OnDestroy {
   }
 
   get locked(): TableColumn[] {
-    return this._columns.filter(
-      _ => _.locked === true && this._hiddenColumns.indexOf(_.name) < 0
-    );
+    return this._columns.filter((_) => _.locked === true && this._hiddenColumns.indexOf(_.name) < 0);
   }
 
   get unlocked(): TableColumn[] {
-    return this._columns.filter(
-      _ => _.locked === false && this._hiddenColumns.indexOf(_.name) < 0
-    );
+    return this._columns.filter((_) => _.locked === false && this._hiddenColumns.indexOf(_.name) < 0);
   }
 
   data: T[];
 
-  constructor(
-    private _svc: TableService<T>,
-    private _cdr: ChangeDetectorRef
-  ) {}
+  constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {}
 
   track(index: number, item: TableColumn): any {
     return item.name;
@@ -74,33 +67,27 @@ export class TableHeadComponent<T> implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     combineLatest([this._svc.columns, this._svc.hiddenColumns])
-      .pipe(takeWhile(_ => this._alive))
+      .pipe(takeWhile((_) => this._alive))
       .subscribe((values: [TableColumn[], string[]]) => {
         const [columns, hiddenColumns] = values;
         this._hiddenColumns = hiddenColumns;
         this.columns = columns;
         const locked = ArrayUtil.flatten(columns, 'columns', true).filter(
-          _ => this._hiddenColumns.indexOf(_.name) < 0 && _.locked
+          (_) => this._hiddenColumns.indexOf(_.name) < 0 && _.locked
         );
         const startWidth = this.selectType === SelectType.checkBox ? 28 : 0;
-        this.lockedFlex = locked.reduce(
-          (prev: number, curr: TableColumn) => prev + curr.flex,
-          0
-        );
-        this.lockedWidth = locked.reduce(
-          (prev: number, curr: TableColumn) => prev + curr.width,
-          startWidth
-        );
+        this.lockedFlex = locked.reduce((prev: number, curr: TableColumn) => prev + curr.flex, 0);
+        this.lockedWidth = locked.reduce((prev: number, curr: TableColumn) => prev + curr.width, startWidth);
         this._cdr.markForCheck();
       });
 
-    this._svc.state.pipe(takeWhile(_ => this._alive)).subscribe(_ => {
+    this._svc.state.pipe(takeWhile((_) => this._alive)).subscribe((_) => {
       this.state = _;
       this._cdr.markForCheck();
     });
 
-    this._svc.displayData.pipe(takeWhile(_ => this._alive)).subscribe(_ => {
-      this.data = _.map(_ => _.data);
+    this._svc.displayData.pipe(takeWhile((_) => this._alive)).subscribe((_) => {
+      this.data = _.map((_) => _.data);
       this._cdr.markForCheck();
     });
   }

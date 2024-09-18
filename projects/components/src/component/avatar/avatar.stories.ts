@@ -1,47 +1,46 @@
-import {AvatarComponent} from "./avatar/avatar.component";
+import { AvatarComponent } from './avatar/avatar.component';
 
-import {applicationConfig, Meta} from "@storybook/angular";
-import {provideHttpClient} from "@angular/common/http";
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
 
 export default {
   title: 'Component/Avatar',
   decorators: [
     applicationConfig({
-      providers: [
-        provideHttpClient()
-      ],
+      providers: [provideHttpClient()],
     }),
   ],
   argTypes: {
     viewType: {
-      control: {type: 'select'},
-      options: ['rounded', 'circle', 'brick']
+      control: { type: 'select' },
+      options: ['rounded', 'circle', 'brick'],
     },
     size: {
-      control: {type: 'select'},
-      options: ['24', '28', '32', '44', '64', '128', '200']
+      control: { type: 'select' },
+      options: ['24', '28', '32', '44', '64', '128', '200'],
     },
     name: {
-      control: {type: 'text'},
+      control: { type: 'text' },
     },
     photo: {
-      control: {type: 'text'},
+      control: { type: 'text' },
     },
     id: {
-      control: {type: 'number'}
-    }
+      control: { type: 'number' },
+    },
   },
   args: {
     viewType: 'circle',
     name: 'AA',
     size: '64',
     id: 2,
-    photo: 'https://cdn.vox-cdn.com/thumbor/WR9hE8wvdM4hfHysXitls9_bCZI=/0x0:1192x795/1400x1400/filters:focal(596x398:597x399)/cdn.vox-cdn.com/uploads/chorus_asset/file/22312759/rickroll_4k.jpg'
+    photo:
+      'https://cdn.vox-cdn.com/thumbor/WR9hE8wvdM4hfHysXitls9_bCZI=/0x0:1192x795/1400x1400/filters:focal(596x398:597x399)/cdn.vox-cdn.com/uploads/chorus_asset/file/22312759/rickroll_4k.jpg',
   },
   component: AvatarComponent,
   moduleMetadata: {
-    imports: []
-  }
+    imports: [],
+  },
 } as Meta;
 export const baseAvatar = (args) => ({
   moduleMetadata: {
@@ -54,7 +53,6 @@ export const baseAvatar = (args) => ({
            </div>
     </div>`,
 });
-
 
 export const avatarAllSizes = () => ({
   moduleMetadata: {
@@ -99,4 +97,3 @@ export const avatarAllSizes = () => ({
             </div>
     </div>`,
 });
-

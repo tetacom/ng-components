@@ -20,9 +20,8 @@ import { ChartService } from '../../service/chart.service';
   selector: '[teta-plot-band]',
   templateUrl: './plot-band.component.html',
   styleUrls: ['./plot-band.component.scss'],
-  standalone:true,
-  imports:[
-  ],
+  standalone: true,
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlotBandComponent implements AfterViewInit, OnDestroy {
@@ -66,29 +65,19 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
   }
 
   get bandSize(): number {
-    return Math.abs(
-      this.scale(this.plotBand.to) - this.scale(this.plotBand.from)
-    );
+    return Math.abs(this.scale(this.plotBand.to) - this.scale(this.plotBand.from));
   }
 
-  constructor(
-    private chartService: ChartService,
-    private cdr: ChangeDetectorRef,
-    private element: ElementRef
-  ) {}
+  constructor(private chartService: ChartService, private cdr: ChangeDetectorRef, private element: ElementRef) {}
 
   emit(event: IChartEvent<PlotBand>) {
     this.chartService.emitPlotband(event);
   }
 
   ngAfterViewInit(): void {
-    const plotbandElement = d3
-      .select(this.element.nativeElement)
-      .select('.plotband');
+    const plotbandElement = d3.select(this.element.nativeElement).select('.plotband');
 
-    const grabElements = d3
-      .select(this.element.nativeElement)
-      .selectAll('.grabber');
+    const grabElements = d3.select(this.element.nativeElement).selectAll('.grabber');
 
     this.dragElements = d3.drag().subject(() => {
       if (this.axis.orientation === AxisOrientation.x) {
@@ -98,34 +87,25 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
       if (this.axis.orientation === AxisOrientation.y) {
         return { y: plotbandElement.attr('y') };
       }
-      return null
+      return null;
     });
 
-    const drag = this.dragElements.on(
-      'start drag end',
-      (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
-        const bandSize = parseFloat(
-          plotbandElement.attr(
-            this.axis.orientation === AxisOrientation.x ? 'width' : 'height'
-          )
-        );
+    const drag = this.dragElements.on('start drag end', (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
+      const bandSize = parseFloat(
+        plotbandElement.attr(this.axis.orientation === AxisOrientation.x ? 'width' : 'height')
+      );
 
-        d.from = this.scale.invert(
-          event[AxisOrientation[this.axis.orientation]]
-        );
+      d.from = this.scale.invert(event[AxisOrientation[this.axis.orientation]]);
 
-        d.to = this.scale.invert(
-          event[AxisOrientation[this.axis.orientation]] + bandSize
-        );
+      d.to = this.scale.invert(event[AxisOrientation[this.axis.orientation]] + bandSize);
 
-        this.emit({
-          event,
-          target: d,
-        });
+      this.emit({
+        event,
+        target: d,
+      });
 
-        this.cdr.detectChanges();
-      }
-    );
+      this.cdr.detectChanges();
+    });
 
     let grabberKey;
     this.resizeElements = d3.drag();
@@ -144,9 +124,7 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
         const minValue = d.min ?? min;
         const maxValue = d.max ?? max;
 
-        d[grabberKey] = this.scale.invert(
-          event[AxisOrientation[this.axis.orientation]]
-        );
+        d[grabberKey] = this.scale.invert(event[AxisOrientation[this.axis.orientation]]);
 
         if (grabberKey === 'from') {
           const borderMin = d.from <= minValue;
@@ -203,13 +181,8 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
     min = min instanceof Date ? min.getTime() : min;
     max = max instanceof Date ? max.getTime() : max;
     const from =
-      (this.plotBand.from as any) instanceof Date
-        ? (this.plotBand.from as any).getTime()
-        : this.plotBand.from;
-    const to =
-      (this.plotBand.to as any) instanceof Date
-        ? (this.plotBand.to as any).getTime()
-        : this.plotBand.to;
+      (this.plotBand.from as any) instanceof Date ? (this.plotBand.from as any).getTime() : this.plotBand.from;
+    const to = (this.plotBand.to as any) instanceof Date ? (this.plotBand.to as any).getTime() : this.plotBand.to;
     const position = ((from <= min ? min : from) + (to >= max ? max : to)) / 2;
     return this.scale(position);
   };

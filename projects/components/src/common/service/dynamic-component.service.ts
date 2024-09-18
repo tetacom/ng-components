@@ -73,10 +73,7 @@ export class DynamicComponentService {
     content = null;
   }
 
-  getContext(
-    content: string | TemplateRef<any> | Type<any> | null | undefined,
-    context: any
-  ): any {
+  getContext(content: string | TemplateRef<any> | Type<any> | null | undefined, context: any): any {
     if (content instanceof TemplateRef) {
       return {
         $implicit: context,
@@ -102,22 +99,14 @@ export class DynamicComponentService {
     return new TetaContentRef([[this._renderer.createText(`${content}`)]]);
   }
 
-  private fromTemplate(
-    content: TemplateRef<any>,
-    context: any
-  ): TetaContentRef {
+  private fromTemplate(content: TemplateRef<any>, context: any): TetaContentRef {
     const viewRef = content.createEmbeddedView(context);
     this._appRef.attachView(viewRef);
     return new TetaContentRef([viewRef.rootNodes], viewRef);
   }
 
-  private fromComponent(
-    content: any,
-    injector: Injector,
-    context: any
-  ): TetaContentRef {
-    const componentFactory =
-      this._componentFactoryResolver.resolveComponentFactory<any>(content);
+  private fromComponent(content: any, injector: Injector, context: any): TetaContentRef {
+    const componentFactory = this._componentFactoryResolver.resolveComponentFactory<any>(content);
     const componentRef = componentFactory.create(injector);
     for (const key in context) {
       if (Object.prototype.hasOwnProperty.call(context, key)) {
@@ -126,10 +115,6 @@ export class DynamicComponentService {
     }
     const componentNativeEl = componentRef.location.nativeElement;
     this._appRef.attachView(componentRef.hostView);
-    return new TetaContentRef(
-      [[componentNativeEl]],
-      componentRef.hostView,
-      componentRef
-    );
+    return new TetaContentRef([[componentNativeEl]], componentRef.hostView, componentRef);
   }
 }

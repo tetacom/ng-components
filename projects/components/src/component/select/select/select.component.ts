@@ -32,35 +32,35 @@ import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
 import { LetDirective } from '../../../directive/let/let.directive';
 
 @Component({
-    selector: 'teta-select',
-    templateUrl: './select.component.html',
-    styleUrls: ['./select.component.scss'],
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => SelectComponent),
-            multi: true,
-        },
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        LetDirective,
-        DropdownComponent,
-        DropdownHeadDirective,
-        IconComponent,
-        NgTemplateOutlet,
-        DropdownContentDirective,
-        TextFieldComponent,
-        FormsModule,
-        ScrollableComponent,
-        CdkVirtualScrollViewport,
-        CdkFixedSizeVirtualScroll,
-        ScrollableDirective,
-        CdkVirtualForOf,
-        HighlightDirective,
-        AsyncPipe,
-    ],
+  selector: 'teta-select',
+  templateUrl: './select.component.html',
+  styleUrls: ['./select.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SelectComponent),
+      multi: true,
+    },
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    LetDirective,
+    DropdownComponent,
+    DropdownHeadDirective,
+    IconComponent,
+    NgTemplateOutlet,
+    DropdownContentDirective,
+    TextFieldComponent,
+    FormsModule,
+    ScrollableComponent,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    ScrollableDirective,
+    CdkVirtualForOf,
+    HighlightDirective,
+    AsyncPipe,
+  ],
 })
 export class SelectComponent implements ControlValueAccessor {
   @HostBinding('class.select_multiple')
@@ -69,11 +69,7 @@ export class SelectComponent implements ControlValueAccessor {
 
   @Input() set options(options: any[]) {
     this._options = options;
-    if (
-      this._internalValue !== null &&
-      this._internalValue !== undefined &&
-      this.options
-    ) {
+    if (this._internalValue !== null && this._internalValue !== undefined && this.options) {
       this.getSelectedValue(this._internalValue);
     }
   }
@@ -129,21 +125,14 @@ export class SelectComponent implements ControlValueAccessor {
       return this.options;
     }
     return this.options?.filter(
-      option =>
-        this.getSearchString(option)
-          .toLowerCase()
-          .indexOf(this.searchText.toLowerCase()) >= 0
+      (option) => this.getSearchString(option).toLowerCase().indexOf(this.searchText.toLowerCase()) >= 0
     );
   }
 
   private _options: any | any[];
   private _internalValue: any;
 
-  constructor(
-    private _cdr: ChangeDetectorRef,
-    private _elementRef: ElementRef,
-    private _config: TetaConfigService
-  ) {
+  constructor(private _cdr: ChangeDetectorRef, private _elementRef: ElementRef, private _config: TetaConfigService) {
     this.locale = this._config.locale;
   }
 
@@ -171,7 +160,7 @@ export class SelectComponent implements ControlValueAccessor {
       } else {
         this.value = [...this.value, option];
       }
-      this._internalValue = this.value.map(_ => this.getValue(_));
+      this._internalValue = this.value.map((_) => this.getValue(_));
       this.onChange(this._internalValue);
     } else {
       this.value = option;
@@ -194,12 +183,12 @@ export class SelectComponent implements ControlValueAccessor {
   removeItemClick(option: any, event: MouseEvent): void {
     event.stopPropagation();
     this.removeItem(option);
-    this._internalValue = this.value.map(_ => this.getValue(_));
+    this._internalValue = this.value.map((_) => this.getValue(_));
     this.onChange(this._internalValue);
   }
 
   removeItem(option: any): void {
-    this.value = this.value.filter(_ => _ !== option);
+    this.value = this.value.filter((_) => _ !== option);
   }
 
   search(text: string): void {
@@ -272,15 +261,9 @@ export class SelectComponent implements ControlValueAccessor {
   private getSelectedValue(value: any | any[]) {
     if (this.multiple) {
       this.value =
-        value && this.options
-          ? this.options.filter(
-              option => value.indexOf(this.getValue(option)) > -1
-            )
-          : [];
+        value && this.options ? this.options.filter((option) => value.indexOf(this.getValue(option)) > -1) : [];
     } else {
-      this.value =
-        this.options &&
-        this.options?.find(option => this.getValue(option) === value);
+      this.value = this.options && this.options?.find((option) => this.getValue(option) === value);
     }
   }
 }

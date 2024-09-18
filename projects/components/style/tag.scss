@@ -1,7 +1,7 @@
-@import "./util/font-util.scss";
-@import "presets/view-types.scss";
+@import './util/font-util.scss';
+@import 'presets/view-types.scss';
 
-.tag{
+.tag {
   display: inline-flex;
   justify-content: center;
   height: 24px;
@@ -19,24 +19,24 @@
   &_filled {
     background-color: var(--color-text-5);
     border-color: transparent;
-    &:hover:not(:active){
+    &:hover:not(:active) {
       background-color: var(--color-text-10);
       fill: var(--color-text-60);
     }
-    &:active{
+    &:active {
       background-color: var(--color-text-20);
       fill: var(--color-text-70);
     }
   }
-  &:hover:not(:active):not(&_filled){
+  &:hover:not(:active):not(&_filled) {
     border-color: var(--color-text-10);
     fill: var(--color-text-60);
   }
-  &:active:not(&_filled){
+  &:active:not(&_filled) {
     border-color: var(--color-text-20);
     fill: var(--color-text-70);
   }
-  &>*:first-child{
+  & > *:first-child {
     padding-right: 8px;
   }
 }

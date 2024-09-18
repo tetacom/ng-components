@@ -1,8 +1,8 @@
-import {Series} from '../model/series';
-import {BasePoint} from '../model/base-point';
-import {SeriesType} from '../model/enum/series-type';
-import {FillType} from '../model/enum/fill-type';
-import {ClipPointsDirection} from "../model/enum/clip-points-direction";
+import { Series } from '../model/series';
+import { BasePoint } from '../model/base-point';
+import { SeriesType } from '../model/enum/series-type';
+import { FillType } from '../model/enum/fill-type';
+import { ClipPointsDirection } from '../model/enum/clip-points-direction';
 
 export const defaultSeriesConfig = (): Series<BasePoint> => ({
   data: [],
@@ -12,5 +12,5 @@ export const defaultSeriesConfig = (): Series<BasePoint> => ({
   fillType: FillType.default,
   color: 'coral',
   visible: true,
-  clipPointsDirection: ClipPointsDirection.x
+  clipPointsDirection: ClipPointsDirection.x,
 });

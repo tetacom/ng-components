@@ -23,14 +23,14 @@ import { DropEvent } from './model/drop-event';
 import { DropTarget } from './model/drop-target';
 
 @Directive({
-    selector: '[tetaDrag]',
-    exportAs: 'drag',
-    // eslint-disable-next-line @angular-eslint/no-host-metadata-property
-    host: {
-        '[style.userSelect]': '"none"',
-        '[class.teta-drag-item]': '"true"',
-    },
-    standalone: true,
+  selector: '[tetaDrag]',
+  exportAs: 'drag',
+  // eslint-disable-next-line @angular-eslint/no-host-metadata-property
+  host: {
+    '[style.userSelect]': '"none"',
+    '[class.teta-drag-item]': '"true"',
+  },
+  standalone: true,
 })
 export class DragDirective<T> implements OnInit, OnDestroy {
   @Input('tetaDrag') data: T;
@@ -84,10 +84,7 @@ export class DragDirective<T> implements OnInit, OnDestroy {
   mouseenter(event: MouseEvent) {
     if (this.allowDrop) {
       event.stopPropagation();
-      if (
-        this.allowDropPredicate === undefined ||
-        this.allowDropPredicate(this._dragService.selection, this.data)
-      ) {
+      if (this.allowDropPredicate === undefined || this.allowDropPredicate(this._dragService.selection, this.data)) {
         this._dragService.setDropTarget(this.instance);
       }
     }
@@ -112,16 +109,14 @@ export class DragDirective<T> implements OnInit, OnDestroy {
       container: this._container?.instance,
       data: this.data,
     });
-    this._dragService.dropTarget
-      .pipe(takeWhile(() => this._alive))
-      .subscribe(target => {
-        this.dropTarget = target;
-        if (target === this.instance) {
-          this.tetaDragEnter.emit(this.instance);
-        }
-        this._cdr.detectChanges();
-        this._cdr.markForCheck();
-      });
+    this._dragService.dropTarget.pipe(takeWhile(() => this._alive)).subscribe((target) => {
+      this.dropTarget = target;
+      if (target === this.instance) {
+        this.tetaDragEnter.emit(this.instance);
+      }
+      this._cdr.detectChanges();
+      this._cdr.markForCheck();
+    });
     this._dragService.dropped
       .pipe(takeWhile(() => this._alive))
       .pipe(
@@ -129,7 +124,7 @@ export class DragDirective<T> implements OnInit, OnDestroy {
           return event.target === this.instance;
         })
       )
-      .subscribe(event => {
+      .subscribe((event) => {
         this.tetaDrop.emit(event);
       });
   }

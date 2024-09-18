@@ -8,9 +8,8 @@ describe('PagerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [PagerComponent]
-})
-    .compileComponents();
+      imports: [PagerComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -35,9 +35,7 @@ export class PositionUtil {
       rect.left = containerPosition.right - elementWidth - margin;
     }
     if (align === Align.center) {
-      rect.left =
-        (containerPosition.left + containerPosition.right) / 2 -
-        elementWidth / 2;
+      rect.left = (containerPosition.left + containerPosition.right) / 2 - elementWidth / 2;
     }
     if (align === Align.outerAuto) {
       align = Align.outerRight;
@@ -95,9 +93,7 @@ export class PositionUtil {
       rect.top = containerPosition.top + verticalMargin;
     }
     if (verticalAlign === VerticalAlign.center) {
-      rect.top =
-        (containerPosition.top + containerPosition.bottom) / 2 -
-        elementHeight / 2;
+      rect.top = (containerPosition.top + containerPosition.bottom) / 2 - elementHeight / 2;
     }
 
     if (rect.left + elementWidth > window.innerWidth) {
@@ -119,10 +115,7 @@ export class PositionUtil {
     ) {
       rect.maxHeight = window.innerHeight - rect.top;
     }
-    if (
-      verticalAlign === VerticalAlign.top ||
-      verticalAlign === VerticalAlign.innerTop
-    ) {
+    if (verticalAlign === VerticalAlign.top || verticalAlign === VerticalAlign.innerTop) {
       rect.maxHeight = containerPosition.top;
     }
     if (!isNaN(rect.left)) {
@@ -135,9 +128,7 @@ export class PositionUtil {
       rect.top = rect.top - transformedParentRect.top;
     }
     if (!isNaN(rect.bottom)) {
-      rect.bottom = rect.bottom
-        ? rect.bottom - transformedParentRect.bottom
-        : rect.bottom;
+      rect.bottom = rect.bottom ? rect.bottom - transformedParentRect.bottom : rect.bottom;
     }
     return rect;
   }
@@ -147,8 +138,7 @@ export class PositionUtil {
     element.style.right = rect.right != null ? `${rect.right}px` : '';
     element.style.top = rect.top != null ? `${rect.top}px` : '';
     element.style.bottom = rect.bottom != null ? `${rect.bottom}px` : '';
-    element.style.maxHeight =
-      rect.maxHeight != null ? `${rect.maxHeight}px` : '';
+    element.style.maxHeight = rect.maxHeight != null ? `${rect.maxHeight}px` : '';
     element.style.minWidth = rect.minWidth != null ? `${rect.minWidth}px` : '';
   }
 

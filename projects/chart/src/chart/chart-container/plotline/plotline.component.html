@@ -1,43 +1,46 @@
-<svg:line class="plotline"
-          [attr.stroke]="plotLine.style?.stroke || 'red'"
-          [attr.stroke-width]="plotLine.style?.strokeWidth || 4"
-          [attr.stroke-dasharray]="plotLine.style?.strokeDasharray"
-          [attr.x1]="axis.orientation === orientation.x ? value : 0"
-          [attr.x2]="axis.orientation === orientation.x ? value : width"
-          [attr.y1]="axis.orientation === orientation.x ? 0 : value"
-          [attr.y2]="axis.orientation === orientation.x ? height : value">
-</svg:line>
-
+<svg:line
+  class="plotline"
+  [attr.stroke]="plotLine.style?.stroke || 'red'"
+  [attr.stroke-width]="plotLine.style?.strokeWidth || 4"
+  [attr.stroke-dasharray]="plotLine.style?.strokeDasharray"
+  [attr.x1]="axis.orientation === orientation.x ? value : 0"
+  [attr.x2]="axis.orientation === orientation.x ? value : width"
+  [attr.y1]="axis.orientation === orientation.x ? 0 : value"
+  [attr.y2]="axis.orientation === orientation.x ? height : value"
+></svg:line>
 
 @if (axis.orientation === orientation.x) {
-  <svg:text
-    text-anchor="middle"
-    dominant-baseline="central"
-    class="label font-title-2 fill-text-70"
-    [attr.x]="value"
-    dy="-2em"
-    [attr.transform]="'rotate(-90, '+ value +',' + height / 2 + ')'"
-    [attr.y]="height / 2">{{ plotLine.label }}
-  </svg:text>
+<svg:text
+  text-anchor="middle"
+  dominant-baseline="central"
+  class="label font-title-2 fill-text-70"
+  [attr.x]="value"
+  dy="-2em"
+  [attr.transform]="'rotate(-90, ' + value + ',' + height / 2 + ')'"
+  [attr.y]="height / 2"
+>
+  {{ plotLine.label }}
+</svg:text>
+} @if (axis.orientation === orientation.y) {
+<svg:text
+  text-anchor="middle"
+  class="label font-title-2 fill-text-70"
+  dominant-baseline="central"
+  [attr.x]="value"
+  [attr.y]="width / 2"
+>
+  {{ plotLine.label }}
+</svg:text>
 }
-
-@if (axis.orientation === orientation.y) {
-  <svg:text
-    text-anchor="middle"
-    class="label font-title-2 fill-text-70"
-    dominant-baseline="central"
-    [attr.x]="value"
-    [attr.y]="width / 2">{{ plotLine.label }}
-  </svg:text>
-}
-<svg:line class="grabber"
-          [class.x-grabber]="axis.orientation === orientation.x"
-          [class.y-grabber]="axis.orientation === orientation.y"
-          [attr.stroke]="'red'"
-          [attr.stroke-width]="8"
-          opacity="0"
-          [attr.x1]="axis.orientation === orientation.x ? value : 0"
-          [attr.x2]="axis.orientation === orientation.x ? value : width"
-          [attr.y1]="axis.orientation === orientation.x ? 0 : value"
-          [attr.y2]="axis.orientation === orientation.x ? height : value">
-</svg:line>
+<svg:line
+  class="grabber"
+  [class.x-grabber]="axis.orientation === orientation.x"
+  [class.y-grabber]="axis.orientation === orientation.y"
+  [attr.stroke]="'red'"
+  [attr.stroke-width]="8"
+  opacity="0"
+  [attr.x1]="axis.orientation === orientation.x ? value : 0"
+  [attr.x2]="axis.orientation === orientation.x ? value : width"
+  [attr.y1]="axis.orientation === orientation.x ? 0 : value"
+  [attr.y2]="axis.orientation === orientation.x ? height : value"
+></svg:line>

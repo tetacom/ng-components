@@ -1,4 +1,4 @@
-import {toPng, toBlob, toCanvas, toJpeg, toSvg, toPixelData} from 'html-to-image';
+import { toPng, toBlob, toCanvas, toJpeg, toSvg, toPixelData } from 'html-to-image';
 
 export enum ExportType {
   png,
@@ -6,12 +6,12 @@ export enum ExportType {
   jpeg,
   blob,
   canvas,
-  pixelData
+  pixelData,
 }
 
 export type ExportOptions = {
-  filter: (node: HTMLElement) => boolean
-}
+  filter: (node: HTMLElement) => boolean;
+};
 
 const renderMapping = new Map<ExportType, any>()
   .set(ExportType.blob, toBlob)
@@ -19,9 +19,9 @@ const renderMapping = new Map<ExportType, any>()
   .set(ExportType.canvas, toCanvas)
   .set(ExportType.jpeg, toJpeg)
   .set(ExportType.svg, toSvg)
-  .set(ExportType.pixelData, toPixelData)
+  .set(ExportType.pixelData, toPixelData);
 
 export const exportDomToImage = (node: HTMLElement, type = ExportType.png, options?: ExportOptions) => {
   const render = renderMapping.get(type) ?? toPng;
-  return render(node, {filter: options?.filter ?? null})
-}
+  return render(node, { filter: options?.filter ?? null });
+};

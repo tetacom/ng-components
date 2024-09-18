@@ -1,4 +1,4 @@
-@import "util/shadow-util.scss";
+@import 'util/shadow-util.scss';
 
 .message {
   position: relative;
@@ -13,9 +13,9 @@
   color: var(--color-text-90);
 
   @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
-    &#{'-'+$paletteName}::before {
+    &#{'-' + $paletteName}::before {
       background: getColorVar($paletteName, '50');
-      content: " ";
+      content: ' ';
       position: absolute;
       top: 0;
       left: 0;

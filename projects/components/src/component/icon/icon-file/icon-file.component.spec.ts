@@ -8,12 +8,11 @@ describe('IconFileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [IconFileComponent]
-})
-      .compileComponents();
+      imports: [IconFileComponent],
+    }).compileComponents();
   });
 
-    beforeEach(() => {
+  beforeEach(() => {
     fixture = TestBed.createComponent(IconFileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

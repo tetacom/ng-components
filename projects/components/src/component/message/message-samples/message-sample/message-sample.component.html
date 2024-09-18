@@ -1,22 +1,50 @@
 <div class="padding-3 bg-panel-50">
-  <button type="button" teta-button [palette]="'primary'"
-          (click)="create('Simple' , 'I will close after 5 seconds', false, 'primary')">
+  <button
+    type="button"
+    teta-button
+    [palette]="'primary'"
+    (click)="create('Simple', 'I will close after 5 seconds', false, 'primary')"
+  >
     Simple
   </button>
-  <button type="button" teta-button [palette]="'primary'"
-          (click)="create('Infinite' , 'I will close after 5 seconds', true, 'primary')">
+  <button
+    type="button"
+    teta-button
+    [palette]="'primary'"
+    (click)="create('Infinite', 'I will close after 5 seconds', true, 'primary')"
+  >
     Infinite
   </button>
-  <button type="button" teta-button [palette]="'green'"
-          (click)="create('Infinite' , 'I will close after 5 seconds', true, 'green')">
+  <button
+    type="button"
+    teta-button
+    [palette]="'green'"
+    (click)="create('Infinite', 'I will close after 5 seconds', true, 'green')"
+  >
     Infinite
   </button>
-  <button type="button" teta-button [palette]="'red'"
-          (click)="create('Custom class' , 'I am supposed to have red background I am supposed to have red background I am supposed to have red background I am supposed to have red background I am supposed to have red background I am supposed to have red background I am supposed to have red background I am supposed to have red background I am supposed to have red background ', false, 'red','bg-red-20')">
+  <button
+    type="button"
+    teta-button
+    [palette]="'red'"
+    (click)="
+      create(
+        'Custom class',
+        'I am supposed to have red background I am supposed to have red background I am supposed to have red background I am supposed to have red background I am supposed to have red background I am supposed to have red background I am supposed to have red background I am supposed to have red background I am supposed to have red background ',
+        false,
+        'red',
+        'bg-red-20'
+      )
+    "
+  >
     With a custom class name
   </button>
-  <button type="button" teta-button [palette]="'text'"
-          (click)="create('Template' , 'I have a custom template', false, 'text', '', messageTemplate)">
+  <button
+    type="button"
+    teta-button
+    [palette]="'text'"
+    (click)="create('Template', 'I have a custom template', false, 'text', '', messageTemplate)"
+  >
     Template
   </button>
 
@@ -24,8 +52,7 @@
 
   <ng-template #messageTemplate let-message>
     <div class="bg-green-10">
-      {{message.text}}
+      {{ message.text }}
     </div>
-
   </ng-template>
 </div>

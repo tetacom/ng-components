@@ -1,7 +1,7 @@
-import {StepperComponent} from './stepper/stepper.component';
+import { StepperComponent } from './stepper/stepper.component';
 
-import {applicationConfig, Meta} from '@storybook/angular';
-import {provideHttpClient} from '@angular/common/http';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
 
 export default {
   title: 'Component/Stepper',

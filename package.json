@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "sb": "nx run components:storybook"
+    "sb": "nx run components:storybook",
+    "prettier": "prettier --write \"projects/**/*.{html,css,scss,ts,mdx}\""
   },
   "private": true,
   "devDependencies": {

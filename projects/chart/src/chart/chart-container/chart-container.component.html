@@ -1,148 +1,124 @@
-@if ({
-  size: size | async,
-  config: config | async,
-  scales: scales | async,
-  plotBands: plotBands | async,
-  visibleRect: visibleRect | async
-}; as data) {
-  @if (data.config?.tooltip?.enable) {
-    <teta-tooltip [size]="data.size"
-                  [config]="data.config"></teta-tooltip>
-  }
-  @if (data.size?.height > 0
-  && data.size?.width > 0
-  && data.visibleRect?.height > 0
-  && data.visibleRect?.width > 0
-  && data.scales?.x.size === data.config.xAxis.length
-  && data.scales?.y.size === data.config.yAxis.length) {
-    <svg height="100%" width="100%" class="position-absolute">
-      <g class="y-axis-container">
-        @for (item of data.scales.y | keyvalue; track item.value.index) {
-          @if (item.value.selfSize > 0
-          && item.value.options.visible
-          && data.scales.x.size > 0
-          && data.scales.y.size > 0) {
-            <g
-              teta-y-axis
-              [axis]="item.value"
-              [size]="data.visibleRect"
-              [attr.transform]="getTranslate(item.value, data.size) | async"></g>
-            <rect
-              tetaZoomable
-              fill-opacity="0"
-              [axis]="item.value"
-              [config]="data.config"
-              [size]="data.visibleRect"
-              [attr.x]="item.value.options.opposite ? 0 : -item.value.selfSize"
-              [attr.y]="0"
-              [attr.height]="data.visibleRect.height"
-              [attr.width]="item.value.selfSize"
-              [attr.transform]="getTranslate(item.value, data.size) | async"></rect>
-          }
-        }
-      </g>
-      <g class="x-axis-container">
-        @for (item of data.scales.x | keyvalue; track item.value.index) {
-          @if (item.value.options.visible && data.scales.x.size > 0 && data.scales.y.size > 0) {
-            <g
-              teta-x-axis
-              [axis]="item.value"
-              [size]="data.visibleRect"
-              [attr.transform]="getTranslate(item.value, data.size) | async"></g>
-            <rect
-              tetaZoomable
-              fill-opacity="0"
-              [axis]="item.value"
-              [config]="data.config"
-              [size]="data.visibleRect"
-              [attr.x]="0"
-              [attr.y]="item.value.options.opposite ? -item.value.selfSize : 0"
-              [attr.width]="data.visibleRect.width"
-              [attr.height]="item.value.selfSize"
-              [attr.transform]="getTranslate(item.value, data.size) | async"></rect>
-          }
-        }
-      </g>
-    </svg>
-  }
-  @if (data.size?.height > 0
-  && data.size?.width > 0
-  && data.visibleRect?.height > 0
-  && data.visibleRect?.width > 0
-  && data.scales?.x.size === data.config.xAxis.length
-  && data.scales?.y.size === data.config.yAxis.length) {
-    <svg
-      tetaZoomable
-      tetaBrushable
-      class="position-absolute"
+@if ({ size: size | async, config: config | async, scales: scales | async, plotBands: plotBands | async, visibleRect:
+visibleRect | async }; as data) { @if (data.config?.tooltip?.enable) {
+<teta-tooltip [size]="data.size" [config]="data.config"></teta-tooltip>
+} @if (data.size?.height > 0 && data.size?.width > 0 && data.visibleRect?.height > 0 && data.visibleRect?.width > 0 &&
+data.scales?.x.size === data.config.xAxis.length && data.scales?.y.size === data.config.yAxis.length) {
+<svg height="100%" width="100%" class="position-absolute">
+  <g class="y-axis-container">
+    @for (item of data.scales.y | keyvalue; track item.value.index) { @if (item.value.selfSize > 0 &&
+    item.value.options.visible && data.scales.x.size > 0 && data.scales.y.size > 0) {
+    <g
+      teta-y-axis
+      [axis]="item.value"
       [size]="data.visibleRect"
+      [attr.transform]="getTranslate(item.value, data.size) | async"
+    ></g>
+    <rect
+      tetaZoomable
+      fill-opacity="0"
+      [axis]="item.value"
       [config]="data.config"
-      [axis]="data.config?.zoom?.type === zoomType.x ? data.scales.x.get(0) : data.scales.y.get(0)"
-      [attr.width]="data.visibleRect.width"
+      [size]="data.visibleRect"
+      [attr.x]="item.value.options.opposite ? 0 : -item.value.selfSize"
+      [attr.y]="0"
       [attr.height]="data.visibleRect.height"
-      [attr.viewBox]="'0 0 ' + data.visibleRect.width + ' ' + data.visibleRect.height"
-      [style.transform]="'translate('+ data.visibleRect.x +'px, '+ data.visibleRect.y +'px)'"
-      (contextmenu)="contextMenu($event, data.scales.x, data.scales.y)"
-      (click)="click($event, data.scales.x, data.scales.y)"
-      (mouseleave)="mouseLeave($event)"
-      (mousemove)="mouseMove($event)">
-      @if (data.config.gridLines?.enable !== false) {
-        <g class="gridlines"
-           teta-gridlines
-           [size]="data.size"></g>
-      }
-      <g class="x-axis-plotband-container">
-        @for (plotBand of data.plotBands; track plotBand) {
-          <g teta-plot-band
-             [plotBand]="plotBand.plotBand"
-             [scale]="plotBand.axis.scale"
-             [size]="data.visibleRect"
-             [axis]="plotBand.axis"></g>
-        }
-      </g>
-      <g class="series-container">
-        @for (series of data.config.series; track series; ) {
-          @if (series.visible) {
-            <g teta-series-host
-               [config]="data.config"
-               [series]="series"></g>
-          }
-        }
-      </g>
-      <g class="x-axis-plotline-container">
-        @for (axis of data.config.xAxis; let i = $index; track axis) {
-          @for (plotLine of axis.plotLines; track plotLine) {
-            <g teta-plot-line
-               [plotLine]="plotLine"
-               [scale]="data.scales.x.get(i).scale"
-               [size]="data.size"
-               [axis]="data.scales.x.get(i)"></g>
-          }
-        }
-      </g>
-      <g class="y-axis-plotline-container">
-        @for (axis of data.config.yAxis; let i = $index; track axis; ) {
-          @for (plotLine of axis.plotLines; track plotLine) {
-            <g teta-plot-line
-               [plotLine]="plotLine"
-               [scale]="data.scales.y.get(i).scale"
-               [size]="data.size"
-               [axis]="data.scales.y.get(i)"></g>
-          }
-        }
-      </g>
-      <g class="annotations">
-        @for (annotation of data.config.annotations; track annotation) {
-          <g teta-annotation
-             [visibleRect]="data.visibleRect"
-             [annotation]="annotation"></g>
-        }
-      </g>
-      @if (data.config.tooltip?.showCrosshair) {
-        <g class="crosshair">
-          <g teta-crosshair [size]="data.visibleRect"></g>
-        </g>
-      }
-    </svg>
+      [attr.width]="item.value.selfSize"
+      [attr.transform]="getTranslate(item.value, data.size) | async"
+    ></rect>
+    } }
+  </g>
+  <g class="x-axis-container">
+    @for (item of data.scales.x | keyvalue; track item.value.index) { @if (item.value.options.visible &&
+    data.scales.x.size > 0 && data.scales.y.size > 0) {
+    <g
+      teta-x-axis
+      [axis]="item.value"
+      [size]="data.visibleRect"
+      [attr.transform]="getTranslate(item.value, data.size) | async"
+    ></g>
+    <rect
+      tetaZoomable
+      fill-opacity="0"
+      [axis]="item.value"
+      [config]="data.config"
+      [size]="data.visibleRect"
+      [attr.x]="0"
+      [attr.y]="item.value.options.opposite ? -item.value.selfSize : 0"
+      [attr.width]="data.visibleRect.width"
+      [attr.height]="item.value.selfSize"
+      [attr.transform]="getTranslate(item.value, data.size) | async"
+    ></rect>
+    } }
+  </g>
+</svg>
+} @if (data.size?.height > 0 && data.size?.width > 0 && data.visibleRect?.height > 0 && data.visibleRect?.width > 0 &&
+data.scales?.x.size === data.config.xAxis.length && data.scales?.y.size === data.config.yAxis.length) {
+<svg
+  tetaZoomable
+  tetaBrushable
+  class="position-absolute"
+  [size]="data.visibleRect"
+  [config]="data.config"
+  [axis]="data.config?.zoom?.type === zoomType.x ? data.scales.x.get(0) : data.scales.y.get(0)"
+  [attr.width]="data.visibleRect.width"
+  [attr.height]="data.visibleRect.height"
+  [attr.viewBox]="'0 0 ' + data.visibleRect.width + ' ' + data.visibleRect.height"
+  [style.transform]="'translate(' + data.visibleRect.x + 'px, ' + data.visibleRect.y + 'px)'"
+  (contextmenu)="contextMenu($event, data.scales.x, data.scales.y)"
+  (click)="click($event, data.scales.x, data.scales.y)"
+  (mouseleave)="mouseLeave($event)"
+  (mousemove)="mouseMove($event)"
+>
+  @if (data.config.gridLines?.enable !== false) {
+  <g class="gridlines" teta-gridlines [size]="data.size"></g>
   }
-}
+  <g class="x-axis-plotband-container">
+    @for (plotBand of data.plotBands; track plotBand) {
+    <g
+      teta-plot-band
+      [plotBand]="plotBand.plotBand"
+      [scale]="plotBand.axis.scale"
+      [size]="data.visibleRect"
+      [axis]="plotBand.axis"
+    ></g>
+    }
+  </g>
+  <g class="series-container">
+    @for (series of data.config.series; track series; ) { @if (series.visible) {
+    <g teta-series-host [config]="data.config" [series]="series"></g>
+    } }
+  </g>
+  <g class="x-axis-plotline-container">
+    @for (axis of data.config.xAxis; let i = $index; track axis) { @for (plotLine of axis.plotLines; track plotLine) {
+    <g
+      teta-plot-line
+      [plotLine]="plotLine"
+      [scale]="data.scales.x.get(i).scale"
+      [size]="data.size"
+      [axis]="data.scales.x.get(i)"
+    ></g>
+    } }
+  </g>
+  <g class="y-axis-plotline-container">
+    @for (axis of data.config.yAxis; let i = $index; track axis; ) { @for (plotLine of axis.plotLines; track plotLine) {
+    <g
+      teta-plot-line
+      [plotLine]="plotLine"
+      [scale]="data.scales.y.get(i).scale"
+      [size]="data.size"
+      [axis]="data.scales.y.get(i)"
+    ></g>
+    } }
+  </g>
+  <g class="annotations">
+    @for (annotation of data.config.annotations; track annotation) {
+    <g teta-annotation [visibleRect]="data.visibleRect" [annotation]="annotation"></g>
+    }
+  </g>
+  @if (data.config.tooltip?.showCrosshair) {
+  <g class="crosshair">
+    <g teta-crosshair [size]="data.visibleRect"></g>
+  </g>
+  }
+</svg>
+} }

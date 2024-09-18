@@ -21,17 +21,12 @@ import { PropertyGridGroupComponent } from './property-grid-group/property-grid-
 import { PropertyGridItemComponent } from './property-grid-item/property-grid-item.component';
 
 @Component({
-    selector: 'teta-property-grid',
-    templateUrl: './property-grid.component.html',
-    styleUrls: ['./property-grid.component.scss'],
-    viewProviders: [FormsUtil.formProvider],
-    standalone: true,
-    imports: [
-        PropertyGridItemComponent,
-        FormsModule,
-        ReactiveFormsModule,
-        PropertyGridGroupComponent,
-    ],
+  selector: 'teta-property-grid',
+  templateUrl: './property-grid.component.html',
+  styleUrls: ['./property-grid.component.scss'],
+  viewProviders: [FormsUtil.formProvider],
+  standalone: true,
+  imports: [PropertyGridItemComponent, FormsModule, ReactiveFormsModule, PropertyGridGroupComponent],
 })
 export class PropertyGridComponent<T> implements OnDestroy {
   @HostBinding('class.form-container') formClass = true;
@@ -79,9 +74,9 @@ export class PropertyGridComponent<T> implements OnDestroy {
   }
 
   onControlValueChange(event: IIdName<any>) {
-    const affected = this.columns.filter(_ => _.parentName === event.name);
+    const affected = this.columns.filter((_) => _.parentName === event.name);
     if (affected?.length) {
-      affected.forEach(item => {
+      affected.forEach((item) => {
         const value = this.formGroup.getRawValue()[item.name];
         if (value) {
           const dictValue = this.getDictValue(value, item.name);
@@ -105,6 +100,6 @@ export class PropertyGridComponent<T> implements OnDestroy {
   }
 
   private getDictValue(value: any, name: string) {
-    return this.dict[name]?.find(_ => _.id === value);
+    return this.dict[name]?.find((_) => _.id === value);
   }
 }

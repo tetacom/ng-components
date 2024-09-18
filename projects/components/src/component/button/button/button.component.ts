@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, HostBinding, Input} from '@angular/core';
-import {viewType} from '../../../common/model/view-type.model';
-import {TetaSize} from "../../../common/enum/teta-size.enum";
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { viewType } from '../../../common/model/view-type.model';
+import { TetaSize } from '../../../common/enum/teta-size.enum';
 
 export type ButtonViewType = 'primary' | 'outline' | 'ghost';
 

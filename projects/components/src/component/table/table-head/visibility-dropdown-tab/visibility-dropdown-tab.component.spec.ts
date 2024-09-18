@@ -8,9 +8,8 @@ describe('VisibilityDropdownTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [VisibilityDropdownTabComponent]
-})
-    .compileComponents();
+      imports: [VisibilityDropdownTabComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

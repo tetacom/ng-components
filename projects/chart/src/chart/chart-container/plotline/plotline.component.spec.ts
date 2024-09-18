@@ -8,9 +8,8 @@ describe('PlotlineComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlotlineComponent ]
-    })
-    .compileComponents();
+      declarations: [PlotlineComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

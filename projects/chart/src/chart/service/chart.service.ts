@@ -49,9 +49,7 @@ export class ChartService {
   private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig());
   private size$ = new BehaviorSubject<DOMRect>(null);
   private pointerMove$ = new Subject<PointerEvent>();
-  private tooltips$ = new BehaviorSubject<
-    Map<Series<BasePoint>, IDisplayTooltip>
-  >(new Map());
+  private tooltips$ = new BehaviorSubject<Map<Series<BasePoint>, IDisplayTooltip>>(new Map());
   private plotBandEvent$ = new Subject<IChartEvent<PlotBand>>();
   private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();
   private pointMove$ = new Subject<IChartEvent<IPointMove>>();
@@ -76,7 +74,7 @@ export class ChartService {
       })
     );
 
-    this.size = this.size$.asObservable().pipe(filter(size => size != null));
+    this.size = this.size$.asObservable().pipe(filter((size) => size != null));
     this.pointerMove = this.pointerMove$.asObservable();
     this.tooltips = this.tooltips$.asObservable();
     this.plotBandEvent = this.plotBandEvent$.asObservable();
@@ -84,20 +82,14 @@ export class ChartService {
     this.pointMove = this.pointMove$.asObservable();
     this.chartClick = this.chartClick$.asObservable();
     this.chartContextMenu = this.chartContextMenu$.asObservable();
-    this.annotationClick = this.annotationEvent$
-      .asObservable()
-      .pipe(filter(_ => _?.event?.type === 'click'));
+    this.annotationClick = this.annotationEvent$.asObservable().pipe(filter((_) => _?.event?.type === 'click'));
     this.annotationContextMenu = this.annotationEvent$
       .asObservable()
-      .pipe(filter(_ => _?.event?.type === 'contextmenu'));
+      .pipe(filter((_) => _?.event?.type === 'contextmenu'));
     this.annotationMove = this.annotationMove$.asObservable();
 
-    this.plotBandClick = this.plotBandEvent$
-      .asObservable()
-      .pipe(filter(_ => _?.event?.type === 'click'));
-    this.plotBandContextMenu = this.plotBandEvent$
-      .asObservable()
-      .pipe(filter(_ => _?.event?.type === 'contextmenu'));
+    this.plotBandClick = this.plotBandEvent$.asObservable().pipe(filter((_) => _?.event?.type === 'click'));
+    this.plotBandContextMenu = this.plotBandEvent$.asObservable().pipe(filter((_) => _?.event?.type === 'contextmenu'));
     // this.zoomInstance = this.zoomInstance$.asObservable();
     // this.brushInstance = this.brushInstance$.asObservable();
   }
@@ -122,46 +114,33 @@ export class ChartService {
     } else {
       currentTooltips.set(tooltip.series, tooltip);
     }
-    this.tooltips$.next(
-      new Map<Series<BasePoint>, IDisplayTooltip>(currentTooltips)
-    );
+    this.tooltips$.next(new Map<Series<BasePoint>, IDisplayTooltip>(currentTooltips));
   }
 
   public clearTooltips() {
     this.tooltips$.next(new Map());
   }
 
-  public async toggleVisibilitySeries(
-    seriesIndex: Array<number | string>,
-    visible?: boolean
-  ) {
+  public async toggleVisibilitySeries(seriesIndex: Array<number | string>, visible?: boolean) {
     if (seriesIndex?.length === 0) {
       return;
     }
 
     const currentConfig = await lastValueFrom(this.config.pipe(take(1)));
 
-    seriesIndex.forEach(serieIndex => {
-      const currentSerieIndex = currentConfig.series.findIndex(
-        _ => _.id === serieIndex
-      );
+    seriesIndex.forEach((serieIndex) => {
+      const currentSerieIndex = currentConfig.series.findIndex((_) => _.id === serieIndex);
 
       if (currentSerieIndex === -1) {
         return;
       }
       currentConfig.series[currentSerieIndex].visible =
-        visible !== undefined
-          ? visible
-          : !currentConfig.series[currentSerieIndex].visible;
+        visible !== undefined ? visible : !currentConfig.series[currentSerieIndex].visible;
 
       const seriesLinkCount = currentConfig.series.filter(
-        _ =>
-          _.yAxisIndex === currentConfig.series[currentSerieIndex].yAxisIndex &&
-          _.visible === true
+        (_) => _.yAxisIndex === currentConfig.series[currentSerieIndex].yAxisIndex && _.visible === true
       ).length;
-      currentConfig.yAxis[
-        currentConfig.series[currentSerieIndex].yAxisIndex
-      ].visible = seriesLinkCount !== 0;
+      currentConfig.yAxis[currentConfig.series[currentSerieIndex].yAxisIndex].visible = seriesLinkCount !== 0;
     });
 
     try {
@@ -209,36 +188,26 @@ export class ChartService {
 
   private saveCookie(config: IChartConfig) {
     if (!config.name) return;
-    const hiddenSeries = config.series?.filter(_ => !_.visible).map(_ => _.id);
-    localStorage.setItem(
-      `${config.name}_${ChartService._hiddenSeriesPostfix}`,
-      JSON.stringify(hiddenSeries)
-    );
+    const hiddenSeries = config.series?.filter((_) => !_.visible).map((_) => _.id);
+    localStorage.setItem(`${config.name}_${ChartService._hiddenSeriesPostfix}`, JSON.stringify(hiddenSeries));
   }
 
   private restoreLocalStorage(config: IChartConfig): IChartConfig {
     if (!config.name) return config;
 
-    const hiddenSeries = localStorage.getItem(
-      `${config.name}_${ChartService._hiddenSeriesPostfix}`
-    );
+    const hiddenSeries = localStorage.getItem(`${config.name}_${ChartService._hiddenSeriesPostfix}`);
     if (hiddenSeries) {
       const json = JSON.parse(hiddenSeries) as Array<string | number>;
       config.series = config.series.map((serie, index) => {
         serie.visible = !json.includes(serie.id);
 
-        const currentSerieIndex = config.series.findIndex(
-          _ => _.id === serie.id
-        );
+        const currentSerieIndex = config.series.findIndex((_) => _.id === serie.id);
 
         if (currentSerieIndex !== -1) {
           const seriesLinkCount = config.series.filter(
-            _ =>
-              _.yAxisIndex === config.series[currentSerieIndex].yAxisIndex &&
-              _.visible === true
+            (_) => _.yAxisIndex === config.series[currentSerieIndex].yAxisIndex && _.visible === true
           ).length;
-          config.yAxis[config.series[currentSerieIndex].yAxisIndex].visible =
-            seriesLinkCount !== 0;
+          config.yAxis[config.series[currentSerieIndex].yAxisIndex].visible = seriesLinkCount !== 0;
         }
 
         return serie;
@@ -253,8 +222,8 @@ export class ChartService {
   private setDefaults(data: [IChartConfig, string]): IChartConfig {
     let [config, id] = data;
 
-    const defaultConfig = defaultConfig => {
-      return source => {
+    const defaultConfig = (defaultConfig) => {
+      return (source) => {
         return Object.assign({}, defaultConfig, source);
       };
     };
@@ -274,11 +243,11 @@ export class ChartService {
       };
     });
 
-    const oppositeYCount = config.yAxis?.filter(_ => _.opposite);
-    const oppositeXCount = config.xAxis?.filter(_ => _.opposite);
+    const oppositeYCount = config.yAxis?.filter((_) => _.opposite);
+    const oppositeXCount = config.xAxis?.filter((_) => _.opposite);
 
-    const nonOppositeYCount = config.yAxis?.filter(_ => !_.opposite);
-    const nonOppositeXCount = config.xAxis?.filter(_ => !_.opposite);
+    const nonOppositeYCount = config.yAxis?.filter((_) => !_.opposite);
+    const nonOppositeXCount = config.xAxis?.filter((_) => !_.opposite);
 
     if (nonOppositeXCount?.length > 1) {
       config.bounds.bottom = 0;
@@ -296,11 +265,7 @@ export class ChartService {
       config.bounds.right = 0;
     }
 
-    config.tooltip = Object.assign(
-      {},
-      defaultChartConfig().tooltip,
-      config.tooltip
-    );
+    config.tooltip = Object.assign({}, defaultChartConfig().tooltip, config.tooltip);
 
     config.zoom = Object.assign({}, defaultChartConfig().zoom, config.zoom);
 
@@ -317,7 +282,7 @@ export class ChartService {
       config.xAxis = yAxes;
       config.yAxis = xAxes;
 
-      config.series = config.series?.map(serie => {
+      config.series = config.series?.map((serie) => {
         const x = serie.xAxisIndex;
         const y = serie.yAxisIndex;
         serie.xAxisIndex = y;
@@ -325,7 +290,7 @@ export class ChartService {
         return {
           ...serie,
           clipPointsDirection: ClipPointsDirection.y,
-          data: serie?.data?.map(point => {
+          data: serie?.data?.map((point) => {
             return {
               ...point,
               x: point?.y,
@@ -339,8 +304,8 @@ export class ChartService {
     }
 
     if (config?.brush?.enable) {
-      config.yAxis = config.yAxis.map(_ => ({ ..._, zoom: false }));
-      config.xAxis = config.xAxis.map(_ => ({ ..._, zoom: false }));
+      config.yAxis = config.yAxis.map((_) => ({ ..._, zoom: false }));
+      config.xAxis = config.xAxis.map((_) => ({ ..._, zoom: false }));
     }
 
     return config;

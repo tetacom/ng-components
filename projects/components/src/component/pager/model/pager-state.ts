@@ -32,16 +32,12 @@ export class PagerState {
   /**
    * Инициализация из анонимного объекта
    */
-  constructor(options?: {
-    page?: number;
-    pageSize?: number;
-    count?: number;
-    totalCount?: number;
-  }) {
+  constructor(options?: { page?: number; pageSize?: number; count?: number; totalCount?: number }) {
     if (options) {
       this.pageSize = options.pageSize || 30;
       this.count = options.count !== null && options.count !== undefined ? options.count : this.count;
-      this.totalCount = options.totalCount !== null && options.totalCount !== undefined ? options.totalCount : this.totalCount;
+      this.totalCount =
+        options.totalCount !== null && options.totalCount !== undefined ? options.totalCount : this.totalCount;
       this.page = options.page !== null && options.page !== undefined ? options.page : 0;
       this.createPages();
     }

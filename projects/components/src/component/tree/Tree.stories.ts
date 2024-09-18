@@ -1,15 +1,14 @@
-import {TreeComponent} from './tree/tree.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {applicationConfig, Meta} from '@storybook/angular';
-import {provideHttpClient} from '@angular/common/http';
-import {IconComponent} from "../icon/icon/icon.component";
-import {IconSpriteDirective} from "../icon/icon-sprite.directive";
-import {TetaTemplateDirective} from "../../directive/teta-template/teta-template.directive";
+import { TreeComponent } from './tree/tree.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { IconComponent } from '../icon/icon/icon.component';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
+import { TetaTemplateDirective } from '../../directive/teta-template/teta-template.directive';
 
 export default {
   title: 'Component/Tree',
   decorators: [
-
     applicationConfig({
       providers: [provideHttpClient()],
     }),
@@ -19,9 +18,7 @@ export default {
 
 export const basicTree = () => ({
   moduleMetadata: {
-    imports: [
-      BrowserAnimationsModule, IconComponent, IconSpriteDirective, TetaTemplateDirective
-    ],
+    imports: [BrowserAnimationsModule, IconComponent, IconSpriteDirective, TetaTemplateDirective],
   },
   props: {
     data: treeData,

@@ -25,22 +25,14 @@ import { PositionUtil } from '../../common/util/position-util';
 import { DynamicContentBaseDirective } from '../dynamic-content-base.directive';
 
 @Directive({
-    selector: '[tetaTooltip]',
-    standalone: true,
+  selector: '[tetaTooltip]',
+  standalone: true,
 })
-export class TooltipDirective
-  extends DynamicContentBaseDirective
-  implements OnDestroy, OnInit
-{
+export class TooltipDirective extends DynamicContentBaseDirective implements OnDestroy, OnInit {
   /**
    * Строка, шаблон или компонент для создания контекстного меню
    */
-  @Input() tetaTooltip?:
-    | string
-    | TemplateRef<any>
-    | Type<any>
-    | null
-    | undefined = null;
+  @Input() tetaTooltip?: string | TemplateRef<any> | Type<any> | null | undefined = null;
   @Input() override align: Align = Align.center;
   @Input() override verticalAlign: VerticalAlign = VerticalAlign.top;
   private _componentRect: any;
@@ -74,18 +66,9 @@ export class TooltipDirective
         takeWhile(() => this._alive),
         filter(() => this._open),
         filter(() => this._componentRef != null),
-        filter(
-          (event: MouseEvent) =>
-            !DomUtil.clickedInside(this._elementRef.nativeElement, event)
-        ),
-        filter(
-          (event: MouseEvent) =>
-            !DomUtil.clickedInside(
-              this._componentRef?.location.nativeElement,
-              event
-            )
-        ),
-        tap(_ => this.destroyContentRef())
+        filter((event: MouseEvent) => !DomUtil.clickedInside(this._elementRef.nativeElement, event)),
+        filter((event: MouseEvent) => !DomUtil.clickedInside(this._componentRef?.location.nativeElement, event)),
+        tap((_) => this.destroyContentRef())
       )
       .subscribe();
   }
@@ -93,11 +76,9 @@ export class TooltipDirective
   protected setPosition() {
     if (this._componentRef && this._open) {
       if (!this._componentRect) {
-        this._componentRect =
-          this._componentRef.location.nativeElement.getBoundingClientRect();
+        this._componentRect = this._componentRef.location.nativeElement.getBoundingClientRect();
       }
-      const containerPosition =
-        this._elementRef.nativeElement.getBoundingClientRect();
+      const containerPosition = this._elementRef.nativeElement.getBoundingClientRect();
       const position = PositionUtil.getPosition(
         containerPosition,
         this._componentRect,
@@ -106,12 +87,8 @@ export class TooltipDirective
         0,
         12
       );
-      PositionUtil.setElementPosition(
-        this._componentRef.location.nativeElement,
-        position
-      );
-      const verticalClass =
-        containerPosition.top < position.top ? 'tooltip_bottom' : 'tooltip_top';
+      PositionUtil.setElementPosition(this._componentRef.location.nativeElement, position);
+      const verticalClass = containerPosition.top < position.top ? 'tooltip_bottom' : 'tooltip_top';
       this._componentRef.instance.addClass(verticalClass);
     }
   }

@@ -1,7 +1,9 @@
 <div class="progress-bar" [style.width.%]="percent"></div>
-<div class="progress-slider"
-     [class.progress-slider_visible]="moving"
-     #progressSlider
-     (mousedown)="mousedown()"
-     (click)="click($event)"
-     [style.left.%]="percent"></div>
+<div
+  class="progress-slider"
+  [class.progress-slider_visible]="moving"
+  #progressSlider
+  (mousedown)="mousedown()"
+  (click)="click($event)"
+  [style.left.%]="percent"
+></div>

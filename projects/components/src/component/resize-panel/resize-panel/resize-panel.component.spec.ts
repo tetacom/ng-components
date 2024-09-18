@@ -8,9 +8,8 @@ describe('ResizePanelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [ResizePanelComponent]
-})
-    .compileComponents();
+      imports: [ResizePanelComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

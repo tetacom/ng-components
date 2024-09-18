@@ -11,19 +11,19 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'teta-color-input',
-    templateUrl: './color-input.component.html',
-    styleUrls: ['./color-input.component.scss'],
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => ColorInputComponent),
-            multi: true,
-        },
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [FormsModule],
+  selector: 'teta-color-input',
+  templateUrl: './color-input.component.html',
+  styleUrls: ['./color-input.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ColorInputComponent),
+      multi: true,
+    },
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [FormsModule],
 })
 export class ColorInputComponent implements ControlValueAccessor {
   @Input() disabled = false;
@@ -67,16 +67,11 @@ export class ColorInputComponent implements ControlValueAccessor {
 
   getHexColor(color: string) {
     if (color && color.startsWith('rgb')) {
-      const value = color.substring(
-        color.indexOf('(') + 1,
-        color.lastIndexOf(')')
-      );
+      const value = color.substring(color.indexOf('(') + 1, color.lastIndexOf(')'));
       const colorArray = value.split(',');
-      color = `#${('00' + parseInt(colorArray[0], 10).toString(16)).slice(
-        -2
-      )}${('00' + parseInt(colorArray[1], 10).toString(16)).slice(-2)}${(
-        '00' + parseInt(colorArray[2], 10).toString(16)
-      ).slice(-2)}`;
+      color = `#${('00' + parseInt(colorArray[0], 10).toString(16)).slice(-2)}${(
+        '00' + parseInt(colorArray[1], 10).toString(16)
+      ).slice(-2)}${('00' + parseInt(colorArray[2], 10).toString(16)).slice(-2)}`;
     }
     return color;
   }

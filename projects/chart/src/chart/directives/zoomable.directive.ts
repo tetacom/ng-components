@@ -23,7 +23,7 @@ import { ScaleType } from '../model/enum/scale-type';
 
 @Directive({
   selector: '[tetaZoomable]',
-  standalone:true
+  standalone: true,
 })
 export class ZoomableDirective implements OnDestroy, AfterViewInit {
   @Input() config: IChartConfig;
@@ -64,9 +64,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
 
   ngOnInit() {
     if (this.axis?.options?.zoom || this.config?.zoom?.enable) {
-      this.zoomable =
-        this.config?.zoom?.zoomBehavior === ZoomBehaviorType.move &&
-        !this.config?.tooltip?.showCrosshair;
+      this.zoomable = this.config?.zoom?.zoomBehavior === ZoomBehaviorType.move && !this.config?.tooltip?.showCrosshair;
       this.crosshair = this.config?.tooltip?.showCrosshair;
     }
   }
@@ -83,38 +81,34 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   }
 
   private initZoomSync() {
-    this.zoomService.zoomed
-      .pipe(takeWhile(() => this.alive))
-      .subscribe((zoomed: ZoomMessage) => {
-        if (
-          this._element &&
-          this.elementRef !== zoomed?.element &&
-          zoomed?.axis?.index === this.axis.index &&
-          zoomed?.axis?.orientation === this.axis.orientation
-        ) {
-          const scale = this.axis.scale.copy().domain(this.axis.originDomain);
-          let transform;
-          if (zoomed.domain === null) {
-            transform = zoomIdentity;
-          } else {
-            transform = this.zoomService.getD3Transform(
-              zoomed.domain,
-              this.axis.originDomain,
-              scale,
-              this.axis.orientation,
-              this.axis.options.inverted
-            );
-          }
-          this._element.call(this.zoom.transform, transform);
-          this.currentTransform = transform;
+    this.zoomService.zoomed.pipe(takeWhile(() => this.alive)).subscribe((zoomed: ZoomMessage) => {
+      if (
+        this._element &&
+        this.elementRef !== zoomed?.element &&
+        zoomed?.axis?.index === this.axis.index &&
+        zoomed?.axis?.orientation === this.axis.orientation
+      ) {
+        const scale = this.axis.scale.copy().domain(this.axis.originDomain);
+        let transform;
+        if (zoomed.domain === null) {
+          transform = zoomIdentity;
+        } else {
+          transform = this.zoomService.getD3Transform(
+            zoomed.domain,
+            this.axis.originDomain,
+            scale,
+            this.axis.orientation,
+            this.axis.options.inverted
+          );
         }
-      });
+        this._element.call(this.zoom.transform, transform);
+        this.currentTransform = transform;
+      }
+    });
   }
 
   private initZoomListeners() {
-    const enable =
-      (this.axis?.options?.zoom && this.axis?.options.visible !== false) ||
-      this.config?.zoom?.enable;
+    const enable = (this.axis?.options?.zoom && this.axis?.options.visible !== false) || this.config?.zoom?.enable;
 
     if (!enable) {
       return;
@@ -126,28 +120,16 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       [this.size.width, this.size.height],
     ]);
 
-    const min =
-      this.config?.zoom?.minTranslate != null
-        ? this.axis.scale(this.config?.zoom?.minTranslate)
-        : -Infinity;
-    const max =
-      this.config?.zoom?.maxTranslate != null
-        ? this.axis.scale(this.config?.zoom?.maxTranslate)
-        : Infinity;
-    if (
-      this.axis.orientation === AxisOrientation.x &&
-      this.config.zoom.type === ZoomType.x
-    ) {
+    const min = this.config?.zoom?.minTranslate != null ? this.axis.scale(this.config?.zoom?.minTranslate) : -Infinity;
+    const max = this.config?.zoom?.maxTranslate != null ? this.axis.scale(this.config?.zoom?.maxTranslate) : Infinity;
+    if (this.axis.orientation === AxisOrientation.x && this.config.zoom.type === ZoomType.x) {
       this.zoom.translateExtent([
         [Math.min(min, max), -Infinity],
         [Math.max(min, max), Infinity],
       ]);
     }
 
-    if (
-      this.axis.orientation === AxisOrientation.y &&
-      this.config.zoom.type === ZoomType.y
-    ) {
+    if (this.axis.orientation === AxisOrientation.y && this.config.zoom.type === ZoomType.y) {
       this.zoom.translateExtent([
         [-Infinity, Math.min(min, max)],
         [Infinity, Math.max(min, max)],
@@ -170,9 +152,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         ? 1
         : 0;
 
-      const minZoom = this.config.zoom?.min
-        ? (extremes[1] - extremes[0]) / this.config.zoom?.min
-        : Infinity;
+      const minZoom = this.config.zoom?.min ? (extremes[1] - extremes[0]) / this.config.zoom?.min : Infinity;
 
       this.zoom.scaleExtent([maxZoom, minZoom]);
     }
@@ -233,27 +213,18 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     this._element?.call(this.zoom);
 
     this.zoom
-      .filter(event => {
-        return (
-          (event.ctrlKey && event.type === 'wheel') ||
-          Boolean(window.TouchEvent && event.type !== 'wheel')
-        );
+      .filter((event) => {
+        return (event.ctrlKey && event.type === 'wheel') || Boolean(window.TouchEvent && event.type !== 'wheel');
       })
-      .wheelDelta(event => {
-        const delta =
-          this.config?.zoom.type === ZoomType.x ? -event.deltaX : -event.deltaY;
+      .wheelDelta((event) => {
+        const delta = this.config?.zoom.type === ZoomType.x ? -event.deltaX : -event.deltaY;
         return delta * 0.002;
       });
 
     const emit = (type: string, event: WheelEvent) => {
       const origin = this.axis.scale.copy().domain(this.axis.originDomain);
       let transform = zoomIdentity;
-      const delta =
-        type === 'end'
-          ? 0
-          : this.axis.orientation === AxisOrientation.y
-          ? event.deltaY
-          : event.deltaX;
+      const delta = type === 'end' ? 0 : this.axis.orientation === AxisOrientation.y ? event.deltaY : event.deltaX;
 
       if (this.axis.orientation === AxisOrientation.y) {
         transform = transform.translate(0, this.currentTransform.y - delta / 2);
@@ -270,9 +241,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
           ? transform.rescaleY(origin).domain()
           : transform.rescaleX(origin).domain();
 
-      const extent = this.axis.options?.inverted
-        ? domain
-        : [...domain].reverse();
+      const extent = this.axis.options?.inverted ? domain : [...domain].reverse();
 
       if (extent[0] <= this.config.zoom?.minTranslate) {
         return;

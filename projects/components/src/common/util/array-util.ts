@@ -9,13 +9,9 @@ export class ArrayUtil {
     return [value];
   }
 
-  public static flatten(
-    data: any[],
-    children?: string | ((item: any) => any[]),
-    onlyLeafs?: boolean
-  ): any[] {
+  public static flatten(data: any[], children?: string | ((item: any) => any[]), onlyLeafs?: boolean): any[] {
     const result: any[] = [];
-    data.forEach(child => {
+    data.forEach((child) => {
       let childItems: any[] = [];
       if (children) {
         if (typeof children === 'string') {
@@ -27,11 +23,7 @@ export class ArrayUtil {
       } else {
         childItems = child.children;
       }
-      if (
-        childItems !== null &&
-        childItems !== undefined &&
-        childItems.length > 0
-      ) {
+      if (childItems !== null && childItems !== undefined && childItems.length > 0) {
         if (!onlyLeafs) {
           result.push(child);
         }
@@ -43,12 +35,8 @@ export class ArrayUtil {
     return result;
   }
 
-  static findRecursive(
-    tree: any[],
-    comparer: (iterableNode: any) => boolean,
-    children = 'children'
-  ): any {
-    const found = tree.find(x => comparer(x));
+  static findRecursive(tree: any[], comparer: (iterableNode: any) => boolean, children = 'children'): any {
+    const found = tree.find((x) => comparer(x));
     if (found !== null && found !== undefined) {
       return found;
     }
@@ -86,13 +74,7 @@ export class ArrayUtil {
           }
         } else if (item[children] && item[children].length > 0) {
           resultItem[children] = [];
-          const found = ArrayUtil.filterRecursive(
-            item[children],
-            filter,
-            children,
-            keepChildren,
-            fullscanChildren
-          );
+          const found = ArrayUtil.filterRecursive(item[children], filter, children, keepChildren, fullscanChildren);
           if (found?.length > 0) {
             resultItem[children] = found;
             result.push(resultItem);
@@ -107,7 +89,7 @@ export class ArrayUtil {
     const result: T[] = [];
     if (array && array.length) {
       for (const item of array) {
-        const found = result.find(_ => comparator(_) === comparator(item));
+        const found = result.find((_) => comparator(_) === comparator(item));
         if (!found) {
           result.push(item);
         }

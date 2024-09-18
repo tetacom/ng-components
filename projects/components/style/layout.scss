@@ -1,8 +1,8 @@
-@use "sass:math";
-@import "util/color-util";
+@use 'sass:math';
+@import 'util/color-util';
 
 @function widthCol($n) {
-  @return math.div(100%, $columns-count) * $n
+  @return math.div(100%, $columns-count) * $n;
 }
 
 body {
@@ -37,10 +37,10 @@ body {
     }
   }
 }
- .row-reverse{
-   display: flex;
-   flex-direction: row-reverse;
- }
+.row-reverse {
+  display: flex;
+  flex-direction: row-reverse;
+}
 
 .column {
   display: flex;
@@ -138,5 +138,5 @@ body {
   border: solid 0;
   border-radius: 4px;
   overflow: hidden;
-  background: var(--color-global-bgcard)
+  background: var(--color-global-bgcard);
 }

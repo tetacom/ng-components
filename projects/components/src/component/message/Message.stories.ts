@@ -1,13 +1,12 @@
-import {MessageSampleComponent} from './message-samples/message-sample/message-sample.component';
+import { MessageSampleComponent } from './message-samples/message-sample/message-sample.component';
 
-import {applicationConfig, Meta} from '@storybook/angular';
-import {provideHttpClient} from '@angular/common/http';
-import {IconSpriteDirective} from '../icon/icon-sprite.directive';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
 
 export default {
   title: 'Component/Message',
   decorators: [
-
     applicationConfig({
       providers: [provideHttpClient()],
     }),

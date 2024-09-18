@@ -22,13 +22,7 @@ export class DialogService {
     buttonIcon: string = null,
     buttonPalette: string = 'primary'
   ): Observable<boolean> {
-    return this.createDialog(
-      message,
-      buttonText,
-      buttonIcon,
-      buttonPalette,
-      true
-    ).pipe(
+    return this.createDialog(message, buttonText, buttonIcon, buttonPalette, true).pipe(
       map((result: IModalResult) => result.reason === ModalCloseReason.resolve)
     );
   }

@@ -8,9 +8,8 @@ describe('CalendarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [RangeCalendarComponent]
-})
-    .compileComponents();
+      imports: [RangeCalendarComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RangeCalendarComponent);
     component = fixture.componentInstance;

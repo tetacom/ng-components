@@ -1,6 +1,5 @@
-
-import {Meta} from "@storybook/angular";
-import {DragDropDemoComponent} from "./drag-drop-demo/drag-drop-demo/drag-drop-demo.component";
+import { Meta } from '@storybook/angular';
+import { DragDropDemoComponent } from './drag-drop-demo/drag-drop-demo/drag-drop-demo.component';
 
 export default {
   title: 'Directive/DragDrop',

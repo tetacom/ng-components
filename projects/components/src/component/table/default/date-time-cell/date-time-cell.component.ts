@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 
 import { DatePickerComponent } from '../../../date-picker/date-picker/date-picker.component';
 import { CellComponentBase } from '../../base/cell-component-base';
@@ -14,28 +8,17 @@ import { DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'teta-date-time-cell',
-    templateUrl: './date-time-cell.component.html',
-    styleUrls: ['./date-time-cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        DatePickerComponent,
-        FormsModule,
-        ReactiveFormsModule,
-        DatePipe,
-    ],
+  selector: 'teta-date-time-cell',
+  templateUrl: './date-time-cell.component.html',
+  styleUrls: ['./date-time-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [DatePickerComponent, FormsModule, ReactiveFormsModule, DatePipe],
 })
-export class DateTimeCellComponent<T>
-  extends CellComponentBase<T>
-  implements OnInit
-{
+export class DateTimeCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: DatePickerComponent;
 
-  constructor(
-    protected override svc: TableService<T>,
-    protected override cdr: ChangeDetectorRef
-  ) {
+  constructor(protected override svc: TableService<T>, protected override cdr: ChangeDetectorRef) {
     super(svc, cdr);
   }
 

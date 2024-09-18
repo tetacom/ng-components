@@ -22,12 +22,12 @@ export const SLIDER_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-    selector: 'teta-progress-bar',
-    templateUrl: './progress-bar.component.html',
-    styleUrls: ['./progress-bar.component.scss'],
-    providers: [SLIDER_CONTROL_VALUE_ACCESSOR],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'teta-progress-bar',
+  templateUrl: './progress-bar.component.html',
+  styleUrls: ['./progress-bar.component.scss'],
+  providers: [SLIDER_CONTROL_VALUE_ACCESSOR],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class ProgressBarComponent implements OnInit, ControlValueAccessor {
   @Input() min = 0;
@@ -108,9 +108,7 @@ export class ProgressBarComponent implements OnInit, ControlValueAccessor {
 
   private getMousePositionInPercents = (event: MouseEvent) => {
     const position = event.clientX - this.containerPosition.min;
-    let percent =
-      (100 / (this.containerPosition.max - this.containerPosition.min)) *
-      position;
+    let percent = (100 / (this.containerPosition.max - this.containerPosition.min)) * position;
     percent = percent <= 0 ? 0 : percent > 100 ? 100 : percent;
     this.setValue(this.getValueFromPercent(percent));
   };
@@ -131,9 +129,7 @@ export class ProgressBarComponent implements OnInit, ControlValueAccessor {
     if (!this.step || this.step <= 0 || isNaN(this.step)) {
       return exactValue;
     }
-    return (
-      Math.round((exactValue - this.min) / this.step) * this.step + this.min
-    );
+    return Math.round((exactValue - this.min) / this.step) * this.step + this.min;
   }
 
   private preventGlobalMouseEvents = () => {

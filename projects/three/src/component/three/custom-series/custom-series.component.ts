@@ -1,15 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  CUSTOM_ELEMENTS_SCHEMA,
-  OnInit,
-} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {Base3dSeriesComponent} from '../three-chart/base-3d-series/base3d-series.component';
-import {Base3dPoint} from '../../../common/model/base-3d-point';
-import {Chart3dService} from '../three-chart/service/chart-3d.service';
-import {extend, NgtArgs, NgtStore} from 'angular-three';
-import {Observable} from 'rxjs';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Base3dSeriesComponent } from '../three-chart/base-3d-series/base3d-series.component';
+import { Base3dPoint } from '../../../common/model/base-3d-point';
+import { Chart3dService } from '../three-chart/service/chart-3d.service';
+import { extend, NgtArgs, NgtStore } from 'angular-three';
+import { Observable } from 'rxjs';
 import * as THREE from 'three';
 
 extend(THREE);
@@ -22,9 +17,7 @@ extend(THREE);
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './custom-series.component.html',
 })
-export class CustomSeriesComponent
-  extends Base3dSeriesComponent<Base3dPoint>
-  implements OnInit {
+export class CustomSeriesComponent extends Base3dSeriesComponent<Base3dPoint> implements OnInit {
   public scales: Observable<{ x; y; z }>;
 
   constructor(override svc: Chart3dService, override ngtStore: NgtStore) {

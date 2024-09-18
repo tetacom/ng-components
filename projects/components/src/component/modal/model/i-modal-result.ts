@@ -1,4 +1,4 @@
-import {ModalCloseReason} from './modal-close-reason.enum';
+import { ModalCloseReason } from './modal-close-reason.enum';
 
 export interface IModalResult<T = any> {
   /**

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ITreeData } from '../../common/contract/i-tree-data';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,9 +9,7 @@ export class TreeService {
   openItems: Observable<ITreeData[]>;
   scrollToIndex: Observable<number>;
 
-  private _openItems: BehaviorSubject<ITreeData[]> = new BehaviorSubject<
-    ITreeData[]
-  >([]);
+  private _openItems: BehaviorSubject<ITreeData[]> = new BehaviorSubject<ITreeData[]>([]);
   private _scrollToIndex = new BehaviorSubject<number>(0);
 
   constructor() {
@@ -31,21 +29,15 @@ export class TreeService {
   }
 
   scrollTo(index: number) {
-    this._scrollToIndex.next(index)
+    this._scrollToIndex.next(index);
   }
 
   private addOrRemove<G>(needle: G, list: G[]): G[] {
-    const found = list?.find(
-      (x) => this.compareItems(x) === this.compareItems(needle)
-    );
+    const found = list?.find((x) => this.compareItems(x) === this.compareItems(needle));
     if (found) {
-      return list.filter(
-        (x) => this.compareItems(x) !== this.compareItems(needle)
-      );
+      return list.filter((x) => this.compareItems(x) !== this.compareItems(needle));
     } else {
       return [...list, needle];
     }
   }
-
-
 }

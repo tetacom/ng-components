@@ -1,10 +1,9 @@
 <div class="divider" style="width: 100%">
   <div class="bg-text-20" style="height: 1px"></div>
   @if (!template) {
-    <div class="divider-content padding-h-2">{{ label }}</div>
+  <div class="divider-content padding-h-2">{{ label }}</div>
   } @else {
-    <ng-container *ngTemplateOutlet="template"></ng-container>
+  <ng-container *ngTemplateOutlet="template"></ng-container>
   }
   <div class="bg-text-20" style="height: 1px"></div>
 </div>
-

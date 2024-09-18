@@ -1,4 +1,4 @@
-import {PagerState} from '../model/pager-state';
+import { PagerState } from '../model/pager-state';
 
 export class PagerUtil {
   static getPage<T>(data: T[], paging: PagerState): T[] {

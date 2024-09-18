@@ -1,54 +1,57 @@
-import {Align} from '../../common/enum/align.enum';
-import {VerticalAlign} from '../../common/enum/vertical-align.enum';
-import {SelectComponent} from './select/select.component';
+import { Align } from '../../common/enum/align.enum';
+import { VerticalAlign } from '../../common/enum/vertical-align.enum';
+import { SelectComponent } from './select/select.component';
 
 import * as faker from 'faker';
 
-import {FormsModule} from '@angular/forms';
-import {applicationConfig, Meta} from '@storybook/angular';
-import {provideHttpClient} from '@angular/common/http';
-import {IconSpriteDirective} from '../icon/icon-sprite.directive';
-import {SelectOptionDirective} from './select-option.directive';
-import {SelectValueDirective} from './select-value.directive';
+import { FormsModule } from '@angular/forms';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
+import { SelectOptionDirective } from './select-option.directive';
+import { SelectValueDirective } from './select-value.directive';
 
 export default {
   title: 'Component/Select',
   decorators: [
-
     applicationConfig({
-      providers: [provideHttpClient()]
-    })
+      providers: [provideHttpClient()],
+    }),
   ],
   argTypes: {
     align: {
       options: ['Align.left', ' Align.right', 'Align.center', 'Align.auto'],
-      control: {type: 'select'}
-    }, verticalAlign: {
-      options: ['VerticalAlign.bottom', 'VerticalAlign.top', 'VerticalAlign.center', 'VerticalAlign.auto', 'VerticalAlign.innerAuto', 'VerticalAlign.innerBottom', 'VerticalAlign.innerTop'],
-      control: {type: 'select'}
+      control: { type: 'select' },
+    },
+    verticalAlign: {
+      options: [
+        'VerticalAlign.bottom',
+        'VerticalAlign.top',
+        'VerticalAlign.center',
+        'VerticalAlign.auto',
+        'VerticalAlign.innerAuto',
+        'VerticalAlign.innerBottom',
+        'VerticalAlign.innerTop',
+      ],
+      control: { type: 'select' },
     },
     viewType: {
       options: ['rounded', 'brick', 'circle'],
-      control: {type: 'select'}
+      control: { type: 'select' },
     },
     allowNull: {
-      control: {type: 'boolean'}
+      control: { type: 'boolean' },
     },
     virtual: {
-      control: {type: 'boolean'}
+      control: { type: 'boolean' },
     },
     autoClose: {
-      control: {type: 'boolean'}
+      control: { type: 'boolean' },
     },
     autoCloseIgnore: {
-      options: [
-        'esc',
-        'enter',
-        'inside',
-        'outside'
-      ],
-      control: {type: 'multi-select'}
-    }
+      options: ['esc', 'enter', 'inside', 'outside'],
+      control: { type: 'multi-select' },
+    },
   },
   args: {
     viewType: 'rounded',
@@ -57,20 +60,20 @@ export default {
     allowNull: true,
     autoClose: true,
     virtual: false,
-    autoCloseIgnore: ['esc',],
+    autoCloseIgnore: ['esc'],
   },
   component: SelectComponent,
   moduleMetadata: {
-    imports: [FormsModule]
-  }
+    imports: [FormsModule],
+  },
 } as Meta;
 
-const getOptions = size => {
+const getOptions = (size) => {
   const res = [];
   for (let i = 0; i < size; i++) {
     res.push({
       id: i,
-      name: faker.address.city()
+      name: faker.address.city(),
     });
   }
   return res;
@@ -90,14 +93,14 @@ const valignMap = new Map<string, VerticalAlign>()
   .set('VerticalAlign.innerTop', VerticalAlign.innerTop);
 export const singleSelect = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective]
+    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective],
   },
   props: {
     ...args,
     valignMap,
     alignMap,
     icon: 'user',
-    options: getOptions(1000)
+    options: getOptions(1000),
   },
   template: `<div class="padding-4 bg-panel-50" [tetaIconSprite]="'assets/icons.svg'">
     <teta-select  style="width: 200px;"
@@ -124,19 +127,19 @@ export const singleSelect = (args) => ({
     <div class="margin-top-3">
       value: {{selected | json}}
     </div>
-  </div>`
+  </div>`,
 });
 
 export const singleSelectWithSearch = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective]
+    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective],
   },
   props: {
     ...args,
     valignMap,
     alignMap,
     icon: 'user',
-    options: getOptions(1000)
+    options: getOptions(1000),
   },
   template: `<div class="padding-4 bg-panel-50" [tetaIconSprite]="'assets/icons.svg'">
     <teta-select  style="width: 200px;"
@@ -163,19 +166,19 @@ export const singleSelectWithSearch = (args) => ({
     <div class="margin-top-3">
       value: {{selected | json}}
     </div>
-  </div>`
+  </div>`,
 });
 
 export const disabledSelect = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective]
+    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective],
   },
   props: {
     ...args,
     valignMap,
     alignMap,
     icon: 'user',
-    options: getOptions(1000)
+    options: getOptions(1000),
   },
   template: `<div class="padding-4 bg-panel-50" [tetaIconSprite]="'assets/icons.svg'">
     <teta-select  style="width: 200px;"
@@ -202,19 +205,19 @@ export const disabledSelect = (args) => ({
     <div class="margin-top-3">
       value: {{selected | json}}
     </div>
-  </div>`
+  </div>`,
 });
 
 export const invalidSelect = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective]
+    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective],
   },
   props: {
     ...args,
     valignMap,
     alignMap,
     icon: 'user',
-    options: getOptions(1000)
+    options: getOptions(1000),
   },
   template: `<div class="padding-4 bg-panel-50" [tetaIconSprite]="'assets/icons.svg'">
     <teta-select  style="width: 200px;"
@@ -241,12 +244,12 @@ export const invalidSelect = (args) => ({
     <div class="margin-top-3">
       value: {{selected | json}}
     </div>
-  </div>`
+  </div>`,
 });
 
 export const multipleSelect = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective]
+    imports: [FormsModule, IconSpriteDirective, SelectComponent, SelectOptionDirective, SelectValueDirective],
   },
   props: {
     ...args,
@@ -254,7 +257,7 @@ export const multipleSelect = (args) => ({
     alignMap,
     selected: [],
     icon: 'user',
-    options: getOptions(1000)
+    options: getOptions(1000),
   },
   template: `<div class="padding-4 bg-panel-50" [tetaIconSprite]="'assets/icons.svg'">
     <teta-select  style="width: 300px;"
@@ -276,5 +279,5 @@ export const multipleSelect = (args) => ({
     <div class="margin-top-3">
       value: {{selected | json}}
     </div>
-  </div>`
+  </div>`,
 });

@@ -1,7 +1,7 @@
-import {FilterType} from '../enum/filter-type.enum';
-import {StringFilterType} from '../enum/string-filter-type.enum';
-import {ListFilterType} from '../enum/list-filter-type.enum';
-import {StringUtil} from '../../../util/string-util';
+import { FilterType } from '../enum/filter-type.enum';
+import { StringFilterType } from '../enum/string-filter-type.enum';
+import { ListFilterType } from '../enum/list-filter-type.enum';
+import { StringUtil } from '../../../util/string-util';
 
 export interface IFilterItemOptions {
   sortOrder?: number;
@@ -93,6 +93,6 @@ export class FilterItem {
     this.listFilterType = options?.listFilterType ?? ListFilterType.None;
     this.strict = options?.strict ?? false;
     this.filterComponent = options?.filterComponent;
-    this.columns = options?.columns?.map(_ => new FilterItem(_)) ?? [];
+    this.columns = options?.columns?.map((_) => new FilterItem(_)) ?? [];
   }
 }

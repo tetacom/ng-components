@@ -1,33 +1,30 @@
-import {CheckboxComponent} from './checkbox/checkbox.component';
+import { CheckboxComponent } from './checkbox/checkbox.component';
 
-import {FormsModule} from '@angular/forms';
-import {applicationConfig, Meta} from "@storybook/angular";
-import {CommonModule} from "@angular/common";
-import {provideHttpClient} from "@angular/common/http";
-import {IconSpriteDirective} from '../icon/icon-sprite.directive';
+import { FormsModule } from '@angular/forms';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { CommonModule } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
 
 export default {
   title: 'Component/Checkbox',
   decorators: [
-
     applicationConfig({
-      providers: [
-        provideHttpClient()
-      ],
+      providers: [provideHttpClient()],
     }),
   ],
   argTypes: {
     text: {
-      control: {type: 'text'}
+      control: { type: 'text' },
     },
     labelPosition: {
       options: ['left', 'right'],
-      control: {type: 'select'}
-    }
+      control: { type: 'select' },
+    },
   },
   args: {
     text: 'text text',
-    labelPosition: 'left'
+    labelPosition: 'left',
   },
   component: CheckboxComponent,
   moduleMetadata: {

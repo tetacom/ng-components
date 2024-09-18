@@ -1,98 +1,104 @@
-import {Meta} from "@storybook/blocks";
-import * as  AvatarStories from "../src/component/avatar/avatar.stories";
+import { Meta } from '@storybook/blocks';
+import * as AvatarStories from '../src/component/avatar/avatar.stories';
 
-<Meta of={AvatarStories}/>
+<Meta of={AvatarStories} />
 
-<div class='column gap-24'>
+<div class="column gap-24">
   <h1>Аватар</h1>
-  <div class='column'>
-    <p>Аватар — графическое изображение пользователя, фотография или рисунок. Он нужен, чтобы быстро узнавать
+  <div class="column">
+    <p>
+      Аватар — графическое изображение пользователя, фотография или рисунок. Он нужен, чтобы быстро узнавать
       пользователя (например, в ветке комментариев), а ещё — чтобы пользователь мог узнать сам себя. Например,
-      проверить, что вошёл в аккаунт под нужным логином.</p>
-    <p>В библиотеке существует два вида аватаров: изображения и цветные буквенные. Также, они различаются по размерам и
-      скруглениям.</p>
+      проверить, что вошёл в аккаунт под нужным логином.
+    </p>
+    <p>
+      В библиотеке существует два вида аватаров: изображения и цветные буквенные. Также, они различаются по размерам и
+      скруглениям.
+    </p>
   </div>
   <h3>Как использовать</h3>
-  <div class='column'>
-    <p>Для создания аватара используется <code>teta-avatar</code></p>
+  <div class="column">
+    <p>
+      Для создания аватара используется <code>teta-avatar</code>
+    </p>
     <p>Аватар нужен в случаях:</p>
     <ul>
       <li>Если на странице есть возможность добавить комментарий;</li>
       <li>Отображение профиля в хедере или же в других компонентах.</li>
     </ul>
   </div>
-  <div class='column'>
+  <div class="column">
     <h3>Скругления и размеры</h3>
     <div>
       <p>В основном, в наших продуктах используются круглые аватары (type: round) с размером 28x28.</p>
     </div>
   </div>
-  <div class='column'>
+  <div class="column">
     <h3>Свойства</h3>
     <table>
       <thead>
-      <tr>
-        <th>Свойство</th>
-        <th>Tип</th>
-        <th>Описание</th>
-      </tr>
+        <tr>
+          <th>Свойство</th>
+          <th>Tип</th>
+          <th>Описание</th>
+        </tr>
       </thead>
       <tbody>
-      <tr>
-        <td  class='text-align-center'>
-          <p>viewType</p>
-        </td>
-        <td class='text-align-center'>
-          <code>'rounded'|'circle'|'brick'</code>
-        </td>
-        <td  class='text-align-center'>
+        <tr>
+          <td class="text-align-center">
+            <p>viewType</p>
+          </td>
+          <td class="text-align-center">
+            <code>'rounded'|'circle'|'brick'</code>
+          </td>
+          <td class="text-align-center">
             <p>Свойство округления компонента.</p>
-        </td>
-      </tr>
-      <tr>
-        <td  class='text-align-center'>
-          <p>size</p>
-        </td>
-        <td class='text-align-center'>
-          <code>'24' | '28' | '32' | '44' | '64' | '128' | '200'</code>
-        </td>
-        <td  class='text-align-center'>
-          <p>Размер компонента</p>
-        </td>
-      </tr>
-      <tr>
-        <td  class='text-align-center'>
-          <p>photo</p>
-        </td>
-        <td class='text-align-center'>
-          <code>string | ArrayBuffer</code>
-        </td>
-        <td  class='text-align-center'>
-          <p>Изображение для фона компонента</p>
-        </td>
-      </tr>
-      <tr>
-        <td  class='text-align-center'>
-          <p>id</p>
-        </td>
-        <td class='text-align-center'>
-          <code>number</code>
-        </td>
-        <td  class='text-align-center'>
-          <p>Свойство, которое отвечает за цвет фона компонента</p>
-        </td>
-      </tr>
-      <tr>
-        <td  class='text-align-center'>
-          <p>name</p>
-        </td>
-        <td class='text-align-center'>
-          <code>string</code>
-        </td>
-        <td  class='text-align-center'>
-          <p>Отображаемый текст</p>
-        </td>
-      </tr>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-align-center">
+            <p>size</p>
+          </td>
+          <td class="text-align-center">
+            <code>'24' | '28' | '32' | '44' | '64' | '128' | '200'</code>
+          </td>
+          <td class="text-align-center">
+            <p>Размер компонента</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-align-center">
+            <p>photo</p>
+          </td>
+          <td class="text-align-center">
+            <code>string | ArrayBuffer</code>
+          </td>
+          <td class="text-align-center">
+            <p>Изображение для фона компонента</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-align-center">
+            <p>id</p>
+          </td>
+          <td class="text-align-center">
+            <code>number</code>
+          </td>
+          <td class="text-align-center">
+            <p>Свойство, которое отвечает за цвет фона компонента</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-align-center">
+            <p>name</p>
+          </td>
+          <td class="text-align-center">
+            <code>string</code>
+          </td>
+          <td class="text-align-center">
+            <p>Отображаемый текст</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>

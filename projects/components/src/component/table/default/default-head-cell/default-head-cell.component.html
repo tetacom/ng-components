@@ -1,10 +1,8 @@
 <div class="column column_auto align-start justify-content-center" [tetaHint]="column.hint || column.caption">
   <div class="table-head__cell__text">
-    {{column.caption}}
+    {{ column.caption }}
   </div>
   @if (column.unit) {
-    <div class="table-head__cell__text font-caption color-text-70">
-      [{{column.unit}}]
-    </div>
+  <div class="table-head__cell__text font-caption color-text-70">[{{ column.unit }}]</div>
   }
 </div>

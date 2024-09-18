@@ -7,10 +7,7 @@ import { StringCellComponent } from '../default/string-cell/string-cell.componen
 import { TableColumn } from './table-column';
 import { BooleanCellComponent } from '../default/boolean-cell/boolean-cell.component';
 
-const cellComponentsMap: Map<FilterType, Type<any>> = new Map<
-  FilterType,
-  Type<any>
->()
+const cellComponentsMap: Map<FilterType, Type<any>> = new Map<FilterType, Type<any>>()
   .set(FilterType.number, NumericCellComponent)
   .set(FilterType.date, DateCellComponent)
   .set(FilterType.list, ListCellComponent)
@@ -19,6 +16,4 @@ const cellComponentsMap: Map<FilterType, Type<any>> = new Map<
   .set(FilterType.custom, StringCellComponent);
 
 export const getCellComponent = (column: TableColumn): Type<any> =>
-  cellComponentsMap.has(column.filterType)
-    ? cellComponentsMap.get(column.filterType)
-    : StringCellComponent;
+  cellComponentsMap.has(column.filterType) ? cellComponentsMap.get(column.filterType) : StringCellComponent;

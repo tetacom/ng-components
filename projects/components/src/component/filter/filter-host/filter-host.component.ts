@@ -10,20 +10,20 @@ import {
   Output,
   ViewContainerRef,
 } from '@angular/core';
-import {FilterState} from '../contarct/filter-state';
-import {FilterItem} from '../contarct/filter-item';
-import {FilterBase} from '../base/filter-base';
-import {FilterComponentBase} from '../base/filter-component-base';
-import {takeWhile} from 'rxjs/operators';
-import {getFilterComponent} from '../contarct/filter-component-map';
-import {IIdName} from '../../../common/contract/i-id-name';
+import { FilterState } from '../contarct/filter-state';
+import { FilterItem } from '../contarct/filter-item';
+import { FilterBase } from '../base/filter-base';
+import { FilterComponentBase } from '../base/filter-component-base';
+import { takeWhile } from 'rxjs/operators';
+import { getFilterComponent } from '../contarct/filter-component-map';
+import { IIdName } from '../../../common/contract/i-id-name';
 
 @Component({
-    selector: 'teta-filter-host',
-    template: '',
-    styles: [],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'teta-filter-host',
+  template: '',
+  styles: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class FilterHostComponent<T> implements OnInit, OnDestroy {
   @Input()
@@ -44,7 +44,7 @@ export class FilterHostComponent<T> implements OnInit, OnDestroy {
     }
   }
 
- @Input()
+  @Input()
   set data(data: T[]) {
     this._data = data;
     if (this._init) {
@@ -72,17 +72,13 @@ export class FilterHostComponent<T> implements OnInit, OnDestroy {
   private _componentRef: ComponentRef<any>;
   private _init: boolean;
 
-  constructor(
-    private viewContainerRef: ViewContainerRef
-  ) {
-  }
+  constructor(private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit() {
     if (!FilterComponentBase.isPrototypeOf(this._column.filterComponent)) {
       this._column.filterComponent = getFilterComponent(this._column);
     }
-    this._componentRef =
-      this.viewContainerRef.createComponent<FilterComponentBase<T>>(this._column.filterComponent);
+    this._componentRef = this.viewContainerRef.createComponent<FilterComponentBase<T>>(this._column.filterComponent);
     this._componentRef.instance.column = this._column;
     this._componentRef.instance.state = this._state;
     this._componentRef.instance.data = this._data;

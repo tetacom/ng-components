@@ -1,25 +1,24 @@
-import {ToggleComponent} from './toggle/toggle.component';
+import { ToggleComponent } from './toggle/toggle.component';
 
-import {FormsModule} from '@angular/forms';
-import {applicationConfig, Meta} from '@storybook/angular';
-import {provideHttpClient} from '@angular/common/http';
-import {IconSpriteDirective} from '../icon/icon-sprite.directive';
+import { FormsModule } from '@angular/forms';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
 
 export default {
   title: 'Component/Toggle',
   decorators: [
-
     applicationConfig({
       providers: [provideHttpClient()],
     }),
   ],
   argTypes: {
     text: {
-      control: {type: 'text'}
+      control: { type: 'text' },
     },
   },
   args: {
-    text: 'text'
+    text: 'text',
   },
   component: ToggleComponent,
   moduleMetadata: {

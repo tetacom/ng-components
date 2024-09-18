@@ -8,9 +8,8 @@ describe('YAxisComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ YAxisComponent ]
-    })
-    .compileComponents();
+      declarations: [YAxisComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -8,9 +8,8 @@ describe('AreaSeriesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AreaSeriesComponent ]
-    })
-    .compileComponents();
+      declarations: [AreaSeriesComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

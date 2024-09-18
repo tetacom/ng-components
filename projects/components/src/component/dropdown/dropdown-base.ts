@@ -48,9 +48,7 @@ export class DropdownBase {
   }
 
   get container() {
-    return this.appendToBody
-      ? this._document.body
-      : this._elementRef.nativeElement;
+    return this.appendToBody ? this._document.body : this._elementRef.nativeElement;
   }
 
   @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -80,10 +78,10 @@ export class DropdownBase {
   ) {
     this._zone.onStable
       .pipe(
-        takeWhile(_ => this._alive),
+        takeWhile((_) => this._alive),
         throttleTime(10, undefined, { trailing: true })
       )
-      .subscribe(_ => {
+      .subscribe((_) => {
         if (this._head?.nativeElement && this._body) {
           setTimeout(() => {
             if (this._head?.nativeElement && this._body) {
@@ -97,10 +95,7 @@ export class DropdownBase {
 
   @HostListener('click', ['$event']) click(event: MouseEvent): void {
     if (this.open) {
-      if (
-        !DomUtil.clickedInside(this._body, event) ||
-        this.autoCloseIgnore.indexOf('inside') < 0
-      ) {
+      if (!DomUtil.clickedInside(this._body, event) || this.autoCloseIgnore.indexOf('inside') < 0) {
         this.closeDropdown();
       }
     } else {
@@ -110,15 +105,8 @@ export class DropdownBase {
     }
   }
 
-  @HostListener('document:click', ['$event']) documentClick(
-    event: MouseEvent
-  ): void {
-    if (
-      !this.open ||
-      !this.autoClose ||
-      event.detail === 0 ||
-      DomUtil.clickedInside(this._head.nativeElement, event)
-    ) {
+  @HostListener('document:click', ['$event']) documentClick(event: MouseEvent): void {
+    if (!this.open || !this.autoClose || event.detail === 0 || DomUtil.clickedInside(this._head.nativeElement, event)) {
       return;
     }
     if (DomUtil.clickedInside(this._body, event)) {
@@ -133,14 +121,8 @@ export class DropdownBase {
   }
 
   @HostListener('window:keyup', ['$event']) keyUp(event: KeyboardEvent): void {
-    const key:AutoCloseIgnoreCase[]= ['esc' , 'enter']
-    if (
-      !this.open ||
-      !this.autoClose ||
-      key.every(
-        (_) => this.autoCloseIgnore.indexOf(_) >= 0
-      )
-    ) {
+    const key: AutoCloseIgnoreCase[] = ['esc', 'enter'];
+    if (!this.open || !this.autoClose || key.every((_) => this.autoCloseIgnore.indexOf(_) >= 0)) {
       return;
     }
     if (
@@ -159,12 +141,8 @@ export class DropdownBase {
     window.removeEventListener('scroll', this.scrollListener, true);
   }
 
-  private scrollListener = event => {
-    if (
-      this.open &&
-      !this._body.contains(event.target) &&
-      this._body !== event.target
-    ) {
+  private scrollListener = (event) => {
+    if (this.open && !this._body.contains(event.target) && this._body !== event.target) {
       this.closeDropdown();
     }
   };
@@ -190,8 +168,7 @@ export class DropdownBase {
     this.openChange.emit(this.open);
     const renderer = this._renderer;
     const content = this._content.nativeElement;
-    const container = (this._body =
-      this._body || renderer.createElement('div'));
+    const container = (this._body = this._body || renderer.createElement('div'));
     renderer.addClass(container, 'dropdown');
     renderer.addClass(container, 'dropdown_' + this.viewType);
     if (this.backdrop) {
@@ -201,7 +178,7 @@ export class DropdownBase {
     }
     if (this.className != null) {
       if (this.className instanceof Array && this.className.length > 0) {
-        this.className.forEach(_ => {
+        this.className.forEach((_) => {
           renderer.addClass(container, _);
         });
       }
@@ -246,15 +223,7 @@ export class DropdownBase {
       parentPosition = targetTransformedParent.getBoundingClientRect();
     }
 
-    const position = PositionUtil.getPosition(
-      rect,
-      targetRect,
-      this.align,
-      this.verticalAlign,
-      0,
-      0,
-      parentPosition
-    );
+    const position = PositionUtil.getPosition(rect, targetRect, this.align, this.verticalAlign, 0, 0, parentPosition);
 
     PositionUtil.setElementPosition(target, position);
   }

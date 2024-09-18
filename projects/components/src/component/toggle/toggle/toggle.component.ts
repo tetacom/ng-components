@@ -18,13 +18,13 @@ export const TOGGLE_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-    selector: 'teta-toggle',
-    templateUrl: './toggle.component.html',
-    styleUrls: ['./toggle.component.scss'],
-    providers: [TOGGLE_CONTROL_VALUE_ACCESSOR],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [NgClass],
+  selector: 'teta-toggle',
+  templateUrl: './toggle.component.html',
+  styleUrls: ['./toggle.component.scss'],
+  providers: [TOGGLE_CONTROL_VALUE_ACCESSOR],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgClass],
 })
 export class ToggleComponent implements ControlValueAccessor {
   @HostBinding('attr.tabindex') tabindex = 0;
@@ -34,7 +34,7 @@ export class ToggleComponent implements ControlValueAccessor {
     if (this.palette) {
       return `toggle-button-${this.palette}`;
     }
-    return ''
+    return '';
   }
 
   @Input() palette = 'primary';

@@ -1,20 +1,16 @@
 // eslint-disable-next-line id-blacklist
 
+import { DividerComponent } from './divider/divider.component';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
 
-import {DividerComponent} from "./divider/divider.component";
-import {applicationConfig, Meta} from "@storybook/angular";
-import {provideHttpClient} from "@angular/common/http";
-
-import {IconSpriteDirective} from "../icon/icon-sprite.directive";
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
 
 export default {
   title: 'Component/Divider',
   decorators: [
-
     applicationConfig({
-      providers: [
-        provideHttpClient()
-      ],
+      providers: [provideHttpClient()],
     }),
   ],
   component: DividerComponent,

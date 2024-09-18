@@ -1,73 +1,78 @@
-import {Meta} from "@storybook/blocks";
-import FileStories from "../src/component/file-upload/File.stories";
+import { Meta } from '@storybook/blocks';
+import FileStories from '../src/component/file-upload/File.stories';
 
-<Meta of={FileStories}/>
+<Meta of={FileStories} />
 
-<div class='column gap-24'>
+<div class="column gap-24">
   <h1>FileArea</h1>
-  <div class='column'>
-    <p>FileArea - область в которой работает перетаскивания туда файлов для загрузки(Drag and Drop). Также можно
-      кликнуть на специальную кнопку, чтобы указать путь к файлу и загрузить его.</p>
+  <div class="column">
+    <p>
+      FileArea - область в которой работает перетаскивания туда файлов для загрузки(Drag and Drop). Также можно кликнуть
+      на специальную кнопку, чтобы указать путь к файлу и загрузить его.
+    </p>
   </div>
   <h3>Как пользоваться компонентом</h3>
-  <div class='column'>
-    <p>Создаем <code> &lt;teta-file-upload-area&gt;</code>, внуть передаем внутрь элементы, которые будут отображаться в нем.</p>
+  <div class="column">
+    <p>
+      Создаем <code> &lt;teta-file-upload-area&gt;</code>, внуть передаем внутрь элементы, которые будут отображаться в
+      нем.
+    </p>
   </div>
-  <div class='column'>
+  <div class="column">
     <h3>Свойства</h3>
     <table>
       <thead>
-      <tr>
-        <th>Свойство</th>
-        <th>Tип</th>
-        <th>Описание</th>
-      </tr>
+        <tr>
+          <th>Свойство</th>
+          <th>Tип</th>
+          <th>Описание</th>
+        </tr>
       </thead>
       <tbody>
-      <tr>
-        <td class='text-align-center'>
-          <p>upload</p>
-        </td>
-        <td class='text-align-center'>
-          <code>function</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Функция, которая используется при загрузке файлов и передает в нее загруженные файлы</p>
-        </td>
-      </tr>
-      <tr>
-        <td class='text-align-center'>
-          <p>accept</p>
-        </td>
-        <td class='text-align-center'>
-          <code>string[]</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Принимаемые типы файлов</p>
-        </td>
-      </tr>
-      <tr>
-        <td class='text-align-center'>
-          <p>multiple</p>
-        </td>
-        <td class='text-align-center'>
-          <code>boolean</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Возможность выбирать несколько файлов</p>
-        </td>
-      </tr>
-      <tr>
-        <td class='text-align-center'>
-          <p>disabled</p>
-        </td>
-        <td class='text-align-center'>
-          <code>boolean</code>
-        </td>
-        <td class='text-align-center'>
-          <p>Отключает прием файлов</p>
-        </td>
-      </tr>
+        <tr>
+          <td class="text-align-center">
+            <p>upload</p>
+          </td>
+          <td class="text-align-center">
+            <code>function</code>
+          </td>
+          <td class="text-align-center">
+            <p>Функция, которая используется при загрузке файлов и передает в нее загруженные файлы</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-align-center">
+            <p>accept</p>
+          </td>
+          <td class="text-align-center">
+            <code>string[]</code>
+          </td>
+          <td class="text-align-center">
+            <p>Принимаемые типы файлов</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-align-center">
+            <p>multiple</p>
+          </td>
+          <td class="text-align-center">
+            <code>boolean</code>
+          </td>
+          <td class="text-align-center">
+            <p>Возможность выбирать несколько файлов</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-align-center">
+            <p>disabled</p>
+          </td>
+          <td class="text-align-center">
+            <code>boolean</code>
+          </td>
+          <td class="text-align-center">
+            <p>Отключает прием файлов</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>

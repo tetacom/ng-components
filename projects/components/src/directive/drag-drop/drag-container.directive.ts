@@ -2,27 +2,32 @@ import {
   ChangeDetectorRef,
   ContentChild,
   Directive,
-  ElementRef, EventEmitter,
-  HostListener, Input, NgZone, OnDestroy,
-  OnInit, Output,
-  ViewContainerRef
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewContainerRef,
 } from '@angular/core';
-import {DragPreviewDirective} from './drag-preview.directive';
-import {DragContainerInstance} from './model/drag-container-instance';
-import {DragDropService} from './drag-drop.service';
-import {takeWhile} from 'rxjs/operators';
-import {DropTarget} from './model/drop-target';
-import {DropEvent} from './model/drop-event';
-import {DragInstance} from './model/drag-instance';
+import { DragPreviewDirective } from './drag-preview.directive';
+import { DragContainerInstance } from './model/drag-container-instance';
+import { DragDropService } from './drag-drop.service';
+import { takeWhile } from 'rxjs/operators';
+import { DropTarget } from './model/drop-target';
+import { DropEvent } from './model/drop-event';
+import { DragInstance } from './model/drag-instance';
 
 @Directive({
-    selector: '[tetaDragContainer]',
-    exportAs: 'dragContainer',
-    host: {
-        '[class.teta-drag-container]': '"true"',
-        '[class.teta-drop-target]': 'isDropTarget'
-    },
-    standalone: true
+  selector: '[tetaDragContainer]',
+  exportAs: 'dragContainer',
+  host: {
+    '[class.teta-drag-container]': '"true"',
+    '[class.teta-drop-target]': 'isDropTarget',
+  },
+  standalone: true,
 })
 export class DragContainerDirective<T> implements OnInit, OnDestroy {
   @Input('tetaDragContainer') data: T[];
@@ -33,8 +38,9 @@ export class DragContainerDirective<T> implements OnInit, OnDestroy {
   @Output() tetaDragEnter = new EventEmitter<DragInstance<T>>();
 
   @ContentChild(DragPreviewDirective, {
-    static: true
-  }) private _previewTemplate: DragPreviewDirective;
+    static: true,
+  })
+  private _previewTemplate: DragPreviewDirective;
 
   instance: DragContainerInstance<T>;
   dropTarget: DropTarget<T>;
@@ -58,29 +64,28 @@ export class DragContainerDirective<T> implements OnInit, OnDestroy {
     this._dragService.cancelDrag();
   }
 
-  constructor(private _dragService: DragDropService<T>,
-              private _elementRef: ElementRef,
-              private _viewContainerRef: ViewContainerRef,
-              private _zone: NgZone,
-              private _cdr: ChangeDetectorRef) {
-  }
+  constructor(
+    private _dragService: DragDropService<T>,
+    private _elementRef: ElementRef,
+    private _viewContainerRef: ViewContainerRef,
+    private _zone: NgZone,
+    private _cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.instance = new DragContainerInstance<T>({
       data: this.data,
       previewTemplate: this._previewTemplate?.templateRef,
-      viewContainer: this._viewContainerRef
+      viewContainer: this._viewContainerRef,
     });
-    this._dragService.dropTarget.pipe(takeWhile(() => this._alive))
-      .subscribe((target) => {
-        this.dropTarget = target;
-        this._cdr.detectChanges();
-      });
+    this._dragService.dropTarget.pipe(takeWhile(() => this._alive)).subscribe((target) => {
+      this.dropTarget = target;
+      this._cdr.detectChanges();
+    });
 
-    this._dragService.dropped.pipe(takeWhile(() => this._alive))
-      .subscribe((event) => {
-        this.tetaDrop.emit(event);
-      });
+    this._dragService.dropped.pipe(takeWhile(() => this._alive)).subscribe((event) => {
+      this.tetaDrop.emit(event);
+    });
   }
 
   ngOnDestroy() {

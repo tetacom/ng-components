@@ -8,9 +8,8 @@ describe('HeadCellDropdownComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [HeadCellDropdownComponent]
-})
-    .compileComponents();
+      imports: [HeadCellDropdownComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

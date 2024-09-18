@@ -1,5 +1,4 @@
-@import "util/color-util.scss";
-
+@import 'util/color-util.scss';
 
 .toggle {
   display: inline-flex;
@@ -25,7 +24,7 @@
 
     &-circle {
       position: absolute;
-      top: calc(50% - 12px/2);
+      top: calc(50% - 12px / 2);
       left: 2px;
       width: 12px;
       height: 12px;
@@ -36,7 +35,6 @@
 
     $button: &;
 
-
     &-on {
       box-shadow: none;
       #{$button}-circle {
@@ -46,7 +44,7 @@
       }
 
       @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
-        &#{$button+ '-'+ $paletteName} {
+        &#{$button + '-' + $paletteName} {
           background: getColorVar($paletteName, '50');
 
           &:hover:not(.toggle_disabled):not(:active) {
@@ -69,4 +67,3 @@
     cursor: pointer;
   }
 }
-

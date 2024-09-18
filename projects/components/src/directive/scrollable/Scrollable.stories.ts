@@ -1,8 +1,7 @@
-
-import {Meta} from "@storybook/angular";
+import { Meta } from '@storybook/angular';
 
 export default {
-  title: 'Component/Scrollable'
+  title: 'Component/Scrollable',
 } as Meta;
 
 export const scrollable = () => ({
@@ -15,4 +14,3 @@ export const scrollable = () => ({
                 </teta-scrollable>
             </div>`,
 });
-

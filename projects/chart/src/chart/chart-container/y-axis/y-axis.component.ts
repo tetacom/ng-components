@@ -1,14 +1,8 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Axis } from '../../core/axis/axis';
 
-import {ScaleService} from "../../service/scale.service";
-import {map, Observable} from "rxjs";
+import { ScaleService } from '../../service/scale.service';
+import { map, Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
@@ -17,12 +11,9 @@ import { AsyncPipe } from '@angular/common';
   standalone: true,
   styleUrls: ['./y-axis.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    AsyncPipe,
-  ]
+  imports: [AsyncPipe],
 })
 export class YAxisComponent implements OnInit, AfterViewInit {
-
   y: Observable<any>;
 
   @Input() axis: Axis;
@@ -31,9 +22,11 @@ export class YAxisComponent implements OnInit, AfterViewInit {
   private _alive = true;
 
   constructor(private scaleService: ScaleService) {
-    this.y = this.scaleService.scales.pipe(map((_) => {
-      return _.y.get(this.axis.index)?.scale
-    }))
+    this.y = this.scaleService.scales.pipe(
+      map((_) => {
+        return _.y.get(this.axis.index)?.scale;
+      })
+    );
   }
 
   ngOnInit(): void {}
@@ -42,15 +35,11 @@ export class YAxisComponent implements OnInit, AfterViewInit {
     this._alive = false;
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   getLabelTransform() {
-    return `translate(${
-      this.axis.options.opposite
-        ? this.axis.selfSize
-        : -this.axis.selfSize
-    }, ${this.size.height / 2}) rotate(-90)`;
+    return `translate(${this.axis.options.opposite ? this.axis.selfSize : -this.axis.selfSize}, ${
+      this.size.height / 2
+    }) rotate(-90)`;
   }
-
 }

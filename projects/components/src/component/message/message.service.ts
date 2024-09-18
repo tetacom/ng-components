@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {Observable, ReplaySubject, Subject} from 'rxjs';
-import {Message} from './model/message';
+import { Injectable } from '@angular/core';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { Message } from './model/message';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MessageService {
   message: Observable<Message>;
@@ -11,7 +11,6 @@ export class MessageService {
 
   private _message = new ReplaySubject<Message>(1);
   private _clear = new Subject<string>();
-
 
   constructor() {
     this.message = this._message.asObservable();

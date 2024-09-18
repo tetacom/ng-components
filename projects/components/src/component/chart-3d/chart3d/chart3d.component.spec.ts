@@ -8,9 +8,8 @@ describe('Chart3dComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [Chart3dComponent]
-})
-    .compileComponents();
+      imports: [Chart3dComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

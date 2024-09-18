@@ -1,25 +1,17 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
-import {HeadCellComponentBase} from '../../base/head-cell-component-base';
-import {TableColumn} from '../../contract/table-column';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { HeadCellComponentBase } from '../../base/head-cell-component-base';
+import { TableColumn } from '../../contract/table-column';
 import { HintDirective } from '../../../../directive/hint/hint.directive';
 
 @Component({
-    selector: 'teta-default-head-cell',
-    templateUrl: './default-head-cell.component.html',
-    styleUrls: ['./default-head-cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [HintDirective],
+  selector: 'teta-default-head-cell',
+  templateUrl: './default-head-cell.component.html',
+  styleUrls: ['./default-head-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [HintDirective],
 })
-export class DefaultHeadCellComponent<T>
-  extends HeadCellComponentBase<T>
-  implements OnInit {
+export class DefaultHeadCellComponent<T> extends HeadCellComponentBase<T> implements OnInit {
   private _column: TableColumn;
   private _columns: TableColumn[];
   private _data: T[];
@@ -58,6 +50,5 @@ export class DefaultHeadCellComponent<T>
     super();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

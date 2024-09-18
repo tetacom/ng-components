@@ -1,6 +1,6 @@
-import {BasePoint} from './base-point';
-import {SvgAttributes} from './svg-attributes';
-import {TemplateRef} from '@angular/core';
+import { BasePoint } from './base-point';
+import { SvgAttributes } from './svg-attributes';
+import { TemplateRef } from '@angular/core';
 
 export interface Annotation {
   id?: number | string;

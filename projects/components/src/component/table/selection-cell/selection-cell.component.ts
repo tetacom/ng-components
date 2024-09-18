@@ -13,12 +13,12 @@ import { FormsModule } from '@angular/forms';
 import { CheckboxComponent } from '../../checkbox/checkbox/checkbox.component';
 
 @Component({
-    selector: 'teta-selection-cell',
-    templateUrl: './selection-cell.component.html',
-    styleUrls: ['./selection-cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [CheckboxComponent, FormsModule],
+  selector: 'teta-selection-cell',
+  templateUrl: './selection-cell.component.html',
+  styleUrls: ['./selection-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CheckboxComponent, FormsModule],
 })
 export class SelectionCellComponent<T> implements OnInit, OnDestroy {
   @Input() row: T;
@@ -39,12 +39,10 @@ export class SelectionCellComponent<T> implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this._svc.selectedRows
-      .pipe(takeWhile((_) => this._alive))
-      .subscribe((_) => {
-        this.selectedRows = _;
-        this._cdr.markForCheck();
-      });
+    this._svc.selectedRows.pipe(takeWhile((_) => this._alive)).subscribe((_) => {
+      this.selectedRows = _;
+      this._cdr.markForCheck();
+    });
   }
 
   ngOnDestroy(): void {

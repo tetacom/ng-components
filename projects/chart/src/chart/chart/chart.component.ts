@@ -1,31 +1,23 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
-import {map, Observable, takeWhile, withLatestFrom} from 'rxjs';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { map, Observable, takeWhile, withLatestFrom } from 'rxjs';
 
-import {Annotation} from '../model/annotation';
-import {BasePoint} from '../model/base-point';
-import {ScaleType} from '../model/enum/scale-type';
-import {TooltipTracking} from '../model/enum/tooltip-tracking';
-import {IChartConfig} from '../model/i-chart-config';
-import {IChartEvent} from '../model/i-chart-event';
-import {IPointMove} from '../model/i-point-move';
-import {IScalesMap} from '../model/i-scales-map';
-import {PlotBand} from '../model/plot-band';
-import {PlotLine} from '../model/plot-line';
-import {BrushService} from '../service/brush.service';
-import {ChartService} from '../service/chart.service';
-import {ScaleService} from '../service/scale.service';
-import {ZoomService} from '../service/zoom.service';
-import {ChartContainerComponent} from '../chart-container/chart-container.component';
-import {AsyncPipe} from '@angular/common';
-import {LegendComponent} from '../legend/legend.component';
+import { Annotation } from '../model/annotation';
+import { BasePoint } from '../model/base-point';
+import { ScaleType } from '../model/enum/scale-type';
+import { TooltipTracking } from '../model/enum/tooltip-tracking';
+import { IChartConfig } from '../model/i-chart-config';
+import { IChartEvent } from '../model/i-chart-event';
+import { IPointMove } from '../model/i-point-move';
+import { IScalesMap } from '../model/i-scales-map';
+import { PlotBand } from '../model/plot-band';
+import { PlotLine } from '../model/plot-line';
+import { BrushService } from '../service/brush.service';
+import { ChartService } from '../service/chart.service';
+import { ScaleService } from '../service/scale.service';
+import { ZoomService } from '../service/zoom.service';
+import { ChartContainerComponent } from '../chart-container/chart-container.component';
+import { AsyncPipe } from '@angular/common';
+import { LegendComponent } from '../legend/legend.component';
 
 @Component({
   selector: 'teta-svg-chart',
@@ -34,75 +26,49 @@ import {LegendComponent} from '../legend/legend.component';
   standalone: true,
   providers: [ChartService, ZoomService, ScaleService, BrushService],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    ChartContainerComponent,
-    AsyncPipe,
-    LegendComponent,
-  ]
+  imports: [ChartContainerComponent, AsyncPipe, LegendComponent],
 })
 export class ChartComponent implements OnInit, OnDestroy {
   hasSeriesData: Observable<boolean>;
   svcConfig: Observable<IChartConfig>;
   @Output()
-  pointerMove: EventEmitter<IChartEvent<Map<number, number>>> =
-    new EventEmitter<IChartEvent<Map<number, number>>>();
+  pointerMove: EventEmitter<IChartEvent<Map<number, number>>> = new EventEmitter<IChartEvent<Map<number, number>>>();
 
   @Output()
-  plotBandsMove: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<
-    IChartEvent<PlotBand>
-  >();
+  plotBandsMove: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<IChartEvent<PlotBand>>();
 
   @Output()
-  plotBandClick: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<
-    IChartEvent<PlotBand>
-  >();
+  plotBandClick: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<IChartEvent<PlotBand>>();
 
   @Output()
-  plotBandContextMenu: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<
-    IChartEvent<PlotBand>
-  >();
+  plotBandContextMenu: EventEmitter<IChartEvent<PlotBand>> = new EventEmitter<IChartEvent<PlotBand>>();
 
   @Output()
-  plotLinesMove: EventEmitter<IChartEvent<PlotLine>> = new EventEmitter<
-    IChartEvent<PlotLine>
-  >();
+  plotLinesMove: EventEmitter<IChartEvent<PlotLine>> = new EventEmitter<IChartEvent<PlotLine>>();
 
   @Output()
-  pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<
-    IChartEvent<IPointMove>
-  >();
+  pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<IChartEvent<IPointMove>>();
 
   @Output()
-  chartClick: EventEmitter<IChartEvent<BasePoint>> = new EventEmitter<
-    IChartEvent<BasePoint>
-  >();
+  chartClick: EventEmitter<IChartEvent<BasePoint>> = new EventEmitter<IChartEvent<BasePoint>>();
 
   @Output()
-  chartContextMenu: EventEmitter<IChartEvent<BasePoint>> = new EventEmitter<
-    IChartEvent<BasePoint>
-  >();
+  chartContextMenu: EventEmitter<IChartEvent<BasePoint>> = new EventEmitter<IChartEvent<BasePoint>>();
 
   @Output()
-  annotationContextMenu: EventEmitter<IChartEvent<Annotation>> =
-    new EventEmitter<IChartEvent<Annotation>>();
+  annotationContextMenu: EventEmitter<IChartEvent<Annotation>> = new EventEmitter<IChartEvent<Annotation>>();
 
   @Output()
-  annotationClick: EventEmitter<IChartEvent<Annotation>> = new EventEmitter<
-    IChartEvent<Annotation>
-  >();
+  annotationClick: EventEmitter<IChartEvent<Annotation>> = new EventEmitter<IChartEvent<Annotation>>();
 
   @Output()
-  annotationMove: EventEmitter<IChartEvent<Annotation>> = new EventEmitter<
-    IChartEvent<Annotation>
-  >();
+  annotationMove: EventEmitter<IChartEvent<Annotation>> = new EventEmitter<IChartEvent<Annotation>>();
 
   @Output()
-  zoomServiceInstance: EventEmitter<ZoomService> =
-    new EventEmitter<ZoomService>();
+  zoomServiceInstance: EventEmitter<ZoomService> = new EventEmitter<ZoomService>();
 
   @Output()
-  brushServiceInstance: EventEmitter<BrushService> =
-    new EventEmitter<BrushService>();
+  brushServiceInstance: EventEmitter<BrushService> = new EventEmitter<BrushService>();
 
   @Input() set config(config: IChartConfig) {
     this.chartService.setConfig(config);
@@ -119,7 +85,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   ) {
     this.svcConfig = this.chartService.config;
     this.hasSeriesData = this.svcConfig.pipe(
-      map(_ => _.series?.length > 0 && _.series?.some(_ => _.data?.length > 0))
+      map((_) => _.series?.length > 0 && _.series?.some((_) => _.data?.length > 0))
     );
   }
 
@@ -137,7 +103,7 @@ export class ChartComponent implements OnInit, OnDestroy {
         withLatestFrom(this.scaleService.scales, this.chartService.config)
       )
       .subscribe((data: [PointerEvent, IScalesMap, IChartConfig]) => {
-        const [event, {x, y}, config] = data;
+        const [event, { x, y }, config] = data;
         const tooltipTracking = config?.tooltip?.tracking;
         if (tooltipTracking === TooltipTracking.y) {
           const result = new Map<number, number>();
@@ -166,65 +132,45 @@ export class ChartComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.chartService.plotBandEvent
-      .pipe(takeWhile(() => this._alive))
-      .subscribe(_ => {
-        this.plotBandsMove.emit(_);
-      });
+    this.chartService.plotBandEvent.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.plotBandsMove.emit(_);
+    });
 
-    this.chartService.plotLineMove
-      .pipe(takeWhile(() => this._alive))
-      .subscribe(_ => {
-        this.plotLinesMove.emit(_);
-      });
+    this.chartService.plotLineMove.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.plotLinesMove.emit(_);
+    });
 
-    this.chartService.pointMove
-      .pipe(takeWhile(() => this._alive))
-      .subscribe(_ => {
-        this.pointMove.emit(_);
-      });
+    this.chartService.pointMove.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.pointMove.emit(_);
+    });
 
-    this.chartService.chartClick
-      .pipe(takeWhile(() => this._alive))
-      .subscribe(_ => {
-        this.chartClick.emit(_);
-      });
+    this.chartService.chartClick.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.chartClick.emit(_);
+    });
 
-    this.chartService.chartContextMenu
-      .pipe(takeWhile(() => this._alive))
-      .subscribe(_ => {
-        this.chartContextMenu.emit(_);
-      });
+    this.chartService.chartContextMenu.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.chartContextMenu.emit(_);
+    });
 
-    this.chartService.plotBandClick
-      .pipe(takeWhile(() => this._alive))
-      .subscribe(_ => {
-        this.plotBandClick.emit(_);
-      });
+    this.chartService.plotBandClick.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.plotBandClick.emit(_);
+    });
 
-    this.chartService.plotBandContextMenu
-      .pipe(takeWhile(() => this._alive))
-      .subscribe(_ => {
-        this.plotBandContextMenu.emit(_);
-      });
+    this.chartService.plotBandContextMenu.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.plotBandContextMenu.emit(_);
+    });
 
-    this.chartService.annotationContextMenu
-      .pipe(takeWhile(() => this._alive))
-      .subscribe(_ => {
-        this.annotationContextMenu.emit(_);
-      });
+    this.chartService.annotationContextMenu.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.annotationContextMenu.emit(_);
+    });
 
-    this.chartService.annotationClick
-      .pipe(takeWhile(() => this._alive))
-      .subscribe(_ => {
-        this.annotationClick.emit(_);
-      });
+    this.chartService.annotationClick.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.annotationClick.emit(_);
+    });
 
-    this.chartService.annotationMove
-      .pipe(takeWhile(() => this._alive))
-      .subscribe(_ => {
-        this.annotationMove.emit(_);
-      });
+    this.chartService.annotationMove.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.annotationMove.emit(_);
+    });
   }
 
   ngOnDestroy() {
