@@ -49,7 +49,7 @@ export const icons = (args) => ({
             <div [tetaIconSprite]="'assets/icons.svg'">
                 <h1 style="margin-bottom: 1em">Обычые иконки без заливки</h1>
                 <div style="display: grid;  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px;">
-                    @for(icon of icons) {
+                    @for(icon of icons; track icon) {
                       <div class="font-body-3" style="display: flex; align-items: center;">
                         <teta-icon [name]="icon" [palette]="palette" [size]="size"></teta-icon>
                         <span class="padding-left-4">{{icon}}</span>
