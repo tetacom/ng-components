@@ -1,21 +1,16 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostBinding,
-  Input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 
 import { Align } from '../../../common/enum/align.enum';
 import { viewType } from '../../../common/model/view-type.model';
 import { HintDirective } from '../../../directive/hint/hint.directive';
 
 @Component({
-    selector: 'teta-input',
-    templateUrl: './input.component.html',
-    styleUrls: ['./input.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [HintDirective],
+  selector: 'teta-input',
+  templateUrl: './input.component.html',
+  styleUrls: ['./input.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [HintDirective],
 })
 export class InputComponent {
   @Input() label?: string;

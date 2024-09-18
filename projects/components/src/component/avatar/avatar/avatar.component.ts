@@ -1,15 +1,15 @@
-import {ChangeDetectionStrategy, Component, HostBinding, Input, OnInit} from '@angular/core';
-import {AvatarColorEnum} from '../model/avatar-color.enum';
-import {viewType} from "../../../common/model/view-type.model";
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
+import { AvatarColorEnum } from '../model/avatar-color.enum';
+import { viewType } from '../../../common/model/view-type.model';
 import { IconComponent } from '../../icon/icon/icon.component';
 
 @Component({
-    selector: 'teta-avatar',
-    templateUrl: './avatar.component.html',
-    styleUrls: ['./avatar.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [IconComponent]
+  selector: 'teta-avatar',
+  templateUrl: './avatar.component.html',
+  styleUrls: ['./avatar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [IconComponent],
 })
 export class AvatarComponent implements OnInit {
   @Input() photo?: string | ArrayBuffer;
@@ -24,10 +24,7 @@ export class AvatarComponent implements OnInit {
     return avatar;
   }
 
-  public colorMap: Map<AvatarColorEnum, string> = new Map<
-    AvatarColorEnum,
-    string
-  >()
+  public colorMap: Map<AvatarColorEnum, string> = new Map<AvatarColorEnum, string>()
     .set(AvatarColorEnum.vibrant, '#FAB13C')
     .set(AvatarColorEnum.pumpkin, '#F67A1A')
     .set(AvatarColorEnum.heart, '#CC3E3E')
@@ -47,9 +44,7 @@ export class AvatarComponent implements OnInit {
     .set(AvatarColorEnum.lime, '#80C026')
     .set(AvatarColorEnum.greyish, '#7F8697');
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

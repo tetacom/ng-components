@@ -1,14 +1,14 @@
-import {AxisOrientation} from './enum/axis-orientation';
-import {ElementRef} from '@angular/core';
+import { AxisOrientation } from './enum/axis-orientation';
+import { ElementRef } from '@angular/core';
 
 export type TransformStyle = {
   transition?: boolean;
-}
+};
 
 export type TargetAxis = {
-  index: number,
-  orientation: AxisOrientation
-}
+  index: number;
+  orientation: AxisOrientation;
+};
 
 export class ZoomMessage {
   eventType: 'start' | 'zoom' | 'end' | string;
@@ -22,7 +22,7 @@ export class ZoomMessage {
     eventType: 'start' | 'zoom' | 'end' | string;
     element?: ElementRef;
     axis?: TargetAxis;
-    domain?: [number, number]
+    domain?: [number, number];
     chartId: string;
     style?: TransformStyle;
   }) {

@@ -1,4 +1,4 @@
 export enum ZoomBehaviorType {
   move,
-  wheel
+  wheel,
 }

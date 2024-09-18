@@ -1,16 +1,14 @@
-import {ChartComponent} from '../chart/chart.component';
-import {createBandChart, createChart, createDragChart} from './story-helper';
-import {applicationConfig, Meta} from "@storybook/angular";
-import {provideHttpClient} from "@angular/common/http";
-import {IconSpriteDirective, ButtonComponent} from '@tetacom/ng-components';
+import { ChartComponent } from '../chart/chart.component';
+import { createBandChart, createChart, createDragChart } from './story-helper';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { IconSpriteDirective, ButtonComponent } from '@tetacom/ng-components';
 
 export default {
   title: 'Component/Chart',
   decorators: [
     applicationConfig({
-      providers: [
-        provideHttpClient()
-      ],
+      providers: [provideHttpClient()],
     }),
   ],
   component: ChartComponent,
@@ -61,14 +59,13 @@ export const basicChart = () => ({
 `,
 });
 
-
 export const draggableChart = () => ({
   moduleMetadata: {
     imports: [ChartComponent, IconSpriteDirective, ButtonComponent],
   },
 
   props: {
-    config: createDragChart(400)
+    config: createDragChart(400),
   },
   template: `
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']"
@@ -79,7 +76,6 @@ export const draggableChart = () => ({
         </div>
       </div>`,
 });
-
 
 export const bandChart = () => ({
   moduleMetadata: {
@@ -87,7 +83,7 @@ export const bandChart = () => ({
   },
 
   props: {
-    config: createBandChart(50)
+    config: createBandChart(50),
   },
   template: `
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']"
@@ -98,6 +94,3 @@ export const bandChart = () => ({
         </div>
       </div>`,
 });
-
-
-

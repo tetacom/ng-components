@@ -1,12 +1,6 @@
-<span [style.display]="edit ? 'none' : 'block'"
-  class="cell-text"
-  [class.cell-text_disabled]="!editable">
+<span [style.display]="edit ? 'none' : 'block'" class="cell-text" [class.cell-text_disabled]="!editable">
   {{ control?.value }}
 </span>
 @if (edit) {
-  <teta-checkbox
-    #input
-    [binary]="true"
-    [formControl]='control'
-  ></teta-checkbox>
+<teta-checkbox #input [binary]="true" [formControl]="control"></teta-checkbox>
 }

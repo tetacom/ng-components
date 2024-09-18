@@ -1,105 +1,117 @@
-import {Meta} from "@storybook/blocks";
-import ExpandPanelStories from "../src/component/expand-panel/ExpandPanel.stories";
+import { Meta } from '@storybook/blocks';
+import ExpandPanelStories from '../src/component/expand-panel/ExpandPanel.stories';
 
-<Meta of={ExpandPanelStories}/>
+<Meta of={ExpandPanelStories} />
 
-<div class='column gap-24'>
+<div class="column gap-24">
   <h1>ExpandPanel</h1>
-  <div class='column'>
-    <p>ExpandPanel обычно используется для фильтров,отображения блоков, которые нужно скрывать, а также при большом
-      количестве элементов в одной строчке</p>
+  <div class="column">
+    <p>
+      ExpandPanel обычно используется для фильтров,отображения блоков, которые нужно скрывать, а также при большом
+      количестве элементов в одной строчке
+    </p>
   </div>
   <h3>Функции</h3>
-  <div class='column'>
+  <div class="column">
     <p>ExpandPanel позволяет скрывать содержимое при клике на соответствующую кнопку.</p>
     <p>При скрытии содержимого, название меняет написание на горизонтальное</p>
   </div>
   <h3>Как пользоваться компонентом</h3>
-  <div class='column'>
-    <p>Создаем <code> &lt;teta-expand-panel&gt;</code>, внуть передаем блоки с
-      директивами <code>tetaExpandPanelHead</code> и <code>tetaExpandPanelContent</code>.</p>
-    <p>Директива <code>tetaExpandPanelHead</code> отвечает за отображение дочерних элементов в шапке элемента.</p>
-    <p>Блок с директивой <code>tetaExpandPanelContent</code> используется как содержимое раскрывающейся панели.</p>
+  <div class="column">
+    <p>
+      Создаем <code> &lt;teta-expand-panel&gt;</code>, внуть передаем блоки с директивами{' '}
+      <code>tetaExpandPanelHead</code> и <code>tetaExpandPanelContent</code>.
+    </p>
+    <p>
+      Директива <code>tetaExpandPanelHead</code> отвечает за отображение дочерних элементов в шапке элемента.
+    </p>
+    <p>
+      Блок с директивой <code>tetaExpandPanelContent</code> используется как содержимое раскрывающейся панели.
+    </p>
   </div>
   <h3>Примеры кода</h3>
   <p>
-    <pre><code>&lt;div [tetaIconSprite]="'assets/icons.svg'" class="column bg-global-bgcard font-body-3 padding-3" style="width:fit-content;height: 500px"&gt;
-    &nbsp;&lt;teta-expand-panel placeholder='Фильтры' &gt;
-      &nbsp;&nbsp;&nbsp;&lt;ng-template tetaExpandPanelHead&gt;Фильтры&lt;/ng-template&gt;
-      &nbsp;&nbsp;&nbsp;&lt;ng-template tetaExpandPanelContent&gt;
-        &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="padding-v-3 padding-h-2"&gt;Фильтр1&lt;/div&gt;
-      &nbsp;&nbsp;&nbsp;&lt;/ng-template&gt;
-    &nbsp;&lt;/teta-expand-panel&gt;
-    &lt;/div&gt;</code></pre>
-</p>
-  <div class='column'>
-  <h3>Свойства</h3>
-  <h4>teta-expand-panel</h4>
-  <table>
-    <thead>
-    <tr>
-      <th>Свойство</th>
-      <th>Tип</th>
-      <th>Описание</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td class='text-align-center'>
-        <p>placeholder</p>
-      </td>
-      <td class='text-align-center'>
-        <code>string</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Текст панели в закрытом состоянии</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>open</p>
-      </td>
-      <td class='text-align-center'>
-        <code>boolean</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Свойство позволяющее управлять состоянием панели</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>openChange</p>
-      </td>
-      <td class='text-align-center'>
-        <code>function</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Указанная функция выполняется при изменении свойства <code>open</code>.Отдает текущее состояние.</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>direction</p>
-      </td>
-      <td class='text-align-center'>
-        <code>'left'|'right'</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Свойство для выбора направления скрытия панели</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>cookieName</p>
-      </td>
-      <td class='text-align-center'>
-        <code>string</code>
-      </td>
-      <td class='text-align-center'>
-        <p>При вводе этого свойства создается кука с указанным именем и с состоянием панели.</p>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
+    <pre>
+      <code>
+        &lt;div [tetaIconSprite]="'assets/icons.svg'" class="column bg-global-bgcard font-body-3 padding-3"
+        style="width:fit-content;height: 500px"&gt; &nbsp;&lt;teta-expand-panel placeholder='Фильтры' &gt;
+        &nbsp;&nbsp;&nbsp;&lt;ng-template tetaExpandPanelHead&gt;Фильтры&lt;/ng-template&gt;
+        &nbsp;&nbsp;&nbsp;&lt;ng-template tetaExpandPanelContent&gt; &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="padding-v-3
+        padding-h-2"&gt;Фильтр1&lt;/div&gt; &nbsp;&nbsp;&nbsp;&lt;/ng-template&gt; &nbsp;&lt;/teta-expand-panel&gt;
+        &lt;/div&gt;
+      </code>
+    </pre>
+  </p>
+  <div class="column">
+    <h3>Свойства</h3>
+    <h4>teta-expand-panel</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Свойство</th>
+          <th>Tип</th>
+          <th>Описание</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-align-center">
+            <p>placeholder</p>
+          </td>
+          <td class="text-align-center">
+            <code>string</code>
+          </td>
+          <td class="text-align-center">
+            <p>Текст панели в закрытом состоянии</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-align-center">
+            <p>open</p>
+          </td>
+          <td class="text-align-center">
+            <code>boolean</code>
+          </td>
+          <td class="text-align-center">
+            <p>Свойство позволяющее управлять состоянием панели</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-align-center">
+            <p>openChange</p>
+          </td>
+          <td class="text-align-center">
+            <code>function</code>
+          </td>
+          <td class="text-align-center">
+            <p>
+              Указанная функция выполняется при изменении свойства <code>open</code>.Отдает текущее состояние.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-align-center">
+            <p>direction</p>
+          </td>
+          <td class="text-align-center">
+            <code>'left'|'right'</code>
+          </td>
+          <td class="text-align-center">
+            <p>Свойство для выбора направления скрытия панели</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-align-center">
+            <p>cookieName</p>
+          </td>
+          <td class="text-align-center">
+            <code>string</code>
+          </td>
+          <td class="text-align-center">
+            <p>При вводе этого свойства создается кука с указанным именем и с состоянием панели.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

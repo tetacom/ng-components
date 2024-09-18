@@ -1,6 +1,6 @@
-@import "util/color-util";
-@import "util/shadow-util";
-@import "presets/view-types.scss";
+@import 'util/color-util';
+@import 'util/shadow-util';
+@import 'presets/view-types.scss';
 
 .dropdown {
   border: solid 1px var(--color-text-5);
@@ -9,7 +9,7 @@
   z-index: 1050;
   box-shadow: var(--shadow-2);
   background: var(--color-global-bgcard);
-  animation: fadeInFromNone .5s ease-out;
+  animation: fadeInFromNone 0.5s ease-out;
 
   @include getView('base');
 
@@ -39,4 +39,3 @@
     opacity: 1;
   }
 }
-

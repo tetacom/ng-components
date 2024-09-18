@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  CUSTOM_ELEMENTS_SCHEMA,
-  OnDestroy,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgtsLine } from 'angular-three-soba/abstractions';
 import { extend, NgtArgs, NgtStore } from 'angular-three';
@@ -22,11 +17,8 @@ extend(THREE);
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './line-3d.component.html',
 })
-export class Line3dComponent
-  extends Base3dSeriesComponent<Line3dPoint>
-  implements OnDestroy
-{
-  public points: Observable<[number,number,number]>;
+export class Line3dComponent extends Base3dSeriesComponent<Line3dPoint> implements OnDestroy {
+  public points: Observable<[number, number, number]>;
   private _alive = true;
 
   protected readonly Math = Math;
@@ -34,15 +26,17 @@ export class Line3dComponent
     super(svc, ngtStore);
     this.points = this.svc.scales.pipe(
       takeWhile(() => this._alive),
-      map(scales => {
+      map((scales) => {
         return this.getPoints(scales);
       })
     );
   }
   getPoints(scales) {
-    return this.series?.data?.map(_ => {
-      return [scales.x(_?.x), scales.y(_?.y), scales.z(_?.z)];
-    }).flat() as [number,number,number];
+    return this.series?.data
+      ?.map((_) => {
+        return [scales.x(_?.x), scales.y(_?.y), scales.z(_?.z)];
+      })
+      .flat() as [number, number, number];
   }
 
   ngOnDestroy(): void {

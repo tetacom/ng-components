@@ -1,27 +1,26 @@
-import {ExpandPanelComponent} from './expand-panel/expand-panel.component';
+import { ExpandPanelComponent } from './expand-panel/expand-panel.component';
 
-import {applicationConfig, Meta} from '@storybook/angular';
-import {IconSpriteDirective} from "../icon/icon-sprite.directive";
-import {ExpandPanelHeadDirective} from "./expand-panel-head.directive";
-import {ExpandPanelContentDirective} from "./expand-panel-content.directive";
-import {provideHttpClient} from "@angular/common/http";
+import { applicationConfig, Meta } from '@storybook/angular';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
+import { ExpandPanelHeadDirective } from './expand-panel-head.directive';
+import { ExpandPanelContentDirective } from './expand-panel-content.directive';
+import { provideHttpClient } from '@angular/common/http';
 
 export default {
   title: 'Component/Expand Panel',
-  decorators: [applicationConfig({
-    providers: [
-      provideHttpClient()
-    ],
-  })],
+  decorators: [
+    applicationConfig({
+      providers: [provideHttpClient()],
+    }),
+  ],
   component: ExpandPanelComponent,
   argTypes: {
     direction: {
       options: ['left', 'right'],
-      control: {type: 'select'}
+      control: { type: 'select' },
     },
   },
   args: {
-
     direction: 'right',
   },
   moduleMetadata: {

@@ -8,9 +8,8 @@ describe('GridlinesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GridlinesComponent ]
-    })
-    .compileComponents();
+      declarations: [GridlinesComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

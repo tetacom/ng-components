@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {DragSortEvent} from '../../drag-sort-event';
-import {ArrayUtil} from '../../../../common/util/array-util';
+import { Component, OnInit } from '@angular/core';
+import { DragSortEvent } from '../../drag-sort-event';
+import { ArrayUtil } from '../../../../common/util/array-util';
 import { DragSortItemDirective } from '../../drag-sort-item.directive';
 import { DragSortContainerDirective } from '../../drag-sort-container.directive';
 
 @Component({
-    selector: 'teta-drag-sort-demo',
-    templateUrl: './drag-sort-demo.component.html',
-    styleUrls: ['./drag-sort-demo.component.scss'],
-    standalone: true,
-    imports: [DragSortContainerDirective, DragSortItemDirective]
+  selector: 'teta-drag-sort-demo',
+  templateUrl: './drag-sort-demo.component.html',
+  styleUrls: ['./drag-sort-demo.component.scss'],
+  standalone: true,
+  imports: [DragSortContainerDirective, DragSortItemDirective],
 })
 export class DragSortDemoComponent implements OnInit {
   items = [
@@ -49,11 +49,9 @@ export class DragSortDemoComponent implements OnInit {
     },
   ];
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   update(event: DragSortEvent<any>, list: any[]) {
     return ArrayUtil.moveItem(list, event.previousIndex, event.newIndex);

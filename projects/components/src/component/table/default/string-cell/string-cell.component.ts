@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { Align } from '../../../../common/enum/align.enum';
 import { CellComponentBase } from '../../base/cell-component-base';
@@ -15,28 +8,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HintDirective } from '../../../../directive/hint/hint.directive';
 
 @Component({
-    selector: 'teta-string-cell',
-    templateUrl: './string-cell.component.html',
-    styleUrls: ['./string-cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        HintDirective,
-        FormsModule,
-        ReactiveFormsModule,
-    ],
+  selector: 'teta-string-cell',
+  templateUrl: './string-cell.component.html',
+  styleUrls: ['./string-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [HintDirective, FormsModule, ReactiveFormsModule],
 })
-export class StringCellComponent<T>
-  extends CellComponentBase<T>
-  implements OnInit
-{
+export class StringCellComponent<T> extends CellComponentBase<T> implements OnInit {
   align = Align;
   @ViewChild('input', { static: false }) input: ElementRef;
 
-  constructor(
-    public override svc: TableService<T>,
-    public override cdr: ChangeDetectorRef
-  ) {
+  constructor(public override svc: TableService<T>, public override cdr: ChangeDetectorRef) {
     super(svc, cdr);
   }
 

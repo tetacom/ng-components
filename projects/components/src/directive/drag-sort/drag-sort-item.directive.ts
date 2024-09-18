@@ -13,8 +13,8 @@ import {
 import { DragSortContainerDirective } from './drag-sort-container.directive';
 
 @Directive({
-    selector: '[tetaDragSortItem]',
-    standalone: true,
+  selector: '[tetaDragSortItem]',
+  standalone: true,
 })
 export class DragSortItemDirective<T> implements OnInit, OnDestroy {
   @Input() tetaDragSortItem!: T;
@@ -89,16 +89,11 @@ export class DragSortItemDirective<T> implements OnInit, OnDestroy {
 
   private createDrag() {
     this._dragElement = this._renderer.createElement('div');
-    this._renderer.appendChild(
-      this._elementRef.nativeElement,
-      this._dragElement
-    );
+    this._renderer.appendChild(this._elementRef.nativeElement, this._dragElement);
     this._renderer.addClass(this._dragElement, 'drop-direction');
     this._renderer.addClass(
       this._dragElement,
-      this.dragSortDirection === 'horizontal'
-        ? 'drop-direction-horizontal'
-        : 'drop-direction-vertical'
+      this.dragSortDirection === 'horizontal' ? 'drop-direction-horizontal' : 'drop-direction-vertical'
     );
   }
 
@@ -108,13 +103,9 @@ export class DragSortItemDirective<T> implements OnInit, OnDestroy {
 
   private getDropPosition(event: DragEvent) {
     if (this.dragSortDirection === 'horizontal') {
-      return event.clientX >= this.rect.x + this.rect.width / 2
-        ? 'end'
-        : 'start';
+      return event.clientX >= this.rect.x + this.rect.width / 2 ? 'end' : 'start';
     } else {
-      return event.clientY >= this.rect.y + this.rect.height / 2
-        ? 'end'
-        : 'start';
+      return event.clientY >= this.rect.y + this.rect.height / 2 ? 'end' : 'start';
     }
   }
 }

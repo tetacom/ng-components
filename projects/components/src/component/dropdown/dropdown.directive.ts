@@ -7,26 +7,27 @@ import {
   NgZone,
   OnDestroy,
   OnInit,
-  Renderer2
+  Renderer2,
 } from '@angular/core';
-import {DOCUMENT} from '@angular/common';
-import {DropdownBase} from './dropdown-base';
+import { DOCUMENT } from '@angular/common';
+import { DropdownBase } from './dropdown-base';
 
 @Directive({
-    selector: '[tetaDropdown]',
-    standalone: true
+  selector: '[tetaDropdown]',
+  standalone: true,
 })
 export class DropdownDirective extends DropdownBase implements OnInit, OnDestroy, AfterViewInit {
-  constructor(protected override _cdr: ChangeDetectorRef,
-              @Inject(DOCUMENT) protected override _document: any,
-              protected override _elementRef: ElementRef<HTMLElement>,
-              protected override _zone: NgZone,
-              protected override _renderer: Renderer2) {
+  constructor(
+    protected override _cdr: ChangeDetectorRef,
+    @Inject(DOCUMENT) protected override _document: any,
+    protected override _elementRef: ElementRef<HTMLElement>,
+    protected override _zone: NgZone,
+    protected override _renderer: Renderer2
+  ) {
     super(_cdr, _document, _elementRef, _zone, _renderer);
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.closeDropdown();

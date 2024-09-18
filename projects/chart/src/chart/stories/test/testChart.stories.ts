@@ -1,15 +1,13 @@
-import {applicationConfig, Meta} from "@storybook/angular";
-import {provideHttpClient} from "@angular/common/http";
-import {IconSpriteDirective, ButtonComponent} from '@tetacom/ng-components';
-import {TestChartComponent} from "./test-chart.component";
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { IconSpriteDirective, ButtonComponent } from '@tetacom/ng-components';
+import { TestChartComponent } from './test-chart.component';
 
 export default {
   title: 'Component/Chart',
   decorators: [
     applicationConfig({
-      providers: [
-        provideHttpClient()
-      ],
+      providers: [provideHttpClient()],
     }),
   ],
   component: TestChartComponent,
@@ -35,7 +33,3 @@ export const testChart = () => ({
 
 `,
 });
-
-
-
-

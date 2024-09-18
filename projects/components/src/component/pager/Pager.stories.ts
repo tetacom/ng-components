@@ -1,27 +1,24 @@
-import {applicationConfig, Meta} from "@storybook/angular";
-import {provideHttpClient} from "@angular/common/http";
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
 
-import {IconSpriteDirective} from "../icon/icon-sprite.directive";
-import {PagerComponent} from "./pager/pager.component";
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
+import { PagerComponent } from './pager/pager.component';
 
 export default {
   title: 'Component/Pager',
   decorators: [
-
     applicationConfig({
-      providers: [
-        provideHttpClient()
-      ],
+      providers: [provideHttpClient()],
     }),
   ],
   moduleMetadata: {
-    imports: []
-  }
+    imports: [],
+  },
 } as Meta;
 
 export const pagerSample = () => ({
   moduleMetadata: {
-    imports: [PagerComponent, IconSpriteDirective]
+    imports: [PagerComponent, IconSpriteDirective],
   },
   template: `<teta-pager [tetaIconSprite]="'assets/icons.svg'"></teta-pager>`,
 });

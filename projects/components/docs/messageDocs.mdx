@@ -1,32 +1,46 @@
-import {Meta} from "@storybook/blocks";
-import MessageStories from "../src/component/message/Message.stories";
+import { Meta } from '@storybook/blocks';
+import MessageStories from '../src/component/message/Message.stories';
 
-<Meta of={MessageStories}/>
+<Meta of={MessageStories} />
 
-<div class='column gap-24'>
+<div class="column gap-24">
   <h1>Тост</h1>
-  <div class='column'>
-    <p>Toast (тост) — короткое немодальное уведомление, которое сообщает пользователю о результате выполнения его команды.</p>
+  <div class="column">
+    <p>
+      Toast (тост) — короткое немодальное уведомление, которое сообщает пользователю о результате выполнения его
+      команды.
+    </p>
   </div>
   <h3>Функции</h3>
-  <div class='column'>
-    <p>Используйте тост, если нет возможности сообщить обратную связь. В проектах выпрыгивает из правого нижнего угла.</p>
-    <p>Тост может показывается несколько секунд или бесконечно. Этот компонент так же может содержать кнопки, чтобы закрыть или же перейти к объекту, к которому применима обратная связь.</p>
+  <div class="column">
+    <p>
+      Используйте тост, если нет возможности сообщить обратную связь. В проектах выпрыгивает из правого нижнего угла.
+    </p>
+    <p>
+      Тост может показывается несколько секунд или бесконечно. Этот компонент так же может содержать кнопки, чтобы
+      закрыть или же перейти к объекту, к которому применима обратная связь.
+    </p>
   </div>
-    <h3>Виды тостов</h3>
-    <div>
-      <p>Есть несколько видов тостов. Они различаются своими State Lines.</p>
-        <ul>
-          <li>Default (Серый)</li>
-          <li>Success (Зеленый)</li>
-          <li>Error (Красный)</li>
-          <li>Warning (Желтый)</li>
-        </ul>
-    </div>
+  <h3>Виды тостов</h3>
+  <div>
+    <p>Есть несколько видов тостов. Они различаются своими State Lines.</p>
+    <ul>
+      <li>Default (Серый)</li>
+      <li>Success (Зеленый)</li>
+      <li>Error (Красный)</li>
+      <li>Warning (Желтый)</li>
+    </ul>
+  </div>
   <h3>Как использовать</h3>
-  <div class='column'>
-    <p>Для того чтобы воспользоваться данным компонентом, нужно внедрить в компонент сервис <code>messageService</code> и использовать метод <code>add</code>. </p>
-    <p> Этот метод ждет объект типа <code>Message</code>, который содержит следующие свойства:</p>
+  <div class="column">
+    <p>
+      Для того чтобы воспользоваться данным компонентом, нужно внедрить в компонент сервис <code>messageService</code> и
+      использовать метод <code>add</code>.{' '}
+    </p>
+    <p>
+      {' '}
+      Этот метод ждет объект типа <code>Message</code>, который содержит следующие свойства:
+    </p>
     <ul>
       <li>name- индификатор для тоста, который используется для его скрытия</li>
       <li>title- текст в заголовке тоста</li>
@@ -38,7 +52,9 @@ import MessageStories from "../src/component/message/Message.stories";
       <li>template - возможность указать свой шаблон тела тоста</li>
       <li>viewType- округление тоста</li>
     </ul>
-  <p>Также есть возможность скрыть тост медотом <code>clearMessages</code></p>
+    <p>
+      Также есть возможность скрыть тост медотом <code>clearMessages</code>
+    </p>
   </div>
   <h3>Виды тостов</h3>
   <div>
@@ -53,17 +69,14 @@ import MessageStories from "../src/component/message/Message.stories";
   <h3>Пример кода</h3>
   <div>
     <p>
-    <pre><code>addMessage()&#123;
-      &nbsp;&nbsp;this.messageService.add(
-      &nbsp;&nbsp;&nbsp;new Message(&#123;
-      &nbsp;&nbsp;&nbsp;&nbsp;name:'example',
-      &nbsp;&nbsp;&nbsp;&nbsp;title:'Ошибка',
-      &nbsp;&nbsp;&nbsp;&nbsp;text:'Перелогиньтесь',
-      &nbsp;&nbsp;&nbsp;&nbsp;palette: 'red',
-      &nbsp;&nbsp;&nbsp;&nbsp;duration: 5000,
-      &nbsp;&nbsp;&nbsp;&#125;);
-      &nbsp;&nbsp;)
-      &nbsp;&#125;</code></pre>
+      <pre>
+        <code>
+          addMessage()&#123; &nbsp;&nbsp;this.messageService.add( &nbsp;&nbsp;&nbsp;new Message(&#123;
+          &nbsp;&nbsp;&nbsp;&nbsp;name:'example', &nbsp;&nbsp;&nbsp;&nbsp;title:'Ошибка',
+          &nbsp;&nbsp;&nbsp;&nbsp;text:'Перелогиньтесь', &nbsp;&nbsp;&nbsp;&nbsp;palette: 'red',
+          &nbsp;&nbsp;&nbsp;&nbsp;duration: 5000, &nbsp;&nbsp;&nbsp;&#125;); &nbsp;&nbsp;) &nbsp;&#125;
+        </code>
+      </pre>
     </p>
   </div>
 </div>

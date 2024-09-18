@@ -1,4 +1,4 @@
 export enum ListFilterType {
   None,
-  Excluded
+  Excluded,
 }

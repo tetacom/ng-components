@@ -17,17 +17,12 @@ import { ButtonComponent } from '../../button/button/button.component';
 import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
-    selector: 'teta-file-upload-area',
-    templateUrl: './file-upload-area.component.html',
-    styleUrls: ['./file-upload-area.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        NgTemplateOutlet,
-        ButtonComponent,
-        IconComponent,
-        TranslocoModule,
-    ],
+  selector: 'teta-file-upload-area',
+  templateUrl: './file-upload-area.component.html',
+  styleUrls: ['./file-upload-area.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgTemplateOutlet, ButtonComponent, IconComponent, TranslocoModule],
 })
 export class FileUploadAreaComponent {
   @HostBinding('class.file-upload') fileUpload = true;

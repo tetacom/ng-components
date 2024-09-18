@@ -1,4 +1,4 @@
-@import "util/color-util.scss";
+@import 'util/color-util.scss';
 
 .progress {
   width: 100%;
@@ -22,7 +22,8 @@
     background: var(--color-primary-50);
   }
 
-  &:hover &-slider, &-slider_visible {
+  &:hover &-slider,
+  &-slider_visible {
     cursor: grab;
   }
 }

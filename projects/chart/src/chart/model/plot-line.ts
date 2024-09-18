@@ -1,4 +1,4 @@
-import {SvgAttributes} from './svg-attributes';
+import { SvgAttributes } from './svg-attributes';
 
 export class PlotLine {
   id?: number | string;

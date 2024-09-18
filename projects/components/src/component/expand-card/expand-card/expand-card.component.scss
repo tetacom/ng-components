@@ -1,13 +1,13 @@
 :host {
   border: solid 1px var(--color-text-5);
   border-radius: 4px;
-  animation: append-animate .5s linear;
+  animation: append-animate 0.5s linear;
   transition: order 5s ease-in;
 }
 
 .content {
   padding: 0 12px 12px 12px;
-  animation: append-animate .5s linear;
+  animation: append-animate 0.5s linear;
 }
 
 @keyframes append-animate {

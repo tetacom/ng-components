@@ -1,4 +1,4 @@
-@import "common.scss";
+@import 'common.scss';
 
 @for $i from 0 through $spacingLength {
   .height-#{$i} {

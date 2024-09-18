@@ -8,9 +8,8 @@ describe('TextFieldComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [TextFieldComponent]
-})
-    .compileComponents();
+      imports: [TextFieldComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

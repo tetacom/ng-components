@@ -1,12 +1,11 @@
-import {Directive, Input, TemplateRef} from '@angular/core';
+import { Directive, Input, TemplateRef } from '@angular/core';
 
 @Directive({
-    selector: '[tetaPropertyGridItemDescription]',
-    standalone: true
+  selector: '[tetaPropertyGridItemDescription]',
+  standalone: true,
 })
 export class PropertyGridItemDescriptionDirective {
   @Input('tetaPropertyGridItemDescription') name: string;
 
-  constructor(public template: TemplateRef<any>) {
-  }
+  constructor(public template: TemplateRef<any>) {}
 }

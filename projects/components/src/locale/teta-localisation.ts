@@ -24,26 +24,13 @@ export interface TetaLocalisation {
   sum: string;
   avg: string;
   search: string;
-  selectYear:string;
+  selectYear: string;
   selected: string;
   notFound: string;
   notSelected: string;
   yes: string;
   no: string;
-  months: [
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-  ];
+  months: [string, string, string, string, string, string, string, string, string, string, string, string];
   days: [string, string, string, string, string, string, string];
   daysShort: [string, string, string, string, string, string, string];
 }

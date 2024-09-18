@@ -8,9 +8,8 @@ describe('SampleInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [SampleInputComponent]
-})
-    .compileComponents();
+      imports: [SampleInputComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

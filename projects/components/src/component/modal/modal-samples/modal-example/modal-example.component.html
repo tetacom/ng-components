@@ -1,25 +1,25 @@
 <div class="column">
   <teta-toolbar [palette]="'background'" class="justify-content-between color-text-90">
     <span>Создать проект</span>
-    <teta-button [square]="true" [view]="'ghost'" [palette]="'text'" (click)="modal.close({reason: closeReason.exit })">
+    <teta-button
+      [square]="true"
+      [view]="'ghost'"
+      [palette]="'text'"
+      (click)="modal.close({ reason: closeReason.exit })"
+    >
       <teta-icon class="fill-text-90" [name]="'closeBig'"></teta-icon>
-    </teta-button>  </teta-toolbar>
+    </teta-button>
+  </teta-toolbar>
   <div class="padding-3 column">
     <div class="margin-v-2">
-      <input class="input" type="text" [(ngModel)]="data.name" placeholder="Название">
+      <input class="input" type="text" [(ngModel)]="data.name" placeholder="Название" />
     </div>
     <div class="margin-v-2">
-      <input class="input" type="text" [(ngModel)]="data.description" placeholder="Описание">
+      <input class="input" type="text" [(ngModel)]="data.description" placeholder="Описание" />
     </div>
   </div>
   <div class="bottom-bar">
-    <button teta-button [palette]="'primary'"
-            (click)="modal.close({reason: closeReason.exit })">
-      Отменить
-    </button>
-    <button teta-button [palette]="'primary'"
-            (click)="modal.close({reason: closeReason.resolve })">
-      Создать
-    </button>
+    <button teta-button [palette]="'primary'" (click)="modal.close({ reason: closeReason.exit })">Отменить</button>
+    <button teta-button [palette]="'primary'" (click)="modal.close({ reason: closeReason.resolve })">Создать</button>
   </div>
 </div>

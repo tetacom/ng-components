@@ -1,16 +1,15 @@
-import {Directive, Input, OnInit} from '@angular/core';
-import {IconService} from './icon.service';
+import { Directive, Input, OnInit } from '@angular/core';
+import { IconService } from './icon.service';
 
 @Directive({
-    selector: '[tetaIconSprite]',
-    standalone: true
+  selector: '[tetaIconSprite]',
+  standalone: true,
 })
 export class IconSpriteDirective implements OnInit {
   @Input() tetaIconSprite: string | string[];
   @Input() bypassInterceptors = true;
 
-  constructor(private _iconService: IconService) {
-  }
+  constructor(private _iconService: IconService) {}
 
   ngOnInit(): void {
     if (typeof this.tetaIconSprite === 'string') {

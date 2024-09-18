@@ -5,19 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { ModalExampleComponent } from './modal-example/modal-example.component';
 import { ModalModule } from '../modal.module';
 
-
-
 import { AlertSampleComponent } from './alert-sample/alert-sample.component';
 import { TranslocoModule } from '@ngneat/transloco';
 
 @NgModule({
-    exports: [
-        ModalFromComponentComponent,
-        ModalFromTemplateComponent,
-        ModalExampleComponent,
-        AlertSampleComponent,
-    ],
-    imports: [
+  exports: [ModalFromComponentComponent, ModalFromTemplateComponent, ModalExampleComponent, AlertSampleComponent],
+  imports: [
     ModalModule,
     FormsModule,
     TranslocoModule,
@@ -25,6 +18,6 @@ import { TranslocoModule } from '@ngneat/transloco';
     ModalFromTemplateComponent,
     ModalExampleComponent,
     AlertSampleComponent,
-],
+  ],
 })
 export class ModalSamplesModule {}

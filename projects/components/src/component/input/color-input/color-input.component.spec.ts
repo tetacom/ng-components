@@ -8,9 +8,8 @@ describe('ColorInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [ColorInputComponent]
-})
-    .compileComponents();
+      imports: [ColorInputComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ColorInputComponent);
     component = fixture.componentInstance;

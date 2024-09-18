@@ -1,17 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostBinding,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'teta-delimiter',
-    templateUrl: './delimiter.component.html',
-    styleUrls: ['./delimiter.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'teta-delimiter',
+  templateUrl: './delimiter.component.html',
+  styleUrls: ['./delimiter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class DelimiterComponent implements OnInit {
   @Input() direction: 'vertical' | 'horizontal' = 'vertical';

@@ -14,18 +14,18 @@ import { RadioButtonComponent } from '../radio-button/radio-button.component';
 type ButtonOrNullOrUndefined = RadioButtonComponent | undefined | null;
 
 @Component({
-    selector: 'teta-radio',
-    templateUrl: './radio.component.html',
-    styleUrls: ['./radio.component.scss'],
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => RadioComponent),
-            multi: true,
-        },
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'teta-radio',
+  templateUrl: './radio.component.html',
+  styleUrls: ['./radio.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => RadioComponent),
+      multi: true,
+    },
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class RadioComponent implements ControlValueAccessor {
   @HostBinding('tabindex') tabindex = 0;
@@ -40,7 +40,7 @@ export class RadioComponent implements ControlValueAccessor {
 
   @Input() set disabled(val: boolean) {
     this.disabled$ = val;
-    this.buttons$.forEach(b => (b.disabled = this.disabled));
+    this.buttons$.forEach((b) => (b.disabled = this.disabled));
   }
 
   get disabled() {
@@ -112,7 +112,6 @@ export class RadioComponent implements ControlValueAccessor {
     return false;
   }
 
-
   selectFirst() {
     if (!this.selectedButton$) {
       if (this.checkedButton$) {
@@ -167,7 +166,7 @@ export class RadioComponent implements ControlValueAccessor {
       this.checkedButton$.checked = false;
     }
 
-    this.checkedButton$ = this.buttons$.find(b => b.value === obj);
+    this.checkedButton$ = this.buttons$.find((b) => b.value === obj);
     if (this.checkedButton$) {
       this.checkedButton$.checked = true;
     }
@@ -213,9 +212,7 @@ export class RadioComponent implements ControlValueAccessor {
     }
 
     const length = this.buttons$.length;
-    let newIndex = this.selectedButton$
-      ? this.buttons$.indexOf(this.selectedButton$)
-      : 0;
+    let newIndex = this.selectedButton$ ? this.buttons$.indexOf(this.selectedButton$) : 0;
     let firstCycle = true;
     do {
       newIndex++;
@@ -236,9 +233,7 @@ export class RadioComponent implements ControlValueAccessor {
       return;
     }
 
-    let newIndex = this.selectedButton$
-      ? this.buttons$.indexOf(this.selectedButton$)
-      : 0;
+    let newIndex = this.selectedButton$ ? this.buttons$.indexOf(this.selectedButton$) : 0;
     let firstCycle = true;
     do {
       newIndex--;

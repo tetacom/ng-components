@@ -22,45 +22,40 @@ const seriesType = [SeriesType.line, SeriesType.line];
 faker.locale = 'ru';
 
 export const createSeries = (size: number) => {
-  return seriesType.map(
-    (type: SeriesType, index: number): Series<BasePoint> => {
-      return {
-        id: index,
-        type,
-        name: faker.address.cityName(),
-        yAxisIndex: 0,
-        xAxisIndex: 0,
-        color: cssColorNames[randomColor()].toLowerCase(),
+  return seriesType.map((type: SeriesType, index: number): Series<BasePoint> => {
+    return {
+      id: index,
+      type,
+      name: faker.address.cityName(),
+      yAxisIndex: 0,
+      xAxisIndex: 0,
+      color: cssColorNames[randomColor()].toLowerCase(),
 
-        fillType: FillType.gradient,
-        data: Array.from(Array(size).keys())
-          .map((key, index, arr) => {
-            const num = faker.datatype.number({ min: 0, max: 6000 });
-            const iconId = faker.datatype.number({ min: 1, max: 14 });
+      fillType: FillType.gradient,
+      data: Array.from(Array(size).keys())
+        .map((key, index, arr) => {
+          const num = faker.datatype.number({ min: 0, max: 6000 });
+          const iconId = faker.datatype.number({ min: 1, max: 14 });
 
-            const point: BasePoint = {
-              x: num,
-              y:
-                type === SeriesType.block
-                  ? 0
-                  : faker.datatype.number({ min: 0, max: 200 }),
-              iconId: `icon${iconId}`,
-              text: faker.commerce.productMaterial(),
-            };
+          const point: BasePoint = {
+            x: num,
+            y: type === SeriesType.block ? 0 : faker.datatype.number({ min: 0, max: 200 }),
+            iconId: `icon${iconId}`,
+            text: faker.commerce.productMaterial(),
+          };
 
-            return point;
-          })
-          .sort((a, b) => a.x - b.x)
-          .map((_, index, arr) => {
-            return {
-              ..._,
-              x: arr[index - 1]?.x,
-              x1: _.x,
-            };
-          }),
-      };
-    }
-  );
+          return point;
+        })
+        .sort((a, b) => a.x - b.x)
+        .map((_, index, arr) => {
+          return {
+            ..._,
+            x: arr[index - 1]?.x,
+            x1: _.x,
+          };
+        }),
+    };
+  });
 };
 
 export const createDragSeries = (size: number): Series<BasePoint> => {
@@ -108,15 +103,10 @@ export const createBandSeries = (size: number): Series<BasePoint> => {
     component: BandseriesComponent as any,
     color: cssColorNames[randomColor()].toLowerCase(),
     data: Array.from(Array(size).keys()).map((key, index, arr) => {
-      const x = faker.date.between(
-        '2022-09-25T00:00:00.000Z',
-        '2022-10-10T00:00:00.000Z'
-      );
+      const x = faker.date.between('2022-09-25T00:00:00.000Z', '2022-10-10T00:00:00.000Z');
       const point: BasePoint = {
         x: x,
-        x1: new Date(
-          x.getTime() + faker.datatype.number({ min: 8640000, max: 109640000 })
-        ) as any,
+        x1: new Date(x.getTime() + faker.datatype.number({ min: 8640000, max: 109640000 })) as any,
         y: faker.address.cityName(),
       };
       console.log(point);

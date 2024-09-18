@@ -74,12 +74,7 @@ export class ModalService {
       injector,
       this.getContext(content, modalData, currentModal)
     );
-    const window = this._factory.createComponent(
-      ModalContainerComponent,
-      contentInstance,
-      injector,
-      this._container
-    );
+    const window = this._factory.createComponent(ModalContainerComponent, contentInstance, injector, this._container);
     window.instance.config = config;
 
     const instance = new ModalInstance(window, contentInstance);
@@ -88,11 +83,7 @@ export class ModalService {
     return instance;
   }
 
-  private getContext(
-    content: string | TemplateRef<any> | Type<any>,
-    context: any,
-    currentModal: CurrentModal
-  ): any {
+  private getContext(content: string | TemplateRef<any> | Type<any>, context: any, currentModal: CurrentModal): any {
     if (content instanceof TemplateRef) {
       return {
         $implicit: {
@@ -109,11 +100,7 @@ export class ModalService {
     return context;
   }
 
-  private getInjector(
-    currentModal: CurrentModal,
-    data: DynamicData,
-    parent: Injector
-  ): Injector {
+  private getInjector(currentModal: CurrentModal, data: DynamicData, parent: Injector): Injector {
     return Injector.create({
       providers: [
         {

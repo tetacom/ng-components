@@ -1,10 +1,9 @@
-import {Directive, Optional, TemplateRef} from '@angular/core';
+import { Directive, Optional, TemplateRef } from '@angular/core';
 
 @Directive({
-    selector: '[tetaDropdownHead]',
-    standalone: true
+  selector: '[tetaDropdownHead]',
+  standalone: true,
 })
 export class DropdownHeadDirective {
-  constructor(@Optional() public template: TemplateRef<any>) {
-  }
+  constructor(@Optional() public template: TemplateRef<any>) {}
 }

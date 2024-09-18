@@ -1,7 +1,6 @@
-@use "sass:map";
-@import "./util/color-util.scss";
+@use 'sass:map';
+@import './util/color-util.scss';
 
 .bg-transparent {
   background-color: transparent;
 }
-

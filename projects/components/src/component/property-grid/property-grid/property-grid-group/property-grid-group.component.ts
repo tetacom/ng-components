@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Optional,
-  Output,
-  QueryList,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Optional, Output, QueryList } from '@angular/core';
 import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
 
 import { IDictionary } from '../../../../common/contract/i-dictionary';
@@ -18,12 +11,12 @@ import { PropertyGridItemComponent } from '../property-grid-item/property-grid-i
 import { ExpandItemComponent } from '../../../expand-card/expand-item/expand-item.component';
 
 @Component({
-    selector: 'teta-property-grid-group',
-    templateUrl: './property-grid-group.component.html',
-    styleUrls: ['./property-grid-group.component.scss'],
-    viewProviders: [FormsUtil.formProvider],
-    standalone: true,
-    imports: [ExpandItemComponent, PropertyGridItemComponent],
+  selector: 'teta-property-grid-group',
+  templateUrl: './property-grid-group.component.html',
+  styleUrls: ['./property-grid-group.component.scss'],
+  viewProviders: [FormsUtil.formProvider],
+  standalone: true,
+  imports: [ExpandItemComponent, PropertyGridItemComponent],
 })
 export class PropertyGridGroupComponent<T> {
   @Input() column: TableColumn;

@@ -1,40 +1,47 @@
-import {PopupContentComponent} from '../../component/dynamic-component/popup-content/popup-content.component';
-import {Align} from '../../common/enum/align.enum';
-import {VerticalAlign} from '../../common/enum/vertical-align.enum';
-import {applicationConfig, Meta} from "@storybook/angular";
-import {provideHttpClient} from "@angular/common/http";
-import {IconComponent} from "../../component/icon/icon/icon.component";
-import {IconSpriteDirective} from "../../component/icon/icon-sprite.directive";
-import {TooltipDirective} from "./tooltip.directive";
-import {ButtonComponent} from "../../component/button/button/button.component";
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { PopupContentComponent } from '../../component/dynamic-component/popup-content/popup-content.component';
+import { Align } from '../../common/enum/align.enum';
+import { VerticalAlign } from '../../common/enum/vertical-align.enum';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { IconComponent } from '../../component/icon/icon/icon.component';
+import { IconSpriteDirective } from '../../component/icon/icon-sprite.directive';
+import { TooltipDirective } from './tooltip.directive';
+import { ButtonComponent } from '../../component/button/button/button.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export default {
   title: 'Directive/Tooltip',
   decorators: [
     applicationConfig({
-      providers: [
-        provideHttpClient()
-      ],
+      providers: [provideHttpClient()],
     }),
   ],
   argTypes: {
     align: {
       options: ['Align.left', ' Align.right', 'Align.center', 'Align.auto'],
-      control: {type: 'select'}
-    }, verticalAlign: {
-      options: ['VerticalAlign.bottom', 'VerticalAlign.top', 'VerticalAlign.center', 'VerticalAlign.auto', 'VerticalAlign.innerAuto', 'VerticalAlign.innerBottom', 'VerticalAlign.innerTop'],
-      control: {type: 'select'}
+      control: { type: 'select' },
+    },
+    verticalAlign: {
+      options: [
+        'VerticalAlign.bottom',
+        'VerticalAlign.top',
+        'VerticalAlign.center',
+        'VerticalAlign.auto',
+        'VerticalAlign.innerAuto',
+        'VerticalAlign.innerBottom',
+        'VerticalAlign.innerTop',
+      ],
+      control: { type: 'select' },
     },
     text: {
-      control: {type: 'text'}
-    }
+      control: { type: 'text' },
+    },
   },
   args: {
     verticalAlign: 'VerticalAlign.auto',
     align: 'Align.auto',
-    text: 'You can get it now, right?'
-  }
+    text: 'You can get it now, right?',
+  },
 } as Meta;
 const alignMap = new Map<string, Align>()
   .set('Align.left', Align.left)
@@ -54,7 +61,7 @@ export const fromString = (args) => ({
     imports: [TooltipDirective, IconComponent, IconSpriteDirective, ButtonComponent, BrowserAnimationsModule],
     entryComponents: [PopupContentComponent],
   },
-  props: {...args, valignMap, alignMap},
+  props: { ...args, valignMap, alignMap },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="bg-panel-50 padding-10 margin-10">
                 <button teta-button
                          [palette]="'primary'"
@@ -74,7 +81,7 @@ export const fromTemplate = (args) => ({
     imports: [TooltipDirective, IconComponent, IconSpriteDirective, ButtonComponent],
     entryComponents: [PopupContentComponent],
   },
-  props: {...args, valignMap, alignMap},
+  props: { ...args, valignMap, alignMap },
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="bg-panel-50 padding-10 margin-10">
                 <ng-template #hint>
                   From template

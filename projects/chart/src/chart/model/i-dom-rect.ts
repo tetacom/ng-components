@@ -1,6 +1,6 @@
 export interface IDomRect {
-  x: number,
-  top: number,
-  width: number,
-  height: number,
+  x: number;
+  top: number;
+  width: number;
+  height: number;
 }

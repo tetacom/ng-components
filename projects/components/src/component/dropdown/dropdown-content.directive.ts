@@ -1,8 +1,8 @@
-import {Directive, ElementRef} from '@angular/core';
+import { Directive, ElementRef } from '@angular/core';
 
 @Directive({
-    selector: '[tetaDropdownContent]',
-    standalone: true
+  selector: '[tetaDropdownContent]',
+  standalone: true,
 })
 export class DropdownContentDirective {
   nativeElement: HTMLElement;

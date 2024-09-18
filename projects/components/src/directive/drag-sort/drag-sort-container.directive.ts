@@ -13,14 +13,12 @@ import { DragSortEvent } from './drag-sort-event';
 // import {DragSortItemDirective} from './drag-sort-item.directive';
 
 @Directive({
-    selector: '[tetaDragSortContainer]',
-    standalone: true,
+  selector: '[tetaDragSortContainer]',
+  standalone: true,
 })
 export class DragSortContainerDirective<T> {
   @Input() dragSortList: T[] = [];
-  @Output() dragSorted: EventEmitter<DragSortEvent<T>> = new EventEmitter<
-    DragSortEvent<T>
-  >();
+  @Output() dragSorted: EventEmitter<DragSortEvent<T>> = new EventEmitter<DragSortEvent<T>>();
 
   private _dragItem!: T | null;
 
@@ -52,10 +50,7 @@ export class DragSortContainerDirective<T> {
     const list = this.getList();
     const sourceIndex = list.indexOf(source);
     const targetIndex = list.indexOf(target);
-    if (
-      (insertBefore && sourceIndex + 1 === targetIndex) ||
-      (!insertBefore && sourceIndex === targetIndex + 1)
-    ) {
+    if ((insertBefore && sourceIndex + 1 === targetIndex) || (!insertBefore && sourceIndex === targetIndex + 1)) {
       return;
     }
     const newIndex = list.indexOf(target) + (insertBefore ? 0 : 1);

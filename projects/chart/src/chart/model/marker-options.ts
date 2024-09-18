@@ -1,5 +1,5 @@
-import {DragPointType} from './enum/drag-point-type';
-import {SvgAttributes} from './svg-attributes';
+import { DragPointType } from './enum/drag-point-type';
+import { SvgAttributes } from './svg-attributes';
 
 export interface DragObjectOptions {
   draggable?: boolean;

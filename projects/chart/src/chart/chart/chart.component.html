@@ -1,24 +1,17 @@
-@if ({
-  hasSeriesData: hasSeriesData | async,
-  svcConfig: svcConfig | async
-}; as data) {
-  @if (data.hasSeriesData === true) {
-    <div class="column column_auto">
-      <teta-chart-container class="chart-container position-relative"></teta-chart-container>
-    </div>
-    @if (data.svcConfig.legend?.enable === true) {
-      <teta-legend [series]="data.svcConfig.series"></teta-legend>
+@if ({ hasSeriesData: hasSeriesData | async, svcConfig: svcConfig | async }; as data) { @if (data.hasSeriesData ===
+true) {
+<div class="column column_auto">
+  <teta-chart-container class="chart-container position-relative"></teta-chart-container>
+</div>
+@if (data.svcConfig.legend?.enable === true) {
+<teta-legend [series]="data.svcConfig.series"></teta-legend>
+} } @else {
+<div class="column column_auto justify-content-center">
+  <span class="font-body-3 color-text-40 overflow-hidden text-overflow-ellipsis nowrap text-align-center">
+    <div #ref><ng-content></ng-content></div>
+    @if (!ref.hasChildNodes()) {
+    <span> No data </span>
     }
-  } @else {
-    <div class="column column_auto justify-content-center">
-    <span class="font-body-3 color-text-40 overflow-hidden text-overflow-ellipsis nowrap text-align-center">
-      <div #ref><ng-content></ng-content></div>
-      @if (!ref.hasChildNodes()) {
-        <span>
-          No data
-        </span>
-      }
-    </span>
-    </div>
-  }
-}
+  </span>
+</div>
+} }

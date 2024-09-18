@@ -8,9 +8,8 @@ describe('DelimiterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [DelimiterComponent]
-})
-    .compileComponents();
+      imports: [DelimiterComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

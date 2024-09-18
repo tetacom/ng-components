@@ -1,10 +1,9 @@
-import {Directive, TemplateRef} from '@angular/core';
+import { Directive, TemplateRef } from '@angular/core';
 
 @Directive({
-    selector: '[tetaDragPreview]',
-    standalone: true
+  selector: '[tetaDragPreview]',
+  standalone: true,
 })
 export class DragPreviewDirective {
-  constructor(public templateRef: TemplateRef<any>) {
-  }
+  constructor(public templateRef: TemplateRef<any>) {}
 }

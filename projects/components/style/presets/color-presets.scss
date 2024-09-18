@@ -1,7 +1,7 @@
 @use '@tetacom/themes/src/tatneft/presets.scss' as tatneft;
 @use '@tetacom/themes/src/base/presets.scss' as base;
-@import "@tetacom/themes/src/global.tokens.css";
-@import "@tetacom/themes/src/util.scss";
+@import '@tetacom/themes/src/global.tokens.css';
+@import '@tetacom/themes/src/util.scss';
 
 $themes: map-collect('themes', tatneft.$presets, base.$presets);
 $shadows: map-collect('shadow', tatneft.$presets, base.$presets);

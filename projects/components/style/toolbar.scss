@@ -1,5 +1,5 @@
-@import "util/font-util.scss";
-@import "util/color-util.scss";
+@import 'util/font-util.scss';
+@import 'util/color-util.scss';
 
 .toolbar {
   height: 52px;
@@ -13,7 +13,7 @@
   @include getFont($fonts, 'title-2');
 
   @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
-    &#{'.toolbar-'+$paletteName} {
+    &#{'.toolbar-' + $paletteName} {
       background-color: getColorVar($paletteName, '50');
     }
   }

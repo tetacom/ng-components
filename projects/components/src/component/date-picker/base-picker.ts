@@ -1,14 +1,14 @@
-import {DatePipe} from '@angular/common';
-import {ChangeDetectorRef, ElementRef, EventEmitter} from '@angular/core';
-import {MaskitoOptions} from '@maskito/core';
+import { DatePipe } from '@angular/common';
+import { ChangeDetectorRef, ElementRef, EventEmitter } from '@angular/core';
+import { MaskitoOptions } from '@maskito/core';
 import dayjs from 'dayjs';
-import {Observable, ReplaySubject} from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 
-import {Align} from '../../common/enum/align.enum';
-import {VerticalAlign} from '../../common/enum/vertical-align.enum';
-import {viewType} from '../../common/model/view-type.model';
-import {DateFromToModel} from './model/from-to.model';
-import {TetaLocalisation} from "../../locale/teta-localisation";
+import { Align } from '../../common/enum/align.enum';
+import { VerticalAlign } from '../../common/enum/vertical-align.enum';
+import { viewType } from '../../common/model/view-type.model';
+import { DateFromToModel } from './model/from-to.model';
+import { TetaLocalisation } from '../../locale/teta-localisation';
 
 export abstract class BasePicker {
   abstract mask: string;
@@ -125,14 +125,14 @@ export abstract class BasePicker {
     const day = this.isAvailableLength(date?.[0], 2) ? Number(date[0]) : null;
     const month = this.isAvailableLength(date?.[1], 2) ? Number(date[1]) : null;
     const year = this.isAvailableLength(date?.[2], 4) ? Number(date[2]) : null;
-    return {day, month, year};
+    return { day, month, year };
   }
 
   getTimeFromStr(str: string, separator = ':') {
     const time = str?.trim().split(separator);
     const hours = this.isAvailableLength(time?.[0], 2) ? Number(time[0]) : null;
     const mins = this.isAvailableLength(time?.[1], 2) ? Number(time[1]) : null;
-    return {hours, mins};
+    return { hours, mins };
   }
 
   focus() {
@@ -143,17 +143,14 @@ export abstract class BasePicker {
     return new Date(date).toLocaleString(['ru'], {
       year: 'numeric',
       month: '2-digit',
-      day: '2-digit', hour12: false,
+      day: '2-digit',
+      hour12: false,
       hour: this.showTime ? '2-digit' : undefined,
       minute: this.showTime ? '2-digit' : undefined,
     });
   }
 
-  getAvailableDate(
-    min: Date | number | string,
-    max: Date | number | string,
-    date: Date | number | string
-  ) {
+  getAvailableDate(min: Date | number | string, max: Date | number | string, date: Date | number | string) {
     const minDate = this.showTime ? new Date(min) : dayjs(new Date(min)).startOf('day').toDate();
     const maxDate = this.showTime ? new Date(max) : dayjs(new Date(max)).endOf('day').toDate();
     if (min && minDate.getTime() >= new Date(date).getTime()) {

@@ -1,5 +1,5 @@
 export enum EditType {
   none,
   cell,
-  row
+  row,
 }

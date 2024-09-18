@@ -1,14 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as d3 from 'd3';
 import { ZoomTransform } from 'd3';
-import {
-  combineLatest,
-  map,
-  Observable,
-  shareReplay,
-  take,
-  withLatestFrom,
-} from 'rxjs';
+import { combineLatest, map, Observable, shareReplay, take, withLatestFrom } from 'rxjs';
 
 import { Axis } from '../core/axis/axis';
 import { AxisOrientation } from '../model/enum/axis-orientation';
@@ -38,15 +31,8 @@ export class ScaleService {
     .set(ScaleType.sqrt, d3.scaleSqrt)
     .set(ScaleType.band, d3.scaleBand);
 
-  constructor(
-    private chartService: ChartService,
-    private zoomService: ZoomService
-  ) {
-    this.scales = combineLatest([
-      this.chartService.size,
-      this.chartService.config,
-      this.zoomService.zoomed,
-    ]).pipe(
+  constructor(private chartService: ChartService, private zoomService: ZoomService) {
+    this.scales = combineLatest([this.chartService.size, this.chartService.config, this.zoomService.zoomed]).pipe(
       map((data: [DOMRectReadOnly, IChartConfig, ZoomMessage]) => {
         const [size, config, zoom] = data;
 
@@ -54,31 +40,25 @@ export class ScaleService {
         const yAxisMap = new Map<number, Axis>();
 
         config.yAxis.map((_, index) => {
-          yAxisMap.set(
-            index,
-            Axis.createAxis(AxisOrientation.y, config, index)
-          );
+          yAxisMap.set(index, Axis.createAxis(AxisOrientation.y, config, index));
         });
 
         config.xAxis.map((_, index) => {
-          xAxisMap.set(
-            index,
-            Axis.createAxis(AxisOrientation.x, config, index)
-          );
+          xAxisMap.set(index, Axis.createAxis(AxisOrientation.x, config, index));
         });
 
         // Generate x scales
         const left = Array.from(yAxisMap.values())
-          .filter(_ => _.options?.visible && _.options?.opposite)
+          .filter((_) => _.options?.visible && _.options?.opposite)
           .reduce((acc, cur) => acc + cur.selfSize, 0);
 
         const right = Array.from(yAxisMap.values())
-          .filter(_ => _.options?.visible && _.options?.opposite !== true)
+          .filter((_) => _.options?.visible && _.options?.opposite !== true)
           .reduce((acc, cur) => acc + cur.selfSize, 0);
 
         const finalWidth = (size.width || 0) - left - right;
 
-        xAxisMap.forEach(axis => {
+        xAxisMap.forEach((axis) => {
           let domain = axis.extremes;
 
           if (axis?.options.inverted) {
@@ -108,9 +88,7 @@ export class ScaleService {
           axis.setOriginDomain(scale.domain());
 
           const hasCache = this.transformCacheX.has(axis.index);
-          const shouldRestore =
-            zoom?.axis?.orientation !== AxisOrientation.x ||
-            zoom.axis?.index !== axis.index;
+          const shouldRestore = zoom?.axis?.orientation !== AxisOrientation.x || zoom.axis?.index !== axis.index;
 
           if (hasCache && shouldRestore) {
             const restoredTransform = this.transformCacheX.get(axis.index);
@@ -139,21 +117,16 @@ export class ScaleService {
         // Generate y axis
 
         const top = Array.from(xAxisMap.values())
-          .filter(_ => _.options?.visible && _.options?.opposite)
+          .filter((_) => _.options?.visible && _.options?.opposite)
           .reduce((acc, cur) => acc + cur.selfSize, 0);
 
         const bottom = Array.from(xAxisMap.values())
-          .filter(_ => _.options?.visible && _.options?.opposite !== true)
+          .filter((_) => _.options?.visible && _.options?.opposite !== true)
           .reduce((acc, cur) => acc + cur.selfSize, 0);
 
-        const finalHeight =
-          (size.height || 0) -
-          top -
-          bottom -
-          config?.bounds?.top -
-          config.bounds?.bottom;
+        const finalHeight = (size.height || 0) - top - bottom - config?.bounds?.top - config.bounds?.bottom;
 
-        yAxisMap.forEach(axis => {
+        yAxisMap.forEach((axis) => {
           let domain = axis.extremes;
 
           if (axis.orientation === AxisOrientation.y) {
@@ -188,9 +161,7 @@ export class ScaleService {
 
           const hasCache = this.transformCacheY.has(axis.index);
 
-          const shouldRestore =
-            zoom?.axis?.orientation !== AxisOrientation.y ||
-            zoom.axis?.index !== axis.index;
+          const shouldRestore = zoom?.axis?.orientation !== AxisOrientation.y || zoom.axis?.index !== axis.index;
 
           if (hasCache && shouldRestore) {
             const restoredTransform = this.transformCacheY.get(axis.index);
@@ -244,10 +215,7 @@ export class ScaleService {
               chartId: config.id,
             });
             this.zoomService.fireZoom(msg);
-            if (
-              config.zoom.syncChannel &&
-              config.zoom.syncType === ZoomType.x
-            ) {
+            if (config.zoom.syncChannel && config.zoom.syncType === ZoomType.x) {
               this.zoomService.broadcastZoom(msg);
             }
           }
@@ -265,10 +233,7 @@ export class ScaleService {
               chartId: config.id,
             });
             this.zoomService.fireZoom(msg);
-            if (
-              config.zoom.syncChannel &&
-              config.zoom.syncType === ZoomType.y
-            ) {
+            if (config.zoom.syncChannel && config.zoom.syncType === ZoomType.y) {
               this.zoomService.broadcastZoom(msg);
             }
           }

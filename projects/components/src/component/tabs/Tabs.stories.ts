@@ -1,11 +1,11 @@
-import {applicationConfig, Meta} from '@storybook/angular';
-import {provideHttpClient} from '@angular/common/http';
-import {IconComponent} from '../icon/icon/icon.component';
-import {IconSpriteDirective} from '../icon/icon-sprite.directive';
-import {TabsComponent} from './tabs/tabs.component';
-import {TabComponent} from './tab/tab.component';
-import {TabTitleDirective} from './tab-title.directive';
-import {TabContentDirective} from './tab-content.directive';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { IconComponent } from '../icon/icon/icon.component';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
+import { TabsComponent } from './tabs/tabs.component';
+import { TabComponent } from './tab/tab.component';
+import { TabTitleDirective } from './tab-title.directive';
+import { TabContentDirective } from './tab-content.directive';
 
 export default {
   title: 'Component/Tabs',

@@ -1,49 +1,63 @@
-@if ({
-  y: y | async,
-  x: x | async,
-  points: displayPoints | async
-}; as data) {
-  @if (series?.fillType === fillType.gradient) {
-    <svg:defs>
-      <svg:linearGradient [id]="'gradient-fill-' + id" gradientUnits="userSpaceOnUse"
-                          x1="0%"
-                          [attr.y1]="config?.inverted ? '0%' : '100%'"
-                          [attr.x2]="config?.inverted ? '100%' : '0%'"
-                          y2="0%">
-        <svg:stop offset="0%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0"></svg:stop>
-        <svg:stop offset="5%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.1"></svg:stop>
-        <svg:stop offset="20%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.2"></svg:stop>
-        <svg:stop offset="60%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.5"></svg:stop>
-        <svg:stop offset="100%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.9"></svg:stop>
-      </svg:linearGradient>
-    </svg:defs>
+@if ({ y: y | async, x: x | async, points: displayPoints | async }; as data) { @if (series?.fillType ===
+fillType.gradient) {
+<svg:defs>
+  <svg:linearGradient
+    [id]="'gradient-fill-' + id"
+    gradientUnits="userSpaceOnUse"
+    x1="0%"
+    [attr.y1]="config?.inverted ? '0%' : '100%'"
+    [attr.x2]="config?.inverted ? '100%' : '0%'"
+    y2="0%"
+  >
+    <svg:stop offset="0%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0"></svg:stop>
+    <svg:stop offset="5%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.1"></svg:stop>
+    <svg:stop offset="20%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.2"></svg:stop>
+    <svg:stop offset="60%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.5"></svg:stop>
+    <svg:stop offset="100%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.9"></svg:stop>
+  </svg:linearGradient>
+</svg:defs>
+} @if (data.x && data.y) { @for (point of data.points; track point) {
+<svg:g (mouseenter)="mouseenter(point)" (mouseleave)="mouseleave(point)">
+  <svg:rect
+    x="0"
+    [attr.x]="data.x(point.x)"
+    [attr.width]="Math.abs(data.x(point.x1) - data.x(point.x))"
+    [attr.fill]="
+      series.fillType === fillType.gradient
+        ? 'url(#gradient-fill-' + id + ')'
+        : point.iconId
+        ? 'url(#pattern' + point.iconId + ')'
+        : point.color ?? series.style?.fill ?? series.color
+    "
+    [attr.fill-opacity]="series.style?.fillOpacity"
+    height="100%"
+  ></svg:rect>
+  @if (point.text && data.x(point.x1) - data.x(point.x) > 8) {
+  <svg:text
+    [attr.transform]="'rotate(270)'"
+    [ngStyle]="{ 'transform-origin': (data.x(point.x1) + data.x(point.x)) / 2 + 'px 50%' }"
+    y="50%"
+    [attr.x]="(data.x(point.x1) + data.x(point.x)) / 2"
+    text-anchor="middle"
+    alignment-baseline="middle"
+    text-anchor="middle"
+  >
+    {{ point.text }}
+  </svg:text>
   }
-  @if (data.x && data.y) {
-    @for (point of data.points; track point) {
-      <svg:g (mouseenter)="mouseenter(point)"
-             (mouseleave)="mouseleave(point)">
-        <svg:rect
-          x="0"
-          [attr.x]="data.x(point.x)"
-          [attr.width]="Math.abs(data.x(point.x1) - data.x(point.x))"
-          [attr.fill]="series.fillType === fillType.gradient ? 'url(#gradient-fill-'+id+')' : point.iconId ? 'url(#pattern'+point.iconId+')' : point.color ?? series.style?.fill ?? series.color"
-          [attr.fill-opacity]="series.style?.fillOpacity"
-          height="100%">
-        </svg:rect>
-        @if (point.text && data.x(point.x1) - data.x(point.x) > 8) {
-          <svg:text [attr.transform]="'rotate(270)'"
-                    [ngStyle]='{"transform-origin": (data.x(point.x1) + data.x(point.x)) / 2+"px 50%"}'
-                    y="50%"
-                    [attr.x]="(data.x(point.x1) + data.x(point.x)) / 2"
-                    text-anchor="middle" alignment-baseline="middle"
-                    text-anchor="middle">{{ point.text }}
-          </svg:text>
-        }
-        <svg:line y1="0" y2="100%" [attr.x1]="data.x(point.x)" [attr.x2]="data.x(point.x)"
-                  [attr.stroke]="point.iconId ? 'var(--color-text-10)' : point.color ?? series.style?.stroke ?? series.color"></svg:line>
-        <svg:line y1="0" y2="100%" [attr.x1]="data.x(point.x1)" [attr.x2]="data.x(point.x1)"
-                  [attr.stroke]="point.iconId ? 'var(--color-text-10)' : point.color ?? series.style?.stroke ?? series.color"></svg:line>
-      </svg:g>
-    }
-  }
-}
+  <svg:line
+    y1="0"
+    y2="100%"
+    [attr.x1]="data.x(point.x)"
+    [attr.x2]="data.x(point.x)"
+    [attr.stroke]="point.iconId ? 'var(--color-text-10)' : point.color ?? series.style?.stroke ?? series.color"
+  ></svg:line>
+  <svg:line
+    y1="0"
+    y2="100%"
+    [attr.x1]="data.x(point.x1)"
+    [attr.x2]="data.x(point.x1)"
+    [attr.stroke]="point.iconId ? 'var(--color-text-10)' : point.color ?? series.style?.stroke ?? series.color"
+  ></svg:line>
+</svg:g>
+} } }

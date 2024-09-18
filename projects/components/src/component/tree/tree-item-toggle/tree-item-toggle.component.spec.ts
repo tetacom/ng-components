@@ -8,9 +8,8 @@ describe('TreeItemToggleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [TreeItemToggleComponent]
-})
-    .compileComponents();
+      imports: [TreeItemToggleComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -14,16 +14,12 @@ import { IconComponent } from '../../icon/icon/icon.component';
 import { ResizeDragDirective } from '../../../directive/resize-drag/resize-drag.directive';
 
 @Component({
-    selector: 'teta-resize-panel',
-    templateUrl: './resize-panel.component.html',
-    styleUrls: ['./resize-panel.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        ResizeDragDirective,
-        NgClass,
-        IconComponent,
-    ],
+  selector: 'teta-resize-panel',
+  templateUrl: './resize-panel.component.html',
+  styleUrls: ['./resize-panel.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ResizeDragDirective, NgClass, IconComponent],
 })
 export class ResizePanelComponent implements OnInit, OnDestroy {
   @Input() size = 8;
@@ -38,7 +34,7 @@ export class ResizePanelComponent implements OnInit, OnDestroy {
   }
 
   get icon() {
-    return this.direction === "horizontal" ? 'moreHorizontal' : 'moreVertical'
+    return this.direction === 'horizontal' ? 'moreHorizontal' : 'moreVertical';
   }
   @Input()
   set grabPosition(val: 'top' | 'left' | 'bottom' | 'right') {
@@ -78,8 +74,7 @@ export class ResizePanelComponent implements OnInit, OnDestroy {
     private _elementRef: ElementRef,
     private _renderer: Renderer2,
     @Inject(DOCUMENT) private _document: any
-  ) {
-  }
+  ) {}
 
   resizeStart(event: MouseEvent) {
     this.setStartPosition();
@@ -109,8 +104,7 @@ export class ResizePanelComponent implements OnInit, OnDestroy {
     this.restorePosition();
   }
 
-  ngOnDestroy(): void {
-  }
+  ngOnDestroy(): void {}
 
   getClassName() {
     return this._positionMap.get(this.grabPosition) || '';
@@ -146,11 +140,7 @@ export class ResizePanelComponent implements OnInit, OnDestroy {
     if (this.minSize && newSize < this.minSize) {
       newSize = this.minSize;
     }
-    this._renderer.setStyle(
-      this._elementRef.nativeElement,
-      'height',
-      `${newSize}px`
-    );
+    this._renderer.setStyle(this._elementRef.nativeElement, 'height', `${newSize}px`);
     this.save();
   }
 
@@ -165,11 +155,7 @@ export class ResizePanelComponent implements OnInit, OnDestroy {
     if (this.minSize && newSize < this.minSize) {
       newSize = this.minSize;
     }
-    this._renderer.setStyle(
-      this._elementRef.nativeElement,
-      'width',
-      `${newSize}px`
-    );
+    this._renderer.setStyle(this._elementRef.nativeElement, 'width', `${newSize}px`);
     this.save();
   }
 
@@ -183,24 +169,12 @@ export class ResizePanelComponent implements OnInit, OnDestroy {
     const savedSize = this.restore();
     if (savedSize) {
       if (this.direction === 'vertical') {
-        this._renderer.setStyle(
-          this._elementRef.nativeElement,
-          'width',
-          `${savedSize}px`
-        );
+        this._renderer.setStyle(this._elementRef.nativeElement, 'width', `${savedSize}px`);
       } else {
-        this._renderer.setStyle(
-          this._elementRef.nativeElement,
-          'height',
-          `${savedSize}px`
-        );
+        this._renderer.setStyle(this._elementRef.nativeElement, 'height', `${savedSize}px`);
       }
       this._renderer.setStyle(this._elementRef.nativeElement, 'flex-grow', `0`);
-      this._renderer.setStyle(
-        this._elementRef.nativeElement,
-        'flex-shrink',
-        `0`
-      );
+      this._renderer.setStyle(this._elementRef.nativeElement, 'flex-shrink', `0`);
       this._renderer.setStyle(this._elementRef.nativeElement, 'flex', `none`);
     }
   }
@@ -208,15 +182,9 @@ export class ResizePanelComponent implements OnInit, OnDestroy {
   private save() {
     if (this.name?.length > 0) {
       if (this.direction === 'vertical') {
-        localStorage.setItem(
-          `resize-panel${this.name}`,
-          this._elementRef.nativeElement.clientWidth
-        );
+        localStorage.setItem(`resize-panel${this.name}`, this._elementRef.nativeElement.clientWidth);
       } else {
-        localStorage.setItem(
-          `resize-panel${this.name}`,
-          this._elementRef.nativeElement.clientHeight
-        );
+        localStorage.setItem(`resize-panel${this.name}`, this._elementRef.nativeElement.clientHeight);
       }
     }
   }

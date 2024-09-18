@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { CellComponentBase } from '../../base/cell-component-base';
 import { ICellCoordinates } from '../../contract/i-cell-coordinates';
@@ -14,27 +7,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxComponent } from '../../../checkbox/checkbox/checkbox.component';
 
 @Component({
-    selector: 'teta-boolean-cell',
-    templateUrl: './boolean-cell.component.html',
-    styleUrls: ['./boolean-cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        CheckboxComponent,
-        FormsModule,
-        ReactiveFormsModule,
-    ],
+  selector: 'teta-boolean-cell',
+  templateUrl: './boolean-cell.component.html',
+  styleUrls: ['./boolean-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CheckboxComponent, FormsModule, ReactiveFormsModule],
 })
-export class BooleanCellComponent<T>
-  extends CellComponentBase<T>
-  implements OnInit
-{
+export class BooleanCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: ElementRef;
 
-  constructor(
-    public override svc: TableService<T>,
-    public override cdr: ChangeDetectorRef
-  ) {
+  constructor(public override svc: TableService<T>, public override cdr: ChangeDetectorRef) {
     super(svc, cdr);
   }
 

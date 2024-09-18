@@ -8,9 +8,8 @@ describe('FilterDropdownTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [FilterDropdownTabComponent]
-})
-    .compileComponents();
+      imports: [FilterDropdownTabComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

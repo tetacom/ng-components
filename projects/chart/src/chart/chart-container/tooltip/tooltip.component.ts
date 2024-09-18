@@ -28,10 +28,7 @@ import { VerticalAlign } from '../../model/enum/vertical-align.enum';
   standalone: true,
   styleUrls: ['./tooltip.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    AsyncPipe,
-    NgTemplateOutlet
-  ]
+  imports: [AsyncPipe, NgTemplateOutlet],
 })
 export class TooltipComponent implements OnInit {
   @Input() size: DOMRect;
@@ -59,10 +56,10 @@ export class TooltipComponent implements OnInit {
     private _zone: NgZone,
     private _elementRef: ElementRef
   ) {
-    this.tooltips = this.svc.tooltips.pipe(map(_ => [..._.values()]));
+    this.tooltips = this.svc.tooltips.pipe(map((_) => [..._.values()]));
   }
-  getImplicit(t){
-    return {$implicit: t} as any
+  getImplicit(t) {
+    return { $implicit: t } as any;
   }
   ngOnInit(): void {
     this.display = this.svc.pointerMove.pipe(
@@ -77,8 +74,8 @@ export class TooltipComponent implements OnInit {
     );
 
     this.position = this.svc.pointerMove.pipe(
-      filter(event => !!event),
-      map(_ => {
+      filter((event) => !!event),
+      map((_) => {
         return this.getPosition(_);
       }),
       tap(() => this.cdr.detectChanges())
@@ -91,22 +88,14 @@ export class TooltipComponent implements OnInit {
     const defaultFormatter = (tooltips: IDisplayTooltip[]): SafeHtml => {
       let html = '';
       const format = d3.timeFormat('%d.%m.%Y');
-      tooltips.forEach(_ => {
+      tooltips.forEach((_) => {
         const indicatorStyle = `display:block; width: 10px; height: 2px; background-color: ${_?.series?.color}`;
 
         html += `<div class='display-flex align-center'><span class='margin-right-1' style='${indicatorStyle}'></span>
           <span class='font-title-3'>${_.series.name}
             <span class='font-body-3'>
-              x: ${
-                (_.point.x as any) instanceof Date
-                  ? format(_.point.x as any)
-                  : _.point.x?.toFixed(2)
-              }
-              y: ${
-                (_.point.y as any) instanceof Date
-                  ? format(_.point.y as any)
-                  : _.point.y?.toFixed(2)
-              }
+              x: ${(_.point.x as any) instanceof Date ? format(_.point.x as any) : _.point.x?.toFixed(2)}
+              y: ${(_.point.y as any) instanceof Date ? format(_.point.y as any) : _.point.y?.toFixed(2)}
             </span>
           </span></div>`;
       });
@@ -122,9 +111,7 @@ export class TooltipComponent implements OnInit {
         if (tooltipList?.length < 1) {
           return '';
         }
-        const formatted = formatter
-          ? transformHtml(formatter(tooltipList))
-          : defaultFormatter(tooltipList);
+        const formatted = formatter ? transformHtml(formatter(tooltipList)) : defaultFormatter(tooltipList);
         return formatted;
       })
     );

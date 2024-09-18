@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ITreeData } from '../../../common/contract/i-tree-data';
 import { TetaConfigService } from '../../../locale/teta-config.service';
@@ -21,19 +14,12 @@ import { TabComponent } from '../../tabs/tab/tab.component';
 import { TabsComponent } from '../../tabs/tabs/tabs.component';
 
 @Component({
-    selector: 'teta-head-cell-dropdown',
-    templateUrl: './head-cell-dropdown.component.html',
-    styleUrls: ['./head-cell-dropdown.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        TabsComponent,
-        TabComponent,
-        TabTitleDirective,
-        IconComponent,
-        TabContentDirective,
-        NgTemplateOutlet,
-    ],
+  selector: 'teta-head-cell-dropdown',
+  templateUrl: './head-cell-dropdown.component.html',
+  styleUrls: ['./head-cell-dropdown.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [TabsComponent, TabComponent, TabTitleDirective, IconComponent, TabContentDirective, NgTemplateOutlet],
 })
 export class HeadCellDropdownComponent<T> {
   @Input() columns: ITreeData[];
@@ -42,14 +28,9 @@ export class HeadCellDropdownComponent<T> {
   @Input() data: T[];
   @Input() tabTemplates: HeadDropdownTab[];
   @Input() dropDownOpen: boolean;
-  @Output() dropDownOpenChange: EventEmitter<boolean> =
-    new EventEmitter<boolean>();
+  @Output() dropDownOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(
-    private _svc: TableService<T>,
-    private _config: TetaConfigService,
-    private _cdr: ChangeDetectorRef
-  ) {}
+  constructor(private _svc: TableService<T>, private _config: TetaConfigService, private _cdr: ChangeDetectorRef) {}
 
   closeDropdown = () => {
     this.dropDownOpen = false;

@@ -1,107 +1,126 @@
-import {Meta} from "@storybook/blocks";
-import TreeStories from "../src/component/tree/Tree.stories";
+import { Meta } from '@storybook/blocks';
+import TreeStories from '../src/component/tree/Tree.stories';
 
-<Meta of={TreeStories}/>
+<Meta of={TreeStories} />
 
-<div class='column gap-24'>
+<div class="column gap-24">
   <h1>Дерево</h1>
-  <div class='column'>
-    <p>Tree (дерево) — компонент, использующийся для отображения иерархических структур, представленных расширяемыми узлами дерева.</p>
+  <div class="column">
+    <p>
+      Tree (дерево) — компонент, использующийся для отображения иерархических структур, представленных расширяемыми
+      узлами дерева.
+    </p>
     <p>Компонент используется для сущностей, которые имеют ссылки на самих себя.</p>
   </div>
   <h3>Правила применения</h3>
-  <div class='column'>
-    <p>У дерева есть отдельные элементы (TreeItem), которые совмещаются между собой. Каждый элемент имеет свой уровень.Раскрытие происходит иерархично: 1 уровень раскрывается на 2 уровень, 2 уровень на 3 уровень и т. п.</p>
+  <div class="column">
+    <p>
+      У дерева есть отдельные элементы (TreeItem), которые совмещаются между собой. Каждый элемент имеет свой
+      уровень.Раскрытие происходит иерархично: 1 уровень раскрывается на 2 уровень, 2 уровень на 3 уровень и т. п.
+    </p>
   </div>
   <h3>Как использовать</h3>
-  <div class='column'>
-    <p>Для начала нужно создать <code> &lt;teta-tree&gt;</code>. Этот компонент ждет свойство <code>data</code>, оно ждет объект со свойством <code>children</code>, которое принимает массив таких же данных. Также можно передавать любые дополнительные свойства, которые необходимы вам для генерации дерева.</p>
-    <p>Внутрь необходимо передать блок <code>ng-template</code> с директивой <code>teta-template</code> для кастомизации элемента дерева.</p>
- </div>
+  <div class="column">
+    <p>
+      Для начала нужно создать <code> &lt;teta-tree&gt;</code>. Этот компонент ждет свойство <code>data</code>, оно ждет
+      объект со свойством <code>children</code>, которое принимает массив таких же данных. Также можно передавать любые
+      дополнительные свойства, которые необходимы вам для генерации дерева.
+    </p>
+    <p>
+      Внутрь необходимо передать блок <code>ng-template</code> с директивой <code>teta-template</code> для кастомизации
+      элемента дерева.
+    </p>
+  </div>
   <h3>Пример кода</h3>
-  <p><pre><code>&lt;teta-tree [data]="data"&gt;
-    &nbsp;&nbsp;&lt;ng-template tetaTemplate let-item&gt;
-    &nbsp;&nbsp;&nbsp;&nbsp;&lt;teta-icon [name]="item.icon"&gt;&lt;/teta-icon&gt;
-    &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&#123;&#123;item.name&#125;&#125;&lt;/p&gt;
-    &nbsp;&nbsp;&lt;/ng-template&gt;
-    &nbsp;&lt;/teta-tree&gt;</code></pre></p>
+  <p>
+    <pre>
+      <code>
+        &lt;teta-tree [data]="data"&gt; &nbsp;&nbsp;&lt;ng-template tetaTemplate let-item&gt;
+        &nbsp;&nbsp;&nbsp;&nbsp;&lt;teta-icon [name]="item.icon"&gt;&lt;/teta-icon&gt;
+        &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&#123;&#123;item.name&#125;&#125;&lt;/p&gt; &nbsp;&nbsp;&lt;/ng-template&gt;
+        &nbsp;&lt;/teta-tree&gt;
+      </code>
+    </pre>
+  </p>
   <h3>Свойства</h3>
   <h4>teta-tree</h4>
   <table>
     <thead>
-    <tr>
-      <th>Свойство</th>
-      <th>Tип</th>
-      <th>Описание</th>
-    </tr>
+      <tr>
+        <th>Свойство</th>
+        <th>Tип</th>
+        <th>Описание</th>
+      </tr>
     </thead>
     <tbody>
-    <tr>
-      <td class='text-align-center'>
-        <p>data</p>
-      </td>
-      <td class='text-align-center'>
-        <code>ITreeData[]</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Данные для формирования дерева</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>childNodeName</p>
-      </td>
-      <td class='text-align-center'>
-        <code>string</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Свойство, отвечающее за название элемента с дочерними элементами дерева (по дефолту <code>children</code>)</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>height</p>
-      </td>
-      <td class='text-align-center'>
-        <code>number</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Высота дерева</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>openItems</p>
-      </td>
-      <td class='text-align-center'>
-        <code>ITreeData[]</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Свойство, отвечающее контроль над открытыми элементами дерева</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>virtual</p>
-      </td>
-      <td class='text-align-center'>
-        <code>boolean</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Флаг добавления виртуального скролла</p>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-align-center'>
-        <p>openItemsChange</p>
-      </td>
-      <td class='text-align-center'>
-        <code>function</code>
-      </td>
-      <td class='text-align-center'>
-        <p>Переданная функция срабатывает при открытии/закрытии элемента дерева и отдает открытые элементы дерева</p>
-      </td>
-    </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>data</p>
+        </td>
+        <td class="text-align-center">
+          <code>ITreeData[]</code>
+        </td>
+        <td class="text-align-center">
+          <p>Данные для формирования дерева</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>childNodeName</p>
+        </td>
+        <td class="text-align-center">
+          <code>string</code>
+        </td>
+        <td class="text-align-center">
+          <p>
+            Свойство, отвечающее за название элемента с дочерними элементами дерева (по дефолту <code>children</code>)
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>height</p>
+        </td>
+        <td class="text-align-center">
+          <code>number</code>
+        </td>
+        <td class="text-align-center">
+          <p>Высота дерева</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>openItems</p>
+        </td>
+        <td class="text-align-center">
+          <code>ITreeData[]</code>
+        </td>
+        <td class="text-align-center">
+          <p>Свойство, отвечающее контроль над открытыми элементами дерева</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>virtual</p>
+        </td>
+        <td class="text-align-center">
+          <code>boolean</code>
+        </td>
+        <td class="text-align-center">
+          <p>Флаг добавления виртуального скролла</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-align-center">
+          <p>openItemsChange</p>
+        </td>
+        <td class="text-align-center">
+          <code>function</code>
+        </td>
+        <td class="text-align-center">
+          <p>Переданная функция срабатывает при открытии/закрытии элемента дерева и отдает открытые элементы дерева</p>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>

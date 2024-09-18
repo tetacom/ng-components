@@ -45,12 +45,7 @@ export abstract class DynamicContentBaseDirective implements OnDestroy {
   protected _content?: TetaContentRef;
   protected _open = false;
 
-  protected abstract get _dynamicContent():
-    | string
-    | TemplateRef<any>
-    | Type<any>
-    | null
-    | undefined;
+  protected abstract get _dynamicContent(): string | TemplateRef<any> | Type<any> | null | undefined;
 
   protected constructor(
     protected _document: any,
@@ -62,10 +57,10 @@ export abstract class DynamicContentBaseDirective implements OnDestroy {
   ) {
     this._zone.onStable
       .pipe(
-        takeWhile(_ => this._alive),
-        filter(_ => this._open)
+        takeWhile((_) => this._alive),
+        filter((_) => this._open)
       )
-      .subscribe(_ => {
+      .subscribe((_) => {
         this.setPosition();
       });
   }
@@ -75,18 +70,12 @@ export abstract class DynamicContentBaseDirective implements OnDestroy {
     this.destroyContentRef();
   }
 
-  protected createContentRef<T>(
-    className?: string | string[]
-  ): ComponentRef<T> {
+  protected createContentRef<T>(className?: string | string[]): ComponentRef<T> {
     if (!this._componentRef) {
       this._open = true;
       const injector = this._service.getInjector(this.data, this._injector);
       const context = this._service.getContext(this._dynamicContent, this.data);
-      this._content = this._service.createContent(
-        this._dynamicContent,
-        this._injector,
-        context
-      );
+      this._content = this._service.createContent(this._dynamicContent, this._injector, context);
       this._componentRef = this._service.createComponent(
         PopupContentComponent,
         this._content,

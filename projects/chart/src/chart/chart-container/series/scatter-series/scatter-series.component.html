@@ -1,20 +1,14 @@
-@if ({
-  y: y | async,
-  x: x | async
-}; as scales) {
-  @if (scales.x && scales.y) {
-    @for (point of series.data; track point) {
-      <svg:circle
-        class="line"
-        (mouseenter)="mouseenter(point)"
-        (mouseleave)="mouseleave(point)"
-        [attr.cx]="scales.x(point.x)"
-        [attr.cy]="scales.y(point.y)"
-        [attr.r]="series.style?.radius ?? 1"
-        [attr.stroke]="point.color ?? series.color"
-        [attr.fill]="point.color ?? series.color"
-        [attr.stroke-width]="series.style?.strokeWidth">
-      </svg:circle>
-    }
-  }
-}
+@if ({ y: y | async, x: x | async }; as scales) { @if (scales.x && scales.y) { @for (point of series.data; track point)
+{
+<svg:circle
+  class="line"
+  (mouseenter)="mouseenter(point)"
+  (mouseleave)="mouseleave(point)"
+  [attr.cx]="scales.x(point.x)"
+  [attr.cy]="scales.y(point.y)"
+  [attr.r]="series.style?.radius ?? 1"
+  [attr.stroke]="point.color ?? series.color"
+  [attr.fill]="point.color ?? series.color"
+  [attr.stroke-width]="series.style?.strokeWidth"
+></svg:circle>
+} } }

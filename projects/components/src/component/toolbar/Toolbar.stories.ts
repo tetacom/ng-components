@@ -1,18 +1,15 @@
-import {ToolbarComponent} from './toolbar/toolbar.component';
-import {applicationConfig, Meta} from "@storybook/angular";
-import {provideHttpClient} from "@angular/common/http";
-import {IconComponent} from "../icon/icon/icon.component";
-import {IconSpriteDirective} from "../icon/icon-sprite.directive";
-import {ButtonComponent} from "../button/button/button.component";
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { applicationConfig, Meta } from '@storybook/angular';
+import { provideHttpClient } from '@angular/common/http';
+import { IconComponent } from '../icon/icon/icon.component';
+import { IconSpriteDirective } from '../icon/icon-sprite.directive';
+import { ButtonComponent } from '../button/button/button.component';
 
 export default {
   title: 'Component/Toolbar',
   decorators: [
-
     applicationConfig({
-      providers: [
-        provideHttpClient()
-      ],
+      providers: [provideHttpClient()],
     }),
   ],
   component: ToolbarComponent,

@@ -12,19 +12,12 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import {
-  animationFrameScheduler,
-  fromEvent,
-  Observable,
-  shareReplay,
-  Subject,
-  tap,
-} from 'rxjs';
-import {map, takeWhile, throttleTime} from 'rxjs/operators';
+import { animationFrameScheduler, fromEvent, Observable, shareReplay, Subject, tap } from 'rxjs';
+import { map, takeWhile, throttleTime } from 'rxjs/operators';
 
-import {ScrollableDirective} from '../scrollable.directive';
-import {NgClass, AsyncPipe} from '@angular/common';
-import {LetDirective} from '../../let/let.directive';
+import { ScrollableDirective } from '../scrollable.directive';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { LetDirective } from '../../let/let.directive';
 
 type ScrollDimensions = {
   clientHeight: number;
@@ -39,15 +32,9 @@ type ScrollDimensions = {
   styleUrls: ['./scrollable.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    LetDirective,
-    NgClass,
-    AsyncPipe,
-    ScrollableDirective
-  ],
+  imports: [LetDirective, NgClass, AsyncPipe, ScrollableDirective],
 })
-export class ScrollableComponent
-  implements OnInit, OnDestroy, AfterContentChecked {
+export class ScrollableComponent implements OnInit, OnDestroy, AfterContentChecked {
   @ContentChild(ScrollableDirective, {
     static: true,
     read: ElementRef,
@@ -126,10 +113,8 @@ export class ScrollableComponent
       .pipe(
         takeWhile(() => this._alive),
         tap((event: any) => {
-          this._scrollbarHorizontal.nativeElement.scrollLeft =
-            event.target.scrollLeft;
-          this._scrollbarVertical.nativeElement.scrollTop =
-            event.target.scrollTop;
+          this._scrollbarHorizontal.nativeElement.scrollLeft = event.target.scrollLeft;
+          this._scrollbarVertical.nativeElement.scrollTop = event.target.scrollTop;
           this.scroll.emit(event);
         })
       )

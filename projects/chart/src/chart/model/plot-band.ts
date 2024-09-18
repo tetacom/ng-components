@@ -39,8 +39,7 @@ export class PlotBand {
     this.from = options?.from;
     this.to = options?.to;
     this.label = options?.label;
-    this.showGrabbers =
-      options?.showGrabbers != null ? options.showGrabbers : true;
+    this.showGrabbers = options?.showGrabbers != null ? options.showGrabbers : true;
     this.draggable = options?.draggable != null ? options?.draggable : false;
     this.resizable = options?.resizable != null ? options?.resizable : true;
     this.min = options?.min;

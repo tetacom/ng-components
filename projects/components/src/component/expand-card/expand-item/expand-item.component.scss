@@ -1,5 +1,5 @@
 :host {
-  animation: append-animate .5s linear;
+  animation: append-animate 0.5s linear;
   transition: order 5s ease-in;
   display: flex;
   flex-direction: column;
@@ -7,7 +7,7 @@
 }
 
 .content {
-  animation: append-animate .5s linear;
+  animation: append-animate 0.5s linear;
 }
 
 @keyframes append-animate {

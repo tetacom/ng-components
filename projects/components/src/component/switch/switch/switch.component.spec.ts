@@ -8,9 +8,8 @@ describe('ChoiceGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [SwitchComponent]
-})
-    .compileComponents();
+      imports: [SwitchComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

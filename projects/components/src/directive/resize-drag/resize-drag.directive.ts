@@ -1,17 +1,9 @@
-import {
-  Directive,
-  EventEmitter,
-  HostBinding,
-  HostListener,
-  Inject,
-  Input,
-  Output,
-} from '@angular/core';
+import { Directive, EventEmitter, HostBinding, HostListener, Inject, Input, Output } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 @Directive({
-    selector: '[tetaResizeDrag]',
-    standalone: true,
+  selector: '[tetaResizeDrag]',
+  standalone: true,
 })
 export class ResizeDragDirective {
   @Input() tetaResizeDrag: 'horizontal' | 'vertical' = 'vertical';

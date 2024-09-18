@@ -1,16 +1,18 @@
-import {Pipe, PipeTransform} from '@angular/core';
-import {formatNumber} from '../util/number-helper';
+import { Pipe, PipeTransform } from '@angular/core';
+import { formatNumber } from '../util/number-helper';
 
 @Pipe({
-    name: 'tetaNumber',
-    standalone: true
+  name: 'tetaNumber',
+  standalone: true,
 })
 export class NumberPipe implements PipeTransform {
-  transform(value: number | string,
-            decimalLength: number = 2,
-            chunkDelimiter: string = '',
-            decimalDelimiter: string = '.',
-            chunkLength: number = 3): string {
+  transform(
+    value: number | string,
+    decimalLength: number = 2,
+    chunkDelimiter: string = '',
+    decimalDelimiter: string = '.',
+    chunkLength: number = 3
+  ): string {
     if (value === null || value === undefined || value === '') {
       return '';
     }
@@ -21,10 +23,6 @@ export class NumberPipe implements PipeTransform {
       return value.toString();
     }
     value = Number(value);
-    return formatNumber(value,
-      decimalLength,
-      chunkDelimiter,
-      decimalDelimiter,
-      chunkLength);
+    return formatNumber(value, decimalLength, chunkDelimiter, decimalDelimiter, chunkLength);
   }
 }

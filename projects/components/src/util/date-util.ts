@@ -1,4 +1,4 @@
-import {prependZero} from '../pipe/util/number-helper';
+import { prependZero } from '../pipe/util/number-helper';
 
 export class DateUtil {
   /**
@@ -64,7 +64,10 @@ export class DateUtil {
       return '';
     }
     const month = dat.getMonth() + 1;
-    return `${prependZero(dat.getDate(), 2)}.${prependZero(month, 2)}.${dat.getFullYear()} ${prependZero(dat.getHours(), 2)}:${prependZero(dat.getMinutes(), 2)}:${prependZero(dat.getSeconds(), 2)}`;
+    return `${prependZero(dat.getDate(), 2)}.${prependZero(month, 2)}.${dat.getFullYear()} ${prependZero(
+      dat.getHours(),
+      2
+    )}:${prependZero(dat.getMinutes(), 2)}:${prependZero(dat.getSeconds(), 2)}`;
   }
 
   /**
@@ -73,11 +76,7 @@ export class DateUtil {
   public static convertUTC2DateLocal(date?: Date): Date | null {
     if (date && date instanceof Date) {
       const timezoneOffsetMs: number =
-        new Date(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate()
-        ).getTimezoneOffset() * 60000;
+        new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTimezoneOffset() * 60000;
       return new Date(date.getTime() - timezoneOffsetMs);
     }
     return null;
@@ -89,19 +88,14 @@ export class DateUtil {
   public static convertDateLocal2UTC(date?: Date): Date | null {
     if (date && date instanceof Date) {
       const timezoneOffsetMs: number =
-        new Date(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate()
-        ).getTimezoneOffset() * 60000;
+        new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTimezoneOffset() * 60000;
       return date == null ? null : new Date(date.getTime() + timezoneOffsetMs);
     }
     return null;
   }
 
   public static convertDateStringsToDates(input: any): any {
-    const regexIso8601 =
-      /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z)?$/i;
+    const regexIso8601 = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z)?$/i;
     if (typeof input === 'string' && regexIso8601.test(input)) {
       return DateUtil.convertStringToLocalDate(input);
     }
@@ -159,35 +153,17 @@ export class DateUtil {
   }
 
   public static truncateToDay(date: Date): Date {
-    const res = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      0,
-      0,
-      0
-    );
+    const res = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
     return res;
   }
 
   public static truncateToHour(date: Date): Date {
-    const res = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      date.getHours(),
-      0,
-      0
-    );
+    const res = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), 0, 0);
     return res;
   }
 
   public static toISOString(date: number): string {
-    return (
-      new Date(date - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .slice(0, -5) + 'Z'
-    );
+    return new Date(date - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -5) + 'Z';
   }
 
   public static isValidDate(date: any): boolean {
@@ -217,8 +193,8 @@ export class DateUtil {
         result = result + s + ' с '; // add seconds value
       }
 
-      if(s === 0 && !m) {
-        result = result + '0 c'
+      if (s === 0 && !m) {
+        result = result + '0 c';
       }
     }
     if (maxValue < 5000) {
@@ -234,8 +210,6 @@ export class DateUtil {
     if (negative) {
       result = '-' + result;
     }
-
-
 
     return result.trim();
   }
@@ -263,8 +237,7 @@ export class DateUtil {
   }
 
   private static fillConvertDateStringsToDates(result: any, input: any): any {
-    const regexIso8601 =
-      /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z?)?$/i;
+    const regexIso8601 = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z?)?$/i;
     for (const key in input) {
       if (!input.hasOwnProperty(key)) {
         continue;

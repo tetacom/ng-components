@@ -1,29 +1,29 @@
-<div class='column column_auto'>
-  <teta-table-head
-    style='z-index: 1'
-    [selectType]='selectType'
-    [showHeadCellMenu]='showHeadCellMenu'></teta-table-head>
-  <div class='column column_auto position-relative'
-       style='z-index: 0'
-       [tetaContextMenu]='contextMenu'
-       [verticalAlign]='verticalAlign.auto'
-       [align]='align.auto'
-       [appendToBody]='true'
-       [data]='contextMenuRow'
-       [open]='contextMenuOpen'
-       (openChange)='setContextMenuOpen($event)'>
+<div class="column column_auto">
+  <teta-table-head style="z-index: 1" [selectType]="selectType" [showHeadCellMenu]="showHeadCellMenu"></teta-table-head>
+  <div
+    class="column column_auto position-relative"
+    style="z-index: 0"
+    [tetaContextMenu]="contextMenu"
+    [verticalAlign]="verticalAlign.auto"
+    [align]="align.auto"
+    [appendToBody]="true"
+    [data]="contextMenuRow"
+    [open]="contextMenuOpen"
+    (openChange)="setContextMenuOpen($event)"
+  >
     <teta-table-body
-      (contextmenu)='setContextMenuRow($event)'
-      (scrollChange)='onScroll($event)'
-      [aggregate]='aggregate'
-      [virtual]='virtual'
-      [activeRow]='activeRow'
-      [trackRow]='trackRow'
-      [trackColumns]='trackColumns'
-      [selectedRows]='selectedRowsList'
-      [additionalComponent]='detailComponent'
-      [selectType]='selectType'
-      [rowClass]='rowClass'>
+      (contextmenu)="setContextMenuRow($event)"
+      (scrollChange)="onScroll($event)"
+      [aggregate]="aggregate"
+      [virtual]="virtual"
+      [activeRow]="activeRow"
+      [trackRow]="trackRow"
+      [trackColumns]="trackColumns"
+      [selectedRows]="selectedRowsList"
+      [additionalComponent]="detailComponent"
+      [selectType]="selectType"
+      [rowClass]="rowClass"
+    >
       <ng-content></ng-content>
     </teta-table-body>
   </div>

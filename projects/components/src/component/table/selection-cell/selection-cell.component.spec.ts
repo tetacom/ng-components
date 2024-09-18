@@ -8,9 +8,8 @@ describe('SelectionCellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [SelectionCellComponent]
-})
-    .compileComponents();
+      imports: [SelectionCellComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

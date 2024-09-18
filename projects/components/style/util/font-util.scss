@@ -1,4 +1,4 @@
-@use "sass:map";
+@use 'sass:map';
 
 @mixin getFontDescription($fontObject) {
   @each $key, $value in $fontObject {

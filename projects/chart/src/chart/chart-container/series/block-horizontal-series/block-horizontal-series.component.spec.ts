@@ -8,7 +8,7 @@ describe('BlockHorizontalSeriesComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [BlockHorizontalSeriesComponent]
+      declarations: [BlockHorizontalSeriesComponent],
     });
     fixture = TestBed.createComponent(BlockHorizontalSeriesComponent);
     component = fixture.componentInstance;

@@ -9,21 +9,18 @@ import {
   OnInit,
   Renderer2,
 } from '@angular/core';
-import {DOCUMENT} from '@angular/common';
-import {DropdownBase} from '../dropdown-base';
+import { DOCUMENT } from '@angular/common';
+import { DropdownBase } from '../dropdown-base';
 
 @Component({
-    selector: 'teta-dropdown',
-    templateUrl: './dropdown.component.html',
-    styleUrls: ['./dropdown.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    exportAs: 'dropdown',
-    standalone: true
+  selector: 'teta-dropdown',
+  templateUrl: './dropdown.component.html',
+  styleUrls: ['./dropdown.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  exportAs: 'dropdown',
+  standalone: true,
 })
-export class DropdownComponent
-  extends DropdownBase
-  implements OnInit, OnDestroy {
-
+export class DropdownComponent extends DropdownBase implements OnInit, OnDestroy {
   constructor(
     protected override _cdr: ChangeDetectorRef,
     @Inject(DOCUMENT) protected override _document: any,
@@ -34,8 +31,7 @@ export class DropdownComponent
     super(_cdr, _document, _elementRef, _zone, _renderer);
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.closeDropdown();

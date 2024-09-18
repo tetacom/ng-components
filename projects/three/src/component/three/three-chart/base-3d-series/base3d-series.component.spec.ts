@@ -8,7 +8,7 @@ describe('Base3dSeriesComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [Base3dSeriesComponent]
+      imports: [Base3dSeriesComponent],
     });
     fixture = TestBed.createComponent(Base3dSeriesComponent);
     component = fixture.componentInstance;

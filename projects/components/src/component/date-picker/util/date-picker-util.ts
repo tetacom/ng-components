@@ -2,16 +2,10 @@ import { DatePeriod } from '../model/date-period';
 import { DayModel } from '../model/day-model';
 
 export class DatePickerUtil {
-  static getFirstDay(
-    month: number,
-    year: number,
-    firstDayOfWeek: number
-  ): Date {
+  static getFirstDay(month: number, year: number, firstDayOfWeek: number): Date {
     const lastDay = new Date(year, month, 0);
     const lastDayIndex =
-      lastDay.getDay() >= firstDayOfWeek
-        ? lastDay.getDay() - firstDayOfWeek
-        : lastDay.getDay() + 7 - firstDayOfWeek;
+      lastDay.getDay() >= firstDayOfWeek ? lastDay.getDay() - firstDayOfWeek : lastDay.getDay() + 7 - firstDayOfWeek;
     return new Date(year, month - 1, lastDay.getDate() - lastDayIndex);
   }
 
@@ -25,25 +19,14 @@ export class DatePickerUtil {
     disabledPeriods: DatePeriod[]
   ): DayModel[] {
     const days = [];
-    const firstDay = DatePickerUtil.getFirstDay(
-      date.getMonth(),
-      date.getFullYear(),
-      firstDayOfWeek
-    );
+    const firstDay = DatePickerUtil.getFirstDay(date.getMonth(), date.getFullYear(), firstDayOfWeek);
     for (let i = 0; i < 6 * 7; i++) {
       const dat = new Date(firstDay);
       dat.setDate(dat.getDate() + i);
       days.push(
         new DayModel({
           date: dat,
-          disabled: DatePickerUtil.isDateInvalid(
-            dat,
-            minDate,
-            maxDate,
-            disabledDates,
-            disabledDays,
-            disabledPeriods
-          ),
+          disabled: DatePickerUtil.isDateInvalid(dat, minDate, maxDate, disabledDates, disabledDays, disabledPeriods),
           today: DatePickerUtil.isToday(dat),
           isCurrentMonth: dat.getMonth() === date.getMonth(),
           selected:
@@ -88,33 +71,20 @@ export class DatePickerUtil {
   }
 
   static isMinInvalid(dat: Date, minDate: Date): boolean {
-    if (
-      dat === null ||
-      dat === undefined ||
-      minDate === null ||
-      minDate === undefined
-    ) {
+    if (dat === null || dat === undefined || minDate === null || minDate === undefined) {
       return false;
     }
     return minDate.getTime() > dat.getTime();
   }
 
   static isMaxInvalid(dat: Date, maxDate: Date): boolean {
-    if (
-      dat === null ||
-      dat === undefined ||
-      maxDate === null ||
-      maxDate === undefined
-    ) {
+    if (dat === null || dat === undefined || maxDate === null || maxDate === undefined) {
       return false;
     }
     return maxDate.getTime() < dat.getTime();
   }
 
-  static isDateInDisabledPeriod(
-    dat: Date,
-    disabledPeriods: DatePeriod[]
-  ): boolean {
+  static isDateInDisabledPeriod(dat: Date, disabledPeriods: DatePeriod[]): boolean {
     if (
       dat === null ||
       dat === undefined ||

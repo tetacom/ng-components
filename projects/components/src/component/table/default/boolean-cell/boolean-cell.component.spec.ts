@@ -8,9 +8,8 @@ describe('BooleanCellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [BooleanCellComponent]
-})
-    .compileComponents();
+      imports: [BooleanCellComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

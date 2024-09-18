@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {DateCellComponent} from './date-cell.component';
+import { DateCellComponent } from './date-cell.component';
 
 describe('DateCellComponent', () => {
   let component: DateCellComponent<any>;
@@ -8,9 +8,8 @@ describe('DateCellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [DateCellComponent]
-})
-      .compileComponents();
+      imports: [DateCellComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

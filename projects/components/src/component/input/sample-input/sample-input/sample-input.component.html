@@ -3,30 +3,29 @@
     <teta-text-field [formControlName]="'name'"></teta-text-field>
   </teta-input>
   <teta-input label="onBlur">
-    <input [formControlName]="'name2'"/>
+    <input [formControlName]="'name2'" />
   </teta-input>
   <teta-input label="onChange">
     <teta-text-field [formControlName]="'surname'"></teta-text-field>
   </teta-input>
 </form>
-<div style="margin-top: 50px;">
-  <div style="display: flex; flex-direction: row; flex-wrap: wrap;grid-gap: 8px;align-items: center;"
-    class="bg-text-20 padding-3">
+<div style="margin-top: 50px">
+  <div
+    style="display: flex; flex-direction: row; flex-wrap: wrap; grid-gap: 8px; align-items: center"
+    class="bg-text-20 padding-3"
+  >
     @for (i of [].constructor(20); track i; let ind = $index) {
-      <div style="display: flex;grid-gap: 8px;align-items: center;"
-        >
-        <div>
-          MD
+    <div style="display: flex; grid-gap: 8px; align-items: center">
+      <div>MD</div>
+      <div class="number-text position-relative">
+        <div (click)="show = ind">
+          {{ value[ind] }}
         </div>
-        <div class="number-text position-relative">
-          <div (click)="show=ind">
-            {{value[ind]}}
-          </div>
-          @if (show===ind) {
-            <input  (blur)="show=null" [(ngModel)]="value[ind]" class="number-input"/>
-          }
-        </div>
+        @if (show===ind) {
+        <input (blur)="show = null" [(ngModel)]="value[ind]" class="number-input" />
+        }
       </div>
+    </div>
     }
   </div>
 </div>
