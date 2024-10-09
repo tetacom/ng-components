@@ -1,16 +1,19 @@
-import { PopupContentComponent } from '../../component/dynamic-component/popup-content/popup-content.component';
-import { applicationConfig, Meta } from '@storybook/angular';
-import { provideHttpClient } from '@angular/common/http';
-import { ButtonComponent } from '../../component/button/button/button.component';
-import { IconComponent } from '../../component/icon/icon/icon.component';
-import { IconSpriteDirective } from '../../component/icon/icon-sprite.directive';
-import { ContextMenuDirective } from './context-menu.directive';
+import {PopupContentComponent} from '../../component/dynamic-component/popup-content/popup-content.component';
+import {applicationConfig, Meta} from '@storybook/angular';
+import {provideHttpClient} from '@angular/common/http';
+import {ButtonComponent} from '../../component/button/button/button.component';
+import {IconComponent} from '../../component/icon/icon/icon.component';
+import {IconSpriteDirective} from '../../component/icon/icon-sprite.directive';
+import {ContextMenuDirective} from './context-menu.directive';
+import {provideAnimations} from "@angular/platform-browser/animations";
 
 export default {
   title: 'Directive/ContextMenu',
   decorators: [
     applicationConfig({
-      providers: [provideHttpClient()],
+      providers: [
+        provideHttpClient(),
+        provideAnimations()],
     }),
   ],
 } as Meta;

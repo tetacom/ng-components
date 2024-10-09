@@ -1,24 +1,25 @@
-import { PopupContentComponent } from '../../component/dynamic-component/popup-content/popup-content.component';
-import { Align } from '../../common/enum/align.enum';
-import { VerticalAlign } from '../../common/enum/vertical-align.enum';
-import { applicationConfig, Meta } from '@storybook/angular';
-import { provideHttpClient } from '@angular/common/http';
-import { IconComponent } from '../../component/icon/icon/icon.component';
-import { IconSpriteDirective } from '../../component/icon/icon-sprite.directive';
-import { ButtonComponent } from '../../component/button/button/button.component';
-import { HintDirective } from './hint.directive';
+import {PopupContentComponent} from '../../component/dynamic-component/popup-content/popup-content.component';
+import {Align} from '../../common/enum/align.enum';
+import {VerticalAlign} from '../../common/enum/vertical-align.enum';
+import {applicationConfig, Meta} from '@storybook/angular';
+import {provideHttpClient} from '@angular/common/http';
+import {IconComponent} from '../../component/icon/icon/icon.component';
+import {IconSpriteDirective} from '../../component/icon/icon-sprite.directive';
+import {ButtonComponent} from '../../component/button/button/button.component';
+import {HintDirective} from './hint.directive';
+import {provideAnimations} from "@angular/platform-browser/animations";
 
 export default {
   title: 'Directive/Hint',
   decorators: [
     applicationConfig({
-      providers: [provideHttpClient()],
+      providers: [provideHttpClient(), provideAnimations()],
     }),
   ],
   argTypes: {
     align: {
       options: ['Align.left', ' Align.right', 'Align.center', 'Align.auto'],
-      control: { type: 'select' },
+      control: {type: 'select'},
     },
     verticalAlign: {
       options: [
@@ -30,13 +31,13 @@ export default {
         'VerticalAlign.innerBottom',
         'VerticalAlign.innerTop',
       ],
-      control: { type: 'select' },
+      control: {type: 'select'},
     },
     delay: {
-      control: { type: 'number' },
+      control: {type: 'number'},
     },
     text: {
-      control: { type: 'text' },
+      control: {type: 'text'},
     },
   },
   args: {
@@ -64,11 +65,11 @@ export const fromString = (args) => ({
     imports: [IconComponent, IconSpriteDirective, ButtonComponent, HintDirective],
     entryComponents: [PopupContentComponent],
   },
-  props: { ...args, valignMap, alignMap },
+  props: {...args, valignMap, alignMap},
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="bg-panel-50 padding-10 margin-10">
               <button teta-button
                      [palette]="'primary'"
-                     [tetaHint]="text"
+                     [tetaHint]="'<div>text</div>'"
                      [align]="alignMap.get(align)"
                      viewType="rounded"
                      [verticalAlign]="valignMap.get(verticalAlign)"
@@ -85,7 +86,7 @@ export const fromTemplate = (args) => ({
     imports: [IconComponent, IconSpriteDirective, ButtonComponent, HintDirective],
     entryComponents: [PopupContentComponent],
   },
-  props: { ...args, valignMap, alignMap },
+  props: {...args, valignMap, alignMap},
   template: `<div [tetaIconSprite]="'assets/icons.svg'" class="bg-panel-50 padding-10 margin-10">
               <ng-template #hint>
                 <div>{{text}}</div>

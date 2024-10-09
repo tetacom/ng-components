@@ -17,7 +17,7 @@
   <div [innerHTML]="displayTooltips | async"></div>
   } @else { @if (!config.tooltip?.template) {
   <div class="padding-2 border-radius-1">
-    @for (tooltip of t; track tooltip) {
+    @for (tooltip of t; track $index) {
     <div class="display-flex align-center">
       <span
         class="display-block margin-right-1"
