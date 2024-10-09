@@ -2,7 +2,7 @@
 @import 'util/font-util.scss';
 
 .list {
-  padding: 8px 0;
+  padding: 8px;
   display: inline-flex;
   flex-direction: column;
   border-radius: 8px;
@@ -16,6 +16,7 @@
     min-height: 28px;
     display: inline-flex;
     align-items: center;
+    border-radius: 8px;
     padding: 0 8px;
     white-space: nowrap;
     background-color: transparent;
