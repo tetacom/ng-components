@@ -4,7 +4,6 @@ import {
   OnChanges,
   OnDestroy,
   output,
-  QueryList,
   SimpleChanges,
 } from '@angular/core';
 import {ControlContainer, FormGroup, NgForm, FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -51,15 +50,14 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
   private _formGroup = inject(ControlContainer);
 
   column = input<TableColumn>();
-  hideNonEditable = input<boolean>()
-  dict = input<IDictionary<IIdName<any>[]>>()
-  decimalPart = input<number>()
-  item = input<T>()
-  itemTemplates = input<QueryList<PropertyGridItemDescriptionDirective>>()
-
+  hideNonEditable = input<boolean>();
+  dict = input<IDictionary<IIdName<any>[]>>();
+  decimalPart = input<number>();
+  item = input<T>();
+  itemTemplates = input<PropertyGridItemDescriptionDirective[]>();
   template = computed(() => {
     return this.itemTemplates().find((item) => item.name === this.column().name);
-  })
+  });
 
   get formGroup(): FormGroup {
     if (this._formGroup instanceof FormGroup) {
@@ -98,7 +96,7 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
   }
 
   getDict() {
-    const dict = this.dict ? this.dict[this.column.name] : [];
+    const dict = this.dict() ? this.dict()[this.column().name] : [];
     if (this.column().parentName?.length > 0) {
       return dict?.filter(
         (dictItem: IIdName<any>) => dictItem.parentId === this.formGroup?.getRawValue()[this.column().parentName]

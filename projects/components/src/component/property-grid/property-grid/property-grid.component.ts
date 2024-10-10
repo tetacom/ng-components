@@ -1,10 +1,8 @@
 import {
-  Component,
-  ContentChildren, effect,
+  Component, contentChildren,
+  effect,
   HostBinding, input,
   Optional, output,
-  Output,
-  QueryList,
 } from '@angular/core';
 import {
   ControlContainer,
@@ -34,8 +32,7 @@ import {PropertyGridItemComponent} from './property-grid-item/property-grid-item
 })
 export class PropertyGridComponent<T> {
   @HostBinding('class.form-container') formClass = true;
-  @ContentChildren(PropertyGridItemDescriptionDirective)
-  itemTemplates: QueryList<PropertyGridItemDescriptionDirective>;
+  itemTemplates = contentChildren(PropertyGridItemDescriptionDirective);
   hideNonEditable = input<boolean>();
   columns = input<TableColumn[]>();
   dict = input<IDictionary<IIdName<any>[]>>();
