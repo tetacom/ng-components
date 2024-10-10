@@ -23,5 +23,5 @@ export class PropertyGridGroupComponent<T> {
   horizontal = input<boolean>();
   controlValueChange = output<IIdName<any>>();
   decimalPart = input<number>();
-  itemTemplates = input<PropertyGridItemDescriptionDirective[]>();
+  itemTemplates = input<readonly PropertyGridItemDescriptionDirective[]>();
 }
