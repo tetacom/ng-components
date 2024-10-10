@@ -10,7 +10,6 @@
         *ngTemplateOutlet="template().template; context: { $implicit: formGroup?.get(column().name) }"></ng-container>
     } @else {
       @if (formGroup?.get(column().name)) {
-        {{column().filterType}} -- {{ filterTypeEnum.list}}
         @switch (column().filterType) {
           @case (filterTypeEnum.list) {
             <teta-select
