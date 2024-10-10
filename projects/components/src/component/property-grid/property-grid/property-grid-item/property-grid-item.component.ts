@@ -54,7 +54,7 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
   dict = input<IDictionary<IIdName<any>[]>>();
   decimalPart = input<number>();
   item = input<T>();
-  itemTemplates = input<PropertyGridItemDescriptionDirective[]>();
+  itemTemplates = input<readonly PropertyGridItemDescriptionDirective[]>();
   template = computed(() => {
     return this.itemTemplates().find((item) => item.name === this.column().name);
   });
