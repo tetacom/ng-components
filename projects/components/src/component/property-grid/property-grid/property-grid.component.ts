@@ -44,7 +44,7 @@ export class PropertyGridComponent<T> {
   horizontal = input<boolean>();
   decimalPart = input<number>();
 
-  @Output() controlValueChange = output<IIdName<any>>();
+  controlValueChange = output<IIdName<any>>();
 
   get formGroup(): FormGroup {
     if (this._formGroup instanceof FormGroup) {
