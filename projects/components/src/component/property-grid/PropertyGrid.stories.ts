@@ -1,12 +1,9 @@
-import { PropertyGridModule } from './property-grid.module';
-
-import { PropertyGridDemoModule } from './property-grid-demo/property-grid-demo.module';
 import { applicationConfig, Meta } from '@storybook/angular';
-import { importProvidersFrom, inject, isDevMode } from '@angular/core';
-import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
-import { IconComponent } from '../icon/icon/icon.component';
+import { inject, isDevMode } from '@angular/core';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { IconSpriteDirective } from '../icon/icon-sprite.directive';
 import { provideTransloco, Translation, TranslocoLoader, TranslocoModule } from '@ngneat/transloco';
+import {PropertyGridDemoComponent} from "./property-grid-demo/property-grid-demo/property-grid-demo.component";
 export class TranslocoHttpLoader implements TranslocoLoader {
   private http = inject(HttpClient);
 
@@ -34,13 +31,13 @@ export default {
     }),
   ],
   moduleMetadata: {
-    imports: [PropertyGridModule, PropertyGridDemoModule, TranslocoModule],
+    imports: [TranslocoModule, PropertyGridDemoComponent],
   },
 } as Meta;
 
 export const simplePropertyGrid = () => ({
   moduleMetadata: {
-    imports: [PropertyGridModule, PropertyGridDemoModule, IconSpriteDirective],
+    imports: [IconSpriteDirective, PropertyGridDemoComponent],
     entryComponents: [],
   },
   template: `<div [tetaIconSprite]="'assets/icons.svg'"
