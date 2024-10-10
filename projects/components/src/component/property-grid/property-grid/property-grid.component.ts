@@ -1,24 +1,28 @@
 import {
   Component,
-  ContentChildren,
-  EventEmitter,
-  HostBinding,
-  Input,
-  OnDestroy,
-  Optional,
+  ContentChildren, effect,
+  HostBinding, input,
+  Optional, output,
   Output,
   QueryList,
 } from '@angular/core';
-import { ControlContainer, FormGroup, NgForm, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  ControlContainer,
+  FormGroup,
+  NgForm,
+  FormsModule,
+  ReactiveFormsModule,
+  UntypedFormControl
+} from '@angular/forms';
 
-import { IDictionary } from '../../../common/contract/i-dictionary';
-import { IIdName } from '../../../common/contract/i-id-name';
-import { boolOrFuncCallback } from '../../../util/bool-or-func';
-import { FormsUtil } from '../../../util/forms-util';
-import { TableColumn } from '../../table/contract/table-column';
-import { PropertyGridItemDescriptionDirective } from './property-grid-item-description.directive';
-import { PropertyGridGroupComponent } from './property-grid-group/property-grid-group.component';
-import { PropertyGridItemComponent } from './property-grid-item/property-grid-item.component';
+import {IDictionary} from '../../../common/contract/i-dictionary';
+import {IIdName} from '../../../common/contract/i-id-name';
+import {boolOrFuncCallback} from '../../../util/bool-or-func';
+import {FormsUtil} from '../../../util/forms-util';
+import {TableColumn} from '../../table/contract/table-column';
+import {PropertyGridItemDescriptionDirective} from './property-grid-item-description.directive';
+import {PropertyGridGroupComponent} from './property-grid-group/property-grid-group.component';
+import {PropertyGridItemComponent} from './property-grid-item/property-grid-item.component';
 
 @Component({
   selector: 'teta-property-grid',
@@ -28,31 +32,19 @@ import { PropertyGridItemComponent } from './property-grid-item/property-grid-it
   standalone: true,
   imports: [PropertyGridItemComponent, FormsModule, ReactiveFormsModule, PropertyGridGroupComponent],
 })
-export class PropertyGridComponent<T> implements OnDestroy {
+export class PropertyGridComponent<T> {
   @HostBinding('class.form-container') formClass = true;
   @ContentChildren(PropertyGridItemDescriptionDirective)
   itemTemplates: QueryList<PropertyGridItemDescriptionDirective>;
-  @Input() hideNonEditable: boolean;
-  @Input() columns: TableColumn[];
-  @Input() dict: IDictionary<IIdName<any>[]>;
-  @Input() set item(item: T) {
-    this._item = item;
-    if (this.formGroup) {
-      this.formGroup.patchValue(item, {
-        emitEvent: false,
-      });
-    }
-  }
-  get item() {
-    return this._item;
-  }
-  @Input() horizontal: boolean;
-  @Input() decimalPart: number;
+  hideNonEditable = input<boolean>();
+  columns = input<TableColumn[]>();
+  dict = input<IDictionary<IIdName<any>[]>>();
+  item = input<T>();
 
-  @Output() controlValueChange = new EventEmitter<IIdName<any>>();
+  horizontal = input<boolean>();
+  decimalPart = input<number>();
 
-  private _alive = true;
-  private _item: T;
+  @Output() controlValueChange = output<IIdName<any>>();
 
   get formGroup(): FormGroup {
     if (this._formGroup instanceof FormGroup) {
@@ -64,7 +56,17 @@ export class PropertyGridComponent<T> implements OnDestroy {
     return null;
   }
 
-  constructor(@Optional() private _formGroup: ControlContainer) {}
+  constructor(@Optional() private _formGroup: ControlContainer) {
+    effect(() => {
+      if (this.item() && this.formGroup) {
+        for (const key in this.item()) {
+          if (this.item().hasOwnProperty(key)) {
+            this.formGroup.setControl(key, new UntypedFormControl(this.item()[key]));
+          }
+        }
+      }
+    });
+  }
 
   getEditable(column: TableColumn) {
     return boolOrFuncCallback(column.editable)({
@@ -74,7 +76,7 @@ export class PropertyGridComponent<T> implements OnDestroy {
   }
 
   onControlValueChange(event: IIdName<any>) {
-    const affected = this.columns.filter((_) => _.parentName === event.name);
+    const affected = this.columns().filter((_) => _.parentName === event.name);
     if (affected?.length) {
       affected.forEach((item) => {
         const value = this.formGroup.getRawValue()[item.name];
@@ -91,15 +93,7 @@ export class PropertyGridComponent<T> implements OnDestroy {
     this.controlValueChange.emit(event);
   }
 
-  ngOnDestroy() {
-    this._alive = false;
-  }
-
-  trackColumns(index: number, column: TableColumn): any {
-    return column.name;
-  }
-
   private getDictValue(value: any, name: string) {
-    return this.dict[name]?.find((_) => _.id === value);
+    return this.dict()[name]?.find((_) => _.id === value);
   }
 }

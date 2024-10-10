@@ -1,9 +1,7 @@
-import { Optional, Provider } from '@angular/core';
+import {inject, Provider} from '@angular/core';
 import {
   AbstractControl,
   ControlContainer,
-  NgForm,
-  NgModelGroup,
   UntypedFormControl,
   UntypedFormGroup,
   ValidationErrors,
@@ -105,14 +103,6 @@ export class FormsUtil {
 
   static formProvider: Provider = {
     provide: ControlContainer,
-    useFactory: FormsUtil.formFactory,
-    deps: [
-      [new Optional(), NgForm],
-      [new Optional(), NgModelGroup],
-    ],
+    useFactory: () => inject(ControlContainer, {skipSelf: true})
   };
-
-  static formFactory(ngForm: NgForm, ngModelGroup: NgModelGroup) {
-    return ngModelGroup || ngForm || null;
-  }
 }

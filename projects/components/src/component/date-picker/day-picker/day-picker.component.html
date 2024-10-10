@@ -6,7 +6,7 @@
   }
 </div>
 <div class="datepicker-picker color-text-90 font-body-3">
-  @for (day of calendar; track day) {
+  @for (day of calendar; track day.date.getTime()) {
   <div
     [class]="getRangeActiveClass(day) + ' datepicker-date font-body-3 datepicker_' + viewType"
     (mouseenter)="hover(day.date)"

@@ -1,34 +1,32 @@
 import {
-  Component,
-  EventEmitter,
-  Input,
+  Component, computed,
+  inject, input,
   OnChanges,
   OnDestroy,
-  Optional,
-  Output,
+  output,
   QueryList,
   SimpleChanges,
 } from '@angular/core';
-import { ControlContainer, FormGroup, NgForm, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslocoService } from '@ngneat/transloco';
-import { Subscription } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import {ControlContainer, FormGroup, NgForm, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {TranslocoService} from '@ngneat/transloco';
+import {Subscription} from 'rxjs';
+import {takeWhile} from 'rxjs/operators';
 
-import { IDictionary } from '../../../../common/contract/i-dictionary';
-import { IIdName } from '../../../../common/contract/i-id-name';
-import { Align } from '../../../../common/enum/align.enum';
-import { boolOrFuncCallback } from '../../../../util/bool-or-func';
-import { FormsUtil } from '../../../../util/forms-util';
-import { FilterType } from '../../../filter/enum/filter-type.enum';
-import { TableColumn } from '../../../table/contract/table-column';
-import { PropertyGridItemDescriptionDirective } from '../property-grid-item-description.directive';
-import { TextFieldComponent } from '../../../input/text-field/text-field.component';
-import { ToggleComponent } from '../../../toggle/toggle/toggle.component';
-import { DatePickerComponent } from '../../../date-picker/date-picker/date-picker.component';
-import { SelectComponent } from '../../../select/select/select.component';
-import { NgTemplateOutlet } from '@angular/common';
-import { InputComponent } from '../../../input/input/input.component';
-import { DisableControlDirective } from '../../../../directive/disable-control/disable-control.directive';
+import {IDictionary} from '../../../../common/contract/i-dictionary';
+import {IIdName} from '../../../../common/contract/i-id-name';
+import {Align} from '../../../../common/enum/align.enum';
+import {boolOrFuncCallback} from '../../../../util/bool-or-func';
+import {FormsUtil} from '../../../../util/forms-util';
+import {FilterType} from '../../../filter/enum/filter-type.enum';
+import {TableColumn} from '../../../table/contract/table-column';
+import {PropertyGridItemDescriptionDirective} from '../property-grid-item-description.directive';
+import {TextFieldComponent} from '../../../input/text-field/text-field.component';
+import {ToggleComponent} from '../../../toggle/toggle/toggle.component';
+import {DatePickerComponent} from '../../../date-picker/date-picker/date-picker.component';
+import {SelectComponent} from '../../../select/select/select.component';
+import {NgTemplateOutlet} from '@angular/common';
+import {InputComponent} from '../../../input/input/input.component';
+import {DisableControlDirective} from '../../../../directive/disable-control/disable-control.directive';
 
 @Component({
   selector: 'teta-property-grid-item',
@@ -49,16 +47,19 @@ import { DisableControlDirective } from '../../../../directive/disable-control/d
   ],
 })
 export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
-  @Input() column: TableColumn;
-  @Input() hideNonEditable: boolean;
-  @Input() dict: IDictionary<IIdName<any>[]>;
-  @Input() decimalPart: number;
-  @Input() item: T;
-  @Input() itemTemplates: QueryList<PropertyGridItemDescriptionDirective>;
+  private transloco = inject(TranslocoService)
+  private _formGroup = inject(ControlContainer);
 
-  get template() {
-    return this.itemTemplates.find((item) => item.name === this.column.name);
-  }
+  column = input<TableColumn>();
+  hideNonEditable = input<boolean>()
+  dict = input<IDictionary<IIdName<any>[]>>()
+  decimalPart = input<number>()
+  item = input<T>()
+  itemTemplates = input<QueryList<PropertyGridItemDescriptionDirective>>()
+
+  template = computed(() => {
+    return this.itemTemplates().find((item) => item.name === this.column().name);
+  })
 
   get formGroup(): FormGroup {
     if (this._formGroup instanceof FormGroup) {
@@ -70,36 +71,37 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
     return null;
   }
 
-  get editable() {
-    return boolOrFuncCallback(this.column.editable)({
-      column: this.column,
+  editable = computed(() => {
+    return boolOrFuncCallback(this.column().editable)({
+      column: this.column(),
       row: this.formGroup?.getRawValue(),
-    });
-  }
+    })
+  })
 
-  @Input() horizontal: boolean;
-  @Output() controlValueChange = new EventEmitter<IIdName<any>>();
+  horizontal = input<boolean>();
+  controlValueChange = output<IIdName<any>>();
   align = Align;
   filterTypeEnum = FilterType;
 
   private _formSub: Subscription;
 
-  get caption(): string {
-    if (this.column.filterType === FilterType.boolean) {
+  caption = computed(() => {
+    if (this.column().filterType === FilterType.boolean) {
       return '';
     }
-    return `${this.column.caption}${this.column.unit ? `, ${this.column.unit}` : ''}`;
-  }
+    return `${this.column().caption}${this.column().unit ? `, ${this.column().unit}` : ''}`;
+  })
 
   private _alive = true;
 
-  constructor(private _transloco: TranslocoService, @Optional() private _formGroup: ControlContainer) {}
+  constructor() {
+  }
 
   getDict() {
     const dict = this.dict ? this.dict[this.column.name] : [];
-    if (this.column.parentName?.length > 0) {
+    if (this.column().parentName?.length > 0) {
       return dict?.filter(
-        (dictItem: IIdName<any>) => dictItem.parentId === this.formGroup?.getRawValue()[this.column.parentName]
+        (dictItem: IIdName<any>) => dictItem.parentId === this.formGroup?.getRawValue()[this.column().parentName]
       );
     }
     return dict;
@@ -112,20 +114,20 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
   getError(column: TableColumn) {
     const control = this.formGroup?.get(column.name);
     if (control?.hasError('required')) {
-      return this._transloco.translate('errors.field_is_required');
+      return this.transloco.translate('errors.field_is_required');
     }
     if (control?.hasError('min')) {
-      return this._transloco.translate('errors.min_value', {
+      return this.transloco.translate('errors.min_value', {
         value: column.minValue,
       });
     }
     if (control?.hasError('max')) {
-      return this._transloco.translate('errors.max_value', {
+      return this.transloco.translate('errors.max_value', {
         value: column.maxValue,
       });
     }
     if (control?.hasError('maxlength')) {
-      return this._transloco.translate('errors.max_length', {
+      return this.transloco.translate('errors.max_length', {
         value: column.maxLength,
       });
     }
@@ -138,15 +140,15 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.column && this.item) {
-      this.formGroup.registerControl(this.column.name, FormsUtil.initControlFromColumn(this.column, this.item));
+    if (this.column() && this.item()) {
+      this.formGroup.setControl(this.column().name, FormsUtil.initControlFromColumn(this.column(), this.item()));
       this._formSub?.unsubscribe();
-      this._formSub = this.formGroup?.controls[this.column.name]?.valueChanges
+      this._formSub = this.formGroup?.controls[this.column().name]?.valueChanges
         .pipe(takeWhile(() => this._alive))
         .subscribe((_) => {
           this.controlValueChange.emit({
             id: _,
-            name: this.column.name,
+            name: this.column().name,
           });
         });
     }

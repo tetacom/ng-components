@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { TableColumn } from '../../../table/contract/table-column';
-import { FilterType } from '../../../filter/enum/filter-type.enum';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {TableColumn} from '../../../table/contract/table-column';
+import {FilterType} from '../../../filter/enum/filter-type.enum';
 import * as faker from 'faker';
-import { IIdName } from '../../../../common/contract/i-id-name';
-import { NgForm, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IDictionary } from '../../../../common/contract/i-dictionary';
-import { PropertyGridItemDescriptionDirective } from '../../property-grid/property-grid-item-description.directive';
-import { PropertyGridComponent } from '../../property-grid/property-grid.component';
+import {IIdName} from '../../../../common/contract/i-id-name';
+import {NgForm, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {IDictionary} from '../../../../common/contract/i-dictionary';
+import {PropertyGridItemDescriptionDirective} from '../../property-grid/property-grid-item-description.directive';
+import {PropertyGridComponent} from '../../property-grid/property-grid.component';
 
 @Component({
   selector: 'teta-property-grid-demo',
@@ -16,15 +16,16 @@ import { PropertyGridComponent } from '../../property-grid/property-grid.compone
   imports: [FormsModule, PropertyGridComponent, PropertyGridItemDescriptionDirective, ReactiveFormsModule],
 })
 export class PropertyGridDemoComponent implements OnInit {
-  @ViewChild('form', {
-    static: true,
-  })
+  @ViewChild(NgForm, {
+    static: true
+  },)
   form: NgForm;
   item = {
+    unknown: 'unknownProperty',
     name: `${faker.name.firstName()} ${faker.name.lastName()}`,
     date: faker.date.between(new Date(2010, 0, 1), new Date(2021, 0, 1)),
-    value: faker.datatype.number({ min: 0, max: 100 }),
-    summary: faker.datatype.number({ min: 0, max: 100000 }),
+    value: faker.datatype.number({min: 0, max: 100}),
+    summary: faker.datatype.number({min: 0, max: 100000}),
     ram: faker.helpers.randomize([8, 16, 32, 64, 128]),
     address: faker.address.streetAddress(),
     state: faker.address.state(),
@@ -34,11 +35,11 @@ export class PropertyGridDemoComponent implements OnInit {
 
   dict: IDictionary<IIdName<any>[]> = {
     ram: [
-      { id: 8, name: '8' },
-      { id: 16, name: '16' },
-      { id: 32, name: '32' },
-      { id: 64, name: '64' },
-      { id: 128, name: '128' },
+      {id: 8, name: '8'},
+      {id: 16, name: '16'},
+      {id: 32, name: '32'},
+      {id: 64, name: '64'},
+      {id: 128, name: '128'},
     ],
   };
 
@@ -70,11 +71,14 @@ export class PropertyGridDemoComponent implements OnInit {
     }),
   ];
 
-  constructor() {}
+  constructor() {
+  }
 
   save(data) {
     console.log(data);
+    console.log(this.form.form.getRawValue());
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 }
