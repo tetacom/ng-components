@@ -10,6 +10,7 @@
         *ngTemplateOutlet="template().template; context: { $implicit: formGroup?.get(column().name) }"></ng-container>
     } @else {
       @if (formGroup?.get(column().name)) {
+        {{column().filterType}} -- {{ filterTypeEnum.list}}
         @switch (column().filterType) {
           @case (filterTypeEnum.list) {
             <teta-select
@@ -34,7 +35,7 @@
               [formControlName]="column().name"></teta-date-picker>
           }
           @case (filterTypeEnum.boolean) {
-            <teta-toggle [tetaDisableControl]="!editable" [formControlName]="column().name">
+            <teta-toggle [tetaDisableControl]="!editable()" [formControlName]="column().name">
               {{ column().caption }}
             </teta-toggle>
           }
