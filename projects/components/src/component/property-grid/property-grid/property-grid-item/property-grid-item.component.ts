@@ -7,7 +7,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {ControlContainer, FormGroup, NgForm, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {TranslocoService} from '@ngneat/transloco';
+import {TranslocoService} from '@jsverse/transloco';
 import {Subscription} from 'rxjs';
 import {takeWhile} from 'rxjs/operators';
 

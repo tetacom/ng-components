@@ -6,7 +6,7 @@ import { ModalExampleComponent } from './modal-example/modal-example.component';
 import { ModalModule } from '../modal.module';
 
 import { AlertSampleComponent } from './alert-sample/alert-sample.component';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @NgModule({
   exports: [ModalFromComponentComponent, ModalFromTemplateComponent, ModalExampleComponent, AlertSampleComponent],
