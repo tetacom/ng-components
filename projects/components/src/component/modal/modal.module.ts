@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ModalContainerComponent } from './modal-container/modal-container.component';
 import { DialogComponent } from './dialog/dialog.component';
 
-import { TRANSLOCO_SCOPE, TranslocoModule } from '@ngneat/transloco';
+import { TRANSLOCO_SCOPE, TranslocoModule } from '@jsverse/transloco';
 
 @NgModule({
   exports: [ModalContainerComponent, DialogComponent],

@@ -74,7 +74,7 @@
     "@maskito/angular": "^2.0.2",
     "@maskito/core": "^2.0.2",
     "@maskito/kit": "^2.0.2",
-    "@ngneat/transloco": "^6.0.4",
+    "@jsverse/transloco": "^7.5.0",
     "@tetacom/themes": "^0.1.5",
     "angular-three": "^1.10.6",
     "angular-three-soba": "^1.14.1",

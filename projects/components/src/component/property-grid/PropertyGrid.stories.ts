@@ -2,7 +2,7 @@ import { applicationConfig, Meta } from '@storybook/angular';
 import { inject, isDevMode } from '@angular/core';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { IconSpriteDirective } from '../icon/icon-sprite.directive';
-import { provideTransloco, Translation, TranslocoLoader, TranslocoModule } from '@ngneat/transloco';
+import { provideTransloco, Translation, TranslocoLoader, TranslocoModule } from '@jsverse/transloco';
 import {PropertyGridDemoComponent} from "./property-grid-demo/property-grid-demo/property-grid-demo.component";
 export class TranslocoHttpLoader implements TranslocoLoader {
   private http = inject(HttpClient);

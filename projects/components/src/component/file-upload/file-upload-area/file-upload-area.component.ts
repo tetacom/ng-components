@@ -11,7 +11,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 import { IconComponent } from '../../icon/icon/icon.component';
 import { ButtonComponent } from '../../button/button/button.component';
 import { NgTemplateOutlet } from '@angular/common';
