@@ -65,6 +65,8 @@ export class PropertyGridComponent<T> {
           if (this.item().hasOwnProperty(key)) {
             if(!this.formGroup.get(key)) {
               this.formGroup.setControl(key, new UntypedFormControl(this.item()[key]));
+            }else {
+              this.formGroup.patchValue(this.item());
             }
           }
         }
