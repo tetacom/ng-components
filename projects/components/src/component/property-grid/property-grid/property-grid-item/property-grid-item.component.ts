@@ -1,12 +1,15 @@
 import {
-  Component, computed,
-  inject, input,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
   OnChanges,
   OnDestroy,
   output,
   SimpleChanges,
 } from '@angular/core';
-import {ControlContainer, FormGroup, NgForm, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ControlContainer, FormGroup, FormsModule, NgForm, ReactiveFormsModule} from '@angular/forms';
 import {TranslocoService} from '@jsverse/transloco';
 import {Subscription} from 'rxjs';
 import {takeWhile} from 'rxjs/operators';
@@ -44,6 +47,7 @@ import {DisableControlDirective} from '../../../../directive/disable-control/dis
     TextFieldComponent,
     DisableControlDirective,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
   private transloco = inject(TranslocoService)
@@ -139,7 +143,9 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.column() && this.item()) {
-      this.formGroup.setControl(this.column().name, FormsUtil.initControlFromColumn(this.column(), this.item()));
+      if (!this.formGroup.get(this.column().name)) {
+        this.formGroup.setControl(this.column().name, FormsUtil.initControlFromColumn(this.column(), this.item()));
+      }
       this._formSub?.unsubscribe();
       this._formSub = this.formGroup?.controls[this.column().name]?.valueChanges
         .pipe(takeWhile(() => this._alive))

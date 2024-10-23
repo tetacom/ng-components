@@ -1,21 +1,23 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ViewChild} from '@angular/core';
 import {TableColumn} from '../../../table/contract/table-column';
 import {FilterType} from '../../../filter/enum/filter-type.enum';
 import * as faker from 'faker';
 import {IIdName} from '../../../../common/contract/i-id-name';
-import {NgForm, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, NgForm, ReactiveFormsModule} from '@angular/forms';
 import {IDictionary} from '../../../../common/contract/i-dictionary';
 import {PropertyGridItemDescriptionDirective} from '../../property-grid/property-grid-item-description.directive';
 import {PropertyGridComponent} from '../../property-grid/property-grid.component';
+import {ButtonComponent} from '../../../button/button/button.component';
 
 @Component({
   selector: 'teta-property-grid-demo',
   templateUrl: './property-grid-demo.component.html',
   styleUrls: ['./property-grid-demo.component.scss'],
   standalone: true,
-  imports: [FormsModule, PropertyGridComponent, PropertyGridItemDescriptionDirective, ReactiveFormsModule],
+  imports: [FormsModule, PropertyGridComponent, PropertyGridItemDescriptionDirective, ReactiveFormsModule, ButtonComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PropertyGridDemoComponent implements OnInit {
+export class PropertyGridDemoComponent {
   @ViewChild(NgForm, {
     static: true
   },)
@@ -74,11 +76,14 @@ export class PropertyGridDemoComponent implements OnInit {
   constructor() {
   }
 
-  save(data) {
-    console.log(data);
+  onValueChange = (newValue: IIdName<any>) => {
+    if (newValue.name === 'name') {
+      this.form.form.patchValue({'ram': 256});
+    }
     console.log(this.form.form.getRawValue());
   }
 
-  ngOnInit(): void {
+  showValue() {
+    console.log(this.form.form.getRawValue());
   }
 }

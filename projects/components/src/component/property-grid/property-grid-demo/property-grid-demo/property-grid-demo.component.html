@@ -2,7 +2,7 @@
   <teta-property-grid
     class="scrollable padding-h-3 row_auto"
     style="width: 100%"
-    (controlValueChange)="save($event)"
+    (controlValueChange)="onValueChange($event)"
     [item]="item"
     [horizontal]="true"
     [columns]="columns"
@@ -13,3 +13,4 @@
     </ng-template>
   </teta-property-grid>
 </form>
+<button teta-button (click)="showValue()">ShowValue</button>

@@ -1,14 +1,18 @@
 import {
-  Component, contentChildren,
+  ChangeDetectionStrategy,
+  Component,
+  contentChildren,
   effect,
-  HostBinding, input,
-  Optional, output,
+  HostBinding,
+  input,
+  Optional,
+  output,
 } from '@angular/core';
 import {
   ControlContainer,
   FormGroup,
-  NgForm,
   FormsModule,
+  NgForm,
   ReactiveFormsModule,
   UntypedFormControl
 } from '@angular/forms';
@@ -29,6 +33,7 @@ import {PropertyGridItemComponent} from './property-grid-item/property-grid-item
   viewProviders: [FormsUtil.formProvider],
   standalone: true,
   imports: [PropertyGridItemComponent, FormsModule, ReactiveFormsModule, PropertyGridGroupComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PropertyGridComponent<T> {
   @HostBinding('class.form-container') formClass = true;
@@ -58,7 +63,9 @@ export class PropertyGridComponent<T> {
       if (this.item() && this.formGroup) {
         for (const key in this.item()) {
           if (this.item().hasOwnProperty(key)) {
-            this.formGroup.setControl(key, new UntypedFormControl(this.item()[key]));
+            if(!this.formGroup.get(key)) {
+              this.formGroup.setControl(key, new UntypedFormControl(this.item()[key]));
+            }
           }
         }
       }

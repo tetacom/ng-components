@@ -1,4 +1,4 @@
-import {Component, input, output, QueryList} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input, output} from '@angular/core';
 import {IDictionary} from '../../../../common/contract/i-dictionary';
 import {IIdName} from '../../../../common/contract/i-id-name';
 import {FormsUtil} from '../../../../util/forms-util';
@@ -14,6 +14,7 @@ import {ExpandItemComponent} from '../../../expand-card/expand-item/expand-item.
   viewProviders: [FormsUtil.formProvider],
   standalone: true,
   imports: [ExpandItemComponent, PropertyGridItemComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PropertyGridGroupComponent<T> {
   column = input<TableColumn>();
