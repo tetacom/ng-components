@@ -5,7 +5,7 @@ import {
   ElementRef,
   EventEmitter,
   HostBinding,
-  HostListener,
+  HostListener, input,
   Input,
   OnChanges,
   OnDestroy,
@@ -106,6 +106,7 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
   @Output() tableService = new EventEmitter<TableService<T>>();
   @ViewChild('contextMenu', { static: true }) menu: ElementRef;
   @HostBinding('class.table') private readonly tableClass = true;
+  rowHeight = input<number>(28);
 
   selectedRowsList: T[];
   contextMenuRow: T;
