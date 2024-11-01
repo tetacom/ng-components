@@ -4,7 +4,7 @@
     tetaScrollable
     class="table-body-container"
     (scroll)="emitScroll($event)"
-    [itemSize]="28"
+    [itemSize]="rowHeight()"
   >
     <ng-container *cdkVirtualFor="let row of data; templateCacheSize: 0; let rowIndex = index; trackBy: trackTableRow">
       <ng-container *ngTemplateOutlet="bodyTemplate; context: { row: row, rowIndex: rowIndex }"></ng-container>
@@ -35,66 +35,10 @@
 }
 
 <ng-template #bodyTemplate let-row="row" let-rowIndex="rowIndex">
-  <!--  <div class="table-row"-->
-  <!--    ngForm-->
-  <!--    (click)="setActiveRow(row.data, $event)"-->
-  <!--    [attr.data-row]="rowIndex"-->
-  <!--    [class.table-row_odd]="rowIndex % 2 === 1"-->
-  <!--    [ngClass]="rowClass ? rowClass(row.data, rowIndex) : ''"-->
-  <!--    [class.table-row_selected]="selectedRows && selectedRows.indexOf(row.data) >= 0"-->
-  <!--    [style.flex-grow]="totalFlex"-->
-  <!--    [style.flex-basis.px]="totalWidth"-->
-  <!--    [style.min-width.px]="totalWidth">-->
-  <!--    @if (locked.length > 0) {-->
-  <!--      <div class="table-row_locked"-->
-  <!--        [style.flex-grow]="lockedFlex"-->
-  <!--        [style.flex-basis.px]="lockedWidth"-->
-  <!--        [style.min-width.px]="lockedWidth"-->
-  <!--        [style.zIndex]="row.data === activeRow ? 2 : 1">-->
-  <!--        @if (selectType === selectTypeEnum.checkBox && locked.length) {-->
-  <!--          <teta-selection-cell-->
-  <!--            [row]="row.data"-->
-  <!--          style="width: 28px;"></teta-selection-cell>-->
-  <!--        }-->
-  <!--        @for (column of locked; track trackColumns(colIndex, column); let colIndex = $index) {-->
-  <!--          <teta-cell-->
-  <!--            [attr.data-row]="rowIndex"-->
-  <!--            [attr.data-column]="column.name"-->
-  <!--            [column]="column"-->
-  <!--            [filterOptions]="dict?dict[column.name]:[]"-->
-  <!--            [dict]="dict"-->
-  <!--            [row]="row"-->
-  <!--            [ngClass]="column.cellClass"-->
-  <!--            [attr.tabindex]="0"-->
-  <!--            [style.flex-grow]="column.flex"-->
-  <!--            [style.flex-basis.px]="column.width"-->
-  <!--          ></teta-cell>-->
-  <!--        }-->
-  <!--      </div>-->
-  <!--    }-->
-  <!--    @if (selectType === selectTypeEnum.checkBox && locked.length < 1) {-->
-  <!--      <teta-selection-cell-->
-  <!--        [row]="row.data"-->
-  <!--      style="width: 28px;"></teta-selection-cell>-->
-  <!--    }-->
-  <!--    @for (column of unlocked; track trackColumns(colIndex, column); let colIndex = $index) {-->
-  <!--      <teta-cell-->
-  <!--        [attr.data-row]="rowIndex"-->
-  <!--        [attr.data-column]="column.name"-->
-  <!--        [column]="column"-->
-  <!--        [filterOptions]="dict?dict[column.name]:[]"-->
-  <!--        [dict]="dict"-->
-  <!--        [row]="row"-->
-  <!--        [ngClass]="column.cellClass"-->
-  <!--        [attr.tabindex]="0"-->
-  <!--        [style.flex-grow]="column.flex"-->
-  <!--        [style.flex-basis.px]="column.width"-->
-  <!--      ></teta-cell>-->
-  <!--    }-->
-  <!--  </div>-->
   <teta-table-row
     class="table-row"
     ngForm
+    [style.height.px]="rowHeight()"
     [row]="row"
     (click)="setActiveRow(row.data, $event)"
     [attr.data-row]="rowIndex"
@@ -153,6 +97,7 @@
   @if (locale | async; as loc) { @if (aggregate) {
   <div
     class="table-row"
+    [style.height.px]="rowHeight()"
     [class.table-row_virtual]="virtual"
     [style.flex-grow]="totalFlex"
     [style.flex-basis.px]="totalWidth"

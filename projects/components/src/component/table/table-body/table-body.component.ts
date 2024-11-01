@@ -5,7 +5,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  HostBinding,
+  HostBinding, input,
   Input,
   OnDestroy,
   OnInit,
@@ -72,6 +72,8 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
   @Input() trackColumns: (index: number, column: TableColumn) => any;
   @ViewChild(CdkVirtualScrollViewport, { static: false })
   viewport: CdkVirtualScrollViewport;
+
+  rowHeight = input<number>(28);
 
   @HostBinding('class.table-body') private readonly tableBodyClass = true;
   @Output() scrollChange = new EventEmitter<Event>();
