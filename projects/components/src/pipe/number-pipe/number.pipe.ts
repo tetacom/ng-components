@@ -7,7 +7,7 @@ import { formatNumber } from '../util/number-helper';
 })
 export class NumberPipe implements PipeTransform {
   transform(
-    value: number | string,
+    value: number | string | null | undefined,
     decimalLength: number = 2,
     chunkDelimiter: string = '',
     decimalDelimiter: string = '.',
