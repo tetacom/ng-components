@@ -1,4 +1,4 @@
-import {Component, HostListener, Input, OnInit, signal, TemplateRef, ViewChild} from '@angular/core';
+import { Component, HostListener, Input, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import * as faker from 'faker';
 import { TableColumn } from '../../contract/table-column';
 import { FilterType } from '../../../filter/enum/filter-type.enum';
@@ -14,7 +14,7 @@ import { TableComponent } from '../../table/table.component';
 import { IconComponent } from '../../../icon/icon/icon.component';
 import { ButtonComponent } from '../../../button/button/button.component';
 import { ToolbarComponent } from '../../../toolbar/toolbar/toolbar.component';
-import {FormsModule} from "@angular/forms";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'teta-table-demo',

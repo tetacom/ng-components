@@ -1,88 +1,84 @@
 @if (locale|async; as loc) {
-  <teta-dropdown
-    [align]="align"
-    [verticalAlign]="verticalAlign"
-    [autoClose]="autoClose"
-    [autoCloseIgnore]="autoCloseIgnore"
-    [(open)]="open"
-    [appendToBody]="appendToBody"
-    [disabled]="disabled"
-    [viewType]="viewType"
-    class="row row_auto"
-  >
-    <div tetaDropdownHead [class]="'row row_auto select-head select_' + viewType" [class.select-head_invalid]="invalid">
-      <div class="row_auto flex align-center">
-        @if (icon) {
-          <teta-icon [name]="icon" [palette]="'text'" class="margin-right-1"></teta-icon>
-        }
-        @if ((value === null || value === undefined || value?.length === 0) && !multiple) {
-          <span class="placeholder">
+<teta-dropdown
+  [align]="align"
+  [verticalAlign]="verticalAlign"
+  [autoClose]="autoClose"
+  [autoCloseIgnore]="autoCloseIgnore"
+  [(open)]="open"
+  [appendToBody]="appendToBody"
+  [disabled]="disabled"
+  [viewType]="viewType"
+  class="row row_auto"
+>
+  <div tetaDropdownHead [class]="'row row_auto select-head select_' + viewType" [class.select-head_invalid]="invalid">
+    <div class="row_auto flex align-center">
+      @if (icon) {
+      <teta-icon [name]="icon" [palette]="'text'" class="margin-right-1"></teta-icon>
+      } @if ((value === null || value === undefined || value?.length === 0) && !multiple) {
+      <span class="placeholder">
         {{ placeholder || loc.notSelected }}
       </span>
-        }
-        <ng-container
-          *ngTemplateOutlet="
+      }
+      <ng-container
+        *ngTemplateOutlet="
           valueDirective ? valueDirective.template : valueDefault;
           context: { $implicit: value, value: value }
         "
-        ></ng-container>
-      </div>
-      <teta-icon [name]="'arrowDownSmall'" [palette]="'text'"></teta-icon>
+      ></ng-container>
     </div>
-    @if (options?.length) {
-      <div tetaDropdownContent class="select-body row_auto" (click)="$event.preventDefault()">
-        @if (searchRef) {
-          <div class="select-search padding-h-2 padding-top-2">
-            <teta-text-field
-              [ngModel]="searchText"
-              [class]="'select_' + viewType"
-              (ngModelChange)="search($event)"
-              [placeholder]="loc.search"
-              [leftIconName]="'search'"
-            ></teta-text-field>
-          </div>
-        }
-        @if (visibleOptions?.length) {
-          @if (!multiple && allowNull) {
-            <div [class]="'margin-h-2 list-item list-item_interactive select_' + viewType" (click)="clear()">
-              {{ loc.notSelected }}
-            </div>
-            <div class="list-divider margin-bottom-0"></div>
-          }
-          @if (virtual) {
-            <teta-scrollable class="column column_auto">
-              <cdk-virtual-scroll-viewport tetaScrollable [itemSize]="40" minBufferPx="200" maxBufferPx="600">
-                <div
-                  [class]="'list-item list-item_interactive justify-content-between select_' + viewType"
-                  *cdkVirtualFor="let option of visibleOptions; templateCacheSize: 0"
-                  [class.list-item_active]="itemSelected(option)"
-                  [tetaHighlight]="searchText"
-                  (click)="clickOption(option, $event)"
-                >
-                  <div [tetaHighlight]="searchText">
-                    <ng-container
-                      *ngTemplateOutlet="
+    <teta-icon [name]="'arrowDownSmall'" [palette]="'text'"></teta-icon>
+  </div>
+  @if (options?.length) {
+  <div tetaDropdownContent class="select-body row_auto" (click)="$event.preventDefault()">
+    @if (searchRef) {
+    <div class="select-search padding-h-2 padding-top-2">
+      <teta-text-field
+        [ngModel]="searchText"
+        [class]="'select_' + viewType"
+        (ngModelChange)="search($event)"
+        [placeholder]="loc.search"
+        [leftIconName]="'search'"
+      ></teta-text-field>
+    </div>
+    } @if (visibleOptions?.length) { @if (!multiple && allowNull) {
+    <div [class]="'margin-h-2 list-item list-item_interactive select_' + viewType" (click)="clear()">
+      {{ loc.notSelected }}
+    </div>
+    <div class="list-divider margin-bottom-0"></div>
+    } @if (virtual) {
+    <teta-scrollable class="column column_auto">
+      <cdk-virtual-scroll-viewport tetaScrollable [itemSize]="40" minBufferPx="200" maxBufferPx="600">
+        <div
+          [class]="'list-item list-item_interactive justify-content-between select_' + viewType"
+          *cdkVirtualFor="let option of visibleOptions; templateCacheSize: 0"
+          [class.list-item_active]="itemSelected(option)"
+          [tetaHighlight]="searchText"
+          (click)="clickOption(option, $event)"
+        >
+          <div [tetaHighlight]="searchText">
+            <ng-container
+              *ngTemplateOutlet="
                 optionDirective ? optionDirective.template : optionDefault;
                 context: { $implicit: option, option: option }
               "
-                    >
-                    </ng-container>
-                  </div>
-                  @if (itemSelected(option)) {
-                    <teta-icon [name]="'tick'" [palette]="'text'" class="margin-left-2"></teta-icon>
-                  }
-                </div>
-              </cdk-virtual-scroll-viewport>
-            </teta-scrollable>
-          } @else {
-            <teta-scrollable class="column column_auto" [contentClass]="['column', 'column_auto']">
-              <div class="list">
-                @for (option of visibleOptions; track option) {
-                  <div
-                    [class]="'list-item list-item_interactive justify-content-between  select_' + viewType"
-                    [class.list-item_active]="itemSelected(option)"
-                    (click)="clickOption(option, $event)"
-                  >
+            >
+            </ng-container>
+          </div>
+          @if (itemSelected(option)) {
+          <teta-icon [name]="'tick'" [palette]="'text'" class="margin-left-2"></teta-icon>
+          }
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </teta-scrollable>
+    } @else {
+    <teta-scrollable class="column column_auto" [contentClass]="['column', 'column_auto']">
+      <div class="list">
+        @for (option of visibleOptions; track option) {
+        <div
+          [class]="'list-item list-item_interactive justify-content-between  select_' + viewType"
+          [class.list-item_active]="itemSelected(option)"
+          (click)="clickOption(option, $event)"
+        >
           <span [tetaHighlight]="searchText">
             <ng-container
               *ngTemplateOutlet="
@@ -92,53 +88,50 @@
             >
             </ng-container>
           </span>
-                    @if (itemSelected(option) && multiple) {
-                      <teta-icon [name]="'tick'" [palette]="'text'"></teta-icon>
-                    }
-                  </div>
-                }
-              </div>
-            </teta-scrollable>
+          @if (itemSelected(option) && multiple) {
+          <teta-icon [name]="'tick'" [palette]="'text'"></teta-icon>
           }
-        } @else {
-          <p class="padding-h-3 text-overflow-ellipsis overflow-hidden select-not-found-option">
-            {{ notFoundText || loc.notFound }}
-          </p>
-        }
-        @if (multiple && value?.length) {
-          <div class="row row_auto select-chip-field flex-wrap">
-            @for (item of value; track item) {
-              <div class="tag">
-                <p>{{ getText(item) }}</p>
-                <teta-icon
-                  class="cursor-pointer"
-                  [palette]="'text'"
-                  [name]="'closeCircle'"
-                  (click)="removeItemClick(item, $event)"
-                ></teta-icon>
-              </div>
-            }
-          </div>
+        </div>
         }
       </div>
-    }
-  </teta-dropdown>
-  <ng-template #notFound>
+    </teta-scrollable>
+    } } @else {
     <p class="padding-h-3 text-overflow-ellipsis overflow-hidden select-not-found-option">
       {{ notFoundText || loc.notFound }}
     </p>
-  </ng-template>
-  <ng-template #optionDefault let-option>
-    {{ getText(option) }}
-  </ng-template>
-  <ng-template #valueDefault let-value>
-    @if (multiple) {
-      <div class="row_auto overflow-hidden text-overflow-ellipsis">
-        {{ loc.selected + ' ' + value?.length }}
+    } @if (multiple && value?.length) {
+    <div class="row row_auto select-chip-field flex-wrap">
+      @for (item of value; track item) {
+      <div class="tag">
+        <p>{{ getText(item) }}</p>
+        <teta-icon
+          class="cursor-pointer"
+          [palette]="'text'"
+          [name]="'closeCircle'"
+          (click)="removeItemClick(item, $event)"
+        ></teta-icon>
       </div>
+      }
+    </div>
     }
-    @if (!multiple) {
-      <span class="row row_auto overflow-hidden text-overflow-ellipsis">{{ getText(value) }}</span>
-    }
-  </ng-template>
+  </div>
+  }
+</teta-dropdown>
+<ng-template #notFound>
+  <p class="padding-h-3 text-overflow-ellipsis overflow-hidden select-not-found-option">
+    {{ notFoundText || loc.notFound }}
+  </p>
+</ng-template>
+<ng-template #optionDefault let-option>
+  {{ getText(option) }}
+</ng-template>
+<ng-template #valueDefault let-value>
+  @if (multiple) {
+  <div class="row_auto overflow-hidden text-overflow-ellipsis">
+    {{ loc.selected + ' ' + value?.length }}
+  </div>
+  } @if (!multiple) {
+  <span class="row row_auto overflow-hidden text-overflow-ellipsis">{{ getText(value) }}</span>
+  }
+</ng-template>
 }
