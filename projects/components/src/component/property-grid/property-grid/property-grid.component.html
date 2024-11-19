@@ -1,32 +1,28 @@
-@if (columns().length) {
-  @for (column of columns(); track column.name) {
-    @if (column.columns?.length < 1 && (getEditable(column) || !hideNonEditable())) {
-      <teta-property-grid-item
-        [dict]="dict()"
-        [column]="column"
-        [item]="item()"
-        [id]="column.name"
-        [itemTemplates]="itemTemplates()"
-        [decimalPart]="decimalPart()"
-        [formGroup]="formGroup"
-        [horizontal]="horizontal()"
-        (controlValueChange)="onControlValueChange($event)"
-        [hideNonEditable]="hideNonEditable()"
-      ></teta-property-grid-item>
-    }
-    @if (column.columns?.length > 0 && (getEditable(column) || !hideNonEditable())) {
-      <teta-property-grid-group
-        [id]="column.name"
-        [dict]="dict()"
-        [column]="column"
-        [item]="item()"
-        [itemTemplates]="itemTemplates()"
-        [decimalPart]="decimalPart()"
-        [formGroup]="formGroup"
-        [horizontal]="horizontal()"
-        (controlValueChange)="onControlValueChange($event)"
-        [hideNonEditable]="hideNonEditable()"
-      ></teta-property-grid-group>
-    }
-  }
-}
+@if (columns().length) { @for (column of columns(); track column.name) { @if (column.columns?.length < 1 &&
+(getEditable(column) || !hideNonEditable())) {
+<teta-property-grid-item
+  [dict]="dict()"
+  [column]="column"
+  [item]="item()"
+  [id]="column.name"
+  [itemTemplates]="itemTemplates()"
+  [decimalPart]="decimalPart()"
+  [formGroup]="formGroup"
+  [horizontal]="horizontal()"
+  (controlValueChange)="onControlValueChange($event)"
+  [hideNonEditable]="hideNonEditable()"
+></teta-property-grid-item>
+} @if (column.columns?.length > 0 && (getEditable(column) || !hideNonEditable())) {
+<teta-property-grid-group
+  [id]="column.name"
+  [dict]="dict()"
+  [column]="column"
+  [item]="item()"
+  [itemTemplates]="itemTemplates()"
+  [decimalPart]="decimalPart()"
+  [formGroup]="formGroup"
+  [horizontal]="horizontal()"
+  (controlValueChange)="onControlValueChange($event)"
+  [hideNonEditable]="hideNonEditable()"
+></teta-property-grid-group>
+} } }

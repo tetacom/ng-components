@@ -14,17 +14,17 @@ import {
   FormsModule,
   NgForm,
   ReactiveFormsModule,
-  UntypedFormControl
+  UntypedFormControl,
 } from '@angular/forms';
 
-import {IDictionary} from '../../../common/contract/i-dictionary';
-import {IIdName} from '../../../common/contract/i-id-name';
-import {boolOrFuncCallback} from '../../../util/bool-or-func';
-import {FormsUtil} from '../../../util/forms-util';
-import {TableColumn} from '../../table/contract/table-column';
-import {PropertyGridItemDescriptionDirective} from './property-grid-item-description.directive';
-import {PropertyGridGroupComponent} from './property-grid-group/property-grid-group.component';
-import {PropertyGridItemComponent} from './property-grid-item/property-grid-item.component';
+import { IDictionary } from '../../../common/contract/i-dictionary';
+import { IIdName } from '../../../common/contract/i-id-name';
+import { boolOrFuncCallback } from '../../../util/bool-or-func';
+import { FormsUtil } from '../../../util/forms-util';
+import { TableColumn } from '../../table/contract/table-column';
+import { PropertyGridItemDescriptionDirective } from './property-grid-item-description.directive';
+import { PropertyGridGroupComponent } from './property-grid-group/property-grid-group.component';
+import { PropertyGridItemComponent } from './property-grid-item/property-grid-item.component';
 
 @Component({
   selector: 'teta-property-grid',
@@ -33,7 +33,7 @@ import {PropertyGridItemComponent} from './property-grid-item/property-grid-item
   viewProviders: [FormsUtil.formProvider],
   standalone: true,
   imports: [PropertyGridItemComponent, FormsModule, ReactiveFormsModule, PropertyGridGroupComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PropertyGridComponent<T> {
   @HostBinding('class.form-container') formClass = true;
@@ -63,9 +63,9 @@ export class PropertyGridComponent<T> {
       if (this.item() && this.formGroup) {
         for (const key in this.item()) {
           if (this.item().hasOwnProperty(key)) {
-            if(!this.formGroup.get(key)) {
+            if (!this.formGroup.get(key)) {
               this.formGroup.setControl(key, new UntypedFormControl(this.item()[key]));
-            }else {
+            } else {
               this.formGroup.patchValue(this.item());
             }
           }

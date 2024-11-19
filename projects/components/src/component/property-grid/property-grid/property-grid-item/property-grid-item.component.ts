@@ -9,26 +9,26 @@ import {
   output,
   SimpleChanges,
 } from '@angular/core';
-import {ControlContainer, FormGroup, FormsModule, NgForm, ReactiveFormsModule} from '@angular/forms';
-import {TranslocoService} from '@jsverse/transloco';
-import {Subscription} from 'rxjs';
-import {takeWhile} from 'rxjs/operators';
+import { ControlContainer, FormGroup, FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
+import { TranslocoService } from '@jsverse/transloco';
+import { Subscription } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
 
-import {IDictionary} from '../../../../common/contract/i-dictionary';
-import {IIdName} from '../../../../common/contract/i-id-name';
-import {Align} from '../../../../common/enum/align.enum';
-import {boolOrFuncCallback} from '../../../../util/bool-or-func';
-import {FormsUtil} from '../../../../util/forms-util';
-import {FilterType} from '../../../filter/enum/filter-type.enum';
-import {TableColumn} from '../../../table/contract/table-column';
-import {PropertyGridItemDescriptionDirective} from '../property-grid-item-description.directive';
-import {TextFieldComponent} from '../../../input/text-field/text-field.component';
-import {ToggleComponent} from '../../../toggle/toggle/toggle.component';
-import {DatePickerComponent} from '../../../date-picker/date-picker/date-picker.component';
-import {SelectComponent} from '../../../select/select/select.component';
-import {NgTemplateOutlet} from '@angular/common';
-import {InputComponent} from '../../../input/input/input.component';
-import {DisableControlDirective} from '../../../../directive/disable-control/disable-control.directive';
+import { IDictionary } from '../../../../common/contract/i-dictionary';
+import { IIdName } from '../../../../common/contract/i-id-name';
+import { Align } from '../../../../common/enum/align.enum';
+import { boolOrFuncCallback } from '../../../../util/bool-or-func';
+import { FormsUtil } from '../../../../util/forms-util';
+import { FilterType } from '../../../filter/enum/filter-type.enum';
+import { TableColumn } from '../../../table/contract/table-column';
+import { PropertyGridItemDescriptionDirective } from '../property-grid-item-description.directive';
+import { TextFieldComponent } from '../../../input/text-field/text-field.component';
+import { ToggleComponent } from '../../../toggle/toggle/toggle.component';
+import { DatePickerComponent } from '../../../date-picker/date-picker/date-picker.component';
+import { SelectComponent } from '../../../select/select/select.component';
+import { NgTemplateOutlet } from '@angular/common';
+import { InputComponent } from '../../../input/input/input.component';
+import { DisableControlDirective } from '../../../../directive/disable-control/disable-control.directive';
 
 @Component({
   selector: 'teta-property-grid-item',
@@ -47,10 +47,10 @@ import {DisableControlDirective} from '../../../../directive/disable-control/dis
     TextFieldComponent,
     DisableControlDirective,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
-  private transloco = inject(TranslocoService)
+  private transloco = inject(TranslocoService);
   private _formGroup = inject(ControlContainer);
 
   column = input<TableColumn>();
@@ -77,8 +77,8 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
     return boolOrFuncCallback(this.column().editable)({
       column: this.column(),
       row: this.formGroup?.getRawValue(),
-    })
-  })
+    });
+  });
 
   horizontal = input<boolean>();
   controlValueChange = output<IIdName<any>>();
@@ -92,12 +92,11 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
       return '';
     }
     return `${this.column().caption}${this.column().unit ? `, ${this.column().unit}` : ''}`;
-  })
+  });
 
   private _alive = true;
 
-  constructor() {
-  }
+  constructor() {}
 
   getDict() {
     const dict = this.dict() ? this.dict()[this.column().name] : [];

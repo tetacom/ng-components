@@ -1,11 +1,11 @@
-import {ChangeDetectionStrategy, Component, input, output} from '@angular/core';
-import {IDictionary} from '../../../../common/contract/i-dictionary';
-import {IIdName} from '../../../../common/contract/i-id-name';
-import {FormsUtil} from '../../../../util/forms-util';
-import {TableColumn} from '../../../table/contract/table-column';
-import {PropertyGridItemDescriptionDirective} from '../property-grid-item-description.directive';
-import {PropertyGridItemComponent} from '../property-grid-item/property-grid-item.component';
-import {ExpandItemComponent} from '../../../expand-card/expand-item/expand-item.component';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { IDictionary } from '../../../../common/contract/i-dictionary';
+import { IIdName } from '../../../../common/contract/i-id-name';
+import { FormsUtil } from '../../../../util/forms-util';
+import { TableColumn } from '../../../table/contract/table-column';
+import { PropertyGridItemDescriptionDirective } from '../property-grid-item-description.directive';
+import { PropertyGridItemComponent } from '../property-grid-item/property-grid-item.component';
+import { ExpandItemComponent } from '../../../expand-card/expand-item/expand-item.component';
 
 @Component({
   selector: 'teta-property-grid-group',
@@ -14,7 +14,7 @@ import {ExpandItemComponent} from '../../../expand-card/expand-item/expand-item.
   viewProviders: [FormsUtil.formProvider],
   standalone: true,
   imports: [ExpandItemComponent, PropertyGridItemComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PropertyGridGroupComponent<T> {
   column = input<TableColumn>();

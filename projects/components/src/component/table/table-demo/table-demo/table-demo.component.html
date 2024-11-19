@@ -2,7 +2,7 @@
   <button teta-button (click)="delete(selectedRows)" [square]="true" [palette]="'text'" [view]="'ghost'">
     <teta-icon [name]="'delete'" [palette]="'text'"></teta-icon>
   </button>
-  <input  [(ngModel)]="rowHeight" />
+  <input [(ngModel)]="rowHeight" />
 </teta-toolbar>
 <teta-table
   [data]="data"
@@ -15,7 +15,6 @@
   [editType]="editType"
   [editEvent]="editEvent"
   [selectType]="selectType"
-
   (tableService)="tableService = $event"
   [rowHeight]="rowHeight()"
   [rowEditable]="rowEditable"

@@ -1,4 +1,4 @@
-import {inject, Provider} from '@angular/core';
+import { inject, Provider } from '@angular/core';
 import {
   AbstractControl,
   ControlContainer,
@@ -103,6 +103,6 @@ export class FormsUtil {
 
   static formProvider: Provider = {
     provide: ControlContainer,
-    useFactory: () => inject(ControlContainer, {skipSelf: true})
+    useFactory: () => inject(ControlContainer, { skipSelf: true }),
   };
 }
