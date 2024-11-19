@@ -274,7 +274,19 @@ export const coloredIconsList = [
   'sumAddColor',
 ];
 
-export const fileIconsList = ['file_csv', 'file_doc', 'file_las', 'file_pdf', 'file_txt', 'file_xls'];
+export const fileIconsList = [
+  'file_csv',
+  'file_doc',
+  'file_docx',
+  'file_las',
+  'file_pdf',
+  'file_txt',
+  'file_xls',
+  'file_xlsx',
+  'file_png',
+  'file_jpg',
+  'file_jpeg',
+];
 export const lithotypeIconsList = [
   'icon1',
   'icon2',
