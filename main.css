@@ -622,8 +622,8 @@ a {
 }
 
 .button_ghost.button-global {
-  color: var(--color-global-50);
-  fill: var(--color-global-50);
+  color: var(--color-global-90);
+  fill: var(--color-global-90);
   background-color: transparent;
 }
 .button_ghost.button-global.hover, .button_ghost.button-global:hover {
@@ -634,9 +634,9 @@ a {
 }
 
 .button_outline.button-global {
-  color: var(--color-global-50);
-  fill: var(--color-global-50);
-  border-color: var(--color-global-50);
+  color: var(--color-global-90);
+  fill: var(--color-global-90);
+  border-color: var(--color-global-10);
   border-style: solid;
   border-width: 1px;
   background-color: transparent;
@@ -739,8 +739,8 @@ a {
 }
 
 .button_ghost.button-text {
-  color: var(--color-text-50);
-  fill: var(--color-text-50);
+  color: var(--color-text-90);
+  fill: var(--color-text-90);
   background-color: transparent;
 }
 .button_ghost.button-text.hover, .button_ghost.button-text:hover {
@@ -751,9 +751,9 @@ a {
 }
 
 .button_outline.button-text {
-  color: var(--color-text-50);
-  fill: var(--color-text-50);
-  border-color: var(--color-text-50);
+  color: var(--color-text-90);
+  fill: var(--color-text-90);
+  border-color: var(--color-text-10);
   border-style: solid;
   border-width: 1px;
   background-color: transparent;
@@ -936,8 +936,8 @@ a {
 }
 
 .button_ghost.button-primary {
-  color: var(--color-primary-50);
-  fill: var(--color-primary-50);
+  color: var(--color-primary-90);
+  fill: var(--color-primary-90);
   background-color: transparent;
 }
 .button_ghost.button-primary.hover, .button_ghost.button-primary:hover {
@@ -948,9 +948,9 @@ a {
 }
 
 .button_outline.button-primary {
-  color: var(--color-primary-50);
-  fill: var(--color-primary-50);
-  border-color: var(--color-primary-50);
+  color: var(--color-primary-90);
+  fill: var(--color-primary-90);
+  border-color: var(--color-primary-10);
   border-style: solid;
   border-width: 1px;
   background-color: transparent;
@@ -1133,8 +1133,8 @@ a {
 }
 
 .button_ghost.button-green {
-  color: var(--color-green-50);
-  fill: var(--color-green-50);
+  color: var(--color-green-90);
+  fill: var(--color-green-90);
   background-color: transparent;
 }
 .button_ghost.button-green.hover, .button_ghost.button-green:hover {
@@ -1145,9 +1145,9 @@ a {
 }
 
 .button_outline.button-green {
-  color: var(--color-green-50);
-  fill: var(--color-green-50);
-  border-color: var(--color-green-50);
+  color: var(--color-green-90);
+  fill: var(--color-green-90);
+  border-color: var(--color-green-10);
   border-style: solid;
   border-width: 1px;
   background-color: transparent;
@@ -1330,8 +1330,8 @@ a {
 }
 
 .button_ghost.button-red {
-  color: var(--color-red-50);
-  fill: var(--color-red-50);
+  color: var(--color-red-90);
+  fill: var(--color-red-90);
   background-color: transparent;
 }
 .button_ghost.button-red.hover, .button_ghost.button-red:hover {
@@ -1342,9 +1342,9 @@ a {
 }
 
 .button_outline.button-red {
-  color: var(--color-red-50);
-  fill: var(--color-red-50);
-  border-color: var(--color-red-50);
+  color: var(--color-red-90);
+  fill: var(--color-red-90);
+  border-color: var(--color-red-10);
   border-style: solid;
   border-width: 1px;
   background-color: transparent;
@@ -1527,8 +1527,8 @@ a {
 }
 
 .button_ghost.button-yellow {
-  color: var(--color-yellow-50);
-  fill: var(--color-yellow-50);
+  color: var(--color-yellow-90);
+  fill: var(--color-yellow-90);
   background-color: transparent;
 }
 .button_ghost.button-yellow.hover, .button_ghost.button-yellow:hover {
@@ -1539,9 +1539,9 @@ a {
 }
 
 .button_outline.button-yellow {
-  color: var(--color-yellow-50);
-  fill: var(--color-yellow-50);
-  border-color: var(--color-yellow-50);
+  color: var(--color-yellow-90);
+  fill: var(--color-yellow-90);
+  border-color: var(--color-yellow-10);
   border-style: solid;
   border-width: 1px;
   background-color: transparent;
@@ -1724,8 +1724,8 @@ a {
 }
 
 .button_ghost.button-chart {
-  color: var(--color-chart-50);
-  fill: var(--color-chart-50);
+  color: var(--color-chart-90);
+  fill: var(--color-chart-90);
   background-color: transparent;
 }
 .button_ghost.button-chart.hover, .button_ghost.button-chart:hover {
@@ -1736,9 +1736,9 @@ a {
 }
 
 .button_outline.button-chart {
-  color: var(--color-chart-50);
-  fill: var(--color-chart-50);
-  border-color: var(--color-chart-50);
+  color: var(--color-chart-90);
+  fill: var(--color-chart-90);
+  border-color: var(--color-chart-10);
   border-style: solid;
   border-width: 1px;
   background-color: transparent;
