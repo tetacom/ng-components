@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   contentChildren,
-  effect,
   HostBinding,
   input,
   Optional,
@@ -59,19 +58,17 @@ export class PropertyGridComponent<T> {
   }
 
   constructor(@Optional() private _formGroup: ControlContainer) {
-    effect(() => {
-      if (this.item() && this.formGroup) {
-        for (const key in this.item()) {
-          if (this.item().hasOwnProperty(key)) {
-            if (!this.formGroup.get(key)) {
-              this.formGroup.setControl(key, new UntypedFormControl(this.item()[key]));
-            } else {
-              this.formGroup.patchValue(this.item());
-            }
+    if (this.item() && this.formGroup) {
+      for (const key in this.item()) {
+        if (this.item().hasOwnProperty(key)) {
+          if (!this.formGroup.get(key)) {
+            this.formGroup.setControl(key, new UntypedFormControl(this.item()[key]));
+          } else {
+            this.formGroup.patchValue(this.item());
           }
         }
       }
-    });
+    }
   }
 
   getEditable(column: TableColumn) {
