@@ -62,11 +62,15 @@ export class PropertyGridComponent<T> {
     effect(() => {
       if (this.item() && this.formGroup) {
         for (const key in this.item()) {
-          if (this.item().hasOwnProperty(key)) {
+          if (Object.prototype.hasOwnProperty.call(this.item(), key)) {
             if (!this.formGroup.get(key)) {
-              this.formGroup.setControl(key, new UntypedFormControl(this.item()[key]));
+              this.formGroup.setControl(key, new UntypedFormControl(this.item()[key]), {
+                emitEvent: false,
+              });
             } else {
-              this.formGroup.patchValue(this.item());
+              this.formGroup.patchValue(this.item(), {
+                emitEvent: false,
+              });
             }
           }
         }
