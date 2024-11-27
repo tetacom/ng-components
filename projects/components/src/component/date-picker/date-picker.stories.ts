@@ -30,8 +30,8 @@ export default {
   },
   args: {
     viewType: 'rounded',
-    minDate: new Date(new Date().getFullYear() - 3, new Date().getMonth(), new Date().getDate()),
-    maxDate: new Date(new Date().getFullYear() + 3, new Date().getMonth(), new Date().getDate()),
+    minDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 3),
+    maxDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 3),
     allowNull: true,
   },
   component: DatePickerComponent,
@@ -45,7 +45,7 @@ export const baseDatepicker = (args) => ({
     imports: [FormsModule, MaskitoModule, IconSpriteDirective],
   },
   props: { ...args, date: new Date() },
-  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [date]="date" [minDate]="min" [maxDate]="max" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
+  template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [date]="date" [minDate]="minDate" [maxDate]="maxDate" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
 });
 export const disabledDatepicker = (args) => ({
   moduleMetadata: {
