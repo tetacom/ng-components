@@ -3166,12 +3166,12 @@ a {
   width: 16px;
 }
 .icon-l {
-  height: 20px;
-  width: 20px;
-}
-.icon-xl {
   height: 24px;
   width: 24px;
+}
+.icon-xl {
+  height: 32px;
+  width: 32px;
 }
 .icon.icon-global {
   fill: var(--color-global-70);
