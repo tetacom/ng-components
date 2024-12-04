@@ -64,7 +64,7 @@ export class PropertyGridComponent<T> {
         for (const key in this.item()) {
           if (Object.prototype.hasOwnProperty.call(this.item(), key)) {
             if (!this.formGroup.get(key)) {
-              this.formGroup.setControl(key, new UntypedFormControl(this.item()[key]), {
+              this.formGroup.setControl(key, new UntypedFormControl(this.item()[key], { updateOn: 'blur' }), {
                 emitEvent: false,
               });
             } else {

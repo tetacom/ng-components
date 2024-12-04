@@ -1,4 +1,4 @@
-@if (columns().length) { @for (column of columns(); track column.name) { @if (column.columns?.length < 1 &&
+@if (columns()?.length) { @for (column of columns(); track column.name) { @if (column.columns?.length < 1 &&
 (getEditable(column) || !hideNonEditable())) {
 <teta-property-grid-item
   [dict]="dict()"
