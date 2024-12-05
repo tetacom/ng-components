@@ -39,7 +39,7 @@ export class PlotlineComponent implements OnInit, OnDestroy {
     private zoomService: ZoomService,
     private scaleService: ScaleService,
     private chartService: ChartService,
-    private element: ElementRef
+    private element: ElementRef,
   ) {}
 
   ngOnInit(): void {

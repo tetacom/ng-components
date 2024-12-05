@@ -38,7 +38,7 @@ export class TestChartComponent {
     const tr = this.getTrSeries(traRad);
     const cs = this.getCasingSeries(
       construction.casing.sort((a, b) => a.intervalTopMd - b.intervalTopMd),
-      traRad
+      traRad,
     );
     return {
       tooltip: {
@@ -94,7 +94,7 @@ export class TestChartComponent {
             r: 10,
             // r: cs.columnOuterDiameter / 1000
           },
-          trajectory
+          trajectory,
         );
         console.log('point, depth', point, depth, cs.columnOuterDiameter / 1000);
         points.push(point);
@@ -108,7 +108,7 @@ export class TestChartComponent {
       md: number;
       r: number;
     },
-    trajectory
+    trajectory,
   ) {
     const { prev, next } = this.findPreviousNextPoints(trajectory, point.md);
     console.log(prev, next, point.md);
@@ -123,7 +123,7 @@ export class TestChartComponent {
 
     const beta = Math.acos(
       Math.cos(zenithAngle - prev.zenithAngle) -
-        Math.sin(prev.zenithAngle) * Math.sin(zenithAngle) * (1 - Math.cos(azimuthAngle - prev.azimuthAngle))
+        Math.sin(prev.zenithAngle) * Math.sin(zenithAngle) * (1 - Math.cos(azimuthAngle - prev.azimuthAngle)),
     );
     console.log('zenithAngle', zenithAngle, 'azimuthAngle', azimuthAngle, 'beta', beta);
 

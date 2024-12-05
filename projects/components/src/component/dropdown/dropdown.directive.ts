@@ -22,7 +22,7 @@ export class DropdownDirective extends DropdownBase implements OnInit, OnDestroy
     @Inject(DOCUMENT) protected override _document: any,
     protected override _elementRef: ElementRef<HTMLElement>,
     protected override _zone: NgZone,
-    protected override _renderer: Renderer2
+    protected override _renderer: Renderer2,
   ) {
     super(_cdr, _document, _elementRef, _zone, _renderer);
   }

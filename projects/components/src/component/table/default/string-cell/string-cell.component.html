@@ -10,11 +10,11 @@
   {{ control.value }}
 </span>
 @if (edit) {
-<input
-  #input
-  type="text"
-  class="input row_auto border-radius-0"
-  (keydown.enter)="input.blur()"
-  [formControl]="control"
-/>
+  <input
+    #input
+    type="text"
+    class="input row_auto border-radius-0"
+    (keydown.enter)="input.blur()"
+    [formControl]="control"
+  />
 }

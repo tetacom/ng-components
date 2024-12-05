@@ -71,7 +71,7 @@ export class ChartService {
       shareReplay({
         bufferSize: 1,
         refCount: true,
-      })
+      }),
     );
 
     this.size = this.size$.asObservable().pipe(filter((size) => size != null));
@@ -138,7 +138,7 @@ export class ChartService {
         visible !== undefined ? visible : !currentConfig.series[currentSerieIndex].visible;
 
       const seriesLinkCount = currentConfig.series.filter(
-        (_) => _.yAxisIndex === currentConfig.series[currentSerieIndex].yAxisIndex && _.visible === true
+        (_) => _.yAxisIndex === currentConfig.series[currentSerieIndex].yAxisIndex && _.visible === true,
       ).length;
       currentConfig.yAxis[currentConfig.series[currentSerieIndex].yAxisIndex].visible = seriesLinkCount !== 0;
     });
@@ -205,7 +205,7 @@ export class ChartService {
 
         if (currentSerieIndex !== -1) {
           const seriesLinkCount = config.series.filter(
-            (_) => _.yAxisIndex === config.series[currentSerieIndex].yAxisIndex && _.visible === true
+            (_) => _.yAxisIndex === config.series[currentSerieIndex].yAxisIndex && _.visible === true,
           ).length;
           config.yAxis[config.series[currentSerieIndex].yAxisIndex].visible = seriesLinkCount !== 0;
         }

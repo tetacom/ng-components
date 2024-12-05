@@ -18,14 +18,17 @@ export class TreeItemToggleComponent implements OnInit {
   @Input() item: ITreeData;
   open: Observable<boolean>;
 
-  constructor(public service: TreeService, private _cdr: ChangeDetectorRef) {}
+  constructor(
+    public service: TreeService,
+    private _cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.open = this.service.openItems.pipe(
       map((_) => {
         const found = _?.find((x) => this.service.compareItems(x) === this.service.compareItems(this.item));
         return found != null;
-      })
+      }),
     );
   }
 }

@@ -20,7 +20,10 @@ extend(THREE);
 export class CustomSeriesComponent extends Base3dSeriesComponent<Base3dPoint> implements OnInit {
   public scales: Observable<{ x; y; z }>;
 
-  constructor(override svc: Chart3dService, override ngtStore: NgtStore) {
+  constructor(
+    override svc: Chart3dService,
+    override ngtStore: NgtStore,
+  ) {
     super(svc, ngtStore);
     this.scales = this.svc.scales;
   }

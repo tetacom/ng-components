@@ -86,7 +86,7 @@ export class ScrollableComponent implements OnInit, OnDestroy, AfterContentCheck
       shareReplay({
         refCount: true,
         bufferSize: 1,
-      })
+      }),
     );
     this._observer = new ResizeObserver(this._observe);
   }
@@ -116,7 +116,7 @@ export class ScrollableComponent implements OnInit, OnDestroy, AfterContentCheck
           this._scrollbarHorizontal.nativeElement.scrollLeft = event.target.scrollLeft;
           this._scrollbarVertical.nativeElement.scrollTop = event.target.scrollTop;
           this.scroll.emit(event);
-        })
+        }),
       )
       .subscribe();
 

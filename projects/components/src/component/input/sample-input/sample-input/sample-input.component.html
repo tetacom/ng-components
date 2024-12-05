@@ -15,17 +15,17 @@
     class="bg-text-20 padding-3"
   >
     @for (i of [].constructor(20); track i; let ind = $index) {
-    <div style="display: flex; grid-gap: 8px; align-items: center">
-      <div>MD</div>
-      <div class="number-text position-relative">
-        <div (click)="show = ind">
-          {{ value[ind] }}
+      <div style="display: flex; grid-gap: 8px; align-items: center">
+        <div>MD</div>
+        <div class="number-text position-relative">
+          <div (click)="show = ind">
+            {{ value[ind] }}
+          </div>
+          @if (show === ind) {
+            <input (blur)="show = null" [(ngModel)]="value[ind]" class="number-input" />
+          }
         </div>
-        @if (show===ind) {
-        <input (blur)="show = null" [(ngModel)]="value[ind]" class="number-input" />
-        }
       </div>
-    </div>
     }
   </div>
 </div>

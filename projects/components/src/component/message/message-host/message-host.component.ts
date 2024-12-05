@@ -54,7 +54,10 @@ export class MessageHostComponent implements OnInit, OnDestroy {
 
   private _alive = true;
 
-  constructor(private _svc: MessageService, private _cdr: ChangeDetectorRef) {}
+  constructor(
+    private _svc: MessageService,
+    private _cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit() {
     this._svc.message.pipe(takeWhile((_) => this._alive)).subscribe((messages) => {

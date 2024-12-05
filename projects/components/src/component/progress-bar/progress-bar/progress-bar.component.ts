@@ -62,7 +62,7 @@ export class ProgressBarComponent implements OnInit, ControlValueAccessor {
     private _elementRef: ElementRef,
     private _renderer: Renderer2,
     private _cdr: ChangeDetectorRef,
-    @Inject(DOCUMENT) private _document: any
+    @Inject(DOCUMENT) private _document: any,
   ) {}
 
   @HostListener('document:mouseup', ['$event']) mouseup() {

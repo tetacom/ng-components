@@ -1,18 +1,19 @@
-@if (locale | async; as loc) { @if (filterOptions | async; as options) {
-<teta-filter-host
-  [column]="column"
-  [data]="data"
-  [state]="state"
-  [filterOptions]="options[column.name]"
-></teta-filter-host>
-}
-<teta-toolbar class="justify-content-between">
-  <button type="button" teta-button [palette]="'text'" [view]="'ghost'" (click)="clearFilter()">
-    {{ loc.clear }}
-  </button>
-  <button type="button" teta-button [palette]="'primary'" (click)="applyFilter()">
-    <teta-icon [name]="'tick'" [palette]="'white'"></teta-icon>
-    {{ loc.apply }}
-  </button>
-</teta-toolbar>
+@if (locale | async; as loc) {
+  @if (filterOptions | async; as options) {
+    <teta-filter-host
+      [column]="column"
+      [data]="data"
+      [state]="state"
+      [filterOptions]="options[column.name]"
+    ></teta-filter-host>
+  }
+  <teta-toolbar class="justify-content-between">
+    <button type="button" teta-button [palette]="'text'" [view]="'ghost'" (click)="clearFilter()">
+      {{ loc.clear }}
+    </button>
+    <button type="button" teta-button [palette]="'primary'" (click)="applyFilter()">
+      <teta-icon [name]="'tick'" [palette]="'white'"></teta-icon>
+      {{ loc.apply }}
+    </button>
+  </teta-toolbar>
 }

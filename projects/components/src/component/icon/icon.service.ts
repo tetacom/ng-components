@@ -16,7 +16,7 @@ export class IconService {
     @Inject(DOCUMENT) protected _document: any,
     private _rendererFactory: RendererFactory2,
     private _httpBackend: HttpBackend,
-    private _http: HttpClient
+    private _http: HttpClient,
   ) {
     this._renderer = this._rendererFactory.createRenderer(null, null);
   }
@@ -38,7 +38,7 @@ export class IconService {
       map((svgText: string) => {
         const svgEl = this.svgElementFromString(svgText);
         return this.cloneSVG(svgEl);
-      })
+      }),
     );
   }
 

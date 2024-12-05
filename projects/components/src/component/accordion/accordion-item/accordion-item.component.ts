@@ -48,7 +48,10 @@ export class AccordionItemComponent {
 
   private readonly accordion$: AccordionComponent;
 
-  constructor(@Optional() @Inject(AccordionComponent) accordion: AccordionComponent, private cdr$: ChangeDetectorRef) {
+  constructor(
+    @Optional() @Inject(AccordionComponent) accordion: AccordionComponent,
+    private cdr$: ChangeDetectorRef,
+  ) {
     this.accordion$ = accordion;
   }
 

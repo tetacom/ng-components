@@ -20,10 +20,10 @@ export class DialogService {
     message: string,
     buttonText: string = 'common.ok',
     buttonIcon: string = null,
-    buttonPalette: string = 'primary'
+    buttonPalette: string = 'primary',
   ): Observable<boolean> {
     return this.createDialog(message, buttonText, buttonIcon, buttonPalette, true).pipe(
-      map((result: IModalResult) => result.reason === ModalCloseReason.resolve)
+      map((result: IModalResult) => result.reason === ModalCloseReason.resolve),
     );
   }
 
@@ -32,7 +32,7 @@ export class DialogService {
     buttonText: string = 'common.ok',
     buttonIcon: string = null,
     buttonPalette: string = 'primary',
-    showCancelButton: boolean = true
+    showCancelButton: boolean = true,
   ): Observable<IModalResult> {
     const dialog = this._modal.create(
       DialogComponent,
@@ -46,7 +46,7 @@ export class DialogService {
       {
         esc: true,
         backdrop: true,
-      }
+      },
     );
     return dialog.onClose;
   }

@@ -88,7 +88,10 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
 
   protected _alive = true;
 
-  protected constructor(protected svc: TableService<T>, protected cdr: ChangeDetectorRef) {}
+  protected constructor(
+    protected svc: TableService<T>,
+    protected cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnDestroy(): void {
     this._alive = false;

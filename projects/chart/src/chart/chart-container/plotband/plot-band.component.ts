@@ -68,7 +68,11 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
     return Math.abs(this.scale(this.plotBand.to) - this.scale(this.plotBand.from));
   }
 
-  constructor(private chartService: ChartService, private cdr: ChangeDetectorRef, private element: ElementRef) {}
+  constructor(
+    private chartService: ChartService,
+    private cdr: ChangeDetectorRef,
+    private element: ElementRef,
+  ) {}
 
   emit(event: IChartEvent<PlotBand>) {
     this.chartService.emitPlotband(event);
@@ -92,7 +96,7 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
 
     const drag = this.dragElements.on('start drag end', (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
       const bandSize = parseFloat(
-        plotbandElement.attr(this.axis.orientation === AxisOrientation.x ? 'width' : 'height')
+        plotbandElement.attr(this.axis.orientation === AxisOrientation.x ? 'width' : 'height'),
       );
 
       d.from = this.scale.invert(event[AxisOrientation[this.axis.orientation]]);
@@ -156,7 +160,7 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
         });
 
         this.cdr.detectChanges();
-      }
+      },
     );
 
     plotbandElement.datum<PlotBand>(this.plotBand);

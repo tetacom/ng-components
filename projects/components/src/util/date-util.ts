@@ -48,7 +48,7 @@ export class DateUtil {
       parseInt(dtPart[0], 10),
       parseInt(tPart[0], 10),
       parseInt(tPart[1], 10),
-      parseInt(tPart[2], 10)
+      parseInt(tPart[2], 10),
     );
     if (isNaN(parsedDate.getTime())) {
       return null;
@@ -66,7 +66,7 @@ export class DateUtil {
     const month = dat.getMonth() + 1;
     return `${prependZero(dat.getDate(), 2)}.${prependZero(month, 2)}.${dat.getFullYear()} ${prependZero(
       dat.getHours(),
-      2
+      2,
     )}:${prependZero(dat.getMinutes(), 2)}:${prependZero(dat.getSeconds(), 2)}`;
   }
 

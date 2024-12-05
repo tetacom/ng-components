@@ -49,7 +49,10 @@ export class StringFilterComponent<T> extends FilterComponentBase<T> implements 
   }
   locale: Observable<TetaLocalisation>;
 
-  constructor(private changeDetector: ChangeDetectorRef, private _config: TetaConfigService) {
+  constructor(
+    private changeDetector: ChangeDetectorRef,
+    private _config: TetaConfigService,
+  ) {
     super();
     this.locale = this._config.locale;
   }
@@ -69,7 +72,7 @@ export class StringFilterComponent<T> extends FilterComponentBase<T> implements 
           field: this.column.filterField,
           type: this.column.stringFilterType,
           name: this.column.name,
-        })
+        }),
       );
     }
     filter.type = this.column.stringFilterType;

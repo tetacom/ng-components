@@ -20,7 +20,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 export class NumericCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: ElementRef;
 
-  constructor(protected override svc: TableService<T>, protected override cdr: ChangeDetectorRef) {
+  constructor(
+    protected override svc: TableService<T>,
+    protected override cdr: ChangeDetectorRef,
+  ) {
     super(svc, cdr);
   }
 

@@ -1,25 +1,30 @@
 @if (column.columns && column.columns.length > 0) {
-<div class="table-head__group__container">
-  <div class="table-head__group__caption">
-    {{ column.caption }}
+  <div class="table-head__group__container">
+    <div class="table-head__group__caption">
+      {{ column.caption }}
+    </div>
+    <div class="table-head__group__children">
+      @for (col of column.columns; track col) {
+        @if (!columnIsHidden(col)) {
+          <teta-table-head-group
+            class="table-head__group"
+            [data]="data"
+            [showHeadCellMenu]="showHeadCellMenu"
+            [column]="col"
+          ></teta-table-head-group>
+        }
+      }
+    </div>
   </div>
-  <div class="table-head__group__children">
-    @for (col of column.columns; track col) { @if (!columnIsHidden(col)) {
-    <teta-table-head-group
-      class="table-head__group"
+}
+@if (!column.columns || column.columns.length === 0) {
+  @if (!columnIsHidden(column)) {
+    <teta-head-cell
+      class="table-head__cell"
       [data]="data"
       [showHeadCellMenu]="showHeadCellMenu"
-      [column]="col"
-    ></teta-table-head-group>
-    } }
-  </div>
-</div>
-} @if (!column.columns || column.columns.length === 0) { @if (!columnIsHidden(column)) {
-<teta-head-cell
-  class="table-head__cell"
-  [data]="data"
-  [showHeadCellMenu]="showHeadCellMenu"
-  [attr.data-column]="column.name"
-  [column]="column"
-></teta-head-cell>
-} }
+      [attr.data-column]="column.name"
+      [column]="column"
+    ></teta-head-cell>
+  }
+}

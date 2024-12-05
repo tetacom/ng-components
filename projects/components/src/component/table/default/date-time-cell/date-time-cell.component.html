@@ -1,12 +1,12 @@
 <span [style.display]="edit ? 'none' : 'block'" class="cell-text" [class.cell-text_disabled]="!editable">
-  {{ control?.value | date : 'dd.MM.yyyy HH:mm:ss' }}
+  {{ control?.value | date: 'dd.MM.yyyy HH:mm:ss' }}
 </span>
 @if (edit) {
-<teta-date-picker
-  class="datepicker-table"
-  #input
-  [appendToBody]="true"
-  [showTime]="true"
-  [formControl]="control"
-></teta-date-picker>
+  <teta-date-picker
+    class="datepicker-table"
+    #input
+    [appendToBody]="true"
+    [showTime]="true"
+    [formControl]="control"
+  ></teta-date-picker>
 }

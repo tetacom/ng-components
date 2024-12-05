@@ -124,7 +124,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     private _svc: TableService<T>,
     private _elementRef: ElementRef,
     private _config: TetaConfigService,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
   ) {}
 
   setActiveRow(row: T, event: MouseEvent) {
@@ -141,7 +141,7 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
         const [columns, hiddenColumns] = values;
         this._hiddenColumns = hiddenColumns;
         this.columns = ArrayUtil.flatten(columns, 'columns', true).filter(
-          (_) => this._hiddenColumns.indexOf(_.name) < 0
+          (_) => this._hiddenColumns.indexOf(_.name) < 0,
         );
         this._cdr.markForCheck();
       });
@@ -243,14 +243,14 @@ export class TableBodyComponent<T> implements OnInit, OnDestroy {
     return (this.data as any)?.reduce(
       (accum, current: TableRow<T>) =>
         accum != null && accum <= current.data[columnName] ? accum : current.data[columnName],
-      null
+      null,
     );
   }
 
   private getMax(columnName: string): number {
     return (this.data as any)?.reduce(
       (accum, current) => (accum != null && accum >= current.data[columnName] ? accum : current.data[columnName]),
-      null
+      null,
     );
   }
 }

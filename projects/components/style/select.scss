@@ -30,7 +30,9 @@
     white-space: nowrap;
     padding: 0 8px;
     @include getFont($fonts, 'body-3');
-    transition: border-color 0.4s, background-color 0.4s;
+    transition:
+      border-color 0.4s,
+      background-color 0.4s;
     overflow: hidden;
 
     &_invalid {

@@ -22,7 +22,7 @@ export class ModalService {
     @Inject(DOCUMENT)
     private _document: any,
     private _injector: Injector,
-    private _factory: DynamicComponentService
+    private _factory: DynamicComponentService,
   ) {
     this._container = this._document.body;
 
@@ -47,7 +47,7 @@ export class ModalService {
     content: string | TemplateRef<any> | Type<any>,
     data?: any,
     config?: IModalConfig,
-    injector?: Injector
+    injector?: Injector,
   ): ModalInstance<T> {
     if (content === null || content === undefined) {
       throw new Error('Specify template or component to render');
@@ -59,7 +59,7 @@ export class ModalService {
           class: [],
           esc: true,
         },
-        config
+        config,
       );
     }
     if (injector === null || injector === undefined) {
@@ -72,7 +72,7 @@ export class ModalService {
     const contentInstance = this._factory.createContent(
       content,
       injector,
-      this.getContext(content, modalData, currentModal)
+      this.getContext(content, modalData, currentModal),
     );
     const window = this._factory.createComponent(ModalContainerComponent, contentInstance, injector, this._container);
     window.instance.config = config;

@@ -1,32 +1,33 @@
 @if (open) {
-<teta-toolbar
-  style="display: flex"
-  [style.justifyContent]="direction === 'right' ? 'space-between' : 'unset'"
-  [style.flexDirection]="direction === 'right' ? 'row-reverse' : 'row'"
->
-  <button teta-button [square]="true" [palette]="'text'" [view]="'ghost'" (click)="closePanel()">
-    <teta-icon [palette]="'text'" [name]="direction === 'right' ? 'start' : 'end'"></teta-icon>
-  </button>
-  <span class="font-title-2" style="display: contents">
-    <ng-container *ngTemplateOutlet="head?.template"></ng-container>
-  </span>
-</teta-toolbar>
-<ng-container *ngTemplateOutlet="content?.template"></ng-container>
-} @if (!open) {
-<div class="width-10 overflow-hidden" style="height: 100%">
-  <button
-    teta-button
-    style="transform-origin: 0 0; transform: rotate(-90deg) translateX(-100%); margin: 6px"
-    [palette]="'text'"
-    [view]="'ghost'"
-    (click)="openPanel()"
+  <teta-toolbar
+    style="display: flex"
+    [style.justifyContent]="direction === 'right' ? 'space-between' : 'unset'"
+    [style.flexDirection]="direction === 'right' ? 'row-reverse' : 'row'"
   >
-    <div class="font-button-2 nowrap">{{ placeholder }}</div>
-    <teta-icon
-      style="transform-origin: 0 0; transform: rotate(-90deg) translateX(-100%)"
+    <button teta-button [square]="true" [palette]="'text'" [view]="'ghost'" (click)="closePanel()">
+      <teta-icon [palette]="'text'" [name]="direction === 'right' ? 'start' : 'end'"></teta-icon>
+    </button>
+    <span class="font-title-2" style="display: contents">
+      <ng-container *ngTemplateOutlet="head?.template"></ng-container>
+    </span>
+  </teta-toolbar>
+  <ng-container *ngTemplateOutlet="content?.template"></ng-container>
+}
+@if (!open) {
+  <div class="width-10 overflow-hidden" style="height: 100%">
+    <button
+      teta-button
+      style="transform-origin: 0 0; transform: rotate(-90deg) translateX(-100%); margin: 6px"
       [palette]="'text'"
-      [name]="direction === 'right' ? 'start' : 'end'"
-    ></teta-icon>
-  </button>
-</div>
+      [view]="'ghost'"
+      (click)="openPanel()"
+    >
+      <div class="font-button-2 nowrap">{{ placeholder }}</div>
+      <teta-icon
+        style="transform-origin: 0 0; transform: rotate(-90deg) translateX(-100%)"
+        [palette]="'text'"
+        [name]="direction === 'right' ? 'start' : 'end'"
+      ></teta-icon>
+    </button>
+  </div>
 }

@@ -39,7 +39,7 @@ export class BarSeriesComponent<T extends BasePoint> extends SeriesBaseComponent
     protected override cdr: ChangeDetectorRef,
     protected override scaleService: ScaleService,
     protected override zoomService: ZoomService,
-    protected override element: ElementRef
+    protected override element: ElementRef,
   ) {
     super(svc, cdr, scaleService, zoomService, element);
   }
@@ -50,7 +50,7 @@ export class BarSeriesComponent<T extends BasePoint> extends SeriesBaseComponent
         const count = _.series.filter((_) => _.type === SeriesType.bar && _.xAxisIndex === this.series.xAxisIndex);
 
         return count.length;
-      })
+      }),
     );
 
     this.x1 = this.scaleService.scales.pipe(
@@ -60,7 +60,7 @@ export class BarSeriesComponent<T extends BasePoint> extends SeriesBaseComponent
         const domain = this.series.data.map((_) => _.x);
 
         return d3.scaleBand<number>().range([0, range[1]]).domain(domain).padding(0.1);
-      })
+      }),
     );
 
     this.x = this.scaleService.scales.pipe(map((_) => _.x.get(this.series.xAxisIndex)?.scale));

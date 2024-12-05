@@ -22,13 +22,16 @@ export class Line3dComponent extends Base3dSeriesComponent<Line3dPoint> implemen
   private _alive = true;
 
   protected readonly Math = Math;
-  constructor(override svc: Chart3dService, override ngtStore: NgtStore) {
+  constructor(
+    override svc: Chart3dService,
+    override ngtStore: NgtStore,
+  ) {
     super(svc, ngtStore);
     this.points = this.svc.scales.pipe(
       takeWhile(() => this._alive),
       map((scales) => {
         return this.getPoints(scales);
-      })
+      }),
     );
   }
   getPoints(scales) {

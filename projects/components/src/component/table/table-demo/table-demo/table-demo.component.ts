@@ -204,9 +204,9 @@ export class TableDemoComponent implements OnInit {
         `${res}${i === 0 ? '' : '\n'}${columns.reduce(
           (columnResult: string, column: TableColumn, j: number) =>
             `${columnResult}${j === 0 ? '' : '\t'}${currentRow[column.name] ?? ''}`,
-          ''
+          '',
         )}`,
-      ''
+      '',
     );
   }
 
@@ -226,7 +226,7 @@ export class TableDemoComponent implements OnInit {
           res[columns[index].name] = value;
         }
         return res;
-      }, {})
+      }, {}),
     );
   }
 

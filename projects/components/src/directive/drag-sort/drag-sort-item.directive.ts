@@ -30,7 +30,7 @@ export class DragSortItemDirective<T> implements OnInit, OnDestroy {
   constructor(
     @Host() private _container: DragSortContainerDirective<T>,
     private _elementRef: ElementRef,
-    private _renderer: Renderer2
+    private _renderer: Renderer2,
   ) {}
 
   @HostListener('dragstart', ['$event']) dragstart(event: DragEvent): void {
@@ -64,7 +64,7 @@ export class DragSortItemDirective<T> implements OnInit, OnDestroy {
     this._container.updateSortOrder(
       this._container.getDragItem(),
       this.tetaDragSortItem,
-      this.getDropPosition(event) === 'start'
+      this.getDropPosition(event) === 'start',
     );
     this.hideDrag();
   }
@@ -93,7 +93,7 @@ export class DragSortItemDirective<T> implements OnInit, OnDestroy {
     this._renderer.addClass(this._dragElement, 'drop-direction');
     this._renderer.addClass(
       this._dragElement,
-      this.dragSortDirection === 'horizontal' ? 'drop-direction-horizontal' : 'drop-direction-vertical'
+      this.dragSortDirection === 'horizontal' ? 'drop-direction-horizontal' : 'drop-direction-vertical',
     );
   }
 

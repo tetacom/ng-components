@@ -54,7 +54,7 @@ export class TooltipComponent implements OnInit {
     private zoomService: ZoomService,
     private sanitizer: DomSanitizer,
     private _zone: NgZone,
-    private _elementRef: ElementRef
+    private _elementRef: ElementRef,
   ) {
     this.tooltips = this.svc.tooltips.pipe(map((_) => [..._.values()]));
   }
@@ -70,7 +70,7 @@ export class TooltipComponent implements OnInit {
         setTimeout(() => {
           this.cdr.detectChanges();
         });
-      })
+      }),
     );
 
     this.position = this.svc.pointerMove.pipe(
@@ -78,7 +78,7 @@ export class TooltipComponent implements OnInit {
       map((_) => {
         return this.getPosition(_);
       }),
-      tap(() => this.cdr.detectChanges())
+      tap(() => this.cdr.detectChanges()),
     );
 
     const transformHtml = (html): SafeHtml => {
@@ -113,7 +113,7 @@ export class TooltipComponent implements OnInit {
         }
         const formatted = formatter ? transformHtml(formatter(tooltipList)) : defaultFormatter(tooltipList);
         return formatted;
-      })
+      }),
     );
   }
 
@@ -131,7 +131,7 @@ export class TooltipComponent implements OnInit {
       this.tooltip?.nativeElement?.getBoundingClientRect(),
       Align.auto,
       VerticalAlign.top,
-      12
+      12,
     );
   }
 

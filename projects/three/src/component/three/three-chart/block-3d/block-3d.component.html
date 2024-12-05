@@ -1,15 +1,16 @@
-@if ({ blocks: blocks | async, scales: svc.scales | async }; as data) { @for (mesh of data.blocks; let i = $index; track
-mesh) {
-<ngt-primitive *args="[mesh[0].component]"></ngt-primitive>
-<ngts-text
-  [text]="series.data[i].name"
-  color="black"
-  [fontSize]="2.5"
-  [rotation]="[0, Math.PI / 2, 0]"
-  [position]="[1, mesh[0].position, 5]"
-  [textAlign]="'left'"
-  [anchorX]="'center'"
-  [anchorY]="'middle'"
-></ngts-text>
-<ngt-primitive *args="[mesh[1].component]"></ngt-primitive>
-} }
+@if ({ blocks: blocks | async, scales: svc.scales | async }; as data) {
+  @for (mesh of data.blocks; let i = $index; track mesh) {
+    <ngt-primitive *args="[mesh[0].component]"></ngt-primitive>
+    <ngts-text
+      [text]="series.data[i].name"
+      color="black"
+      [fontSize]="2.5"
+      [rotation]="[0, Math.PI / 2, 0]"
+      [position]="[1, mesh[0].position, 5]"
+      [textAlign]="'left'"
+      [anchorX]="'center'"
+      [anchorY]="'middle'"
+    ></ngts-text>
+    <ngt-primitive *args="[mesh[1].component]"></ngt-primitive>
+  }
+}

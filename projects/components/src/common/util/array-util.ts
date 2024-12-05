@@ -57,7 +57,7 @@ export class ArrayUtil {
     filter: (item: any) => boolean,
     children = 'children',
     keepChildren = true,
-    fullscanChildren = false
+    fullscanChildren = false,
   ): any {
     const result = [];
     if (array && array.length) {

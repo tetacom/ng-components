@@ -30,7 +30,11 @@ export class HeadCellDropdownComponent<T> {
   @Input() dropDownOpen: boolean;
   @Output() dropDownOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private _svc: TableService<T>, private _config: TetaConfigService, private _cdr: ChangeDetectorRef) {}
+  constructor(
+    private _svc: TableService<T>,
+    private _config: TetaConfigService,
+    private _cdr: ChangeDetectorRef,
+  ) {}
 
   closeDropdown = () => {
     this.dropDownOpen = false;

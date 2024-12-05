@@ -19,13 +19,13 @@ export class Chart3dService {
     this.minMax = this.data.pipe(
       map((_) => {
         return this.getAxesMinMax(_);
-      })
+      }),
     );
     this.scales = this.minMax.pipe(
       map((minMax) => {
         return this.getScales(minMax);
       }),
-      shareReplay(1)
+      shareReplay(1),
     );
   }
 

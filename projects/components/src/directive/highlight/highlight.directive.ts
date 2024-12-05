@@ -56,7 +56,7 @@ export class HighlightDirective {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = textNode.nodeValue.replace(
       new RegExp(searchWithOutRegExp, 'gi'),
-      (match) => `<mark>${match}</mark>`
+      (match) => `<mark>${match}</mark>`,
     );
 
     const parentNode = textNode.parentNode;

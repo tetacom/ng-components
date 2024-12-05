@@ -16,7 +16,7 @@ export class DatePickerUtil {
     maxDate: Date,
     disabledDates: Date[],
     disabledDays: number[],
-    disabledPeriods: DatePeriod[]
+    disabledPeriods: DatePeriod[],
   ): DayModel[] {
     const days = [];
     const firstDay = DatePickerUtil.getFirstDay(date.getMonth(), date.getFullYear(), firstDayOfWeek);
@@ -34,7 +34,7 @@ export class DatePickerUtil {
             dat.getMonth() === date.getMonth() &&
             dat.getDate() === date.getDate(),
           weekend: dat.getDay() === 0 || dat.getDay() === 6,
-        })
+        }),
       );
     }
     return days;
@@ -46,7 +46,7 @@ export class DatePickerUtil {
     maxDate: Date,
     disabledDates: Date[],
     disabledDays: number[],
-    disabledPeriods: DatePeriod[]
+    disabledPeriods: DatePeriod[],
   ): boolean {
     return (
       DatePickerUtil.isDayDisabled(dat, disabledDays) ||
@@ -103,7 +103,7 @@ export class DatePickerUtil {
         d.end !== null &&
         d.end !== undefined &&
         d.start.getTime() <= dat.getTime() &&
-        d.end.getTime() >= dat.getTime()
+        d.end.getTime() >= dat.getTime(),
     );
   }
 
@@ -123,7 +123,7 @@ export class DatePickerUtil {
         d !== undefined &&
         d.getFullYear() === dat.getFullYear() &&
         d.getMonth() === dat.getMonth() &&
-        d.getDate() === dat.getDate()
+        d.getDate() === dat.getDate(),
     );
   }
 

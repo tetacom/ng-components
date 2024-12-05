@@ -7,9 +7,10 @@
   </button>
 </div>
 @if (!message.template && message.text) {
-<div class="font-body-3 padding-v-2 padding-left-4">
-  {{ message.text }}
-</div>
-} @if (message.template) {
-<ng-container *ngTemplateOutlet="message.template; context: { $implicit: message }"></ng-container>
+  <div class="font-body-3 padding-v-2 padding-left-4">
+    {{ message.text }}
+  </div>
+}
+@if (message.template) {
+  <ng-container *ngTemplateOutlet="message.template; context: { $implicit: message }"></ng-container>
 }

@@ -32,7 +32,7 @@ export abstract class BaseCalendar implements OnChanges, OnDestroy {
   public minMax: ReplaySubject<MinMaxDateModel> = new ReplaySubject<MinMaxDateModel>(1);
   public currentYear: ReplaySubject<number> = new ReplaySubject<number>(1);
   public selectedPicker: BehaviorSubject<'day' | 'month' | 'year'> = new BehaviorSubject<'day' | 'month' | 'year'>(
-    'day'
+    'day',
   );
   abstract calendar: DayModel[] | { currentMonth: DayModel[]; nextMonth: DayModel[] };
 

@@ -1,9 +1,9 @@
 @if (locale | async; as loc) {
-<div class="padding-3">
-  <teta-radio [ngModel]="filter.value" (ngModelChange)="setFilter()">
-    <teta-radio-button [value]="null">{{ loc?.notSelected }}</teta-radio-button>
-    <teta-radio-button [value]="true">{{ loc?.yes }}</teta-radio-button>
-    <teta-radio-button [value]="false">{{ loc?.no }}</teta-radio-button>
-  </teta-radio>
-</div>
+  <div class="padding-3">
+    <teta-radio [ngModel]="filter.value" (ngModelChange)="setFilter()">
+      <teta-radio-button [value]="null">{{ loc?.notSelected }}</teta-radio-button>
+      <teta-radio-button [value]="true">{{ loc?.yes }}</teta-radio-button>
+      <teta-radio-button [value]="false">{{ loc?.no }}</teta-radio-button>
+    </teta-radio>
+  </div>
 }

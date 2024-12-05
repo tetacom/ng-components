@@ -19,7 +19,11 @@
   align-items: center;
   gap: var(--space);
   padding: var(--space);
-  transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out, color 0.2s ease-in-out, fill 0.2s ease-in-out;
+  transition:
+    background-color 0.2s ease-in-out,
+    border 0.2s ease-in-out,
+    color 0.2s ease-in-out,
+    fill 0.2s ease-in-out;
 
   &:has(p:first-child) {
     padding-left: calc(2 * var(--space));

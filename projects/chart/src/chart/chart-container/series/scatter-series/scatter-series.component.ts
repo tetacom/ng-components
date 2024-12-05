@@ -37,7 +37,7 @@ export class ScatterSeriesComponent<T extends BasePoint>
     protected override cdr: ChangeDetectorRef,
     protected override scaleService: ScaleService,
     protected override zoomService: ZoomService,
-    protected override element: ElementRef
+    protected override element: ElementRef,
   ) {
     super(svc, cdr, scaleService, zoomService, element);
   }

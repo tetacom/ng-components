@@ -11,7 +11,7 @@ export class NumberPipe implements PipeTransform {
     decimalLength: number = 2,
     chunkDelimiter: string = '',
     decimalDelimiter: string = '.',
-    chunkLength: number = 3
+    chunkLength: number = 3,
   ): string {
     if (value === null || value === undefined || value === '') {
       return '';

@@ -17,7 +17,10 @@ import { CheckboxComponent } from '../../../checkbox/checkbox/checkbox.component
 export class BooleanCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: ElementRef;
 
-  constructor(public override svc: TableService<T>, public override cdr: ChangeDetectorRef) {
+  constructor(
+    public override svc: TableService<T>,
+    public override cdr: ChangeDetectorRef,
+  ) {
     super(svc, cdr);
   }
 

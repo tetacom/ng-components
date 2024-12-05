@@ -37,7 +37,7 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
     this.__series = series;
 
     this.markers = this.__series.data?.filter(
-      (_) => _?.marker && _?.x !== undefined && _?.y !== undefined && _?.x !== null && _?.y !== null
+      (_) => _?.marker && _?.x !== undefined && _?.y !== undefined && _?.x !== null && _?.y !== null,
     );
   }
 
@@ -50,7 +50,7 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
     protected override cdr: ChangeDetectorRef,
     protected override scaleService: ScaleService,
     protected override zoomService: ZoomService,
-    protected override element: ElementRef
+    protected override element: ElementRef,
   ) {
     super(svc, cdr, scaleService, zoomService, element);
   }
@@ -96,7 +96,7 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
 
         return this.getTransform(event, x.get(this.series.xAxisIndex).scale, y.get(this.series.yAxisIndex).scale);
       }),
-      tap(() => setTimeout(() => this.cdr.detectChanges()))
+      tap(() => setTimeout(() => this.cdr.detectChanges())),
     );
 
     this.path = combineLatest([this.scaleService.scales, this._update]).pipe(
@@ -120,7 +120,7 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
               point.x !== undefined &&
               point.y !== undefined &&
               !isNaN(point.x) &&
-              !isNaN(point.y)
+              !isNaN(point.y),
           )
           .x((point) => this.x(point.x))
           .y((point) => this.y(point.y));
@@ -146,7 +146,7 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
         }
 
         return line(filteredData);
-      })
+      }),
     );
   }
 
@@ -205,7 +205,7 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
         scaleX(this.series.data[rightId - 1]?.x),
         scaleY(this.series.data[rightId - 1]?.y),
         scaleX(this.series.data[rightId]?.x),
-        scaleY(this.series.data[rightId]?.y)
+        scaleY(this.series.data[rightId]?.y),
       );
       const x = scaleX.invert(intersect.x);
       const y = scaleY.invert(intersect.y);
@@ -248,7 +248,7 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
         scaleX(this.series.data[rightId - 1]?.x),
         scaleY(this.series.data[rightId - 1]?.y),
         scaleX(this.series.data[rightId]?.x),
-        scaleY(this.series.data[rightId]?.y)
+        scaleY(this.series.data[rightId]?.y),
       );
 
       const x = scaleX.invert(intersect.x);

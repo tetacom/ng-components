@@ -19,7 +19,10 @@ export class StringCellComponent<T> extends CellComponentBase<T> implements OnIn
   align = Align;
   @ViewChild('input', { static: false }) input: ElementRef;
 
-  constructor(public override svc: TableService<T>, public override cdr: ChangeDetectorRef) {
+  constructor(
+    public override svc: TableService<T>,
+    public override cdr: ChangeDetectorRef,
+  ) {
     super(svc, cdr);
   }
 

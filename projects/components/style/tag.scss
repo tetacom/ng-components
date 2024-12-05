@@ -15,7 +15,9 @@
   border-width: 1px;
   fill: var(--color-text-50);
   color: var(--color-text-90);
-  transition: border-color 0.4s, background-color 0.4s;
+  transition:
+    border-color 0.4s,
+    background-color 0.4s;
   &_filled {
     background-color: var(--color-text-5);
     border-color: transparent;

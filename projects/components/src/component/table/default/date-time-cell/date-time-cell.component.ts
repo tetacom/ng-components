@@ -18,7 +18,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 export class DateTimeCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: DatePickerComponent;
 
-  constructor(protected override svc: TableService<T>, protected override cdr: ChangeDetectorRef) {
+  constructor(
+    protected override svc: TableService<T>,
+    protected override cdr: ChangeDetectorRef,
+  ) {
     super(svc, cdr);
   }
 

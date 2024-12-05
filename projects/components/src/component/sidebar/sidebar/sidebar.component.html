@@ -1,15 +1,16 @@
 @if (backdrop && open) {
-<div [@sidebar] (click)="setOpen(false)" class="sidebar-backdrop"></div>
-} @if (open) {
-<div
-  class="sidebar"
-  [@sidebar]
-  [ngClass]="className"
-  [class.sidebar-top]="position === sidebarPosition.top"
-  [class.sidebar-bottom]="position === sidebarPosition.bottom"
-  [class.sidebar-left]="position === sidebarPosition.left"
-  [class.sidebar-right]="position === sidebarPosition.right"
->
-  <ng-content></ng-content>
-</div>
+  <div [@sidebar] (click)="setOpen(false)" class="sidebar-backdrop"></div>
+}
+@if (open) {
+  <div
+    class="sidebar"
+    [@sidebar]
+    [ngClass]="className"
+    [class.sidebar-top]="position === sidebarPosition.top"
+    [class.sidebar-bottom]="position === sidebarPosition.bottom"
+    [class.sidebar-left]="position === sidebarPosition.left"
+    [class.sidebar-right]="position === sidebarPosition.right"
+  >
+    <ng-content></ng-content>
+  </div>
 }

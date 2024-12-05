@@ -10,14 +10,14 @@ export class LetDirective<T> {
 
   constructor(
     @Inject(ViewContainerRef) viewContainer: ViewContainerRef,
-    @Inject(TemplateRef) templateRef: TemplateRef<LetContext<T>>
+    @Inject(TemplateRef) templateRef: TemplateRef<LetContext<T>>,
   ) {
     viewContainer.createEmbeddedView(templateRef, new LetContext<T>(this));
   }
 
   static ngTemplateContextGuard<T>(
     _dir: LetDirective<T>,
-    _ctx: any
+    _ctx: any,
   ): _ctx is LetDirective<Exclude<T, null | undefined>> {
     return true;
   }

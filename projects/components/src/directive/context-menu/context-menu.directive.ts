@@ -49,7 +49,7 @@ export class ContextMenuDirective extends DynamicContentBaseDirective implements
     protected override _injector: Injector,
     protected override _zone: NgZone,
     protected override _cdr: ChangeDetectorRef,
-    private _click: ClickService
+    private _click: ClickService,
   ) {
     super(_document, _elementRef, _service, _injector, _zone, _cdr);
     this.addScrollListener();
@@ -123,7 +123,7 @@ export class ContextMenuDirective extends DynamicContentBaseDirective implements
         },
         this._componentRef.location.nativeElement.getBoundingClientRect(),
         this.align,
-        this.verticalAlign
+        this.verticalAlign,
       );
       PositionUtil.setElementPosition(this._componentRef.location.nativeElement, position);
     }

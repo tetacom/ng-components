@@ -30,7 +30,7 @@ export class BlockHorizontalSeriesComponent<T extends BasePoint> extends SeriesB
     protected override cdr: ChangeDetectorRef,
     protected override scaleService: ScaleService,
     protected override zoomService: ZoomService,
-    protected override element: ElementRef
+    protected override element: ElementRef,
   ) {
     super(svc, cdr, scaleService, zoomService, element);
     this.id = (Date.now() + Math.random()).toString(36);
@@ -50,7 +50,7 @@ export class BlockHorizontalSeriesComponent<T extends BasePoint> extends SeriesB
             (point.x <= max || point.x1 <= max || arr[index - 1]?.x <= max || arr[index - 1]?.x1 <= max)
           );
         });
-      })
+      }),
     );
   }
 

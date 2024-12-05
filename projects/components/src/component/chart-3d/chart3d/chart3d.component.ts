@@ -40,7 +40,10 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private _alive = true;
 
-  constructor(private _elementRef: ElementRef, private _themeService: ThemeSwitchService) {}
+  constructor(
+    private _elementRef: ElementRef,
+    private _themeService: ThemeSwitchService,
+  ) {}
 
   @Input() set config(config: Chart3dOptions) {
     if (config) {
@@ -65,7 +68,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
           this.gridColor = _ ? '#5d6a73' : '#bdbdc6';
           this.axesColor = _ ? '#8e8f9d' : '#7d8f9a';
           this.init();
-        })
+        }),
       )
       .subscribe();
   }
@@ -135,7 +138,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
       const circleGeometry = new THREE.BufferGeometry().setFromPoints(
-        new THREE.Path().absarc(0, 0, x(r), 0, Math.PI * 2, false).getSpacedPoints(100)
+        new THREE.Path().absarc(0, 0, x(r), 0, Math.PI * 2, false).getSpacedPoints(100),
       );
 
       const circle = new THREE.LineSegments(circleGeometry, material);
@@ -308,7 +311,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
         acc.z = acc.z.concat(_.z);
         return acc as any;
       },
-      { x: [], y: [], z: [] }
+      { x: [], y: [], z: [] },
     );
 
     const x = d3

@@ -49,7 +49,7 @@ export class TooltipDirective extends DynamicContentBaseDirective implements OnD
     protected override _injector: Injector,
     protected override _zone: NgZone,
     protected override _cdr: ChangeDetectorRef,
-    private _click: ClickService
+    private _click: ClickService,
   ) {
     super(_document, _elementRef, _service, _injector, _zone, _cdr);
   }
@@ -68,7 +68,7 @@ export class TooltipDirective extends DynamicContentBaseDirective implements OnD
         filter(() => this._componentRef != null),
         filter((event: MouseEvent) => !DomUtil.clickedInside(this._elementRef.nativeElement, event)),
         filter((event: MouseEvent) => !DomUtil.clickedInside(this._componentRef?.location.nativeElement, event)),
-        tap((_) => this.destroyContentRef())
+        tap((_) => this.destroyContentRef()),
       )
       .subscribe();
   }
@@ -85,7 +85,7 @@ export class TooltipDirective extends DynamicContentBaseDirective implements OnD
         this.align,
         this.verticalAlign,
         0,
-        12
+        12,
       );
       PositionUtil.setElementPosition(this._componentRef.location.nativeElement, position);
       const verticalClass = containerPosition.top < position.top ? 'tooltip_bottom' : 'tooltip_top';

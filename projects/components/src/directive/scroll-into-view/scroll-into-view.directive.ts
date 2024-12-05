@@ -11,7 +11,10 @@ export class ScrollIntoViewDirective implements OnChanges {
   @Input() behavior: ScrollBehavior = 'smooth';
   @Input() block: ScrollLogicalPosition = 'end';
 
-  constructor(@Inject(PLATFORM_ID) private platformId: any, private elementRef: ElementRef) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: any,
+    private elementRef: ElementRef,
+  ) {}
 
   ngOnChanges(simpleChange: SimpleChanges) {
     if (isPlatformBrowser(this.platformId)) {

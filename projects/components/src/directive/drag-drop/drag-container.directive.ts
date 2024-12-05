@@ -69,7 +69,7 @@ export class DragContainerDirective<T> implements OnInit, OnDestroy {
     private _elementRef: ElementRef,
     private _viewContainerRef: ViewContainerRef,
     private _zone: NgZone,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {

@@ -8,7 +8,10 @@ export class ModalInstance<T = any> {
   onClose: Observable<IModalResult<T>>;
   private _onClose: Subject<IModalResult<T>> = new Subject<IModalResult<T>>();
 
-  constructor(private _window: ComponentRef<ModalContainerComponent>, private _content: TetaContentRef) {
+  constructor(
+    private _window: ComponentRef<ModalContainerComponent>,
+    private _content: TetaContentRef,
+  ) {
     this.onClose = this._onClose.asObservable();
     if (this._window && this._window.instance) {
       this._window.instance.closeEvent.subscribe((event: IModalResult) => {

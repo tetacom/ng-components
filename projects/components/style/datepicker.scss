@@ -36,7 +36,9 @@
     color: var(--color-text-90);
     fill: var(--color-text-90);
     padding: 0 8px;
-    transition: border-color 0.4s, background-color 0.4s;
+    transition:
+      border-color 0.4s,
+      background-color 0.4s;
     min-width: 0;
 
     &_disabled {

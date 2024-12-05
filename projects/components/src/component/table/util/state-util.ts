@@ -25,7 +25,7 @@ export class StateUtil {
           filter.value &&
           ((filter.value.lessThan !== null && filter.value.lessThan !== undefined) ||
             (filter.value.greaterThan !== null && filter.value.greaterThan !== undefined) ||
-            (filter.value.equalsTo !== null && filter.value.equalsTo !== undefined))
+            (filter.value.equalsTo !== null && filter.value.equalsTo !== undefined)),
       )
     ) {
       hasFilters = true;
@@ -37,7 +37,7 @@ export class StateUtil {
           filter &&
           filter.value &&
           ((filter.value.lessThan !== null && filter.value.lessThan !== undefined) ||
-            (filter.value.greaterThan !== null && filter.value.greaterThan !== undefined))
+            (filter.value.greaterThan !== null && filter.value.greaterThan !== undefined)),
       )
     ) {
       hasFilters = true;

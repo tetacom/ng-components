@@ -15,7 +15,7 @@ export class PositionUtil {
       right: 0,
       top: 0,
       bottom: 0,
-    }
+    },
   ): IRect {
     const rect: IRect = {};
     const elementWidth = elementPosition.right - elementPosition.left;

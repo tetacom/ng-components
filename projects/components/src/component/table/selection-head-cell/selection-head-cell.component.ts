@@ -17,7 +17,10 @@ export class SelectionHeadCellComponent<T> implements OnInit, OnDestroy {
 
   private _alive = true;
 
-  constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {}
+  constructor(
+    private _svc: TableService<T>,
+    private _cdr: ChangeDetectorRef,
+  ) {}
 
   selectAll(value: boolean) {
     if (value) {

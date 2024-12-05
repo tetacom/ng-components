@@ -30,7 +30,10 @@ export class Block3dComponent<T extends Block3dPoint> extends Base3dSeriesCompon
   private _alive = true;
   protected readonly Math = Math;
 
-  constructor(override svc: Chart3dService, override ngtStore: NgtStore) {
+  constructor(
+    override svc: Chart3dService,
+    override ngtStore: NgtStore,
+  ) {
     super(svc, ngtStore);
     this.blocks = this.svc.scales.pipe(
       takeWhile(() => this._alive),
@@ -38,7 +41,7 @@ export class Block3dComponent<T extends Block3dPoint> extends Base3dSeriesCompon
         return this.series?.data?.map((_) => {
           return this.createSVGTexture(scales.y(_?.y), scales.y(_?.y1), _?.iconId);
         });
-      })
+      }),
     );
   }
 

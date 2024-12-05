@@ -36,7 +36,7 @@ export class Axes3dComponent implements OnDestroy {
       takeWhile(() => this._alive),
       map(([scales, minMax]) => {
         return this.createAxes(scales, minMax);
-      })
+      }),
     );
   }
 

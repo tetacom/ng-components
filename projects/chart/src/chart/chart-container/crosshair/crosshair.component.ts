@@ -15,7 +15,11 @@ export class CrosshairComponent implements OnInit {
   @Input() size: DOMRect;
   transform: Observable<any>;
 
-  constructor(private scaleService: ScaleService, private chartService: ChartService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private scaleService: ScaleService,
+    private chartService: ChartService,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.transform = this.chartService.pointerMove.pipe(
@@ -29,7 +33,7 @@ export class CrosshairComponent implements OnInit {
         setTimeout(() => {
           this.cdr.detectChanges();
         });
-      })
+      }),
     );
   }
 }

@@ -102,7 +102,7 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
     const dict = this.dict() ? this.dict()[this.column().name] : [];
     if (this.column().parentName?.length > 0) {
       return dict?.filter(
-        (dictItem: IIdName<any>) => dictItem.parentId === this.formGroup?.getRawValue()[this.column().parentName]
+        (dictItem: IIdName<any>) => dictItem.parentId === this.formGroup?.getRawValue()[this.column().parentName],
       );
     }
     return dict;

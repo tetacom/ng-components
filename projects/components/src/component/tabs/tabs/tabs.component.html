@@ -1,29 +1,31 @@
 <div role="tablist" class="tabs-head" [class.tabs-head_small]="size === 's'">
   @for (tab of tabs; track tab) {
-  <button
-    type="button"
-    class="tabs-head-item"
-    (click)="select(tab.id)"
-    [class.tabs-head-item_active]="tab.id === activeId"
-    [disabled]="tab.disabled"
-  >
-    <span
-      [id]="tab.id"
-      class="tabs-title"
-      role="tab"
-      [attr.tabindex]="tab.disabled ? '-1' : undefined"
-      [attr.aria-controls]="!destroyOnHide || tab.id === activeId ? tab.id + '-panel' : null"
-      [attr.aria-expanded]="tab.id === activeId"
-      [attr.aria-disabled]="tab.disabled"
+    <button
+      type="button"
+      class="tabs-head-item"
+      (click)="select(tab.id)"
+      [class.tabs-head-item_active]="tab.id === activeId"
+      [disabled]="tab.disabled"
     >
-      {{ tab.title }}
-      <ng-template [ngTemplateOutlet]="tab.titleTpl?.template"></ng-template>
-    </span>
-  </button>
+      <span
+        [id]="tab.id"
+        class="tabs-title"
+        role="tab"
+        [attr.tabindex]="tab.disabled ? '-1' : undefined"
+        [attr.aria-controls]="!destroyOnHide || tab.id === activeId ? tab.id + '-panel' : null"
+        [attr.aria-expanded]="tab.id === activeId"
+        [attr.aria-disabled]="tab.disabled"
+      >
+        {{ tab.title }}
+        <ng-template [ngTemplateOutlet]="tab.titleTpl?.template"></ng-template>
+      </span>
+    </button>
   }
 </div>
 <div class="tabs-content">
-  @for (tab of tabs; track tab) { @if (!destroyOnHide || tab.id === activeId) {
-  <ng-template [ngTemplateOutlet]="tab.contentTpl?.template"></ng-template>
-  } }
+  @for (tab of tabs; track tab) {
+    @if (!destroyOnHide || tab.id === activeId) {
+      <ng-template [ngTemplateOutlet]="tab.contentTpl?.template"></ng-template>
+    }
+  }
 </div>

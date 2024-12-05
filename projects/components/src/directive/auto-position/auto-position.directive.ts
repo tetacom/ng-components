@@ -18,7 +18,10 @@ export class AutoPositionDirective implements AfterViewInit, OnDestroy {
 
   private _alive = true;
 
-  constructor(private _elementRef: ElementRef, private _zone: NgZone) {}
+  constructor(
+    private _elementRef: ElementRef,
+    private _zone: NgZone,
+  ) {}
 
   ngAfterViewInit() {
     this.setPosition();

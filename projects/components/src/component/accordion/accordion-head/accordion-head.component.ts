@@ -29,7 +29,7 @@ export class AccordionHeadComponent implements OnInit {
   constructor(
     @Host()
     @Inject(AccordionItemComponent)
-    accordionItem: AccordionItemComponent
+    accordionItem: AccordionItemComponent,
   ) {
     this.accordionItem$ = accordionItem;
   }

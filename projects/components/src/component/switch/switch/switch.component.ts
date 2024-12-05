@@ -39,11 +39,14 @@ export class SwitchComponent implements OnInit, OnDestroy, ControlValueAccessor 
   private _alive = true;
   private _value: any;
 
-  constructor(private svc: SwitchService, private cdr: ChangeDetectorRef) {
+  constructor(
+    private svc: SwitchService,
+    private cdr: ChangeDetectorRef,
+  ) {
     this.svc.value
       .pipe(
         takeWhile((_) => this._alive),
-        filter((_) => _ !== this._value)
+        filter((_) => _ !== this._value),
       )
       .subscribe((_) => {
         this.onChange(_);

@@ -73,7 +73,7 @@ export class ResizePanelComponent implements OnInit, OnDestroy {
   constructor(
     private _elementRef: ElementRef,
     private _renderer: Renderer2,
-    @Inject(DOCUMENT) private _document: any
+    @Inject(DOCUMENT) private _document: any,
   ) {}
 
   resizeStart(event: MouseEvent) {
@@ -115,13 +115,13 @@ export class ResizePanelComponent implements OnInit, OnDestroy {
       this._renderer.setStyle(
         this._elementRef.nativeElement,
         'width',
-        `${this._elementRef.nativeElement.offsetWidth}px`
+        `${this._elementRef.nativeElement.offsetWidth}px`,
       );
     } else {
       this._renderer.setStyle(
         this._elementRef.nativeElement,
         'height',
-        `${this._elementRef.nativeElement.offsetHeight}px`
+        `${this._elementRef.nativeElement.offsetHeight}px`,
       );
     }
     this._renderer.setStyle(this._elementRef.nativeElement, 'flex-grow', `0`);
