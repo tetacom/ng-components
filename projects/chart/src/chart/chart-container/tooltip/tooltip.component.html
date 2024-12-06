@@ -1,38 +1,47 @@
-@if ({p: position | async}; as data) { @if ((tooltips | async); as t) { @if (t.length > 0) {
-<div
-  class="chart-tooltip color-text-90 bg-global-bgcard shadow-2"
-  #tooltip
-  [style.position]="'fixed'"
-  [style.opacity]="display | async"
-  [hidden]="!data.p"
-  style="pointer-events: none; min-width: 200px"
-  [style.left.px]="data.p?.left"
-  [style.top.px]="data.p?.top"
-  [style.bottom.px]="data.p?.bottom"
-  [style.right.px]="data.p?.right"
->
-  @if (config.tooltip?.template) {
-  <ng-container *ngTemplateOutlet="config.tooltip.template; context: getImplicit(t)"></ng-container>
-  } @if (config.tooltip?.format) {
-  <div [innerHTML]="displayTooltips | async"></div>
-  } @else { @if (!config.tooltip?.template) {
-  <div class="padding-2 border-radius-1">
-    @for (tooltip of t; track $index) {
-    <div class="display-flex align-center">
-      <span
-        class="display-block margin-right-1"
-        [style.width.px]="10"
-        [style.height.px]="2"
-        [style.background-color]="tooltip.series?.color"
+@if ({ p: position | async }; as data) {
+  @if (tooltips | async; as t) {
+    @if (t.length > 0) {
+      <div
+        class="chart-tooltip color-text-90 bg-global-bgcard shadow-2"
+        #tooltip
+        [style.position]="'fixed'"
+        [style.opacity]="display | async"
+        [hidden]="!data.p"
+        style="pointer-events: none; min-width: 200px"
+        [style.left.px]="data.p?.left"
+        [style.top.px]="data.p?.top"
+        [style.bottom.px]="data.p?.bottom"
+        [style.right.px]="data.p?.right"
       >
-      </span>
-      <span class="font-title-3">
-        {{ tooltip.series?.name }}
-        <span class="font-body-3"> x: {{ format(tooltip.point?.x) }} y: {{ format(tooltip.point?.y) }} </span>
-      </span>
-    </div>
+        @if (config.tooltip?.template) {
+          <ng-container *ngTemplateOutlet="config.tooltip.template; context: getImplicit(t)"></ng-container>
+        }
+        @if (config.tooltip?.format) {
+          <div [innerHTML]="displayTooltips | async"></div>
+        } @else {
+          @if (!config.tooltip?.template) {
+            <div class="padding-2 border-radius-1">
+              @for (tooltip of t; track $index) {
+                <div class="display-flex align-center">
+                  <span
+                    class="display-block margin-right-1"
+                    [style.width.px]="10"
+                    [style.height.px]="2"
+                    [style.background-color]="tooltip.series?.color"
+                  >
+                  </span>
+                  <span class="font-title-3">
+                    {{ tooltip.series?.name }}
+                    <span class="font-body-3">
+                      x: {{ format(tooltip.point?.x) }} y: {{ format(tooltip.point?.y) }}
+                    </span>
+                  </span>
+                </div>
+              }
+            </div>
+          }
+        }
+      </div>
     }
-  </div>
-  } }
-</div>
-} } }
+  }
+}

@@ -1,9 +1,9 @@
 @if (leftIconName) {
-<teta-icon [name]="leftIconName" [palette]="'text'"></teta-icon>
+  <teta-icon [name]="leftIconName" [palette]="'text'"></teta-icon>
 }
 <input
   #input
-  [ngModel]="value | tetaNumber : (!onlyNumber ? null : inputFocused ? 1000 : decimalPart)"
+  [ngModel]="value | tetaNumber: (!onlyNumber ? null : inputFocused ? 1000 : decimalPart)"
   [tetaOnlyNumber]="onlyNumber"
   (ngModelChange)="value = $event; onChange($event)"
   [placeholder]="placeholder"
@@ -15,5 +15,10 @@
   type="text"
 />
 @if (value && !disabled) {
-<teta-icon class="close-icon" [name]="'closeCircle'" [palette]="'text'" (click)="value = ''; onChange('')"></teta-icon>
+  <teta-icon
+    class="close-icon"
+    [name]="'closeCircle'"
+    [palette]="'text'"
+    (click)="value = ''; onChange('')"
+  ></teta-icon>
 }

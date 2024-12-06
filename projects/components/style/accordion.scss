@@ -58,7 +58,9 @@
     align-items: center;
     gap: 12px;
     padding: 12px;
-    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    transition:
+      background-color 0.2s ease-in-out,
+      color 0.2s ease-in-out;
 
     &_disabled {
       color: var(--color-text-30);

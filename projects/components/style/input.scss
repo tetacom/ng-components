@@ -45,7 +45,9 @@
   grid-gap: 4px;
   width: 100%;
   min-width: 0;
-  transition: border-color 0.4s, background-color 0.4s;
+  transition:
+    border-color 0.4s,
+    background-color 0.4s;
 
   @include getView('field');
 

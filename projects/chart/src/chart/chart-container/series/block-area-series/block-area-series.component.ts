@@ -39,7 +39,7 @@ export class BlockAreaSeriesComponent<T extends BasePoint>
     protected override cdr: ChangeDetectorRef,
     protected override scaleService: ScaleService,
     protected override zoomService: ZoomService,
-    protected override element: ElementRef
+    protected override element: ElementRef,
   ) {
     super(svc, cdr, scaleService, zoomService, element);
     this.id = (Date.now() + Math.random()).toString(36);
@@ -59,7 +59,7 @@ export class BlockAreaSeriesComponent<T extends BasePoint>
             (point.y <= max || point.y1 <= max || arr[index - 1]?.y <= max || arr[index - 1]?.y1 <= max)
           );
         });
-      })
+      }),
     );
   }
 

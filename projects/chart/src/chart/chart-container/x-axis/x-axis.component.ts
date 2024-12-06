@@ -34,11 +34,14 @@ export class XAxisComponent implements OnInit, OnChanges, OnDestroy {
   private update$ = new BehaviorSubject<void>(null);
   private _alive = true;
 
-  constructor(private scaleService: ScaleService, private _svc: ChartService) {
+  constructor(
+    private scaleService: ScaleService,
+    private _svc: ChartService,
+  ) {
     this.x = this.scaleService.scales.pipe(
       map((_) => {
         return _.x.get(this.axis.index)?.scale;
-      })
+      }),
     );
 
     this.ticks = combineLatest([this.x, this.update$]).pipe(
@@ -52,11 +55,11 @@ export class XAxisComponent implements OnInit, OnChanges, OnDestroy {
             getTextWidth(
               this.axis.options.tickFormat ? this.axis.options.tickFormat(_) : this.axis.defaultFormatter()(_),
               0.45,
-              11
-            )
+              11,
+            ),
           );
         return x.ticks(size.width / parseInt(d3.max(tickSize), 10) / 5);
-      })
+      }),
     );
   }
 

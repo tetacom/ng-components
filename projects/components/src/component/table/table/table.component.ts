@@ -117,11 +117,14 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
   private _headElement: HTMLElement;
   private _state: FilterState;
 
-  constructor(private _svc: TableService<T>, private _elementRef: ElementRef) {
+  constructor(
+    private _svc: TableService<T>,
+    private _elementRef: ElementRef,
+  ) {
     this._svc.state
       .pipe(
         takeWhile(() => this._alive),
-        filter((state) => state !== this._state)
+        filter((state) => state !== this._state),
       )
       .subscribe((state: FilterState) => this.stateChange.next(state));
 
@@ -362,9 +365,9 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
           return this.selectedRows?.some(
             (selectedRow) =>
               this.trackRow(this._svc.getRowIndex(selectedRow), selectedRow) ===
-              this.trackRow(this._svc.getRowIndex(row), row)
+              this.trackRow(this._svc.getRowIndex(row), row),
           );
-        })
+        }),
       );
     }
     if (Object.prototype.hasOwnProperty.call(changes, 'dict')) {
@@ -406,7 +409,7 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
 
   private getCellElement(coordinates: ICellCoordinates): HTMLElement | null {
     return this._elementRef.nativeElement.querySelector(
-      `teta-cell[data-row="${coordinates.row}"][data-column="${coordinates.column}"]`
+      `teta-cell[data-row="${coordinates.row}"][data-column="${coordinates.column}"]`,
     );
   }
 

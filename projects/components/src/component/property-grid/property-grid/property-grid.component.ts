@@ -25,6 +25,7 @@ import { TableColumn } from '../../table/contract/table-column';
 import { PropertyGridItemDescriptionDirective } from './property-grid-item-description.directive';
 import { PropertyGridGroupComponent } from './property-grid-group/property-grid-group.component';
 import { PropertyGridItemComponent } from './property-grid-item/property-grid-item.component';
+import { ArrayUtil } from '../../../common/util/array-util';
 
 @Component({
   selector: 'teta-property-grid',
@@ -60,13 +61,21 @@ export class PropertyGridComponent<T> {
 
   constructor(@Optional() private _formGroup: ControlContainer) {
     effect(() => {
-      if (this.item() && this.formGroup) {
+      if (this.item() && this.columns()?.length && this.formGroup) {
         for (const key in this.item()) {
           if (Object.prototype.hasOwnProperty.call(this.item(), key)) {
             if (!this.formGroup.get(key)) {
-              this.formGroup.setControl(key, new UntypedFormControl(this.item()[key], { updateOn: 'blur' }), {
-                emitEvent: false,
-              });
+              const currentColumn = ArrayUtil.findRecursive(this.columns(), (item) => item.name === key, 'columns');
+
+              if (currentColumn) {
+                this.formGroup.setControl(key, FormsUtil.initControlFromColumn(currentColumn, this.item()), {
+                  emitEvent: false,
+                });
+              } else {
+                this.formGroup.setControl(key, new UntypedFormControl(this.item()[key]), {
+                  emitEvent: false,
+                });
+              }
             } else {
               this.formGroup.patchValue(this.item(), {
                 emitEvent: false,

@@ -71,7 +71,7 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
     private _svc: ChartService,
     private _scaleService: ScaleService,
     private _elementRef: ElementRef,
-    private _zone: NgZone
+    private _zone: NgZone,
   ) {
     this.config = this._svc.config;
     this.size = this._svc.size;
@@ -82,7 +82,7 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
       shareReplay({
         bufferSize: 1,
         refCount: true,
-      })
+      }),
     );
 
     this.plotBands = combineLatest([this.config, this.scales]).pipe(
@@ -106,7 +106,7 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
         });
 
         return bands.sort((a, b) => a.plotBand.order - b.plotBand.order);
-      })
+      }),
     );
 
     this.brushScale = this._scaleService.scales.pipe(
@@ -121,7 +121,7 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
       shareReplay({
         bufferSize: 1,
         refCount: true,
-      })
+      }),
     );
 
     this.visibleRect = combineLatest([this.size, this.scales, this.config]).pipe(
@@ -149,7 +149,7 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
       shareReplay({
         bufferSize: 1,
         refCount: true,
-      })
+      }),
     );
   }
 
@@ -201,7 +201,7 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
 
         const nonOppisteTranslateX = nonOppositeOffsetX.reduce(
           (acc, curr) => acc + curr.selfSize,
-          config.bounds?.bottom
+          config.bounds?.bottom,
         );
 
         const left = yAxesArray
@@ -223,7 +223,7 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
         }
 
         return 'translate(0, 0)';
-      })
+      }),
     );
   }
 

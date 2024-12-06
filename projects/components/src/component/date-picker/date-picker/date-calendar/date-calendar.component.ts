@@ -53,9 +53,9 @@ export class DateCalendarComponent extends BaseCalendar implements OnChanges, On
             dayjs(new Date(this.selectedDate)).locale('ru', { weekStart: 1 }),
             year,
             month,
-            minMax
+            minMax,
           );
-        })
+        }),
       )
       .subscribe((_) => {
         this.calendar = _;

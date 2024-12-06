@@ -1,6 +1,25 @@
-@if ({ xValues: tickXValues | async, yValues: tickYValues | async, x: x | async, y: y | async, config: config | async };
-as data) { @if (data.y && data.config.gridLines?.showY !== false) { @for (tick of data.yValues; track tick) {
-<svg:line [attr.x1]="0" [attr.y1]="data.y(tick) || 1" [attr.x2]="size?.width" [attr.y2]="data.y(tick) || 1"></svg:line>
-} } @if (data.x && data.config.gridLines?.showX !== false) { @for (tick of data.xValues; track tick) {
-<svg:line [attr.x1]="data.x(tick) || 1" [attr.y1]="0" [attr.x2]="data.x(tick) || 1" [attr.y2]="size?.height"></svg:line>
-} } }
+@if (
+  { xValues: tickXValues | async, yValues: tickYValues | async, x: x | async, y: y | async, config: config | async };
+  as data
+) {
+  @if (data.y && data.config.gridLines?.showY !== false) {
+    @for (tick of data.yValues; track tick) {
+      <svg:line
+        [attr.x1]="0"
+        [attr.y1]="data.y(tick) || 1"
+        [attr.x2]="size?.width"
+        [attr.y2]="data.y(tick) || 1"
+      ></svg:line>
+    }
+  }
+  @if (data.x && data.config.gridLines?.showX !== false) {
+    @for (tick of data.xValues; track tick) {
+      <svg:line
+        [attr.x1]="data.x(tick) || 1"
+        [attr.y1]="0"
+        [attr.x2]="data.x(tick) || 1"
+        [attr.y2]="size?.height"
+      ></svg:line>
+    }
+  }
+}

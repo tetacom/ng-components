@@ -31,7 +31,10 @@ export class ScaleService {
     .set(ScaleType.sqrt, d3.scaleSqrt)
     .set(ScaleType.band, d3.scaleBand);
 
-  constructor(private chartService: ChartService, private zoomService: ZoomService) {
+  constructor(
+    private chartService: ChartService,
+    private zoomService: ZoomService,
+  ) {
     this.scales = combineLatest([this.chartService.size, this.chartService.config, this.zoomService.zoomed]).pipe(
       map((data: [DOMRectReadOnly, IChartConfig, ZoomMessage]) => {
         const [size, config, zoom] = data;
@@ -105,7 +108,7 @@ export class ScaleService {
                 x.originDomain,
                 x.scale,
                 AxisOrientation.x,
-                x.options.inverted
+                x.options.inverted,
               );
               const rescaled = transform.rescaleX(x.scale.copy());
               x.setScale(rescaled);
@@ -178,7 +181,7 @@ export class ScaleService {
                 y.originDomain,
                 y.scale,
                 AxisOrientation.y,
-                y.options.inverted
+                y.options.inverted,
               );
               const rescaled = transform.rescaleY(y.scale.copy());
               y.setScale(rescaled);
@@ -194,7 +197,7 @@ export class ScaleService {
       shareReplay({
         bufferSize: 1,
         refCount: true,
-      })
+      }),
     );
   }
 

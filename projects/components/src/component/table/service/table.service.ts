@@ -128,8 +128,8 @@ export class TableService<T> {
         (item) =>
           new TableRow<T>({
             data: item,
-          })
-      ) ?? []
+          }),
+      ) ?? [],
     );
   }
 
@@ -177,7 +177,7 @@ export class TableService<T> {
         JSON.stringify({
           hash: this.initialColumnsHash,
           columns: this.displayColumns.map((_) => new TableColumnStore(_)),
-        })
+        }),
       );
     }
   }
@@ -283,7 +283,7 @@ export class TableService<T> {
               name: column.name,
               field: column.filterField,
               value: new DateFilterValue(),
-            })
+            }),
           );
           break;
         case FilterType.string:
@@ -292,7 +292,7 @@ export class TableService<T> {
               name: column.name,
               field: column.filterField,
               value: '',
-            })
+            }),
           );
           break;
         case FilterType.number:
@@ -301,7 +301,7 @@ export class TableService<T> {
               name: column.name,
               field: column.filterField,
               value: new NumericFilterValue(),
-            })
+            }),
           );
           break;
         case FilterType.list:
@@ -311,7 +311,7 @@ export class TableService<T> {
               field: column.filterField,
               value: [],
               type: ListFilterType.None,
-            })
+            }),
           );
           break;
       }
@@ -343,7 +343,7 @@ export class TableService<T> {
 
   lockPreviousColumns(column: TableColumn, element: HTMLElement) {
     const flat = ArrayUtil.flatten(this.displayColumns, 'columns', true).sort(
-      (a, b) => Number(b.locked) - Number(a.locked)
+      (a, b) => Number(b.locked) - Number(a.locked),
     );
     const index = flat.indexOf(column);
     const previous = flat.slice(0, index).filter((_) => _.flex > 0);
@@ -691,7 +691,7 @@ export class TableService<T> {
 
   getVisibleColumns() {
     const visible = ArrayUtil.flatten(this._columns.value, 'columns', true).filter(
-      (_) => this._hiddenColumns.value.indexOf(_.name) < 0
+      (_) => this._hiddenColumns.value.indexOf(_.name) < 0,
     );
     return visible.sort((a, b) => Number(b.locked) - Number(a.locked));
   }

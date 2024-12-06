@@ -31,7 +31,10 @@ export class ListCellComponent<T> extends CellComponentBase<T> implements OnInit
 
   verticalAlign = VerticalAlign;
 
-  constructor(protected override svc: TableService<T>, protected override cdr: ChangeDetectorRef) {
+  constructor(
+    protected override svc: TableService<T>,
+    protected override cdr: ChangeDetectorRef,
+  ) {
     super(svc, cdr);
   }
 

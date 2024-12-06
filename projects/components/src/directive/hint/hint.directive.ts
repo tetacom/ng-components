@@ -51,7 +51,7 @@ export class HintDirective extends DynamicContentBaseDirective implements OnDest
     protected override _service: DynamicComponentService,
     protected override _injector: Injector,
     protected override _zone: NgZone,
-    protected override _cdr: ChangeDetectorRef
+    protected override _cdr: ChangeDetectorRef,
   ) {
     super(_document, _elementRef, _service, _injector, _zone, _cdr);
   }
@@ -92,7 +92,7 @@ export class HintDirective extends DynamicContentBaseDirective implements OnDest
         this.align,
         this.verticalAlign,
         0,
-        4
+        4,
       );
       PositionUtil.setElementPosition(this._componentRef.location.nativeElement, position);
     }

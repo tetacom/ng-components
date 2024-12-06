@@ -33,7 +33,7 @@ export class MainDropdownTabComponent<T> implements OnInit {
     private _svc: TableService<T>,
     private _config: TetaConfigService,
     private _elementRef: ElementRef,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
   ) {
     this.locale = this._config.locale;
   }

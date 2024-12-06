@@ -1,18 +1,21 @@
-@if (labelPosition==='right') {
-<div class="checkbox__tick" [class.checkbox__tick_active]="checked != false">
-  <teta-icon [name]="checked ? 'tick' : checked === false ? '' : 'dash'"></teta-icon>
-</div>
-@if (!noLabel) {
-<span class="font-body-3">
-  <ng-container *ngTemplateOutlet="content"></ng-container>
-</span>
-} } @if (labelPosition==='left') { @if (!noLabel) {
-<span class="font-body-3">
-  <ng-container *ngTemplateOutlet="content"></ng-container>
-</span>
+@if (labelPosition === 'right') {
+  <div class="checkbox__tick" [class.checkbox__tick_active]="checked != false">
+    <teta-icon [name]="checked ? 'tick' : checked === false ? '' : 'dash'"></teta-icon>
+  </div>
+  @if (!noLabel) {
+    <span class="font-body-3">
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </span>
+  }
 }
-<div class="checkbox__tick" [class.checkbox__tick_active]="checked != false">
-  <teta-icon [name]="checked ? 'tick' : checked === false ? '' : 'dash'"></teta-icon>
-</div>
+@if (labelPosition === 'left') {
+  @if (!noLabel) {
+    <span class="font-body-3">
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </span>
+  }
+  <div class="checkbox__tick" [class.checkbox__tick_active]="checked != false">
+    <teta-icon [name]="checked ? 'tick' : checked === false ? '' : 'dash'"></teta-icon>
+  </div>
 }
 <ng-template #content><ng-content></ng-content></ng-template>

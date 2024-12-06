@@ -22,7 +22,7 @@ export class DynamicComponentService {
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
     private _rendererFactory: RendererFactory2,
-    private _appRef: ApplicationRef
+    private _appRef: ApplicationRef,
   ) {
     this._renderer = this._rendererFactory.createRenderer(null, null);
   }
@@ -31,7 +31,7 @@ export class DynamicComponentService {
     component: Type<T>,
     contentRef: TetaContentRef,
     injector: Injector,
-    container: any
+    container: any,
   ): ComponentRef<T> {
     const componentRef = this._componentFactoryResolver
       .resolveComponentFactory(component)
@@ -44,7 +44,7 @@ export class DynamicComponentService {
   createContent(
     content: string | TemplateRef<any> | Type<any> | null | undefined,
     injector: Injector,
-    context?: any
+    context?: any,
   ): TetaContentRef {
     if (content === null || content === undefined) {
       throw new Error('Content is undefined');
@@ -61,7 +61,7 @@ export class DynamicComponentService {
   destroy<T>(
     component: ComponentRef<T> | null | undefined,
     content: TetaContentRef | null,
-    container: HTMLElement
+    container: HTMLElement,
   ): void {
     if (component) {
       this._appRef.detachView(component.hostView);

@@ -59,7 +59,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     private elementRef: ElementRef,
     private zoomService: ZoomService,
     private chartService: ChartService,
-    private zone: NgZone
+    private zone: NgZone,
   ) {}
 
   ngOnInit() {
@@ -98,7 +98,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
             this.axis.originDomain,
             scale,
             this.axis.orientation,
-            this.axis.options.inverted
+            this.axis.options.inverted,
           );
         }
         this._element.call(this.zoom.transform, transform);
@@ -149,8 +149,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
       const maxZoom = this.config.zoom?.max
         ? (extremes[1] - extremes[0]) / this.config.zoom?.max
         : this.config.zoom?.limitZoomByData
-        ? 1
-        : 0;
+          ? 1
+          : 0;
 
       const minZoom = this.config.zoom?.min ? (extremes[1] - extremes[0]) / this.config.zoom?.min : Infinity;
 

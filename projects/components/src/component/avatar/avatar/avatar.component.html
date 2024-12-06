@@ -1,26 +1,26 @@
 <div [class]="avatar">
   @if (photo) {
-  <img [class]="'avatar_' + this.viewType" [src]="photo" alt="" />
+    <img [class]="'avatar_' + this.viewType" [src]="photo" alt="" />
   } @else {
-  <div
-    [class]="'avatar_' + this.viewType"
-    [style.background-color]="colorMap.get(id % 17) || colorMap.get(0)"
-    class="column align-center justify-content-center position-relative"
-  >
-    @if (name) {
-    <p>{{ name }}</p>
-    } @else {
-    <teta-icon
-      class="width-10 height-10"
-      style="fill: white;width:{{ size }}px; height:{{ size }}px"
-      name="photoCamera"
-    ></teta-icon>
-    }
     <div
       [class]="'avatar_' + this.viewType"
-      class="position-absolute"
-      style="width: 100%;z-index:1;height: 100%; background: linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0) 100%);'"
-    ></div>
-  </div>
+      [style.background-color]="colorMap.get(id % 17) || colorMap.get(0)"
+      class="column align-center justify-content-center position-relative"
+    >
+      @if (name) {
+        <p>{{ name }}</p>
+      } @else {
+        <teta-icon
+          class="width-10 height-10"
+          style="fill: white;width:{{ size }}px; height:{{ size }}px"
+          name="photoCamera"
+        ></teta-icon>
+      }
+      <div
+        [class]="'avatar_' + this.viewType"
+        class="position-absolute"
+        style="width: 100%;z-index:1;height: 100%; background: linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0) 100%);'"
+      ></div>
+    </div>
   }
 </div>

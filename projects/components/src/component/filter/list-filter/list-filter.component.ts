@@ -61,7 +61,10 @@ export class ListFilterComponent<T> extends FilterComponentBase<T> implements On
 
   excluded: boolean;
 
-  constructor(private changeDetector: ChangeDetectorRef, private _config: TetaConfigService) {
+  constructor(
+    private changeDetector: ChangeDetectorRef,
+    private _config: TetaConfigService,
+  ) {
     super();
     this.locale = this._config.locale;
   }
@@ -106,7 +109,7 @@ export class ListFilterComponent<T> extends FilterComponentBase<T> implements On
           value: [],
           type: this.column.listFilterType,
           name: this.column.name,
-        })
+        }),
       );
     }
     this.excluded = filter.type === ListFilterType.Excluded;

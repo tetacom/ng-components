@@ -18,12 +18,15 @@ export class ZoomService implements OnDestroy {
   private broadcastChannel: string;
   private broadcastSub: Subscription;
 
-  constructor(private _broadcast: BroadcastService, private _chart: ChartService) {
+  constructor(
+    private _broadcast: BroadcastService,
+    private _chart: ChartService,
+  ) {
     this.zoomed = this.zoomed$.asObservable().pipe(
       shareReplay({
         bufferSize: 1,
         refCount: true,
-      })
+      }),
     );
   }
 
@@ -55,7 +58,7 @@ export class ZoomService implements OnDestroy {
                 (zoom.message.axis.orientation === AxisOrientation.y && config.zoom.syncType === ZoomType.y) ||
                 (zoom.message.axis.orientation === AxisOrientation.x && config.zoom.syncType === ZoomType.x))
             );
-          })
+          }),
         )
         .subscribe(([zoom, config]) => {
           this.fireZoom(zoom.message);
@@ -68,7 +71,7 @@ export class ZoomService implements OnDestroy {
     originalDomain: [number, number],
     scale,
     orientation: AxisOrientation,
-    inverted: boolean
+    inverted: boolean,
   ) {
     const zoomScale =
       Math.abs(scale(originalDomain[1]) - scale(originalDomain[0])) /

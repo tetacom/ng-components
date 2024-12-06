@@ -18,7 +18,10 @@ import { ToolbarComponent } from '../../../toolbar/toolbar/toolbar.component';
 export class ModalExampleComponent implements OnInit {
   closeReason = ModalCloseReason;
 
-  constructor(public modal: CurrentModal, private data: DynamicData) {}
+  constructor(
+    public modal: CurrentModal,
+    private data: DynamicData,
+  ) {}
 
   ngOnInit(): void {}
 }

@@ -74,12 +74,12 @@ export class DropdownBase {
     protected _document: any,
     protected _elementRef: ElementRef<HTMLElement>,
     protected _zone: NgZone,
-    protected _renderer: Renderer2
+    protected _renderer: Renderer2,
   ) {
     this._zone.onStable
       .pipe(
         takeWhile((_) => this._alive),
-        throttleTime(10, undefined, { trailing: true })
+        throttleTime(10, undefined, { trailing: true }),
       )
       .subscribe((_) => {
         if (this._head?.nativeElement && this._body) {

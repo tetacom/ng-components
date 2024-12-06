@@ -125,14 +125,18 @@ export class SelectComponent implements ControlValueAccessor {
       return this.options;
     }
     return this.options?.filter(
-      (option) => this.getSearchString(option).toLowerCase().indexOf(this.searchText.toLowerCase()) >= 0
+      (option) => this.getSearchString(option).toLowerCase().indexOf(this.searchText.toLowerCase()) >= 0,
     );
   }
 
   private _options: any | any[];
   private _internalValue: any;
 
-  constructor(private _cdr: ChangeDetectorRef, private _elementRef: ElementRef, private _config: TetaConfigService) {
+  constructor(
+    private _cdr: ChangeDetectorRef,
+    private _elementRef: ElementRef,
+    private _config: TetaConfigService,
+  ) {
     this.locale = this._config.locale;
   }
 

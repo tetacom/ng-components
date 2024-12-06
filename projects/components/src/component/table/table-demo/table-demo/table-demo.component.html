@@ -34,13 +34,13 @@
     <div class="list-divider"></div>
     <div class="list-item list-item_interactive" (click)="copy()">Copy</div>
     @if (selectedRows?.length > 0) {
-    <div class="list-item list-item_interactive" (click)="copyAll()">Copy selected</div>
+      <div class="list-item list-item_interactive" (click)="copyAll()">Copy selected</div>
     }
     <div class="list-item list-item_interactive" (click)="paste()">Paste</div>
     <div class="list-divider"></div>
     <div class="list-item list-item_interactive" (click)="delete(selectedRows)">Удалить</div>
     @if (selectedRows?.length > 0) {
-    <div class="list-item list-item_interactive" (click)="deleteAll()">Удалить выделенные</div>
+      <div class="list-item list-item_interactive" (click)="deleteAll()">Удалить выделенные</div>
     }
     {{ activeRow.name | json }}
   </div>

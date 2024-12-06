@@ -21,7 +21,7 @@ export class MessageSampleComponent implements OnInit {
     infinite: boolean,
     palette: string,
     className?: string,
-    template?: TemplateRef<any>
+    template?: TemplateRef<any>,
   ) {
     this._svc.add(
       new Message({
@@ -32,7 +32,7 @@ export class MessageSampleComponent implements OnInit {
         text,
         template,
         infinite,
-      })
+      }),
     );
   }
 

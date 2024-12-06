@@ -69,13 +69,13 @@ export class VisibilityDropdownTabComponent<T> implements OnDestroy {
     private _svc: TableService<T>,
     private _config: TetaConfigService,
     private _elementRef: ElementRef,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
   ) {
     this.locale = this._config.locale;
     this._svc.hiddenColumns
       .pipe(
         takeWhile((_) => this._alive),
-        map((_) => [..._])
+        map((_) => [..._]),
       )
       .subscribe((_) => {
         this.hiddenColumns = _;

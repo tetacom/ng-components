@@ -28,7 +28,10 @@ export class SelectionCellComponent<T> implements OnInit, OnDestroy {
 
   private _alive = true;
 
-  constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {}
+  constructor(
+    private _svc: TableService<T>,
+    private _cdr: ChangeDetectorRef,
+  ) {}
 
   selectRow(value: boolean) {
     if (value) {

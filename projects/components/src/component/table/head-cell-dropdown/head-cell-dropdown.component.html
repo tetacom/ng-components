@@ -1,27 +1,29 @@
 @if (dropDownOpen) {
-<teta-tabs class="column_auto">
-  @for (tab of tabTemplates; track trackIndex($index)) { @if (tab.showTab(column)) {
-  <teta-tab>
-    <ng-template tetaTabTitle>
-      @if (tab.icon) {
-      <teta-icon [name]="tab.icon" [palette]="'text'"></teta-icon>
+  <teta-tabs class="column_auto">
+    @for (tab of tabTemplates; track trackIndex($index)) {
+      @if (tab.showTab(column)) {
+        <teta-tab>
+          <ng-template tetaTabTitle>
+            @if (tab.icon) {
+              <teta-icon [name]="tab.icon" [palette]="'text'"></teta-icon>
+            }
+          </ng-template>
+          <ng-template tetaTabContent>
+            <ng-container
+              *ngTemplateOutlet="
+                tab.template;
+                context: {
+                  column: column,
+                  columns: columns,
+                  data: data,
+                  state: state,
+                  close: closeDropdown,
+                }
+              "
+            ></ng-container>
+          </ng-template>
+        </teta-tab>
       }
-    </ng-template>
-    <ng-template tetaTabContent>
-      <ng-container
-        *ngTemplateOutlet="
-          tab.template;
-          context: {
-            column: column,
-            columns: columns,
-            data: data,
-            state: state,
-            close: closeDropdown
-          }
-        "
-      ></ng-container>
-    </ng-template>
-  </teta-tab>
-  } }
-</teta-tabs>
+    }
+  </teta-tabs>
 }

@@ -29,7 +29,10 @@ export class ClickOutsideDirective implements OnDestroy {
     return this._handleEvents;
   }
 
-  constructor(private _elementRef: ElementRef, private _ngZone: NgZone) {}
+  constructor(
+    private _elementRef: ElementRef,
+    private _ngZone: NgZone,
+  ) {}
 
   ngOnDestroy(): void {
     this.removeListener();

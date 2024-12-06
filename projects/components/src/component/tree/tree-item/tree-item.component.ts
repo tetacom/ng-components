@@ -52,7 +52,10 @@ export class TreeItemComponent implements OnInit, OnChanges, OnDestroy {
     return this.depth + (this.item[this.childNodeName]?.length > 0 ? 0 : this.childPadding ? 2 : 1);
   }
 
-  constructor(public service: TreeService, private _cdr: ChangeDetectorRef) {}
+  constructor(
+    public service: TreeService,
+    private _cdr: ChangeDetectorRef,
+  ) {}
 
   openItem() {
     this.service.openItem(this.item);

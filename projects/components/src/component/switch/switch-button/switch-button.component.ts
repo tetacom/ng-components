@@ -34,7 +34,10 @@ export class SwitchButtonComponent implements OnInit, OnDestroy {
   private svcValue: any;
   private _alive = true;
 
-  constructor(private svc: SwitchService, private cdr: ChangeDetectorRef) {
+  constructor(
+    private svc: SwitchService,
+    private cdr: ChangeDetectorRef,
+  ) {
     this.svc.value.pipe(takeWhile((_) => this._alive)).subscribe((_) => {
       this.svcValue = _;
       this.cdr.markForCheck();

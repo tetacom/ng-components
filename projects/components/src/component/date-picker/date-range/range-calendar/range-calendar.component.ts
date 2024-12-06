@@ -77,16 +77,16 @@ export class RangeCalendarComponent extends BaseCalendar implements OnChanges, O
               dayjs(new Date(this.selectedDate.from || new Date())).locale('ru', { weekStart: 1 }),
               year,
               month,
-              minMax
+              minMax,
             ),
             nextMonth: this.generateCalendar(
               dayjs(new Date(this.selectedDate.from || new Date())).locale('ru', { weekStart: 1 }),
               availableYear,
               availableMonth,
-              minMax
+              minMax,
             ),
           };
-        })
+        }),
       )
       .subscribe((_) => {
         this.calendar = _;

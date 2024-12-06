@@ -12,6 +12,6 @@ export class StepperComponent {
   steps = input.required<IIdName<number>[]>();
   currentStepId = input.required<number>();
   currentIndex: Signal<number> = computed(
-    () => this.steps().findIndex((step) => step.id === this.currentStepId()) ?? 0
+    () => this.steps().findIndex((step) => step.id === this.currentStepId()) ?? 0,
   );
 }

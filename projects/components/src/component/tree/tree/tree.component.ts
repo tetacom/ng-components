@@ -80,12 +80,12 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy {
     private _service: TreeService,
     private _elementRef: ElementRef,
     private _cdr: ChangeDetectorRef,
-    private _zone: NgZone
+    private _zone: NgZone,
   ) {
     this._service.openItems
       .pipe(
         takeWhile((_) => this._alive),
-        filter((_) => this._openItems !== _)
+        filter((_) => this._openItems !== _),
       )
       .subscribe((_: ITreeData[]) => {
         this._openItems = _;

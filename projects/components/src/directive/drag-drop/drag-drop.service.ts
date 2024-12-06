@@ -26,7 +26,10 @@ export class DragDropService<T> {
   private _previewRef: EmbeddedViewRef<any>;
   private dropped$ = new Subject<DropEvent<T>>();
 
-  constructor(@Inject(DOCUMENT) private _document: Document, private _rendererFactory: RendererFactory2) {
+  constructor(
+    @Inject(DOCUMENT) private _document: Document,
+    private _rendererFactory: RendererFactory2,
+  ) {
     this._renderer = this._rendererFactory.createRenderer(null, null);
     this.dropTarget = this.dropTarget$.asObservable();
     this.dropped = this.dropped$.asObservable();
@@ -34,7 +37,7 @@ export class DragDropService<T> {
       .pipe(
         filter(() => {
           return this.startPosition != null;
-        })
+        }),
       )
       .subscribe((event: MouseEvent) => {
         if (!this.dragProcess && this.getDelta(event) > this._delta) {
@@ -138,7 +141,7 @@ export class DragDropService<T> {
         {
           $implicit: this.dragProcess.selection.items,
           data: this.dragProcess.selection.items,
-        }
+        },
       );
       const preview = this._renderer.createElement('div');
       this._renderer.setStyle(preview, 'position', 'fixed');

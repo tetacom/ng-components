@@ -22,7 +22,10 @@ export class OnlyNumberDirective {
 
   private readonly _minusSign: string = '-';
 
-  constructor(private _elementRef: ElementRef<HTMLInputElement>, private _control: NgControl) {}
+  constructor(
+    private _elementRef: ElementRef<HTMLInputElement>,
+    private _control: NgControl,
+  ) {}
 
   @HostListener('change', ['$event']) onChange(e: any) {
     if (this.tetaOnlyNumber === false) {
@@ -93,7 +96,7 @@ export class OnlyNumberDirective {
         // this._elementRef.nativeElement.value =
         //   `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`;
         this._control.control.patchValue(
-          `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`
+          `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`,
         );
         if (this._elementRef.nativeElement.setSelectionRange) {
           this._elementRef.nativeElement.setSelectionRange(cursorPosition + 1, cursorPosition + 1);

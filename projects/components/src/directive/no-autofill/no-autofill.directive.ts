@@ -9,7 +9,10 @@ import { Directive, ElementRef, OnInit, Renderer2 } from '@angular/core';
  * Disable autofill inputs in Chrome. Append hidden inputs with text/password type, to element.
  */
 export class NoAutofillDirective implements OnInit {
-  constructor(private _renderer: Renderer2, private _elementRef: ElementRef) {}
+  constructor(
+    private _renderer: Renderer2,
+    private _elementRef: ElementRef,
+  ) {}
 
   ngOnInit() {
     const inputsTypes = ['text', 'password'];
@@ -22,7 +25,7 @@ export class NoAutofillDirective implements OnInit {
       this._renderer.insertBefore(
         this._elementRef.nativeElement,
         inputElement,
-        this._elementRef.nativeElement.firstChild
+        this._elementRef.nativeElement.firstChild,
       );
     });
   }

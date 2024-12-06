@@ -8,7 +8,7 @@ export function tetaZoneFull<T>(ngZone: NgZone): MonoTypeOperatorFunction<T> {
         next: (value) => ngZone.run(() => subscriber.next(value)),
         error: (error: unknown) => ngZone.run(() => subscriber.error(error)),
         complete: () => ngZone.run(() => subscriber.complete()),
-      })
+      }),
     );
 }
 

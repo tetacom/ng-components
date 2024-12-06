@@ -124,7 +124,7 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
     private _svc: TableService<T>,
     private _app: ApplicationRef,
     private _elementRef: ElementRef,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
   ) {}
 
   dragstart(event: DragEvent): void {
@@ -180,7 +180,7 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
           return 'filter';
         }
         return '';
-      })
+      }),
     );
 
     this.observer = new IntersectionObserver(
@@ -195,7 +195,7 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
       {
         root: this._svc.getTableElement(this._elementRef.nativeElement),
         threshold: [1],
-      }
+      },
     );
     this.observer.observe(this._elementRef.nativeElement);
   }

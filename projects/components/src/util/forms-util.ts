@@ -69,7 +69,7 @@ export class FormsUtil {
         validators: FormsUtil.getValidators(column),
         updateOn:
           column.filterType === FilterType.number || column.filterType === FilterType.string ? 'blur' : 'change',
-      }
+      },
     );
   }
 

@@ -2,17 +2,17 @@
   {{ getValue(control.value) }}
 </span>
 @if (edit) {
-<teta-select
-  #input
-  class="row_auto select-table"
-  [allowNull]="!column.required"
-  [verticalAlign]="verticalAlign.auto"
-  [appendToBody]="true"
-  [options]="displayFilterOptions"
-  [valueRef]="'id'"
-  [textRef]="'name'"
-  [searchRef]="displayFilterOptions?.length > 20 ? 'name' : ''"
-  [formControl]="control"
->
-</teta-select>
+  <teta-select
+    #input
+    class="row_auto select-table"
+    [allowNull]="!column.required"
+    [verticalAlign]="verticalAlign.auto"
+    [appendToBody]="true"
+    [options]="displayFilterOptions"
+    [valueRef]="'id'"
+    [textRef]="'name'"
+    [searchRef]="displayFilterOptions?.length > 20 ? 'name' : ''"
+    [formControl]="control"
+  >
+  </teta-select>
 }

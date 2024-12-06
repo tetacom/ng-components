@@ -39,7 +39,7 @@ export class SeriesBaseComponent<T extends BasePoint> implements OnInit {
     protected scaleService: ScaleService,
     protected zoomService: ZoomService,
     protected element: ElementRef,
-    protected zone?: NgZone
+    protected zone?: NgZone,
   ) {}
 
   ngOnInit(): void {}

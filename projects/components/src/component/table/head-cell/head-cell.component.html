@@ -18,28 +18,28 @@
     >
       <teta-head-cell-host [column]="column" [columns]="columns | async" [data]="data"></teta-head-cell-host>
       @if (iconName | async; as icon) {
-      <teta-icon [palette]="'text'" [name]="icon"></teta-icon>
+        <teta-icon [palette]="'text'" [name]="icon"></teta-icon>
       }
     </div>
     @if (showHeadCellMenu) {
-    <teta-head-cell-dropdown
-      tetaDropdownContent
-      [tabTemplates]="tabTemplates"
-      [data]="data"
-      [column]="column"
-      [columns]="columns | async"
-      [state]="state | async"
-      [(dropDownOpen)]="dropDownOpen"
-    ></teta-head-cell-dropdown>
+      <teta-head-cell-dropdown
+        tetaDropdownContent
+        [tabTemplates]="tabTemplates"
+        [data]="data"
+        [column]="column"
+        [columns]="columns | async"
+        [state]="state | async"
+        [(dropDownOpen)]="dropDownOpen"
+      ></teta-head-cell-dropdown>
     }
   </teta-dropdown>
   @if (showDrag) {
-  <div
-    class="drop-area"
-    draggable="false"
-    [class.drop-area_left]="showDrag === 'left'"
-    [class.drop-area_right]="showDrag === 'right'"
-  ></div>
+    <div
+      class="drop-area"
+      draggable="false"
+      [class.drop-area_left]="showDrag === 'left'"
+      [class.drop-area_right]="showDrag === 'right'"
+    ></div>
   }
 </div>
 <div

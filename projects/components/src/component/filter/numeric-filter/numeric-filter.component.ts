@@ -54,7 +54,10 @@ export class NumericFilterComponent<T> extends FilterComponentBase<T> implements
   }
   locale: Observable<TetaLocalisation>;
 
-  constructor(private changeDetector: ChangeDetectorRef, private _config: TetaConfigService) {
+  constructor(
+    private changeDetector: ChangeDetectorRef,
+    private _config: TetaConfigService,
+  ) {
     super();
     this.locale = this._config.locale;
   }
@@ -72,7 +75,7 @@ export class NumericFilterComponent<T> extends FilterComponentBase<T> implements
           field: this.column.filterField,
           name: this.column.name,
           strict: true,
-        })
+        }),
       );
     }
     return filter;

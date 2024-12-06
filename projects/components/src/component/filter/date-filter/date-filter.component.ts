@@ -52,7 +52,10 @@ export class DateFilterComponent<T> extends FilterComponentBase<T> implements On
   }
   locale: Observable<TetaLocalisation>;
 
-  constructor(private changeDetector: ChangeDetectorRef, private _config: TetaConfigService) {
+  constructor(
+    private changeDetector: ChangeDetectorRef,
+    private _config: TetaConfigService,
+  ) {
     super();
     this.locale = this._config.locale;
   }
@@ -69,7 +72,7 @@ export class DateFilterComponent<T> extends FilterComponentBase<T> implements On
           value: new DateFilterValue(),
           field: this.column.filterField,
           name: this.column.name,
-        })
+        }),
       );
     }
     return filter;

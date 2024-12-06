@@ -34,7 +34,7 @@ export class LoaderDirective implements OnDestroy {
     private _elementRef: ElementRef,
     private _renderer: Renderer2,
     @Inject(DOCUMENT) private _document: any,
-    protected _zone: NgZone
+    protected _zone: NgZone,
   ) {
     this._element = this._elementRef.nativeElement;
     this._zone.onStable.pipe(takeWhile((_) => this._alive)).subscribe((_) => {

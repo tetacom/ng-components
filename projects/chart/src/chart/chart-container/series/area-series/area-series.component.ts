@@ -31,7 +31,7 @@ export class AreaSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T
     protected override cdr: ChangeDetectorRef,
     protected override scaleService: ScaleService,
     protected override zoomService: ZoomService,
-    protected override element: ElementRef
+    protected override element: ElementRef,
   ) {
     super(svc, cdr, scaleService, zoomService, element);
     this.id = (Date.now() + Math.random()).toString(36);
@@ -82,7 +82,7 @@ export class AreaSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T
         }
 
         return area(filteredData);
-      })
+      }),
     );
   }
 }

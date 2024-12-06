@@ -82,7 +82,7 @@ export class DateRangeComponent extends BasePicker implements OnInit, ControlVal
     override _cdr: ChangeDetectorRef,
     override _elementRef: ElementRef,
     override datePipe: DatePipe,
-    private localeService: TetaConfigService
+    private localeService: TetaConfigService,
   ) {
     super(_elementRef, _cdr, datePipe);
     this.locale = this.localeService.locale;

@@ -1,18 +1,18 @@
 @if (transform | async; as t) {
-<svg:line
-  [attr.x1]="t.x"
-  y1="0"
-  [attr.x2]="t.x"
-  [attr.y2]="size.height"
-  stroke="var(--color-text-90)"
-  stroke-width="0.5"
-></svg:line>
-<svg:line
-  x1="0"
-  [attr.y1]="t.y"
-  [attr.x2]="size.width"
-  [attr.y2]="t.y"
-  stroke="var(--color-text-90)"
-  stroke-width="0.5"
-></svg:line>
+  <svg:line
+    [attr.x1]="t.x"
+    y1="0"
+    [attr.x2]="t.x"
+    [attr.y2]="size.height"
+    stroke="var(--color-text-90)"
+    stroke-width="0.5"
+  ></svg:line>
+  <svg:line
+    x1="0"
+    [attr.y1]="t.y"
+    [attr.x2]="size.width"
+    [attr.y2]="t.y"
+    stroke="var(--color-text-90)"
+    stroke-width="0.5"
+  ></svg:line>
 }

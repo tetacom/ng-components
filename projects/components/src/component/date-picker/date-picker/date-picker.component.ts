@@ -96,7 +96,7 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
     override _elementRef: ElementRef,
     override _cdr: ChangeDetectorRef,
     override datePipe: DatePipe,
-    private localeService: TetaConfigService
+    private localeService: TetaConfigService,
   ) {
     super(_elementRef, _cdr, datePipe);
     this.locale = this.localeService.locale;

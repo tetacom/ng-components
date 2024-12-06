@@ -21,7 +21,10 @@ export class DialogComponent implements OnInit {
   @Input() buttonPalette: string;
   @Input() showCancelButton: boolean;
 
-  constructor(public modal: CurrentModal, private data: DynamicData) {}
+  constructor(
+    public modal: CurrentModal,
+    private data: DynamicData,
+  ) {}
 
   cancel() {
     this.modal.close({

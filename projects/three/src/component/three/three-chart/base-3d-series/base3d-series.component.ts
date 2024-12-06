@@ -22,5 +22,8 @@ export class Base3dSeriesComponent<T extends Base3dThreePoint> {
     return this._series;
   }
   protected _series: Base3dSeries<T>;
-  constructor(protected svc: Chart3dService, protected ngtStore: NgtStore) {}
+  constructor(
+    protected svc: Chart3dService,
+    protected ngtStore: NgtStore,
+  ) {}
 }

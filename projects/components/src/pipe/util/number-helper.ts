@@ -16,7 +16,7 @@ export const formatNumber = (
   decimalLength: number,
   chunkDelimiter: string,
   decimalDelimiter: string,
-  chunkLength: number
+  chunkLength: number,
 ) => {
   const abs = Math.abs(value);
   if (0 < abs && 1 > abs) {
@@ -28,7 +28,7 @@ export const formatNumber = (
   const num = value.toFixed(precision);
   return (decimalDelimiter ? num.replace('.', decimalDelimiter) : num).replace(
     new RegExp(result, 'g'),
-    '$&' + chunkDelimiter
+    '$&' + chunkDelimiter,
   );
 };
 

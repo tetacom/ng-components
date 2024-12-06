@@ -3,31 +3,34 @@
     {{ column().caption }}
   </span>
   <div class="form-container">
-    @for (col of column().columns; track col.name) { @if (col.columns?.length < 1) { @if (column().editable ||
-    !hideNonEditable) {
-    <teta-property-grid-item
-      [id]="col.name"
-      [dict]="dict()"
-      [column]="col"
-      [item]="item()"
-      [itemTemplates]="itemTemplates()"
-      [decimalPart]="decimalPart()"
-      [hideNonEditable]="hideNonEditable()"
-      (controlValueChange)="controlValueChange.emit($event)"
-      [horizontal]="horizontal()"
-    ></teta-property-grid-item>
-    } } @else {
-    <teta-property-grid-group
-      [id]="col.name"
-      [dict]="dict()"
-      [column]="col"
-      [item]="item()"
-      [itemTemplates]="itemTemplates()"
-      [decimalPart]="decimalPart()"
-      [hideNonEditable]="hideNonEditable()"
-      [horizontal]="horizontal()"
-      (controlValueChange)="controlValueChange.emit($event)"
-    ></teta-property-grid-group>
-    } }
+    @for (col of column().columns; track col.name) {
+      @if (col.columns?.length < 1) {
+        @if (column().editable || !hideNonEditable) {
+          <teta-property-grid-item
+            [id]="col.name"
+            [dict]="dict()"
+            [column]="col"
+            [item]="item()"
+            [itemTemplates]="itemTemplates()"
+            [decimalPart]="decimalPart()"
+            [hideNonEditable]="hideNonEditable()"
+            (controlValueChange)="controlValueChange.emit($event)"
+            [horizontal]="horizontal()"
+          ></teta-property-grid-item>
+        }
+      } @else {
+        <teta-property-grid-group
+          [id]="col.name"
+          [dict]="dict()"
+          [column]="col"
+          [item]="item()"
+          [itemTemplates]="itemTemplates()"
+          [decimalPart]="decimalPart()"
+          [hideNonEditable]="hideNonEditable()"
+          [horizontal]="horizontal()"
+          (controlValueChange)="controlValueChange.emit($event)"
+        ></teta-property-grid-group>
+      }
+    }
   </div>
 </teta-expand-item>

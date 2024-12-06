@@ -59,7 +59,10 @@ export class TableHeadComponent<T> implements OnInit, OnDestroy {
 
   data: T[];
 
-  constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {}
+  constructor(
+    private _svc: TableService<T>,
+    private _cdr: ChangeDetectorRef,
+  ) {}
 
   track(index: number, item: TableColumn): any {
     return item.name;
@@ -73,7 +76,7 @@ export class TableHeadComponent<T> implements OnInit, OnDestroy {
         this._hiddenColumns = hiddenColumns;
         this.columns = columns;
         const locked = ArrayUtil.flatten(columns, 'columns', true).filter(
-          (_) => this._hiddenColumns.indexOf(_.name) < 0 && _.locked
+          (_) => this._hiddenColumns.indexOf(_.name) < 0 && _.locked,
         );
         const startWidth = this.selectType === SelectType.checkBox ? 28 : 0;
         this.lockedFlex = locked.reduce((prev: number, curr: TableColumn) => prev + curr.flex, 0);

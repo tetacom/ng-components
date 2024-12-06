@@ -101,7 +101,7 @@ export class DragDirective<T> implements OnInit, OnDestroy {
     private _container: DragContainerDirective<T>,
     private _dragService: DragDropService<T>,
     private _zone: NgZone,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -122,7 +122,7 @@ export class DragDirective<T> implements OnInit, OnDestroy {
       .pipe(
         filter((event: DropEvent<T>) => {
           return event.target === this.instance;
-        })
+        }),
       )
       .subscribe((event) => {
         this.tetaDrop.emit(event);

@@ -1,69 +1,74 @@
-@if ({ y: y | async, x: x | async, points: displayPoints | async }; as data) { @if (series?.fillType ===
-fillType.gradient) {
-<svg:defs>
-  <svg:linearGradient
-    [id]="'gradient-fill-' + id"
-    gradientUnits="userSpaceOnUse"
-    x1="0%"
-    [attr.y1]="config?.inverted ? '0%' : '100%'"
-    [attr.x2]="config?.inverted ? '100%' : '0%'"
-    y2="0%"
-  >
-    <svg:stop offset="0%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0"></svg:stop>
-    <svg:stop offset="5%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.1"></svg:stop>
-    <svg:stop offset="20%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.2"></svg:stop>
-    <svg:stop offset="60%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.5"></svg:stop>
-    <svg:stop offset="100%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.9"></svg:stop>
-  </svg:linearGradient>
-</svg:defs>
-} @if (data.x && data.y) { @for (point of data.points; track point) {
-<svg:g (mouseenter)="mouseenter(point)" (mouseleave)="mouseleave(point)">
-  @if (!!config.inverted) {
-  <svg:rect
-    [attr.x]="data.x(0) < data.x(point.x) ? data.x(0) : data.x(point.x)"
-    [attr.y]="data.y(point.y)"
-    [attr.height]="Math.abs(data.y(point.y1) - data.y(point.y))"
-    [attr.width]="data.x(0) < data.x(point.x) ? data.x(point.x) - data.x(0) : data.x(0) - data.x(point.x)"
-    [attr.stroke]="point.iconId ? '' : point.color ?? series.style?.stroke ?? series.color"
-    [attr.stroke-dasharray]="series.style?.strokeDasharray"
-    [attr.stroke-width]="series.style?.strokeWidth"
-    [attr.fill]="
-      series.fillType === fillType.gradient
-        ? 'url(#gradient-fill-' + id + ')'
-        : point.iconId
-        ? 'url(#pattern' + point.iconId + ')'
-        : point.color ?? series.style?.fill ?? series.color
-    "
-    [attr.fill-opacity]="series.style?.fillOpacity"
-  ></svg:rect>
-  } @else {
-  <svg:rect
-    [attr.x]="data.x(point.x)"
-    [attr.y]="data.y(0)"
-    [attr.height]="Math.abs(data.y(0) - data.y(point.y))"
-    [attr.width]="data.x(point.x1) - data.x(point.x)"
-    [attr.stroke]="point.iconId ? '' : point.color ?? series.color"
-    [attr.stroke-dasharray]="series.style?.strokeDasharray"
-    [attr.stroke-width]="series.style?.strokeWidth"
-    [attr.fill]="
-      series.fillType === fillType.gradient
-        ? 'url(#gradient-fill-' + id + ')'
-        : point.iconId
-        ? 'url(#pattern' + point.iconId + ')'
-        : point.color ?? series.color
-    "
-    [attr.fill-opacity]="series.style?.fillOpacity"
-  ></svg:rect>
-  } @if (point.text) {
-  <svg:text
-    x="50%"
-    fill="var(--color-text-50)"
-    [attr.y]="(data.y(point.y1) + data.y(point.y)) / 2"
-    alignment-baseline="middle"
-    text-anchor="middle"
-  >
-    {{ point.text }}
-  </svg:text>
+@if ({ y: y | async, x: x | async, points: displayPoints | async }; as data) {
+  @if (series?.fillType === fillType.gradient) {
+    <svg:defs>
+      <svg:linearGradient
+        [id]="'gradient-fill-' + id"
+        gradientUnits="userSpaceOnUse"
+        x1="0%"
+        [attr.y1]="config?.inverted ? '0%' : '100%'"
+        [attr.x2]="config?.inverted ? '100%' : '0%'"
+        y2="0%"
+      >
+        <svg:stop offset="0%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0"></svg:stop>
+        <svg:stop offset="5%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.1"></svg:stop>
+        <svg:stop offset="20%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.2"></svg:stop>
+        <svg:stop offset="60%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.5"></svg:stop>
+        <svg:stop offset="100%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.9"></svg:stop>
+      </svg:linearGradient>
+    </svg:defs>
   }
-</svg:g>
-} } }
+  @if (data.x && data.y) {
+    @for (point of data.points; track point) {
+      <svg:g (mouseenter)="mouseenter(point)" (mouseleave)="mouseleave(point)">
+        @if (!!config.inverted) {
+          <svg:rect
+            [attr.x]="data.x(0) < data.x(point.x) ? data.x(0) : data.x(point.x)"
+            [attr.y]="data.y(point.y)"
+            [attr.height]="Math.abs(data.y(point.y1) - data.y(point.y))"
+            [attr.width]="data.x(0) < data.x(point.x) ? data.x(point.x) - data.x(0) : data.x(0) - data.x(point.x)"
+            [attr.stroke]="point.iconId ? '' : (point.color ?? series.style?.stroke ?? series.color)"
+            [attr.stroke-dasharray]="series.style?.strokeDasharray"
+            [attr.stroke-width]="series.style?.strokeWidth"
+            [attr.fill]="
+              series.fillType === fillType.gradient
+                ? 'url(#gradient-fill-' + id + ')'
+                : point.iconId
+                  ? 'url(#pattern' + point.iconId + ')'
+                  : (point.color ?? series.style?.fill ?? series.color)
+            "
+            [attr.fill-opacity]="series.style?.fillOpacity"
+          ></svg:rect>
+        } @else {
+          <svg:rect
+            [attr.x]="data.x(point.x)"
+            [attr.y]="data.y(0)"
+            [attr.height]="Math.abs(data.y(0) - data.y(point.y))"
+            [attr.width]="data.x(point.x1) - data.x(point.x)"
+            [attr.stroke]="point.iconId ? '' : (point.color ?? series.color)"
+            [attr.stroke-dasharray]="series.style?.strokeDasharray"
+            [attr.stroke-width]="series.style?.strokeWidth"
+            [attr.fill]="
+              series.fillType === fillType.gradient
+                ? 'url(#gradient-fill-' + id + ')'
+                : point.iconId
+                  ? 'url(#pattern' + point.iconId + ')'
+                  : (point.color ?? series.color)
+            "
+            [attr.fill-opacity]="series.style?.fillOpacity"
+          ></svg:rect>
+        }
+        @if (point.text) {
+          <svg:text
+            x="50%"
+            fill="var(--color-text-50)"
+            [attr.y]="(data.y(point.y1) + data.y(point.y)) / 2"
+            alignment-baseline="middle"
+            text-anchor="middle"
+          >
+            {{ point.text }}
+          </svg:text>
+        }
+      </svg:g>
+    }
+  }
+}

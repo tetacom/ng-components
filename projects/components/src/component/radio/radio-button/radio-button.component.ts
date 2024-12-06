@@ -49,7 +49,10 @@ export class RadioButtonComponent implements OnInit, OnDestroy {
 
   private _value: any;
 
-  constructor(private container: ViewContainerRef, @Host() public radio: RadioComponent) {}
+  constructor(
+    private container: ViewContainerRef,
+    @Host() public radio: RadioComponent,
+  ) {}
 
   @HostListener('click')
   hostClick() {

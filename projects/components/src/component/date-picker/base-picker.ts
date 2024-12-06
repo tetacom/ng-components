@@ -36,7 +36,7 @@ export abstract class BasePicker {
   protected constructor(
     protected _elementRef: ElementRef,
     protected _cdr: ChangeDetectorRef,
-    protected datePipe: DatePipe
+    protected datePipe: DatePipe,
   ) {
     this.inputText = this.checkNull();
   }

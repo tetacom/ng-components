@@ -38,7 +38,7 @@ export class TableHeadGroupComponent<T> implements OnInit, OnDestroy {
   @HostBinding('style.flex-grow') get flexGrow() {
     if (this.column?.columns?.length > 0) {
       const flat = ArrayUtil.flatten(this.column?.columns, 'columns', true).filter(
-        (_) => this._hiddenColumns.indexOf(_.name) < 0
+        (_) => this._hiddenColumns.indexOf(_.name) < 0,
       );
       return flat?.reduce((prev, curr) => prev + curr.flex, 0);
     }
@@ -50,7 +50,7 @@ export class TableHeadGroupComponent<T> implements OnInit, OnDestroy {
   get flexBasis() {
     if (this.column?.columns?.length > 0) {
       const flat = ArrayUtil.flatten(this.column?.columns, 'columns', true).filter(
-        (_) => this._hiddenColumns.indexOf(_.name) < 0
+        (_) => this._hiddenColumns.indexOf(_.name) < 0,
       );
       return flat?.reduce((prev, curr) => prev + curr.width, 0);
     }
@@ -65,7 +65,10 @@ export class TableHeadGroupComponent<T> implements OnInit, OnDestroy {
     return TableUtil.getColumnLeaves(this._column)?.filter((_) => this._hiddenColumns.indexOf(_.name) < 0);
   }
 
-  constructor(private _svc: TableService<T>, private _cdr: ChangeDetectorRef) {
+  constructor(
+    private _svc: TableService<T>,
+    private _cdr: ChangeDetectorRef,
+  ) {
     this._svc.hiddenColumns.pipe(takeWhile((_) => this._alive)).subscribe((_) => {
       this._hiddenColumns = _;
       this._cdr.markForCheck();

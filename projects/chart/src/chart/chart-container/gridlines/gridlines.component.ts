@@ -25,7 +25,10 @@ export class GridlinesComponent implements AfterViewInit {
   x: Observable<any>;
   y: Observable<any>;
 
-  constructor(private svc: ScaleService, private chartService: ChartService) {
+  constructor(
+    private svc: ScaleService,
+    private chartService: ChartService,
+  ) {
     this.config = this.chartService.config;
 
     this.tickYValues = this.svc.scales.pipe(
@@ -36,7 +39,7 @@ export class GridlinesComponent implements AfterViewInit {
         return config.gridLines?.y?.ticksCount != null
           ? generateTicks(scales.y.get(0).scale.domain(), config.gridLines?.y?.ticksCount)
           : scales.y.get(0)?.scale.ticks(ratio);
-      })
+      }),
     );
 
     this.tickXValues = this.svc.scales.pipe(
@@ -47,7 +50,7 @@ export class GridlinesComponent implements AfterViewInit {
         return config.gridLines?.x?.ticksCount != null
           ? generateTicks(scales.x.get(0).originDomain, config.gridLines?.x?.ticksCount)
           : scales.x.get(0)?.scale.ticks(ratio);
-      })
+      }),
     );
 
     this.y = this.svc.scales.pipe(map((_) => _.y.get(0)?.scale));

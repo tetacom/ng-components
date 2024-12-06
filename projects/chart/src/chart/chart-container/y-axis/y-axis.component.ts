@@ -25,7 +25,7 @@ export class YAxisComponent implements OnInit, AfterViewInit {
     this.y = this.scaleService.scales.pipe(
       map((_) => {
         return _.y.get(this.axis.index)?.scale;
-      })
+      }),
     );
   }
 

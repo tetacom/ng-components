@@ -53,12 +53,12 @@ export abstract class DynamicContentBaseDirective implements OnDestroy {
     protected _service: DynamicComponentService,
     protected _injector: Injector,
     protected _zone: NgZone,
-    protected _cdr: ChangeDetectorRef
+    protected _cdr: ChangeDetectorRef,
   ) {
     this._zone.onStable
       .pipe(
         takeWhile((_) => this._alive),
-        filter((_) => this._open)
+        filter((_) => this._open),
       )
       .subscribe((_) => {
         this.setPosition();
@@ -80,7 +80,7 @@ export abstract class DynamicContentBaseDirective implements OnDestroy {
         PopupContentComponent,
         this._content,
         injector,
-        this.appendToBody ? this._document.body : this._elementRef.nativeElement
+        this.appendToBody ? this._document.body : this._elementRef.nativeElement,
       );
       if (className) {
         this._componentRef.instance.addClass(className);
@@ -94,7 +94,7 @@ export abstract class DynamicContentBaseDirective implements OnDestroy {
     this._service.destroy(
       this._componentRef,
       this._content,
-      this.appendToBody ? this._document.body : this._elementRef.nativeElement
+      this.appendToBody ? this._document.body : this._elementRef.nativeElement,
     );
     this._componentRef = null;
   }

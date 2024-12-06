@@ -23,7 +23,7 @@ export const ANIMATION_FRAME = new InjectionToken<Observable<DOMHighResTimeStamp
 
       return animationFrame$.pipe(share());
     },
-  }
+  },
 );
 
 export const WINDOW = new InjectionToken<Window>('An abstraction over global window object', {

@@ -38,7 +38,7 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
     private brushService: BrushService,
     private chartService: ChartService,
     private element: ElementRef,
-    private zone: NgZone
+    private zone: NgZone,
   ) {
     this._container = d3.select(this.element.nativeElement);
   }
@@ -47,12 +47,12 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
     this.brushService.brushDomain
       .pipe(
         takeWhile(() => this._alive),
-        filter((brush) => brush.chartId !== this.config.id)
+        filter((brush) => brush.chartId !== this.config.id),
       )
       .subscribe((brush) => {
         this._container.call(
           this.brush.move,
-          [Math.floor(brush.selection[0]), Math.floor(brush.selection[1])].map(this.axis.scale)
+          [Math.floor(brush.selection[0]), Math.floor(brush.selection[1])].map(this.axis.scale),
         );
       });
   }
@@ -99,7 +99,9 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
             if (invertedSelection[1] - invertedSelection[0] > config.brush?.max) {
               this._container.call(
                 this.brush.move,
-                [Math.floor(invertedSelection[0]), Math.floor(invertedSelection[0] + config.brush?.max)].map(brushScale)
+                [Math.floor(invertedSelection[0]), Math.floor(invertedSelection[0] + config.brush?.max)].map(
+                  brushScale,
+                ),
               );
               return;
             }
@@ -107,7 +109,7 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
             if (invertedSelection[1] - invertedSelection[0] < config.brush?.min) {
               this._container.call(
                 this.brush.move,
-                [Math.floor(invertedSelection[0]), Math.ceil(invertedSelection[0] + config.brush?.min)].map(brushScale)
+                [Math.floor(invertedSelection[0]), Math.ceil(invertedSelection[0] + config.brush?.min)].map(brushScale),
               );
               return;
             }
@@ -121,7 +123,7 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
               this.brush.move,
               this.selection
                 ? [this.selection[0], this.selection[0] + config.brush?.max].map(brushScale)
-                : [config.brush?.from, config.brush?.to].map(brushScale)
+                : [config.brush?.from, config.brush?.to].map(brushScale),
             );
             return;
           }
@@ -131,7 +133,7 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
               this.brush.move,
               this.selection
                 ? [this.selection[0], this.selection[0] + config.brush?.min].map(brushScale)
-                : [config.brush?.from, config.brush?.to].map(brushScale)
+                : [config.brush?.from, config.brush?.to].map(brushScale),
             );
             return;
           }
@@ -166,7 +168,7 @@ export class BrushableDirective implements OnDestroy, OnInit, AfterViewInit, OnC
           this._container.call(
             this.brush.move,
             this.selection ? this.selection.map(brushScale) : domain.map(brushScale),
-            {}
+            {},
           );
         }, 0);
       });

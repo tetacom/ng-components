@@ -5,22 +5,22 @@
       <teta-icon [name]="open ? 'arrowUpKey' : 'arrowDownKey'" [palette]="'text'"></teta-icon>
     </button>
     @if (showCross) {
-    <teta-delimiter [palette]="'text'" class="height-4"></teta-delimiter>
-    <button
-      type="button"
-      teta-button
-      (click)="crossClick.emit($event)"
-      [palette]="'text'"
-      [view]="'ghost'"
-      [square]="true"
-    >
-      <teta-icon [name]="'closeBig'" [palette]="'text'"></teta-icon>
-    </button>
+      <teta-delimiter [palette]="'text'" class="height-4"></teta-delimiter>
+      <button
+        type="button"
+        teta-button
+        (click)="crossClick.emit($event)"
+        [palette]="'text'"
+        [view]="'ghost'"
+        [square]="true"
+      >
+        <teta-icon [name]="'closeBig'" [palette]="'text'"></teta-icon>
+      </button>
     }
   </div>
 </teta-toolbar>
 @if (open) {
-<div class="content">
-  <ng-content></ng-content>
-</div>
+  <div class="content">
+    <ng-content></ng-content>
+  </div>
 }

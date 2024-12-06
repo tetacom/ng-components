@@ -81,11 +81,11 @@ export class ChartComponent implements OnInit, OnDestroy {
     public chartService: ChartService,
     public zoomService: ZoomService,
     public brushService: BrushService,
-    public scaleService: ScaleService
+    public scaleService: ScaleService,
   ) {
     this.svcConfig = this.chartService.config;
     this.hasSeriesData = this.svcConfig.pipe(
-      map((_) => _.series?.length > 0 && _.series?.some((_) => _.data?.length > 0))
+      map((_) => _.series?.length > 0 && _.series?.some((_) => _.data?.length > 0)),
     );
   }
 
@@ -100,7 +100,7 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.chartService.pointerMove
       .pipe(
         takeWhile(() => this._alive),
-        withLatestFrom(this.scaleService.scales, this.chartService.config)
+        withLatestFrom(this.scaleService.scales, this.chartService.config),
       )
       .subscribe((data: [PointerEvent, IScalesMap, IChartConfig]) => {
         const [event, { x, y }, config] = data;
