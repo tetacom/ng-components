@@ -7,7 +7,6 @@ import {
   OnChanges,
   OnDestroy,
   output,
-  SimpleChanges,
 } from '@angular/core';
 import { ControlContainer, FormGroup, FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { TranslocoService } from '@jsverse/transloco';
@@ -140,7 +139,7 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
     this._formSub?.unsubscribe();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.column() && this.item()) {
       if (!this.formGroup.get(this.column().name)) {
         this.formGroup.setControl(this.column().name, FormsUtil.initControlFromColumn(this.column(), this.item()));

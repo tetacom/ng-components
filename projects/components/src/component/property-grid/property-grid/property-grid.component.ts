@@ -8,14 +8,7 @@ import {
   Optional,
   output,
 } from '@angular/core';
-import {
-  ControlContainer,
-  FormGroup,
-  FormsModule,
-  NgForm,
-  ReactiveFormsModule,
-  UntypedFormControl,
-} from '@angular/forms';
+import { ControlContainer, FormGroup, FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 
 import { IDictionary } from '../../../common/contract/i-dictionary';
 import { IIdName } from '../../../common/contract/i-id-name';
@@ -63,11 +56,7 @@ export class PropertyGridComponent<T> {
       if (this.item() && this.formGroup) {
         for (const key in this.item()) {
           if (Object.prototype.hasOwnProperty.call(this.item(), key)) {
-            if (!this.formGroup.get(key)) {
-              this.formGroup.setControl(key, new UntypedFormControl(this.item()[key], { updateOn: 'blur' }), {
-                emitEvent: false,
-              });
-            } else {
+            if (this.formGroup.get(key)) {
               this.formGroup.patchValue(this.item(), {
                 emitEvent: false,
               });
