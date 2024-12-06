@@ -76,11 +76,11 @@ export class PropertyGridComponent<T> {
                   emitEvent: false,
                 });
               }
+            } else {
+              this.formGroup.patchValue(this.item(), {
+                emitEvent: false,
+              });
             }
-          } else {
-            this.formGroup.patchValue(this.item(), {
-              emitEvent: false,
-            });
           }
         }
       }
