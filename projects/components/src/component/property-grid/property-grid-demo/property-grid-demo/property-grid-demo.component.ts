@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
 import { TableColumn } from '../../../table/contract/table-column';
 import { FilterType } from '../../../filter/enum/filter-type.enum';
 import * as faker from 'faker';
@@ -24,22 +24,12 @@ import { ButtonComponent } from '../../../button/button/button.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PropertyGridDemoComponent {
+  private aaa = false;
   @ViewChild(NgForm, {
     static: true,
   })
   form: NgForm;
-  item = {
-    unknown: 'unknownProperty',
-    name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-    date: faker.date.between(new Date(2010, 0, 1), new Date(2021, 0, 1)),
-    value: faker.datatype.number({ min: 0, max: 100 }),
-    summary: faker.datatype.number({ min: 0, max: 100000 }),
-    ram: faker.helpers.randomize([8, 16, 32, 64, 128]),
-    address: faker.address.streetAddress(),
-    state: faker.address.state(),
-    city: faker.address.city(),
-    zip: faker.address.zipCode(),
-  };
+  item = signal<unknown>(this.getItem());
 
   dict: IDictionary<IIdName<any>[]> = {
     ram: [
@@ -51,7 +41,7 @@ export class PropertyGridDemoComponent {
     ],
   };
 
-  columns = [
+  columns = signal<TableColumn[]>([
     new TableColumn({
       name: 'name',
       flex: 1,
@@ -77,18 +67,46 @@ export class PropertyGridDemoComponent {
       caption: 'RAM',
       filterType: FilterType.list,
     }),
-  ];
-
-  constructor() {}
+  ]);
 
   onValueChange = (newValue: IIdName<any>) => {
-    if (newValue.name === 'name') {
-      this.form.form.patchValue({ ram: 256 });
-    }
-    console.log(this.form.form.getRawValue());
+    // if (newValue.name === 'name') {
+    //   this.form.form.patchValue({ ram: 256 });
+    // }
+    console.log('onValueChange', this.form.form.getRawValue());
   };
 
   showValue() {
-    console.log(this.form.form.getRawValue());
+    console.log('showValue', this.form.form.getRawValue());
+  }
+
+  updateColumns() {
+    this.columns.set([...this.columns().map((col) => {
+      if(col.name === 'value') {
+        this.aaa = !this.aaa;
+        return { ...col, editable: this.aaa };
+      }
+      return {...col}
+    })]);
+  }
+
+  updateItem() {
+    this.item.set(this.getItem());
+    this.updateColumns()
+  }
+
+  private getItem() {
+    return {
+      unknown: 'unknownProperty',
+      name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      date: faker.date.between(new Date(2010, 0, 1), new Date(2021, 0, 1)),
+      value: faker.datatype.number({ min: 0, max: 100 }),
+      summary: faker.datatype.number({ min: 0, max: 100000 }),
+      ram: faker.helpers.randomize([8, 16, 32, 64, 128]),
+      address: faker.address.streetAddress(),
+      state: faker.address.state(),
+      city: faker.address.city(),
+      zip: faker.address.zipCode(),
+    };
   }
 }
