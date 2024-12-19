@@ -9,9 +9,13 @@ export class DisableControlDirective {
   @Input() set tetaDisableControl(val: boolean) {
     if (this.ngControl.control) {
       if (val) {
-        this.ngControl.control.disable();
+        this.ngControl.control.disable({
+          emitEvent: false,
+        });
       } else {
-        this.ngControl.control.enable();
+        this.ngControl.control.enable({
+          emitEvent: false,
+        });
       }
     }
   }

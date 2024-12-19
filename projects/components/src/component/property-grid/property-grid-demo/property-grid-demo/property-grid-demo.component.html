@@ -3,9 +3,9 @@
     class="scrollable padding-h-3 row_auto"
     style="width: 100%"
     (controlValueChange)="onValueChange($event)"
-    [item]="item"
+    [item]="item()"
     [horizontal]="true"
-    [columns]="columns"
+    [columns]="columns()"
     [dict]="dict"
   >
     <ng-template [tetaPropertyGridItemDescription]="'ram'" let-control>
@@ -14,3 +14,5 @@
   </teta-property-grid>
 </form>
 <button teta-button (click)="showValue()">ShowValue</button>
+<button teta-button (click)="updateColumns()">updateColumns</button>
+<button teta-button (click)="updateItem()">updateItem</button>
