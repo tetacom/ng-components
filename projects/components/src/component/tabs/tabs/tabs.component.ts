@@ -18,11 +18,10 @@ export interface ITabChangeEvent {
 }
 
 @Component({
-  selector: 'teta-tabs',
-  templateUrl: './tabs.component.html',
-  styleUrls: ['./tabs.component.scss'],
-  standalone: true,
-  imports: [NgTemplateOutlet],
+    selector: 'teta-tabs',
+    templateUrl: './tabs.component.html',
+    styleUrls: ['./tabs.component.scss'],
+    imports: [NgTemplateOutlet]
 })
 export class TabsComponent implements AfterContentChecked {
   @HostBinding('class.tabs') classTabs = true;

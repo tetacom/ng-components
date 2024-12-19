@@ -15,12 +15,11 @@ import { ZoomService } from '../../../service/zoom.service';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'svg:svg[teta-scatter-series]',
-  templateUrl: './scatter-series.component.html',
-  styleUrls: ['./scatter-series.component.scss'],
-  standalone: true,
-  imports: [AsyncPipe],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'svg:svg[teta-scatter-series]',
+    templateUrl: './scatter-series.component.html',
+    styleUrls: ['./scatter-series.component.scss'],
+    imports: [AsyncPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ScatterSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>

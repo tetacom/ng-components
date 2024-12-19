@@ -5,11 +5,10 @@ import { DragSortItemDirective } from '../../drag-sort-item.directive';
 import { DragSortContainerDirective } from '../../drag-sort-container.directive';
 
 @Component({
-  selector: 'teta-drag-sort-demo',
-  templateUrl: './drag-sort-demo.component.html',
-  styleUrls: ['./drag-sort-demo.component.scss'],
-  standalone: true,
-  imports: [DragSortContainerDirective, DragSortItemDirective],
+    selector: 'teta-drag-sort-demo',
+    templateUrl: './drag-sort-demo.component.html',
+    styleUrls: ['./drag-sort-demo.component.scss'],
+    imports: [DragSortContainerDirective, DragSortItemDirective]
 })
 export class DragSortDemoComponent implements OnInit {
   items = [

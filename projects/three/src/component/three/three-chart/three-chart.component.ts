@@ -23,14 +23,13 @@ import { Canvas3dHost } from './directive/canvas-3d-host';
 extend(THREE);
 
 @Component({
-  selector: 'teta-three-chart',
-  templateUrl: './three-chart.component.html',
-  styleUrls: ['./three-chart.component.scss'],
-  standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NgtStore],
-  imports: [NgtCanvas, SceneComponent, CommonModule, CanvasComponent, Canvas3dHost],
+    selector: 'teta-three-chart',
+    templateUrl: './three-chart.component.html',
+    styleUrls: ['./three-chart.component.scss'],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [NgtStore],
+    imports: [NgtCanvas, SceneComponent, CommonModule, CanvasComponent, Canvas3dHost]
 })
 export class ThreeChartComponent implements OnInit, OnChanges {
   @Input() data: I3dChartConfig;

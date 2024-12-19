@@ -5,11 +5,10 @@ import { ChartService } from '../../service/chart.service';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: '[teta-crosshair]',
-  templateUrl: './crosshair.component.html',
-  styleUrls: ['./crosshair.component.scss'],
-  standalone: true,
-  imports: [AsyncPipe],
+    selector: '[teta-crosshair]',
+    templateUrl: './crosshair.component.html',
+    styleUrls: ['./crosshair.component.scss'],
+    imports: [AsyncPipe]
 })
 export class CrosshairComponent implements OnInit {
   @Input() size: DOMRect;

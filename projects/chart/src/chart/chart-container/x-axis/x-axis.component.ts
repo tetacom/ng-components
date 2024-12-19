@@ -17,12 +17,11 @@ import { ChartService } from '../../service/chart.service';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: '[teta-x-axis]',
-  templateUrl: './x-axis.component.html',
-  styleUrls: ['./x-axis.component.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe],
+    selector: '[teta-x-axis]',
+    templateUrl: './x-axis.component.html',
+    styleUrls: ['./x-axis.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [AsyncPipe]
 })
 export class XAxisComponent implements OnInit, OnChanges, OnDestroy {
   x: Observable<any>;

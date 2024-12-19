@@ -23,12 +23,11 @@ import { ToolbarComponent } from '../../../toolbar/toolbar/toolbar.component';
 import { FilterHostComponent } from '../../../filter/filter-host/filter-host.component';
 
 @Component({
-  selector: 'teta-filter-dropdown-tab',
-  templateUrl: './filter-dropdown-tab.component.html',
-  styleUrls: ['./filter-dropdown-tab.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [FilterHostComponent, ToolbarComponent, ButtonComponent, IconComponent, AsyncPipe],
+    selector: 'teta-filter-dropdown-tab',
+    templateUrl: './filter-dropdown-tab.component.html',
+    styleUrls: ['./filter-dropdown-tab.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [FilterHostComponent, ToolbarComponent, ButtonComponent, IconComponent, AsyncPipe]
 })
 export class FilterDropdownTabComponent<T> implements OnInit {
   @Input() columns: ITreeData[];

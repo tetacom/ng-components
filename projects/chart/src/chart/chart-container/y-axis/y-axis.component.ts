@@ -6,12 +6,11 @@ import { map, Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: '[teta-y-axis]',
-  templateUrl: './y-axis.component.html',
-  standalone: true,
-  styleUrls: ['./y-axis.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe],
+    selector: '[teta-y-axis]',
+    templateUrl: './y-axis.component.html',
+    styleUrls: ['./y-axis.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [AsyncPipe]
 })
 export class YAxisComponent implements OnInit, AfterViewInit {
   y: Observable<any>;

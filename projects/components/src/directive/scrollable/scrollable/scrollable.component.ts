@@ -27,12 +27,11 @@ type ScrollDimensions = {
 };
 
 @Component({
-  selector: 'teta-scrollable',
-  templateUrl: './scrollable.component.html',
-  styleUrls: ['./scrollable.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [LetDirective, NgClass, AsyncPipe, ScrollableDirective],
+    selector: 'teta-scrollable',
+    templateUrl: './scrollable.component.html',
+    styleUrls: ['./scrollable.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [LetDirective, NgClass, AsyncPipe, ScrollableDirective]
 })
 export class ScrollableComponent implements OnInit, OnDestroy, AfterContentChecked {
   @ContentChild(ScrollableDirective, {

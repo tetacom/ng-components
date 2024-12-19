@@ -2,7 +2,8 @@ import { Component, HostBinding } from '@angular/core';
 import { TableColumn } from '../contract/table-column';
 
 @Component({
-  template: '',
+    template: '',
+    standalone: false
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 export abstract class HeadCellComponentBase<T> {

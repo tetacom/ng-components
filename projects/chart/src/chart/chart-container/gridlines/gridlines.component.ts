@@ -9,12 +9,11 @@ import { IScalesMap } from '../../model/i-scales-map';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: '[teta-gridlines]',
-  templateUrl: './gridlines.component.html',
-  styleUrls: ['./gridlines.component.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe],
+    selector: '[teta-gridlines]',
+    templateUrl: './gridlines.component.html',
+    styleUrls: ['./gridlines.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [AsyncPipe]
 })
 export class GridlinesComponent implements AfterViewInit {
   @Input() size: DOMRect;

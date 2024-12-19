@@ -21,20 +21,19 @@ import { I3dChartConfig } from '../model/i-3d-chart-config';
 import { Chart3dService } from '../service/chart-3d.service';
 
 @Component({
-  standalone: true,
-  selector: 'teta-scene',
-  templateUrl: './scene.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    NgtsOrbitControls,
-    CommonModule,
-    Area3dComponent,
-    Line3dComponent,
-    Axes3dComponent,
-    Block3dComponent,
-    Series3dHost,
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    selector: 'teta-scene',
+    templateUrl: './scene.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        NgtsOrbitControls,
+        CommonModule,
+        Area3dComponent,
+        Line3dComponent,
+        Axes3dComponent,
+        Block3dComponent,
+        Series3dHost,
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SceneComponent implements OnInit {
   public data: Observable<I3dChartConfig>;

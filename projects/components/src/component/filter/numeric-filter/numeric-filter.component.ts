@@ -23,12 +23,11 @@ import { FormsModule } from '@angular/forms';
 import { InputComponent } from '../../input/input/input.component';
 
 @Component({
-  selector: 'teta-numeric-filter',
-  templateUrl: './numeric-filter.component.html',
-  styleUrls: ['./numeric-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [InputComponent, FormsModule, OnlyNumberDirective, AsyncPipe],
+    selector: 'teta-numeric-filter',
+    templateUrl: './numeric-filter.component.html',
+    styleUrls: ['./numeric-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [InputComponent, FormsModule, OnlyNumberDirective, AsyncPipe]
 })
 export class NumericFilterComponent<T> extends FilterComponentBase<T> implements OnInit {
   @Input() column: FilterItem;

@@ -23,12 +23,11 @@ import { Align } from '../../model/enum/align.enum';
 import { VerticalAlign } from '../../model/enum/vertical-align.enum';
 
 @Component({
-  selector: 'teta-tooltip',
-  templateUrl: './tooltip.component.html',
-  standalone: true,
-  styleUrls: ['./tooltip.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, NgTemplateOutlet],
+    selector: 'teta-tooltip',
+    templateUrl: './tooltip.component.html',
+    styleUrls: ['./tooltip.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [AsyncPipe, NgTemplateOutlet]
 })
 export class TooltipComponent implements OnInit {
   @Input() size: DOMRect;

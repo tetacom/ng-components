@@ -5,12 +5,11 @@ import { IconSpriteDirective } from '../../../icon/icon-sprite.directive';
 import { ButtonComponent } from '../../../button/button/button.component';
 
 @Component({
-  selector: 'teta-modal-from-component',
-  templateUrl: './modal-from-component.component.html',
-  styleUrls: ['./modal-from-component.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [ButtonComponent, IconSpriteDirective],
+    selector: 'teta-modal-from-component',
+    templateUrl: './modal-from-component.component.html',
+    styleUrls: ['./modal-from-component.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [ButtonComponent, IconSpriteDirective]
 })
 export class ModalFromComponentComponent implements OnInit {
   @Input() name: string;

@@ -21,12 +21,11 @@ import { FormsModule } from '@angular/forms';
 import { InputComponent } from '../../input/input/input.component';
 
 @Component({
-  selector: 'teta-string-filter',
-  templateUrl: './string-filter.component.html',
-  styleUrls: ['./string-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [InputComponent, FormsModule, AsyncPipe],
+    selector: 'teta-string-filter',
+    templateUrl: './string-filter.component.html',
+    styleUrls: ['./string-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [InputComponent, FormsModule, AsyncPipe]
 })
 export class StringFilterComponent<T> extends FilterComponentBase<T> implements OnInit {
   @Input() column: FilterItem;

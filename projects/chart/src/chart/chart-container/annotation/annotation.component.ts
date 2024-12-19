@@ -16,12 +16,11 @@ import { ChartService } from '../../service/chart.service';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 
 @Component({
-  selector: '[teta-annotation]',
-  templateUrl: './annotation.component.html',
-  styleUrls: ['./annotation.component.scss'],
-  standalone: true,
-  imports: [NgTemplateOutlet, AsyncPipe],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: '[teta-annotation]',
+    templateUrl: './annotation.component.html',
+    styleUrls: ['./annotation.component.scss'],
+    imports: [NgTemplateOutlet, AsyncPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AnnotationComponent implements OnDestroy {
   @Input() visibleRect: DOMRect;

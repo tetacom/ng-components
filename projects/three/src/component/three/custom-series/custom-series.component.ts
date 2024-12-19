@@ -10,12 +10,11 @@ import * as THREE from 'three';
 extend(THREE);
 
 @Component({
-  selector: 'teta-custom-series',
-  standalone: true,
-  imports: [CommonModule, NgtArgs],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './custom-series.component.html',
+    selector: 'teta-custom-series',
+    imports: [CommonModule, NgtArgs],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './custom-series.component.html'
 })
 export class CustomSeriesComponent extends Base3dSeriesComponent<Base3dPoint> implements OnInit {
   public scales: Observable<{ x; y; z }>;

@@ -10,12 +10,11 @@ import { Line3dPoint } from '../model/line-3d-point';
 
 extend(THREE);
 @Component({
-  selector: 'teta-line-3d',
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, NgtsLine, NgtArgs],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  templateUrl: './line-3d.component.html',
+    selector: 'teta-line-3d',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [CommonModule, NgtsLine, NgtArgs],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    templateUrl: './line-3d.component.html'
 })
 export class Line3dComponent extends Base3dSeriesComponent<Line3dPoint> implements OnDestroy {
   public points: Observable<[number, number, number]>;

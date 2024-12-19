@@ -15,12 +15,11 @@ import { AccordionContentDirective } from '../accordion-content.directive';
 import { viewType } from '../../../common/model/view-type.model';
 
 @Component({
-  selector: 'teta-accordion-item',
-  templateUrl: './accordion-item.component.html',
-  styleUrls: ['./accordion-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [NgTemplateOutlet],
+    selector: 'teta-accordion-item',
+    templateUrl: './accordion-item.component.html',
+    styleUrls: ['./accordion-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [NgTemplateOutlet]
 })
 export class AccordionItemComponent {
   @ContentChild(AccordionContentDirective, { static: false })

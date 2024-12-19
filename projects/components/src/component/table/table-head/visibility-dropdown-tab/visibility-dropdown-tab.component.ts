@@ -20,22 +20,21 @@ import { FormsModule } from '@angular/forms';
 import { CheckboxComponent } from '../../../checkbox/checkbox/checkbox.component';
 
 @Component({
-  selector: 'teta-visibility-dropdown-tab',
-  templateUrl: './visibility-dropdown-tab.component.html',
-  styleUrls: ['./visibility-dropdown-tab.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CheckboxComponent,
-    FormsModule,
-    ScrollableComponent,
-    TreeComponent,
-    TetaTemplateDirective,
-    TreeItemToggleComponent,
-    ToolbarComponent,
-    ButtonComponent,
-    AsyncPipe,
-  ],
+    selector: 'teta-visibility-dropdown-tab',
+    templateUrl: './visibility-dropdown-tab.component.html',
+    styleUrls: ['./visibility-dropdown-tab.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CheckboxComponent,
+        FormsModule,
+        ScrollableComponent,
+        TreeComponent,
+        TetaTemplateDirective,
+        TreeItemToggleComponent,
+        ToolbarComponent,
+        ButtonComponent,
+        AsyncPipe,
+    ]
 })
 export class VisibilityDropdownTabComponent<T> implements OnDestroy {
   @Input() columns: ITreeData[];

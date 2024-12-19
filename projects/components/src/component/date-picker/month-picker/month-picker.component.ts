@@ -6,12 +6,11 @@ import { IconComponent } from '../../icon/icon/icon.component';
 import { ButtonComponent } from '../../button/button/button.component';
 
 @Component({
-  selector: 'teta-month-picker',
-  templateUrl: './month-picker.component.html',
-  styleUrls: ['./month-picker.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [ButtonComponent, IconComponent, NgClass],
+    selector: 'teta-month-picker',
+    templateUrl: './month-picker.component.html',
+    styleUrls: ['./month-picker.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [ButtonComponent, IconComponent, NgClass]
 })
 export class MonthPickerComponent implements OnInit {
   @Input() selectedMonth: number = 1;

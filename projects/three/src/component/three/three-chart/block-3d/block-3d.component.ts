@@ -13,12 +13,11 @@ import { AsyncPipe } from '@angular/common';
 extend(THREE);
 
 @Component({
-  selector: 'teta-block-3d',
-  templateUrl: './block-3d.component.html',
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgtArgs, NgtsText, AsyncPipe],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    selector: 'teta-block-3d',
+    templateUrl: './block-3d.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [NgtArgs, NgtsText, AsyncPipe],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class Block3dComponent<T extends Block3dPoint> extends Base3dSeriesComponent<T> implements OnDestroy {
   public blocks: Observable<

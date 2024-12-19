@@ -8,12 +8,11 @@ import { DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'teta-date-time-cell',
-  templateUrl: './date-time-cell.component.html',
-  styleUrls: ['./date-time-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [DatePickerComponent, FormsModule, ReactiveFormsModule, DatePipe],
+    selector: 'teta-date-time-cell',
+    templateUrl: './date-time-cell.component.html',
+    styleUrls: ['./date-time-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [DatePickerComponent, FormsModule, ReactiveFormsModule, DatePipe]
 })
 export class DateTimeCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: DatePickerComponent;

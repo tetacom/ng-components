@@ -12,12 +12,11 @@ import { ITreeData } from '../../../../common/contract/i-tree-data';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'teta-main-dropdown-tab',
-  templateUrl: './main-dropdown-tab.component.html',
-  styleUrls: ['./main-dropdown-tab.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [AsyncPipe],
+    selector: 'teta-main-dropdown-tab',
+    templateUrl: './main-dropdown-tab.component.html',
+    styleUrls: ['./main-dropdown-tab.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [AsyncPipe]
 })
 export class MainDropdownTabComponent<T> implements OnInit {
   @Input() columns: ITreeData[];

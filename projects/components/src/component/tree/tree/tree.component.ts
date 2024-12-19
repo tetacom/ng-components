@@ -25,20 +25,19 @@ import { ScrollableDirective } from '../../../directive/scrollable/scrollable.di
 import { ScrollableComponent } from '../../../directive/scrollable/scrollable/scrollable.component';
 
 @Component({
-  selector: 'teta-tree',
-  templateUrl: './tree.component.html',
-  styleUrls: ['./tree.component.scss'],
-  providers: [TreeService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    ScrollableComponent,
-    CdkVirtualScrollViewport,
-    CdkFixedSizeVirtualScroll,
-    ScrollableDirective,
-    CdkVirtualForOf,
-    TreeItemComponent,
-  ],
+    selector: 'teta-tree',
+    templateUrl: './tree.component.html',
+    styleUrls: ['./tree.component.scss'],
+    providers: [TreeService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        ScrollableComponent,
+        CdkVirtualScrollViewport,
+        CdkFixedSizeVirtualScroll,
+        ScrollableDirective,
+        CdkVirtualForOf,
+        TreeItemComponent,
+    ]
 })
 export class TreeComponent implements OnInit, OnChanges, OnDestroy {
   @Input()

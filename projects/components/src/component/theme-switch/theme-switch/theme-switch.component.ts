@@ -6,12 +6,11 @@ import { IconComponent } from '../../icon/icon/icon.component';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'teta-theme-switch',
-  templateUrl: './theme-switch.component.html',
-  styleUrls: ['./theme-switch.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [ButtonComponent, IconComponent, AsyncPipe],
+    selector: 'teta-theme-switch',
+    templateUrl: './theme-switch.component.html',
+    styleUrls: ['./theme-switch.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [ButtonComponent, IconComponent, AsyncPipe]
 })
 export class ThemeSwitchComponent implements OnInit {
   @Input() palette = 'text';

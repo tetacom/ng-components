@@ -10,12 +10,11 @@ import { ZoomService } from '../../../service/zoom.service';
 import { AsyncPipe, NgStyle } from '@angular/common';
 
 @Component({
-  selector: 'svg:svg[teta-block-horizontal-series]',
-  templateUrl: './block-horizontal-series.component.html',
-  styleUrls: ['./block-horizontal-series.component.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, NgStyle],
+    selector: 'svg:svg[teta-block-horizontal-series]',
+    templateUrl: './block-horizontal-series.component.html',
+    styleUrls: ['./block-horizontal-series.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [AsyncPipe, NgStyle]
 })
 export class BlockHorizontalSeriesComponent<T extends BasePoint> extends SeriesBaseComponent<T> implements OnInit {
   x: Observable<any>;

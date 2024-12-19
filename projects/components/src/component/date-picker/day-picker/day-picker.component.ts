@@ -16,12 +16,11 @@ import { DayItemComponent } from './day-item/day-item.component';
 import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'teta-day-picker',
-  templateUrl: './day-picker.component.html',
-  styleUrls: ['./day-picker.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [NgClass, DayItemComponent],
+    selector: 'teta-day-picker',
+    templateUrl: './day-picker.component.html',
+    styleUrls: ['./day-picker.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [NgClass, DayItemComponent]
 })
 export class DayPickerComponent implements OnChanges {
   @Input() date: Date | string | number = new Date();

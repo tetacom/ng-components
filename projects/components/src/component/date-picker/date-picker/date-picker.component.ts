@@ -41,24 +41,23 @@ export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'teta-date-picker',
-  templateUrl: './date-picker.component.html',
-  styleUrls: ['./date-picker.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DATE_PICKER_CONTROL_VALUE_ACCESSOR, DatePipe],
-  standalone: true,
-  imports: [
-    DropdownComponent,
-    DropdownHeadDirective,
-    NgClass,
-    InputComponent,
-    FormsModule,
-    MaskitoModule,
-    IconComponent,
-    DropdownContentDirective,
-    DateCalendarComponent,
-    AsyncPipe,
-  ],
+    selector: 'teta-date-picker',
+    templateUrl: './date-picker.component.html',
+    styleUrls: ['./date-picker.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [DATE_PICKER_CONTROL_VALUE_ACCESSOR, DatePipe],
+    imports: [
+        DropdownComponent,
+        DropdownHeadDirective,
+        NgClass,
+        InputComponent,
+        FormsModule,
+        MaskitoModule,
+        IconComponent,
+        DropdownContentDirective,
+        DateCalendarComponent,
+        AsyncPipe,
+    ]
 })
 export class DatePickerComponent extends BasePicker implements OnInit, ControlValueAccessor, OnChanges {
   @Input() date: Date | string | number = null;

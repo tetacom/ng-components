@@ -10,12 +10,11 @@ import { ZoomService } from '../../../service/zoom.service';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'svg:svg[teta-block-series]',
-  templateUrl: './block-series.component.html',
-  styleUrls: ['./block-series.component.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe],
+    selector: 'svg:svg[teta-block-series]',
+    templateUrl: './block-series.component.html',
+    styleUrls: ['./block-series.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [AsyncPipe]
 })
 export class BlockSeriesComponent<T extends BasePoint> extends SeriesBaseComponent<T> implements OnInit {
   x: Observable<any>;

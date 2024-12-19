@@ -7,12 +7,11 @@ import { ScrollToSelectedYearDirective } from './scroll-to-selected-year.directi
 import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'teta-year-picker',
-  templateUrl: './year-picker.component.html',
-  styleUrls: ['./year-picker.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [NgClass, ScrollToSelectedYearDirective],
+    selector: 'teta-year-picker',
+    templateUrl: './year-picker.component.html',
+    styleUrls: ['./year-picker.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [NgClass, ScrollToSelectedYearDirective]
 })
 export class YearPickerComponent implements OnInit {
   @Input() selectedYear: number;

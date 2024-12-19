@@ -7,12 +7,11 @@ import { AsyncPipe } from '@angular/common';
 import { IconComponent } from '../../icon/icon/icon.component';
 
 @Component({
-  selector: 'teta-tree-item-toggle',
-  templateUrl: './tree-item-toggle.component.html',
-  styleUrls: ['./tree-item-toggle.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [IconComponent, AsyncPipe],
+    selector: 'teta-tree-item-toggle',
+    templateUrl: './tree-item-toggle.component.html',
+    styleUrls: ['./tree-item-toggle.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [IconComponent, AsyncPipe]
 })
 export class TreeItemToggleComponent implements OnInit {
   @Input() item: ITreeData;

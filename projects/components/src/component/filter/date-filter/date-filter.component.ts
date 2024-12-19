@@ -23,12 +23,11 @@ import { DatePickerComponent } from '../../date-picker/date-picker/date-picker.c
 import { InputComponent } from '../../input/input/input.component';
 
 @Component({
-  selector: 'teta-date-filter',
-  templateUrl: './date-filter.component.html',
-  styleUrls: ['./date-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [InputComponent, DatePickerComponent, FormsModule, AsyncPipe],
+    selector: 'teta-date-filter',
+    templateUrl: './date-filter.component.html',
+    styleUrls: ['./date-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [InputComponent, DatePickerComponent, FormsModule, AsyncPipe]
 })
 export class DateFilterComponent<T> extends FilterComponentBase<T> implements OnInit {
   @Input() column: FilterItem;

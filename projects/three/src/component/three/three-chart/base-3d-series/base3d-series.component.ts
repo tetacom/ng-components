@@ -6,11 +6,10 @@ import { Base3dSeries } from '../model/base-3d-series';
 import { NgtStore } from 'angular-three';
 
 @Component({
-  selector: 'teta-base3d-series',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './base3d-series.component.html',
-  styleUrls: ['./base3d-series.component.scss'],
+    selector: 'teta-base3d-series',
+    imports: [CommonModule],
+    templateUrl: './base3d-series.component.html',
+    styleUrls: ['./base3d-series.component.scss']
 })
 export class Base3dSeriesComponent<T extends Base3dThreePoint> {
   @Input()

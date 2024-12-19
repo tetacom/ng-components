@@ -36,25 +36,24 @@ import { DropdownHeadDirective } from '../../dropdown/dropdown-head.directive';
 import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
 
 @Component({
-  selector: 'teta-head-cell',
-  templateUrl: './head-cell.component.html',
-  styleUrls: ['./head-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    DropdownComponent,
-    DropdownHeadDirective,
-    NgClass,
-    HeadCellHostComponent,
-    IconComponent,
-    HeadCellDropdownComponent,
-    DropdownContentDirective,
-    ResizeDragDirective,
-    MainDropdownTabComponent,
-    FilterDropdownTabComponent,
-    VisibilityDropdownTabComponent,
-    AsyncPipe,
-  ],
+    selector: 'teta-head-cell',
+    templateUrl: './head-cell.component.html',
+    styleUrls: ['./head-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        DropdownComponent,
+        DropdownHeadDirective,
+        NgClass,
+        HeadCellHostComponent,
+        IconComponent,
+        HeadCellDropdownComponent,
+        DropdownContentDirective,
+        ResizeDragDirective,
+        MainDropdownTabComponent,
+        FilterDropdownTabComponent,
+        VisibilityDropdownTabComponent,
+        AsyncPipe,
+    ]
 })
 export class HeadCellComponent<T> implements OnInit, OnDestroy {
   @Input() column: TableColumn;

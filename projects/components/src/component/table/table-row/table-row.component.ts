@@ -3,12 +3,11 @@ import { ControlContainer, FormControl, FormGroup, NgForm, UntypedFormControl } 
 import { TableRow } from '../contract/table-row';
 
 @Component({
-  selector: 'teta-table-row',
-  standalone: true,
-  imports: [],
-  templateUrl: './table-row.component.html',
-  styleUrl: './table-row.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-table-row',
+    imports: [],
+    templateUrl: './table-row.component.html',
+    styleUrl: './table-row.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TableRowComponent<T> implements OnChanges {
   @Input() row: TableRow<T>;

@@ -12,12 +12,11 @@ import { LinearSeriesBase } from '../linear-series-base';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'svg:svg[teta-area-series]',
-  templateUrl: './area-series.component.html',
-  styleUrls: ['./area-series.component.scss'],
-  standalone: true,
-  imports: [AsyncPipe],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'svg:svg[teta-area-series]',
+    templateUrl: './area-series.component.html',
+    styleUrls: ['./area-series.component.scss'],
+    imports: [AsyncPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AreaSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T> implements OnInit, OnDestroy {
   areaPath: Observable<string>;
