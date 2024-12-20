@@ -199,6 +199,10 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
     }
   }
 
+  setDisabledState?(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     this.prepareInput(false);
   }
