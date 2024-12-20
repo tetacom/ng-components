@@ -51,6 +51,7 @@ export class PropertyGridDemoComponent {
     new TableColumn({
       name: 'date',
       locked: true,
+      editable: false,
       filterType: FilterType.date,
     }),
     new TableColumn({
@@ -81,9 +82,12 @@ export class PropertyGridDemoComponent {
   }
 
   updateColumns() {
+    this.aaa = !this.aaa;
     this.columns.set([...this.columns().map((col) => {
       if(col.name === 'value') {
-        this.aaa = !this.aaa;
+        return { ...col, editable: this.aaa };
+      }
+      if(col.name === 'date') {
         return { ...col, editable: this.aaa };
       }
       return {...col}
