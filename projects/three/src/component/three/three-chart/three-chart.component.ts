@@ -10,7 +10,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { extend, NgtCanvas, NgtStore } from 'angular-three';
+import { extend, injectStore, NgtCanvas } from 'angular-three';
 import * as THREE from 'three';
 import { OrthographicCamera } from 'three';
 
@@ -28,7 +28,6 @@ extend(THREE);
     styleUrls: ['./three-chart.component.scss'],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [NgtStore],
     imports: [NgtCanvas, SceneComponent, CommonModule, CanvasComponent, Canvas3dHost]
 })
 export class ThreeChartComponent implements OnInit, OnChanges {
@@ -37,7 +36,7 @@ export class ThreeChartComponent implements OnInit, OnChanges {
   public camera: OrthographicCamera;
 
   protected readonly chartService = inject(Chart3dService);
-  protected readonly store = inject(NgtStore);
+  protected readonly store = injectStore();
   protected readonly cdr = inject(ChangeDetectorRef);
 
   ngOnInit(): void {

@@ -1,3 +1,5 @@
+@use 'sass:map';
+@use 'sass:list';
 @import 'util/color-util.scss';
 @import 'util/font-util.scss';
 @import 'presets/view-types.scss';
@@ -14,7 +16,7 @@
 
   @include getView('base');
 
-  @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
+  @each $paletteName, $palette in map.get($themes, list.nth(map.keys($themes), 1)) {
     &#{'-' + $paletteName} {
       background: getColorVar($paletteName, '50');
     }

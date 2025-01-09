@@ -7,7 +7,6 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { NgtStore } from 'angular-three';
 import { NgtsOrbitControls } from 'angular-three-soba/controls';
 import { Observable } from 'rxjs';
 import { Euler } from 'three';
@@ -19,6 +18,7 @@ import { Series3dHost } from '../directive/series-3d-host';
 import { Line3dComponent } from '../line-3d/line-3d.component';
 import { I3dChartConfig } from '../model/i-3d-chart-config';
 import { Chart3dService } from '../service/chart-3d.service';
+import { injectStore } from 'angular-three';
 
 @Component({
     selector: 'teta-scene',
@@ -38,7 +38,7 @@ import { Chart3dService } from '../service/chart-3d.service';
 export class SceneComponent implements OnInit {
   public data: Observable<I3dChartConfig>;
   public rotation: Euler;
-  public readonly store = inject(NgtStore);
+  public readonly store = injectStore();
   protected readonly Math = Math;
   protected readonly chartService = inject(Chart3dService);
   protected readonly _cdr = inject(ChangeDetectorRef);

@@ -1,3 +1,4 @@
+@use 'sass:map';
 @import 'util/color-util.scss';
 
 .toggle {
@@ -43,7 +44,7 @@
         box-shadow: none;
       }
 
-      @each $paletteName, $palette in map-get($themes, nth(map-keys($themes), 1)) {
+      @each $paletteName, $palette in map.get($themes, nth(map.keys($themes), 1)) {
         &#{$button + '-' + $paletteName} {
           background: getColorVar($paletteName, '50');
 

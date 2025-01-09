@@ -21,6 +21,10 @@ $sizes: (
 );
 
 .avatar {
+  font-style: normal;
+  font-weight: 600;
+  line-height: 16px;
+
   &_brick {
     border-radius: var(--radius-base-brick);
   }
@@ -33,16 +37,13 @@ $sizes: (
     border-radius: var(--radius-base-round);
   }
 
-  font-style: normal;
-  font-weight: 600;
-  line-height: 16px;
 }
 
 @each $sizeName, $size in $sizes {
   .avatar-size-#{$sizeName} {
     height: #{$size}px;
     width: #{$size}px;
-    font-size: map-get($font-sizes, $sizeName);
+    font-size: map.get($font-sizes, $sizeName);
 
     img {
       height: #{$size}px;

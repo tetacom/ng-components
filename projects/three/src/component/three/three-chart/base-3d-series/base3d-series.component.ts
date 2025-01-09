@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Chart3dService } from '../service/chart-3d.service';
 import { Base3dThreePoint } from '../model/base-3d-three-point';
 import { Base3dSeries } from '../model/base-3d-series';
-import { NgtStore } from 'angular-three';
+import { injectStore} from 'angular-three';
 
 @Component({
     selector: 'teta-base3d-series',
@@ -12,6 +12,7 @@ import { NgtStore } from 'angular-three';
     styleUrls: ['./base3d-series.component.scss']
 })
 export class Base3dSeriesComponent<T extends Base3dThreePoint> {
+  protected ngtStore = injectStore();
   @Input()
   set series(series: Base3dSeries<T>) {
     this._series = series;
@@ -23,6 +24,6 @@ export class Base3dSeriesComponent<T extends Base3dThreePoint> {
   protected _series: Base3dSeries<T>;
   constructor(
     protected svc: Chart3dService,
-    protected ngtStore: NgtStore,
+
   ) {}
 }
