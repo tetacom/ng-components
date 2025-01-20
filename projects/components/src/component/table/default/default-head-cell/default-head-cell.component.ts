@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, Input, OnInit } from '@angular/core';
 import { HeadCellComponentBase } from '../../base/head-cell-component-base';
 import { TableColumn } from '../../contract/table-column';
 import { HintDirective } from '../../../../directive/hint/hint.directive';
@@ -46,9 +46,15 @@ export class DefaultHeadCellComponent<T> extends HeadCellComponentBase<T> implem
     return this._data;
   }
 
+  hint = computed(() => {
+    const hintText = this.column.hint || this.column.caption;
+    return `${hintText}, ${this.column.unit}`;
+  })
+
   constructor(private _cdr: ChangeDetectorRef) {
     super();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 }

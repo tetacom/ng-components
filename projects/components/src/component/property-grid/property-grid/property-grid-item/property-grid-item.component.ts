@@ -93,7 +93,15 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
     return `${this.column().caption}${this.column().unit ? `, ${this.column().unit}` : ''}`;
   });
 
+  hint = computed(() => {
+    if (this.column().filterType === FilterType.boolean) {
+      return '';
+    }
+    return `${this.column().hint}${this.column().unit ? `, ${this.column().unit }` : ''}`;
+  })
+
   private _alive = true;
+
 
   constructor() {}
 
