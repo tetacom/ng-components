@@ -2123,18 +2123,20 @@ a {
 }
 
 .badge {
+  border-style: solid;
+  border-width: 1px;
+  width: fit-content;
+  padding: 1px 6px;
+  border-radius: 4px;
   font-size: 11px;
   font-family: Inter;
   font-weight: 500;
   font-style: normal;
   line-height: 16px;
   text-decoration: none;
+}
+.badge {
   border-radius: var(--radius-base-round);
-  border-style: solid;
-  border-width: 1px;
-  width: fit-content;
-  padding: 1px 6px;
-  border-radius: 4px;
 }
 .badge_brick {
   border-radius: var(--radius-base-brick);
@@ -2212,7 +2214,6 @@ a {
 .border {
   border-style: solid;
   border-width: 1px;
-  border-radius: var(--radius-field-round);
 }
 .border-top {
   border-top-style: solid;
@@ -2269,6 +2270,9 @@ a {
 .border-radius-12 {
   border-radius: 12px !important;
 }
+.border {
+  border-radius: var(--radius-field-round);
+}
 .border_brick {
   border-radius: var(--radius-field-brick);
 }
@@ -2299,6 +2303,8 @@ a {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.button {
   border-radius: var(--radius-btn-round);
 }
 .button_brick {
@@ -2675,6 +2681,8 @@ a {
   display: inline-flex;
   width: 200px;
   min-width: 0;
+}
+.daterange {
   border-radius: var(--radius-base-round);
 }
 .daterange_brick {
@@ -2691,6 +2699,8 @@ a {
   display: inline-flex;
   width: 110px;
   min-width: 0;
+}
+.datepicker {
   border-radius: var(--radius-base-round);
 }
 .datepicker_brick {
@@ -2918,6 +2928,8 @@ a {
   box-shadow: var(--shadow-2);
   background: var(--color-global-bgcard);
   animation: fadeInFromNone 0.5s ease-out;
+}
+.dropdown {
   border-radius: var(--radius-base-round);
 }
 .dropdown_brick {
@@ -3133,6 +3145,8 @@ a {
   color: var(--color-text-90);
   border: solid 1px var(--color-text-5);
   border-radius: 8px;
+}
+.hint {
   border-radius: var(--radius-base-round);
 }
 .hint_brick {
@@ -3250,6 +3264,10 @@ a {
   width: 100%;
   min-width: 0;
   transition: border-color 0.4s, background-color 0.4s;
+}
+.text-field,
+.input,
+.textarea {
   border-radius: var(--radius-field-round);
 }
 .text-field_brick,
@@ -4065,9 +4083,6 @@ body {
   resize: both;
 }
 
-.navigation {
-  border-radius: var(--radius-base-round);
-}
 .navigation-item {
   padding: 0 12px;
   grid-gap: 8px;
@@ -4080,6 +4095,9 @@ body {
   font-style: normal;
   line-height: 16px;
   text-decoration: none;
+}
+.navigation {
+  border-radius: var(--radius-base-round);
 }
 .navigation_brick {
   border-radius: var(--radius-base-brick);
@@ -4342,6 +4360,8 @@ body {
   display: inline-flex;
   height: 28px;
   width: 100%;
+}
+.select {
   border-radius: var(--radius-field-round);
 }
 .select_brick {
@@ -5615,6 +5635,8 @@ body {
   background: var(--color-text-5);
   color: var(--color-text-90);
   fill: var(--color-text-90);
+}
+.switch {
   border-radius: var(--radius-field-round);
 }
 .switch_brick {
@@ -6148,6 +6170,8 @@ body {
   z-index: 1;
   background-color: var(--color-global-white);
   color: var(--color-text-50);
+}
+.tooltip {
   border-radius: var(--radius-base-round);
 }
 .tooltip_brick {
