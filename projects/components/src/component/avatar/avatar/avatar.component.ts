@@ -4,12 +4,11 @@ import { viewType } from '../../../common/model/view-type.model';
 import { IconComponent } from '../../icon/icon/icon.component';
 
 @Component({
-  selector: 'teta-avatar',
-  templateUrl: './avatar.component.html',
-  styleUrls: ['./avatar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [IconComponent],
+    selector: 'teta-avatar',
+    templateUrl: './avatar.component.html',
+    styleUrls: ['./avatar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [IconComponent]
 })
 export class AvatarComponent implements OnInit {
   @Input() photo?: string | ArrayBuffer;

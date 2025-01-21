@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, TemplateRef } from '
 import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
-  selector: 'teta-divider',
-  templateUrl: './divider.component.html',
-  styleUrls: ['./divider.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [NgTemplateOutlet],
+    selector: 'teta-divider',
+    templateUrl: './divider.component.html',
+    styleUrls: ['./divider.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [NgTemplateOutlet]
 })
 export class DividerComponent implements OnInit {
   @Input() label;

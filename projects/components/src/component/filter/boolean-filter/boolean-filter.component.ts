@@ -22,12 +22,11 @@ import { FormsModule } from '@angular/forms';
 import { RadioComponent } from '../../radio/radio/radio.component';
 
 @Component({
-  selector: 'teta-boolean-filter',
-  templateUrl: './boolean-filter.component.html',
-  styleUrls: ['./boolean-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [RadioComponent, FormsModule, RadioButtonComponent, AsyncPipe],
+    selector: 'teta-boolean-filter',
+    templateUrl: './boolean-filter.component.html',
+    styleUrls: ['./boolean-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [RadioComponent, FormsModule, RadioButtonComponent, AsyncPipe]
 })
 export class BooleanFilterComponent<T> extends FilterComponentBase<T> implements OnInit {
   @Input() column: FilterItem;

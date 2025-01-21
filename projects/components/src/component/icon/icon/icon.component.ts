@@ -4,12 +4,11 @@ import { TetaSize } from '../../../common/enum/teta-size.enum';
 import { IconSpriteDirective } from '../icon-sprite.directive';
 
 @Component({
-  selector: 'teta-icon',
-  templateUrl: './icon.component.html',
-  styleUrls: ['./icon.component.scss'],
-  imports: [IconSpriteDirective],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
+    selector: 'teta-icon',
+    templateUrl: './icon.component.html',
+    styleUrls: ['./icon.component.scss'],
+    imports: [IconSpriteDirective],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IconComponent {
   @Input() name: string;

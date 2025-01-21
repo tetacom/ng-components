@@ -7,12 +7,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxComponent } from '../../../checkbox/checkbox/checkbox.component';
 
 @Component({
-  selector: 'teta-boolean-cell',
-  templateUrl: './boolean-cell.component.html',
-  styleUrls: ['./boolean-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [CheckboxComponent, FormsModule, ReactiveFormsModule],
+    selector: 'teta-boolean-cell',
+    templateUrl: './boolean-cell.component.html',
+    styleUrls: ['./boolean-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [CheckboxComponent, FormsModule, ReactiveFormsModule]
 })
 export class BooleanCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: ElementRef;

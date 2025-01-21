@@ -16,19 +16,18 @@ import { OnlyNumberDirective } from '../../../directive/only-number/only-number.
 import { IconComponent } from '../../icon/icon/icon.component';
 
 @Component({
-  selector: 'teta-text-field',
-  templateUrl: './text-field.component.html',
-  styleUrls: ['./text-field.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => TextFieldComponent),
-      multi: true,
-    },
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [IconComponent, FormsModule, OnlyNumberDirective, NgClass, NumberPipe],
+    selector: 'teta-text-field',
+    templateUrl: './text-field.component.html',
+    styleUrls: ['./text-field.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => TextFieldComponent),
+            multi: true,
+        },
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [IconComponent, FormsModule, OnlyNumberDirective, NgClass, NumberPipe]
 })
 export class TextFieldComponent implements ControlValueAccessor {
   @Input() placeholder = '';

@@ -19,13 +19,12 @@ export const CHECKBOX_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'teta-checkbox',
-  templateUrl: './checkbox.component.html',
-  styleUrls: ['./checkbox.component.scss'],
-  providers: [CHECKBOX_CONTROL_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [IconComponent, NgTemplateOutlet],
+    selector: 'teta-checkbox',
+    templateUrl: './checkbox.component.html',
+    styleUrls: ['./checkbox.component.scss'],
+    providers: [CHECKBOX_CONTROL_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [IconComponent, NgTemplateOutlet]
 })
 export class CheckboxComponent implements ControlValueAccessor, OnInit {
   @HostBinding('attr.tabindex') tabindex = 0;

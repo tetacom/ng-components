@@ -18,12 +18,11 @@ import * as d3 from 'd3';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'svg:svg[teta-bar-series]',
-  templateUrl: './bar-series.component.html',
-  styleUrls: ['./bar-series.component.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe],
+    selector: 'svg:svg[teta-bar-series]',
+    templateUrl: './bar-series.component.html',
+    styleUrls: ['./bar-series.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [AsyncPipe]
 })
 export class BarSeriesComponent<T extends BasePoint> extends SeriesBaseComponent<T> implements OnInit, OnChanges {
   x: Observable<any>;

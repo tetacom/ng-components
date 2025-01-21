@@ -97,6 +97,9 @@ export class OnlyNumberDirective {
         //   `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`;
         this._control.control.patchValue(
           `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`,
+          {
+            emitEvent: false,
+          },
         );
         if (this._elementRef.nativeElement.setSelectionRange) {
           this._elementRef.nativeElement.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
@@ -171,7 +174,9 @@ export class OnlyNumberDirective {
     const valid: boolean = new RegExp(regex).test(value.toString());
 
     if (valid) {
-      this._control.control.patchValue(parseFloat(value));
+      this._control.control.patchValue(parseFloat(value), {
+        emitEvent: false,
+      });
     }
   }
 }

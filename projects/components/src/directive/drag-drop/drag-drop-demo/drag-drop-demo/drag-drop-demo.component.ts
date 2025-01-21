@@ -7,12 +7,11 @@ import { DragDirective } from '../../drag.directive';
 import { DragContainerDirective } from '../../drag-container.directive';
 
 @Component({
-  selector: 'teta-drag-drop-demo',
-  templateUrl: './drag-drop-demo.component.html',
-  styleUrls: ['./drag-drop-demo.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [DragContainerDirective, DragDirective, DragPreviewDirective, JsonPipe],
+    selector: 'teta-drag-drop-demo',
+    templateUrl: './drag-drop-demo.component.html',
+    styleUrls: ['./drag-drop-demo.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [DragContainerDirective, DragDirective, DragPreviewDirective, JsonPipe]
 })
 export class DragDropDemoComponent implements OnInit {
   items = [

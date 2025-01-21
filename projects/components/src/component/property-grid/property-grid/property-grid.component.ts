@@ -28,13 +28,12 @@ import { PropertyGridItemComponent } from './property-grid-item/property-grid-it
 import { ArrayUtil } from '../../../common/util/array-util';
 
 @Component({
-  selector: 'teta-property-grid',
-  templateUrl: './property-grid.component.html',
-  styleUrls: ['./property-grid.component.scss'],
-  viewProviders: [FormsUtil.formProvider],
-  standalone: true,
-  imports: [PropertyGridItemComponent, FormsModule, ReactiveFormsModule, PropertyGridGroupComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-property-grid',
+    templateUrl: './property-grid.component.html',
+    styleUrls: ['./property-grid.component.scss'],
+    viewProviders: [FormsUtil.formProvider],
+    imports: [PropertyGridItemComponent, FormsModule, ReactiveFormsModule, PropertyGridGroupComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PropertyGridComponent<T> {
   @HostBinding('class.form-container') formClass = true;

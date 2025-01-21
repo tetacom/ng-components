@@ -20,13 +20,12 @@ import { AsyncPipe } from '@angular/common';
 import { LegendComponent } from '../legend/legend.component';
 
 @Component({
-  selector: 'teta-svg-chart',
-  templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.scss'],
-  standalone: true,
-  providers: [ChartService, ZoomService, ScaleService, BrushService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ChartContainerComponent, AsyncPipe, LegendComponent],
+    selector: 'teta-svg-chart',
+    templateUrl: './chart.component.html',
+    styleUrls: ['./chart.component.scss'],
+    providers: [ChartService, ZoomService, ScaleService, BrushService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [ChartContainerComponent, AsyncPipe, LegendComponent]
 })
 export class ChartComponent implements OnInit, OnDestroy {
   hasSeriesData: Observable<boolean>;

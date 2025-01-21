@@ -16,8 +16,9 @@ import { MinMaxDateModel } from './model/min-max-date.model';
 import { TetaLocalisation } from '../../locale/teta-localisation';
 
 @Component({
-  template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    template: '',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export abstract class BaseCalendar implements OnChanges, OnDestroy {
   abstract selectedDate;

@@ -8,13 +8,12 @@ import { PropertyGridItemComponent } from '../property-grid-item/property-grid-i
 import { ExpandItemComponent } from '../../../expand-card/expand-item/expand-item.component';
 
 @Component({
-  selector: 'teta-property-grid-group',
-  templateUrl: './property-grid-group.component.html',
-  styleUrls: ['./property-grid-group.component.scss'],
-  viewProviders: [FormsUtil.formProvider],
-  standalone: true,
-  imports: [ExpandItemComponent, PropertyGridItemComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-property-grid-group',
+    templateUrl: './property-grid-group.component.html',
+    styleUrls: ['./property-grid-group.component.scss'],
+    viewProviders: [FormsUtil.formProvider],
+    imports: [ExpandItemComponent, PropertyGridItemComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PropertyGridGroupComponent<T> {
   column = input<TableColumn>();

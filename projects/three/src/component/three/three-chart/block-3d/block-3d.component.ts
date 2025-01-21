@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, OnDestroy } from '@angular/core';
-import { extend, NgtArgs, NgtStore } from 'angular-three';
+import { extend, NgtArgs } from 'angular-three';
 import { NgtsText } from 'angular-three-soba/abstractions';
 import { map, Observable, takeWhile } from 'rxjs';
 import * as THREE from 'three';
@@ -13,12 +13,11 @@ import { AsyncPipe } from '@angular/common';
 extend(THREE);
 
 @Component({
-  selector: 'teta-block-3d',
-  templateUrl: './block-3d.component.html',
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgtArgs, NgtsText, AsyncPipe],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    selector: 'teta-block-3d',
+    templateUrl: './block-3d.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [NgtArgs, NgtsText, AsyncPipe],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class Block3dComponent<T extends Block3dPoint> extends Base3dSeriesComponent<T> implements OnDestroy {
   public blocks: Observable<
@@ -32,9 +31,8 @@ export class Block3dComponent<T extends Block3dPoint> extends Base3dSeriesCompon
 
   constructor(
     override svc: Chart3dService,
-    override ngtStore: NgtStore,
   ) {
-    super(svc, ngtStore);
+    super(svc);
     this.blocks = this.svc.scales.pipe(
       takeWhile(() => this._alive),
       map((scales) => {

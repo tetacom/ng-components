@@ -9,12 +9,11 @@ import { TableService } from '../../service/table.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'teta-list-cell',
-  templateUrl: './list-cell.component.html',
-  styleUrls: ['./list-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [SelectComponent, FormsModule, ReactiveFormsModule],
+    selector: 'teta-list-cell',
+    templateUrl: './list-cell.component.html',
+    styleUrls: ['./list-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [SelectComponent, FormsModule, ReactiveFormsModule]
 })
 export class ListCellComponent<T> extends CellComponentBase<T> implements OnInit {
   get displayFilterOptions(): IIdName<any>[] {

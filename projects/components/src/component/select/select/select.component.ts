@@ -32,35 +32,34 @@ import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
 import { LetDirective } from '../../../directive/let/let.directive';
 
 @Component({
-  selector: 'teta-select',
-  templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => SelectComponent),
-      multi: true,
-    },
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    LetDirective,
-    DropdownComponent,
-    DropdownHeadDirective,
-    IconComponent,
-    NgTemplateOutlet,
-    DropdownContentDirective,
-    TextFieldComponent,
-    FormsModule,
-    ScrollableComponent,
-    CdkVirtualScrollViewport,
-    CdkFixedSizeVirtualScroll,
-    ScrollableDirective,
-    CdkVirtualForOf,
-    HighlightDirective,
-    AsyncPipe,
-  ],
+    selector: 'teta-select',
+    templateUrl: './select.component.html',
+    styleUrls: ['./select.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => SelectComponent),
+            multi: true,
+        },
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        LetDirective,
+        DropdownComponent,
+        DropdownHeadDirective,
+        IconComponent,
+        NgTemplateOutlet,
+        DropdownContentDirective,
+        TextFieldComponent,
+        FormsModule,
+        ScrollableComponent,
+        CdkVirtualScrollViewport,
+        CdkFixedSizeVirtualScroll,
+        ScrollableDirective,
+        CdkVirtualForOf,
+        HighlightDirective,
+        AsyncPipe,
+    ]
 })
 export class SelectComponent implements ControlValueAccessor {
   @HostBinding('class.select_multiple')

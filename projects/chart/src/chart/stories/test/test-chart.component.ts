@@ -5,11 +5,10 @@ import { trajectory } from './data/tr';
 import { construction } from './data/cs';
 
 @Component({
-  selector: 'teta-test-chart',
-  standalone: true,
-  imports: [CommonModule, ChartComponent],
-  templateUrl: './test-chart.component.html',
-  styleUrl: './test-chart.component.css',
+    selector: 'teta-test-chart',
+    imports: [CommonModule, ChartComponent],
+    templateUrl: './test-chart.component.html',
+    styleUrl: './test-chart.component.css'
 })
 export class TestChartComponent {
   config: IChartConfig;

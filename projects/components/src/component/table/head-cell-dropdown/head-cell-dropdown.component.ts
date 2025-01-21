@@ -14,12 +14,11 @@ import { TabComponent } from '../../tabs/tab/tab.component';
 import { TabsComponent } from '../../tabs/tabs/tabs.component';
 
 @Component({
-  selector: 'teta-head-cell-dropdown',
-  templateUrl: './head-cell-dropdown.component.html',
-  styleUrls: ['./head-cell-dropdown.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [TabsComponent, TabComponent, TabTitleDirective, IconComponent, TabContentDirective, NgTemplateOutlet],
+    selector: 'teta-head-cell-dropdown',
+    templateUrl: './head-cell-dropdown.component.html',
+    styleUrls: ['./head-cell-dropdown.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [TabsComponent, TabComponent, TabTitleDirective, IconComponent, TabContentDirective, NgTemplateOutlet]
 })
 export class HeadCellDropdownComponent<T> {
   @Input() columns: ITreeData[];

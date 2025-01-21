@@ -32,26 +32,25 @@ type DisplayPlotBand = {
   plotBand: PlotBand;
 };
 @Component({
-  selector: 'teta-chart-container',
-  templateUrl: './chart-container.component.html',
-  styleUrls: ['./chart-container.component.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    TooltipComponent,
-    ZoomableDirective,
-    XAxisComponent,
-    YAxisComponent,
-    AsyncPipe,
-    KeyValuePipe,
-    PlotBandComponent,
-    GridlinesComponent,
-    SeriesHostComponent,
-    PlotlineComponent,
-    AnnotationComponent,
-    CrosshairComponent,
-    BrushableDirective,
-  ],
+    selector: 'teta-chart-container',
+    templateUrl: './chart-container.component.html',
+    styleUrls: ['./chart-container.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        TooltipComponent,
+        ZoomableDirective,
+        XAxisComponent,
+        YAxisComponent,
+        AsyncPipe,
+        KeyValuePipe,
+        PlotBandComponent,
+        GridlinesComponent,
+        SeriesHostComponent,
+        PlotlineComponent,
+        AnnotationComponent,
+        CrosshairComponent,
+        BrushableDirective,
+    ]
 })
 export class ChartContainerComponent implements AfterViewInit, OnDestroy {
   config: Observable<IChartConfig>;

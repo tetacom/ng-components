@@ -25,20 +25,19 @@ import { NgClass, AsyncPipe } from '@angular/common';
 import { ButtonComponent } from '../../../button/button/button.component';
 
 @Component({
-  selector: 'teta-range-calendar',
-  templateUrl: './range-calendar.component.html',
-  styleUrls: ['./range-calendar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    ButtonComponent,
-    NgClass,
-    IconComponent,
-    DayPickerComponent,
-    MonthPickerComponent,
-    YearPickerComponent,
-    AsyncPipe,
-  ],
+    selector: 'teta-range-calendar',
+    templateUrl: './range-calendar.component.html',
+    styleUrls: ['./range-calendar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        ButtonComponent,
+        NgClass,
+        IconComponent,
+        DayPickerComponent,
+        MonthPickerComponent,
+        YearPickerComponent,
+        AsyncPipe,
+    ]
 })
 export class RangeCalendarComponent extends BaseCalendar implements OnChanges, OnDestroy {
   @Input() locale: TetaLocalisation;

@@ -7,12 +7,11 @@ import { extend, NgtArgs } from 'angular-three';
 extend(THREE);
 
 @Component({
-  selector: 'teta-area-3d',
-  templateUrl: './area-3d.component.html',
-  standalone: true,
-  imports: [CommonModule, NgtArgs],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    selector: 'teta-area-3d',
+    templateUrl: './area-3d.component.html',
+    imports: [CommonModule, NgtArgs],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class Area3dComponent implements OnInit {
   public area: GridHelper[];

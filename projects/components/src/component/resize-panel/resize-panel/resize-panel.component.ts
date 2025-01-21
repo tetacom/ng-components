@@ -14,12 +14,11 @@ import { IconComponent } from '../../icon/icon/icon.component';
 import { ResizeDragDirective } from '../../../directive/resize-drag/resize-drag.directive';
 
 @Component({
-  selector: 'teta-resize-panel',
-  templateUrl: './resize-panel.component.html',
-  styleUrls: ['./resize-panel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [ResizeDragDirective, NgClass, IconComponent],
+    selector: 'teta-resize-panel',
+    templateUrl: './resize-panel.component.html',
+    styleUrls: ['./resize-panel.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [ResizeDragDirective, NgClass, IconComponent]
 })
 export class ResizePanelComponent implements OnInit, OnDestroy {
   @Input() size = 8;

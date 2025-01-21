@@ -39,27 +39,26 @@ import { ScrollableComponent } from '../../../directive/scrollable/scrollable/sc
 import { TableRowComponent } from '../table-row/table-row.component';
 
 @Component({
-  selector: 'teta-table-body',
-  templateUrl: './table-body.component.html',
-  styleUrls: ['./table-body.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    ScrollableComponent,
-    CdkVirtualScrollViewport,
-    CdkFixedSizeVirtualScroll,
-    ScrollableDirective,
-    CdkVirtualForOf,
-    NgTemplateOutlet,
-    FormsModule,
-    NgClass,
-    SelectionCellComponent,
-    CellComponent,
-    IconComponent,
-    AsyncPipe,
-    NumberPipe,
-    TableRowComponent,
-  ],
+    selector: 'teta-table-body',
+    templateUrl: './table-body.component.html',
+    styleUrls: ['./table-body.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        ScrollableComponent,
+        CdkVirtualScrollViewport,
+        CdkFixedSizeVirtualScroll,
+        ScrollableDirective,
+        CdkVirtualForOf,
+        NgTemplateOutlet,
+        FormsModule,
+        NgClass,
+        SelectionCellComponent,
+        CellComponent,
+        IconComponent,
+        AsyncPipe,
+        NumberPipe,
+        TableRowComponent,
+    ]
 })
 export class TableBodyComponent<T> implements OnInit, OnDestroy {
   @Input() virtual: boolean;

@@ -8,12 +8,11 @@ import { AsyncPipe } from '@angular/common';
 import { DraggablePointDirective } from '../../../directives/draggable-point.directive';
 
 @Component({
-  selector: 'svg:svg[teta-line-series]',
-  templateUrl: './line-series.component.html',
-  styleUrls: ['./line-series.component.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, DraggablePointDirective],
+    selector: 'svg:svg[teta-line-series]',
+    templateUrl: './line-series.component.html',
+    styleUrls: ['./line-series.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [AsyncPipe, DraggablePointDirective]
 })
 export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T> implements OnInit, OnDestroy {
   constructor(

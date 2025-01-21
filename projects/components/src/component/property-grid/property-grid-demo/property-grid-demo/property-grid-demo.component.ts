@@ -10,18 +10,17 @@ import { PropertyGridComponent } from '../../property-grid/property-grid.compone
 import { ButtonComponent } from '../../../button/button/button.component';
 
 @Component({
-  selector: 'teta-property-grid-demo',
-  templateUrl: './property-grid-demo.component.html',
-  styleUrls: ['./property-grid-demo.component.scss'],
-  standalone: true,
-  imports: [
-    FormsModule,
-    PropertyGridComponent,
-    PropertyGridItemDescriptionDirective,
-    ReactiveFormsModule,
-    ButtonComponent,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-property-grid-demo',
+    templateUrl: './property-grid-demo.component.html',
+    styleUrls: ['./property-grid-demo.component.scss'],
+    imports: [
+        FormsModule,
+        PropertyGridComponent,
+        PropertyGridItemDescriptionDirective,
+        ReactiveFormsModule,
+        ButtonComponent,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PropertyGridDemoComponent {
   private aaa = false;

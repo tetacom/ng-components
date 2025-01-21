@@ -24,12 +24,11 @@ import { FormsModule } from '@angular/forms';
 import { TextFieldComponent } from '../../input/text-field/text-field.component';
 
 @Component({
-  selector: 'teta-list-filter',
-  templateUrl: './list-filter.component.html',
-  styleUrls: ['./list-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [TextFieldComponent, FormsModule, ScrollableComponent, CheckboxComponent, AsyncPipe],
+    selector: 'teta-list-filter',
+    templateUrl: './list-filter.component.html',
+    styleUrls: ['./list-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [TextFieldComponent, FormsModule, ScrollableComponent, CheckboxComponent, AsyncPipe]
 })
 export class ListFilterComponent<T> extends FilterComponentBase<T> implements OnInit {
   @Input() column: FilterItem;

@@ -8,11 +8,10 @@ import { map, Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'svg:svg[teta-bandseries]',
-  templateUrl: './bandseries.component.html',
-  standalone: true,
-  imports: [AsyncPipe],
-  styleUrls: ['./bandseries.component.scss'],
+    selector: 'svg:svg[teta-bandseries]',
+    templateUrl: './bandseries.component.html',
+    imports: [AsyncPipe],
+    styleUrls: ['./bandseries.component.scss']
 })
 export class BandseriesComponent extends SeriesBaseComponent<BasePoint> implements OnInit {
   x: Observable<any>;

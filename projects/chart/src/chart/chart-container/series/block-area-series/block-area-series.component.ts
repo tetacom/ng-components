@@ -17,12 +17,11 @@ import { ZoomService } from '../../../service/zoom.service';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'svg:svg[teta-block-area-series]',
-  templateUrl: './block-area-series.component.html',
-  styleUrls: ['./block-area-series.component.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe],
+    selector: 'svg:svg[teta-block-area-series]',
+    templateUrl: './block-area-series.component.html',
+    styleUrls: ['./block-area-series.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [AsyncPipe]
 })
 export class BlockAreaSeriesComponent<T extends BasePoint>
   extends SeriesBaseComponent<T>

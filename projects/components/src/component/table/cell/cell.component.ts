@@ -7,12 +7,11 @@ import { TableRow } from '../contract/table-row';
 import { CellHostComponent } from '../cell-host/cell-host.component';
 
 @Component({
-  selector: 'teta-cell',
-  templateUrl: './cell.component.html',
-  styleUrls: ['./cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [CellHostComponent],
+    selector: 'teta-cell',
+    templateUrl: './cell.component.html',
+    styleUrls: ['./cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [CellHostComponent]
 })
 export class CellComponent<T> {
   @Input() column: TableColumn;

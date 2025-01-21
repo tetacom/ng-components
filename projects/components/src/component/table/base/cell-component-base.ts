@@ -13,7 +13,8 @@ import { TableRow } from '../contract/table-row';
 import { TableService } from '../service/table.service';
 
 @Component({
-  template: '',
+    template: '',
+    standalone: false
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 export abstract class CellComponentBase<T> implements OnInit, OnDestroy {

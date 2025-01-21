@@ -19,12 +19,11 @@ import { TableHeadGroupComponent } from '../table-head-group/table-head-group.co
 import { SelectionHeadCellComponent } from '../selection-head-cell/selection-head-cell.component';
 
 @Component({
-  selector: 'teta-table-head',
-  templateUrl: './table-head.component.html',
-  styleUrls: ['./table-head.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [SelectionHeadCellComponent, TableHeadGroupComponent],
+    selector: 'teta-table-head',
+    templateUrl: './table-head.component.html',
+    styleUrls: ['./table-head.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [SelectionHeadCellComponent, TableHeadGroupComponent]
 })
 export class TableHeadComponent<T> implements OnInit, OnDestroy {
   @Input() selectType: SelectType;

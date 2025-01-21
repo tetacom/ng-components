@@ -13,12 +13,11 @@ import { Axes3dMinMax } from '../model/axes-3d-min-max';
 extend(THREE);
 
 @Component({
-  selector: 'teta-axes-3d',
-  templateUrl: './axes-3d.component.html',
-  standalone: true,
-  imports: [CommonModule, NgtsText],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'teta-axes-3d',
+    templateUrl: './axes-3d.component.html',
+    imports: [CommonModule, NgtsText],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Axes3dComponent implements OnDestroy {
   @Input() rotation: Euler;

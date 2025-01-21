@@ -3,13 +3,12 @@ import { IconComponent } from '../../icon/icon/icon.component';
 import { ButtonComponent } from '../../button/button/button.component';
 
 @Component({
-  selector: 'teta-expand-item',
-  templateUrl: './expand-item.component.html',
-  styleUrls: ['./expand-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  exportAs: 'expand-item',
-  standalone: true,
-  imports: [ButtonComponent, IconComponent],
+    selector: 'teta-expand-item',
+    templateUrl: './expand-item.component.html',
+    styleUrls: ['./expand-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    exportAs: 'expand-item',
+    imports: [ButtonComponent, IconComponent]
 })
 export class ExpandItemComponent {
   @Input() open = true;

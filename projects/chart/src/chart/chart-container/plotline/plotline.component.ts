@@ -17,12 +17,11 @@ import { IChartEvent } from '../../model/i-chart-event';
 import { ChartService } from '../../service/chart.service';
 
 @Component({
-  selector: '[teta-plot-line]',
-  templateUrl: './plotline.component.html',
-  styleUrls: ['./plotline.component.scss'],
-  standalone: true,
-  imports: [],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: '[teta-plot-line]',
+    templateUrl: './plotline.component.html',
+    styleUrls: ['./plotline.component.scss'],
+    imports: [],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlotlineComponent implements OnInit, OnDestroy {
   @Input() plotLine: PlotLine;

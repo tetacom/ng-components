@@ -90,7 +90,7 @@ export const lithotypeChart = () => ({
 });
 export const customSeries = () => ({
   moduleMetadata: {
-    imports: [ThreeChartComponent],
+    imports: [ThreeChartComponent, IconSpriteDirective],
   },
   props: {
     data: {

@@ -5,13 +5,12 @@ import { ButtonComponent } from '../../button/button/button.component';
 import { ToolbarComponent } from '../../toolbar/toolbar/toolbar.component';
 
 @Component({
-  selector: 'teta-expand-card',
-  templateUrl: './expand-card.component.html',
-  styleUrls: ['./expand-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  exportAs: 'expand-card',
-  standalone: true,
-  imports: [ToolbarComponent, ButtonComponent, IconComponent, DelimiterComponent],
+    selector: 'teta-expand-card',
+    templateUrl: './expand-card.component.html',
+    styleUrls: ['./expand-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    exportAs: 'expand-card',
+    imports: [ToolbarComponent, ButtonComponent, IconComponent, DelimiterComponent]
 })
 export class ExpandCardComponent implements OnInit {
   @Input() open = true;

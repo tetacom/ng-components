@@ -8,12 +8,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HintDirective } from '../../../../directive/hint/hint.directive';
 
 @Component({
-  selector: 'teta-string-cell',
-  templateUrl: './string-cell.component.html',
-  styleUrls: ['./string-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [HintDirective, FormsModule, ReactiveFormsModule],
+    selector: 'teta-string-cell',
+    templateUrl: './string-cell.component.html',
+    styleUrls: ['./string-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [HintDirective, FormsModule, ReactiveFormsModule]
 })
 export class StringCellComponent<T> extends CellComponentBase<T> implements OnInit {
   align = Align;

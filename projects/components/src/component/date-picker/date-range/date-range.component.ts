@@ -40,24 +40,23 @@ export const DATE_Range_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'teta-date-range',
-  templateUrl: './date-range.component.html',
-  styleUrls: ['./date-range.component.scss'],
-  providers: [DATE_Range_CONTROL_VALUE_ACCESSOR, DatePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    DropdownComponent,
-    DropdownHeadDirective,
-    NgClass,
-    InputComponent,
-    FormsModule,
-    MaskitoModule,
-    IconComponent,
-    DropdownContentDirective,
-    RangeCalendarComponent,
-    AsyncPipe,
-  ],
+    selector: 'teta-date-range',
+    templateUrl: './date-range.component.html',
+    styleUrls: ['./date-range.component.scss'],
+    providers: [DATE_Range_CONTROL_VALUE_ACCESSOR, DatePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        DropdownComponent,
+        DropdownHeadDirective,
+        NgClass,
+        InputComponent,
+        FormsModule,
+        MaskitoModule,
+        IconComponent,
+        DropdownContentDirective,
+        RangeCalendarComponent,
+        AsyncPipe,
+    ]
 })
 export class DateRangeComponent extends BasePicker implements OnInit, ControlValueAccessor {
   @Input() date: DateFromToModel = { from: null, to: null };

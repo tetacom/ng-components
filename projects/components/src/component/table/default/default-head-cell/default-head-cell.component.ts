@@ -4,12 +4,11 @@ import { TableColumn } from '../../contract/table-column';
 import { HintDirective } from '../../../../directive/hint/hint.directive';
 
 @Component({
-  selector: 'teta-default-head-cell',
-  templateUrl: './default-head-cell.component.html',
-  styleUrls: ['./default-head-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [HintDirective],
+    selector: 'teta-default-head-cell',
+    templateUrl: './default-head-cell.component.html',
+    styleUrls: ['./default-head-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [HintDirective]
 })
 export class DefaultHeadCellComponent<T> extends HeadCellComponentBase<T>{
   private _column: TableColumn;

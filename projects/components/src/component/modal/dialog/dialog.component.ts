@@ -8,11 +8,10 @@ import { ButtonComponent } from '../../button/button/button.component';
 import { ToolbarComponent } from '../../toolbar/toolbar/toolbar.component';
 
 @Component({
-  selector: 'teta-dialog',
-  templateUrl: './dialog.component.html',
-  styleUrls: ['./dialog.component.scss'],
-  standalone: true,
-  imports: [ToolbarComponent, ButtonComponent, IconComponent, TranslocoModule],
+    selector: 'teta-dialog',
+    templateUrl: './dialog.component.html',
+    styleUrls: ['./dialog.component.scss'],
+    imports: [ToolbarComponent, ButtonComponent, IconComponent, TranslocoModule]
 })
 export class DialogComponent implements OnInit {
   @Input() message: string;

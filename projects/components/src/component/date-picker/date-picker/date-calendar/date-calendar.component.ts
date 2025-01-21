@@ -24,12 +24,11 @@ import { IconComponent } from '../../../icon/icon/icon.component';
 import { ButtonComponent } from '../../../button/button/button.component';
 
 @Component({
-  selector: 'teta-date-calendar',
-  templateUrl: './date-calendar.component.html',
-  styleUrls: ['./date-calendar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [ButtonComponent, IconComponent, DayPickerComponent, MonthPickerComponent, YearPickerComponent, AsyncPipe],
+    selector: 'teta-date-calendar',
+    templateUrl: './date-calendar.component.html',
+    styleUrls: ['./date-calendar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [ButtonComponent, IconComponent, DayPickerComponent, MonthPickerComponent, YearPickerComponent, AsyncPipe]
 })
 export class DateCalendarComponent extends BaseCalendar implements OnChanges, OnDestroy {
   @Input() selectedDate: Date | string | number = new Date();
