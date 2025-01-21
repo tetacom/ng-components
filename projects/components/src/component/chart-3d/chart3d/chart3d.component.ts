@@ -29,7 +29,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private _scene: THREE.Scene;
   private _camera: THREE.PerspectiveCamera;
-  private _renderer: THREE.Renderer;
+  private _renderer: THREE.WebGLRenderer;
   private _controls: OrbitControls;
   private _obs: ResizeObserver;
   private _config: Chart3dOptions;

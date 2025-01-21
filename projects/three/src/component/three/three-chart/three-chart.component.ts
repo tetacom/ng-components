@@ -10,25 +10,24 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { extend, injectStore, NgtCanvas } from 'angular-three';
+import { extend } from 'angular-three';
 import * as THREE from 'three';
 import { OrthographicCamera } from 'three';
 
 import { I3dChartConfig } from './model/i-3d-chart-config';
 import { SceneComponent } from './scene/scene.component';
 import { Chart3dService } from './service/chart-3d.service';
-import { CanvasComponent } from './canvas/canvas.component';
 import { Canvas3dHost } from './directive/canvas-3d-host';
 
 extend(THREE);
 
 @Component({
-    selector: 'teta-three-chart',
-    templateUrl: './three-chart.component.html',
-    styleUrls: ['./three-chart.component.scss'],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgtCanvas, SceneComponent, CommonModule, CanvasComponent, Canvas3dHost]
+  selector: 'teta-three-chart',
+  templateUrl: './three-chart.component.html',
+  styleUrls: ['./three-chart.component.scss'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, Canvas3dHost],
 })
 export class ThreeChartComponent implements OnInit, OnChanges {
   @Input() data: I3dChartConfig;
@@ -36,7 +35,6 @@ export class ThreeChartComponent implements OnInit, OnChanges {
   public camera: OrthographicCamera;
 
   protected readonly chartService = inject(Chart3dService);
-  protected readonly store = injectStore();
   protected readonly cdr = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
