@@ -8,7 +8,7 @@
   "targets": {
     "build": {
       "executor": "@nx/angular:package",
-      "outputs": ["{workspaceRoot}/{projectRoot}/dist"],
+      "outputs": ["{workspaceRoot}/projects/chart/dist"],
       "options": {
         "project": "projects/chart/ng-package.json"
       },

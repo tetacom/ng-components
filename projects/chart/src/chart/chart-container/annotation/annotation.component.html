@@ -26,7 +26,7 @@
         #annotationNode
         [style.background-color]="annotation.style?.fill ?? 'var(--color-global-bgmain)'"
         [style.cursor]="annotation?.draggable ? 'move' : 'default'"
-        [className]="'padding-h-2 ' + annotation.className ?? ''"
+        [className]="'padding-h-2 ' + (annotation.className ?? '')"
         style="border-radius: 2px; display: inline-block"
       >
         @if (annotation.template) {

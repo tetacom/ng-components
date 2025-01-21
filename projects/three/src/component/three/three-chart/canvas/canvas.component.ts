@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgtCanvas } from 'angular-three';
+import { NgtCamera, NgtCanvas } from 'angular-three';
 import { SceneComponent } from '../scene/scene.component';
 import { I3dChartConfig } from '../model/i-3d-chart-config';
-import { Camera } from 'three';
 
 @Component({
     selector: 'teta-canvas',
@@ -15,6 +14,6 @@ import { Camera } from 'three';
 })
 export class CanvasComponent {
   @Input() scene: typeof SceneComponent;
-  @Input() camera: Camera;
+  @Input() camera: NgtCamera;
   @Input() data: I3dChartConfig;
 }
