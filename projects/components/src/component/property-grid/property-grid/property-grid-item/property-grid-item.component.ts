@@ -92,9 +92,14 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
     return `${this.column().caption}${this.column().unit ? `, ${this.column().unit}` : ''}`;
   });
 
-  private _alive = true;
+  hint = computed(() => {
+    if (this.column().filterType === FilterType.boolean) {
+      return '';
+    }
+    return `${this.column().hint || this.column().caption}${this.column().unit ? `, ${this.column().unit}` : ''}`;
+  })
 
-  constructor() {}
+  private _alive = true;
 
   getDict() {
     const dict = this.dict() ? this.dict()[this.column().name] : [];
