@@ -97,7 +97,7 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
     if (this.column().filterType === FilterType.boolean) {
       return '';
     }
-    return `${this.column().hint}, ${this.column().unit ?? ''}`;
+    return `${this.column().hint || this.column().caption}${this.column().unit ? `, ${this.column().unit}` : ''}`;
   })
 
   private _alive = true;

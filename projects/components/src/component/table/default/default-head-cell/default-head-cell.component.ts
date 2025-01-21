@@ -50,9 +50,8 @@ export class DefaultHeadCellComponent<T> extends HeadCellComponentBase<T>{
     super();
   }
 
-
   getHint(){
     const hintText = this.column.hint || this.column.caption;
-    return `${hintText}, ${this.column.unit}`;
+    return `${hintText}${this.column.unit ? `, ${this.column.unit}` : ''}`;
   }
 }
