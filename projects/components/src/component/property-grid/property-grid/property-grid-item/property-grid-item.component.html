@@ -1,7 +1,7 @@
 @if (editable() || !hideNonEditable()) {
   <teta-input
     [label]="caption()"
-    [hint]="column().hint"
+    [hint]="hint()"
     [formGroup]="formGroup"
     [horizontal]="horizontal()"
     [required]="column().required"
