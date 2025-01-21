@@ -11,7 +11,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           cache: npm
-          node-version: 20
+          node-version: 22
       - name: Install & Build
         run: npm install && npx nx build three
       - name: Publish
