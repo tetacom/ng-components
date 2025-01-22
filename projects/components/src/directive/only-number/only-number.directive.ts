@@ -27,11 +27,23 @@ export class OnlyNumberDirective {
     private _control: NgControl,
   ) {}
 
-  @HostListener('change', ['$event']) onChange(e: any) {
+  @HostListener('input', ['$event']) onChange(e: any) {
     if (this.tetaOnlyNumber === false) {
       return;
     }
-    this.validateValue(this._elementRef.nativeElement.value);
+    e.preventDefault();
+    e.stopPropagation();
+    // this.validateValue(this._elementRef.nativeElement.value);
+  }
+
+  @HostListener('blur', ['$event']) onBlur(e: any) {
+    e.preventDefault();
+    e.stopPropagation();
+    const value = this._elementRef.nativeElement.value;
+    if (value.endsWith('.')) {
+      this._elementRef.nativeElement.value = value.replace('.', '');
+      this._elementRef.nativeElement.dispatchEvent(new Event('input'));
+    }
   }
 
   @HostListener('dblclick', ['$event']) dblclick(e: any) {
@@ -64,11 +76,7 @@ export class OnlyNumberDirective {
 
     const separatorIsCloseToSign = signExists && cursorPosition <= 1;
     if (this.allowDecimals && !separatorIsCloseToSign && !separatorExists) {
-      // if (this.decimalSeparator === '.') {
       allowedKeys.push('.');
-      // } else {
-      // allowedKeys.push(',');
-      // }
     }
 
     const firstCharacterIsSeparator = originalValue.charAt(0) !== this.decimalSeparator;
@@ -93,14 +101,8 @@ export class OnlyNumberDirective {
       return;
     } else {
       if (e.key === ',' && originalValue.indexOf('.') < 0) {
-        // this._elementRef.nativeElement.value =
-        //   `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`;
-        this._control.control.patchValue(
-          `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`,
-          {
-            emitEvent: false,
-          },
-        );
+        this._elementRef.nativeElement.value = `${originalValue.slice(0, cursorPosition)}.${originalValue.slice(cursorPosition)}`;
+        this._elementRef.nativeElement.dispatchEvent(new Event('input'));
         if (this._elementRef.nativeElement.setSelectionRange) {
           this._elementRef.nativeElement.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
         }
@@ -177,6 +179,8 @@ export class OnlyNumberDirective {
       this._control.control.patchValue(parseFloat(value), {
         emitEvent: false,
       });
+    } else {
+      console.error('INVALID VALUE');
     }
   }
 }
