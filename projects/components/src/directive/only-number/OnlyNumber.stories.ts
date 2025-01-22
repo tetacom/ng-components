@@ -13,6 +13,7 @@ export const onlyNumber = () => ({
   },
   props: {
     data: 123,
+    data2: 12323,
     log: (name, value) => {
       action(name)(value);
       console.log(name, value);
@@ -31,9 +32,9 @@ export const onlyNumber = () => ({
                 Standart
                 <input tetaOnlyNumber
                         class="input"
-                        [ngModel]="data"
-                        (ngModelChange)="data=$event;log('tetaOnlyNumber', $event)"/>
-                <div>{{data}}</div>
+                        [ngModel]="data2"
+                        (ngModelChange)="data2=$event;log('tetaOnlyNumber', $event)"/>
+                <div>{{data2}}</div>
               </div>
               <input class="input"/>`,
 });
