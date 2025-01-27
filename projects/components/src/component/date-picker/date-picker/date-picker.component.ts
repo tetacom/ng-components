@@ -41,23 +41,24 @@ export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-    selector: 'teta-date-picker',
-    templateUrl: './date-picker.component.html',
-    styleUrls: ['./date-picker.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [DATE_PICKER_CONTROL_VALUE_ACCESSOR, DatePipe],
-    imports: [
-        DropdownComponent,
-        DropdownHeadDirective,
-        NgClass,
-        InputComponent,
-        FormsModule,
-        MaskitoModule,
-        IconComponent,
-        DropdownContentDirective,
-        DateCalendarComponent,
-        AsyncPipe,
-    ]
+  selector: 'teta-date-picker',
+  templateUrl: './date-picker.component.html',
+  styleUrls: ['./date-picker.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DATE_PICKER_CONTROL_VALUE_ACCESSOR, DatePipe],
+  imports: [
+    DropdownComponent,
+    DropdownHeadDirective,
+    NgClass,
+    InputComponent,
+    FormsModule,
+    MaskitoModule,
+    IconComponent,
+    DropdownContentDirective,
+    DateCalendarComponent,
+    AsyncPipe,
+  ],
+  host: {},
 })
 export class DatePickerComponent extends BasePicker implements OnInit, ControlValueAccessor, OnChanges {
   @Input() date: Date | string | number = null;
@@ -86,9 +87,11 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
   public selectedDate: ReplaySubject<Date | string | number> = new ReplaySubject<Date | string | number>(1);
   public mask = '';
   @HostBinding('class.datepicker') private readonly classDatepicker = true;
+
   @HostBinding('class.datepicker-time') get dateTimeClass() {
     return this.showTime;
   }
+
   @HostBinding('tabindex') private readonly tabindex = 0;
 
   constructor(

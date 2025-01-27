@@ -19,7 +19,7 @@ export class AvatarComponent implements OnInit {
 
   @HostBinding('class') get avatar() {
     let avatar = 'avatar ';
-    avatar += 'avatar-size-' + this.size;
+    avatar += 'avatar-appearance-' + this.size;
     return avatar;
   }
 

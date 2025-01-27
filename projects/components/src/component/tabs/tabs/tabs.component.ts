@@ -39,7 +39,7 @@ export class TabsComponent implements AfterContentChecked {
   @Input() direction: 'horizontal' | 'vertical' = 'horizontal';
 
   /**
-   * Tabs size
+   * Tabs appearance
    */
   @Input() size: 's' | 'm' = 'm';
 

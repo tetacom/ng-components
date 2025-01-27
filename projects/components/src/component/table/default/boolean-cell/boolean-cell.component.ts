@@ -30,9 +30,6 @@ export class BooleanCellComponent<T> extends CellComponentBase<T> implements OnI
   startEdit(initiator: ICellCoordinates, type: 'cell' | 'row'): void {
     if (initiator?.column === this.column.name) {
       this.cdr.markForCheck();
-      setTimeout(() => {
-        this.input?.nativeElement.focus();
-      }, 0);
     }
   }
 

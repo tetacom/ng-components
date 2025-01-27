@@ -52,7 +52,7 @@ export const baseButton: StoryFn = (args) => ({
   },
   props: args,
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
-       <button teta-button  [disabled]="false" [view]="view" [square]="false"  [size]="size" [viewType]="viewType" [palette]="palette">
+       <button teta-button  [disabled]="false" [view]="view" [square]="false"  [tetaSize]="size" [viewType]="viewType" [tetaPalette]="palette">
           <teta-icon [name]="'addCircle'"></teta-icon>
           {{text}}
        </button>
@@ -64,7 +64,7 @@ export const disabledButton: StoryFn = (args) => ({
   },
   props: args,
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
-       <button teta-button  [disabled]="true" [view]="view" [square]="false"  [size]="size" [viewType]="viewType" [palette]="palette">
+       <button teta-button  [disabled]="true" [view]="view" [square]="false"  [tetaSize]="size" [viewType]="viewType" [tetaPalette]="palette">
           <teta-icon [name]="'addCircle'"></teta-icon>
           {{text}}
        </button>
@@ -76,7 +76,7 @@ export const squireButton = (args) => ({
   },
   props: args,
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
-       <button teta-button  [disabled]="false" [view]="view" [square]="true"  [size]="size" [viewType]="viewType" [palette]="palette">
+       <button teta-button  [disabled]="false" [view]="view" [square]="true"  [tetaSize]="size" [viewType]="viewType" [tetaPalette]="palette">
           <teta-icon [name]="'addCircle'"></teta-icon>
           {{text}}
        </button>
@@ -107,7 +107,7 @@ export const allButtonTypes: StoryFn = () => ({
             @for(palette of palettes;let i=$index; track $index;) {
                 <div class="column" style="grid-gap: 20px">
                   <p class="font-body-3">{{types[i]}}</p>
-                  <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette">
+                  <button teta-button [disabled]="disabled" [tetaSize]="size" [viewType]="types[i]" [tetaPalette]="palette">
                     @if(leftIcon) {
                         <teta-icon [name]="'addCircle'"></teta-icon>
                     }
@@ -116,12 +116,12 @@ export const allButtonTypes: StoryFn = () => ({
                         <teta-icon [name]="'user'"></teta-icon>
                     }
                   </button>
-                  <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette" [square]="true">
+                  <button teta-button [disabled]="disabled" [tetaSize]="size" [viewType]="types[i]" [tetaPalette]="palette" [square]="true">
                     @if(leftIcon) {
                         <teta-icon [name]="'addCircle'"></teta-icon>
                     }
                   </button>
-                  <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette" [view]="'outline'">
+                  <button teta-button [disabled]="disabled" [tetaSize]="size" [viewType]="types[i]" [tetaPalette]="palette" [view]="'outline'">
                     @if(leftIcon) {
                         <teta-icon [name]="'addCircle'"></teta-icon>
                     }
@@ -130,7 +130,7 @@ export const allButtonTypes: StoryFn = () => ({
                         <teta-icon [name]="'user'"></teta-icon>
                     }
                   </button>
-                  <button teta-button [disabled]="disabled" [size]="size" [viewType]="types[i]" [palette]="palette" [view]="'ghost'">
+                  <button teta-button [disabled]="disabled" [tetaSize]="size" [viewType]="types[i]" [tetaPalette]="palette" [view]="'ghost'">
                     @if(leftIcon) {
                         <teta-icon [name]="'addCircle'"></teta-icon>
                     }

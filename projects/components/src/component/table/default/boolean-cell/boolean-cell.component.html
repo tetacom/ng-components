@@ -2,5 +2,7 @@
   {{ control?.value }}
 </span>
 @if (edit) {
-  <teta-checkbox #input [binary]="true" [formControl]="control"></teta-checkbox>
+  <div class="row row_auto align-center justify-content-center">
+    <teta-checkbox #input [binary]="true" [formControl]="control"></teta-checkbox>
+  </div>
 }

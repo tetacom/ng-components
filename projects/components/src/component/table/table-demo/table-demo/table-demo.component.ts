@@ -23,7 +23,7 @@ import { FormsModule } from '@angular/forms';
     imports: [ToolbarComponent, ButtonComponent, IconComponent, TableComponent, JsonPipe, FormsModule]
 })
 export class TableDemoComponent implements OnInit {
-  rowHeight = signal<number>(28);
+  rowHeight = signal<number>(40);
   @Input() size: number;
   @Input() virtual: boolean;
   @Input() editType: EditType;
@@ -90,6 +90,11 @@ export class TableDemoComponent implements OnInit {
         editable: false,
       }),
       new TableColumn({
+        name: 'active',
+        filterType: FilterType.boolean,
+        locked: true,
+      }),
+      new TableColumn({
         name: 'date',
         locked: true,
         filterType: FilterType.date,
@@ -148,6 +153,7 @@ export class TableDemoComponent implements OnInit {
         address: faker.address.streetAddress(),
         state: faker.address.state(),
         city: faker.address.city(),
+        active: faker.datatype.boolean(),
         zip: faker.address.zipCode(),
         editable: Math.random() > 0.1,
       });
@@ -230,10 +236,10 @@ export class TableDemoComponent implements OnInit {
   }
 
   rowEditable(row: any) {
-    return row.editable;
+    return row?.editable ?? true;
   }
 
   rowClass(row: any) {
-    return row.editable ? '' : 'table-row_disabled';
+    return row?.editable ? '' : 'table-row_disabled';
   }
 }
