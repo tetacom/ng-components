@@ -1,75 +1,61 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, OnDestroy } from '@angular/core';
 import * as d3 from 'd3';
-import { map, Observable } from 'rxjs';
 
 import { BasePoint } from '../../../model/base-point';
 import { ClipPointsDirection } from '../../../model/enum/clip-points-direction';
-import { FillDirection, FillType } from '../../../model/enum/fill-type';
 import { LinearSeriesBaseComponent } from '../linear-series-base.component';
-import { AsyncPipe } from '@angular/common';
+import { FillDirection, FillType } from '../../../model/enum/fill-type';
 
 @Component({
   selector: 'svg:svg[teta-area-series]',
   templateUrl: './area-series.component.html',
   styleUrls: ['./area-series.component.scss'],
-  imports: [AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AreaSeriesComponent<T extends BasePoint>
-  extends LinearSeriesBaseComponent<T>
-  implements OnInit, OnDestroy
-{
-  areaPath: Observable<string>;
+export class AreaSeriesComponent<T extends BasePoint> extends LinearSeriesBaseComponent<T> implements OnDestroy {
+  areaPath = computed(() => {
+    if (!this.x() || !this.y()) {
+      return '';
+    }
 
-  fillDirection = FillDirection;
-  fillType = FillType;
+    const area = d3
+      .area<BasePoint>()
+      .defined((point) => point.x !== null && point.y !== null && !isNaN(point.x) && !isNaN(point.y));
 
-  override ngOnInit() {
-    super.ngOnInit();
-    this.areaPath = this.scaleService.scales.pipe(
-      map((data) => {
-        const { x, y } = data;
+    if (this.config().inverted) {
+      area
+        .x1((_) => (_.x1 !== null && _.x1 !== undefined ? this.x()(_.x1) : this.x()(0)))
+        .x0((_) => this.x()(_.x))
+        .y((_) => this.y()(_.y));
+    } else {
+      area
+        .y1((_) => (_.y1 !== null && _.y1 !== undefined ? this.y()(_.y1) : this.y()(0)))
+        .y0((_) => this.y()(_.y))
+        .x((_) => this.x()(_.x));
+    }
 
-        this.x = x.get(this.series().xAxisIndex)?.scale;
-        this.y = y.get(this.series().yAxisIndex)?.scale;
+    const filter = this.defaultClipPointsMapping.get(this.series().clipPointsDirection);
+    let filteredData = this.series().data;
 
-        if (!this.x || !this.y) {
-          return '';
-        }
+    if (this.series().clipPointsDirection === ClipPointsDirection.x) {
+      let [min, max] = this.x().domain();
 
-        const area = d3
-          .area<BasePoint>()
-          .defined((point) => point.x !== null && point.y !== null && !isNaN(point.x) && !isNaN(point.y));
+      min = min instanceof Date ? min.getTime() : min;
+      max = max instanceof Date ? max.getTime() : max;
 
-        area
-          .x1((_) => (_.x1 !== null && _.x1 !== undefined ? this.x(_.x1) : this.x(0)))
-          .x0((_) => this.x(_.x))
+      filteredData = filteredData?.filter(filter(min, max));
+    }
 
-          .y((_) => this.y(_.y));
+    if (this.series().clipPointsDirection === ClipPointsDirection.y) {
+      let [min, max] = this.y().domain();
 
-        const filter = this.defaultClipPointsMapping.get(this.series().clipPointsDirection);
-        let filteredData = this.series().data;
+      min = min instanceof Date ? min.getTime() : min;
+      max = max instanceof Date ? max.getTime() : max;
 
-        if (this.series().clipPointsDirection === ClipPointsDirection.x) {
-          let [min, max] = this.x.domain();
-
-          min = min instanceof Date ? min.getTime() : min;
-          max = max instanceof Date ? max.getTime() : max;
-
-          filteredData = filteredData?.filter(filter(min, max));
-        }
-
-        if (this.series().clipPointsDirection === ClipPointsDirection.y) {
-          let [min, max] = this.y.domain();
-
-          min = min instanceof Date ? min.getTime() : min;
-          max = max instanceof Date ? max.getTime() : max;
-
-          filteredData = filteredData?.filter(filter(min, max));
-        }
-
-        return area(filteredData);
-      }),
-    );
-  }
+      filteredData = filteredData?.filter(filter(min, max));
+    }
+    return area(filteredData);
+  });
+  protected readonly FillType = FillType;
+  protected readonly FillDirection = FillDirection;
 }

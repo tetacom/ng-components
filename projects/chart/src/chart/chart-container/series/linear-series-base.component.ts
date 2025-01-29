@@ -1,53 +1,86 @@
-import { Component, computed, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, OnDestroy, signal } from '@angular/core';
 import * as d3 from 'd3';
-import { BehaviorSubject, combineLatest, map, Observable, tap, withLatestFrom } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { SeriesBaseComponent } from '../../base/series-base.component';
 import { BasePoint } from '../../model/base-point';
 import { ClipPointsDirection } from '../../model/enum/clip-points-direction';
 import { TooltipTracking } from '../../model/enum/tooltip-tracking';
-import { IScalesMap } from '../../model/i-scales-map';
-import { Series } from '../../model/series';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   template: '',
   standalone: true,
 })
-export class LinearSeriesBaseComponent<T extends BasePoint>
-  extends SeriesBaseComponent<T>
-  implements OnInit, OnDestroy
-{
-  public defaultClipPointsMapping: Map<
-    ClipPointsDirection,
-    (min: number, max: number) => (point: BasePoint, idx: number, arr: Array<BasePoint>) => {}
-  > = new Map();
+export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseComponent<T> implements OnDestroy {
+  pointerMove = toSignal(this.svc.pointerMove);
+  transform = computed(() => {
+    const event = this.pointerMove();
+    return this.getTransform(event, this.x(), this.y());
+  });
 
-  transform: Observable<Pick<BasePoint, 'x' | 'y'>>;
+  public defaultClipPointsMapping = new Map<
+    ClipPointsDirection,
+    (min: number, max: number) => (point: BasePoint, idx: number, arr: Array<BasePoint>) => boolean
+  >();
+
   display: Observable<number>;
-  path: Observable<string>;
-  x: any;
-  y: any;
+
   markers = computed(() => {
     return this.series().data?.filter(
       (_) => _?.marker && _?.x !== undefined && _?.y !== undefined && _?.x !== null && _?.y !== null,
     );
   });
 
-  private __series: Series<T>;
-  protected _update = new BehaviorSubject<void>(null);
+  path = computed(() => {
+    this.update();
+    if (!this.x() || !this.y()) {
+      return '';
+    }
 
-  // @Input()
-  // override set series(series: Series<T>) {
-  //   this.__series = series;
-  //
-  //   this.markers =
-  // }
-  //
-  // override get series() {
-  //   return this.__series;
-  // }
+    const filter = this.defaultClipPointsMapping.get(this.series().clipPointsDirection);
 
-  ngOnInit(): void {
+    const line = d3
+      .line<BasePoint>()
+      .defined(
+        (point) =>
+          point.x !== null &&
+          point.y !== null &&
+          point.x !== undefined &&
+          point.y !== undefined &&
+          !isNaN(point.x) &&
+          !isNaN(point.y),
+      )
+      .x((point) => this.x()(point.x))
+      .y((point) => this.y()(point.y));
+
+    let filteredData = this.series().data;
+
+    if (this.series().clipPointsDirection === ClipPointsDirection.x) {
+      let [min, max] = this.x().domain();
+
+      min = min instanceof Date ? min.getTime() : min;
+      max = max instanceof Date ? max.getTime() : max;
+
+      filteredData = filteredData?.filter(filter(min, max));
+    }
+
+    if (this.series().clipPointsDirection === ClipPointsDirection.y) {
+      let [min, max] = this.y().domain();
+
+      min = min instanceof Date ? min.getTime() : min;
+      max = max instanceof Date ? max.getTime() : max;
+
+      filteredData = filteredData?.filter(filter(min, max));
+    }
+
+    return line(filteredData);
+  });
+
+  protected update = signal<unknown>(null);
+
+  constructor() {
+    super();
     const filterX = (min: number, max: number) => (point: BasePoint, idx: number, arr: Array<BasePoint>) => {
       const bigger = min > max ? min : max;
       const smaller = min > max ? max : min;
@@ -80,66 +113,6 @@ export class LinearSeriesBaseComponent<T extends BasePoint>
 
     this.defaultClipPointsMapping.set(ClipPointsDirection.x, filterX);
     this.defaultClipPointsMapping.set(ClipPointsDirection.y, filterY);
-
-    this.transform = this.svc.pointerMove.pipe(
-      withLatestFrom(this.scaleService.scales),
-      map((data: [PointerEvent, IScalesMap]) => {
-        const [event, { x, y }] = data;
-
-        return this.getTransform(event, x.get(this.series().xAxisIndex).scale, y.get(this.series().yAxisIndex).scale);
-      }),
-      tap(() => setTimeout(() => this.cdr.detectChanges())),
-    );
-
-    this.path = combineLatest([this.scaleService.scales, this._update]).pipe(
-      map(([data]) => {
-        const { x, y } = data;
-        this.x = x.get(this.series().xAxisIndex)?.scale;
-        this.y = y.get(this.series().yAxisIndex)?.scale;
-
-        if (!this.x || !this.y) {
-          return '';
-        }
-
-        const filter = this.defaultClipPointsMapping.get(this.series().clipPointsDirection);
-
-        const line = d3
-          .line<BasePoint>()
-          .defined(
-            (point) =>
-              point.x !== null &&
-              point.y !== null &&
-              point.x !== undefined &&
-              point.y !== undefined &&
-              !isNaN(point.x) &&
-              !isNaN(point.y),
-          )
-          .x((point) => this.x(point.x))
-          .y((point) => this.y(point.y));
-
-        let filteredData = this.series().data;
-
-        if (this.series().clipPointsDirection === ClipPointsDirection.x) {
-          let [min, max] = this.x.domain();
-
-          min = min instanceof Date ? min.getTime() : min;
-          max = max instanceof Date ? max.getTime() : max;
-
-          filteredData = filteredData?.filter(filter(min, max));
-        }
-
-        if (this.series().clipPointsDirection === ClipPointsDirection.y) {
-          let [min, max] = this.y.domain();
-
-          min = min instanceof Date ? min.getTime() : min;
-          max = max instanceof Date ? max.getTime() : max;
-
-          filteredData = filteredData?.filter(filter(min, max));
-        }
-
-        return line(filteredData);
-      }),
-    );
   }
 
   ngOnDestroy() {
@@ -150,26 +123,35 @@ export class LinearSeriesBaseComponent<T extends BasePoint>
   }
 
   getTransform(event: any, scaleX: any, scaleY: any): Pick<BasePoint, 'x' | 'y'> {
-    if (event.type === 'mouseleave') {
+    if (!scaleX || !scaleY) {
+      return null;
+    }
+    if (event && event.type === 'mouseleave') {
       return null;
     }
     const mouse = [event?.offsetX, event?.offsetY];
 
     const tooltipTracking = this.config()?.tooltip?.tracking;
-    const lineIntersection = (p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y) => {
+    const lineIntersection = (
+      p0_x: number,
+      p0_y: number,
+      p1_x: number,
+      p1_y: number,
+      p2_x: number,
+      p2_y: number,
+      p3_x: number,
+      p3_y: number,
+    ) => {
       const rV = {} as any;
-      let s1_x, s1_y, s2_x, s2_y;
-      s1_x = p1_x - p0_x;
-      s1_y = p1_y - p0_y;
-      s2_x = p3_x - p2_x;
-      s2_y = p3_y - p2_y;
+      const s1_x = p1_x - p0_x;
+      const s1_y = p1_y - p0_y;
+      const s2_x = p3_x - p2_x;
+      const s2_y = p3_y - p2_y;
 
-      let s, t;
-      s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / (-s2_x * s1_y + s1_x * s2_y);
-      t = (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / (-s2_x * s1_y + s1_x * s2_y);
+      const s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / (-s2_x * s1_y + s1_x * s2_y);
+      const t = (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / (-s2_x * s1_y + s1_x * s2_y);
 
       if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {
-        // Collision detected
         rV.x = p0_x + t * s1_x;
         rV.y = p0_y + t * s1_y;
       }

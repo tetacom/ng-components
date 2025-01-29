@@ -17,7 +17,7 @@ import { BandSeriesComponent } from './bandseries/band-series.component';
 
 const randomColor = randomInt(0, cssColorNames.length - 1);
 
-const seriesType = [SeriesType.line, SeriesType.line];
+const seriesType = [SeriesType.line, SeriesType.bar, SeriesType.area];
 
 faker.locale = 'ru';
 
@@ -28,7 +28,7 @@ export const createSeries = (size: number) => {
       type,
       name: faker.address.cityName(),
       xAxisIndex: 0,
-      yAxisIndex: index,
+      yAxisIndex: index > 1 ? 1 : index,
       color: cssColorNames[randomColor()].toLowerCase(),
 
       fillType: FillType.gradient,
@@ -119,7 +119,7 @@ export const createChart = (size: number, inverted = true): IChartConfig => {
   return {
     id: '123123123132',
     name: '123123123132',
-    inverted: inverted,
+    // inverted: inverted,
     tooltip: {
       tracking: TooltipTracking.y,
     },
