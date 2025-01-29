@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, input } from '@angular/core';
 
 import { BasePoint } from '../model/base-point';
 import { IChartConfig } from '../model/i-chart-config';
@@ -11,36 +11,28 @@ import { ZoomService } from '../service/zoom.service';
   template: '',
   standalone: true,
 })
-export class SeriesBaseComponent<T extends BasePoint> implements OnInit {
-  @Input()
-  set config(config: IChartConfig) {
-    this._config = config;
+export class SeriesBaseComponent<T extends BasePoint> {
+  protected svc = inject(ChartService);
+  protected cdr = inject(ChangeDetectorRef);
+  protected scaleService = inject(ScaleService);
+  protected zoomService = inject(ZoomService);
+  protected element = inject(ElementRef);
+  id = (Date.now() + Math.random()).toString(36);
+
+  config = input<IChartConfig>();
+  series = input<Series<T>>();
+
+  mouseenter(point: BasePoint) {
+    this.svc.setTooltip({
+      point: point,
+      series: this.series(),
+    });
   }
 
-  get config() {
-    return this._config;
+  mouseleave(point: BasePoint) {
+    this.svc.setTooltip({
+      point: null,
+      series: this.series(),
+    });
   }
-
-  @Input()
-  set series(series: Series<T>) {
-    this._series = series;
-  }
-
-  get series() {
-    return this._series;
-  }
-
-  protected _series: Series<T>;
-  protected _config: IChartConfig;
-
-  constructor(
-    protected svc: ChartService,
-    protected cdr: ChangeDetectorRef,
-    protected scaleService: ScaleService,
-    protected zoomService: ZoomService,
-    protected element: ElementRef,
-    protected zone?: NgZone,
-  ) {}
-
-  ngOnInit(): void {}
 }

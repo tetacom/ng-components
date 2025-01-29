@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, input } from '@angular/core';
 import { Series } from '../model/series';
 import { BasePoint } from '../model/base-point';
 import { SeriesType } from '../model/enum/series-type';
@@ -20,7 +20,7 @@ export class LegendComponent {
     .set(SeriesType.block, 12)
     .set(SeriesType.blockArea, 2);
 
-  @Input() series: Array<Series<BasePoint>>;
+  series = input<Array<Series<BasePoint>>>();
   @HostBinding('class.padding-bottom-4') classLegend = true;
 
   constructor(private chartService: ChartService) {}
@@ -29,7 +29,8 @@ export class LegendComponent {
     return this.sizeMapping.get(serie.type ?? SeriesType.line);
   }
 
-  click(serie: Series<BasePoint>) {
-    this.chartService.toggleVisibilitySeries([serie.id]);
+  click(series: Series<BasePoint>, visible?: boolean) {
+    series.visible = visible;
+    this.chartService.updateSeries(series);
   }
 }

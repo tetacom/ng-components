@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^19.0.5",
-    "@angular/core": "^19.0.5"
+    "@angular/core": "^19.0.5",
+    "@tetacom/ng-components": "^1.5.1"
   },
   "dependencies": {
     "tslib": "^2.6.2"

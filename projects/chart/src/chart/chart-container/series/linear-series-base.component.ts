@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, Input, OnDestroy, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { BehaviorSubject, combineLatest, map, Observable, tap, withLatestFrom } from 'rxjs';
 
@@ -8,15 +8,15 @@ import { ClipPointsDirection } from '../../model/enum/clip-points-direction';
 import { TooltipTracking } from '../../model/enum/tooltip-tracking';
 import { IScalesMap } from '../../model/i-scales-map';
 import { Series } from '../../model/series';
-import { ChartService } from '../../service/chart.service';
-import { ScaleService } from '../../service/scale.service';
-import { ZoomService } from '../../service/zoom.service';
 
 @Component({
   template: '',
   standalone: true,
 })
-export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T> implements OnInit, OnDestroy {
+export class LinearSeriesBaseComponent<T extends BasePoint>
+  extends SeriesBaseComponent<T>
+  implements OnInit, OnDestroy
+{
   public defaultClipPointsMapping: Map<
     ClipPointsDirection,
     (min: number, max: number) => (point: BasePoint, idx: number, arr: Array<BasePoint>) => {}
@@ -27,35 +27,27 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
   path: Observable<string>;
   x: any;
   y: any;
-  markers: BasePoint[];
+  markers = computed(() => {
+    return this.series().data?.filter(
+      (_) => _?.marker && _?.x !== undefined && _?.y !== undefined && _?.x !== null && _?.y !== null,
+    );
+  });
 
   private __series: Series<T>;
   protected _update = new BehaviorSubject<void>(null);
 
-  @Input()
-  override set series(series: Series<T>) {
-    this.__series = series;
+  // @Input()
+  // override set series(series: Series<T>) {
+  //   this.__series = series;
+  //
+  //   this.markers =
+  // }
+  //
+  // override get series() {
+  //   return this.__series;
+  // }
 
-    this.markers = this.__series.data?.filter(
-      (_) => _?.marker && _?.x !== undefined && _?.y !== undefined && _?.x !== null && _?.y !== null,
-    );
-  }
-
-  override get series() {
-    return this.__series;
-  }
-
-  constructor(
-    protected override svc: ChartService,
-    protected override cdr: ChangeDetectorRef,
-    protected override scaleService: ScaleService,
-    protected override zoomService: ZoomService,
-    protected override element: ElementRef,
-  ) {
-    super(svc, cdr, scaleService, zoomService, element);
-  }
-
-  override ngOnInit(): void {
+  ngOnInit(): void {
     const filterX = (min: number, max: number) => (point: BasePoint, idx: number, arr: Array<BasePoint>) => {
       const bigger = min > max ? min : max;
       const smaller = min > max ? max : min;
@@ -94,7 +86,7 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
       map((data: [PointerEvent, IScalesMap]) => {
         const [event, { x, y }] = data;
 
-        return this.getTransform(event, x.get(this.series.xAxisIndex).scale, y.get(this.series.yAxisIndex).scale);
+        return this.getTransform(event, x.get(this.series().xAxisIndex).scale, y.get(this.series().yAxisIndex).scale);
       }),
       tap(() => setTimeout(() => this.cdr.detectChanges())),
     );
@@ -102,14 +94,14 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
     this.path = combineLatest([this.scaleService.scales, this._update]).pipe(
       map(([data]) => {
         const { x, y } = data;
-        this.x = x.get(this.series.xAxisIndex)?.scale;
-        this.y = y.get(this.series.yAxisIndex)?.scale;
+        this.x = x.get(this.series().xAxisIndex)?.scale;
+        this.y = y.get(this.series().yAxisIndex)?.scale;
 
         if (!this.x || !this.y) {
           return '';
         }
 
-        const filter = this.defaultClipPointsMapping.get(this.series.clipPointsDirection);
+        const filter = this.defaultClipPointsMapping.get(this.series().clipPointsDirection);
 
         const line = d3
           .line<BasePoint>()
@@ -125,9 +117,9 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
           .x((point) => this.x(point.x))
           .y((point) => this.y(point.y));
 
-        let filteredData = this.series.data;
+        let filteredData = this.series().data;
 
-        if (this.series.clipPointsDirection === ClipPointsDirection.x) {
+        if (this.series().clipPointsDirection === ClipPointsDirection.x) {
           let [min, max] = this.x.domain();
 
           min = min instanceof Date ? min.getTime() : min;
@@ -136,7 +128,7 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
           filteredData = filteredData?.filter(filter(min, max));
         }
 
-        if (this.series.clipPointsDirection === ClipPointsDirection.y) {
+        if (this.series().clipPointsDirection === ClipPointsDirection.y) {
           let [min, max] = this.y.domain();
 
           min = min instanceof Date ? min.getTime() : min;
@@ -153,11 +145,9 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
   ngOnDestroy() {
     this.svc.setTooltip({
       point: null,
-      series: this.series,
+      series: this.series(),
     });
   }
-
-  ngAfterViewInit() {}
 
   getTransform(event: any, scaleX: any, scaleY: any): Pick<BasePoint, 'x' | 'y'> {
     if (event.type === 'mouseleave') {
@@ -165,7 +155,7 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
     }
     const mouse = [event?.offsetX, event?.offsetY];
 
-    const tooltipTracking = this.config?.tooltip?.tracking;
+    const tooltipTracking = this.config()?.tooltip?.tracking;
     const lineIntersection = (p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y) => {
       const rV = {} as any;
       let s1_x, s1_y, s2_x, s2_y;
@@ -195,17 +185,17 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
       if (x0 instanceof Date) {
         x0 = x0.getTime();
       }
-      const rightId = bisect(this.series.data, x0);
+      const rightId = bisect(this.series().data, x0);
       const range = scaleY.range();
       const intersect = lineIntersection(
         pointer,
         range[0],
         pointer,
         Number.MAX_SAFE_INTEGER,
-        scaleX(this.series.data[rightId - 1]?.x),
-        scaleY(this.series.data[rightId - 1]?.y),
-        scaleX(this.series.data[rightId]?.x),
-        scaleY(this.series.data[rightId]?.y),
+        scaleX(this.series().data[rightId - 1]?.x),
+        scaleY(this.series().data[rightId - 1]?.y),
+        scaleX(this.series().data[rightId]?.x),
+        scaleY(this.series().data[rightId]?.y),
       );
       const x = scaleX.invert(intersect.x);
       const y = scaleY.invert(intersect.y);
@@ -215,12 +205,12 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
             x: scaleX.invert(intersect.x),
             y: scaleY.invert(intersect.y),
           },
-          series: this.series,
+          series: this.series(),
         });
       } else {
         this.svc.setTooltip({
           point: null,
-          series: this.series,
+          series: this.series(),
         });
       }
 
@@ -237,7 +227,7 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
       if (y0 instanceof Date) {
         y0 = y0.getTime();
       }
-      const rightId = bisect(this.series.data, y0);
+      const rightId = bisect(this.series().data, y0);
       const range = scaleX.range();
 
       const intersect = lineIntersection(
@@ -245,10 +235,10 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
         mouse[1],
         Number.MAX_SAFE_INTEGER,
         mouse[1],
-        scaleX(this.series.data[rightId - 1]?.x),
-        scaleY(this.series.data[rightId - 1]?.y),
-        scaleX(this.series.data[rightId]?.x),
-        scaleY(this.series.data[rightId]?.y),
+        scaleX(this.series().data[rightId - 1]?.x),
+        scaleY(this.series().data[rightId - 1]?.y),
+        scaleX(this.series().data[rightId]?.x),
+        scaleY(this.series().data[rightId]?.y),
       );
 
       const x = scaleX.invert(intersect.x);
@@ -260,12 +250,12 @@ export class LinearSeriesBase<T extends BasePoint> extends SeriesBaseComponent<T
             x: scaleX.invert(intersect.x),
             y: scaleY.invert(intersect.y),
           },
-          series: this.series,
+          series: this.series(),
         });
       } else {
         this.svc.setTooltip({
           point: null,
-          series: this.series,
+          series: this.series(),
         });
       }
 

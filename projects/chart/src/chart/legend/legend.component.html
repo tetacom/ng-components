@@ -1,20 +1,16 @@
-@for (serie of series; track serie.id) {
-  @if (serie?.showInLegend !== false) {
+@for (seriesItem of series(); track seriesItem.id) {
+  @if (seriesItem?.showInLegend !== false && seriesItem.enabled) {
     <div>
-      <div class="legend-item cursor-pointer" (click)="click(serie)">
-        <div
-          class="legend-icon-form"
-          [style.height.px]="getHeight(serie)"
-          [style.border-top-color]="serie.visible ? serie.color : 'var(--color-text-30)'"
-          [style.border-top-style]="serie.style?.strokeDasharray ? 'dashed' : 'solid'"
-          [style.border-width.px]="serie.style?.strokeDasharray ? 1 : 2"
-        ></div>
-        <div
-          class="legend-label"
-          style="user-select: none"
-          [style.text-decoration]="serie.visible ? 'none' : 'line-through'"
-        >
-          {{ serie.name }}
+      <div class="legend-item cursor-pointer" (click)="click(seriesItem, !seriesItem.visible)">
+        <div class="legend-icon-form"
+             [style.height.px]="getHeight(seriesItem)"
+             [style.border-top-color]="seriesItem.visible ? seriesItem.color : 'var(--color-text-30)'"
+             [style.border-top-style]="seriesItem.style?.strokeDasharray ? 'dashed' : 'solid'"
+             [style.border-width.px]="seriesItem.style?.strokeDasharray ? 1 : 2"></div>
+        <div class="legend-label"
+             style="user-select: none"
+             [style.text-decoration]="seriesItem.visible ? 'none' : 'line-through'">
+          {{ seriesItem.name }}
         </div>
       </div>
     </div>

@@ -1,40 +1,28 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { map, Observable } from 'rxjs';
 
 import { BasePoint } from '../../../model/base-point';
 import { ClipPointsDirection } from '../../../model/enum/clip-points-direction';
 import { FillDirection, FillType } from '../../../model/enum/fill-type';
-import { ChartService } from '../../../service/chart.service';
-import { ScaleService } from '../../../service/scale.service';
-import { ZoomService } from '../../../service/zoom.service';
-import { LinearSeriesBase } from '../linear-series-base';
+import { LinearSeriesBaseComponent } from '../linear-series-base.component';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'svg:svg[teta-area-series]',
-    templateUrl: './area-series.component.html',
-    styleUrls: ['./area-series.component.scss'],
-    imports: [AsyncPipe],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'svg:svg[teta-area-series]',
+  templateUrl: './area-series.component.html',
+  styleUrls: ['./area-series.component.scss'],
+  imports: [AsyncPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AreaSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T> implements OnInit, OnDestroy {
+export class AreaSeriesComponent<T extends BasePoint>
+  extends LinearSeriesBaseComponent<T>
+  implements OnInit, OnDestroy
+{
   areaPath: Observable<string>;
 
   fillDirection = FillDirection;
   fillType = FillType;
-  id: string;
-
-  constructor(
-    protected override svc: ChartService,
-    protected override cdr: ChangeDetectorRef,
-    protected override scaleService: ScaleService,
-    protected override zoomService: ZoomService,
-    protected override element: ElementRef,
-  ) {
-    super(svc, cdr, scaleService, zoomService, element);
-    this.id = (Date.now() + Math.random()).toString(36);
-  }
 
   override ngOnInit() {
     super.ngOnInit();
@@ -42,8 +30,8 @@ export class AreaSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T
       map((data) => {
         const { x, y } = data;
 
-        this.x = x.get(this.series.xAxisIndex)?.scale;
-        this.y = y.get(this.series.yAxisIndex)?.scale;
+        this.x = x.get(this.series().xAxisIndex)?.scale;
+        this.y = y.get(this.series().yAxisIndex)?.scale;
 
         if (!this.x || !this.y) {
           return '';
@@ -59,10 +47,10 @@ export class AreaSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T
 
           .y((_) => this.y(_.y));
 
-        const filter = this.defaultClipPointsMapping.get(this.series.clipPointsDirection);
-        let filteredData = this.series.data;
+        const filter = this.defaultClipPointsMapping.get(this.series().clipPointsDirection);
+        let filteredData = this.series().data;
 
-        if (this.series.clipPointsDirection === ClipPointsDirection.x) {
+        if (this.series().clipPointsDirection === ClipPointsDirection.x) {
           let [min, max] = this.x.domain();
 
           min = min instanceof Date ? min.getTime() : min;
@@ -71,7 +59,7 @@ export class AreaSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T
           filteredData = filteredData?.filter(filter(min, max));
         }
 
-        if (this.series.clipPointsDirection === ClipPointsDirection.y) {
+        if (this.series().clipPointsDirection === ClipPointsDirection.y) {
           let [min, max] = this.y.domain();
 
           min = min instanceof Date ? min.getTime() : min;

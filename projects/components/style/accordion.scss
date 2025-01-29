@@ -3,10 +3,14 @@
 @import 'presets/view-types';
 
 .accordion {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 8px;
 
   &-item {
-    display: block;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
     transition: background-color 0.2s ease-in-out;
 
@@ -78,7 +82,8 @@
   }
 
   &-content {
-    display: block;
+    display: flex;
+    flex-direction: column;
     padding: 8px;
   }
 }

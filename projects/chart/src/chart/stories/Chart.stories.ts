@@ -31,32 +31,28 @@ export const basicChart = () => ({
     },
   },
   template: `
-
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']"
-            class="font-body-3 padding-3 bg-global-bgmain"
+            class="font-body-3 column padding-3 bg-global-bgmain"
             style="width: 100%; height: 100vh">
-        <button teta-button
-          [palette]="'primary'"
-          (click)="config=createChart(500);">
-          Create new Data
-        </button>
-        <button teta-button
-          [palette]="'primary'"
-          (click)="config=createChart(0); config2=createChart(0)">
-          Create empty data
-          config </button>
-        <button teta-button
-          [palette]="'primary'"
-          (click)="setZoom(chart)">Set zoom</button>
-
-        <div class="row row_auto gap" style="height: 100%; width: 100%">
-            <teta-svg-chart #chart [config]="config" class="bg-global-bgcard row_6 border border-text-50"></teta-svg-chart>
-
+        <div>
+          <button teta-button
+            [palette]="'primary'"
+            (click)="config=createChart(500);">
+            Create new Data
+          </button>
+          <button teta-button
+            [palette]="'primary'"
+            (click)="config=createChart(0); config2=createChart(0)">
+            Create empty data
+            config </button>
+          <button teta-button
+            [palette]="'primary'"
+            (click)="setZoom(chart)">Set zoom</button>
         </div>
-
-      </div>
-
-`,
+        <div class="row row_auto gap">
+            <teta-svg-chart #chart [config]="config" class="bg-global-bgcard row_6 border border-text-50"></teta-svg-chart>
+        </div>
+      </div>`,
 });
 
 export const draggableChart = () => ({
@@ -69,9 +65,9 @@ export const draggableChart = () => ({
   },
   template: `
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']"
-            class="font-body-3 padding-3 bg-global-bgmain"
+            class="font-body-3 padding-3 bg-global-bgmain column"
             style="width: 100%; height: 100vh">
-        <div class="row row_auto gap" style="height: 100%; width: 100%">
+        <div class="row row_auto gap">
             <teta-svg-chart [config]="config" class="bg-global-bgcard row_6 border border-text-50"></teta-svg-chart>
         </div>
       </div>`,

@@ -17,11 +17,11 @@ import { IChartEvent } from '../../model/i-chart-event';
 import { ChartService } from '../../service/chart.service';
 
 @Component({
-    selector: '[teta-plot-line]',
-    templateUrl: './plotline.component.html',
-    styleUrls: ['./plotline.component.scss'],
-    imports: [],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: '[teta-plot-line]',
+  templateUrl: './plotline.component.html',
+  styleUrls: ['./plotline.component.scss'],
+  imports: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlotlineComponent implements OnInit, OnDestroy {
   @Input() plotLine: PlotLine;
@@ -86,7 +86,7 @@ export class PlotlineComponent implements OnInit, OnDestroy {
   }
 
   emit(event: IChartEvent<PlotLine>) {
-    this.chartService.emitPlotline(event);
+    this.chartService.emitPlotLine(event);
   }
 
   get value() {

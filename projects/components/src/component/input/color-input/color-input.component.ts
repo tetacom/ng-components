@@ -5,26 +5,28 @@ import {
   ElementRef,
   forwardRef,
   HostListener,
+  inject,
   Input,
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'teta-color-input',
-    templateUrl: './color-input.component.html',
-    styleUrls: ['./color-input.component.scss'],
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => ColorInputComponent),
-            multi: true,
-        },
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [FormsModule]
+  selector: 'teta-color-input',
+  templateUrl: './color-input.component.html',
+  styleUrls: ['./color-input.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ColorInputComponent),
+      multi: true,
+    },
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [FormsModule],
 })
 export class ColorInputComponent implements ControlValueAccessor {
+  private elementRef = inject(ElementRef);
   @Input() disabled = false;
   @ViewChild('input', { static: false }) input: ElementRef;
   value = '';
@@ -65,6 +67,13 @@ export class ColorInputComponent implements ControlValueAccessor {
   onTouched(): void {}
 
   getHexColor(color: string) {
+    if (color && color.startsWith('var')) {
+      const value = color.substring(color.indexOf('(') + 1, color.lastIndexOf(')'));
+      const varColor = getComputedStyle(this.elementRef.nativeElement).getPropertyValue(value).trim();
+      if (varColor) {
+        color = varColor;
+      }
+    }
     if (color && color.startsWith('rgb')) {
       const value = color.substring(color.indexOf('(') + 1, color.lastIndexOf(')'));
       const colorArray = value.split(',');

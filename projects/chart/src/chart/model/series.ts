@@ -14,6 +14,7 @@ export interface Series<T extends BasePoint> {
   xAxisIndex?: number;
   yAxisIndex?: number;
   component?: typeof SeriesBaseComponent;
+  enabled?: boolean;
   visible?: boolean;
   color?: string;
   colorScale?: any;
