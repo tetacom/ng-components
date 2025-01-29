@@ -1,18 +1,18 @@
-@if (series?.fillType === fillType.gradient) {
+@if (series()?.fillType === fillType.gradient) {
   <svg:defs>
     <svg:linearGradient
       [id]="'gradient-fill-' + id"
       gradientUnits="userSpaceOnUse"
       x1="0%"
-      [attr.y1]="config?.inverted || series?.fillDirection === fillDirection.y ? '0%' : '100%'"
-      [attr.x2]="config?.inverted || series?.fillDirection === fillDirection.y ? '100%' : '0%'"
+      [attr.y1]="config()?.inverted || series()?.fillDirection === fillDirection.y ? '0%' : '100%'"
+      [attr.x2]="config()?.inverted || series()?.fillDirection === fillDirection.y ? '100%' : '0%'"
       y2="0%"
     >
-      <svg:stop offset="0%" [attr.stop-color]="series.color" stop-opacity="0"></svg:stop>
-      <svg:stop offset="5%" [attr.stop-color]="series.color" stop-opacity="0.1"></svg:stop>
-      <svg:stop offset="20%" [attr.stop-color]="series.color" stop-opacity="0.2"></svg:stop>
-      <svg:stop offset="60%" [attr.stop-color]="series.color" stop-opacity="0.5"></svg:stop>
-      <svg:stop offset="100%" [attr.stop-color]="series.color" stop-opacity="0.8"></svg:stop>
+      <svg:stop offset="0%" [attr.stop-color]="series().color" stop-opacity="0"></svg:stop>
+      <svg:stop offset="5%" [attr.stop-color]="series().color" stop-opacity="0.1"></svg:stop>
+      <svg:stop offset="20%" [attr.stop-color]="series().color" stop-opacity="0.2"></svg:stop>
+      <svg:stop offset="60%" [attr.stop-color]="series().color" stop-opacity="0.5"></svg:stop>
+      <svg:stop offset="100%" [attr.stop-color]="series().color" stop-opacity="0.8"></svg:stop>
     </svg:linearGradient>
   </svg:defs>
 }
@@ -38,7 +38,7 @@
     <svg:circle r="3" [attr.fill]="series.color" [attr.transform]="'translate(' + t.x + ', ' + t.y + ')'"></svg:circle>
   }
 }
-@if (markers; as draggablePoints) {
+@if (markers(); as draggablePoints) {
   @for (point of draggablePoints; track point) {
     <svg:circle
       class="marker"

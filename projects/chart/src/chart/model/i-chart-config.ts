@@ -11,7 +11,7 @@ import { ZoomBehaviorType } from './enum/zoom-behavior-type';
 export interface IChartConfig {
   name?: string;
   id?: string;
-  series?: Series<BasePoint>[];
+  series: Series<BasePoint>[];
   noDataText?: 'No data';
   zoom?: {
     enable: boolean;
@@ -38,6 +38,9 @@ export interface IChartConfig {
     max?: number;
   };
   legend?: {
+    enable?: boolean;
+  };
+  controls?: {
     enable?: boolean;
   };
   bounds?: ChartBounds;

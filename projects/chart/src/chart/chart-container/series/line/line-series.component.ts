@@ -1,30 +1,20 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { ChartService } from '../../../service/chart.service';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { BasePoint } from '../../../model/base-point';
-import { ScaleService } from '../../../service/scale.service';
-import { ZoomService } from '../../../service/zoom.service';
-import { LinearSeriesBase } from '../linear-series-base';
+import { LinearSeriesBaseComponent } from '../linear-series-base.component';
 import { AsyncPipe } from '@angular/common';
 import { DraggablePointDirective } from '../../../directives/draggable-point.directive';
 
 @Component({
-    selector: 'svg:svg[teta-line-series]',
-    templateUrl: './line-series.component.html',
-    styleUrls: ['./line-series.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [AsyncPipe, DraggablePointDirective]
+  selector: 'svg:svg[teta-line-series]',
+  templateUrl: './line-series.component.html',
+  styleUrls: ['./line-series.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [AsyncPipe, DraggablePointDirective],
 })
-export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T> implements OnInit, OnDestroy {
-  constructor(
-    protected override svc: ChartService,
-    protected override cdr: ChangeDetectorRef,
-    protected override scaleService: ScaleService,
-    protected override zoomService: ZoomService,
-    protected override element: ElementRef,
-  ) {
-    super(svc, cdr, scaleService, zoomService, element);
-  }
-
+export class LineSeriesComponent<T extends BasePoint>
+  extends LinearSeriesBaseComponent<T>
+  implements OnInit, OnDestroy
+{
   private start: { x: number; y: number };
   private labelStart: { dx: number; dy: number };
 
@@ -42,7 +32,7 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T
     };
     this.svc.emitPoint({
       target: {
-        series: this.series,
+        series: this.series(),
         point: point,
       },
       event: emitEvent,
@@ -59,7 +49,7 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T
     };
     this.svc.emitPoint({
       target: {
-        series: this.series,
+        series: this.series(),
         point: point,
       },
       event: emitEvent,

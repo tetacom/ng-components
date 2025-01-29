@@ -21,6 +21,9 @@ export const defaultChartConfig = (): IChartConfig => ({
   legend: {
     enable: true,
   },
+  controls: {
+    enable: true,
+  },
   tooltip: {
     enable: true,
     showMarkers: true,
