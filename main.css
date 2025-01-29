@@ -2027,10 +2027,14 @@ a {
 }
 
 .accordion {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 8px;
 }
 .accordion-item {
-  display: block;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   transition: background-color 0.2s ease-in-out;
 }
@@ -2091,7 +2095,8 @@ a {
   background-color: transparent;
 }
 .accordion-content {
-  display: block;
+  display: flex;
+  flex-direction: column;
   padding: 8px;
 }
 
