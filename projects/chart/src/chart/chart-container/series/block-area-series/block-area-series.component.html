@@ -1,4 +1,4 @@
-@if ({ y: y | async, x: x | async, points: displayPoints | async }; as data) {
+@if ({ y: y(), x: x(), points: displayPoints() }; as data) {
   @if (series()?.fillType === fillType.gradient) {
     <svg:defs>
       <svg:linearGradient [id]="'gradient-fill-' + id"

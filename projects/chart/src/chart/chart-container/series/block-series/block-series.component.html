@@ -1,5 +1,5 @@
-@if ({ y: y | async, x: x | async, points: displayPoints | async }; as data) {
-  @if (series()?.fillType === fillType.gradient) {
+@if ({ y: y(), x: x(), points: displayPoints() }; as data) {
+  @if (series()?.fillType === FillType.gradient) {
     <svg:defs>
       <svg:linearGradient
         [id]="'gradient-fill-' + id"
@@ -25,7 +25,7 @@
           [attr.y]="data.y(point.y)"
           [attr.height]="Math.abs(data.y(point.y1) - data.y(point.y))"
           [attr.fill]="
-            series().fillType === fillType.gradient
+            series().fillType === FillType.gradient
               ? 'url(#gradient-fill-' + id + ')'
               : point.iconId
                 ? 'url(#pattern' + point.iconId + ')'

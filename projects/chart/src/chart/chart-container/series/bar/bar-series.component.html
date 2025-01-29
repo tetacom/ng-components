@@ -1,4 +1,4 @@
-@if ({ x: x | async, x1: x1 | async, y: y | async, barSeriesCount: barSeriesCount | async }; as data) {
+@if ({ x: x(), x1: x1(), y: y(), barSeriesCount: barSeriesCount() }; as data) {
   @if (data.x && data.y) {
     @if (data.barSeriesCount > 1) {
       @for (point of series().data; track point) {

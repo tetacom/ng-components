@@ -1,4 +1,4 @@
-@if ({ x: x | async, y: y | async }; as scales) {
+@if ({ x: x(), y: y() }; as scales) {
   @for (band of series().data; track $index) {
     <svg:rect
       [attr.x]="scales.x(band.x)"

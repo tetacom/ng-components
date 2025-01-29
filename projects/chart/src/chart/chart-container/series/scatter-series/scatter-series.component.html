@@ -1,4 +1,4 @@
-@if ({ y: y | async, x: x | async }; as scales) {
+@if ({ y: y(), x: x() }; as scales) {
   @if (scales.x && scales.y) {
     @for (point of series().data; track point) {
       <svg:circle

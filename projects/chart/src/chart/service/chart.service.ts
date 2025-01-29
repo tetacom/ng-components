@@ -217,7 +217,10 @@ export class ChartService {
           const seriesLinkCount = config.series.filter(
             (_) => _.yAxisIndex === config.series[currentSerieIndex].yAxisIndex && _.visible === true,
           ).length;
-          config.yAxis[config.series[currentSerieIndex].yAxisIndex].visible = seriesLinkCount !== 0;
+          const yAxis = config.yAxis[config.series[currentSerieIndex].yAxisIndex];
+          if (yAxis) {
+            yAxis.visible = seriesLinkCount !== 0;
+          }
         }
 
         return serie;
