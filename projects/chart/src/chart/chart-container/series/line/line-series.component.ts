@@ -1,30 +1,17 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { ChartService } from '../../../service/chart.service';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { BasePoint } from '../../../model/base-point';
-import { ScaleService } from '../../../service/scale.service';
-import { ZoomService } from '../../../service/zoom.service';
-import { LinearSeriesBase } from '../linear-series-base';
+import { LinearSeriesBaseComponent } from '../linear-series-base.component';
 import { AsyncPipe } from '@angular/common';
 import { DraggablePointDirective } from '../../../directives/draggable-point.directive';
 
 @Component({
-    selector: 'svg:svg[teta-line-series]',
-    templateUrl: './line-series.component.html',
-    styleUrls: ['./line-series.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [AsyncPipe, DraggablePointDirective]
+  selector: 'svg:svg[teta-line-series]',
+  templateUrl: './line-series.component.html',
+  styleUrls: ['./line-series.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [AsyncPipe, DraggablePointDirective],
 })
-export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T> implements OnInit, OnDestroy {
-  constructor(
-    protected override svc: ChartService,
-    protected override cdr: ChangeDetectorRef,
-    protected override scaleService: ScaleService,
-    protected override zoomService: ZoomService,
-    protected override element: ElementRef,
-  ) {
-    super(svc, cdr, scaleService, zoomService, element);
-  }
-
+export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseComponent<T> implements OnDestroy {
   private start: { x: number; y: number };
   private labelStart: { dx: number; dy: number };
 
@@ -33,16 +20,16 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T
   }
 
   moveEnd(event, point) {
-    point.x = this.x.invert(this.x(this.start.x) + event.deltaX);
-    point.y = this.y.invert(this.y(this.start.y) + event.deltaY);
-    this._update.next();
+    point.x = this.x().invert(this.x()(this.start.x) + event.deltaX);
+    point.y = this.y().invert(this.y()(this.start.y) + event.deltaY);
+    this.update.set({});
     const emitEvent = {
       type: 'end',
       sourceEvent: event,
     };
     this.svc.emitPoint({
       target: {
-        series: this.series,
+        series: this.series(),
         point: point,
       },
       event: emitEvent,
@@ -50,16 +37,16 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T
   }
 
   moveProcess(event, point) {
-    point.x = this.x.invert(this.x(this.start.x) + event.deltaX);
-    point.y = this.y.invert(this.y(this.start.y) + event.deltaY);
-    this._update.next();
+    point.x = this.x().invert(this.x()(this.start.x) + event.deltaX);
+    point.y = this.y().invert(this.y()(this.start.y) + event.deltaY);
+    this.update.set({});
     const emitEvent = {
       type: 'drag',
       sourceEvent: event,
     };
     this.svc.emitPoint({
       target: {
-        series: this.series,
+        series: this.series(),
         point: point,
       },
       event: emitEvent,
@@ -78,22 +65,22 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T
   allowDrag = (point: BasePoint) => {
     return (newPoint) => {
       if (point.marker.minX !== null && point.marker.minX !== undefined) {
-        if (this.x.invert(this.x(this.start.x) + newPoint.deltaX) < point.marker.minX) {
+        if (this.x().invert(this.x()(this.start.x) + newPoint.deltaX) < point.marker.minX) {
           return false;
         }
       }
       if (point.marker.maxX !== null && point.marker.maxX !== undefined) {
-        if (this.x.invert(this.x(this.start.x) + newPoint.deltaX) > point.marker.maxX) {
+        if (this.x().invert(this.x()(this.start.x) + newPoint.deltaX) > point.marker.maxX) {
           return false;
         }
       }
       if (point.marker.minY !== null && point.marker.minY !== undefined) {
-        if (this.y.invert(this.y(this.start.y) + newPoint.deltaY) < point.marker.minY) {
+        if (this.y().invert(this.y()(this.start.y) + newPoint.deltaY) < point.marker.minY) {
           return false;
         }
       }
       if (point.marker.maxY !== null && point.marker.maxY !== undefined) {
-        if (this.y.invert(this.y(this.start.y) + newPoint.deltaY) > point.marker.maxY) {
+        if (this.y().invert(this.y()(this.start.y) + newPoint.deltaY) > point.marker.maxY) {
           return false;
         }
       }

@@ -4,6 +4,7 @@ import {
   filter,
   lastValueFrom,
   map,
+  merge,
   Observable,
   of,
   shareReplay,
@@ -47,6 +48,7 @@ export class ChartService {
   public chartContextMenu: Observable<IChartEvent<BasePoint>>;
 
   private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig());
+  private configUpdates$ = new Subject<IChartConfig>();
   private size$ = new BehaviorSubject<DOMRect>(null);
   private pointerMove$ = new Subject<PointerEvent>();
   private tooltips$ = new BehaviorSubject<Map<Series<BasePoint>, IDisplayTooltip>>(new Map());
@@ -58,16 +60,23 @@ export class ChartService {
   private annotationEvent$ = new Subject<IChartEvent<Annotation>>();
   private annotationMove$ = new Subject<IChartEvent<Annotation>>();
 
-  private static _hiddenSeriesPostfix = 'hidden_series';
+  private static _hiddenSeriesPostfix = 'series_config';
 
   constructor() {
     this.id = of((Date.now() + Math.random()).toString(36));
 
-    this.config = this.config$.asObservable().pipe(
+    const initialConfig = this.config$.asObservable().pipe(
       withLatestFrom(this.id),
       map(this.setDefaults),
       map(this.setPreparationData),
       map(this.restoreLocalStorage),
+      shareReplay({
+        bufferSize: 1,
+        refCount: true,
+      }),
+    );
+
+    this.config = merge(initialConfig, this.configUpdates$).pipe(
       shareReplay({
         bufferSize: 1,
         refCount: true,
@@ -90,8 +99,6 @@ export class ChartService {
 
     this.plotBandClick = this.plotBandEvent$.asObservable().pipe(filter((_) => _?.event?.type === 'click'));
     this.plotBandContextMenu = this.plotBandEvent$.asObservable().pipe(filter((_) => _?.event?.type === 'contextmenu'));
-    // this.zoomInstance = this.zoomInstance$.asObservable();
-    // this.brushInstance = this.brushInstance$.asObservable();
   }
 
   public setConfig(config: IChartConfig) {
@@ -121,32 +128,24 @@ export class ChartService {
     this.tooltips$.next(new Map());
   }
 
-  public async toggleVisibilitySeries(seriesIndex: Array<number | string>, visible?: boolean) {
-    if (seriesIndex?.length === 0) {
+  public async updateSeries(series: Series<BasePoint>, visible?: boolean) {
+    const currentConfig = await lastValueFrom(this.config.pipe(take(1)));
+    const currentSeriesIndex = currentConfig.series.findIndex((_) => _.id === series.id);
+
+    if (currentSeriesIndex === -1) {
       return;
     }
+    currentConfig.series = [...currentConfig.series];
 
-    const currentConfig = await lastValueFrom(this.config.pipe(take(1)));
-
-    seriesIndex.forEach((serieIndex) => {
-      const currentSerieIndex = currentConfig.series.findIndex((_) => _.id === serieIndex);
-
-      if (currentSerieIndex === -1) {
-        return;
-      }
-      currentConfig.series[currentSerieIndex].visible =
-        visible !== undefined ? visible : !currentConfig.series[currentSerieIndex].visible;
-
-      const seriesLinkCount = currentConfig.series.filter(
-        (_) => _.yAxisIndex === currentConfig.series[currentSerieIndex].yAxisIndex && _.visible === true,
-      ).length;
-      currentConfig.yAxis[currentConfig.series[currentSerieIndex].yAxisIndex].visible = seriesLinkCount !== 0;
-    });
+    const seriesLinkCount = currentConfig.series.filter(
+      (_) => _.yAxisIndex === currentConfig.series[currentSeriesIndex].yAxisIndex && _.visible === true,
+    ).length;
+    currentConfig.yAxis[currentConfig.series[currentSeriesIndex].yAxisIndex].visible = seriesLinkCount !== 0;
 
     try {
       this.saveCookie(currentConfig);
     } finally {
-      this.config$.next(currentConfig);
+      this.configUpdates$.next({ ...currentConfig });
     }
   }
 
@@ -158,11 +157,11 @@ export class ChartService {
     this.annotationEvent$.next(event);
   }
 
-  public emitPlotband(event: IChartEvent<PlotBand>) {
+  public emitPlotBand(event: IChartEvent<PlotBand>) {
     this.plotBandEvent$.next(event);
   }
 
-  public emitPlotline(event: IChartEvent<PlotLine>) {
+  public emitPlotLine(event: IChartEvent<PlotLine>) {
     this.plotLineMove$.next(event);
   }
 
@@ -178,28 +177,39 @@ export class ChartService {
     this.chartContextMenu$.next(event);
   }
 
-  // public emitZoomInstance(event: ZoomService) {
-  //   this.zoomInstance$.next(event);
-  // }
-  //
-  // public emitZoomInstance(event: ZoomService) {
-  //   this.zoomInstance$.next(event);
-  // }
-
   private saveCookie(config: IChartConfig) {
     if (!config.name) return;
-    const hiddenSeries = config.series?.filter((_) => !_.visible).map((_) => _.id);
-    localStorage.setItem(`${config.name}_${ChartService._hiddenSeriesPostfix}`, JSON.stringify(hiddenSeries));
+    const series = config.series?.map((_: Series<BasePoint>) => {
+      return {
+        id: _.id,
+        visible: _.visible,
+        enabled: _.enabled,
+        color: _.color,
+        strokeDasharray: _.style?.strokeDasharray,
+        strokeWidth: _.style?.strokeWidth,
+      };
+    });
+    localStorage.setItem(`${config.name}_${ChartService._hiddenSeriesPostfix}`, JSON.stringify(series));
   }
 
   private restoreLocalStorage(config: IChartConfig): IChartConfig {
     if (!config.name) return config;
 
-    const hiddenSeries = localStorage.getItem(`${config.name}_${ChartService._hiddenSeriesPostfix}`);
-    if (hiddenSeries) {
-      const json = JSON.parse(hiddenSeries) as Array<string | number>;
+    const seriesConfig = localStorage.getItem(`${config.name}_${ChartService._hiddenSeriesPostfix}`);
+    if (seriesConfig) {
+      const json: any[] = JSON.parse(seriesConfig);
       config.series = config.series.map((serie, index) => {
-        serie.visible = !json.includes(serie.id);
+        const found = json.find((_) => _.id === serie.id);
+        if (found) {
+          serie.visible = found.visible ?? serie.visible;
+          serie.enabled = found.enabled ?? serie.enabled;
+          serie.color = found.color ?? serie.color;
+          if (!serie.style) {
+            serie.style = {};
+          }
+          serie.style.strokeWidth = found.strokeWidth ?? serie.style.strokeWidth;
+          serie.style.strokeDasharray = found.strokeDasharray ?? serie.style.strokeDasharray;
+        }
 
         const currentSerieIndex = config.series.findIndex((_) => _.id === serie.id);
 
@@ -207,7 +217,10 @@ export class ChartService {
           const seriesLinkCount = config.series.filter(
             (_) => _.yAxisIndex === config.series[currentSerieIndex].yAxisIndex && _.visible === true,
           ).length;
-          config.yAxis[config.series[currentSerieIndex].yAxisIndex].visible = seriesLinkCount !== 0;
+          const yAxis = config.yAxis[config.series[currentSerieIndex].yAxisIndex];
+          if (yAxis) {
+            yAxis.visible = seriesLinkCount !== 0;
+          }
         }
 
         return serie;

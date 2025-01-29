@@ -17,11 +17,11 @@ import { PlotBand } from '../../model/plot-band';
 import { ChartService } from '../../service/chart.service';
 
 @Component({
-    selector: '[teta-plot-band]',
-    templateUrl: './plot-band.component.html',
-    styleUrls: ['./plot-band.component.scss'],
-    imports: [],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: '[teta-plot-band]',
+  templateUrl: './plot-band.component.html',
+  styleUrls: ['./plot-band.component.scss'],
+  imports: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlotBandComponent implements AfterViewInit, OnDestroy {
   @Input() plotBand: PlotBand;
@@ -74,7 +74,7 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   emit(event: IChartEvent<PlotBand>) {
-    this.chartService.emitPlotband(event);
+    this.chartService.emitPlotBand(event);
   }
 
   ngAfterViewInit(): void {

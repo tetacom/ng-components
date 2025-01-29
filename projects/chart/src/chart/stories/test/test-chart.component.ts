@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChartComponent, IChartConfig, SeriesType, TooltipTracking } from '@tetacom/svg-charts';
+import { ChartComponent } from '../../chart/chart.component';
 import { trajectory } from './data/tr';
 import { construction } from './data/cs';
+import { IChartConfig } from '../../model/i-chart-config';
+import { SeriesType } from '../../model/enum/series-type';
+import { TooltipTracking } from '../../model/enum/tooltip-tracking';
 
 @Component({
-    selector: 'teta-test-chart',
-    imports: [CommonModule, ChartComponent],
-    templateUrl: './test-chart.component.html',
-    styleUrl: './test-chart.component.css'
+  selector: 'teta-test-chart',
+  imports: [CommonModule, ChartComponent],
+  templateUrl: './test-chart.component.html',
+  styleUrl: './test-chart.component.css',
 })
 export class TestChartComponent {
   config: IChartConfig;
@@ -33,13 +36,15 @@ export class TestChartComponent {
 
     const aa = this.getPoint(this.point, traRad);
 
-    console.log(aa);
+    // console.log(aa);
     const tr = this.getTrSeries(traRad);
     const cs = this.getCasingSeries(
       construction.casing.sort((a, b) => a.intervalTopMd - b.intervalTopMd),
       traRad,
     );
     return {
+      id: 'AAA',
+      name: 'aaaa',
       tooltip: {
         tracking: TooltipTracking.y,
       },
@@ -84,7 +89,7 @@ export class TestChartComponent {
     const points = [];
 
     casing.forEach((cs) => {
-      console.log('cs.intervalBottomMd', cs.intervalBottomMd);
+      // console.log('cs.intervalBottomMd', cs.intervalBottomMd);
       // const diff = (cs.intervalBottomMd - cs.intervalTopMd) / 100;
       for (let depth = cs.intervalTopMd; depth < cs.intervalBottomMd; depth += 1.3) {
         const point = this.getPoint(
@@ -95,7 +100,7 @@ export class TestChartComponent {
           },
           trajectory,
         );
-        console.log('point, depth', point, depth, cs.columnOuterDiameter / 1000);
+        // console.log('point, depth', point, depth, cs.columnOuterDiameter / 1000);
         points.push(point);
       }
     });
@@ -110,7 +115,7 @@ export class TestChartComponent {
     trajectory,
   ) {
     const { prev, next } = this.findPreviousNextPoints(trajectory, point.md);
-    console.log(prev, next, point.md);
+    // console.log(prev, next, point.md);
     const zenithAngle =
       prev.zenithAngle +
       ((next.zenithAngle - prev.zenithAngle) * (point.md - prev.measuredDepth)) /
@@ -124,9 +129,9 @@ export class TestChartComponent {
       Math.cos(zenithAngle - prev.zenithAngle) -
         Math.sin(prev.zenithAngle) * Math.sin(zenithAngle) * (1 - Math.cos(azimuthAngle - prev.azimuthAngle)),
     );
-    console.log('zenithAngle', zenithAngle, 'azimuthAngle', azimuthAngle, 'beta', beta);
+    // console.log('zenithAngle', zenithAngle, 'azimuthAngle', azimuthAngle, 'beta', beta);
 
-    console.log('beta', beta);
+    // console.log('beta', beta);
 
     const x =
       prev.coordX +
@@ -145,11 +150,11 @@ export class TestChartComponent {
       ((point.md - prev.measuredDepth) * (Math.cos(prev.zenithAngle) + Math.cos(zenithAngle)) * Math.tan(beta / 2)) /
         beta;
 
-    console.log('x,    y,   z', x, y, z);
+    // console.log('x,    y,   z', x, y, z);
 
     const X0 = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 
-    console.log('X0', X0);
+    // console.log('X0', X0);
 
     // console.log('x', x, 'y', y, 'X0', X0);
 

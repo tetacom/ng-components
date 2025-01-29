@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BandseriesComponent } from './bandseries.component';
+import { BandSeriesComponent } from './band-series.component';
 
 describe('BandseriesComponent', () => {
-  let component: BandseriesComponent;
-  let fixture: ComponentFixture<BandseriesComponent>;
+  let component: BandSeriesComponent;
+  let fixture: ComponentFixture<BandSeriesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BandseriesComponent],
+      declarations: [BandSeriesComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(BandseriesComponent);
+    fixture = TestBed.createComponent(BandSeriesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

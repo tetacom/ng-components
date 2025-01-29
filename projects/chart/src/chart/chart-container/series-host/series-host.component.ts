@@ -1,13 +1,13 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ComponentRef,
-  Input,
+  input,
   OnDestroy,
   OnInit,
-  SimpleChanges,
   ViewContainerRef,
+  inject,
+  effect,
 } from '@angular/core';
 import { SeriesBaseComponent } from '../../base/series-base.component';
 import { LineSeriesComponent } from '../series/line/line-series.component';
@@ -23,34 +23,44 @@ import { defaultSeriesTypeMapping } from '../../default/defaultSeriesTypeMapping
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeriesHostComponent<T extends BasePoint> implements OnInit, OnDestroy {
-  @Input() config: IChartConfig;
-  @Input() series: Series<T>;
+  private viewContainerRef = inject(ViewContainerRef);
+  config = input<IChartConfig>();
+  series = input<Series<T>>();
 
   private _init = false;
   private _componentRef: ComponentRef<any>;
 
-  constructor(private viewContainerRef: ViewContainerRef) {}
+  constructor() {
+    effect(() => {
+      this._componentRef.setInput('config', this.config());
+    });
+    effect(() => {
+      this._componentRef.setInput('series', this.series());
+    });
+  }
 
   ngOnInit(): void {
-    if (!SeriesBaseComponent.isPrototypeOf(this.series.component)) {
-      this.series.component = defaultSeriesTypeMapping.get(this.series.type) || LineSeriesComponent;
+    if (!Object.prototype.isPrototypeOf.call(SeriesBaseComponent, this.series().component)) {
+      this.series().component = defaultSeriesTypeMapping.get(this.series().type) || LineSeriesComponent;
     }
 
-    this._componentRef = this.viewContainerRef.createComponent(this.series.component);
-    this._componentRef.instance.config = this.config;
-    this._componentRef.instance.series = this.series;
-    this._init = true;
+    this._componentRef = this.viewContainerRef.createComponent(this.series().component);
   }
 
   ngOnDestroy(): void {
     this._componentRef.destroy();
   }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this._init && (changes.hasOwnProperty('series') || changes.hasOwnProperty('config'))) {
-      this._componentRef.instance.config = this.config;
-      this._componentRef.instance.series = this.series;
-      this._componentRef.injector.get(ChangeDetectorRef).detectChanges();
-    }
-  }
+  //
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (
+  //     this._init &&
+  //     (Object.prototype.hasOwnProperty.call(changes, 'series') ||
+  //       Object.prototype.hasOwnProperty.call(changes, 'config'))
+  //   ) {
+  //     console.log('ngOnChanges');
+  //     this._componentRef.setInput('config', this.config());
+  //     this._componentRef.setInput('series', this.series());
+  //     this._componentRef.injector.get(ChangeDetectorRef).detectChanges();
+  //   }
+  // }
 }

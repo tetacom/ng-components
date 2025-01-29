@@ -24,7 +24,7 @@ import { PlotlineComponent } from './plotline/plotline.component';
 import { AnnotationComponent } from './annotation/annotation.component';
 import { CrosshairComponent } from './crosshair/crosshair.component';
 import { BrushableDirective } from '../directives/brushable.directive';
-import { tetaZoneFull } from '../../observable/zoneObservable';
+import { SeriesControlsComponent } from './series-controls/series-controls.component';
 
 type Opposite = boolean;
 type DisplayPlotBand = {
@@ -32,25 +32,26 @@ type DisplayPlotBand = {
   plotBand: PlotBand;
 };
 @Component({
-    selector: 'teta-chart-container',
-    templateUrl: './chart-container.component.html',
-    styleUrls: ['./chart-container.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        TooltipComponent,
-        ZoomableDirective,
-        XAxisComponent,
-        YAxisComponent,
-        AsyncPipe,
-        KeyValuePipe,
-        PlotBandComponent,
-        GridlinesComponent,
-        SeriesHostComponent,
-        PlotlineComponent,
-        AnnotationComponent,
-        CrosshairComponent,
-        BrushableDirective,
-    ]
+  selector: 'teta-chart-container',
+  templateUrl: './chart-container.component.html',
+  styleUrls: ['./chart-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    TooltipComponent,
+    ZoomableDirective,
+    XAxisComponent,
+    YAxisComponent,
+    AsyncPipe,
+    KeyValuePipe,
+    PlotBandComponent,
+    GridlinesComponent,
+    SeriesHostComponent,
+    PlotlineComponent,
+    AnnotationComponent,
+    CrosshairComponent,
+    BrushableDirective,
+    SeriesControlsComponent,
+  ],
 })
 export class ChartContainerComponent implements AfterViewInit, OnDestroy {
   config: Observable<IChartConfig>;
@@ -77,7 +78,6 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
 
     this.scales = this._scaleService.scales.pipe(
       observeOn(animationFrameScheduler),
-      tetaZoneFull(this._zone),
       shareReplay({
         bufferSize: 1,
         refCount: true,
@@ -144,7 +144,6 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
           height: size.height - top - bottom - config.bounds?.top - config.bounds?.bottom,
         };
       }),
-      tetaZoneFull(this._zone),
       shareReplay({
         bufferSize: 1,
         refCount: true,
@@ -256,9 +255,5 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
 
   mouseLeave(event) {
     this._svc.setPointerMove(event);
-  }
-
-  trackSerie(index, item: Series<BasePoint>) {
-    return item.name?.length ? item.name : index;
   }
 }

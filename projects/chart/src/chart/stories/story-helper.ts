@@ -13,11 +13,11 @@ import * as faker from 'faker';
 import { DragPointType } from '../model/enum/drag-point-type';
 import { ZoomBehaviorType } from '../model/enum/zoom-behavior-type';
 import { ScaleType } from '../model/enum/scale-type';
-import { BandseriesComponent } from './bandseries/bandseries.component';
+import { BandSeriesComponent } from './bandseries/band-series.component';
 
 const randomColor = randomInt(0, cssColorNames.length - 1);
 
-const seriesType = [SeriesType.line, SeriesType.line];
+const seriesType = [SeriesType.line, SeriesType.bar, SeriesType.area];
 
 faker.locale = 'ru';
 
@@ -27,8 +27,8 @@ export const createSeries = (size: number) => {
       id: index,
       type,
       name: faker.address.cityName(),
-      yAxisIndex: 0,
       xAxisIndex: 0,
+      yAxisIndex: index > 1 ? 1 : index,
       color: cssColorNames[randomColor()].toLowerCase(),
 
       fillType: FillType.gradient,
@@ -100,7 +100,7 @@ export const createBandSeries = (size: number): Series<BasePoint> => {
     name: faker.address.cityName(),
     yAxisIndex: 0,
     xAxisIndex: 0,
-    component: BandseriesComponent as any,
+    component: BandSeriesComponent as any,
     color: cssColorNames[randomColor()].toLowerCase(),
     data: Array.from(Array(size).keys()).map((key, index, arr) => {
       const x = faker.date.between('2022-09-25T00:00:00.000Z', '2022-10-10T00:00:00.000Z');
@@ -109,7 +109,7 @@ export const createBandSeries = (size: number): Series<BasePoint> => {
         x1: new Date(x.getTime() + faker.datatype.number({ min: 8640000, max: 109640000 })) as any,
         y: faker.address.cityName(),
       };
-      console.log(point);
+      // console.log(point);
       return point;
     }),
   };
@@ -117,8 +117,9 @@ export const createBandSeries = (size: number): Series<BasePoint> => {
 
 export const createChart = (size: number, inverted = true): IChartConfig => {
   return {
+    id: '123123123132',
     name: '123123123132',
-    inverted: inverted,
+    // inverted: inverted,
     tooltip: {
       tracking: TooltipTracking.y,
     },
@@ -144,6 +145,10 @@ export const createChart = (size: number, inverted = true): IChartConfig => {
       {
         visible: true,
       },
+      {
+        visible: true,
+        opposite: true,
+      },
     ],
     brush: {
       type: BrushType.y,
@@ -159,7 +164,7 @@ export const createChart = (size: number, inverted = true): IChartConfig => {
       maxTranslate: 7000,
     },
     legend: {
-      enable: false,
+      enable: true,
     },
     series: createSeries(size),
   };
@@ -167,6 +172,7 @@ export const createChart = (size: number, inverted = true): IChartConfig => {
 
 export const createDragChart = (size: number): IChartConfig => {
   return {
+    id: '123123123132',
     name: '123123123132',
     inverted: true,
     tooltip: {
@@ -192,6 +198,7 @@ export const createDragChart = (size: number): IChartConfig => {
 
 export const createBandChart = (size: number): IChartConfig => {
   return {
+    id: 'Band Chart',
     name: 'Band Chart',
     tooltip: {
       tracking: TooltipTracking.y,

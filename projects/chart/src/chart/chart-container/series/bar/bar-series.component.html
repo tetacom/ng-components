@@ -1,22 +1,22 @@
-@if ({ x: x | async, x1: x1 | async, y: y | async, barSeriesCount: barSeriesCount | async }; as data) {
+@if ({ x: x(), x1: x1(), y: y(), barSeriesCount: barSeriesCount() }; as data) {
   @if (data.x && data.y) {
     @if (data.barSeriesCount > 1) {
-      @for (point of series.data; track point) {
+      @for (point of series().data; track point) {
         <svg:rect
           (mouseenter)="mouseenter(point)"
           (mouseleave)="mouseleave(point)"
           [attr.x]="
-            data.x(point.x) + ((isNumber(series.id) ? series.id : 0) * data.x1.bandwidth()) / data.barSeriesCount
+            data.x(point.x) + ((isNumber(series().id) ? Number(series().id) : 0) * data.x1.bandwidth()) / data.barSeriesCount
           "
           [attr.y]="point.y > 0 ? data.y(point.y) : data.y(0)"
           [attr.width]="data.x1.bandwidth() / data.barSeriesCount"
           [attr.height]="Math.abs(data.y(point.y) - data.y(0))"
-          [attr.fill]="series.color"
+          [attr.fill]="series().color"
         ></svg:rect>
       }
     }
     @if (data.barSeriesCount === 1) {
-      @for (point of series.data; track point) {
+      @for (point of series().data; track point) {
         <svg:rect
           (mouseenter)="mouseenter(point)"
           (mouseleave)="mouseleave(point)"
@@ -24,7 +24,7 @@
           [attr.y]="point.y > 0 ? data.y(point.y) : data.y(0)"
           [attr.width]="data.x1.bandwidth()"
           [attr.height]="Math.abs(data.y(point.y) - data.y(0))"
-          [attr.fill]="point.color ?? series.color"
+          [attr.fill]="point.color ?? series().color"
         ></svg:rect>
       }
     }

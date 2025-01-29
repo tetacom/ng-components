@@ -1,87 +1,61 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, OnDestroy } from '@angular/core';
 import * as d3 from 'd3';
-import { map, Observable } from 'rxjs';
 
 import { BasePoint } from '../../../model/base-point';
 import { ClipPointsDirection } from '../../../model/enum/clip-points-direction';
+import { LinearSeriesBaseComponent } from '../linear-series-base.component';
 import { FillDirection, FillType } from '../../../model/enum/fill-type';
-import { ChartService } from '../../../service/chart.service';
-import { ScaleService } from '../../../service/scale.service';
-import { ZoomService } from '../../../service/zoom.service';
-import { LinearSeriesBase } from '../linear-series-base';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'svg:svg[teta-area-series]',
-    templateUrl: './area-series.component.html',
-    styleUrls: ['./area-series.component.scss'],
-    imports: [AsyncPipe],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'svg:svg[teta-area-series]',
+  templateUrl: './area-series.component.html',
+  styleUrls: ['./area-series.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AreaSeriesComponent<T extends BasePoint> extends LinearSeriesBase<T> implements OnInit, OnDestroy {
-  areaPath: Observable<string>;
+export class AreaSeriesComponent<T extends BasePoint> extends LinearSeriesBaseComponent<T> implements OnDestroy {
+  areaPath = computed(() => {
+    if (!this.x() || !this.y()) {
+      return '';
+    }
 
-  fillDirection = FillDirection;
-  fillType = FillType;
-  id: string;
+    const area = d3
+      .area<BasePoint>()
+      .defined((point) => point.x !== null && point.y !== null && !isNaN(point.x) && !isNaN(point.y));
 
-  constructor(
-    protected override svc: ChartService,
-    protected override cdr: ChangeDetectorRef,
-    protected override scaleService: ScaleService,
-    protected override zoomService: ZoomService,
-    protected override element: ElementRef,
-  ) {
-    super(svc, cdr, scaleService, zoomService, element);
-    this.id = (Date.now() + Math.random()).toString(36);
-  }
+    if (this.config().inverted) {
+      area
+        .x1((_) => (_.x1 !== null && _.x1 !== undefined ? this.x()(_.x1) : this.x()(0)))
+        .x0((_) => this.x()(_.x))
+        .y((_) => this.y()(_.y));
+    } else {
+      area
+        .y1((_) => (_.y1 !== null && _.y1 !== undefined ? this.y()(_.y1) : this.y()(0)))
+        .y0((_) => this.y()(_.y))
+        .x((_) => this.x()(_.x));
+    }
 
-  override ngOnInit() {
-    super.ngOnInit();
-    this.areaPath = this.scaleService.scales.pipe(
-      map((data) => {
-        const { x, y } = data;
+    const filter = this.defaultClipPointsMapping.get(this.series().clipPointsDirection);
+    let filteredData = this.series().data;
 
-        this.x = x.get(this.series.xAxisIndex)?.scale;
-        this.y = y.get(this.series.yAxisIndex)?.scale;
+    if (this.series().clipPointsDirection === ClipPointsDirection.x) {
+      let [min, max] = this.x().domain();
 
-        if (!this.x || !this.y) {
-          return '';
-        }
+      min = min instanceof Date ? min.getTime() : min;
+      max = max instanceof Date ? max.getTime() : max;
 
-        const area = d3
-          .area<BasePoint>()
-          .defined((point) => point.x !== null && point.y !== null && !isNaN(point.x) && !isNaN(point.y));
+      filteredData = filteredData?.filter(filter(min, max));
+    }
 
-        area
-          .x1((_) => (_.x1 !== null && _.x1 !== undefined ? this.x(_.x1) : this.x(0)))
-          .x0((_) => this.x(_.x))
+    if (this.series().clipPointsDirection === ClipPointsDirection.y) {
+      let [min, max] = this.y().domain();
 
-          .y((_) => this.y(_.y));
+      min = min instanceof Date ? min.getTime() : min;
+      max = max instanceof Date ? max.getTime() : max;
 
-        const filter = this.defaultClipPointsMapping.get(this.series.clipPointsDirection);
-        let filteredData = this.series.data;
-
-        if (this.series.clipPointsDirection === ClipPointsDirection.x) {
-          let [min, max] = this.x.domain();
-
-          min = min instanceof Date ? min.getTime() : min;
-          max = max instanceof Date ? max.getTime() : max;
-
-          filteredData = filteredData?.filter(filter(min, max));
-        }
-
-        if (this.series.clipPointsDirection === ClipPointsDirection.y) {
-          let [min, max] = this.y.domain();
-
-          min = min instanceof Date ? min.getTime() : min;
-          max = max instanceof Date ? max.getTime() : max;
-
-          filteredData = filteredData?.filter(filter(min, max));
-        }
-
-        return area(filteredData);
-      }),
-    );
-  }
+      filteredData = filteredData?.filter(filter(min, max));
+    }
+    return area(filteredData);
+  });
+  protected readonly FillType = FillType;
+  protected readonly FillDirection = FillDirection;
 }

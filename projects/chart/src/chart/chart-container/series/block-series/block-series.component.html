@@ -1,19 +1,19 @@
-@if ({ y: y | async, x: x | async, points: displayPoints | async }; as data) {
-  @if (series?.fillType === fillType.gradient) {
+@if ({ y: y(), x: x(), points: displayPoints() }; as data) {
+  @if (series()?.fillType === FillType.gradient) {
     <svg:defs>
       <svg:linearGradient
         [id]="'gradient-fill-' + id"
         gradientUnits="userSpaceOnUse"
         x1="0%"
-        [attr.y1]="config?.inverted ? '0%' : '100%'"
-        [attr.x2]="config?.inverted ? '100%' : '0%'"
+        [attr.y1]="config()?.inverted ? '0%' : '100%'"
+        [attr.x2]="config()?.inverted ? '100%' : '0%'"
         y2="0%"
       >
-        <svg:stop offset="0%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0"></svg:stop>
-        <svg:stop offset="5%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.1"></svg:stop>
-        <svg:stop offset="20%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.2"></svg:stop>
-        <svg:stop offset="60%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.5"></svg:stop>
-        <svg:stop offset="100%" [attr.stop-color]="series.style?.fill ?? series.color" stop-opacity="0.9"></svg:stop>
+        <svg:stop offset="0%" [attr.stop-color]="series().style?.fill ?? series().color" stop-opacity="0"></svg:stop>
+        <svg:stop offset="5%" [attr.stop-color]="series().style?.fill ?? series().color" stop-opacity="0.1"></svg:stop>
+        <svg:stop offset="20%" [attr.stop-color]="series().style?.fill ?? series().color" stop-opacity="0.2"></svg:stop>
+        <svg:stop offset="60%" [attr.stop-color]="series().style?.fill ?? series().color" stop-opacity="0.5"></svg:stop>
+        <svg:stop offset="100%" [attr.stop-color]="series().style?.fill ?? series().color" stop-opacity="0.9"></svg:stop>
       </svg:linearGradient>
     </svg:defs>
   }
@@ -25,13 +25,13 @@
           [attr.y]="data.y(point.y)"
           [attr.height]="Math.abs(data.y(point.y1) - data.y(point.y))"
           [attr.fill]="
-            series.fillType === fillType.gradient
+            series().fillType === FillType.gradient
               ? 'url(#gradient-fill-' + id + ')'
               : point.iconId
                 ? 'url(#pattern' + point.iconId + ')'
-                : (point.color ?? series.style?.fill ?? series.color)
+                : (point.color ?? series().style?.fill ?? series().color)
           "
-          [attr.fill-opacity]="series.style?.fillOpacity"
+          [attr.fill-opacity]="series().style?.fillOpacity"
           width="100%"
         ></svg:rect>
         @if (point.text && data.y(point.y1) - data.y(point.y) > 8) {
@@ -49,14 +49,14 @@
           x2="100%"
           [attr.y1]="data.y(point.y)"
           [attr.y2]="data.y(point.y)"
-          [attr.stroke]="point.iconId ? 'var(--color-text-10)' : (point.color ?? series.style?.stroke ?? series.color)"
+          [attr.stroke]="point.iconId ? 'var(--color-text-10)' : (point.color ?? series().style?.stroke ?? series().color)"
         ></svg:line>
         <svg:line
           x1="0"
           x2="100%"
           [attr.y1]="data.y(point.y1)"
           [attr.y2]="data.y(point.y1)"
-          [attr.stroke]="point.iconId ? 'var(--color-text-10)' : (point.color ?? series.style?.stroke ?? series.color)"
+          [attr.stroke]="point.iconId ? 'var(--color-text-10)' : (point.color ?? series().style?.stroke ?? series().color)"
         ></svg:line>
       </svg:g>
     }
