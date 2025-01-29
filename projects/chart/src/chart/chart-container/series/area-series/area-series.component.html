@@ -20,22 +20,22 @@
   class="area"
   [attr.d]="areaPath | async"
   [attr.stroke-width]="0"
-  [attr.fill-opacity]="series.style?.fillOpacity"
+  [attr.fill-opacity]="series().style?.fillOpacity"
   [attr.fill]="
-    series.fillType === fillType.gradient ? 'url(#gradient-fill-' + id + ')' : (series.style?.fill ?? series.color)
+    series().fillType === fillType.gradient ? 'url(#gradient-fill-' + id + ')' : (series().style?.fill ?? series().color)
   "
 ></svg:path>
 <svg:path
   class="area"
   fill="none"
   [attr.d]="path | async"
-  [attr.stroke]="series.color"
-  [attr.stroke-dasharray]="series.style?.strokeDasharray"
-  [attr.stroke-width]="series.style?.strokeWidth"
+  [attr.stroke]="series().color"
+  [attr.stroke-dasharray]="series().style?.strokeDasharray"
+  [attr.stroke-width]="series().style?.strokeWidth"
 ></svg:path>
 @if (transform | async; as t) {
   @if (t?.x != null && t?.y != null) {
-    <svg:circle r="3" [attr.fill]="series.color" [attr.transform]="'translate(' + t.x + ', ' + t.y + ')'"></svg:circle>
+    <svg:circle r="3" [attr.fill]="series().color" [attr.transform]="'translate(' + t.x + ', ' + t.y + ')'"></svg:circle>
   }
 }
 @if (markers(); as draggablePoints) {

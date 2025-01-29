@@ -39,4 +39,5 @@ export class BarSeriesComponent<T extends BasePoint> extends SeriesBaseComponent
   }
 
   protected readonly Math = Math;
+  protected readonly Number = Number;
 }
