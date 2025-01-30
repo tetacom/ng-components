@@ -9,59 +9,61 @@
     <teta-icon [name]="'gear'"></teta-icon>
   </button>
   <div tetaDropdownContent class="column shadow-2" style="min-width: 200px;">
-    <teta-accordion>
-      @for (seriesItem of series(); track $index) {
-        <teta-accordion-item [viewType]="'rounded'" [divider]="true">
-          <teta-accordion-head>
-            <div class="row align-center gap-12">
-              <div class="row align-center" (click)="$event.stopPropagation()">
-                <teta-checkbox [ngModel]="seriesItem.enabled"
-                               (ngModelChange)="setSeriesEnabled(seriesItem, $event)"
-                               [binary]="true"></teta-checkbox>
-                <teta-color-input [ngModel]="seriesItem.color"
-                                  (ngModelChange)="setSeriesColor(seriesItem, $event)"></teta-color-input>
+    <teta-scrollable class="column column_auto" [contentClass]="'column'">
+      <teta-accordion>
+        @for (seriesItem of series(); track $index) {
+          <teta-accordion-item [viewType]="'rounded'" [divider]="true">
+            <teta-accordion-head>
+              <div class="row align-center gap-12">
+                <div class="row align-center" (click)="$event.stopPropagation()">
+                  <teta-checkbox [ngModel]="seriesItem.enabled"
+                                 (ngModelChange)="setSeriesEnabled(seriesItem, $event)"
+                                 [binary]="true"></teta-checkbox>
+                  <teta-color-input [ngModel]="seriesItem.color"
+                                    (ngModelChange)="setSeriesColor(seriesItem, $event)"></teta-color-input>
+                </div>
+                {{ seriesItem.name }}
               </div>
-              {{ seriesItem.name }}
-            </div>
-          </teta-accordion-head>
-          <ng-template tetaAccordionContent>
-            <div class="column gap-8">
-              <teta-select [options]="strokeWidth"
-                           [ngModel]="seriesItem.style?.strokeWidth ?? 1"
-                           [valueRef]="'id'"
-                           (ngModelChange)="setSeriesStrokeWidth(seriesItem, $event)"
-                           [allowNull]="false">
-                <ng-template tetaSelectOption let-option>
-                  <div style="width: 50px;"
-                       [style.height.px]="option.id"
-                       [style.background-color]="seriesItem.color"></div>
-                </ng-template>
-                <ng-template tetaSelectValue let-value>
-                  <div style="width: 50px;"
-                       [style.height.px]="value?.id"
-                       [style.background-color]="seriesItem.color"></div>
-                </ng-template>
-              </teta-select>
-              <teta-select [options]="strokeArray"
-                           [ngModel]="seriesItem.style?.strokeDasharray ?? ''"
-                           [valueRef]="'id'"
-                           (ngModelChange)="setSeriesStrokeDasharray(seriesItem, $event)"
-                           [allowNull]="false">
-                <ng-template tetaSelectOption let-option>
-                  <div style="width: 50px;border:0;border-top: 2px;"
-                       [style.border-style]="option.value"
-                       [style.border-color]="seriesItem.color"></div>
-                </ng-template>
-                <ng-template tetaSelectValue let-value>
-                  <div style="width: 50px;border:0;border-top: 2px;"
-                       [style.border-style]="value?.value"
-                       [style.border-color]="seriesItem.color"></div>
-                </ng-template>
-              </teta-select>
-            </div>
-          </ng-template>
-        </teta-accordion-item>
-      }
-    </teta-accordion>
+            </teta-accordion-head>
+            <ng-template tetaAccordionContent>
+              <div class="column gap-8">
+                <teta-select [options]="strokeWidth"
+                             [ngModel]="seriesItem.style?.strokeWidth ?? 1"
+                             [valueRef]="'id'"
+                             (ngModelChange)="setSeriesStrokeWidth(seriesItem, $event)"
+                             [allowNull]="false">
+                  <ng-template tetaSelectOption let-option>
+                    <div style="width: 50px;"
+                         [style.height.px]="option.id"
+                         [style.background-color]="seriesItem.color"></div>
+                  </ng-template>
+                  <ng-template tetaSelectValue let-value>
+                    <div style="width: 50px;"
+                         [style.height.px]="value?.id"
+                         [style.background-color]="seriesItem.color"></div>
+                  </ng-template>
+                </teta-select>
+                <teta-select [options]="strokeArray"
+                             [ngModel]="seriesItem.style?.strokeDasharray ?? ''"
+                             [valueRef]="'id'"
+                             (ngModelChange)="setSeriesStrokeDasharray(seriesItem, $event)"
+                             [allowNull]="false">
+                  <ng-template tetaSelectOption let-option>
+                    <div style="width: 50px;border:0;border-top: 2px;"
+                         [style.border-style]="option.value"
+                         [style.border-color]="seriesItem.color"></div>
+                  </ng-template>
+                  <ng-template tetaSelectValue let-value>
+                    <div style="width: 50px;border:0;border-top: 2px;"
+                         [style.border-style]="value?.value"
+                         [style.border-color]="seriesItem.color"></div>
+                  </ng-template>
+                </teta-select>
+              </div>
+            </ng-template>
+          </teta-accordion-item>
+        }
+      </teta-accordion>
+    </teta-scrollable>
   </div>
 </teta-dropdown>

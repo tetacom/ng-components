@@ -137,10 +137,10 @@ export class ChartService {
     }
     currentConfig.series = [...currentConfig.series];
 
-    const seriesLinkCount = currentConfig.series.filter(
-      (_) => _.yAxisIndex === currentConfig.series[currentSeriesIndex].yAxisIndex && _.visible === true,
-    ).length;
-    currentConfig.yAxis[currentConfig.series[currentSeriesIndex].yAxisIndex].visible = seriesLinkCount !== 0;
+    // const seriesLinkCount = currentConfig.series.filter(
+    //   (_) => _.yAxisIndex === currentConfig.series[currentSeriesIndex].yAxisIndex && _.visible === true,
+    // ).length;
+    // currentConfig.yAxis[currentConfig.series[currentSeriesIndex].yAxisIndex].visible = seriesLinkCount !== 0;
 
     try {
       this.saveCookie(currentConfig);
@@ -211,17 +211,17 @@ export class ChartService {
           serie.style.strokeDasharray = found.strokeDasharray ?? serie.style.strokeDasharray;
         }
 
-        const currentSerieIndex = config.series.findIndex((_) => _.id === serie.id);
+        // const currentSerieIndex = config.series.findIndex((_) => _.id === serie.id);
 
-        if (currentSerieIndex !== -1) {
-          const seriesLinkCount = config.series.filter(
-            (_) => _.yAxisIndex === config.series[currentSerieIndex].yAxisIndex && _.visible === true,
-          ).length;
-          const yAxis = config.yAxis[config.series[currentSerieIndex].yAxisIndex];
-          if (yAxis) {
-            yAxis.visible = seriesLinkCount !== 0;
-          }
-        }
+        // if (currentSerieIndex !== -1) {
+        //   const seriesLinkCount = config.series.filter(
+        //     (_) => _.yAxisIndex === config.series[currentSerieIndex].yAxisIndex && _.visible === true,
+        //   ).length;
+        //   const yAxis = config.yAxis[config.series[currentSerieIndex].yAxisIndex];
+        //   if (yAxis) {
+        //     yAxis.visible = seriesLinkCount !== 0;
+        //   }
+        // }
 
         return serie;
       });
