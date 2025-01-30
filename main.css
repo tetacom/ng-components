@@ -2035,7 +2035,6 @@ a {
 .accordion-item {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   transition: background-color 0.2s ease-in-out;
 }
 .accordion-item_active {
