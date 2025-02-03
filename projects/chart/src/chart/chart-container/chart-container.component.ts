@@ -1,15 +1,22 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, NgZone, OnDestroy } from '@angular/core';
-import { animationFrameScheduler, combineLatest, map, Observable, observeOn, shareReplay, withLatestFrom } from 'rxjs';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy } from '@angular/core';
+import {
+  animationFrameScheduler,
+  combineLatest,
+  map,
+  Observable,
+  observeOn,
+  shareReplay,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
 import { Axis } from '../core/axis/axis';
-import { BasePoint } from '../model/base-point';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 import { BrushType } from '../model/enum/brush-type';
 import { ZoomType } from '../model/enum/zoom-type';
 import { IChartConfig } from '../model/i-chart-config';
 import { IScalesMap } from '../model/i-scales-map';
 import { PlotBand } from '../model/plot-band';
-import { Series } from '../model/series';
 import { ChartService } from '../service/chart.service';
 import { ScaleService } from '../service/scale.service';
 import { TooltipComponent } from './tooltip/tooltip.component';
@@ -71,7 +78,6 @@ export class ChartContainerComponent implements AfterViewInit, OnDestroy {
     private _svc: ChartService,
     private _scaleService: ScaleService,
     private _elementRef: ElementRef,
-    private _zone: NgZone,
   ) {
     this.config = this._svc.config;
     this.size = this._svc.size;
