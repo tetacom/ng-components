@@ -10,6 +10,7 @@ import {
   shareReplay,
   Subject,
   take,
+  tap,
   withLatestFrom,
 } from 'rxjs';
 
@@ -33,6 +34,7 @@ import { Series } from '../model/series';
 export class ChartService {
   public id: Observable<string>;
   public config: Observable<IChartConfig>;
+  public initialConfig: Observable<IChartConfig>;
   public size: Observable<DOMRect>;
   public pointerMove: Observable<PointerEvent>;
   public tooltips: Observable<Map<Series<BasePoint>, IDisplayTooltip>>;
@@ -65,7 +67,14 @@ export class ChartService {
   constructor() {
     this.id = of((Date.now() + Math.random()).toString(36));
 
-    const initialConfig = this.config$.asObservable().pipe(
+    this.initialConfig = this.config$.asObservable().pipe(
+      shareReplay({
+        bufferSize: 1,
+        refCount: true,
+      }),
+    );
+
+    const initialConfig = this.initialConfig.pipe(
       withLatestFrom(this.id),
       map(this.setDefaults),
       map(this.setPreparationData),
@@ -135,18 +144,22 @@ export class ChartService {
     if (currentSeriesIndex === -1) {
       return;
     }
-    currentConfig.series = [...currentConfig.series];
-
-    // const seriesLinkCount = currentConfig.series.filter(
-    //   (_) => _.yAxisIndex === currentConfig.series[currentSeriesIndex].yAxisIndex && _.visible === true,
-    // ).length;
-    // currentConfig.yAxis[currentConfig.series[currentSeriesIndex].yAxisIndex].visible = seriesLinkCount !== 0;
+    currentConfig.series = currentConfig.series.map((seriesItem) => {
+      return { ...seriesItem };
+    });
 
     try {
       this.saveCookie(currentConfig);
     } finally {
       this.configUpdates$.next({ ...currentConfig });
     }
+  }
+
+  public async clearSeriesSettings() {
+    const config = await lastValueFrom(this.initialConfig.pipe(take(1)));
+    if (!config.name) return;
+    localStorage.removeItem(`${config.name}_${ChartService._hiddenSeriesPostfix}`);
+    this.config$.next({ ...config });
   }
 
   public emitMoveAnnotation(event: IChartEvent<Annotation>) {
@@ -185,6 +198,7 @@ export class ChartService {
         visible: _.visible,
         enabled: _.enabled,
         color: _.color,
+        type: _.type,
         strokeDasharray: _.style?.strokeDasharray,
         strokeWidth: _.style?.strokeWidth,
       };
@@ -204,25 +218,13 @@ export class ChartService {
           serie.visible = found.visible ?? serie.visible;
           serie.enabled = found.enabled ?? serie.enabled;
           serie.color = found.color ?? serie.color;
+          serie.type = parseInt(found.type, 10) ?? serie.type;
           if (!serie.style) {
             serie.style = {};
           }
           serie.style.strokeWidth = found.strokeWidth ?? serie.style.strokeWidth;
           serie.style.strokeDasharray = found.strokeDasharray ?? serie.style.strokeDasharray;
         }
-
-        // const currentSerieIndex = config.series.findIndex((_) => _.id === serie.id);
-
-        // if (currentSerieIndex !== -1) {
-        //   const seriesLinkCount = config.series.filter(
-        //     (_) => _.yAxisIndex === config.series[currentSerieIndex].yAxisIndex && _.visible === true,
-        //   ).length;
-        //   const yAxis = config.yAxis[config.series[currentSerieIndex].yAxisIndex];
-        //   if (yAxis) {
-        //     yAxis.visible = seriesLinkCount !== 0;
-        //   }
-        // }
-
         return serie;
       });
 
