@@ -1,5 +1,4 @@
 import {
-  AfterContentChecked,
   ChangeDetectionStrategy,
   Component,
   ContentChild,
@@ -12,8 +11,17 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { animationFrameScheduler, fromEvent, Observable, shareReplay, Subject, tap } from 'rxjs';
-import { map, takeWhile, throttleTime } from 'rxjs/operators';
+import {
+  animationFrameScheduler,
+  debounceTime,
+  distinctUntilChanged,
+  fromEvent,
+  Observable,
+  shareReplay,
+  Subject,
+  tap,
+} from 'rxjs';
+import { map, takeWhile } from 'rxjs/operators';
 
 import { ScrollableDirective } from '../scrollable.directive';
 import { NgClass, AsyncPipe } from '@angular/common';
@@ -27,13 +35,13 @@ type ScrollDimensions = {
 };
 
 @Component({
-    selector: 'teta-scrollable',
-    templateUrl: './scrollable.component.html',
-    styleUrls: ['./scrollable.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [LetDirective, NgClass, AsyncPipe, ScrollableDirective]
+  selector: 'teta-scrollable',
+  templateUrl: './scrollable.component.html',
+  styleUrls: ['./scrollable.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [LetDirective, NgClass, AsyncPipe, ScrollableDirective],
 })
-export class ScrollableComponent implements OnInit, OnDestroy, AfterContentChecked {
+export class ScrollableComponent implements OnInit, OnDestroy {
   @ContentChild(ScrollableDirective, {
     static: true,
     read: ElementRef,
@@ -69,25 +77,36 @@ export class ScrollableComponent implements OnInit, OnDestroy, AfterContentCheck
 
   private _container: ElementRef;
   private _alive = true;
-  private _observer: ResizeObserver;
+  private resizeObserver: ResizeObserver;
+  private mutationObserver: MutationObserver;
 
   constructor() {
     this.scrollSize = this._scrollSize.asObservable().pipe(
-      throttleTime(100, animationFrameScheduler),
+      debounceTime(100, animationFrameScheduler),
       map(() => {
+        const { scrollHeight, clientHeight, scrollWidth, clientWidth } = this._container.nativeElement;
         return {
-          scrollHeight: this._container.nativeElement.scrollHeight,
-          scrollWidth: this._container.nativeElement.scrollWidth,
-          clientHeight: this._container.nativeElement.clientHeight,
-          clientWidth: this._container.nativeElement.clientWidth,
+          scrollHeight,
+          clientHeight,
+          scrollWidth,
+          clientWidth,
         };
+      }),
+      distinctUntilChanged((previous, current) => {
+        return (
+          previous.scrollHeight === current.scrollHeight &&
+          previous.clientHeight === current.clientHeight &&
+          previous.scrollWidth === current.scrollWidth &&
+          previous.clientWidth === current.clientWidth
+        );
       }),
       shareReplay({
         refCount: true,
         bufferSize: 1,
       }),
     );
-    this._observer = new ResizeObserver(this._observe);
+    this.resizeObserver = new ResizeObserver(this._observe);
+    this.mutationObserver = new MutationObserver(this._observe);
   }
 
   private _observe = () => {
@@ -119,16 +138,18 @@ export class ScrollableComponent implements OnInit, OnDestroy, AfterContentCheck
       )
       .subscribe();
 
-    this._observer.observe(this._container.nativeElement);
+    this.resizeObserver.observe(this._container.nativeElement);
+    this.mutationObserver.observe(this._container.nativeElement, {
+      attributes: false,
+      childList: true,
+      subtree: true,
+    });
   }
 
   ngOnDestroy() {
     this._alive = false;
-    this._observer.unobserve(this._container.nativeElement);
-    this._observer.disconnect();
-  }
-
-  ngAfterContentChecked() {
-    this._observe();
+    this.resizeObserver.unobserve(this._container.nativeElement);
+    this.resizeObserver.disconnect();
+    this.mutationObserver.disconnect();
   }
 }
