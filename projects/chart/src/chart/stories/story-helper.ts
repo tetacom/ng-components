@@ -16,13 +16,13 @@ import { ScaleType } from '../model/enum/scale-type';
 import { BandSeriesComponent } from './bandseries/band-series.component';
 
 const randomColor = randomInt(0, cssColorNames.length - 1);
-
-const seriesType = [SeriesType.line, SeriesType.bar, SeriesType.area];
+const randomSeries = randomInt(0, 5);
 
 faker.locale = 'ru';
 
-export const createSeries = (size: number) => {
-  return seriesType.map((type: SeriesType, index: number): Series<BasePoint> => {
+export const createSeries = (index: number, size: number) => {
+  {
+    const type = randomSeries();
     return {
       id: index,
       type,
@@ -55,7 +55,7 @@ export const createSeries = (size: number) => {
           };
         }),
     };
-  });
+  }
 };
 
 export const createDragSeries = (size: number): Series<BasePoint> => {
@@ -115,7 +115,11 @@ export const createBandSeries = (size: number): Series<BasePoint> => {
   };
 };
 
-export const createChart = (size: number, inverted = true): IChartConfig => {
+export const createChart = (seriesCount: number, size: number, inverted = true): IChartConfig => {
+  const series = [];
+  for (let i = 0; i < seriesCount; i++) {
+    series.push(createSeries(i, size));
+  }
   return {
     id: '123123123132',
     name: '123123123132',
@@ -166,7 +170,7 @@ export const createChart = (size: number, inverted = true): IChartConfig => {
     legend: {
       enable: true,
     },
-    series: createSeries(size),
+    series: series,
   };
 };
 

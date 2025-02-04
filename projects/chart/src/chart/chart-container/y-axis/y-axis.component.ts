@@ -1,44 +1,29 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { Axis } from '../../core/axis/axis';
 
 import { ScaleService } from '../../service/scale.service';
-import { map, Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { map } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
-    selector: '[teta-y-axis]',
-    templateUrl: './y-axis.component.html',
-    styleUrls: ['./y-axis.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [AsyncPipe]
+  selector: '[teta-y-axis]',
+  templateUrl: './y-axis.component.html',
+  styleUrls: ['./y-axis.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class YAxisComponent implements OnInit, AfterViewInit {
-  y: Observable<any>;
+export class YAxisComponent {
+  private scaleService = inject(ScaleService);
+  yScales = toSignal(this.scaleService.scales.pipe(map((_) => _.y)));
+  axis = input<Axis>();
+  size = input<DOMRect>();
 
-  @Input() axis: Axis;
-  @Input() size: DOMRect;
+  y = computed(() => {
+    return this.yScales().get(this.axis().index)?.scale;
+  });
 
-  private _alive = true;
-
-  constructor(private scaleService: ScaleService) {
-    this.y = this.scaleService.scales.pipe(
-      map((_) => {
-        return _.y.get(this.axis.index)?.scale;
-      }),
-    );
-  }
-
-  ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this._alive = false;
-  }
-
-  ngAfterViewInit() {}
-
-  getLabelTransform() {
-    return `translate(${this.axis.options.opposite ? this.axis.selfSize : -this.axis.selfSize}, ${
-      this.size.height / 2
+  getLabelTransform = computed(() => {
+    return `translate(${this.axis().options.opposite ? this.axis().selfSize : -this.axis().selfSize}, ${
+      this.size().height / 2
     }) rotate(-90)`;
-  }
+  });
 }

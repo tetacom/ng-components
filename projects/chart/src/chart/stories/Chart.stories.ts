@@ -23,7 +23,7 @@ export const basicChart = () => ({
   },
 
   props: {
-    config: createChart(200),
+    config: createChart(20, 200),
     createChart: createChart,
     setZoom: function (chart) {
       console.log(chart);
@@ -37,12 +37,12 @@ export const basicChart = () => ({
         <div>
           <button teta-button
             [palette]="'primary'"
-            (click)="config=createChart(500);">
+            (click)="config=createChart(20, 500);">
             Create new Data
           </button>
           <button teta-button
             [palette]="'primary'"
-            (click)="config=createChart(0); config2=createChart(0)">
+            (click)="config=createChart(0, 0); config2=createChart(0, 0)">
             Create empty data
             config </button>
           <button teta-button
