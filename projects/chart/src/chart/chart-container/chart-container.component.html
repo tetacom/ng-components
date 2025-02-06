@@ -92,7 +92,7 @@
         }
       </g>
       <g class="series-container">
-        @for (series of data.config.series; track series) {
+        @for (series of data.config.series; track $index) {
           @if (series.visible && series.enabled) {
             <g teta-series-host [config]="data.config" [series]="series"></g>
           }
