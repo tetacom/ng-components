@@ -1,88 +1,88 @@
 <svg:rect
   class="plotband"
   xmlns:svg="http://www.w3.org/1999/html"
-  [class.draggable]="plotBand?.draggable === true"
-  [attr.fill]="getFill(plotBand)"
-  [attr.opacity]="plotBand.style?.plotBand?.opacity"
-  [attr.height]="axis.orientation === orientation.x ? height : bandSize"
-  [attr.width]="axis.orientation === orientation.x ? bandSize : width"
-  [attr.y]="axis.orientation === orientation.y ? (axis.options.inverted === true ? from : to) : null"
-  [attr.x]="axis.orientation === orientation.x ? (axis.options.inverted === true ? to : from) : null"
+  [class.draggable]="plotBand()?.draggable === true"
+  [attr.fill]="fill()"
+  [attr.opacity]="plotBand().style?.plotBand?.opacity"
+  [attr.height]="axis().orientation === orientation.x ? height() : bandSize()"
+  [attr.width]="axis().orientation === orientation.x ? bandSize() : width()"
+  [attr.y]="axis().orientation === orientation.y ? (axis().options.inverted === true ? from() : to()) : null"
+  [attr.x]="axis().orientation === orientation.x ? (axis().options.inverted === true ? to() : from()) : null"
 ></svg:rect>
-@if (axis.orientation === orientation.x) {
+@if (axis().orientation === orientation.x) {
   <svg:text
     text-anchor="middle"
     dominant-baseline="middle"
     class="label font-caption fill-text-90"
-    [attr.x]="getTextPosition()"
-    [attr.transform]="'rotate(-90, ' + getTextPosition() + ',' + height / 2 + ')'"
-    [attr.y]="height / 2"
+    [attr.x]="textPosition()"
+    [attr.transform]="'rotate(-90, ' + textPosition() + ',' + height() / 2 + ')'"
+    [attr.y]="height() / 2"
   >
-    {{ plotBand.label }}
+    {{ plotBand().label }}
   </svg:text>
 }
-@if (axis.orientation === orientation.y) {
+@if (axis().orientation === orientation.y) {
   <svg:text
     text-anchor="middle"
     class="label font-caption fill-text-90"
     dominant-baseline="central"
-    [attr.x]="getTextPosition()"
-    [attr.y]="width / 2"
+    [attr.x]="textPosition()"
+    [attr.y]="width() / 2"
   >
-    {{ plotBand.label }}
+    {{ plotBand().label }}
   </svg:text>
 }
-@if (plotBand.resizable) {
-  @if (plotBand.showGrabbers) {
+@if (plotBand().resizable) {
+  @if (plotBand().showGrabbers) {
     <svg:line
       class="display-grabber"
-      [attr.stroke]="plotBand.style?.grabbers?.stroke || 'var(--color-text-50)'"
-      [attr.stroke-width]="plotBand.style?.grabbers?.strokeWidth || 4"
-      [attr.stroke-dasharray]="plotBand.style?.grabbers?.strokeDasharray"
-      [attr.x1]="axis.orientation === orientation.x ? from : 0"
-      [attr.x2]="axis.orientation === orientation.x ? from : width"
+      [attr.stroke]="plotBand().style?.grabbers?.stroke || 'var(--color-text-50)'"
+      [attr.stroke-width]="plotBand().style?.grabbers?.strokeWidth || 4"
+      [attr.stroke-dasharray]="plotBand().style?.grabbers?.strokeDasharray"
+      [attr.x1]="axis().orientation === orientation.x ? from() : 0"
+      [attr.x2]="axis().orientation === orientation.x ? from() : width()"
       [attr.data-grabber]="'from'"
-      [attr.y1]="axis.orientation === orientation.x ? 0 : from"
-      [attr.y2]="axis.orientation === orientation.x ? height : from"
+      [attr.y1]="axis().orientation === orientation.x ? 0 : from()"
+      [attr.y2]="axis().orientation === orientation.x ? height() : from()"
     ></svg:line>
     <svg:line
       class="display-grabber"
-      [attr.stroke]="plotBand.style?.grabbers?.stroke || 'var(--color-text-50)'"
-      [attr.stroke-width]="plotBand.style?.grabbers?.strokeWidth || 4"
-      [attr.stroke-dasharray]="plotBand.style?.grabbers?.strokeDasharray"
-      [attr.x1]="axis.orientation === orientation.x ? to : 0"
-      [attr.x2]="axis.orientation === orientation.x ? to : width"
+      [attr.stroke]="plotBand().style?.grabbers?.stroke || 'var(--color-text-50)'"
+      [attr.stroke-width]="plotBand().style?.grabbers?.strokeWidth || 4"
+      [attr.stroke-dasharray]="plotBand().style?.grabbers?.strokeDasharray"
+      [attr.x1]="axis().orientation === orientation.x ? to() : 0"
+      [attr.x2]="axis().orientation === orientation.x ? to() : width()"
       [attr.data-grabber]="'to'"
-      [attr.y1]="axis.orientation === orientation.x ? 0 : to"
-      [attr.y2]="axis.orientation === orientation.x ? height : to"
+      [attr.y1]="axis().orientation === orientation.x ? 0 : to()"
+      [attr.y2]="axis().orientation === orientation.x ? height() : to()"
     ></svg:line>
   }
   <svg:line
     class="grabber"
-    [class.x-grabber]="axis.orientation === orientation.x"
-    [class.y-grabber]="axis.orientation === orientation.y"
-    [class.resizeable]="plotBand?.resizable"
-    [attr.stroke]="plotBand.style?.grabbers?.stroke || 'var(--color-text-50)'"
+    [class.x-grabber]="axis().orientation === orientation.x"
+    [class.y-grabber]="axis().orientation === orientation.y"
+    [class.resizeable]="plotBand()?.resizable"
+    [attr.stroke]="plotBand().style?.grabbers?.stroke || 'var(--color-text-50)'"
     [attr.stroke-width]="8"
-    [style.transform]="axis.orientation === orientation.x ? 'translateX(2px)' : 'translateY(2px)'"
-    [attr.x1]="axis.orientation === orientation.x ? from : 0"
-    [attr.x2]="axis.orientation === orientation.x ? from : width"
+    [style.transform]="axis().orientation === orientation.x ? 'translateX(2px)' : 'translateY(2px)'"
+    [attr.x1]="axis().orientation === orientation.x ? from() : 0"
+    [attr.x2]="axis().orientation === orientation.x ? from() : width()"
     [attr.data-grabber]="'from'"
-    [attr.y1]="axis.orientation === orientation.x ? 0 : from"
-    [attr.y2]="axis.orientation === orientation.x ? height : from"
+    [attr.y1]="axis().orientation === orientation.x ? 0 : from()"
+    [attr.y2]="axis().orientation === orientation.x ? height() : from()"
   ></svg:line>
   <svg:line
     class="grabber"
-    [class.x-grabber]="axis.orientation === orientation.x"
-    [class.y-grabber]="axis.orientation === orientation.y"
-    [class.resizeable]="plotBand?.resizable"
-    [attr.stroke]="plotBand.style?.grabbers?.stroke || 'var(--color-text-50)'"
+    [class.x-grabber]="axis().orientation === orientation.x"
+    [class.y-grabber]="axis().orientation === orientation.y"
+    [class.resizeable]="plotBand()?.resizable"
+    [attr.stroke]="plotBand().style?.grabbers?.stroke || 'var(--color-text-50)'"
     [attr.stroke-width]="8"
-    [style.transform]="axis.orientation === orientation.x ? 'translateX(-2px)' : 'translateY(-2px)'"
-    [attr.x1]="axis.orientation === orientation.x ? to : 0"
-    [attr.x2]="axis.orientation === orientation.x ? to : width"
+    [style.transform]="axis().orientation === orientation.x ? 'translateX(-2px)' : 'translateY(-2px)'"
+    [attr.x1]="axis().orientation === orientation.x ? to() : 0"
+    [attr.x2]="axis().orientation === orientation.x ? to() : width()"
     [attr.data-grabber]="'to'"
-    [attr.y1]="axis.orientation === orientation.x ? 0 : to"
-    [attr.y2]="axis.orientation === orientation.x ? height : to"
+    [attr.y1]="axis().orientation === orientation.x ? 0 : to()"
+    [attr.y2]="axis().orientation === orientation.x ? height() : to()"
   ></svg:line>
 }

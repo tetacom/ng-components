@@ -1,12 +1,14 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  computed,
+  effect,
   ElementRef,
   HostListener,
-  Input,
+  input,
   OnDestroy,
+  signal,
 } from '@angular/core';
 import * as d3 from 'd3';
 
@@ -24,21 +26,26 @@ import { ChartService } from '../../service/chart.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlotBandComponent implements AfterViewInit, OnDestroy {
-  @Input() plotBand: PlotBand;
-  @Input() axis: Axis;
-  @Input() scale: any;
-  @Input() size: DOMRect;
+  plotBand = input<PlotBand>();
+  axis = input<Axis>();
+  scale = input<any>();
+  size = input<DOMRect>();
+
+  fromTo = signal<{
+    from: number;
+    to: number;
+  } | null>(null);
 
   @HostListener('click', ['$event']) click(event: MouseEvent) {
     this.emit({
-      target: this.plotBand,
+      target: this.plotBand(),
       event,
     });
   }
 
   @HostListener('contextmenu', ['$event']) contextMenu(event: MouseEvent) {
     this.emit({
-      target: this.plotBand,
+      target: this.plotBand(),
       event,
     });
   }
@@ -47,31 +54,39 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
   resizeElements: any;
   dragElements: any;
 
-  get height(): number {
-    return this.size.height;
-  }
+  height = computed(() => {
+    return this.size().height;
+  });
 
-  get width(): number {
-    return this.size.width;
-  }
+  width = computed(() => {
+    return this.size().width;
+  });
 
-  get from(): number {
-    return this.scale(this.plotBand.from);
-  }
+  from = computed(() => {
+    return this.scale()(this.fromTo().from);
+  });
 
-  get to(): number {
-    return this.scale(this.plotBand.to);
-  }
+  to = computed(() => {
+    return this.scale()(this.fromTo().to);
+  });
 
-  get bandSize(): number {
-    return Math.abs(this.scale(this.plotBand.to) - this.scale(this.plotBand.from));
-  }
+  bandSize = computed(() => {
+    return Math.abs(this.scale()(this.fromTo().to) - this.scale()(this.fromTo().from));
+  });
 
   constructor(
     private chartService: ChartService,
-    private cdr: ChangeDetectorRef,
     private element: ElementRef,
-  ) {}
+  ) {
+    effect(() => {
+      if (this.plotBand()) {
+        this.fromTo.set({
+          from: this.plotBand().from,
+          to: this.plotBand().to,
+        });
+      }
+    });
+  }
 
   emit(event: IChartEvent<PlotBand>) {
     this.chartService.emitPlotBand(event);
@@ -83,11 +98,11 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
     const grabElements = d3.select(this.element.nativeElement).selectAll('.grabber');
 
     this.dragElements = d3.drag().subject(() => {
-      if (this.axis.orientation === AxisOrientation.x) {
+      if (this.axis().orientation === AxisOrientation.x) {
         return { x: plotbandElement.attr('x') };
       }
 
-      if (this.axis.orientation === AxisOrientation.y) {
+      if (this.axis().orientation === AxisOrientation.y) {
         return { y: plotbandElement.attr('y') };
       }
       return null;
@@ -95,19 +110,38 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
 
     const drag = this.dragElements.on('start drag end', (event: d3.D3DragEvent<any, PlotBand, any>, d: PlotBand) => {
       const bandSize = parseFloat(
-        plotbandElement.attr(this.axis.orientation === AxisOrientation.x ? 'width' : 'height'),
+        plotbandElement.attr(this.axis().orientation === AxisOrientation.x ? 'width' : 'height'),
       );
 
-      d.from = this.scale.invert(event[AxisOrientation[this.axis.orientation]]);
+      const from = this.scale().invert(event[AxisOrientation[this.axis().orientation]]);
+      const to = this.scale().invert(event[AxisOrientation[this.axis().orientation]] + bandSize);
 
-      d.to = this.scale.invert(event[AxisOrientation[this.axis.orientation]] + bandSize);
+      // const min = Math.min(...this.scale().domain());
+      // const max = Math.max(...this.scale().domain());
+      //
+      // const minValue = d.min ?? min;
+      // const maxValue = d.max ?? max;
+      //
+      // d.from = from;
+      // d.to = to;
+      // if (d.from < minValue) {
+      //   d.from = minValue;
+      // }
+      // if (d.to > maxValue) {
+      //   d.to = maxValue;
+      // }
 
+      d.from = from;
+      d.to = to;
+
+      this.fromTo.set({
+        from: d.from,
+        to: d.to,
+      });
       this.emit({
         event,
         target: d,
       });
-
-      this.cdr.detectChanges();
     });
 
     let grabberKey;
@@ -121,13 +155,13 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
           grabberKey = grabber;
         }
 
-        const min = Math.min(...this.scale.domain());
-        const max = Math.max(...this.scale.domain());
+        const min = Math.min(...this.scale().domain());
+        const max = Math.max(...this.scale().domain());
 
         const minValue = d.min ?? min;
         const maxValue = d.max ?? max;
 
-        d[grabberKey] = this.scale.invert(event[AxisOrientation[this.axis.orientation]]);
+        d[grabberKey] = this.scale().invert(event[AxisOrientation[this.axis().orientation]]);
 
         if (grabberKey === 'from') {
           const borderMin = d.from <= minValue;
@@ -152,24 +186,25 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
             d.to = d.from;
           }
         }
-
+        this.fromTo.set({
+          from: d.from,
+          to: d.to,
+        });
         this.emit({
           event,
           target: d,
         });
-
-        this.cdr.detectChanges();
       },
     );
 
-    plotbandElement.datum<PlotBand>(this.plotBand);
-    grabElements.datum<PlotBand>(this.plotBand);
+    plotbandElement.datum<PlotBand>(this.plotBand());
+    grabElements.datum<PlotBand>(this.plotBand());
 
-    if (this.plotBand.draggable) {
+    if (this.plotBand().draggable) {
       plotbandElement.call(drag);
     }
 
-    if (this.plotBand.resizable) {
+    if (this.plotBand().resizable) {
       grabElements.call(resize);
     }
   }
@@ -179,21 +214,21 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
     this.resizeElements.on('start drag end', null);
   }
 
-  getTextPosition = () => {
-    let [min, max] = this.scale.domain();
+  textPosition = computed(() => {
+    let [min, max] = this.scale().domain();
     min = min instanceof Date ? min.getTime() : min;
     max = max instanceof Date ? max.getTime() : max;
     const from =
-      (this.plotBand.from as any) instanceof Date ? (this.plotBand.from as any).getTime() : this.plotBand.from;
-    const to = (this.plotBand.to as any) instanceof Date ? (this.plotBand.to as any).getTime() : this.plotBand.to;
+      (this.fromTo().from as any) instanceof Date ? (this.fromTo().from as any).getTime() : this.fromTo().from;
+    const to = (this.fromTo().to as any) instanceof Date ? (this.fromTo().to as any).getTime() : this.fromTo().to;
     const position = ((from <= min ? min : from) + (to >= max ? max : to)) / 2;
-    return this.scale(position);
-  };
+    return this.scale()(position);
+  });
 
-  getFill(d: PlotBand): string {
-    if (d.style?.plotBand?.patternImage) {
-      return `url(#${d.style.plotBand?.patternImage})`;
+  fill = computed(() => {
+    if (this.plotBand().style?.plotBand?.patternImage) {
+      return `url(#${this.plotBand().style.plotBand?.patternImage})`;
     }
-    return d.style.plotBand?.fill;
-  }
+    return this.plotBand().style.plotBand?.fill;
+  });
 }
