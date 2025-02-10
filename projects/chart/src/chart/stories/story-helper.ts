@@ -143,6 +143,18 @@ export const createChart = (seriesCount: number, size: number, inverted = true):
             draggable: true,
           },
         ],
+        plotBands: [
+          {
+            order: 0,
+            from: 100,
+            to: 200,
+            draggable: true,
+            resizable: true,
+            style: {
+              plotBand: { fill: 'red' },
+            },
+          },
+        ],
       },
     ],
     yAxis: [
