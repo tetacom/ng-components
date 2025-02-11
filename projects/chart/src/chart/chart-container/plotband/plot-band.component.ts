@@ -34,7 +34,10 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
   fromTo = signal<{
     from: number;
     to: number;
-  } | null>(null);
+  } | null>({
+    from: 0,
+    to: 0,
+  });
 
   @HostListener('click', ['$event']) click(event: MouseEvent) {
     this.emit({
@@ -63,15 +66,42 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
   });
 
   from = computed(() => {
-    return this.scale()(this.fromTo().from);
+    if (this.scale() && this.fromTo()) {
+      return this.scale()(this.fromTo().from);
+    }
+    return 0;
   });
 
   to = computed(() => {
-    return this.scale()(this.fromTo().to);
+    if (this.scale() && this.fromTo()) {
+      return this.scale()(this.fromTo().to);
+    }
+    return 0;
   });
 
   bandSize = computed(() => {
-    return Math.abs(this.scale()(this.fromTo().to) - this.scale()(this.fromTo().from));
+    if (this.scale() && this.fromTo()) {
+      return Math.abs(this.scale()(this.fromTo().to) - this.scale()(this.fromTo().from));
+    }
+    return 0;
+  });
+
+  textPosition = computed(() => {
+    let [min, max] = this.scale().domain();
+    min = min instanceof Date ? min.getTime() : min;
+    max = max instanceof Date ? max.getTime() : max;
+    const from =
+      (this.fromTo().from as any) instanceof Date ? (this.fromTo().from as any).getTime() : this.fromTo().from;
+    const to = (this.fromTo().to as any) instanceof Date ? (this.fromTo().to as any).getTime() : this.fromTo().to;
+    const position = ((from <= min ? min : from) + (to >= max ? max : to)) / 2;
+    return this.scale()(position);
+  });
+
+  fill = computed(() => {
+    if (this.plotBand().style?.plotBand?.patternImage) {
+      return `url(#${this.plotBand().style.plotBand?.patternImage})`;
+    }
+    return this.plotBand().style.plotBand?.fill;
   });
 
   constructor(
@@ -213,22 +243,4 @@ export class PlotBandComponent implements AfterViewInit, OnDestroy {
     this.dragElements.on('start drag end', null);
     this.resizeElements.on('start drag end', null);
   }
-
-  textPosition = computed(() => {
-    let [min, max] = this.scale().domain();
-    min = min instanceof Date ? min.getTime() : min;
-    max = max instanceof Date ? max.getTime() : max;
-    const from =
-      (this.fromTo().from as any) instanceof Date ? (this.fromTo().from as any).getTime() : this.fromTo().from;
-    const to = (this.fromTo().to as any) instanceof Date ? (this.fromTo().to as any).getTime() : this.fromTo().to;
-    const position = ((from <= min ? min : from) + (to >= max ? max : to)) / 2;
-    return this.scale()(position);
-  });
-
-  fill = computed(() => {
-    if (this.plotBand().style?.plotBand?.patternImage) {
-      return `url(#${this.plotBand().style.plotBand?.patternImage})`;
-    }
-    return this.plotBand().style.plotBand?.fill;
-  });
 }
