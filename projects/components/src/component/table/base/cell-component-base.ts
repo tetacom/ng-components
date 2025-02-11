@@ -13,8 +13,8 @@ import { TableRow } from '../contract/table-row';
 import { TableService } from '../service/table.service';
 
 @Component({
-    template: '',
-    standalone: false
+  template: '',
+  standalone: false,
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
@@ -135,6 +135,14 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
       if (this.index === cellValue.row && this.column.name === cellValue.column) {
         this.row.data[this.column.name] = cellValue.value;
         this.setupControl();
+
+        for (const controlsKey in this.formGroup.controls) {
+          this.formGroup.controls[controlsKey].updateValueAndValidity({
+            emitEvent: false,
+            onlySelf: true,
+          });
+        }
+
         this.formGroup.updateValueAndValidity();
         this.row.valid = this.formGroup.valid;
         this.cdr.detectChanges();
