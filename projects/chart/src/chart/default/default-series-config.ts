@@ -9,7 +9,7 @@ export const defaultSeriesConfig = (): Series<BasePoint> => ({
   type: SeriesType.line,
   xAxisIndex: 0,
   yAxisIndex: 0,
-  fillType: FillType.gradient,
+  fillType: FillType.default,
   color: 'coral',
   visible: true,
   enabled: true,
