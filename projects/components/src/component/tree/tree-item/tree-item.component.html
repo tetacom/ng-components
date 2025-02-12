@@ -1,8 +1,8 @@
-<div class="tree__item_content" [ngClass]="'tree__item_content-' + computedDepth" (click)="openItem()">
+<div class="tree__item_content" [ngClass]="'tree__item_content-' + computedDepth()" (click)="openItem()">
   <ng-container
     *ngTemplateOutlet="
-      template;
-      context: { $implicit: item, item: item, open: itemIsOpen, service: service, depth: depth }
+      template();
+      context: { $implicit: item(), item: item(), open: itemIsOpen(), service: treeService, depth: depth() }
     "
   ></ng-container>
 </div>

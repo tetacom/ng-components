@@ -1,33 +1,30 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, Signal } from '@angular/core';
 import { TreeService } from '../tree.service';
 import { ITreeData } from '../../../common/contract/i-tree-data';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
 import { IconComponent } from '../../icon/icon/icon.component';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
-    selector: 'teta-tree-item-toggle',
-    templateUrl: './tree-item-toggle.component.html',
-    styleUrls: ['./tree-item-toggle.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [IconComponent, AsyncPipe]
+  selector: 'teta-tree-item-toggle',
+  templateUrl: './tree-item-toggle.component.html',
+  styleUrls: ['./tree-item-toggle.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [IconComponent],
 })
-export class TreeItemToggleComponent implements OnInit {
-  @Input() item: ITreeData;
-  open: Observable<boolean>;
+export class TreeItemToggleComponent {
+  treeService = inject(TreeService);
+  item = input<ITreeData>();
+  open: Signal<boolean>;
 
-  constructor(
-    public service: TreeService,
-    private _cdr: ChangeDetectorRef,
-  ) {}
+  openItems: Signal<ITreeData[]>;
 
-  ngOnInit(): void {
-    this.open = this.service.openItems.pipe(
-      map((_) => {
-        const found = _?.find((x) => this.service.compareItems(x) === this.service.compareItems(this.item));
-        return found != null;
-      }),
-    );
+  constructor() {
+    this.openItems = toSignal(this.treeService.openItems);
+    this.open = computed(() => {
+      const found = this.openItems()?.find(
+        (x) => this.treeService.compareItems(x) === this.treeService.compareItems(this.item()),
+      );
+      return !!found;
+    });
   }
 }
