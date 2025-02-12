@@ -41,8 +41,13 @@ export class ExtremesBuilder implements IBuilder<Axis, number[] | string[]> {
       extremes[1] = options?.max;
     }
     if (typeof extremes[0] === 'number' && typeof extremes[1] === 'number' && extremes[0] === extremes[1]) {
-      extremes[0] = extremes[0] - 1;
-      extremes[1] = extremes[1] + 1;
+      if (extremes[1] > 0) {
+        extremes[0] = 0;
+        extremes[1] = extremes[1] * 2;
+      } else {
+        extremes[0] = extremes[0] - 1;
+        extremes[1] = extremes[1] + 1;
+      }
     }
     this.extremes = extremes;
     return this.extremes;
