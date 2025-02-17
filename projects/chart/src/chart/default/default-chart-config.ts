@@ -22,7 +22,7 @@ export const defaultChartConfig = (): IChartConfig => ({
     enable: true,
   },
   controls: {
-    enable: true,
+    enable: false,
   },
   tooltip: {
     enable: true,
