@@ -41,7 +41,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   mouseenter() {
     this.zoom?.on('start zoom end', this.zoomed);
     this._element?.call(this.zoom).on('dblclick.zoom', null);
-    // Run wheel event listener
     if (this.config?.zoom?.zoomBehavior === ZoomBehaviorType.wheel) {
       this.runWheelTranslate();
     }
