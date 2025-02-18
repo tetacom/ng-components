@@ -16,10 +16,10 @@ import { D3ZoomEvent, ZoomBehavior, zoomIdentity } from 'd3';
 import { ZoomType } from '../model/enum/zoom-type';
 import { AxisOrientation } from '../model/enum/axis-orientation';
 import { ZoomMessage } from '../model/i-broadcast-message';
-import { takeWhile } from 'rxjs';
-import { ChartService } from '../service/chart.service';
+import { combineLatest, takeWhile } from 'rxjs';
 import { ZoomBehaviorType } from '../model/enum/zoom-behavior-type';
 import { ScaleType } from '../model/enum/scale-type';
+import { ScaleService } from '../service/scale.service';
 
 @Directive({
   selector: '[tetaZoomable]',
@@ -58,7 +58,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   constructor(
     private elementRef: ElementRef,
     private zoomService: ZoomService,
-    private chartService: ChartService,
+    private scaleService: ScaleService,
     private zone: NgZone,
   ) {}
 
@@ -81,27 +81,31 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
   }
 
   private initZoomSync() {
-    this.zoomService.zoomed.pipe(takeWhile(() => this.alive)).subscribe((zoomed: ZoomMessage) => {
+
+    combineLatest([this.scaleService.scales, this.zoomService.zoomed]).pipe(takeWhile(() => this.alive)).subscribe((data) => {
+      
+      const [scales, zoomed] = data;
+
       if (
         this._element &&
-        this.elementRef !== zoomed?.element &&
         zoomed?.axis?.index === this.axis.index &&
         zoomed?.axis?.orientation === this.axis.orientation
       ) {
-        const scale = this.axis.scale.copy().domain(this.axis.originDomain);
+        const axis =  this.axis.orientation === AxisOrientation.x ? scales.x.get(this.axis.index) : scales.y.get(this.axis.index);
+        const scale = axis.scale.copy().domain(this.axis.originDomain);
         let transform;
         if (zoomed.domain === null) {
           transform = zoomIdentity;
         } else {
           transform = this.zoomService.getD3Transform(
             zoomed.domain,
-            this.axis.originDomain,
+            axis.originDomain,
             scale,
-            this.axis.orientation,
-            this.axis.options.inverted,
+            axis.orientation,
+            axis.options.inverted,
           );
         }
-        this._element.call(this.zoom.transform, transform);
+        this.elementRef.nativeElement.__zoom = transform;
         this.currentTransform = transform;
       }
     });
@@ -262,7 +266,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
         chartId: this.config.id,
       });
 
-      this._element?.call(this.zoom.transform, transform);
+      this.elementRef.nativeElement.__zoom = transform;
       this.zoomService.fireZoom(message);
       this.zoomService.broadcastZoom(message);
       this.currentTransform = transform;
