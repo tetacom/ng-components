@@ -2,6 +2,7 @@
  * Public API Surface of chart
  */
 
+export * from './chart/const/chart-config-postfix';
 export * from './chart/service/public-api';
 export * from './chart/base/series-base.component';
 export * from './chart/chart/chart.component';

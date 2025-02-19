@@ -10,7 +10,6 @@ import {
   shareReplay,
   Subject,
   take,
-  tap,
   withLatestFrom,
 } from 'rxjs';
 
@@ -27,6 +26,7 @@ import { IPointMove } from '../model/i-point-move';
 import { PlotBand } from '../model/plot-band';
 import { PlotLine } from '../model/plot-line';
 import { Series } from '../model/series';
+import { chartConfigPostfix } from '../const/chart-config-postfix';
 
 @Injectable({
   providedIn: 'root',
@@ -48,6 +48,7 @@ export class ChartService {
   public annotationContextMenu: Observable<IChartEvent<Annotation>>;
   public chartClick: Observable<IChartEvent<BasePoint>>;
   public chartContextMenu: Observable<IChartEvent<BasePoint>>;
+  public configUpdated: Observable<string>;
 
   private config$ = new BehaviorSubject<IChartConfig>(defaultChartConfig());
   private configUpdates$ = new Subject<IChartConfig>();
@@ -61,8 +62,6 @@ export class ChartService {
   private chartContextMenu$ = new Subject<IChartEvent<BasePoint>>();
   private annotationEvent$ = new Subject<IChartEvent<Annotation>>();
   private annotationMove$ = new Subject<IChartEvent<Annotation>>();
-
-  private static _hiddenSeriesPostfix = 'series_config';
 
   constructor() {
     this.id = of((Date.now() + Math.random()).toString(36));
@@ -86,6 +85,7 @@ export class ChartService {
     );
 
     this.config = merge(initialConfig, this.configUpdates$).pipe(
+      filter((_) => _ !== null),
       shareReplay({
         bufferSize: 1,
         refCount: true,
@@ -108,6 +108,11 @@ export class ChartService {
 
     this.plotBandClick = this.plotBandEvent$.asObservable().pipe(filter((_) => _?.event?.type === 'click'));
     this.plotBandContextMenu = this.plotBandEvent$.asObservable().pipe(filter((_) => _?.event?.type === 'contextmenu'));
+    this.configUpdated = this.configUpdates$.asObservable().pipe(
+      map((config) => {
+        return this.getConfigString(config);
+      }),
+    );
   }
 
   public setConfig(config: IChartConfig) {
@@ -158,7 +163,8 @@ export class ChartService {
   public async clearSeriesSettings() {
     const config = await lastValueFrom(this.initialConfig.pipe(take(1)));
     if (!config.name) return;
-    localStorage.removeItem(`${config.name}_${ChartService._hiddenSeriesPostfix}`);
+    localStorage.removeItem(`${config.name}_${chartConfigPostfix}`);
+    this.configUpdates$.next(null);
     this.config$.next({ ...config });
   }
 
@@ -192,7 +198,12 @@ export class ChartService {
 
   private saveCookie(config: IChartConfig) {
     if (!config.name) return;
-    const series = config.series?.map((_: Series<BasePoint>) => {
+    const seriesConfig = this.getConfigString(config);
+    localStorage.setItem(`${config.name}_${chartConfigPostfix}`, seriesConfig);
+  }
+
+  private getConfigString(config: IChartConfig) {
+    const series = config?.series?.map((_: Series<BasePoint>) => {
       return {
         id: _.id,
         visible: _.visible,
@@ -203,13 +214,13 @@ export class ChartService {
         strokeWidth: _.style?.strokeWidth,
       };
     });
-    localStorage.setItem(`${config.name}_${ChartService._hiddenSeriesPostfix}`, JSON.stringify(series));
+    return JSON.stringify(series ?? null);
   }
 
   private restoreLocalStorage(config: IChartConfig): IChartConfig {
     if (!config.name) return config;
 
-    const seriesConfig = localStorage.getItem(`${config.name}_${ChartService._hiddenSeriesPostfix}`);
+    const seriesConfig = localStorage.getItem(`${config.name}_${chartConfigPostfix}`);
     if (seriesConfig) {
       const json: any[] = JSON.parse(seriesConfig);
       config.series = config.series.map((serie, index) => {

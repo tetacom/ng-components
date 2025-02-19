@@ -20,12 +20,12 @@ import { AsyncPipe } from '@angular/common';
 import { LegendComponent } from '../legend/legend.component';
 
 @Component({
-    selector: 'teta-svg-chart',
-    templateUrl: './chart.component.html',
-    styleUrls: ['./chart.component.scss'],
-    providers: [ChartService, ZoomService, ScaleService, BrushService],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [ChartContainerComponent, AsyncPipe, LegendComponent]
+  selector: 'teta-svg-chart',
+  templateUrl: './chart.component.html',
+  styleUrls: ['./chart.component.scss'],
+  providers: [ChartService, ZoomService, ScaleService, BrushService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ChartContainerComponent, AsyncPipe, LegendComponent],
 })
 export class ChartComponent implements OnInit, OnDestroy {
   hasSeriesData: Observable<boolean>;
@@ -68,6 +68,9 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   @Output()
   brushServiceInstance: EventEmitter<BrushService> = new EventEmitter<BrushService>();
+
+  @Output()
+  configUpdated: EventEmitter<string> = new EventEmitter<string>();
 
   @Input() set config(config: IChartConfig) {
     this.chartService.setConfig(config);
@@ -169,6 +172,10 @@ export class ChartComponent implements OnInit, OnDestroy {
 
     this.chartService.annotationMove.pipe(takeWhile(() => this._alive)).subscribe((_) => {
       this.annotationMove.emit(_);
+    });
+
+    this.chartService.configUpdated.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.configUpdated.emit(_);
     });
   }
 
