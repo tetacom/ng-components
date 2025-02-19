@@ -8,19 +8,23 @@ import { IDictionary } from '../../../../common/contract/i-dictionary';
 import { PropertyGridItemDescriptionDirective } from '../../property-grid/property-grid-item-description.directive';
 import { PropertyGridComponent } from '../../property-grid/property-grid.component';
 import { ButtonComponent } from '../../../button/button/button.component';
+import { provideTranslocoScope, TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
-    selector: 'teta-property-grid-demo',
-    templateUrl: './property-grid-demo.component.html',
-    styleUrls: ['./property-grid-demo.component.scss'],
-    imports: [
-        FormsModule,
-        PropertyGridComponent,
-        PropertyGridItemDescriptionDirective,
-        ReactiveFormsModule,
-        ButtonComponent,
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'teta-property-grid-demo',
+  templateUrl: './property-grid-demo.component.html',
+  styleUrls: ['./property-grid-demo.component.scss'],
+  imports: [
+    FormsModule,
+    PropertyGridComponent,
+    PropertyGridItemDescriptionDirective,
+    ReactiveFormsModule,
+    ButtonComponent,
+    TranslocoPipe,
+    TranslocoDirective,
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideTranslocoScope('errors')],
 })
 export class PropertyGridDemoComponent {
   private aaa = false;
@@ -46,6 +50,7 @@ export class PropertyGridDemoComponent {
       flex: 1,
       locked: true,
       filterType: FilterType.string,
+      required: true,
     }),
     new TableColumn({
       name: 'date',
@@ -82,20 +87,22 @@ export class PropertyGridDemoComponent {
 
   updateColumns() {
     this.aaa = !this.aaa;
-    this.columns.set([...this.columns().map((col) => {
-      if(col.name === 'value') {
-        return { ...col, editable: this.aaa };
-      }
-      if(col.name === 'date') {
-        return { ...col, editable: this.aaa };
-      }
-      return {...col}
-    })]);
+    this.columns.set([
+      ...this.columns().map((col) => {
+        if (col.name === 'value') {
+          return { ...col, editable: this.aaa };
+        }
+        if (col.name === 'date') {
+          return { ...col, editable: this.aaa };
+        }
+        return { ...col };
+      }),
+    ]);
   }
 
   updateItem() {
     this.item.set(this.getItem());
-    this.updateColumns()
+    this.updateColumns();
   }
 
   private getItem() {
