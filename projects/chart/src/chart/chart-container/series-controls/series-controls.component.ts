@@ -12,6 +12,7 @@ import {
   DropdownContentDirective,
   DropdownHeadDirective,
   IconComponent,
+  InputComponent,
   ScrollableComponent,
   SelectComponent,
   SelectOptionDirective,
@@ -25,6 +26,7 @@ import { ChartService } from '../../service/chart.service';
 import { LineSeriesComponent } from '../series/line/line-series.component';
 import { SeriesType } from '../../model/enum/series-type';
 import { defaultSeriesTypeMapping } from '../../default/defaultSeriesTypeMapping';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'teta-series-controls',
@@ -45,6 +47,8 @@ import { defaultSeriesTypeMapping } from '../../default/defaultSeriesTypeMapping
     SelectOptionDirective,
     SelectValueDirective,
     ScrollableComponent,
+    TranslocoPipe,
+    InputComponent,
   ],
   templateUrl: './series-controls.component.html',
   styleUrl: './series-controls.component.css',

@@ -127,6 +127,9 @@ export const createChart = (seriesCount: number, size: number, inverted = true):
     tooltip: {
       tracking: TooltipTracking.y,
     },
+    controls: {
+      enable: true,
+    },
     bounds: new ChartBounds({
       // top: 50
     }),

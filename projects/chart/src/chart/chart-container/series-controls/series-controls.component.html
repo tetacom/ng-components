@@ -7,17 +7,17 @@
           [palette]="'text'"
           [view]="'ghost'">
     <teta-icon [name]="'gear'"></teta-icon>
+    {{ 'charts.settings' | transloco }}
   </button>
   <div tetaDropdownContent class="column shadow-2" style="min-width: 200px;">
     @if (disabledSeries().length > 0) {
-      <div class="row justify-content-end padding-h-3 padding-top-3">
+      <div class="row padding-h-3 padding-top-3">
         <teta-dropdown [align]="Align.left" [appendToBody]="true">
           <button teta-button
                   tetaDropdownHead
-                  [square]="true"
-                  [size]="TetaSize.S"
                   [palette]="'primary'">
             <teta-icon [name]="'add'"></teta-icon>
+            {{ 'charts.add_curve' | transloco }}
           </button>
           <div tetaDropdownContent class="column list shadow-2" style="min-width: 200px;"
                (click)="$event.stopPropagation();">
@@ -49,58 +49,64 @@
             </teta-accordion-head>
             <ng-template tetaAccordionContent>
               <div class="column gap-8">
-                <teta-select [options]="strokeWidth"
-                             [ngModel]="seriesItem.style?.strokeWidth ?? 1"
-                             [valueRef]="'id'"
-                             (ngModelChange)="setSeriesStrokeWidth(seriesItem, $event)"
-                             [allowNull]="false">
-                  <ng-template tetaSelectOption let-option>
-                    <div style="width: 50px;"
-                         [style.height.px]="option.id"
-                         [style.background-color]="seriesItem.color"></div>
-                  </ng-template>
-                  <ng-template tetaSelectValue let-value>
-                    <div style="width: 50px;"
-                         [style.height.px]="value?.id"
-                         [style.background-color]="seriesItem.color"></div>
-                  </ng-template>
-                </teta-select>
-                <teta-select [options]="strokeArray"
-                             [ngModel]="seriesItem.style?.strokeDasharray ?? ''"
-                             [valueRef]="'id'"
-                             (ngModelChange)="setSeriesStrokeDasharray(seriesItem, $event)"
-                             [allowNull]="false">
-                  <ng-template tetaSelectOption let-option>
-                    <div style="width: 50px;border:0;border-top: 2px;"
-                         [style.border-style]="option.value"
-                         [style.border-color]="seriesItem.color"></div>
-                  </ng-template>
-                  <ng-template tetaSelectValue let-value>
-                    <div style="width: 50px;border:0;border-top: 2px;"
-                         [style.border-style]="value?.value"
-                         [style.border-color]="seriesItem.color"></div>
-                  </ng-template>
-                </teta-select>
-                <teta-select [options]="seriesType"
-                             [ngModel]="seriesItem.type ?? SeriesType.line"
-                             [valueRef]="'id'"
-                             [textRef]="'value'"
-                             (ngModelChange)="setSeriesType(seriesItem, $event)"
-                             [allowNull]="false">
-                </teta-select>
+                <teta-input [label]="'charts.line_width' | transloco">
+                  <teta-select [options]="strokeWidth"
+                               [ngModel]="seriesItem.style?.strokeWidth ?? 1"
+                               [valueRef]="'id'"
+                               (ngModelChange)="setSeriesStrokeWidth(seriesItem, $event)"
+                               [allowNull]="false">
+                    <ng-template tetaSelectOption let-option>
+                      <div style="width: 50px;"
+                           [style.height.px]="option.id"
+                           [style.background-color]="seriesItem.color"></div>
+                    </ng-template>
+                    <ng-template tetaSelectValue let-value>
+                      <div style="width: 50px;"
+                           [style.height.px]="value?.id"
+                           [style.background-color]="seriesItem.color"></div>
+                    </ng-template>
+                  </teta-select>
+                </teta-input>
+                <teta-input [label]="'charts.line_style' | transloco">
+                  <teta-select [options]="strokeArray"
+                               [ngModel]="seriesItem.style?.strokeDasharray ?? ''"
+                               [valueRef]="'id'"
+                               (ngModelChange)="setSeriesStrokeDasharray(seriesItem, $event)"
+                               [allowNull]="false">
+                    <ng-template tetaSelectOption let-option>
+                      <div style="width: 50px;border:0;border-top: 2px;"
+                           [style.border-style]="option.value"
+                           [style.border-color]="seriesItem.color"></div>
+                    </ng-template>
+                    <ng-template tetaSelectValue let-value>
+                      <div style="width: 50px;border:0;border-top: 2px;"
+                           [style.border-style]="value?.value"
+                           [style.border-color]="seriesItem.color"></div>
+                    </ng-template>
+                  </teta-select>
+                </teta-input>
+                <teta-input [label]="'charts.chart_type' | transloco">
+                  <teta-select [options]="seriesType"
+                               [ngModel]="seriesItem.type ?? SeriesType.line"
+                               [valueRef]="'id'"
+                               [textRef]="'value'"
+                               (ngModelChange)="setSeriesType(seriesItem, $event)"
+                               [allowNull]="false">
+                  </teta-select>
+                </teta-input>
               </div>
             </ng-template>
           </teta-accordion-item>
         }
       </teta-accordion>
     </teta-scrollable>
-    <div class="row padding-3 justify-content-end">
+    <div class="row padding-3">
       <button teta-button
-              [square]="true"
-              [size]="TetaSize.S"
               [palette]="'red'"
+              [view]="'ghost'"
               (click)="clear()">
-        <teta-icon [name]="'delete'"></teta-icon>
+        <teta-icon [name]="'erase'"></teta-icon>
+        {{ 'charts.reset' | transloco }}
       </button>
     </div>
   </div>

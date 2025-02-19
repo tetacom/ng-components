@@ -1,8 +1,11 @@
-import { Preview } from '@storybook/angular';
+import { applicationConfig, Preview } from '@storybook/angular';
+import { provideTransloco } from '@jsverse/transloco';
+import { TranslocoHttpLoaderService } from './TranslocoHttpLoaderService';
+import { provideHttpClient } from '@angular/common/http';
 
 const preview: Preview = {
   parameters: {
-    actions: {argTypesRegex: "^on[A-Z].*"},
+    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -10,8 +13,24 @@ const preview: Preview = {
       },
     },
   },
-
-  tags: ["autodocs"]
+  decorators: [
+    applicationConfig({
+      providers: [
+        provideHttpClient(),
+        provideTransloco({
+          config: {
+            availableLangs: ['en'],
+            defaultLang: 'en',
+            fallbackLang: 'en',
+            reRenderOnLangChange: true,
+            prodMode: false,
+          },
+          loader: TranslocoHttpLoaderService,
+        }),
+      ],
+    }),
+  ],
+  tags: ['autodocs'],
 };
 
 export default preview;
