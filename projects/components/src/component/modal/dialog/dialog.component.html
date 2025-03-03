@@ -1,19 +1,31 @@
-<div class="padding-2 font-body-2">
-  {{ message | transloco }}
-</div>
+<h3 class="padding-2 font-title-2">
+  {{ title | transloco }}
+</h3>
+
+@if (text) {
+  <p class="padding-2 font-body-3">
+    {{ text | transloco }}
+  </p>
+}
+
 <teta-toolbar class="justify-content-end">
-  @if (showCancelButton) {
-    <button teta-button (click)="cancel()" [palette]="'text'" [view]="'ghost'">
-      {{ 'common.cancel' | transloco }}
+  @if (decline) {
+    <button teta-button (click)="cancel()" [palette]="decline?.palette || 'text'" [view]="'ghost'">
+      @if (decline?.icon) {
+        <teta-icon [name]="decline.icon"></teta-icon>
+      }
+      @if (decline.text) {
+        {{ decline.text | transloco }}
+      }
     </button>
   }
 
-  <button teta-button (click)="ok()" [square]="!buttonText?.length" [palette]="buttonPalette">
-    @if (buttonIcon) {
-      <teta-icon [name]="buttonIcon"></teta-icon>
+  <button teta-button (click)="ok()" [palette]="confirm?.palette || 'primary'">
+    @if (confirm?.icon) {
+      <teta-icon [name]="confirm.icon"></teta-icon>
     }
-    @if (buttonText?.length > 0) {
-      {{ buttonText | transloco }}
+    @if (confirm.text) {
+      {{ confirm.text | transloco }}
     }
   </button>
 </teta-toolbar>

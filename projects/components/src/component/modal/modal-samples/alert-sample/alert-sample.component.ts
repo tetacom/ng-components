@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DialogService } from '../../dialog.service';
 import { ButtonComponent } from '../../../button/button/button.component';
 import { IconSpriteDirective } from '../../../icon/icon-sprite.directive';
 
 @Component({
-    selector: 'teta-alert-sample',
-    templateUrl: './alert-sample.component.html',
-    styleUrls: ['./alert-sample.component.scss'],
-    imports: [IconSpriteDirective, ButtonComponent]
+  selector: 'teta-alert-sample',
+  templateUrl: './alert-sample.component.html',
+  styleUrls: ['./alert-sample.component.scss'],
+  imports: [IconSpriteDirective, ButtonComponent],
 })
-export class AlertSampleComponent implements OnInit {
+export class AlertSampleComponent {
   constructor(private _dialog: DialogService) {}
 
   alert() {
@@ -17,16 +17,21 @@ export class AlertSampleComponent implements OnInit {
   }
 
   dialog() {
-    this._dialog.confirm('Some alert text').subscribe((_) => {
+    this._dialog.confirm({ title: 'Some alert text' }).subscribe((_) => {
       alert(_.toString());
     });
   }
 
   dialog2() {
-    this._dialog.confirm('Some alert text', 'Edit', 'edit', 'red').subscribe((_) => {
-      alert(_.toString());
-    });
+    this._dialog
+      .confirm({
+        title: 'Some alert text',
+        text: 'Some description text',
+        confirm: { text: 'Edit', palette: 'red', icon: 'edit' },
+        decline: { text: 'Cancel', icon: 'closeBig' },
+      })
+      .subscribe((_) => {
+        alert(_.toString());
+      });
   }
-
-  ngOnInit(): void {}
 }

@@ -5,6 +5,7 @@ import { IModalResult } from './model/i-modal-result';
 import { DialogComponent } from './dialog/dialog.component';
 import { map } from 'rxjs/operators';
 import { ModalCloseReason } from './model/modal-close-reason.enum';
+import { DialogDataType } from './model/dialog-data';
 
 @Injectable({
   providedIn: 'root',
@@ -12,36 +13,26 @@ import { ModalCloseReason } from './model/modal-close-reason.enum';
 export class DialogService {
   constructor(private _modal: ModalService) {}
 
-  alert(message: string): void {
-    this.createDialog(message, 'common.ok', null, 'primary', false);
+  alert(title: string): void {
+    this.createDialog({ title, decline: null });
   }
 
-  confirm(
-    message: string,
-    buttonText: string = 'common.ok',
-    buttonIcon: string = null,
-    buttonPalette: string = 'primary',
-  ): Observable<boolean> {
-    return this.createDialog(message, buttonText, buttonIcon, buttonPalette, true).pipe(
+  confirm(confirmDialogData: DialogDataType): Observable<boolean> {
+    return this.createDialog(confirmDialogData).pipe(
       map((result: IModalResult) => result.reason === ModalCloseReason.resolve),
     );
   }
 
-  private createDialog(
-    message: string,
-    buttonText: string = 'common.ok',
-    buttonIcon: string = null,
-    buttonPalette: string = 'primary',
-    showCancelButton: boolean = true,
-  ): Observable<IModalResult> {
+  private createDialog(dialogData: DialogDataType): Observable<IModalResult> {
+    const { title, text, confirm, decline } = dialogData;
+
     const dialog = this._modal.create(
       DialogComponent,
       {
-        message,
-        buttonText,
-        buttonIcon,
-        buttonPalette,
-        showCancelButton,
+        title,
+        text,
+        confirm,
+        decline,
       },
       {
         esc: true,
