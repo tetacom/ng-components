@@ -17,14 +17,21 @@ export class AlertSampleComponent {
   }
 
   dialog() {
-    this._dialog.confirm('Some alert text').subscribe((_) => {
+    this._dialog.confirm({ title: 'Some alert text' }).subscribe((_) => {
       alert(_.toString());
     });
   }
 
   dialog2() {
-    this._dialog.confirm('Some alert text', 'Edit', 'edit', 'red', 'Cancel', 'closeBig').subscribe((_) => {
-      alert(_.toString());
-    });
+    this._dialog
+      .confirm({
+        title: 'Some alert text',
+        text: 'Some description text',
+        confirm: { text: 'Edit', palette: 'red', icon: 'edit' },
+        decline: { text: 'Cancel', icon: 'closeBig' },
+      })
+      .subscribe((_) => {
+        alert(_.toString());
+      });
   }
 }

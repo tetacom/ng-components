@@ -5,6 +5,7 @@ import { IModalResult } from './model/i-modal-result';
 import { DialogComponent } from './dialog/dialog.component';
 import { map } from 'rxjs/operators';
 import { ModalCloseReason } from './model/modal-close-reason.enum';
+import { DialogDataType } from './model/dialog-data';
 
 @Injectable({
   providedIn: 'root',
@@ -12,52 +13,26 @@ import { ModalCloseReason } from './model/modal-close-reason.enum';
 export class DialogService {
   constructor(private _modal: ModalService) {}
 
-  alert(message: string): void {
-    this.createDialog(message, 'common.ok', null, 'primary', false);
+  alert(title: string): void {
+    this.createDialog({ title, decline: null });
   }
 
-  confirm(
-    message: string,
-    buttonText = 'common.ok',
-    buttonIcon: string = null,
-    buttonPalette = 'primary',
-    cancelButtonText = 'common.cancel',
-    cancelButtonIcon: string = null,
-    cancelButtonPalette = 'text',
-  ): Observable<boolean> {
-    return this.createDialog(
-      message,
-      buttonText,
-      buttonIcon,
-      buttonPalette,
-      true,
-      cancelButtonText,
-      cancelButtonIcon,
-      cancelButtonPalette,
-    ).pipe(map((result: IModalResult) => result.reason === ModalCloseReason.resolve));
+  confirm(confirmDialogData: DialogDataType): Observable<boolean> {
+    return this.createDialog(confirmDialogData).pipe(
+      map((result: IModalResult) => result.reason === ModalCloseReason.resolve),
+    );
   }
 
-  private createDialog(
-    message: string,
-    buttonText = 'common.ok',
-    buttonIcon: string = null,
-    buttonPalette = 'primary',
-    showCancelButton = true,
-    cancelButtonText = 'common.cancel',
-    cancelButtonIcon: string = null,
-    cancelButtonPalette = 'text',
-  ): Observable<IModalResult> {
+  private createDialog(dialogData: DialogDataType): Observable<IModalResult> {
+    const { title, text, confirm, decline } = dialogData;
+
     const dialog = this._modal.create(
       DialogComponent,
       {
-        message,
-        buttonText,
-        buttonIcon,
-        buttonPalette,
-        showCancelButton,
-        cancelButtonText,
-        cancelButtonIcon,
-        cancelButtonPalette,
+        title,
+        text,
+        confirm,
+        decline,
       },
       {
         esc: true,
