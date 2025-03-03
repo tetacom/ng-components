@@ -58,6 +58,7 @@ export class OnlyNumberDirective {
       return;
     }
     this.validateValue(e.clipboardData.getData('text/plain'));
+    this._elementRef.nativeElement.dispatchEvent(new Event('input'));
     e.preventDefault();
   }
 
