@@ -3,8 +3,13 @@
 </div>
 <teta-toolbar class="justify-content-end">
   @if (showCancelButton) {
-    <button teta-button (click)="cancel()" [palette]="'text'" [view]="'ghost'">
-      {{ 'common.cancel' | transloco }}
+    <button teta-button (click)="cancel()" [palette]="cancelButtonPalette" [view]="'ghost'">
+      @if (cancelButtonIcon) {
+        <teta-icon [name]="cancelButtonIcon"></teta-icon>
+      }
+      @if (cancelButtonText?.length > 0) {
+        {{ cancelButtonText | transloco }}
+      }
     </button>
   }
 

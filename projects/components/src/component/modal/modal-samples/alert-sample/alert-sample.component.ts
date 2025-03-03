@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DialogService } from '../../dialog.service';
 import { ButtonComponent } from '../../../button/button/button.component';
 import { IconSpriteDirective } from '../../../icon/icon-sprite.directive';
 
 @Component({
-    selector: 'teta-alert-sample',
-    templateUrl: './alert-sample.component.html',
-    styleUrls: ['./alert-sample.component.scss'],
-    imports: [IconSpriteDirective, ButtonComponent]
+  selector: 'teta-alert-sample',
+  templateUrl: './alert-sample.component.html',
+  styleUrls: ['./alert-sample.component.scss'],
+  imports: [IconSpriteDirective, ButtonComponent],
 })
-export class AlertSampleComponent implements OnInit {
+export class AlertSampleComponent {
   constructor(private _dialog: DialogService) {}
 
   alert() {
@@ -23,10 +23,8 @@ export class AlertSampleComponent implements OnInit {
   }
 
   dialog2() {
-    this._dialog.confirm('Some alert text', 'Edit', 'edit', 'red').subscribe((_) => {
+    this._dialog.confirm('Some alert text', 'Edit', 'edit', 'red', 'Cancel', 'closeBig').subscribe((_) => {
       alert(_.toString());
     });
   }
-
-  ngOnInit(): void {}
 }

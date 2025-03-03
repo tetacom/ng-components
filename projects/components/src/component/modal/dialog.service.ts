@@ -18,21 +18,34 @@ export class DialogService {
 
   confirm(
     message: string,
-    buttonText: string = 'common.ok',
+    buttonText = 'common.ok',
     buttonIcon: string = null,
-    buttonPalette: string = 'primary',
+    buttonPalette = 'primary',
+    cancelButtonText = 'common.cancel',
+    cancelButtonIcon: string = null,
+    cancelButtonPalette = 'text',
   ): Observable<boolean> {
-    return this.createDialog(message, buttonText, buttonIcon, buttonPalette, true).pipe(
-      map((result: IModalResult) => result.reason === ModalCloseReason.resolve),
-    );
+    return this.createDialog(
+      message,
+      buttonText,
+      buttonIcon,
+      buttonPalette,
+      true,
+      cancelButtonText,
+      cancelButtonIcon,
+      cancelButtonPalette,
+    ).pipe(map((result: IModalResult) => result.reason === ModalCloseReason.resolve));
   }
 
   private createDialog(
     message: string,
-    buttonText: string = 'common.ok',
+    buttonText = 'common.ok',
     buttonIcon: string = null,
-    buttonPalette: string = 'primary',
-    showCancelButton: boolean = true,
+    buttonPalette = 'primary',
+    showCancelButton = true,
+    cancelButtonText = 'common.cancel',
+    cancelButtonIcon: string = null,
+    cancelButtonPalette = 'text',
   ): Observable<IModalResult> {
     const dialog = this._modal.create(
       DialogComponent,
@@ -42,6 +55,9 @@ export class DialogService {
         buttonIcon,
         buttonPalette,
         showCancelButton,
+        cancelButtonText,
+        cancelButtonIcon,
+        cancelButtonPalette,
       },
       {
         esc: true,
