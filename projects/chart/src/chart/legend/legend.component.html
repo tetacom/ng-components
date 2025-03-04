@@ -7,7 +7,7 @@
              [style.border-top-color]="seriesItem.visible ? seriesItem.color : 'var(--color-text-30)'"
              [style.border-top-style]="seriesItem.style?.strokeDasharray ? 'dashed' : 'solid'"
              [style.border-width.px]="seriesItem.style?.strokeDasharray ? 1 : 2"></div>
-        <div class="legend-label"
+        <div class="legend-label font-caption"
              style="user-select: none"
              [style.text-decoration]="seriesItem.visible ? 'none' : 'line-through'">
           {{ seriesItem.name }}

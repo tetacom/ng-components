@@ -70,6 +70,7 @@ export class SeriesControlsComponent {
 
   strokeWidth = [
     { id: 1, value: 1 },
+    { id: 1.5, value: 1.5 },
     { id: 2, value: 2 },
     { id: 3, value: 3 },
     { id: 4, value: 4 },
@@ -78,7 +79,7 @@ export class SeriesControlsComponent {
 
   strokeArray = [
     { id: '', value: 'solid' },
-    { id: '4, 8', value: 'dashed' },
+    { id: '4, 4', value: 'dashed' },
     { id: '2, 2', value: 'dotted' },
   ];
 

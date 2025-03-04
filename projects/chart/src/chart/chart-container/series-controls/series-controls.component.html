@@ -37,10 +37,13 @@
           <teta-accordion-item [viewType]="'rounded'" [divider]="true">
             <teta-accordion-head>
               <div class="row align-center gap-12">
-                <div class="row align-center" (click)="$event.stopPropagation()">
-                  <teta-checkbox [ngModel]="seriesItem.enabled"
-                                 (ngModelChange)="setSeriesEnabled(seriesItem, $event)"
-                                 [binary]="true"></teta-checkbox>
+                <div class="row align-center gap-8" (click)="$event.stopPropagation()">
+                  <teta-button (click)="setSeriesEnabled(seriesItem, false)"
+                               [palette]="'text'"
+                               [view]="'ghost'"
+                               [square]="true">
+                    <teta-icon [name]="'delete'" [palette]="'red'"></teta-icon>
+                  </teta-button>
                   <teta-color-input [ngModel]="seriesItem.color"
                                     (ngModelChange)="setSeriesColor(seriesItem, $event)"></teta-color-input>
                 </div>
