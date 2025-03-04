@@ -1,5 +1,6 @@
-<span [style.display]="edit ? 'none' : 'block'" class="cell-text" [class.cell-text_disabled]="!editable">
-  {{ getValue(control.value) }}
+<span [style.display]="edit ? 'none' : 'flex'" class="cell-text justify-content-between" [class.cell-text_disabled]="!editable">
+  <span class="row_auto overflow-hidden text-overflow-ellipsis">{{ getValue(control.value) }}</span>
+  <teta-icon [name]="'arrowDownSmall'" [palette]="'text'"></teta-icon>
 </span>
 @if (edit) {
   <teta-select

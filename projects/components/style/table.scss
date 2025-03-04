@@ -234,6 +234,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     user-select: none;
+    flex-grow: 1;
 
     &_numeric {
       text-align: right;

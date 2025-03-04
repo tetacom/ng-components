@@ -7,13 +7,14 @@ import { CellComponentBase } from '../../base/cell-component-base';
 import { ICellCoordinates } from '../../contract/i-cell-coordinates';
 import { TableService } from '../../service/table.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IconComponent } from '../../../icon/icon/icon.component';
 
 @Component({
-    selector: 'teta-list-cell',
-    templateUrl: './list-cell.component.html',
-    styleUrls: ['./list-cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [SelectComponent, FormsModule, ReactiveFormsModule]
+  selector: 'teta-list-cell',
+  templateUrl: './list-cell.component.html',
+  styleUrls: ['./list-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [SelectComponent, FormsModule, ReactiveFormsModule, IconComponent],
 })
 export class ListCellComponent<T> extends CellComponentBase<T> implements OnInit {
   get displayFilterOptions(): IIdName<any>[] {
