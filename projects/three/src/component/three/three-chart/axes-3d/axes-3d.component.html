@@ -2,34 +2,37 @@
   @for (tick of data.axes?.x; track tick) {
     <ngts-text
       [text]="tick.value + '-'"
-      [color]="'var(--color-text-90)'"
-      [rotation]="rotation"
-      [fontSize]="2.5"
-      [position]="[tick.position, -50, 50]"
-      [anchorX]="'right'"
-      [anchorY]="'middle'"
-      [textAlign]="'right'"
-    ></ngts-text>
+      [options]="{
+        color:'var(--color-text-90)',
+        rotation:rotation,
+        fontSize:2.5,
+        position:[tick.position, -50, 50],
+        anchorX:'right',
+        anchorY:'middle',
+        textAlign:'right',
+      }"></ngts-text>
   }
   @for (tick of data.axes?.y; track tick) {
     <ngts-text
       [text]="tick.value + '-'"
-      [color]="'var(--color-text-90)'"
-      [rotation]="rotation"
-      [fontSize]="2.5"
-      [position]="[0, tick.position, 50]"
-      [anchorX]="'right'"
-      [anchorY]="'middle'"
-      [textAlign]="'right'"
-    ></ngts-text>
+      [options]="{
+        color:'var(--color-text-90)',
+        rotation:rotation,
+        fontSize:2.5,
+        position:[0, tick.position, 50],
+        anchorX:'right',
+        anchorY:'middle',
+        textAlign:'right',
+      }"></ngts-text>
   }
   @for (tick of data.axes?.z; track tick) {
     <ngts-text
       [text]="tick.value"
-      [color]="'var(--color-text-90)'"
-      [rotation]="rotation"
-      [fontSize]="2.5"
-      [position]="[25, -50, tick.position]"
-    ></ngts-text>
+      [options]="{
+        color: 'var(--color-text-90)',
+        rotation: rotation,
+        fontSize: 2.5,
+        position: [25, -50, tick.position],
+      }"></ngts-text>
   }
 }
