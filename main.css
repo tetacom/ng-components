@@ -5888,6 +5888,7 @@ body {
   text-overflow: ellipsis;
   -webkit-user-select: none;
           user-select: none;
+  flex-grow: 1;
 }
 .cell-text_numeric {
   text-align: right;
