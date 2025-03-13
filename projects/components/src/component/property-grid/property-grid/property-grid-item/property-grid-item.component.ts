@@ -95,6 +95,9 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
   });
 
   hint = computed(() => {
+    if (this.column().hint === this.column().caption) {
+      return '';
+    }
     return `${this.column().hint || this.column().caption}${this.column().unit ? `, ${this.column().unit}` : ''}`;
   });
 
