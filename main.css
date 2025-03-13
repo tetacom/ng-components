@@ -3149,6 +3149,7 @@ a {
   color: var(--color-text-90);
   border: solid 1px var(--color-text-5);
   border-radius: 8px;
+  pointer-events: none;
 }
 .hint {
   border-radius: var(--radius-base-round);
