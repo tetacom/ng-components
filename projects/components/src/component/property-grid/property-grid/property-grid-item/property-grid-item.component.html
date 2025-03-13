@@ -1,61 +1,70 @@
 @if (editable() || !hideNonEditable()) {
-  <div [tetaHint]="hint()" [align]="align.left">
-    <teta-input [label]="caption()" [formGroup]="formGroup" [horizontal]="horizontal()" [required]="column().required">
-      @if (template()) {
-        <ng-container
-          *ngTemplateOutlet="template().template; context: { $implicit: formGroup?.get(column().name) }"
-        ></ng-container>
-      } @else {
-        @if (formGroup?.get(column().name)) {
-          @switch (column().filterType) {
-            @case (filterTypeEnum.list) {
-              <teta-select
-                class="row_auto"
-                [tetaDisableControl]="!editable()"
-                [searchRef]="getDict()?.length > 10 ? 'name' : ''"
-                [allowNull]="!column().required"
-                [appendToBody]="true"
-                [invalid]="controlIsInvalid(column().name)"
-                [formControlName]="column().name"
-                [options]="getDict()"
-                [valueRef]="'id'"
-                [textRef]="'name'"
-                [multiple]="false"
-              ></teta-select>
-            }
-            @case (filterTypeEnum.date) {
-              <teta-date-picker
-                class="row_auto"
-                [appendToBody]="true"
-                [tetaDisableControl]="!editable()"
-                [invalid]="controlIsInvalid(column().name)"
-                [formControlName]="column().name"
-              ></teta-date-picker>
-            }
-            @case (filterTypeEnum.boolean) {
-              <teta-toggle [tetaDisableControl]="!editable()" [formControlName]="column().name">
-                {{ column().caption }}
-              </teta-toggle>
-            }
-            @default {
-              <teta-text-field
-                class="row_auto"
-                [tetaDisableControl]="!editable()"
-                [decimalPart]="column().filterType === filterTypeEnum.number ? decimalPart() : null"
-                [onlyNumber]="column().filterType === filterTypeEnum.number"
-                [placeholder]="column().caption"
-                [invalid]="controlIsInvalid(column().name)"
-                [formControlName]="column().name"
-              ></teta-text-field>
-            }
+  <teta-input
+    [label]="caption()"
+    [hint]="hint()"
+    [formGroup]="formGroup"
+    [horizontal]="horizontal()"
+    [required]="column().required"
+  >
+    @if (template()) {
+      <ng-container
+        *ngTemplateOutlet="template().template; context: { $implicit: formGroup?.get(column().name) }"
+      ></ng-container>
+    } @else {
+      @if (formGroup?.get(column().name)) {
+        @switch (column().filterType) {
+          @case (filterTypeEnum.list) {
+            <teta-select
+              class="row_auto"
+              [tetaDisableControl]="!editable()"
+              [searchRef]="getDict()?.length > 10 ? 'name' : ''"
+              [allowNull]="!column().required"
+              [appendToBody]="true"
+              [invalid]="controlIsInvalid(column().name)"
+              [formControlName]="column().name"
+              [options]="getDict()"
+              [valueRef]="'id'"
+              [textRef]="'name'"
+              [multiple]="false"
+            ></teta-select>
+          }
+          @case (filterTypeEnum.date) {
+            <teta-date-picker
+              class="row_auto"
+              [appendToBody]="true"
+              [tetaDisableControl]="!editable()"
+              [invalid]="controlIsInvalid(column().name)"
+              [formControlName]="column().name"
+            ></teta-date-picker>
+          }
+          @case (filterTypeEnum.boolean) {
+            <teta-toggle
+              [tetaDisableControl]="!editable()"
+              [formControlName]="column().name"
+              [tetaHint]="hint()"
+              [align]="align.left"
+            >
+              {{ column().caption }}
+            </teta-toggle>
+          }
+          @default {
+            <teta-text-field
+              class="row_auto"
+              [tetaDisableControl]="!editable()"
+              [decimalPart]="column().filterType === filterTypeEnum.number ? decimalPart() : null"
+              [onlyNumber]="column().filterType === filterTypeEnum.number"
+              [placeholder]="column().caption"
+              [invalid]="controlIsInvalid(column().name)"
+              [formControlName]="column().name"
+            ></teta-text-field>
           }
         }
       }
-      @if (controlIsInvalid(column().name)) {
-        <div ngProjectAs="message" class="color-red-50">
-          {{ getError(column()) }}
-        </div>
-      }
-    </teta-input>
-  </div>
+    }
+    @if (controlIsInvalid(column().name)) {
+      <div ngProjectAs="message" class="color-red-50">
+        {{ getError(column()) }}
+      </div>
+    }
+  </teta-input>
 }

@@ -70,7 +70,14 @@ export class PropertyGridDemoComponent {
     new TableColumn({
       name: 'ram',
       caption: 'RAM',
+      hint: 'RAM hint',
       filterType: FilterType.list,
+    }),
+    new TableColumn({
+      name: 'bool',
+      caption: 'toggle',
+      hint: 'Toogle hint',
+      filterType: FilterType.boolean,
     }),
   ]);
 
