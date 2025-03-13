@@ -12,6 +12,8 @@
         [horizontal]="horizontal()"
         (controlValueChange)="onControlValueChange($event)"
         [hideNonEditable]="hideNonEditable()"
+        [tetaHint]="getHint(column)"
+        [align]="Align.left"
       ></teta-property-grid-item>
     }
     @if (column.columns?.length > 0 && (getEditable(column) || !hideNonEditable())) {

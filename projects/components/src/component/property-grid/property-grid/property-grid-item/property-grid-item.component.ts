@@ -30,22 +30,22 @@ import { InputComponent } from '../../../input/input/input.component';
 import { DisableControlDirective } from '../../../../directive/disable-control/disable-control.directive';
 
 @Component({
-    selector: 'teta-property-grid-item',
-    templateUrl: './property-grid-item.component.html',
-    styleUrls: ['./property-grid-item.component.scss'],
-    viewProviders: [FormsUtil.formProvider],
-    imports: [
-        InputComponent,
-        FormsModule,
-        ReactiveFormsModule,
-        NgTemplateOutlet,
-        SelectComponent,
-        DatePickerComponent,
-        ToggleComponent,
-        TextFieldComponent,
-        DisableControlDirective,
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'teta-property-grid-item',
+  templateUrl: './property-grid-item.component.html',
+  styleUrls: ['./property-grid-item.component.scss'],
+  viewProviders: [FormsUtil.formProvider],
+  imports: [
+    InputComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    NgTemplateOutlet,
+    SelectComponent,
+    DatePickerComponent,
+    ToggleComponent,
+    TextFieldComponent,
+    DisableControlDirective,
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
   private transloco = inject(TranslocoService);
@@ -91,13 +91,6 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
     }
     return `${this.column().caption}${this.column().unit ? `, ${this.column().unit}` : ''}`;
   });
-
-  hint = computed(() => {
-    if (this.column().filterType === FilterType.boolean) {
-      return '';
-    }
-    return `${this.column().hint || this.column().caption}${this.column().unit ? `, ${this.column().unit}` : ''}`;
-  })
 
   private _alive = true;
 

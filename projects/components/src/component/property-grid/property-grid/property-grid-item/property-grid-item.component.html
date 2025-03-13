@@ -1,11 +1,5 @@
 @if (editable() || !hideNonEditable()) {
-  <teta-input
-    [label]="caption()"
-    [hint]="hint()"
-    [formGroup]="formGroup"
-    [horizontal]="horizontal()"
-    [required]="column().required"
-  >
+  <teta-input [label]="caption()" [formGroup]="formGroup" [horizontal]="horizontal()" [required]="column().required">
     @if (template()) {
       <ng-container
         *ngTemplateOutlet="template().template; context: { $implicit: formGroup?.get(column().name) }"
