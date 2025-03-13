@@ -1,6 +1,7 @@
 @import 'util/shadow-util.scss';
 @import 'util/color-util.scss';
 @import 'presets/view-types.scss';
+
 .hint {
   box-shadow: var(--shadow-1);
   padding: 8px;
@@ -10,5 +11,6 @@
   color: var(--color-text-90);
   border: solid 1px var(--color-text-5);
   border-radius: 8px;
+  pointer-events: none;
   @include getView('base');
 }

@@ -38,7 +38,12 @@
             ></teta-date-picker>
           }
           @case (filterTypeEnum.boolean) {
-            <teta-toggle [tetaDisableControl]="!editable()" [formControlName]="column().name">
+            <teta-toggle
+              [tetaDisableControl]="!editable()"
+              [formControlName]="column().name"
+              [tetaHint]="hint()"
+              [align]="align.left"
+            >
               {{ column().caption }}
             </teta-toggle>
           }
