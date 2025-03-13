@@ -28,6 +28,7 @@ import { SelectComponent } from '../../../select/select/select.component';
 import { NgTemplateOutlet } from '@angular/common';
 import { InputComponent } from '../../../input/input/input.component';
 import { DisableControlDirective } from '../../../../directive/disable-control/disable-control.directive';
+import { HintDirective } from '../../../../directive/hint/hint.directive';
 
 @Component({
   selector: 'teta-property-grid-item',
@@ -44,6 +45,7 @@ import { DisableControlDirective } from '../../../../directive/disable-control/d
     ToggleComponent,
     TextFieldComponent,
     DisableControlDirective,
+    HintDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -90,6 +92,10 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
       return '';
     }
     return `${this.column().caption}${this.column().unit ? `, ${this.column().unit}` : ''}`;
+  });
+
+  hint = computed(() => {
+    return `${this.column().hint || this.column().caption}${this.column().unit ? `, ${this.column().unit}` : ''}`;
   });
 
   private _alive = true;

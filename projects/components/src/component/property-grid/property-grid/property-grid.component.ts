@@ -26,15 +26,13 @@ import { PropertyGridItemDescriptionDirective } from './property-grid-item-descr
 import { PropertyGridGroupComponent } from './property-grid-group/property-grid-group.component';
 import { PropertyGridItemComponent } from './property-grid-item/property-grid-item.component';
 import { ArrayUtil } from '../../../common/util/array-util';
-import { HintDirective } from '../../../directive/hint/hint.directive';
-import { Align } from '../../../common/enum/align.enum';
 
 @Component({
   selector: 'teta-property-grid',
   templateUrl: './property-grid.component.html',
   styleUrls: ['./property-grid.component.scss'],
   viewProviders: [FormsUtil.formProvider],
-  imports: [PropertyGridItemComponent, FormsModule, ReactiveFormsModule, PropertyGridGroupComponent, HintDirective],
+  imports: [PropertyGridItemComponent, FormsModule, ReactiveFormsModule, PropertyGridGroupComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PropertyGridComponent<T> {
@@ -95,13 +93,6 @@ export class PropertyGridComponent<T> {
     });
   }
 
-  getHint(column: TableColumn) {
-    if (column.hint === column.caption) {
-      return '';
-    }
-    return `${column.hint || column.caption}${column.unit ? `, ${column.unit}` : ''}`;
-  }
-
   onControlValueChange(event: IIdName<any>) {
     const affected = this.columns().filter((_) => _.parentName === event.name);
     if (affected?.length) {
@@ -123,6 +114,4 @@ export class PropertyGridComponent<T> {
   private getDictValue(value: any, name: string) {
     return this.dict()[name]?.find((_) => _.id === value);
   }
-
-  protected readonly Align = Align;
 }
