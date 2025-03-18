@@ -48,6 +48,9 @@ export class TestChartComponent {
       tooltip: {
         tracking: TooltipTracking.y,
       },
+      controls: {
+        enable: true,
+      },
       xAxis: [
         {
           title: 'x',
