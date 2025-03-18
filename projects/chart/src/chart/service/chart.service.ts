@@ -130,6 +130,8 @@ export class ChartService {
 
   public setTooltip(tooltip: IDisplayTooltip) {
     const currentTooltips = this.tooltips$.value;
+    const key = [...currentTooltips.keys()].find((_) => _.id === tooltip.series.id);
+    currentTooltips.delete(key);
     if (!tooltip.point) {
       currentTooltips.delete(tooltip.series);
     } else {
