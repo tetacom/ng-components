@@ -61,6 +61,13 @@ export class Chart3dService {
     const ZMinMaxVal: [number, number] = [Math.min(...zArr), Math.max(...zArr)];
     const XMinMaxVal: [number, number] = [Math.min(...xArr), Math.max(...xArr)];
     const YMinMaxVal: [number, number] = [Math.min(...yArr), Math.max(...yArr)];
+    const zDelta = ZMinMaxVal[1] - ZMinMaxVal[0];
+    const xDelta = XMinMaxVal[1] - XMinMaxVal[0];
+    const yDelta = YMinMaxVal[1] - YMinMaxVal[0];
+    const maxDelta = Math.max(zDelta, xDelta, yDelta);
+    ZMinMaxVal[1] = ZMinMaxVal[0] + maxDelta;
+    XMinMaxVal[1] = XMinMaxVal[0] + maxDelta;
+    YMinMaxVal[1] = YMinMaxVal[0] + maxDelta;
     return {
       z: this.getMinMaxRange(ZMinMaxVal, data.zAxis?.min, data.zAxis?.max),
       x: this.getMinMaxRange(XMinMaxVal, data.xAxis?.min, data.xAxis?.max),
