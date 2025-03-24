@@ -35,7 +35,7 @@
       <teta-accordion>
         @for (seriesItem of enabledSeries(); track seriesItem.id) {
           <teta-accordion-item [viewType]="'rounded'" [divider]="true">
-            <teta-accordion-head>
+            <teta-accordion-head style="padding: 2px 8px">
               <div class="row align-center gap-12">
                 <div class="row align-center gap-8" (click)="$event.stopPropagation()">
                   <teta-button (click)="setSeriesEnabled(seriesItem, false)"
