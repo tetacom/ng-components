@@ -6,7 +6,6 @@ import {
   AccordionItemComponent,
   Align,
   ButtonComponent,
-  CheckboxComponent,
   ColorInputComponent,
   DropdownComponent,
   DropdownContentDirective,
@@ -40,7 +39,6 @@ import { TranslocoPipe } from '@jsverse/transloco';
     AccordionHeadComponent,
     AccordionItemComponent,
     AccordionContentDirective,
-    CheckboxComponent,
     ColorInputComponent,
     FormsModule,
     SelectComponent,
@@ -60,12 +58,16 @@ export class SeriesControlsComponent {
 
   series = input<Series<BasePoint>[]>();
 
+  availableSeries = computed(() => {
+    return this.series()?.filter((item) => item.showInControls !== false && item.type !== SeriesType.custom) ?? [];
+  });
+
   enabledSeries = computed(() => {
-    return this.series()?.filter((item) => item.enabled) ?? [];
+    return this.availableSeries()?.filter((item) => item.enabled) ?? [];
   });
 
   disabledSeries = computed(() => {
-    return this.series()?.filter((item) => !item.enabled) ?? [];
+    return this.availableSeries()?.filter((item) => !item.enabled) ?? [];
   });
 
   strokeWidth = [
