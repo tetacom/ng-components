@@ -84,10 +84,6 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit {
     combineLatest([this.scaleService.scales, this.zoomService.zoomed]).pipe(takeWhile(() => this.alive)).subscribe((data) => {
 
       const [scales, zoomed] = data;
-
-      console.log(zoomed.domain);
-
-
       if (
         this._element &&
         this.elementRef !== zoomed?.element &&
