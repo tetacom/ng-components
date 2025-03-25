@@ -21,6 +21,7 @@ export interface Series<T extends BasePoint> {
   fillType?: FillType;
   fillDirection?: FillDirection;
   showInLegend?: boolean;
+  showInControls?: boolean;
   style?: SvgAttributes;
   clipPointsDirection?: ClipPointsDirection;
 }

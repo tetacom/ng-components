@@ -5,4 +5,5 @@ export enum SeriesType {
   scatter,
   block,
   blockArea,
+  custom,
 }
