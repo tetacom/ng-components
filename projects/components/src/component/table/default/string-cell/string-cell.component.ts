@@ -6,13 +6,15 @@ import { ICellCoordinates } from '../../contract/i-cell-coordinates';
 import { TableService } from '../../service/table.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HintDirective } from '../../../../directive/hint/hint.directive';
+import { FormsUtil } from '../../../../util/forms-util';
 
 @Component({
-    selector: 'teta-string-cell',
-    templateUrl: './string-cell.component.html',
-    styleUrls: ['./string-cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [HintDirective, FormsModule, ReactiveFormsModule]
+  selector: 'teta-string-cell',
+  templateUrl: './string-cell.component.html',
+  styleUrls: ['./string-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [FormsUtil.formProvider],
+  imports: [HintDirective, FormsModule, ReactiveFormsModule],
 })
 export class StringCellComponent<T> extends CellComponentBase<T> implements OnInit {
   align = Align;
