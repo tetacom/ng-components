@@ -42,11 +42,27 @@ export class ScaleService {
         const xAxisMap = new Map<number, Axis>();
         const yAxisMap = new Map<number, Axis>();
 
-        config.yAxis.map((_, index) => {
+        config.yAxis.map((axis, index) => {
+          if (
+            axis.visible &&
+            config.series.some((serie) => serie.yAxisIndex === index && serie.enabled && serie.data?.length > 0)
+          ) {
+            axis.visible = true;
+          } else {
+            axis.visible = false;
+          }
           yAxisMap.set(index, Axis.createAxis(AxisOrientation.y, config, index));
         });
 
-        config.xAxis.map((_, index) => {
+        config.xAxis.map((axis, index) => {
+          if (
+            axis.visible &&
+            config.series.some((serie) => serie.xAxisIndex === index && serie.enabled && serie.data?.length > 0)
+          ) {
+            axis.visible = true;
+          } else {
+            axis.visible = false;
+          }
           xAxisMap.set(index, Axis.createAxis(AxisOrientation.x, config, index));
         });
 
