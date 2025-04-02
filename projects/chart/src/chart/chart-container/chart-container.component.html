@@ -4,8 +4,7 @@
   scales: scales | async,
   plotBands: plotBands | async,
   visibleRect: visibleRect | async,
-};
-  as data) {
+}; as data) {
   @if (data.config?.tooltip?.enable) {
     <teta-tooltip [size]="data.size" [config]="data.config"></teta-tooltip>
   }
