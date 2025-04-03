@@ -56,7 +56,7 @@ export default {
   args: {
     viewType: 'rounded',
     verticalAlign: 'VerticalAlign.auto',
-    align: 'Align.auto',
+    align: 'Align.minWidth',
     allowNull: true,
     autoClose: true,
     virtual: false,
@@ -79,6 +79,7 @@ const getOptions = (size) => {
   return res;
 };
 const alignMap = new Map<string, Align>()
+  .set('Align.minWidth', Align.minWidth)
   .set('Align.left', Align.left)
   .set('Align.auto', Align.auto)
   .set('Align.center', Align.center)
@@ -112,7 +113,7 @@ export const singleSelect = (args) => ({
                   [verticalAlign]="valignMap.get(verticalAlign)"
 
                   [textRef]="'name'"
-                  [virtual]="virtual"
+                  [virtual]="true"
                   [valueRef]="'id'"
                   [autoClose]="autoClose"
                   [autoCloseIgnore]="autoCloseIgnore"
