@@ -19,13 +19,13 @@ import IconStories from '../src/component/icon/Icon.stories';
 - Кнопки
 - Инпуты
 - Селекты
-- Аккордеонах и т.п.
+- Аккордеоны и т.п.
 
 ### Как использовать
 
-Для создание иконки используется `teta-icon` и аттрибут `name` для указания названия иконки.
+Для создания иконки используется `teta-icon` и аттрибут `name` для указания названия иконки.
 
-Для того, чтобы инконки загрузились в проект, необходимо в родительском компоненте или в корневом элементе добавить
+Для того чтобы инконки загрузились в проект, необходимо в родительском компоненте или в корневом элементе добавить
 директиву `tetaIconSprite` с указанием пакета с нужными иконками.
 
 На данный момент есть следующие пакеты с иконками:
@@ -46,47 +46,8 @@ import IconStories from '../src/component/icon/Icon.stories';
 
 ### Свойства
 
-<table>
-  <thead>
-    <tr>
-      <th>Свойство</th>
-      <th>Tип</th>
-      <th>Описание</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="text-align-center">
-        <p>name</p>
-      </td>
-      <td class="text-align-center">
-        <code>string</code>
-      </td>
-      <td class="text-align-center">
-        <p>Название иконки</p>
-      </td>
-    </tr>
-    <tr>
-      <td class="text-align-center">
-        <p>size</p>
-      </td>
-      <td class="text-align-center">
-        <code>TetaSize</code>
-      </td>
-      <td class="text-align-center">
-        <p>Размер иконки</p>
-      </td>
-    </tr>
-    <tr>
-      <td class="text-align-center">
-        <p>palette</p>
-      </td>
-      <td class="text-align-center">
-        <code>string</code>
-      </td>
-      <td class="text-align-center">
-        <p>Принимает название палитры и окращивает в 50-й оттенок этой палитры</p>
-      </td>
-    </tr>
-  </tbody>
-</table>
+| Свойство | Тип        | Описание                                                            |
+| -------- | ---------- | ------------------------------------------------------------------- |
+| name     | `string`   | Название иконки                                                     |
+| size     | `TetaSize` | Размер иконки                                                       |
+| palette  | `string`   | Принимает название палитры и окрашивает в 50-й оттенок этой палитры |
