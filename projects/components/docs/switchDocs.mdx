@@ -3,114 +3,45 @@ import SwitchStories from '../src/component/switch/Switch.stories';
 
 <Meta of={SwitchStories} />
 
-<div class="column gap-24">
-  <h1>Switch</h1>
-  <div class="column">
-    <p>
-      Switch — компонент, которые совмещает в себе несколько элементов навигации по странице. Занимает много места, но
-      упрощает переходы по разделам.
-    </p>
-  </div>
-  <h3>Правила применения</h3>
-  <div class="column">
-    <p>Основные правила применения этого элемента:</p>
-    <ul>
-      <li>Не использовать более восьми кнопок в группе выбора.</li>
-      <li>Не использовать для навигации верхнего уровня в шапке сайта.</li>
-      <li>Согласовывать текст на кнопках с заголовком (если есть).</li>
-    </ul>
-  </div>
-  <h3>Как использовать</h3>
-  <div class="column">
-    <p>
-      В данной библиотеке этот компонент называется <code>teta-switch</code>. Для управления состоянием используется{' '}
-      <code>ngModel</code>.
-    </p>
-    <p>
-      Внутрь <code>teta-switch</code> необходимо передать специальные кнопки <code>teta-switch-button</code>, у которых
-      есть свойство <code>value</code> являющееся идентификатором для их выбора
-    </p>
-  </div>
-  <h3>Пример кода</h3>
-  <p>
-    <pre>
-      <code>
-        &lt;teta-switch [(ngModel)]="selected"&gt; &nbsp;&nbsp;&lt;teta-switch-button value="1"&gt; &nbsp;&nbsp;&nbsp;1
-        &nbsp;&nbsp;&lt;/teta-switch-button&gt; &nbsp;&nbsp;&lt;teta-switch-button value="2"&gt; &nbsp;&nbsp;&nbsp;2
-        &nbsp;&nbsp;&lt;/teta-switch-button&gt; &lt;/teta-switch&gt;
-      </code>
-    </pre>
-  </p>
-  <h3>Свойства</h3>
-  <h4>teta-switch</h4>
-  <table>
-    <thead>
-      <tr>
-        <th>Свойство</th>
-        <th>Tип</th>
-        <th>Описание</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="text-align-center">
-          <p>viewType</p>
-        </td>
-        <td class="text-align-center">
-          <code>'rounded'|'circle'|'brick'</code>
-        </td>
-        <td class="text-align-center">
-          <p>Свойство округления компонента.</p>
-        </td>
-      </tr>
-      <tr>
-        <td class="text-align-center">
-          <p>disabled</p>
-        </td>
-        <td class="text-align-center">
-          <code>boolean</code>
-        </td>
-        <td class="text-align-center">
-          <p>Отключает реакцию компонента на клик пользователя</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <h4>teta-switch-button</h4>
-  <table>
-    <thead>
-      <tr>
-        <th>Свойство</th>
-        <th>Tип</th>
-        <th>Описание</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="text-align-center">
-          <p>size</p>
-        </td>
-        <td class="text-align-center">
-          <code>'m' |'l'</code>
-        </td>
-        <td class="text-align-center">
-          <p>Размер кнопки</p>
-        </td>
-      </tr>
-      <tr>
-        <td class="text-align-center">
-          <p>palette</p>
-        </td>
-        <td class="text-align-center">
-          <code>string</code>
-        </td>
-        <td class="text-align-center">
-          <p>
-            Отвечает за цвет фона кнопки. Принимает в себя название палитры и указывает 50-й оттенок (Пример: вводим
-            yellow- цвет будет color-yellow-50)."
-          </p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+# Switch
+
+Switch — компонент, которые совмещает в себе несколько элементов навигации по странице. Занимает много места, но упрощает переходы по разделам.
+
+### Правила применения
+
+Основные правила применения этого элемента:
+
+- Не использовать более восьми кнопок в группе выбора.
+- Не использовать для навигации верхнего уровня в шапке сайта.
+- Согласовывать текст на кнопках с заголовком (если есть).
+
+### Как использовать
+
+В данной библиотеке этот компонент называется `teta-switch`. Для управления состоянием используется `ngModel`.
+
+Внутрь `teta-switch` необходимо передать специальные кнопки `teta-switch-button`, у которых есть свойство `value` являющееся идентификатором для их выбора
+
+### Пример кода
+
+```
+<teta-switch [(ngModel)]="selected">
+  <teta-switch-button value="1">1</teta-switch-button>
+  <teta-switch-button value="2">2</teta-switch-button>
+</teta-switch>
+```
+
+### Свойства
+
+#### teta-switch
+
+| Свойство | Тип                            | Описание                                          |
+| -------- | ------------------------------ | ------------------------------------------------- |
+| viewType | `'rounded'\|'circle'\|'brick'` | Свойство округления компонента.                   |
+| disabled | `boolean`                      | Отключает реакцию компонента на клик пользователя |
+
+#### teta-switch-button
+
+| Свойство | Тип          | Описание                                                                                                                                      |
+| -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| size     | `'m' \| 'l'` | Размер кнопки                                                                                                                                 |
+| palette  | `string`     | Отвечает за цвет фона кнопки. Принимает в себя название палитры и указывает 50-й оттенок (Пример: вводим yellow- цвет будет color-yellow-50). |

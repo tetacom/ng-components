@@ -39,16 +39,16 @@ import AccordionStories from '../src/component/accordion/Accordion.stories';
 ```
 <teta-accordion>
   <teta-accordion-item [viewType]="'rounded'" [divider]="true">
-   <teta-accordion-head>Heading 1</teta-accordion-head>
-   <ng-template tetaAccordionContent>
-    <div class="padding-v-3 padding-h-2">I am the content 1</div>
-   </ng-template>
+    <teta-accordion-head>Heading 1</teta-accordion-head>
+    <ng-template tetaAccordionContent>
+      <div class="padding-v-3 padding-h-2">I am the content 1</div>
+    </ng-template>
   </teta-accordion-item>
   <teta-accordion-item [viewType]="'brick'">
-   <teta-accordion-head>Heading 3</teta-accordion-head>
-   <ng-template tetaAccordionContent>
-    <div class="padding-v-3 padding-h-5">I am the content 3</div>
-   </ng-template>
+    <teta-accordion-head>Heading 3</teta-accordion-head>
+    <ng-template tetaAccordionContent>
+      <div class="padding-v-3 padding-h-5">I am the content 3</div>
+    </ng-template>
   </teta-accordion-item>
 </teta-accordion>
 ```
@@ -57,83 +57,15 @@ import AccordionStories from '../src/component/accordion/Accordion.stories';
 
 #### teta-accordion-item
 
-<table>
-  <thead>
-    <tr>
-      <th>Свойство</th>
-      <th>Tип</th>
-      <th>Описание</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="text-align-center">
-        <p>open</p>
-      </td>
-      <td class="text-align-center">
-        <code>boolean</code>
-      </td>
-      <td class="text-align-center">
-        <p>Свойство позволяющее управлять состоянием аккордеона</p>
-      </td>
-    </tr>
-    <tr>
-      <td class="text-align-center">
-        <p>disabled</p>
-      </td>
-      <td class="text-align-center">
-        <code>boolean</code>
-      </td>
-      <td class="text-align-center">
-        <p>Свойство для отключения аккордеона</p>
-      </td>
-    </tr>
-    <tr>
-      <td class="text-align-center">
-        <p>viewType</p>
-      </td>
-      <td class="text-align-center">
-        <code>'rounded'|'circle'|'brick'</code>
-      </td>
-      <td class="text-align-center">
-        <p>Свойство округления компонента.</p>
-      </td>
-    </tr>
-    <tr>
-      <td class="text-align-center">
-        <p>divider</p>
-      </td>
-      <td class="text-align-center">
-        <code>boolean</code>
-      </td>
-      <td class="text-align-center">
-        <p>Разделители между айтемами</p>
-      </td>
-    </tr>
-  </tbody>
-</table>
+| Свойство   | Тип                                | Описание                                               |
+| ---------- | ---------------------------------- | ------------------------------------------------------ |
+| `open`     | `boolean`                          | Свойство, позволяющее управлять состоянием аккордеона. |
+| `disabled` | `boolean`                          | Свойство для отключения аккордеона.                    |
+| `viewType` | `'rounded' \| 'circle' \| 'brick'` | Свойство округления компонента.                        |
+| `divider`  | `boolean`                          | Разделители между айтемами.                            |
 
 #### teta-accordion-head
 
-<table>
-  <thead>
-    <tr>
-      <th>Свойство</th>
-      <th>Tип</th>
-      <th>Описание</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="text-align-center">
-        <p>showToggle</p>
-      </td>
-      <td class="text-align-center">
-        <code>boolean</code>
-      </td>
-      <td class="text-align-center">
-        <p>Свойство для отображения состояния аккордеона</p>
-      </td>
-    </tr>
-  </tbody>
-</table>
+| Свойство   | Тип       | Описание                                      |
+| ---------- | --------- | --------------------------------------------- |
+| showToggle | `boolean` | Свойство для отображения состояния аккордеона |
