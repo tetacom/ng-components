@@ -36,34 +36,37 @@ export class ScaleService {
     private zoomService: ZoomService,
   ) {
     this.scales = combineLatest([this.chartService.size, this.chartService.config, this.zoomService.zoomed]).pipe(
-      map((data: [DOMRectReadOnly, IChartConfig, ZoomMessage]) => {
-        const [size, config, zoom] = data;
-
+      map(([size, config, zoom]) => {
+        config = { ...config };
+        config.xAxis = config.xAxis.map((_) => ({ ..._ }));
+        config.yAxis = config.yAxis.map((_) => ({ ..._ }));
         const xAxisMap = new Map<number, Axis>();
         const yAxisMap = new Map<number, Axis>();
 
-        config.yAxis.map((axis, index) => {
+        config.yAxis.forEach((axis, index) => {
+          const newAxis = Axis.createAxis(AxisOrientation.y, config, index);
           if (
-            axis.visible &&
+            newAxis.options.visible &&
             config.series.some((serie) => serie.yAxisIndex === index && serie.enabled && serie.data?.length > 0)
           ) {
-            axis.visible = true;
+            newAxis.options.visible = true;
           } else {
-            axis.visible = false;
+            newAxis.options.visible = false;
           }
-          yAxisMap.set(index, Axis.createAxis(AxisOrientation.y, config, index));
+          yAxisMap.set(index, newAxis);
         });
 
-        config.xAxis.map((axis, index) => {
+        config.xAxis.forEach((axis, index) => {
+          const newAxis = Axis.createAxis(AxisOrientation.x, config, index);
           if (
-            axis.visible &&
+            newAxis.options.visible &&
             config.series.some((serie) => serie.xAxisIndex === index && serie.enabled && serie.data?.length > 0)
           ) {
-            axis.visible = true;
+            newAxis.options.visible = true;
           } else {
-            axis.visible = false;
+            newAxis.options.visible = false;
           }
-          xAxisMap.set(index, Axis.createAxis(AxisOrientation.x, config, index));
+          xAxisMap.set(index, newAxis);
         });
 
         // Generate x scales
