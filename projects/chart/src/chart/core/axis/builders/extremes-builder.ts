@@ -22,7 +22,10 @@ export class ExtremesBuilder implements IBuilder<Axis, number[] | string[]> {
     if (!hasMin || !hasMax) {
       const linkedSeries = settings.linkedSeries();
       const data = linkedSeries.reduce((acc: BasePoint[], current) => {
-        return acc.concat(current.data);
+        if (current.visible && current.enabled) {
+          return acc.concat(current.data);
+        }
+        return acc;
       }, []);
       const accessor = this.extentAccessorMap.get(settings.orientation);
 
@@ -45,7 +48,6 @@ export class ExtremesBuilder implements IBuilder<Axis, number[] | string[]> {
         extremes[0] = 0;
         extremes[1] = extremes[1] * 2;
       } else {
-        extremes[0] = extremes[0] - 1;
         extremes[1] = extremes[1] + 1;
       }
     }
