@@ -47,7 +47,9 @@ export class ScaleService {
           const newAxis = Axis.createAxis(AxisOrientation.y, config, index);
           if (
             newAxis.options.visible &&
-            config.series.some((serie) => serie.yAxisIndex === index && serie.enabled && serie.data?.length > 0)
+            config.series.some(
+              (serie) => serie.yAxisIndex === index && serie.visible && serie.enabled && serie.data?.length > 0,
+            )
           ) {
             newAxis.options.visible = true;
           } else {
