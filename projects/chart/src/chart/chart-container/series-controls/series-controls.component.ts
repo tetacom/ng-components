@@ -26,6 +26,7 @@ import { LineSeriesComponent } from '../series/line/line-series.component';
 import { SeriesType } from '../../model/enum/series-type';
 import { defaultSeriesTypeMapping } from '../../default/defaultSeriesTypeMapping';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { FillType } from '../../model/enum/fill-type';
 
 @Component({
   selector: 'teta-series-controls',
@@ -94,6 +95,11 @@ export class SeriesControlsComponent {
     { id: SeriesType.bar, value: 'Bar' },
   ];
 
+  fillType = [
+    { id: FillType.default, value: 'Default' },
+    { id: FillType.gradient, value: 'Gradient' },
+  ];
+
   setSeriesEnabled(series: Series<BasePoint>, value: boolean) {
     series.enabled = value;
     this.chartService.updateSeries(series);
@@ -123,6 +129,14 @@ export class SeriesControlsComponent {
   setSeriesType(series: Series<BasePoint>, value: SeriesType) {
     series.type = value;
     series.component = defaultSeriesTypeMapping.get(series.type) || LineSeriesComponent;
+    if (value === SeriesType.area || value === SeriesType.blockArea || value === SeriesType.block) {
+      series.fillType = FillType.gradient;
+    }
+    this.chartService.updateSeries(series);
+  }
+
+  setSeriesFillType(series: Series<BasePoint>, value: FillType) {
+    series.fillType = value;
     this.chartService.updateSeries(series);
   }
 
@@ -132,4 +146,5 @@ export class SeriesControlsComponent {
 
   protected readonly TetaSize = TetaSize;
   protected readonly SeriesType = SeriesType;
+  protected readonly FillType = FillType;
 }

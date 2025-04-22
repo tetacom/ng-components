@@ -97,6 +97,17 @@
                                [allowNull]="false">
                   </teta-select>
                 </teta-input>
+                @if (seriesItem.type === SeriesType.area || seriesItem.type === SeriesType.blockArea || seriesItem.type === SeriesType.block) {
+                  <teta-input [label]="'charts.fill_type' | transloco">
+                    <teta-select [options]="fillType"
+                                 [ngModel]="seriesItem.fillType ?? FillType.default"
+                                 [valueRef]="'id'"
+                                 [textRef]="'value'"
+                                 (ngModelChange)="setSeriesFillType(seriesItem, $event)"
+                                 [allowNull]="false">
+                    </teta-select>
+                  </teta-input>
+                }
               </div>
             </ng-template>
           </teta-accordion-item>
