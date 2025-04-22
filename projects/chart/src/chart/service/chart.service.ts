@@ -212,6 +212,7 @@ export class ChartService {
         enabled: _.enabled,
         color: _.color,
         type: _.type,
+        fillType: _.fillType,
         strokeDasharray: _.style?.strokeDasharray,
         strokeWidth: _.style?.strokeWidth,
       };
@@ -231,7 +232,14 @@ export class ChartService {
           serie.visible = found.visible ?? serie.visible;
           serie.enabled = found.enabled ?? serie.enabled;
           serie.color = found.color ?? serie.color;
-          serie.type = parseInt(found.type, 10) ?? serie.type;
+          const type = parseInt(found.type, 10);
+          if (type !== null && type !== undefined && !isNaN(type)) {
+            serie.type = type;
+          }
+          const fillType = parseInt(found.fillType, 10);
+          if (fillType !== null && fillType !== undefined && !isNaN(fillType)) {
+            serie.fillType = fillType;
+          }
           if (!serie.style) {
             serie.style = {};
           }
