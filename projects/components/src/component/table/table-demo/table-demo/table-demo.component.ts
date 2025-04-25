@@ -1,5 +1,8 @@
 import { Component, HostListener, Input, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import * as faker from 'faker';
+import { JsonPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { TableColumn } from '../../contract/table-column';
 import { FilterType } from '../../../filter/enum/filter-type.enum';
 import { IDictionary } from '../../../../common/contract/i-dictionary';
@@ -8,19 +11,16 @@ import { EditType } from '../../enum/edit-type.enum';
 import { SelectType } from '../../enum/select-type.enum';
 import { EditEvent } from '../../enum/edit-event.enum';
 import { TableService } from '../../service/table.service';
-import { ICellInstance } from '../../contract/i-cell-instance';
-import { JsonPipe } from '@angular/common';
 import { TableComponent } from '../../table/table.component';
 import { IconComponent } from '../../../icon/icon/icon.component';
 import { ButtonComponent } from '../../../button/button/button.component';
 import { ToolbarComponent } from '../../../toolbar/toolbar/toolbar.component';
-import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'teta-table-demo',
-    templateUrl: './table-demo.component.html',
-    styleUrls: ['./table-demo.component.scss'],
-    imports: [ToolbarComponent, ButtonComponent, IconComponent, TableComponent, JsonPipe, FormsModule]
+  selector: 'teta-table-demo',
+  templateUrl: './table-demo.component.html',
+  styleUrls: ['./table-demo.component.scss'],
+  imports: [ToolbarComponent, ButtonComponent, IconComponent, TableComponent, JsonPipe, FormsModule],
 })
 export class TableDemoComponent implements OnInit {
   rowHeight = signal<number>(28);
@@ -103,10 +103,12 @@ export class TableDemoComponent implements OnInit {
         name: 'value',
         locked: true,
         filterType: FilterType.number,
+        fillPercentage: true,
       }),
       new TableColumn({
         name: 'summary',
         filterType: FilterType.number,
+        fillPercentage: true,
       }),
       new TableColumn({
         name: 'ram',
@@ -166,7 +168,7 @@ export class TableDemoComponent implements OnInit {
     return res;
   };
 
-  cellEditStart(event: ICellInstance<any>) {
+  cellEditStart() {
     //
   }
 
@@ -229,11 +231,11 @@ export class TableDemoComponent implements OnInit {
     );
   }
 
-  rowEditable(row: any) {
-    return row.editable;
+  rowEditable(row: any): boolean {
+    return row?.editable ?? false;
   }
 
   rowClass(row: any) {
-    return row.editable ? '' : 'table-row_disabled';
+    return row?.editable ? '' : 'table-row_disabled';
   }
 }
