@@ -130,7 +130,7 @@ export class TableColumn extends FilterItem {
    */
   required: boolean;
   /**
-   * Показывать диашоамму в процентах от максимума столбца для ячейки с числом
+   * Показывать диаграмму в процентах от максимума столбца для ячейки с числом
    */
   fillPercentage: boolean;
   /**
