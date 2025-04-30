@@ -6,6 +6,7 @@ import { ListCellComponent } from '../default/list-cell/list-cell.component';
 import { StringCellComponent } from '../default/string-cell/string-cell.component';
 import { TableColumn } from './table-column';
 import { BooleanCellComponent } from '../default/boolean-cell/boolean-cell.component';
+import { ColorCellComponent } from '../default/color-cell/color-cell.component';
 
 const cellComponentsMap: Map<FilterType, Type<any>> = new Map<FilterType, Type<any>>()
   .set(FilterType.number, NumericCellComponent)
@@ -13,6 +14,7 @@ const cellComponentsMap: Map<FilterType, Type<any>> = new Map<FilterType, Type<a
   .set(FilterType.list, ListCellComponent)
   .set(FilterType.string, StringCellComponent)
   .set(FilterType.boolean, BooleanCellComponent)
+  .set(FilterType.color, ColorCellComponent)
   .set(FilterType.custom, StringCellComponent);
 
 export const getCellComponent = (column: TableColumn): Type<any> =>

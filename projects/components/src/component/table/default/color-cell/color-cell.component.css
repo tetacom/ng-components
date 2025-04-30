@@ -1,12 +1,15 @@
 :host {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
 }
+
 input[type='color'] {
   height: 16px;
   width: 16px;
   padding: 0;
   border: 0;
+
   &::-webkit-color-swatch,
   &::-webkit-color-swatch-wrapper {
     border: 0;

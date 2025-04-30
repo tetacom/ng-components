@@ -17,10 +17,10 @@ import { ToolbarComponent } from '../../../toolbar/toolbar/toolbar.component';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'teta-table-demo',
-    templateUrl: './table-demo.component.html',
-    styleUrls: ['./table-demo.component.scss'],
-    imports: [ToolbarComponent, ButtonComponent, IconComponent, TableComponent, JsonPipe, FormsModule]
+  selector: 'teta-table-demo',
+  templateUrl: './table-demo.component.html',
+  styleUrls: ['./table-demo.component.scss'],
+  imports: [ToolbarComponent, ButtonComponent, IconComponent, TableComponent, JsonPipe, FormsModule],
 })
 export class TableDemoComponent implements OnInit {
   rowHeight = signal<number>(28);
@@ -88,6 +88,12 @@ export class TableDemoComponent implements OnInit {
         filterType: FilterType.string,
         locked: true,
         editable: false,
+      }),
+      new TableColumn({
+        name: 'color',
+        filterType: FilterType.color,
+        locked: true,
+        editable: true,
       }),
       new TableColumn({
         name: 'date',

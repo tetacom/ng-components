@@ -1,17 +1,19 @@
 @if (editable() || !hideNonEditable()) {
-  <teta-input
-    [label]="caption()"
-    [hint]="hint()"
-    [formGroup]="formGroup"
-    [horizontal]="horizontal()"
-    [required]="column().required"
-  >
-    @if (template()) {
-      <ng-container
-        *ngTemplateOutlet="template().template; context: { $implicit: formGroup?.get(column().name) }"
-      ></ng-container>
-    } @else {
-      @if (formGroup?.get(column().name)) {
+  @if (template()) {
+    <ng-container
+      *ngTemplateOutlet="template().template; context: {
+        $implicit: formGroup?.get(column().name),
+        control:formGroup?.get(column().name),
+        column: column()
+      }"
+    ></ng-container>
+  } @else {
+    @if (formGroup?.get(column().name)) {
+      <teta-input [label]="caption()"
+                  [hint]="hint()"
+                  [formGroup]="formGroup"
+                  [horizontal]="horizontal() || column().filterType === filterTypeEnum.color"
+                  [required]="column().required">
         @switch (column().filterType) {
           @case (filterTypeEnum.list) {
             <teta-select
@@ -47,6 +49,13 @@
               {{ column().caption }}
             </teta-toggle>
           }
+          @case (filterTypeEnum.color) {
+            <teta-color-input
+              class="border border-text-20 border-radius-4 padding-1"
+              [tetaDisableControl]="!editable()"
+              [formControlName]="column().name">
+            </teta-color-input>
+          }
           @default {
             <teta-text-field
               class="row_auto"
@@ -59,12 +68,12 @@
             ></teta-text-field>
           }
         }
-      }
+        @if (controlIsInvalid(column().name)) {
+          <div ngProjectAs="message" class="color-red-50">
+            {{ getError(column()) }}
+          </div>
+        }
+      </teta-input>
     }
-    @if (controlIsInvalid(column().name)) {
-      <div ngProjectAs="message" class="color-red-50">
-        {{ getError(column()) }}
-      </div>
-    }
-  </teta-input>
+  }
 }

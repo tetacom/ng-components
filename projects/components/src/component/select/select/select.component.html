@@ -64,6 +64,7 @@
                     style="display: flex"
                     *cdkVirtualFor="let option of visibleOptions; templateCacheSize: 0"
                     [class.list-item_active]="itemSelected(option)"
+                    [class.list-item_disabled]="option.disabled === true"
                     [tetaHighlight]="searchText"
                     [style.height.px]="28"
                     (click)="clickOption(option, $event)"
@@ -91,6 +92,7 @@
                   <div
                     [class]="'list-item list-item_interactive justify-content-between  select_' + viewType"
                     [class.list-item_active]="itemSelected(option)"
+                    [class.list-item_disabled]="option.disabled === true"
                     (click)="clickOption(option, $event)"
                   >
                     <span [tetaHighlight]="searchText">

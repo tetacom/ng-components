@@ -4,5 +4,6 @@ export enum FilterType {
   date,
   list,
   boolean,
+  color,
   custom,
 }

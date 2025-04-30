@@ -29,6 +29,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { InputComponent } from '../../../input/input/input.component';
 import { DisableControlDirective } from '../../../../directive/disable-control/disable-control.directive';
 import { HintDirective } from '../../../../directive/hint/hint.directive';
+import { ColorInputComponent } from '../../../input/color-input/color-input.component';
 
 @Component({
   selector: 'teta-property-grid-item',
@@ -46,6 +47,7 @@ import { HintDirective } from '../../../../directive/hint/hint.directive';
     TextFieldComponent,
     DisableControlDirective,
     HintDirective,
+    ColorInputComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

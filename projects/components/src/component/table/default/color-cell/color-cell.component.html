@@ -1,0 +1,8 @@
+<input
+  type="color"
+  #input
+  [name]="column.name"
+  [disabled]="!editable"
+  (blur)="setValue()"
+  [ngModel]="getHexColor(row.data[column.name])"
+  (ngModelChange)="row.data[column.name] = $event" />

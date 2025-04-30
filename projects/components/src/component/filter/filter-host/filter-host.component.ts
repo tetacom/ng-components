@@ -75,7 +75,7 @@ export class FilterHostComponent<T> implements OnInit, OnDestroy {
   constructor(private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit() {
-    if (!FilterComponentBase.isPrototypeOf(this._column.filterComponent)) {
+    if (!Object.prototype.isPrototypeOf.call(FilterComponentBase, this._column.filterComponent)) {
       this._column.filterComponent = getFilterComponent(this._column);
     }
     this._componentRef = this.viewContainerRef.createComponent<FilterComponentBase<T>>(this._column.filterComponent);
