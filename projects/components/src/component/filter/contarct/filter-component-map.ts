@@ -13,6 +13,7 @@ const filterComponentsMap: Map<FilterType, Type<any>> = new Map<FilterType, Type
   .set(FilterType.list, ListFilterComponent)
   .set(FilterType.string, StringFilterComponent)
   .set(FilterType.boolean, BooleanFilterComponent)
+  .set(FilterType.color, StringFilterComponent)
   .set(FilterType.custom, StringFilterComponent);
 
 export const getFilterComponent = (item: FilterItem): Type<any> =>

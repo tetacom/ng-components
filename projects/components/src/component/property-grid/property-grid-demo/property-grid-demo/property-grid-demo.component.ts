@@ -59,6 +59,12 @@ export class PropertyGridDemoComponent {
       filterType: FilterType.date,
     }),
     new TableColumn({
+      name: 'color',
+      locked: true,
+      editable: true,
+      filterType: FilterType.color,
+    }),
+    new TableColumn({
       name: 'value',
       locked: true,
       filterType: FilterType.number,

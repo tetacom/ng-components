@@ -74,6 +74,7 @@ const getOptions = (size) => {
     res.push({
       id: i,
       name: faker.address.city(),
+      disabled: i % 3 === 0,
     });
   }
   return res;
