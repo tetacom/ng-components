@@ -1,0 +1,9 @@
+:host {
+  &.fill-percentage {
+    background-image: linear-gradient(
+      to right,
+      var(--color-primary-5) var(--fillPercentage),
+      transparent var(--fillPercentage)
+    );
+  }
+}

@@ -40,12 +40,12 @@ import { ContextMenuDirective } from '../../../directive/context-menu/context-me
 import { TableHeadComponent } from '../table-head/table-head.component';
 
 @Component({
-    selector: 'teta-table',
-    templateUrl: './table.component.html',
-    styleUrls: ['./table.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [TableService],
-    imports: [TableHeadComponent, ContextMenuDirective, TableBodyComponent]
+  selector: 'teta-table',
+  templateUrl: './table.component.html',
+  styleUrls: ['./table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [TableService],
+  imports: [TableHeadComponent, ContextMenuDirective, TableBodyComponent],
 })
 export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnChanges {
   @Input() data: T[] = [];

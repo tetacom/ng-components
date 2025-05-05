@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import objectHash from 'object-hash';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { map, startWith, withLatestFrom } from 'rxjs/operators';
 
 import { IDictionary } from '../../../common/contract/i-dictionary';
 import { IIdName } from '../../../common/contract/i-id-name';
@@ -53,6 +54,7 @@ export class TableService<T> {
   activeRow: Observable<T | null>;
   hiddenColumns: Observable<string[]>;
   scrollIndex: Observable<number>;
+  numberColumnsMaxValues: Observable<{ [key: string]: number }>;
 
   editType: EditType = EditType.cell;
   editEvent: EditEvent = EditEvent.doubleClick;
@@ -95,6 +97,7 @@ export class TableService<T> {
   private _selectedRows = new BehaviorSubject<T[]>([]);
   private _activeRow = new BehaviorSubject<T | null>(null);
   private _scrollIndex = new Subject<number | null>();
+  private _numberColumnsMaxValues = new BehaviorSubject<{ [key: string]: number }>({});
 
   private _currentEditCell?: ICellCoordinates;
 
@@ -120,6 +123,50 @@ export class TableService<T> {
     this.activeRow = this._activeRow.asObservable();
     this.hiddenColumns = this._hiddenColumns.asObservable();
     this.scrollIndex = this._scrollIndex.asObservable();
+    this.numberColumnsMaxValues = this._numberColumnsMaxValues.asObservable();
+
+    combineLatest([this.displayData, this.columns, this._valueChanged.pipe(startWith(null))])
+      .pipe(
+        withLatestFrom(this.numberColumnsMaxValues),
+        map(([[data, columns, valueChanged], numberColumnsMaxValues]) => {
+          if (data.length && columns.length) {
+            const numberTypeColumnKeys: string[] = [];
+            const initValues = { ...numberColumnsMaxValues };
+
+            if (valueChanged && columns.find(({ name }) => name)?.fillPercentage) {
+              numberTypeColumnKeys.push(valueChanged.column);
+              initValues[valueChanged.column] = null;
+            } else {
+              columns
+                .filter(({ fillPercentage, filterType }) => fillPercentage && filterType === FilterType.number)
+                .forEach(({ name }) => {
+                  numberTypeColumnKeys.push(name);
+                });
+
+              numberTypeColumnKeys.forEach((key) => {
+                initValues[key] = null;
+              });
+            }
+
+            const maxValues = data
+              .map(({ data }) => data)
+              .reduce((init, row) => {
+                const result = { ...init };
+
+                for (const currentKey of numberTypeColumnKeys) {
+                  const currentValue: number = row[currentKey];
+                  result[currentKey] =
+                    result[currentKey] !== null ? Math.max(init[currentKey], currentValue) : row[currentKey];
+                }
+
+                return result;
+              }, initValues);
+
+            this._numberColumnsMaxValues.next(maxValues);
+          }
+        }),
+      )
+      .subscribe();
   }
 
   setData(data: T[]): void {
