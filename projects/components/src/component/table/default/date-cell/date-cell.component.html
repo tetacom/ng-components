@@ -5,6 +5,7 @@
   <teta-date-picker
     class="datepicker-table"
     #input
+    [open]="open()"
     [allowNull]="!column.required"
     [appendToBody]="true"
     [showTime]="false"

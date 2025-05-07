@@ -9,12 +9,12 @@ import { OnlyNumberDirective } from '../../../../directive/only-number/only-numb
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'teta-numeric-cell',
-    templateUrl: './numeric-cell.component.html',
-    styleUrls: ['./numeric-cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    viewProviders: [FormsUtil.formProvider],
-    imports: [FormsModule, OnlyNumberDirective, ReactiveFormsModule, NumberPipe]
+  selector: 'teta-numeric-cell',
+  templateUrl: './numeric-cell.component.html',
+  styleUrls: ['./numeric-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [FormsUtil.formProvider],
+  imports: [FormsModule, OnlyNumberDirective, ReactiveFormsModule, NumberPipe],
 })
 export class NumericCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: ElementRef;
@@ -34,6 +34,7 @@ export class NumericCellComponent<T> extends CellComponentBase<T> implements OnI
     if (initiator?.column === this.column.name) {
       this.cdr.detectChanges();
       this.input.nativeElement?.focus();
+      this.input.nativeElement?.select();
     }
   }
 

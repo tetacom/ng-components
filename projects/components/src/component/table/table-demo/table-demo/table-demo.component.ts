@@ -84,6 +84,11 @@ export class TableDemoComponent implements OnInit {
         },
       }),
       new TableColumn({
+        name: 'enable',
+        filterType: FilterType.boolean,
+        locked: true,
+      }),
+      new TableColumn({
         name: 'city',
         filterType: FilterType.string,
         locked: true,
@@ -153,6 +158,7 @@ export class TableDemoComponent implements OnInit {
         ram: faker.helpers.randomize([8, 16, 32, 64, 128]),
         address: faker.address.streetAddress(),
         state: faker.address.state(),
+        enable: Math.random() > 0.1,
         city: faker.address.city(),
         zip: faker.address.zipCode(),
         editable: Math.random() > 0.1,

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, signal, ViewChild } from '@angular/core';
 
 import { DatePickerComponent } from '../../../date-picker/date-picker/date-picker.component';
 import { CellComponentBase } from '../../base/cell-component-base';
@@ -18,6 +18,7 @@ import { FormsUtil } from '../../../../util/forms-util';
 })
 export class DateTimeCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: DatePickerComponent;
+  open = signal(false);
 
   constructor(
     protected override svc: TableService<T>,
@@ -32,6 +33,7 @@ export class DateTimeCellComponent<T> extends CellComponentBase<T> implements On
 
   startEdit(initiator: ICellCoordinates, type: 'cell' | 'row'): void {
     if (initiator?.column === this.column.name) {
+      this.open.set(true);
       setTimeout(() => {
         this.input?.openPicker(true);
         this.cdr.markForCheck();
@@ -40,6 +42,7 @@ export class DateTimeCellComponent<T> extends CellComponentBase<T> implements On
   }
 
   stopEdit(): void {
+    this.open.set(false);
     this.cdr.markForCheck();
   }
 }

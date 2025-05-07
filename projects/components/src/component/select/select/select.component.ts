@@ -101,7 +101,9 @@ export class SelectComponent implements ControlValueAccessor {
   @ContentChild(SelectValueDirective, { static: true })
   valueDirective: SelectValueDirective;
 
-  @HostBinding('class.select_open') open = false;
+  @HostBinding('class.select_open')
+  @Input()
+  open = false;
 
   @HostBinding('class.select') private readonly selectClass = true;
 

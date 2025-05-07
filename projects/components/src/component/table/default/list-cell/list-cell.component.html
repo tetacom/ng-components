@@ -9,6 +9,7 @@
   <teta-select
     #input
     class="row_auto select-table"
+    [open]="open()"
     [allowNull]="!column.required"
     [verticalAlign]="verticalAlign.auto"
     [appendToBody]="true"

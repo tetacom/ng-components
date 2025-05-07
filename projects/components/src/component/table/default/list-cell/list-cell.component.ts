@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, signal, ViewChild } from '@angular/core';
 
 import { IIdName } from '../../../../common/contract/i-id-name';
 import { VerticalAlign } from '../../../../common/enum/vertical-align.enum';
@@ -19,6 +19,8 @@ import { FormsUtil } from '../../../../util/forms-util';
   imports: [SelectComponent, FormsModule, ReactiveFormsModule, IconComponent],
 })
 export class ListCellComponent<T> extends CellComponentBase<T> implements OnInit {
+  open = signal(false);
+
   get displayFilterOptions(): IIdName<any>[] {
     if (this.column?.parentName?.length > 0) {
       const parentValue = this.row.data[this.column.parentName];
@@ -46,10 +48,12 @@ export class ListCellComponent<T> extends CellComponentBase<T> implements OnInit
         this.input?.focus();
         this.cdr.markForCheck();
       }, 0);
+      this.open.set(true);
     }
   }
 
   stopEdit() {
+    this.open.set(false);
     this.cdr.markForCheck();
   }
 
