@@ -46,6 +46,7 @@ export interface ITableColumnOptions extends IFilterItemOptions {
   minValue?: number;
   maxLength?: number;
   required?: boolean;
+  decimalLength?: number;
   validators?: ValidatorFn[];
 }
 
@@ -129,6 +130,10 @@ export class TableColumn extends FilterItem {
    */
   required: boolean;
   /**
+   * Размер дробной части для числовых полей
+   */
+  decimalLength?: number;
+  /**
    * Функции валидации
    */
   validators: ValidatorFn[];
@@ -157,6 +162,7 @@ export class TableColumn extends FilterItem {
     this.minValue = options?.minValue;
     this.maxLength = options?.maxLength;
     this.required = options?.required;
+    this.decimalLength = options?.decimalLength;
     this.columns = options?.columns?.map((x) => new TableColumn(x)) ?? [];
     this.validators = options?.validators;
   }
