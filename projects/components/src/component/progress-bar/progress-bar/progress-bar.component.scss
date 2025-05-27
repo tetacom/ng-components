@@ -1,0 +1,5 @@
+:host {
+  user-select: none;          /* Standard */
+  -webkit-user-select: none;  /* Safari < 15 */
+  -ms-user-select: none;      /* old Edge / IE */
+}
