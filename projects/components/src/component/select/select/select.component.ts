@@ -104,18 +104,18 @@ export class SelectComponent implements ControlValueAccessor {
 
   @HostBinding('class.select_open')
   @Input()
-  _open = false;
-
-  get open(): boolean {
-    return this._open;
-  }
-
   set open(value: boolean) {
+    this._open = value;
+
     if (value && this.searchInput) {
       setTimeout(() => {
         this.searchInput?.nativeElement.querySelector('input')?.focus();
-      });
+      }, 0);
     }
+  }
+
+  get open(): boolean {
+    return this._open;
   }
 
   @HostBinding('class.select') private readonly selectClass = true;
@@ -145,6 +145,7 @@ export class SelectComponent implements ControlValueAccessor {
 
   private _options: any | any[];
   private _internalValue: any;
+  private _open = false;
 
   constructor(
     private _cdr: ChangeDetectorRef,
@@ -262,12 +263,14 @@ export class SelectComponent implements ControlValueAccessor {
     this._cdr.detectChanges();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onChange: (value: any) => void = () => {};
 
   registerOnChange(fn: (value: any) => void): void {
     this.onChange = fn;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onTouched = () => {};
 
   registerOnTouched(fn: () => void): void {
