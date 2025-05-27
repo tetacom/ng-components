@@ -7,6 +7,7 @@ import {
   forwardRef,
   HostBinding,
   Input,
+  ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -29,7 +30,6 @@ import { NgTemplateOutlet, AsyncPipe } from '@angular/common';
 import { IconComponent } from '../../icon/icon/icon.component';
 import { DropdownHeadDirective } from '../../dropdown/dropdown-head.directive';
 import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
-import { LetDirective } from '../../../directive/let/let.directive';
 
 @Component({
   selector: 'teta-select',
@@ -44,7 +44,6 @@ import { LetDirective } from '../../../directive/let/let.directive';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LetDirective,
     DropdownComponent,
     DropdownHeadDirective,
     IconComponent,
@@ -101,9 +100,23 @@ export class SelectComponent implements ControlValueAccessor {
   @ContentChild(SelectValueDirective, { static: true })
   valueDirective: SelectValueDirective;
 
+  @ViewChild('searchInput') searchInput: ElementRef;
+
   @HostBinding('class.select_open')
   @Input()
-  open = false;
+  _open = false;
+
+  get open(): boolean {
+    return this._open;
+  }
+
+  set open(value: boolean) {
+    if (value && this.searchInput) {
+      setTimeout(() => {
+        this.searchInput?.nativeElement.querySelector('input')?.focus();
+      });
+    }
+  }
 
   @HostBinding('class.select') private readonly selectClass = true;
 

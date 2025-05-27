@@ -32,7 +32,7 @@
     @if (options?.length) {
       <div tetaDropdownContent class="select-body row_auto" (click)="$event.preventDefault()">
         @if (searchRef) {
-          <div class="select-search padding-h-2 padding-top-2">
+          <div #searchInput class="select-search padding-h-2 padding-top-2">
             <teta-text-field
               [ngModel]="searchText"
               [class]="'select_' + viewType"
