@@ -7,6 +7,7 @@ import {
   Align,
   ButtonComponent,
   ColorInputComponent,
+  DialogService,
   DropdownComponent,
   DropdownContentDirective,
   DropdownHeadDirective,
@@ -25,7 +26,7 @@ import { ChartService } from '../../service/chart.service';
 import { LineSeriesComponent } from '../series/line/line-series.component';
 import { SeriesType } from '../../model/enum/series-type';
 import { defaultSeriesTypeMapping } from '../../default/defaultSeriesTypeMapping';
-import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { FillType } from '../../model/enum/fill-type';
 
 @Component({
@@ -55,6 +56,8 @@ import { FillType } from '../../model/enum/fill-type';
 })
 export class SeriesControlsComponent {
   private chartService = inject(ChartService);
+  private dialogService = inject(DialogService);
+  private translocoService = inject(TranslocoService);
   protected readonly Align = Align;
 
   series = input<Series<BasePoint>[]>();
@@ -141,7 +144,15 @@ export class SeriesControlsComponent {
   }
 
   clear() {
-    this.chartService.clearSeriesSettings();
+    this.dialogService
+      .confirm({
+        title: this.translocoService.translate('chart.confirm_settings_reset'),
+      })
+      .subscribe((result) => {
+        if (result) {
+          this.chartService.clearSeriesSettings();
+        }
+      });
   }
 
   protected readonly TetaSize = TetaSize;
