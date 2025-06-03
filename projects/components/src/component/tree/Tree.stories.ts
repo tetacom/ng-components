@@ -5,6 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { IconComponent } from '../icon/icon/icon.component';
 import { IconSpriteDirective } from '../icon/icon-sprite.directive';
 import { TetaTemplateDirective } from '../../directive/teta-template/teta-template.directive';
+import { TreeItemToggleComponent } from '@tetacom/ng-components';
 
 export default {
   title: 'Component/Tree',
@@ -18,14 +19,25 @@ export default {
 
 export const basicTree = () => ({
   moduleMetadata: {
-    imports: [BrowserAnimationsModule, IconComponent, IconSpriteDirective, TetaTemplateDirective],
+    imports: [
+      BrowserAnimationsModule,
+      IconComponent,
+      IconSpriteDirective,
+      TetaTemplateDirective,
+      TreeItemToggleComponent,
+    ],
   },
   props: {
     data: treeData,
   },
   template: `<teta-tree  [tetaIconSprite]="'assets/icons.svg'" style="width: 400px;" [data]="data">
   <ng-template tetaTemplate let-item>
-    <teta-icon [name]="item.icon" class="fill-text-30 margin-right-2"></teta-icon> {{item.name}}
+    <div class="tree__item">
+      @if (item.children?.length > 0) {
+        <teta-tree-item-toggle [item]="item"></teta-tree-item-toggle>
+      }
+      <teta-icon [name]="item.icon" class="fill-text-30 margin-right-2"></teta-icon> {{item.name}}
+    </div>
   </ng-template>
 </teta-tree>`,
 });
