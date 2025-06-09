@@ -146,7 +146,7 @@ export class SeriesControlsComponent {
   clear() {
     this.dialogService
       .confirm({
-        title: this.translocoService.translate('chart.confirm_settings_reset'),
+        title: this.translocoService.translate('charts.confirm_settings_reset'),
       })
       .subscribe((result) => {
         if (result) {
