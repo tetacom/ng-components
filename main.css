@@ -2338,10 +2338,9 @@ a {
   align-items: center;
   justify-content: center;
 }
-.button[disabled] {
+.button[disabled], .button[disabled]:hover, .button[disabled]:focus-visible {
   border: none;
-  filter: grayscale(1);
-  opacity: 0.3;
+  background-color: var(--color-text-30);
 }
 .button:focus-visible {
   box-shadow: 0 0 0 4px var(--color-primary-10);
@@ -5672,8 +5671,8 @@ body {
 .switch-button_active {
   border: solid 0;
   background: var(--color-primary-50);
-  fill: var(--color-text-90);
-  color: var(--color-text-90);
+  color: var(--color-global-white);
+  fill: var(--color-global-white);
 }
 
 .table {
