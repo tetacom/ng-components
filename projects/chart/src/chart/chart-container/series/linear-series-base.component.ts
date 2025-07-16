@@ -167,8 +167,10 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
       if (x0 instanceof Date) {
         x0 = x0.getTime();
       }
-      const rightId = bisect(this.series().data, x0);
+      const rightId = bisect([...this.series().data.sort((a, b) => a.x - b.x)], x0);
+
       const range = scaleY.range();
+
       const intersect = lineIntersection(
         pointer,
         range[0],
@@ -206,10 +208,12 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
       const bisect = d3.bisector((_: BasePoint) => _.y).right;
 
       let y0 = scaleY.invert(mouse[1]);
+
       if (y0 instanceof Date) {
         y0 = y0.getTime();
       }
-      const rightId = bisect(this.series().data, y0);
+      const rightId = bisect([...this.series().data.sort((a, b) => a.y - b.y)], y0);
+
       const range = scaleX.range();
 
       const intersect = lineIntersection(
