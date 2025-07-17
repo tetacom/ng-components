@@ -28,6 +28,7 @@
               (keydown)="checkEnter($event)"
               [(ngModel)]="inputText"
               (ngModelChange)="changeInput($event)"
+              (blur)="onBlur()"
               [maskito]="maskitoOptions"
             />
             @if (data.selectedDate || allowNull) {
@@ -46,7 +47,7 @@
     </div>
     <div tetaDropdownContent (click)="$event.preventDefault()">
       <teta-date-calendar
-        [isDateNull]="date === null"
+        [isDateNull]="data.selectedDate === null"
         [open]="open"
         [max]="maxDate"
         [min]="minDate"
