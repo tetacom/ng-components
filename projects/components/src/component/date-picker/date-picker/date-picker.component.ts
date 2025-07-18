@@ -157,7 +157,9 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
         if (this.showTime) {
           date = new Date(date.setHours(hours || 0, mins || 0));
         }
-        this.changeSelectedDate(this.getAvailableDate(this.minDate, this.maxDate, date));
+        const availableDate = this.getAvailableDate(this.minDate, this.maxDate, date);
+        this.changeSelectedDate(availableDate);
+        this.selectedDate.next(availableDate);
       } else {
         this.setDate(this.date);
       }
@@ -205,5 +207,35 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
 
   ngOnChanges(changes: SimpleChanges): void {
     this.prepareInput(false);
+  }
+
+  override changeInput(v) {
+    this.changePlaceholder(v);
+    this.updateCalendarSelection(v);
+  }
+
+  private updateCalendarSelection(inputValue: string) {
+    if (!inputValue || inputValue.trim() === '') {
+      if (this.allowNull) {
+        this.selectedDate.next(null);
+      }
+      return;
+    }
+
+    const val = inputValue.split(',');
+    const { day, year, month } = this.getDateFromStr(val[0]);
+    const { mins, hours } = this.getTimeFromStr(val[1]);
+
+    if (day && year && month) {
+      let date = new Date(year, month - 1, day);
+      if (this.showTime && hours !== null && mins !== null) {
+        date = new Date(date.setHours(hours, mins));
+      }
+
+      if (!isNaN(date.getTime())) {
+        const availableDate = this.getAvailableDate(this.minDate, this.maxDate, date);
+        this.selectedDate.next(availableDate);
+      }
+    }
   }
 }
