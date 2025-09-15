@@ -167,7 +167,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
       if (x0 instanceof Date) {
         x0 = x0.getTime();
       }
-      const rightId = bisect([...this.series().data.sort((a, b) => a.x - b.x)], x0);
+      const rightId = bisect([...this.series().data].sort((a, b) => a.x - b.x), x0);
 
       const range = scaleY.range();
 
@@ -212,7 +212,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
       if (y0 instanceof Date) {
         y0 = y0.getTime();
       }
-      const rightId = bisect([...this.series().data.sort((a, b) => a.y - b.y)], y0);
+      const rightId = bisect([...this.series().data].sort((a, b) => a.y - b.y), y0);
 
       const range = scaleX.range();
 
