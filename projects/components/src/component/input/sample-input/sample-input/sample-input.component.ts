@@ -26,10 +26,6 @@ export class SampleInputComponent implements OnInit {
         updateOn: 'change',
       }),
     });
-
-    this.form.valueChanges.subscribe((changes) => {
-      console.log('changes', changes);
-    });
   }
 
   log(text) {
