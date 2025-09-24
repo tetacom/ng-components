@@ -28,7 +28,7 @@
               (keydown)="checkEnter($event)"
               [(ngModel)]="inputText"
               (ngModelChange)="changeInput($event)"
-              (blur)="onBlur()"
+              (blur)="onBlur($event)"
               [maskito]="maskitoOptions"
             />
             @if (data.selectedDate || allowNull) {

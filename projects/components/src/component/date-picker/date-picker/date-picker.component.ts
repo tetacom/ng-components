@@ -33,6 +33,7 @@ import { MaskitoModule } from '@maskito/angular';
 import { InputComponent } from '../../input/input/input.component';
 import { DropdownHeadDirective } from '../../dropdown/dropdown-head.directive';
 import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
+import { DateUtil } from '../../../util/date-util';
 
 export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -144,7 +145,10 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
     this.changePlaceholder(str);
   }
 
-  onBlur() {
+  onBlur(event?: FocusEvent) {
+    if ((event?.target as HTMLInputElement)?.value === DateUtil.toShortString(this.date as Date) ) {
+      return;
+    }
     if (this.allowNull && this.inputText.trim() === '') {
       this.setDate(null);
       this.emitValue(null);

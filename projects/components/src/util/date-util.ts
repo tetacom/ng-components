@@ -71,6 +71,17 @@ export class DateUtil {
   }
 
   /**
+   * Привести дату к строке без часов и минут
+   */
+  public static toShortString(dat: Date): string {
+    if (!dat || !(dat instanceof Date)) {
+      return '';
+    }
+    const month = dat.getMonth() + 1;
+    return `${prependZero(dat.getDate(), 2)}.${prependZero(month, 2)}.${dat.getFullYear()}`;
+  }
+
+  /**
    * Подготовка даты к отправке на сервер, чтобы небыло смещения часов
    */
   public static convertUTC2DateLocal(date?: Date): Date | null {
