@@ -132,6 +132,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
     const mouse = [event?.offsetX, event?.offsetY];
 
     const tooltipTracking = this.config()?.tooltip?.tracking;
+
     const lineIntersection = (
       p0_x: number,
       p0_y: number,
@@ -160,6 +161,8 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
     };
 
     if (tooltipTracking === TooltipTracking.x) {
+      const sortedData = [...this.series().data].sort((a, b) => a.x - b.x);
+
       const bisect = d3.bisector((_: BasePoint) => _.x).right;
       const pointer = mouse[0];
 
@@ -167,7 +170,10 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
       if (x0 instanceof Date) {
         x0 = x0.getTime();
       }
-      const rightId = bisect([...this.series().data].sort((a, b) => a.x - b.x), x0);
+      const rightId = bisect(
+        [...this.series().data].sort((a, b) => a.x - b.x),
+        x0,
+      );
 
       const range = scaleY.range();
 
@@ -176,10 +182,10 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
         range[0],
         pointer,
         Number.MAX_SAFE_INTEGER,
-        scaleX(this.series().data[rightId - 1]?.x),
-        scaleY(this.series().data[rightId - 1]?.y),
-        scaleX(this.series().data[rightId]?.x),
-        scaleY(this.series().data[rightId]?.y),
+        scaleX(sortedData[rightId - 1]?.x),
+        scaleY(sortedData[rightId - 1]?.y),
+        scaleX(sortedData[rightId]?.x),
+        scaleY(sortedData[rightId]?.y),
       );
       const x = scaleX.invert(intersect.x);
       const y = scaleY.invert(intersect.y);
@@ -205,6 +211,8 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
     }
 
     if (tooltipTracking === TooltipTracking.y) {
+      const sortedData = [...this.series().data].sort((a, b) => a.y - b.y);
+
       const bisect = d3.bisector((_: BasePoint) => _.y).right;
 
       let y0 = scaleY.invert(mouse[1]);
@@ -212,7 +220,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
       if (y0 instanceof Date) {
         y0 = y0.getTime();
       }
-      const rightId = bisect([...this.series().data].sort((a, b) => a.y - b.y), y0);
+      const rightId = bisect(sortedData, y0);
 
       const range = scaleX.range();
 
@@ -221,10 +229,10 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
         mouse[1],
         Number.MAX_SAFE_INTEGER,
         mouse[1],
-        scaleX(this.series().data[rightId - 1]?.x),
-        scaleY(this.series().data[rightId - 1]?.y),
-        scaleX(this.series().data[rightId]?.x),
-        scaleY(this.series().data[rightId]?.y),
+        scaleX(sortedData[rightId - 1]?.x),
+        scaleY(sortedData[rightId - 1]?.y),
+        scaleX(sortedData[rightId]?.x),
+        scaleY(sortedData[rightId]?.y),
       );
 
       const x = scaleX.invert(intersect.x);
