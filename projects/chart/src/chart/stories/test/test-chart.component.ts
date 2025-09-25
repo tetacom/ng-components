@@ -36,7 +36,6 @@ export class TestChartComponent {
 
     const aa = this.getPoint(this.point, traRad);
 
-    // console.log(aa);
     const tr = this.getTrSeries(traRad);
     const cs = this.getCasingSeries(
       construction.casing.sort((a, b) => a.intervalTopMd - b.intervalTopMd),
