@@ -5,6 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { IconSpriteDirective } from '../icon/icon-sprite.directive';
 import { IconComponent } from '../icon/icon/icon.component';
 import { TetaSize } from '../../common/enum/teta-size.enum';
+import { LoaderDirective } from '../../directive/loader/loader.directive';
 
 export default {
   title: 'Component/Button',
@@ -65,6 +66,18 @@ export const disabledButton: StoryFn = (args) => ({
   props: args,
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
        <button teta-button  [disabled]="true" [view]="view" [square]="false"  [size]="size" [viewType]="viewType" [palette]="palette">
+          <teta-icon [name]="'addCircle'"></teta-icon>
+          {{text}}
+       </button>
+</div>`,
+});
+export const loadingButton: StoryFn = (args) => ({
+  moduleMetadata: {
+    imports: [IconSpriteDirective, IconComponent, LoaderDirective],
+  },
+  props: args,
+  template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
+       <button teta-button [tetaLoader]="true" [disabled]="false" [loading]="true" [view]="view" [square]="false"  [size]="size" [viewType]="viewType" [palette]="palette">
           <teta-icon [name]="'addCircle'"></teta-icon>
           {{text}}
        </button>
