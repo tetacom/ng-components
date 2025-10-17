@@ -10,7 +10,9 @@
   border: 0;
   color: var(--color-text-90);
   fill: var(--color-text-90);
-  transition: background 0.4s;
+  transition:
+    background 0.4s,
+    color 0.4s;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -53,17 +55,18 @@
 
   &:has(.loader) {
     pointer-events: none;
+    color: transparent;
   }
 
   .loader {
     &::before {
       border-color: var(--color-text-90);
       border-top-color: transparent;
-      width: 20px;
-      height: 20px;
-      margin-left: -10px;
-      margin-top: -10px;
-      border-width: 3px;
+      width: 16px;
+      height: 16px;
+      margin-left: -8px;
+      margin-top: -8px;
+      border-width: 2px;
     }
   }
 }

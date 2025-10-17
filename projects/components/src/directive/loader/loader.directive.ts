@@ -73,7 +73,7 @@ export class LoaderDirective implements OnDestroy {
       this._renderer.removeChild(this._loader.parentElement, this._loader);
     }
     if (this._mask && this._mask.parentElement) {
-      this._renderer.removeChild(this._loader.parentElement, this._mask);
+      this._renderer.removeChild(this._mask.parentElement, this._mask);
     }
   }
 

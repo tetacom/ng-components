@@ -40,7 +40,7 @@ export default {
     palette: 'primary',
     view: 'primary',
     text: 'text text',
-    size: 'm',
+    size: TetaSize.M,
   },
   component: ButtonComponent,
   moduleMetadata: {
@@ -77,7 +77,7 @@ export const loadingButton: StoryFn = (args) => ({
   },
   props: args,
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
-       <button teta-button [tetaLoader]="true" [disabled]="false" [loading]="true" [view]="view" [square]="false"  [size]="size" [viewType]="viewType" [palette]="palette">
+       <button teta-button [tetaLoader]="true" [disabled]="false" [view]="view" [square]="false"  [size]="size" [viewType]="viewType" [palette]="palette">
           <teta-icon [name]="'addCircle'"></teta-icon>
           {{text}}
        </button>
@@ -103,7 +103,7 @@ export const allButtonTypes: StoryFn = () => ({
     palettes: ['primary', 'text', 'red', 'yellow', 'green'],
     types: ['brick', 'circle', 'rounded', 'rounded', 'rounded'],
     text: 'Push me',
-    size: 'm',
+    size: TetaSize.M,
     leftIcon: true,
     rightIcon: true,
     disabled: false,
