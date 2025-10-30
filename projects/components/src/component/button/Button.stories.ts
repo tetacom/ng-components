@@ -5,6 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { IconSpriteDirective } from '../icon/icon-sprite.directive';
 import { IconComponent } from '../icon/icon/icon.component';
 import { TetaSize } from '../../common/enum/teta-size.enum';
+import { LoaderDirective } from '../../directive/loader/loader.directive';
 
 export default {
   title: 'Component/Button',
@@ -39,7 +40,7 @@ export default {
     palette: 'primary',
     view: 'primary',
     text: 'text text',
-    size: 'm',
+    size: TetaSize.M,
   },
   component: ButtonComponent,
   moduleMetadata: {
@@ -70,6 +71,18 @@ export const disabledButton: StoryFn = (args) => ({
        </button>
 </div>`,
 });
+export const loadingButton: StoryFn = (args) => ({
+  moduleMetadata: {
+    imports: [IconSpriteDirective, IconComponent, LoaderDirective],
+  },
+  props: args,
+  template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
+       <button teta-button [tetaLoader]="true" [disabled]="false" [view]="view" [square]="false"  [size]="size" [viewType]="viewType" [palette]="palette">
+          <teta-icon [name]="'addCircle'"></teta-icon>
+          {{text}}
+       </button>
+</div>`,
+});
 export const squireButton = (args) => ({
   moduleMetadata: {
     imports: [IconSpriteDirective, IconComponent],
@@ -90,7 +103,7 @@ export const allButtonTypes: StoryFn = () => ({
     palettes: ['primary', 'text', 'red', 'yellow', 'green'],
     types: ['brick', 'circle', 'rounded', 'rounded', 'rounded'],
     text: 'Push me',
-    size: 'm',
+    size: TetaSize.M,
     leftIcon: true,
     rightIcon: true,
     disabled: false,

@@ -8,9 +8,11 @@
   gap: 6px;
   padding: 6px 12px;
   border: 0;
-  color: var(--color-global-white);
-  fill: var(--color-global-white);
-  transition: background 0.4s;
+  color: var(--color-text-90);
+  fill: var(--color-text-90);
+  transition:
+    background 0.4s,
+    color 0.4s;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -49,5 +51,22 @@
 
   &:focus-visible {
     box-shadow: 0 0 0 4px var(--color-primary-10);
+  }
+
+  &:has(.loader) {
+    pointer-events: none;
+    color: transparent;
+  }
+
+  .loader {
+    &::before {
+      border-color: var(--color-text-90);
+      border-top-color: transparent;
+      width: 16px;
+      height: 16px;
+      margin-left: -8px;
+      margin-top: -8px;
+      border-width: 2px;
+    }
   }
 }
