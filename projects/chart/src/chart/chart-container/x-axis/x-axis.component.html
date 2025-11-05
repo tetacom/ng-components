@@ -13,7 +13,7 @@
         [attr.dy]="data.axis.options.opposite ? '-0.71em' : '0.71em'"
         [attr.y]="data.axis.options.opposite ? 0 : 9"
       >
-        {{ data.axis.options.tickFormat ? data.axis.options.tickFormat(tick) : data.axis.defaultFormatter()(tick) }}!!!
+        {{ data.axis.options.tickFormat ? data.axis.options.tickFormat(tick) : data.axis.defaultFormatter()(tick) }}
       </text>
       <line stroke="var(--color-text-30)" [attr.y2]="data.axis.options.opposite ? -6 : 6"></line>
     </svg:g>
