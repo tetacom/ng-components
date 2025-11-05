@@ -1,8 +1,11 @@
-@if ({
-  x: x(),
-  ticks: ticks(),
-  axis: axis()
-}; as data) {
+@if (
+  {
+    x: x(),
+    ticks: ticks(),
+    axis: axis(),
+  };
+  as data
+) {
   @for (tick of data.ticks; track $index) {
     <svg:g text-anchor="middle" [attr.transform]="'translate(' + data.x(tick) + ', 0)'">
       <text
@@ -10,12 +13,12 @@
         [attr.dy]="data.axis.options.opposite ? '-0.71em' : '0.71em'"
         [attr.y]="data.axis.options.opposite ? 0 : 9"
       >
-        {{ data.axis.options.tickFormat ? data.axis.options.tickFormat(tick) : data.axis.defaultFormatter()(tick) }}
+        {{ data.axis.options.tickFormat ? data.axis.options.tickFormat(tick) : data.axis.defaultFormatter()(tick) }}!!!
       </text>
       <line stroke="var(--color-text-30)" [attr.y2]="data.axis.options.opposite ? -6 : 6"></line>
     </svg:g>
   }
-  <svg:g class="label-axis font-caption" [attr.transform]="getLabelTransform()">
+  <svg:g class="font-caption" style="fill: var(--color-text-70)" [attr.transform]="getLabelTransform()">
     <text fill="var(--color-text-70)" text-anchor="middle" dominant-baseline="middle">
       {{ data.axis.options.title }}
     </text>
