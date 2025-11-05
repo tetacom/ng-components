@@ -1,7 +1,10 @@
-@if ({
-  y: y(),
-  axis: axis()
-}; as data) {
+@if (
+  {
+    y: y(),
+    axis: axis(),
+  };
+  as data
+) {
   @for (tick of data.y.ticks(); track $index) {
     <svg:g
       [attr.text-anchor]="data.axis.options.opposite ? 'start' : 'end'"
@@ -13,7 +16,7 @@
       <line stroke="var(--color-text-30)" [attr.x2]="data.axis.options.opposite ? 6 : -6"></line>
     </svg:g>
   }
-  <svg:g class="label-axis font-caption" [attr.transform]="getLabelTransform()">
+  <svg:g class="font-caption" style="fill: var(--color-text-70)" [attr.transform]="getLabelTransform()">
     <text
       [attr.dy]="data.axis.options.opposite ? '-4px' : '4px'"
       text-anchor="middle"
