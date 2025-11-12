@@ -14,6 +14,7 @@ export const getPrecision = (a: number) => {
 export const formatNumber = (
   value: any,
   decimalLength: number,
+  isFocused: boolean,
   chunkDelimiter: string,
   decimalDelimiter: string,
   chunkLength: number,
@@ -26,8 +27,7 @@ export const formatNumber = (
   }
 
   let precision = Math.min(getPrecision(numberValue), Math.floor(decimalLength));
-  // Пытаемся сохранить количество нулей после запятой для 0
-  if (numberValue === 0 && typeof value === 'string') {
+  if (isFocused && numberValue === 0 && typeof value === 'string') {
     const decimalPart = value.split('.')[1] || '';
     const trailingZerosMatch = decimalPart.match(/0*$/);
     precision = trailingZerosMatch ? trailingZerosMatch[0].length : 0;
@@ -35,8 +35,8 @@ export const formatNumber = (
 
   const digitGroupingRegex = '\\d(?=(\\d{' + chunkLength + '})+' + (precision > 0 ? '\\D' : '$') + ')';
   let formattedNumberString = numberValue.toFixed(precision);
-  // Учитываем знак минуса для отрицательного нуля
-  if (numberValue === 0 && 1 / numberValue === -Infinity) {
+
+  if (isFocused && numberValue === 0 && 1 / numberValue === -Infinity) {
     formattedNumberString = '-' + formattedNumberString;
   }
 

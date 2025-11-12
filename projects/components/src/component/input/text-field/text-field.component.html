@@ -3,7 +3,7 @@
 }
 <input
   #input
-  [ngModel]="value | tetaNumber: (!onlyNumber ? null : inputFocused ? 1000 : decimalPart)"
+  [ngModel]="value | tetaNumber: (!onlyNumber ? null : inputFocused ? 1000 : decimalPart) : inputFocused"
   [tetaOnlyNumber]="onlyNumber"
   (ngModelChange)="value = $event; onChange($event)"
   [placeholder]="placeholder"
