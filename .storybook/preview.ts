@@ -1,7 +1,19 @@
-import { applicationConfig, Preview } from '@storybook/angular';
+import { applicationConfig, Preview, StoryFn } from '@storybook/angular';
 import { provideTransloco } from '@jsverse/transloco';
 import { TranslocoHttpLoaderService } from './TranslocoHttpLoaderService';
 import { provideHttpClient } from '@angular/common/http';
+
+const themeDecorator = (story: StoryFn, context) => {
+  const scheme = context.globals.scheme;
+  const htmlElement: HTMLElement | null = document.querySelector('html');
+
+  if (htmlElement) {
+    htmlElement.classList.remove('baselight', 'basedark');
+    htmlElement.classList.add(scheme === 'dark' ? 'basedark' : 'baselight');
+  }
+
+  return story(context.args, context);
+};
 
 const preview: Preview = {
   parameters: {
@@ -29,8 +41,24 @@ const preview: Preview = {
         }),
       ],
     }),
+    themeDecorator,
   ],
   tags: ['autodocs'],
+};
+
+export const globalTypes = {
+  scheme: {
+    name: 'Схема',
+    defaultValue: 'dark',
+    toolbar: {
+      icon: 'moon',
+      items: [
+        { value: 'light', title: 'Light', icon: 'sun' },
+        { value: 'dark', title: 'Dark', icon: 'moon' },
+      ],
+      showName: true,
+    },
+  },
 };
 
 export default preview;

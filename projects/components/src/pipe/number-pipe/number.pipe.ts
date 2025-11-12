@@ -8,10 +8,10 @@ import { formatNumber } from '../util/number-helper';
 export class NumberPipe implements PipeTransform {
   transform(
     value: number | string | null | undefined,
-    decimalLength: number = 2,
-    chunkDelimiter: string = '',
-    decimalDelimiter: string = '.',
-    chunkLength: number = 3,
+    decimalLength = 2,
+    chunkDelimiter = '',
+    decimalDelimiter = '.',
+    chunkLength = 3,
   ): string {
     if (value === null || value === undefined || value === '') {
       return '';
@@ -22,7 +22,7 @@ export class NumberPipe implements PipeTransform {
     if (decimalLength === null) {
       return value.toString();
     }
-    value = Number(value);
+
     return formatNumber(value, decimalLength, chunkDelimiter, decimalDelimiter, chunkLength);
   }
 }

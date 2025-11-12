@@ -17,17 +17,20 @@ export const formatNumber = (
   chunkDelimiter: string,
   decimalDelimiter: string,
   chunkLength: number,
-) => {
-  const abs = Math.abs(value);
+): string => {
+  const numberValue = Number(value);
+  const abs = Math.abs(numberValue);
   if (0 < abs && 1 > abs) {
     const firstDigitIndex = Math.floor(Math.abs(Math.log10(abs)));
     decimalLength += firstDigitIndex;
   }
-  const precision = Math.min(getPrecision(value), Math.floor(decimalLength));
-  const result = '\\d(?=(\\d{' + chunkLength + '})+' + (precision > 0 ? '\\D' : '$') + ')';
-  const num = value.toFixed(precision);
-  return (decimalDelimiter ? num.replace('.', decimalDelimiter) : num).replace(
-    new RegExp(result, 'g'),
+
+  const precision = Math.min(getPrecision(numberValue), Math.floor(decimalLength));
+  const digitGroupingRegex = '\\d(?=(\\d{' + chunkLength + '})+' + (precision > 0 ? '\\D' : '$') + ')';
+  const formattedNumberString = numberValue.toFixed(precision);
+
+  return (decimalDelimiter ? formattedNumberString.replace('.', decimalDelimiter) : formattedNumberString).replace(
+    new RegExp(digitGroupingRegex, 'g'),
     '$&' + chunkDelimiter,
   );
 };
