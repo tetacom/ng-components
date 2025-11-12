@@ -14,7 +14,6 @@ export const getPrecision = (a: number) => {
 export const formatNumber = (
   value: any,
   decimalLength: number,
-  isFocused: boolean,
   chunkDelimiter: string,
   decimalDelimiter: string,
   chunkLength: number,
@@ -26,19 +25,9 @@ export const formatNumber = (
     decimalLength += firstDigitIndex;
   }
 
-  let precision = Math.min(getPrecision(numberValue), Math.floor(decimalLength));
-  if (isFocused && numberValue === 0 && typeof value === 'string') {
-    const decimalPart = value.split('.')[1] || '';
-    const trailingZerosMatch = decimalPart.match(/0*$/);
-    precision = trailingZerosMatch ? trailingZerosMatch[0].length : 0;
-  }
-
+  const precision = Math.min(getPrecision(numberValue), Math.floor(decimalLength));
   const digitGroupingRegex = '\\d(?=(\\d{' + chunkLength + '})+' + (precision > 0 ? '\\D' : '$') + ')';
-  let formattedNumberString = numberValue.toFixed(precision);
-
-  if (isFocused && numberValue === 0 && 1 / numberValue === -Infinity) {
-    formattedNumberString = '-' + formattedNumberString;
-  }
+  const formattedNumberString = numberValue.toFixed(precision);
 
   return (decimalDelimiter ? formattedNumberString.replace('.', decimalDelimiter) : formattedNumberString).replace(
     new RegExp(digitGroupingRegex, 'g'),

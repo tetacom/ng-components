@@ -9,7 +9,6 @@ export class NumberPipe implements PipeTransform {
   transform(
     value: number | string | null | undefined,
     decimalLength = 2,
-    isFocused = false,
     chunkDelimiter = '',
     decimalDelimiter = '.',
     chunkLength = 3,
@@ -24,6 +23,6 @@ export class NumberPipe implements PipeTransform {
       return value.toString();
     }
 
-    return formatNumber(value, decimalLength, isFocused, chunkDelimiter, decimalDelimiter, chunkLength);
+    return formatNumber(value, decimalLength, chunkDelimiter, decimalDelimiter, chunkLength);
   }
 }
