@@ -2,6 +2,11 @@
 @import './util/font-util.scss';
 @import 'presets/view-types.scss';
 
+@mixin loaderBorder($border-color) {
+  border-color: $border-color;
+  border-top-color: transparent;
+}
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -16,6 +21,17 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  &.button_primary {
+    color: var(--color-global-white);
+    fill: var(--color-global-white);
+
+    .loader {
+      &::before {
+        @include loaderBorder(var(--color-global-white));
+      }
+    }
+  }
 
   @include getView('btn');
 
@@ -60,8 +76,8 @@
 
   .loader {
     &::before {
-      border-color: var(--color-text-90);
-      border-top-color: transparent;
+      @include loaderBorder(var(--color-text-90));
+
       width: 16px;
       height: 16px;
       margin-left: -8px;
