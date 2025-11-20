@@ -110,7 +110,8 @@ export class DynamicComponentService {
     const componentRef = componentFactory.create(injector);
     for (const key in context) {
       if (Object.prototype.hasOwnProperty.call(context, key)) {
-        componentRef.instance[key] = context[key];
+        // componentRef.instance[key] = context[key];
+        componentRef.setInput(key, context[key]);
       }
     }
     const componentNativeEl = componentRef.location.nativeElement;
