@@ -2038,7 +2038,7 @@ a {
   transition: background-color 0.2s ease-in-out;
 }
 .accordion-item_active {
-  background: var(--color-text-10);
+  background: var(--color-text-5);
 }
 .accordion-item_active.accordion-item_divider::after {
   background-color: transparent;
@@ -2081,6 +2081,7 @@ a {
   gap: 12px;
   padding: 12px;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  border-radius: 8px;
 }
 .accordion-head_disabled {
   color: var(--color-text-30);
