@@ -27,13 +27,13 @@
   }
 
   &-l {
-    height: 20px;
-    width: 20px;
+    height: 24px;
+    width: 24px;
   }
 
   &-xl {
-    height: 24px;
-    width: 24px;
+    height: 32px;
+    width: 32px;
   }
 
   @each $paletteName, $palette in map.get($themes, list.nth(map.keys($themes), 1)) {
