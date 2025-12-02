@@ -14,7 +14,7 @@
     transition: background-color 0.2s ease-in-out;
 
     &_active {
-      background: var(--color-text-10);
+      background: var(--color-text-5);
 
       &.accordion-item_divider {
         &::after {
@@ -64,6 +64,7 @@
     transition:
       background-color 0.2s ease-in-out,
       color 0.2s ease-in-out;
+    border-radius: 8px;
 
     &_disabled {
       color: var(--color-text-30);
