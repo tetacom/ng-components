@@ -5,17 +5,15 @@
 .button {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
+  gap: 4px;
   border: 0;
-  color: var(--color-global-white);
-  fill: var(--color-global-white);
-  transition:
-    background 0.4s,
-    color 0.4s;
+  color: var(--teta-button-color);
+  fill: var(--teta-button-color);
+  transition: all 0.3s;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  height: var(--teta-button-size);
 
   @include getView('btn');
 
@@ -23,34 +21,46 @@
     cursor: pointer;
   }
 
+  &-xs {
+    --teta-button-size: 24px;
+    @include getFont($fonts, 'button-3');
+
+    padding: 0 8px;
+  }
+
   &-s {
-    height: 24px;
+    --teta-button-size: 28px;
+    @include getFont($fonts, 'button-2');
+
+    padding: 0 12px;
   }
 
   &-m {
-    height: 28px;
+    --teta-button-size: 32px;
+    @include getFont($fonts, 'button-2');
+
+    padding: 0 16px;
   }
 
   &-l {
-    height: 32px;
+    --teta-button-size: 44px;
+    @include getFont($fonts, 'title-2');
+
+    padding: 0 24px;
+  }
+
+  &-xl {
+    --teta-button-size: 56px;
+    @include getFont($fonts, 'title-1');
+
+    padding: 0 32px;
   }
 
   &-square {
-    width: 28px;
+    width: var(--teta-button-size);
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-  }
-
-  &[disabled],
-  &[disabled]:hover,
-  &[disabled]:focus-visible {
-    border: none;
-    background-color: var(--color-text-30);
-  }
-
-  &:focus-visible {
-    box-shadow: 0 0 0 4px var(--color-primary-10);
   }
 
   &:has(.loader) {
@@ -59,17 +69,12 @@
   }
 
   .loader::before {
-    width: 16px;
-    height: 16px;
-    margin-left: -8px;
-    margin-top: -8px;
+    width: calc(var(--teta-button-size) / 2);
+    height: calc(var(--teta-button-size) / 2);
+    margin-left: calc(var(--teta-button-size) / 4 * -1);
+    margin-top: calc(var(--teta-button-size) / 4 * -1);
     border-width: 2px;
-    border-color: var(--color-text-90);
-    border-top-color: transparent;
-  }
-
-  &:is(.button_primary) .loader::before {
-    border-color: var(--color-global-white);
+    border-color: var(--teta-button-color);
     border-top-color: transparent;
   }
 }

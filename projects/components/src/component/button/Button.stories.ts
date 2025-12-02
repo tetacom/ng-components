@@ -24,7 +24,7 @@ export default {
       control: { type: 'select' },
     },
     size: {
-      options: [TetaSize.S, TetaSize.M, TetaSize.L],
+      options: [TetaSize.XS, TetaSize.S, TetaSize.M, TetaSize.L, TetaSize.XL],
       control: { type: 'select' },
     },
     view: {
@@ -58,7 +58,7 @@ export const baseButton: StoryFn = (args) => ({
   props: args,
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
        <button teta-button [tetaLoader]="loading" [disabled]="false" [view]="view" [square]="false"  [size]="size" [viewType]="viewType" [palette]="palette">
-          <teta-icon [name]="'addCircle'"></teta-icon>
+          <teta-icon [name]="'addCircle'" [size]="size"></teta-icon>
           {{text}}
        </button>
 </div>`,
@@ -70,19 +70,7 @@ export const disabledButton: StoryFn = (args) => ({
   props: args,
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
        <button teta-button [tetaLoader]="loading" [disabled]="true" [view]="view" [square]="false"  [size]="size" [viewType]="viewType" [palette]="palette">
-          <teta-icon [name]="'addCircle'"></teta-icon>
-          {{text}}
-       </button>
-</div>`,
-});
-export const loadingButton: StoryFn = (args) => ({
-  moduleMetadata: {
-    imports: [IconSpriteDirective, IconComponent, LoaderDirective],
-  },
-  props: args,
-  template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
-       <button teta-button [tetaLoader]="true" [disabled]="false" [view]="view" [square]="false"  [size]="size" [viewType]="viewType" [palette]="palette">
-          <teta-icon [name]="'addCircle'"></teta-icon>
+          <teta-icon [name]="'addCircle'" [size]="size"></teta-icon>
           {{text}}
        </button>
 </div>`,
@@ -94,7 +82,7 @@ export const squireButton = (args) => ({
   props: args,
   template: `<div class="row bg-global-bgcard padding-3 gap-20" [tetaIconSprite]="'assets/icons.svg'">
        <button teta-button [tetaLoader]="loading" [disabled]="false" [view]="view" [square]="true"  [size]="size" [viewType]="viewType" [palette]="palette">
-          <teta-icon [name]="'addCircle'"></teta-icon>
+          <teta-icon [name]="'addCircle'" [size]="size"></teta-icon>
           {{text}}
        </button>
 </div>`,
