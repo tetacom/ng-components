@@ -622,14 +622,14 @@ a {
   background-color: var(--color-global-70);
 }
 .button_primary.button-global:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-global-10);
+  box-shadow: 0 0 0 4px var(--color-global-10);
 }
 .button_primary.button-global[disabled], .button_primary.button-global[disabled]:hover, .button_primary.button-global[disabled]:focus-visible {
   background-color: var(--color-text-30);
 }
 
 .button_ghost.button-global {
-  --teta-button-color: var(--color-global-50);
+  --teta-button-color: var(--color-global-90);
   background-color: transparent;
 }
 .button_ghost.button-global.hover:not(:disabled), .button_ghost.button-global:hover:not(:disabled) {
@@ -639,7 +639,7 @@ a {
   background-color: var(--color-global-10);
 }
 .button_ghost.button-global:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-global-10);
+  box-shadow: 0 0 0 4px var(--color-global-10);
 }
 .button_ghost.button-global[disabled], .button_ghost.button-global[disabled]:hover, .button_ghost.button-global[disabled]:focus-visible {
   --teta-button-color: var(--color-text-30);
@@ -659,7 +659,7 @@ a {
   background-color: var(--color-global-10);
 }
 .button_outline.button-global:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-global-10);
+  box-shadow: 0 0 0 4px var(--color-global-10);
 }
 .button_outline.button-global[disabled], .button_outline.button-global[disabled]:hover, .button_outline.button-global[disabled]:focus-visible {
   --teta-button-color: var(--color-text-30);
@@ -757,14 +757,14 @@ a {
   background-color: var(--color-text-70);
 }
 .button_primary.button-text:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-text-10);
+  box-shadow: 0 0 0 4px var(--color-text-10);
 }
 .button_primary.button-text[disabled], .button_primary.button-text[disabled]:hover, .button_primary.button-text[disabled]:focus-visible {
   background-color: var(--color-text-30);
 }
 
 .button_ghost.button-text {
-  --teta-button-color: var(--color-text-50);
+  --teta-button-color: var(--color-text-90);
   background-color: transparent;
 }
 .button_ghost.button-text.hover:not(:disabled), .button_ghost.button-text:hover:not(:disabled) {
@@ -774,7 +774,7 @@ a {
   background-color: var(--color-text-10);
 }
 .button_ghost.button-text:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-text-10);
+  box-shadow: 0 0 0 4px var(--color-text-10);
 }
 .button_ghost.button-text[disabled], .button_ghost.button-text[disabled]:hover, .button_ghost.button-text[disabled]:focus-visible {
   --teta-button-color: var(--color-text-30);
@@ -794,7 +794,7 @@ a {
   background-color: var(--color-text-10);
 }
 .button_outline.button-text:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-text-10);
+  box-shadow: 0 0 0 4px var(--color-text-10);
 }
 .button_outline.button-text[disabled], .button_outline.button-text[disabled]:hover, .button_outline.button-text[disabled]:focus-visible {
   --teta-button-color: var(--color-text-30);
@@ -972,14 +972,14 @@ a {
   background-color: var(--color-primary-70);
 }
 .button_primary.button-primary:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-primary-10);
+  box-shadow: 0 0 0 4px var(--color-primary-10);
 }
 .button_primary.button-primary[disabled], .button_primary.button-primary[disabled]:hover, .button_primary.button-primary[disabled]:focus-visible {
   background-color: var(--color-text-30);
 }
 
 .button_ghost.button-primary {
-  --teta-button-color: var(--color-primary-50);
+  --teta-button-color: var(--color-primary-90);
   background-color: transparent;
 }
 .button_ghost.button-primary.hover:not(:disabled), .button_ghost.button-primary:hover:not(:disabled) {
@@ -989,7 +989,7 @@ a {
   background-color: var(--color-primary-10);
 }
 .button_ghost.button-primary:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-primary-10);
+  box-shadow: 0 0 0 4px var(--color-primary-10);
 }
 .button_ghost.button-primary[disabled], .button_ghost.button-primary[disabled]:hover, .button_ghost.button-primary[disabled]:focus-visible {
   --teta-button-color: var(--color-text-30);
@@ -1009,7 +1009,7 @@ a {
   background-color: var(--color-primary-10);
 }
 .button_outline.button-primary:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-primary-10);
+  box-shadow: 0 0 0 4px var(--color-primary-10);
 }
 .button_outline.button-primary[disabled], .button_outline.button-primary[disabled]:hover, .button_outline.button-primary[disabled]:focus-visible {
   --teta-button-color: var(--color-text-30);
@@ -1187,14 +1187,14 @@ a {
   background-color: var(--color-green-70);
 }
 .button_primary.button-green:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-green-10);
+  box-shadow: 0 0 0 4px var(--color-green-10);
 }
 .button_primary.button-green[disabled], .button_primary.button-green[disabled]:hover, .button_primary.button-green[disabled]:focus-visible {
   background-color: var(--color-text-30);
 }
 
 .button_ghost.button-green {
-  --teta-button-color: var(--color-green-50);
+  --teta-button-color: var(--color-green-90);
   background-color: transparent;
 }
 .button_ghost.button-green.hover:not(:disabled), .button_ghost.button-green:hover:not(:disabled) {
@@ -1204,7 +1204,7 @@ a {
   background-color: var(--color-green-10);
 }
 .button_ghost.button-green:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-green-10);
+  box-shadow: 0 0 0 4px var(--color-green-10);
 }
 .button_ghost.button-green[disabled], .button_ghost.button-green[disabled]:hover, .button_ghost.button-green[disabled]:focus-visible {
   --teta-button-color: var(--color-text-30);
@@ -1224,7 +1224,7 @@ a {
   background-color: var(--color-green-10);
 }
 .button_outline.button-green:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-green-10);
+  box-shadow: 0 0 0 4px var(--color-green-10);
 }
 .button_outline.button-green[disabled], .button_outline.button-green[disabled]:hover, .button_outline.button-green[disabled]:focus-visible {
   --teta-button-color: var(--color-text-30);
@@ -1402,14 +1402,14 @@ a {
   background-color: var(--color-red-70);
 }
 .button_primary.button-red:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-red-10);
+  box-shadow: 0 0 0 4px var(--color-red-10);
 }
 .button_primary.button-red[disabled], .button_primary.button-red[disabled]:hover, .button_primary.button-red[disabled]:focus-visible {
   background-color: var(--color-text-30);
 }
 
 .button_ghost.button-red {
-  --teta-button-color: var(--color-red-50);
+  --teta-button-color: var(--color-red-90);
   background-color: transparent;
 }
 .button_ghost.button-red.hover:not(:disabled), .button_ghost.button-red:hover:not(:disabled) {
@@ -1419,7 +1419,7 @@ a {
   background-color: var(--color-red-10);
 }
 .button_ghost.button-red:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-red-10);
+  box-shadow: 0 0 0 4px var(--color-red-10);
 }
 .button_ghost.button-red[disabled], .button_ghost.button-red[disabled]:hover, .button_ghost.button-red[disabled]:focus-visible {
   --teta-button-color: var(--color-text-30);
@@ -1439,7 +1439,7 @@ a {
   background-color: var(--color-red-10);
 }
 .button_outline.button-red:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-red-10);
+  box-shadow: 0 0 0 4px var(--color-red-10);
 }
 .button_outline.button-red[disabled], .button_outline.button-red[disabled]:hover, .button_outline.button-red[disabled]:focus-visible {
   --teta-button-color: var(--color-text-30);
@@ -1617,14 +1617,14 @@ a {
   background-color: var(--color-yellow-70);
 }
 .button_primary.button-yellow:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-yellow-10);
+  box-shadow: 0 0 0 4px var(--color-yellow-10);
 }
 .button_primary.button-yellow[disabled], .button_primary.button-yellow[disabled]:hover, .button_primary.button-yellow[disabled]:focus-visible {
   background-color: var(--color-text-30);
 }
 
 .button_ghost.button-yellow {
-  --teta-button-color: var(--color-yellow-50);
+  --teta-button-color: var(--color-yellow-90);
   background-color: transparent;
 }
 .button_ghost.button-yellow.hover:not(:disabled), .button_ghost.button-yellow:hover:not(:disabled) {
@@ -1634,7 +1634,7 @@ a {
   background-color: var(--color-yellow-10);
 }
 .button_ghost.button-yellow:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-yellow-10);
+  box-shadow: 0 0 0 4px var(--color-yellow-10);
 }
 .button_ghost.button-yellow[disabled], .button_ghost.button-yellow[disabled]:hover, .button_ghost.button-yellow[disabled]:focus-visible {
   --teta-button-color: var(--color-text-30);
@@ -1654,7 +1654,7 @@ a {
   background-color: var(--color-yellow-10);
 }
 .button_outline.button-yellow:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-yellow-10);
+  box-shadow: 0 0 0 4px var(--color-yellow-10);
 }
 .button_outline.button-yellow[disabled], .button_outline.button-yellow[disabled]:hover, .button_outline.button-yellow[disabled]:focus-visible {
   --teta-button-color: var(--color-text-30);
@@ -1832,14 +1832,14 @@ a {
   background-color: var(--color-chart-70);
 }
 .button_primary.button-chart:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-chart-10);
+  box-shadow: 0 0 0 4px var(--color-chart-10);
 }
 .button_primary.button-chart[disabled], .button_primary.button-chart[disabled]:hover, .button_primary.button-chart[disabled]:focus-visible {
   background-color: var(--color-text-30);
 }
 
 .button_ghost.button-chart {
-  --teta-button-color: var(--color-chart-50);
+  --teta-button-color: var(--color-chart-90);
   background-color: transparent;
 }
 .button_ghost.button-chart.hover:not(:disabled), .button_ghost.button-chart:hover:not(:disabled) {
@@ -1849,7 +1849,7 @@ a {
   background-color: var(--color-chart-10);
 }
 .button_ghost.button-chart:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-chart-10);
+  box-shadow: 0 0 0 4px var(--color-chart-10);
 }
 .button_ghost.button-chart[disabled], .button_ghost.button-chart[disabled]:hover, .button_ghost.button-chart[disabled]:focus-visible {
   --teta-button-color: var(--color-text-30);
@@ -1869,7 +1869,7 @@ a {
   background-color: var(--color-chart-10);
 }
 .button_outline.button-chart:focus-visible {
-  box-shadow: 0px 0px 0px 4px var(--color-chart-10);
+  box-shadow: 0 0 0 4px var(--color-chart-10);
 }
 .button_outline.button-chart[disabled], .button_outline.button-chart[disabled]:hover, .button_outline.button-chart[disabled]:focus-visible {
   --teta-button-color: var(--color-text-30);
@@ -2481,7 +2481,7 @@ a {
   padding: 0 16px;
 }
 .button-l {
-  --teta-button-size: 44px;
+  --teta-button-size: 40px;
   font-size: 14px;
   font-family: Inter;
   font-weight: 500;
@@ -2491,7 +2491,7 @@ a {
   padding: 0 24px;
 }
 .button-xl {
-  --teta-button-size: 56px;
+  --teta-button-size: 48px;
   font-size: 16px;
   font-family: Inter;
   font-weight: 500;
@@ -2499,7 +2499,7 @@ a {
   line-height: 24px;
   letter-spacing: 0.0015em;
   text-decoration: none;
-  padding: 0 32px;
+  padding: 0 24px;
 }
 .button-square {
   width: var(--teta-button-size);
