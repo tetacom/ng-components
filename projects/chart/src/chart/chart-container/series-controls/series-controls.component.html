@@ -5,9 +5,9 @@
           tetaDropdownHead
           [class.active]="dropdown.open"
           [palette]="'text'"
+          [square]="true"
           [view]="'ghost'">
     <teta-icon [name]="'gear'"></teta-icon>
-    {{ 'charts.settings' | transloco }}
   </button>
   <div tetaDropdownContent class="column shadow-2" style="min-width: 200px;">
     @if (disabledSeries().length > 0) {
