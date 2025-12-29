@@ -62,7 +62,7 @@ export class PositionUtil {
 
     if (verticalAlign === VerticalAlign.auto) {
       if (
-        containerPosition.bottom + elementHeight > window.innerHeight &&
+        Math.floor(containerPosition.bottom + elementHeight) > window.innerHeight &&
         containerPosition.bottom >= window.innerHeight / 2
       ) {
         verticalAlign = VerticalAlign.top;
@@ -72,7 +72,7 @@ export class PositionUtil {
     }
     if (verticalAlign === VerticalAlign.innerAuto) {
       if (
-        containerPosition.bottom + elementHeight > window.innerHeight &&
+        Math.floor(containerPosition.bottom + elementHeight) > window.innerHeight &&
         containerPosition.bottom >= window.innerHeight / 2
       ) {
         verticalAlign = VerticalAlign.innerTop;
