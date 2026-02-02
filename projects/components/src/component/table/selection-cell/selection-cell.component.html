@@ -1,7 +1,7 @@
 <teta-checkbox
   [binary]="true"
   [noLabel]="true"
-  [ngModel]="selectedRows?.indexOf(row) >= 0"
+  [ngModel]="isSelected()"
   (ngModelChange)="selectRow($event)"
   (click)="$event.stopPropagation()"
 ></teta-checkbox>
