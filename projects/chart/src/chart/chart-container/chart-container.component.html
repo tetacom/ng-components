@@ -98,7 +98,7 @@
         }
       </g>
       <g class="x-axis-plotline-container">
-        @for (axis of data.config.xAxis; let i = $index; track axis) {
+        @for (axis of data.config.xAxis; let i = $index; track i) {
           @for (plotLine of axis.plotLines; track $index) {
             <g teta-plot-line
                [plotLine]="plotLine"
@@ -109,7 +109,7 @@
         }
       </g>
       <g class="y-axis-plotline-container">
-        @for (axis of data.config.yAxis; let i = $index; track axis) {
+        @for (axis of data.config.yAxis; let i = $index; track i) {
           @for (plotLine of axis.plotLines; track $index) {
             <g teta-plot-line
                [plotLine]="plotLine"
