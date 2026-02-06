@@ -120,7 +120,7 @@
         }
       </g>
       <g class="annotations">
-        @for (annotation of data.config.annotations; track annotation) {
+        @for (annotation of data.config.annotations; track $index) {
           <g teta-annotation [visibleRect]="data.visibleRect" [annotation]="annotation"></g>
         }
       </g>
