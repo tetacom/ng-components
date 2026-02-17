@@ -33,15 +33,22 @@ export class OnlyNumberDirective {
     }
     e.preventDefault();
     e.stopPropagation();
-    // this.validateValue(this._elementRef.nativeElement.value);
   }
 
   @HostListener('blur', ['$event']) onBlur(e: any) {
     e.preventDefault();
     e.stopPropagation();
-    const value = this._elementRef.nativeElement.value;
-    if (value.endsWith('.')) {
-      this._elementRef.nativeElement.value = value.replace('.', '');
+    let value = this._elementRef.nativeElement.value;
+    if (value === '') {
+      value = null;
+      this._elementRef.nativeElement.value = value;
+      this._elementRef.nativeElement.dispatchEvent(new Event('input'));
+    } else if (value.endsWith('.')) {
+      value = value.replace('.', '');
+      if (value === '') {
+        value = null;
+      }
+      this._elementRef.nativeElement.value = value;
       this._elementRef.nativeElement.dispatchEvent(new Event('input'));
     }
   }
