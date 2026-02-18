@@ -38,17 +38,9 @@ export class OnlyNumberDirective {
   @HostListener('blur', ['$event']) onBlur(e: any) {
     e.preventDefault();
     e.stopPropagation();
-    let value = this._elementRef.nativeElement.value;
-    if (value === '') {
-      value = null;
-      this._elementRef.nativeElement.value = value;
-      this._elementRef.nativeElement.dispatchEvent(new Event('input'));
-    } else if (value.endsWith('.')) {
-      value = value.replace('.', '');
-      if (value === '') {
-        value = null;
-      }
-      this._elementRef.nativeElement.value = value;
+    const value = this._elementRef.nativeElement.value;
+    if (value.endsWith('.')) {
+      this._elementRef.nativeElement.value = value.replace('.', '');
       this._elementRef.nativeElement.dispatchEvent(new Event('input'));
     }
   }
