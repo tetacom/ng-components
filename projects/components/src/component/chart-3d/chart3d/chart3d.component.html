@@ -1,1 +1,16 @@
 <canvas #canvas></canvas>
+<div #tooltip class="bg-global-bgcard tooltip color-text-90" [style.display]="tooltipVisible ? 'block' : 'none'" [style.left.px]="tooltipX" [style.top.px]="tooltipY">
+  <div class="tooltip-content">
+    <div class="tooltip-header">
+      <strong>{{ tooltipWellName }}</strong>
+    </div>
+    <div class="tooltip-row">
+      <span class="label">MD:</span>
+      <span class="value">{{ tooltipMD }} {{ tooltipUnit }}</span>
+    </div>
+    <div class="tooltip-row">
+      <span class="label">TVD:</span>
+      <span class="value">{{ tooltipTVD }} {{ tooltipUnit }}</span>
+    </div>
+  </div>
+</div>

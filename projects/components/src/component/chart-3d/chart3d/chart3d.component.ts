@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -16,6 +17,8 @@ import { Series3d } from '../model/series-3d';
 import { ThemeSwitchService } from '../../theme-switch/theme-switch.service';
 import { takeWhile, tap } from 'rxjs/operators';
 import { OrbitControls } from 'three-stdlib';
+import { Chart3dTooltipService } from '../services/chart3d-tooltip.service';
+import { WellMeshData, IntersectionResult } from '../model/chart3d-tooltip';
 
 @Component({
   selector: 'teta-chart3d',
@@ -26,6 +29,7 @@ import { OrbitControls } from 'three-stdlib';
 })
 export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('canvas') canvasRef: ElementRef;
+  @ViewChild('tooltip') tooltipRef: ElementRef;
 
   private _scene: THREE.Scene;
   private _camera: THREE.PerspectiveCamera;
@@ -33,6 +37,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
   private _controls: OrbitControls;
   private _obs: ResizeObserver;
   private _config: Chart3dOptions;
+  private _animationFrameId: number;
 
   private SIDE_SIZE = 100;
   private gridColor: any;
@@ -40,9 +45,26 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private _alive = true;
 
+  // Tooltip properties
+  tooltipVisible = true;
+  tooltipX = 0;
+  tooltipY = 0;
+  tooltipWellName = '';
+  tooltipMD = '';
+  tooltipTVD = '';
+  tooltipUnit = 'm';
+
+  // Raycasting
+  private _wellMeshes: WellMeshData[] = [];
+  private _tooltipMarker: THREE.Mesh;
+  private _mouseMoveHandler: (event: MouseEvent) => void;
+  private _mouseLeaveHandler: () => void;
+
   constructor(
     private _elementRef: ElementRef,
     private _themeService: ThemeSwitchService,
+    private _cdr: ChangeDetectorRef,
+    private _tooltipService: Chart3dTooltipService,
   ) {}
 
   @Input() set config(config: Chart3dOptions) {
@@ -77,12 +99,15 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addResizeObserver();
     this.createScene();
     this.startRenderingLoop();
+    this.addMouseMoveListener();
     this.init();
   }
 
   ngOnDestroy() {
     this._alive = false;
     this.removeResizeObserver();
+    this.removeMouseListeners();
+    this.disposeThreeResources();
   }
 
   private init() {
@@ -93,6 +118,8 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
     while (this._scene.children.length > 0) {
       this._scene.remove(this._scene.children[0]);
     }
+
+    this._wellMeshes = [];
 
     const { x, y, z } = this.getScales(this._config.series);
 
@@ -105,14 +132,24 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
 
       const color = d3.scaleOrdinal(d3.schemeTableau10);
 
-      const material = new THREE.LineBasicMaterial({
+      const material = new THREE.MeshBasicMaterial({
         color: data?.color ?? color(idx.toString()),
       });
 
-      const tubeGeometry = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 1024, 0.5, 20, false);
+      const curve = new THREE.CatmullRomCurve3(points);
+      const tubeGeometry = new THREE.TubeGeometry(curve, 1024, 0.5, 20, false);
 
-      let tube = new THREE.Line(tubeGeometry, material);
+      let tube = new THREE.Mesh(tubeGeometry, material);
       this._scene.add(tube);
+
+      // Store well mesh with its data for raycasting
+      this._wellMeshes.push({
+        mesh: tube,
+        series: data,
+        scale: { x, y, z },
+        curve: curve,
+        points: data.points,
+      });
     });
 
     const circles = x.ticks(this.SIDE_SIZE / 10);
@@ -200,7 +237,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     const animate = () => {
-      requestAnimationFrame(animate);
+      this._animationFrameId = requestAnimationFrame(animate);
       this._controls?.update();
       this.render();
     };
@@ -333,4 +370,187 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
 
     return { x, y, z };
   }
+
+  private addMouseMoveListener() {
+    this._mouseMoveHandler = (event) => {
+        this.handleMouseMove(event);
+    };
+
+    this._mouseLeaveHandler = () => {
+      this.hideTooltip();
+      this._cdr.detectChanges();
+    };
+
+    this.canvas.addEventListener('mousemove', this._mouseMoveHandler);
+    this.canvas.addEventListener('mouseleave', this._mouseLeaveHandler);
+  }
+
+  private handleMouseMove(event: MouseEvent): void {
+    const intersection = this._tooltipService.findIntersection(
+      event,
+      this.canvas,
+      this._camera,
+      this._wellMeshes
+    );
+
+    if (intersection) {
+      this.showTooltip(intersection, event);
+      this.updateTooltipMarker(
+        intersection.intersectionPoint,
+        intersection.wellData.curve
+      );
+      this.canvas.style.cursor = 'pointer';
+    } else {
+      this.hideTooltip();
+      this.canvas.style.cursor = 'default';
+    }
+
+    this._cdr.detectChanges();
+  }
+
+  private showTooltip(intersection: IntersectionResult, event: MouseEvent): void {
+    const rect = this.canvas.getBoundingClientRect();
+
+    this.tooltipVisible = true;
+    this.tooltipX = event.clientX - rect.left;
+    this.tooltipY = event.clientY - rect.top;
+    this.tooltipWellName = intersection.wellData.series.name || 'Well';
+    this.tooltipMD = intersection.md.toFixed(2);
+    this.tooltipTVD = intersection.tvd.toFixed(2);
+    this.tooltipUnit = this._config.unit || 'm';
+
+    if (this._tooltipMarker) {
+      this._tooltipMarker.visible = true;
+    }
+  }
+
+  private hideTooltip(): void {
+    this.tooltipVisible = false;
+    if (this._tooltipMarker) {
+      this._tooltipMarker.visible = false;
+    }
+  }
+
+  private removeMouseListeners() {
+    if (this.canvas && this._mouseMoveHandler) {
+      this.canvas.removeEventListener('mousemove', this._mouseMoveHandler);
+    }
+    if (this.canvas && this._mouseLeaveHandler) {
+      this.canvas.removeEventListener('mouseleave', this._mouseLeaveHandler);
+    }
+  }
+
+  private disposeThreeResources() {
+    // Cancel animation frame
+    if (this._animationFrameId) {
+      cancelAnimationFrame(this._animationFrameId);
+    }
+
+    // Dispose tooltip marker
+    if (this._tooltipMarker) {
+      this._tooltipMarker.geometry.dispose();
+      (this._tooltipMarker.material as THREE.Material).dispose();
+    }
+
+    // Dispose all scene objects
+    if (this._scene) {
+      this._scene.traverse((object) => {
+        if (object instanceof THREE.Mesh) {
+          object.geometry?.dispose();
+          if (object.material) {
+            if (Array.isArray(object.material)) {
+              object.material.forEach((material) => material.dispose());
+            } else {
+              object.material.dispose();
+            }
+          }
+        }
+        if (object instanceof THREE.Line || object instanceof THREE.LineSegments) {
+          object.geometry?.dispose();
+          if (object.material) {
+            (object.material as THREE.Material).dispose();
+          }
+        }
+        if (object instanceof THREE.Sprite) {
+          if (object.material) {
+            const spriteMaterial = object.material as THREE.SpriteMaterial;
+            spriteMaterial.map?.dispose();
+            spriteMaterial.dispose();
+          }
+        }
+      });
+    }
+
+    // Dispose controls
+    if (this._controls) {
+      this._controls.dispose();
+    }
+
+    // Dispose renderer
+    if (this._renderer) {
+      this._renderer.dispose();
+    }
+
+    // Clear arrays
+    this._wellMeshes = [];
+  }
+
+  private updateTooltipMarker(intersectionPoint: THREE.Vector3, curve: THREE.CatmullRomCurve3) {
+    // Remove old marker if exists
+    if (this._tooltipMarker) {
+      this._scene.remove(this._tooltipMarker);
+      this._tooltipMarker.geometry.dispose();
+      (this._tooltipMarker.material as THREE.Material).dispose();
+    }
+
+    // Find the closest point on the curve using service
+    const pointOnCurve = this._tooltipService.findClosestPointOnCurve(
+      intersectionPoint,
+      curve
+    );
+
+    // Find parameter t for tangent calculation
+    let closestT = 0;
+    let minDistance = Infinity;
+    const samples = 100;
+
+    for (let i = 0; i <= samples; i++) {
+      const t = i / samples;
+      const curvePoint = curve.getPoint(t);
+      const distance = pointOnCurve.distanceTo(curvePoint);
+
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestT = t;
+      }
+    }
+
+    // Get tangent at this point to orient the ring
+    const tangent = curve.getTangent(closestT).normalize();
+
+    const markerGeometry = new THREE.TorusGeometry(.85, 0.25, 16, 32);
+    const markerMaterial = new THREE.MeshBasicMaterial({
+      color: 0xff4444,
+      transparent: true,
+      opacity: 0.85,
+      depthTest: false,
+      side: THREE.DoubleSide,
+    });
+
+    this._tooltipMarker = new THREE.Mesh(markerGeometry, markerMaterial);
+
+    // Position the marker at the point on curve
+    this._tooltipMarker.position.copy(pointOnCurve);
+
+    // Orient the ring perpendicular to the tangent
+    const up = new THREE.Vector3(0, 0, 1);
+    const quaternion = new THREE.Quaternion().setFromUnitVectors(up, tangent);
+    this._tooltipMarker.setRotationFromQuaternion(quaternion);
+
+    this._tooltipMarker.renderOrder = 999;
+    this._tooltipMarker.visible = true;
+
+    this._scene.add(this._tooltipMarker);
+  }
+
 }

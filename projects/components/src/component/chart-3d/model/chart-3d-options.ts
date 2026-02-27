@@ -7,10 +7,13 @@ export class Chart3dOptions {
     max?: number;
   };
 
+  unit?: string;
+
   series: Series3d<Base3dPoint>[];
 
   constructor(options?: Chart3dOptions) {
     this.axes = { ...options?.axes };
+    this.unit = options?.unit;
     this.series = options?.series || [];
   }
 }
