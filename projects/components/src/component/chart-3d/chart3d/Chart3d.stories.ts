@@ -16,7 +16,7 @@ function generateWellTrajectory(
   let cumulativeMD = 0;
 
   for (let i = 0; i < points; i++) {
-    const depth = i * 100;
+    const depth = i * 1000;
     const x = offsetX + Math.sin(i * 0.2) * 20 + i * 2;
     const z = offsetZ + Math.cos(i * 0.2) * 20 + i * 2;
 
@@ -29,7 +29,7 @@ function generateWellTrajectory(
       cumulativeMD += segmentLength;
     }
 
-    trajectory.push({ x, y: depth, z, md: cumulativeMD + 10 });
+    trajectory.push({ x: 0, y: depth, z: 0, md: depth });
   }
 
   return new Series3d({
@@ -83,25 +83,33 @@ export const basicChart3d: StoryFn = () => ({
   `,
 });
 
-export const singleWell: StoryFn = () => ({
-  moduleMetadata: {
-    imports: [Chart3dComponent],
-  },
-  props: {
-    config: new Chart3dOptions({
-      axes: { max: 7000 },
-      unit: 'm',
-      series: [generateWellTrajectory('Single Well', '#ff6b6b', 0, 0, 80)],
-    }),
-  },
-  template: `
+export const singleWell: StoryFn = () => {
+
+  const tr = generateWellTrajectory('Single Well', '#ff6b6b', 0, 0, 3)
+  console.log(tr)
+  return {
+    moduleMetadata: {
+      imports: [Chart3dComponent],
+    },
+    props: {
+      config: new Chart3dOptions({
+        axes: { max: 7000 },
+        unit: 'm',
+        series: [tr],
+      }),
+    },
+    template: `
     <div class="bg-global-bgmain padding-3" style="width: 100%; height: 100vh">
       <div class="bg-global-bgcard" style="width: 100%; height: 100%">
         <teta-chart3d [config]="config"></teta-chart3d>
       </div>
     </div>
   `,
-});
+  }
+
+}
+
+
 
 export const multipleWells: StoryFn = () => ({
   moduleMetadata: {

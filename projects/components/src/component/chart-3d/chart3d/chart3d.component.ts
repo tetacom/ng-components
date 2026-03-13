@@ -128,7 +128,8 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
       }
 
-      const points = data.points.map((_) => new THREE.Vector3(x(_.x), y(_.y), z(_.z)));
+      const orderedDataPoints = [...data.points].sort((a, b) => (a.md ?? 0) - (b.md ?? 0));
+      const points = orderedDataPoints.map((_) => new THREE.Vector3(x(_.x), y(_.y), z(_.z)));
 
       const color = d3.scaleOrdinal(d3.schemeTableau10);
 
@@ -148,7 +149,7 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
         series: data,
         scale: { x, y, z },
         curve: curve,
-        points: data.points,
+        points: orderedDataPoints,
       });
     });
 
@@ -503,8 +504,8 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
       (this._tooltipMarker.material as THREE.Material).dispose();
     }
 
-    // Find the closest point on the curve using service
-    const pointOnCurve = this._tooltipService.findClosestPointOnCurve(
+    // Closest point on curve (local helper, keep marker purely visual)
+    const pointOnCurve = this._tooltipService.findClosestPointOnCurveLocal(
       intersectionPoint,
       curve
     );
