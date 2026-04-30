@@ -19,16 +19,16 @@ import { TableHeadGroupComponent } from '../table-head-group/table-head-group.co
 import { SelectionHeadCellComponent } from '../selection-head-cell/selection-head-cell.component';
 
 @Component({
-    selector: 'teta-table-head',
-    templateUrl: './table-head.component.html',
-    styleUrls: ['./table-head.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [SelectionHeadCellComponent, TableHeadGroupComponent]
+  selector: 'teta-table-head',
+  templateUrl: './table-head.component.html',
+  styleUrls: ['./table-head.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [SelectionHeadCellComponent, TableHeadGroupComponent],
 })
 export class TableHeadComponent<T> implements OnInit, OnDestroy {
   @Input() selectType: SelectType;
   @Input() showHeadCellMenu: boolean;
-  @HostBinding('class.table-head') private readonly tableHeadClass = true;
+  @HostBinding('class.table-head') readonly tableHeadClass = true;
 
   state: FilterState;
   selectTypeEnum = SelectType;

@@ -24,7 +24,7 @@ export class FullScreenDirective {
     await this.service.toggle(this.elementRef.nativeElement);
   }
 
-  async onEsc(ev: KeyboardEvent) {
+  async onEsc(ev: Event) {
     if (document.fullscreenElement === this.elementRef.nativeElement) {
       ev.stopPropagation();
       await this.exit();

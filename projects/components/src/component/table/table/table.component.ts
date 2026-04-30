@@ -40,12 +40,12 @@ import { ContextMenuDirective } from '../../../directive/context-menu/context-me
 import { TableHeadComponent } from '../table-head/table-head.component';
 
 @Component({
-    selector: 'teta-table',
-    templateUrl: './table.component.html',
-    styleUrls: ['./table.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [TableService],
-    imports: [TableHeadComponent, ContextMenuDirective, TableBodyComponent]
+  selector: 'teta-table',
+  templateUrl: './table.component.html',
+  styleUrls: ['./table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [TableService],
+  imports: [TableHeadComponent, ContextMenuDirective, TableBodyComponent],
 })
 export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnChanges {
   @Input() data: T[] = [];
@@ -105,7 +105,7 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnCh
   @Output() valueChange = new EventEmitter<ICellInstance<T>>();
   @Output() tableService = new EventEmitter<TableService<T>>();
   @ViewChild('contextMenu', { static: true }) menu: ElementRef;
-  @HostBinding('class.table') private readonly tableClass = true;
+  @HostBinding('class.table') readonly tableClass = true;
   rowHeight = input<number>(28);
 
   selectedRowsList: T[];

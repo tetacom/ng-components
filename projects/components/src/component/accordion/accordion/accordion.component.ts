@@ -8,5 +8,5 @@ import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
   standalone: true,
 })
 export class AccordionComponent {
-  @HostBinding('class.accordion') private readonly accordionClassName = true;
+  @HostBinding('class.accordion') readonly accordionClassName = true;
 }

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, ElementRef, EventEmitter } from '@angular/core';
+import { ChangeDetectorRef, ElementRef, EventEmitter, inject } from '@angular/core';
 import { MaskitoOptions } from '@maskito/core';
 import dayjs from 'dayjs';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -9,8 +9,14 @@ import { VerticalAlign } from '../../common/enum/vertical-align.enum';
 import { viewType } from '../../common/model/view-type.model';
 import { DateFromToModel } from './model/from-to.model';
 import { TetaLocalisation } from '../../locale/teta-localisation';
+import { TetaConfigService } from '../../locale/teta-config.service';
 
 export abstract class BasePicker {
+  protected _elementRef = inject(ElementRef);
+  protected _cdr = inject(ChangeDetectorRef);
+  protected datePipe = inject(DatePipe);
+  protected localeService = inject(TetaConfigService);
+
   abstract mask: string;
   abstract date;
   abstract locale: Observable<TetaLocalisation>;
@@ -33,11 +39,7 @@ export abstract class BasePicker {
   public inputText: string;
   public maskitoOptions: MaskitoOptions;
 
-  protected constructor(
-    protected _elementRef: ElementRef,
-    protected _cdr: ChangeDetectorRef,
-    protected datePipe: DatePipe,
-  ) {
+  protected constructor() {
     this.inputText = this.checkNull();
   }
 

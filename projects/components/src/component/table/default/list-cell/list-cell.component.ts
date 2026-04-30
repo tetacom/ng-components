@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, signal, ViewChild } from '@angular/core';
 
 import { IIdName } from '../../../../common/contract/i-id-name';
 import { VerticalAlign } from '../../../../common/enum/vertical-align.enum';
 import { SelectComponent } from '../../../select/select/select.component';
 import { CellComponentBase } from '../../base/cell-component-base';
 import { ICellCoordinates } from '../../contract/i-cell-coordinates';
-import { TableService } from '../../service/table.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IconComponent } from '../../../icon/icon/icon.component';
 import { FormsUtil } from '../../../../util/forms-util';
@@ -34,13 +33,6 @@ export class ListCellComponent<T> extends CellComponentBase<T> implements OnInit
   @ViewChild('input', { static: false }) input: SelectComponent;
 
   verticalAlign = VerticalAlign;
-
-  constructor(
-    protected override svc: TableService<T>,
-    protected override cdr: ChangeDetectorRef,
-  ) {
-    super(svc, cdr);
-  }
 
   startEdit(initiator: ICellCoordinates, type: 'cell' | 'row'): void {
     if (initiator?.column === this.column.name) {

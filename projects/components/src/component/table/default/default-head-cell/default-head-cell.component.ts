@@ -1,16 +1,18 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input } from '@angular/core';
 import { HeadCellComponentBase } from '../../base/head-cell-component-base';
 import { TableColumn } from '../../contract/table-column';
 import { HintDirective } from '../../../../directive/hint/hint.directive';
 
 @Component({
-    selector: 'teta-default-head-cell',
-    templateUrl: './default-head-cell.component.html',
-    styleUrls: ['./default-head-cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [HintDirective]
+  selector: 'teta-default-head-cell',
+  templateUrl: './default-head-cell.component.html',
+  styleUrls: ['./default-head-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [HintDirective],
 })
-export class DefaultHeadCellComponent<T> extends HeadCellComponentBase<T>{
+export class DefaultHeadCellComponent<T> extends HeadCellComponentBase<T> {
+  private _cdr = inject(ChangeDetectorRef);
+
   private _column: TableColumn;
   private _columns: TableColumn[];
   private _data: T[];
@@ -45,11 +47,7 @@ export class DefaultHeadCellComponent<T> extends HeadCellComponentBase<T>{
     return this._data;
   }
 
-  constructor(private _cdr: ChangeDetectorRef) {
-    super();
-  }
-
-  getHint(){
+  getHint() {
     const hintText = this.column.hint || this.column.caption;
     return `${hintText}${this.column.unit ? `, ${this.column.unit}` : ''}`;
   }

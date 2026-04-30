@@ -14,11 +14,11 @@ import { IconComponent } from '../../icon/icon/icon.component';
 import { ResizeDragDirective } from '../../../directive/resize-drag/resize-drag.directive';
 
 @Component({
-    selector: 'teta-resize-panel',
-    templateUrl: './resize-panel.component.html',
-    styleUrls: ['./resize-panel.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [ResizeDragDirective, NgClass, IconComponent]
+  selector: 'teta-resize-panel',
+  templateUrl: './resize-panel.component.html',
+  styleUrls: ['./resize-panel.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ResizeDragDirective, NgClass, IconComponent],
 })
 export class ResizePanelComponent implements OnInit, OnDestroy {
   @Input() size = 8;
@@ -56,7 +56,7 @@ export class ResizePanelComponent implements OnInit, OnDestroy {
   @Input() name: string;
   @Input() minSize: number;
   @Input() maxSize: number;
-  @HostBinding('class.resize-panel') private readonly resizePanelClass = true;
+  @HostBinding('class.resize-panel') readonly resizePanelClass = true;
 
   private _direction: 'vertical' | 'horizontal' = 'horizontal';
   private _grabPosition: 'top' | 'left' | 'bottom' | 'right' = 'left';

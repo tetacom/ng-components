@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'teta-form-group-title',
@@ -7,10 +7,6 @@ import { ChangeDetectionStrategy, Component, HostBinding, OnInit } from '@angula
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class FormGroupTitleComponent implements OnInit {
-  @HostBinding('class.form-group-title') private readonly className = true;
-
-  constructor() {}
-
-  ngOnInit(): void {}
+export class FormGroupTitleComponent {
+  @HostBinding('class.form-group-title') readonly className = true;
 }

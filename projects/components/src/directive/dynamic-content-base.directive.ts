@@ -4,11 +4,11 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
+  inject,
   Injector,
   Input,
   NgZone,
   OnDestroy,
-  OnInit,
   Output,
   TemplateRef,
   Type,
@@ -20,9 +20,17 @@ import { Align } from '../common/enum/align.enum';
 import { VerticalAlign } from '../common/enum/vertical-align.enum';
 import { DynamicComponentService } from '../common/service/dynamic-component.service';
 import { PopupContentComponent } from '../component/dynamic-component/popup-content/popup-content.component';
+import { DOCUMENT } from '@angular/common';
 
 @Directive()
 export abstract class DynamicContentBaseDirective implements OnDestroy {
+  protected _document = inject(DOCUMENT);
+  protected _elementRef = inject(ElementRef);
+  protected _service = inject(DynamicComponentService);
+  protected _injector = inject(Injector);
+  protected _zone = inject(NgZone);
+  protected _cdr = inject(ChangeDetectorRef);
+
   @Input() data: any;
   @Input() className?: string | string[];
   @Input() align: Align = Align.left;
@@ -47,14 +55,7 @@ export abstract class DynamicContentBaseDirective implements OnDestroy {
 
   protected abstract get _dynamicContent(): string | TemplateRef<any> | Type<any> | null | undefined;
 
-  protected constructor(
-    protected _document: any,
-    protected _elementRef: ElementRef,
-    protected _service: DynamicComponentService,
-    protected _injector: Injector,
-    protected _zone: NgZone,
-    protected _cdr: ChangeDetectorRef,
-  ) {
+  protected constructor() {
     this._zone.onStable
       .pipe(
         takeWhile((_) => this._alive),

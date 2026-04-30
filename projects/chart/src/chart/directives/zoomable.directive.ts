@@ -31,8 +31,8 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit, OnInit {
   @Input() axis: Axis;
   @Input() size: DOMRect;
 
-  @HostBinding('class.zoomable') private zoomable = false;
-  @HostBinding('class.crosshair') private crosshair = false;
+  @HostBinding('class.zoomable') zoomable = false;
+  @HostBinding('class.crosshair') crosshair = false;
 
   private _element: d3.Selection<SVGElement, any, any, any>;
   private zoom: ZoomBehavior<any, any>;

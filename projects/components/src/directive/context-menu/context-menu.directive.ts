@@ -1,21 +1,7 @@
-import { DOCUMENT } from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Directive,
-  ElementRef,
-  HostListener,
-  Inject,
-  Injector,
-  Input,
-  NgZone,
-  OnDestroy,
-  TemplateRef,
-  Type,
-} from '@angular/core';
+import { Directive, HostListener, inject, Input, OnDestroy, TemplateRef, Type } from '@angular/core';
 
 import { AutoCloseIgnoreCase } from '../../common/contract/auto-close-ignore-case';
 import { ClickService } from '../../common/service/click.service';
-import { DynamicComponentService } from '../../common/service/dynamic-component.service';
 import { ArrayUtil } from '../../common/util/array-util';
 import { DomUtil } from '../../common/util/dom-util';
 import { PositionUtil } from '../../common/util/position-util';
@@ -26,6 +12,8 @@ import { DynamicContentBaseDirective } from '../dynamic-content-base.directive';
   standalone: true,
 })
 export class ContextMenuDirective extends DynamicContentBaseDirective implements OnDestroy {
+  private _click = inject(ClickService);
+
   /**
    * Строка, шаблон или компонент для создания контекстного меню
    */
@@ -41,17 +29,8 @@ export class ContextMenuDirective extends DynamicContentBaseDirective implements
     y: number;
   };
 
-  constructor(
-    @Inject(DOCUMENT)
-    protected override _document: any,
-    protected override _elementRef: ElementRef,
-    protected override _service: DynamicComponentService,
-    protected override _injector: Injector,
-    protected override _zone: NgZone,
-    protected override _cdr: ChangeDetectorRef,
-    private _click: ClickService,
-  ) {
-    super(_document, _elementRef, _service, _injector, _zone, _cdr);
+  constructor() {
+    super();
     this.addScrollListener();
   }
 

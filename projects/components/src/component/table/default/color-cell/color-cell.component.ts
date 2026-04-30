@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   HostBinding,
@@ -9,7 +8,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CellComponentBase } from '../../base/cell-component-base';
-import { TableService } from '../../service/table.service';
 import { ICellCoordinates } from '../../contract/i-cell-coordinates';
 import { ColorUtil } from '../../util/color-util';
 import { FormsModule } from '@angular/forms';
@@ -23,7 +21,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ColorCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: ElementRef;
-  @HostBinding('attr.tabindex') private readonly tabindex = 0;
+  @HostBinding('attr.tabindex') readonly tabindex = 0;
 
   @HostListener('focus', ['$event'])
   @HostListener('focusin', ['$event'])
@@ -33,13 +31,6 @@ export class ColorCellComponent<T> extends CellComponentBase<T> implements OnIni
       column: this.column.name,
       event: event,
     });
-  }
-
-  constructor(
-    public override svc: TableService<T>,
-    public override cdr: ChangeDetectorRef,
-  ) {
-    super(svc, cdr);
   }
 
   setValue(): void {

@@ -1,7 +1,6 @@
 import { of } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { TranslocoLoader } from '@jsverse/transloco';
-import { TranslocoLoaderData } from '@jsverse/transloco/lib/transloco.loader';
+import { TranslocoLoader, TranslocoLoaderData } from '@jsverse/transloco';
 
 @Injectable({
   providedIn: 'root',

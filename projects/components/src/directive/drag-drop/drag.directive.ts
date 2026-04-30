@@ -4,14 +4,12 @@ import {
   EventEmitter,
   HostBinding,
   HostListener,
-  Inject,
+  inject,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
-  SkipSelf,
 } from '@angular/core';
 import { filter, takeWhile } from 'rxjs/operators';
 
@@ -25,7 +23,6 @@ import { DropTarget } from './model/drop-target';
 @Directive({
   selector: '[tetaDrag]',
   exportAs: 'drag',
-  // eslint-disable-next-line @angular-eslint/no-host-metadata-property
   host: {
     '[style.userSelect]': '"none"',
     '[class.teta-drag-item]': '"true"',
@@ -33,6 +30,15 @@ import { DropTarget } from './model/drop-target';
   standalone: true,
 })
 export class DragDirective<T> implements OnInit, OnDestroy {
+  private readonly _container = inject<DragContainerDirective<T>>(DragContainerDirective, {
+    optional: true,
+    skipSelf: true,
+  });
+
+  private readonly _dragService = inject<DragDropService<T>>(DragDropService);
+  private readonly _zone = inject(NgZone);
+  private readonly _cdr = inject(ChangeDetectorRef);
+
   @Input('tetaDrag') data: T;
 
   @HostBinding('class.teta_draggable_item')
@@ -65,7 +71,8 @@ export class DragDirective<T> implements OnInit, OnDestroy {
 
   @HostListener('mousedown', ['$event'])
   @HostListener('touchstart', ['$event'])
-  mousedown(event: MouseEvent) {
+  mousedown(event: MouseEvent | TouchEvent) {
+    event = event as MouseEvent;
     if (!this.allowDrag) {
       return;
     }
@@ -93,16 +100,6 @@ export class DragDirective<T> implements OnInit, OnDestroy {
   @HostListener('mouseleave', ['$event']) mouseleave(event) {
     this._dragService.setDropTarget(null);
   }
-
-  constructor(
-    @Inject(DragContainerDirective)
-    @Optional()
-    @SkipSelf()
-    private _container: DragContainerDirective<T>,
-    private _dragService: DragDropService<T>,
-    private _zone: NgZone,
-    private _cdr: ChangeDetectorRef,
-  ) {}
 
   ngOnInit() {
     this.instance = new DragInstance({

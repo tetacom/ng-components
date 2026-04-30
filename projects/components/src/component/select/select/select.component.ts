@@ -6,6 +6,7 @@ import {
   ElementRef,
   forwardRef,
   HostBinding,
+  inject,
   Input,
   ViewChild,
 } from '@angular/core';
@@ -61,6 +62,10 @@ import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
   ],
 })
 export class SelectComponent implements ControlValueAccessor {
+  private _cdr = inject(ChangeDetectorRef);
+  private _elementRef = inject(ElementRef);
+  private _config = inject(TetaConfigService);
+
   @HostBinding('class.select_multiple')
   @Input()
   multiple: boolean;
@@ -118,7 +123,7 @@ export class SelectComponent implements ControlValueAccessor {
     return this._open;
   }
 
-  @HostBinding('class.select') private readonly selectClass = true;
+  @HostBinding('class.select') readonly selectClass = true;
 
   @HostBinding('tabindex')
   private get tabindex() {
@@ -147,11 +152,7 @@ export class SelectComponent implements ControlValueAccessor {
   private _internalValue: any;
   private _open = false;
 
-  constructor(
-    private _cdr: ChangeDetectorRef,
-    private _elementRef: ElementRef,
-    private _config: TetaConfigService,
-  ) {
+  constructor() {
     this.locale = this._config.locale;
   }
 

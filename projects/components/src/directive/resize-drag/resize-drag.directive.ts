@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, HostBinding, HostListener, Inject, Input, Output } from '@angular/core';
+import { Directive, EventEmitter, HostBinding, HostListener, inject, Inject, Input, Output } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 @Directive({
@@ -6,6 +6,8 @@ import { DOCUMENT } from '@angular/common';
   standalone: true,
 })
 export class ResizeDragDirective {
+  private _document = inject(DOCUMENT);
+
   @Input() tetaResizeDrag: 'horizontal' | 'vertical' = 'vertical';
 
   @Output() resizeStart = new EventEmitter<MouseEvent>();
@@ -13,19 +15,17 @@ export class ResizeDragDirective {
   @Output() resizeEnd = new EventEmitter<MouseEvent>();
 
   @HostBinding('class.resize-drag_active')
-  private _active: boolean;
+  _active: boolean;
 
   @HostBinding('class.resize-drag_horizontal')
-  private get horizontal() {
+  get horizontal() {
     return this.tetaResizeDrag === 'horizontal';
   }
 
   @HostBinding('class.resize-drag_vertical')
-  private get vertical() {
+  get vertical() {
     return this.tetaResizeDrag === 'vertical';
   }
-
-  constructor(@Inject(DOCUMENT) private _document: any) {}
 
   @HostListener('mousedown', ['$event']) mouseDown(event: MouseEvent) {
     this.resizeStart.emit(event);

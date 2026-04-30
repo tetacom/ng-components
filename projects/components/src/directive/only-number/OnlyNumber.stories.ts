@@ -1,5 +1,5 @@
 import { FormsModule } from '@angular/forms';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { Meta } from '@storybook/angular';
 import { OnlyNumberDirective } from './only-number.directive';
 
