@@ -40,11 +40,11 @@ export class TreeItemComponent {
   template = input<TemplateRef<any>>();
   childPadding = input<boolean>();
   openItems: Signal<ITreeData[]>;
-  @HostBinding('class.tree__item-container') private readonly treeItemClass = true;
+  @HostBinding('class.tree__item-container') readonly treeItemClass = true;
 
   itemIsOpen: Signal<boolean>;
 
-  @HostBinding('@treeItemInstance') private readonly treeItemInstance = true;
+  @HostBinding('@treeItemInstance') readonly treeItemInstance = true;
 
   computedDepth = computed(() => {
     return this.depth() + (this.item()[this.childNodeName()]?.length > 0 ? 0 : this.childPadding() ? 2 : 1);

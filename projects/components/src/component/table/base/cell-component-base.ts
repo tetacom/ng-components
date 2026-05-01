@@ -16,9 +16,14 @@ import { TableService } from '../service/table.service';
   template: '',
   standalone: false,
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
-  @HostBinding('class.cell-component') private readonly cellClass = true;
+  protected svc = inject<TableService<T>>(TableService);
+  protected cdr = inject(ChangeDetectorRef);
+  private _formGroup = inject(ControlContainer, {
+    optional: true,
+  });
+
+  @HostBinding('class.cell-component') readonly cellClass = true;
 
   @HostBinding('class.cell-invalid') get cellInvalid() {
     const control = this.formGroup?.get(this.column?.name);
@@ -27,10 +32,6 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
     }
     return false;
   }
-
-  private _formGroup = inject(ControlContainer, {
-    optional: true,
-  });
 
   get control(): FormControl {
     return this.formGroup?.get(this.column?.name) as FormControl;
@@ -88,11 +89,6 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   }
 
   protected _alive = true;
-
-  protected constructor(
-    protected svc: TableService<T>,
-    protected cdr: ChangeDetectorRef,
-  ) {}
 
   ngOnDestroy(): void {
     this._alive = false;

@@ -7,16 +7,16 @@ import { TableRow } from '../contract/table-row';
 import { CellHostComponent } from '../cell-host/cell-host.component';
 
 @Component({
-    selector: 'teta-cell',
-    templateUrl: './cell.component.html',
-    styleUrls: ['./cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CellHostComponent]
+  selector: 'teta-cell',
+  templateUrl: './cell.component.html',
+  styleUrls: ['./cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CellHostComponent],
 })
 export class CellComponent<T> {
   @Input() column: TableColumn;
   @Input() filterOptions: IIdName<any>[];
   @Input() dict: IDictionary<IIdName<any>[]>;
   @Input() row: TableRow<T>;
-  @HostBinding('class.cell') private readonly tableCellClass = true;
+  @HostBinding('class.cell') readonly tableCellClass = true;
 }

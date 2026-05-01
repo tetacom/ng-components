@@ -1,34 +1,21 @@
-import { DOCUMENT } from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Directive,
-  ElementRef,
-  HostListener,
-  Inject,
-  Injector,
-  Input,
-  NgZone,
-  OnDestroy,
-  OnInit,
-  TemplateRef,
-  Type,
-} from '@angular/core';
+import { Directive, HostListener, inject, Input, OnDestroy, OnInit, TemplateRef, Type } from '@angular/core';
 import { merge } from 'rxjs';
 import { filter, takeWhile, tap } from 'rxjs/operators';
 
 import { Align } from '../../common/enum/align.enum';
 import { VerticalAlign } from '../../common/enum/vertical-align.enum';
-import { ClickService } from '../../common/service/click.service';
-import { DynamicComponentService } from '../../common/service/dynamic-component.service';
 import { DomUtil } from '../../common/util/dom-util';
 import { PositionUtil } from '../../common/util/position-util';
 import { DynamicContentBaseDirective } from '../dynamic-content-base.directive';
+import { ClickService } from '../../common/service/click.service';
 
 @Directive({
   selector: '[tetaTooltip]',
   standalone: true,
 })
 export class TooltipDirective extends DynamicContentBaseDirective implements OnDestroy, OnInit {
+  private _click = inject(ClickService);
+
   /**
    * Строка, шаблон или компонент для создания контекстного меню
    */
@@ -39,19 +26,6 @@ export class TooltipDirective extends DynamicContentBaseDirective implements OnD
 
   get _dynamicContent() {
     return this.tetaTooltip;
-  }
-
-  constructor(
-    @Inject(DOCUMENT)
-    protected override _document: any,
-    protected override _elementRef: ElementRef,
-    protected override _service: DynamicComponentService,
-    protected override _injector: Injector,
-    protected override _zone: NgZone,
-    protected override _cdr: ChangeDetectorRef,
-    private _click: ClickService,
-  ) {
-    super(_document, _elementRef, _service, _injector, _zone, _cdr);
   }
 
   @HostListener('click', ['$event'])

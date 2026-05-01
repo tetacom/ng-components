@@ -1,7 +1,6 @@
 import { DatePipe, NgClass, AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -24,16 +23,15 @@ import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
 import { viewType } from '../../../common/model/view-type.model';
 import { BasePicker } from '../base-picker';
 import { DatePeriod } from '../model/date-period';
-import { TetaConfigService } from '../../../locale/teta-config.service';
 import { TetaLocalisation } from '../../../locale/teta-localisation';
 import { DateCalendarComponent } from './date-calendar/date-calendar.component';
 import { DropdownContentDirective } from '../../dropdown/dropdown-content.directive';
 import { IconComponent } from '../../icon/icon/icon.component';
-import { MaskitoModule } from '@maskito/angular';
 import { InputComponent } from '../../input/input/input.component';
 import { DropdownHeadDirective } from '../../dropdown/dropdown-head.directive';
 import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
 import { DateUtil } from '../../../util/date-util';
+import { MaskitoDirective } from '@maskito/angular';
 
 export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -53,14 +51,19 @@ export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
     NgClass,
     InputComponent,
     FormsModule,
-    MaskitoModule,
     IconComponent,
     DropdownContentDirective,
     DateCalendarComponent,
     AsyncPipe,
+    MaskitoDirective,
   ],
 })
 export class DatePickerComponent extends BasePicker implements OnInit, ControlValueAccessor, OnChanges {
+  // override _elementRef = inject(ElementRef);
+  // override _cdr = inject(ChangeDetectorRef);
+  // override datePipe = inject(DatePipe);
+  // private localeService = inject(TetaConfigService);
+
   @Input() date: Date | string | number = null;
   public locale: Observable<TetaLocalisation>;
   @Input() showTime = false;
@@ -86,19 +89,14 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
   @Output() selectDate: EventEmitter<Date> = new EventEmitter<Date>();
   public selectedDate: ReplaySubject<Date | string | number> = new ReplaySubject<Date | string | number>(1);
   public mask = '';
-  @HostBinding('class.datepicker') private readonly classDatepicker = true;
+  @HostBinding('class.datepicker') readonly classDatepicker = true;
   @HostBinding('class.datepicker-time') get dateTimeClass() {
     return this.showTime;
   }
-  @HostBinding('tabindex') private readonly tabindex = 0;
+  @HostBinding('tabindex') readonly tabindex = 0;
 
-  constructor(
-    override _elementRef: ElementRef,
-    override _cdr: ChangeDetectorRef,
-    override datePipe: DatePipe,
-    private localeService: TetaConfigService,
-  ) {
-    super(_elementRef, _cdr, datePipe);
+  constructor() {
+    super();
     this.locale = this.localeService.locale;
   }
 
@@ -146,7 +144,7 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
   }
 
   onBlur(event?: FocusEvent) {
-    if ((event?.target as HTMLInputElement)?.value === DateUtil.toShortString(this.date as Date) ) {
+    if ((event?.target as HTMLInputElement)?.value === DateUtil.toShortString(this.date as Date)) {
       return;
     }
     if (this.allowNull && this.inputText.trim() === '') {

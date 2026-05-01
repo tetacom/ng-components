@@ -98,7 +98,7 @@ export class TreeComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
     return this.treeService.compareItems;
   }
 
-  @HostBinding('class.tree') private readonly treeClass = true;
+  @HostBinding('class.tree') readonly treeClass = true;
 
   ngOnInit(): void {
     this.service.emit(this.treeService);

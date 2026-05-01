@@ -10,7 +10,9 @@
     "strictNullChecks": false,
     "noImplicitAny": false,
     "skipDefaultLibCheck": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "module": "preserve",
+    "moduleResolution": "bundler"
   },
   "files": [],
   "include": [],

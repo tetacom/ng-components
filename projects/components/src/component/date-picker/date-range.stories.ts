@@ -1,6 +1,5 @@
 import { FormsModule } from '@angular/forms';
 
-import { MaskitoModule } from '@maskito/angular';
 import { applicationConfig, Meta } from '@storybook/angular';
 import { provideHttpClient } from '@angular/common/http';
 import { DateRangeComponent } from './date-range/date-range.component';
@@ -36,27 +35,27 @@ export default {
   },
   component: DateRangeComponent,
   moduleMetadata: {
-    imports: [FormsModule, MaskitoModule],
+    imports: [FormsModule],
   },
 } as Meta;
 
 export const baseDateRange = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, MaskitoModule, DateRangeComponent, IconSpriteDirective],
+    imports: [FormsModule, DateRangeComponent, IconSpriteDirective],
   },
   props: { ...args, data: { from: new Date(), to: new Date() } },
   template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-range [ngModel]="data" [maxDate]="maxDate" [minDate]="minDate"  [showTime]="showTime"  [viewType]="viewType" [allowNull]="allowNull"></teta-date-range></div>`,
 });
 export const disabledDateRange = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, MaskitoModule, DateRangeComponent, IconSpriteDirective],
+    imports: [FormsModule, DateRangeComponent, IconSpriteDirective],
   },
   props: { ...args, data: { from: new Date(), to: new Date() } },
   template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-range [disabled]="true" [ngModel]="data" [maxDate]="maxDate" [minDate]="minDate"  [showTime]="showTime"  [viewType]="viewType" [allowNull]="allowNull"></teta-date-range></div>`,
 });
 export const invalidDateRange = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, MaskitoModule, DateRangeComponent, IconSpriteDirective],
+    imports: [FormsModule, DateRangeComponent, IconSpriteDirective],
   },
   props: { ...args, data: { from: new Date(), to: new Date() } },
   template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-range  [invalid]="true" [ngModel]="data" [maxDate]="maxDate" [minDate]="minDate"  [showTime]="showTime"  [viewType]="viewType" [allowNull]="allowNull"></teta-date-range></div>`,

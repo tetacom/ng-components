@@ -6,6 +6,7 @@ import {
   ElementRef,
   HostBinding,
   HostListener,
+  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -36,26 +37,31 @@ import { DropdownHeadDirective } from '../../dropdown/dropdown-head.directive';
 import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
 
 @Component({
-    selector: 'teta-head-cell',
-    templateUrl: './head-cell.component.html',
-    styleUrls: ['./head-cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        DropdownComponent,
-        DropdownHeadDirective,
-        NgClass,
-        HeadCellHostComponent,
-        IconComponent,
-        HeadCellDropdownComponent,
-        DropdownContentDirective,
-        ResizeDragDirective,
-        MainDropdownTabComponent,
-        FilterDropdownTabComponent,
-        VisibilityDropdownTabComponent,
-        AsyncPipe,
-    ]
+  selector: 'teta-head-cell',
+  templateUrl: './head-cell.component.html',
+  styleUrls: ['./head-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    DropdownComponent,
+    DropdownHeadDirective,
+    NgClass,
+    HeadCellHostComponent,
+    IconComponent,
+    HeadCellDropdownComponent,
+    DropdownContentDirective,
+    ResizeDragDirective,
+    MainDropdownTabComponent,
+    FilterDropdownTabComponent,
+    VisibilityDropdownTabComponent,
+    AsyncPipe,
+  ],
 })
 export class HeadCellComponent<T> implements OnInit, OnDestroy {
+  private _svc = inject<TableService<T>>(TableService);
+  private _app = inject(ApplicationRef);
+  private _elementRef = inject(ElementRef);
+  private _cdr = inject(ChangeDetectorRef);
+
   @Input() column: TableColumn;
   @Input() showHeadCellMenu: boolean;
   @Input() data: T[];
@@ -119,13 +125,6 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
 
   private observer: IntersectionObserver;
 
-  constructor(
-    private _svc: TableService<T>,
-    private _app: ApplicationRef,
-    private _elementRef: ElementRef,
-    private _cdr: ChangeDetectorRef,
-  ) {}
-
   dragstart(event: DragEvent): void {
     if (event && event.dataTransfer) {
       event.dataTransfer.setData('text', 'move');
@@ -133,7 +132,7 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
     this._svc.dragStart(this.column);
   }
 
-  @HostListener('dragenter', ['$event']) dragenter(): void {
+  @HostListener('dragenter') dragenter(): void {
     this.rect = this._elementRef.nativeElement.getBoundingClientRect();
   }
 
@@ -149,7 +148,7 @@ export class HeadCellComponent<T> implements OnInit, OnDestroy {
     this.showDrag = null;
   }
 
-  @HostListener('dragend', ['$event']) dragend(): void {
+  @HostListener('dragend') dragend(): void {
     this.showDrag = null;
   }
 

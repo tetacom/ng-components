@@ -1,0 +1,363 @@
+[21:15:07.305] [INFO] Storybook upgrade - v10.3.6
+[21:15:07.308] [INFO] detect-projects-spinner-start: Detecting projects...
+[21:15:07.309] [DEBUG] Finding Storybook projects...
+[21:15:07.612] [DEBUG] Found 1 Storybook projects
+[21:15:07.614] [INFO] detect-projects-spinner: Detecting projects: 1 projects
+[21:15:07.615] [DEBUG] Getting Storybook data...
+[21:15:07.615] [DEBUG] Getting Storybook info...
+[21:15:07.746] [DEBUG] Loading main config...
+[21:15:07.746] [DEBUG] Getting stories paths...
+[21:15:07.769] [DEBUG] Getting package manager...
+[21:15:08.092] [DEBUG] Getting package.json info for D:/WORK/ng-components/package.json...
+[21:15:08.092] [DEBUG] Getting Storybook version...
+[21:15:08.092] [DEBUG] Detecting CSF factory usage...
+[21:15:08.121] [DEBUG] D:/WORK/ng-components/.storybook - Validating before version... 10.1.0
+[21:15:08.121] [DEBUG] D:/WORK/ng-components/.storybook - Validating upgrade compatibility...
+[21:15:08.121] [DEBUG] D:/WORK/ng-components/.storybook - Fetching NPM version information...
+[21:15:08.121] [DEBUG] Getting CLI versions from NPM for storybook...
+[21:15:08.122] [DEBUG] Executing command: npm info storybook version
+[21:15:08.134] [DEBUG] Getting CLI versions from NPM for storybook@next...
+[21:15:08.134] [DEBUG] Executing command: npm info storybook@next version
+[21:15:08.639] [DEBUG] D:/WORK/ng-components/.storybook - Evaluating blockers...
+[21:15:08.651] [DEBUG] Getting installed version for @storybook/experimental-addon-test...
+[21:15:08.653] [DEBUG] Executing command: npm ls --json --depth=99 2>NUL
+[21:15:10.284] [DEBUG] Executing command: npm ls --json --depth=0 2>NUL
+[21:15:11.840] [DEBUG] Error finding installations for @storybook/experimental-addon-test: ExecaError: Command failed with exit code 1: npm.cmd ls --json "--depth=0" "2>NUL"
+
+npm error code EINVALIDTAGNAME
+npm error Invalid tag name "2>NUL" of package "2>NUL": Tags may not have any characters that encodeURIComponent encodes.
+npm error A complete log of this run can be found in: C:\Users\fclmm\AppData\Local\npm-cache\_logs\2026-04-30T17_15_10_368Z-debug-0.log
+
+{
+  "error": {
+    "code": "EINVALIDTAGNAME",
+    "summary": "Invalid tag name \"2>NUL\" of package \"2>NUL\": Tags may not have any characters that encodeURIComponent encodes.",
+    "detail": ""
+  }
+}
+[21:15:11.840] [DEBUG] No installations found for @storybook/experimental-addon-test
+[21:15:11.840] [INFO] detect-projects-spinner-stop: 1 project detected
+[21:15:11.840] [DEBUG] Found 1 valid projects and 0 error projects
+[21:15:11.840] [INFO] Upgrading from [1m10.1.0[22m to [1m10.3.6[22m
+[21:15:11.841] [INFO] upgrade-dependencies-task-start: Fetching versions to update package.json files..
+[21:15:11.841] [DEBUG] Updating dependencies in D:/WORK/ng-components/.storybook...
+[21:15:11.841] [INFO] upgrade-dependencies-task: D:/WORK/ng-components/package.json
+[21:15:11.842] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:11.842] [DEBUG] Getting CLI versions from NPM for @chromatic-com/storybook...
+[21:15:11.842] [DEBUG] Executing command: npm info @chromatic-com/storybook version
+[21:15:11.850] [DEBUG] Getting CLI versions from NPM for @storybook/test-runner...
+[21:15:11.850] [DEBUG] Executing command: npm info @storybook/test-runner version
+[21:15:13.452] [DEBUG] {
+  "upgradedDependencies": [
+    "storybook@10.3.6"
+  ]
+}
+[21:15:13.452] [DEBUG] {
+  "upgradedDevDependencies": [
+    "@storybook/angular@10.3.6",
+    "@chromatic-com/storybook@^5.1.2",
+    "@storybook/test-runner@0.24.3"
+  ]
+}
+[21:15:13.452] [DEBUG] {
+  "upgradedPeerDependencies": []
+}
+[21:15:13.452] [DEBUG] Getting package.json info for D:/WORK/ng-components/package.json...
+[21:15:13.452] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:13.452] [DEBUG] Using cached version for storybook...
+[21:15:13.452] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:13.453] [DEBUG] Getting package.json info for D:/WORK/ng-components/package.json...
+[21:15:13.453] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:13.453] [DEBUG] Getting CLI versions from NPM for @storybook/angular...
+[21:15:13.453] [DEBUG] Executing command: npm info @storybook/angular version
+[21:15:14.571] [DEBUG] Using cached version for @chromatic-com/storybook...
+[21:15:14.571] [DEBUG] Using cached version for @storybook/test-runner...
+[21:15:14.571] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:14.571] [DEBUG] Getting package.json info for D:/WORK/ng-components/package.json...
+[21:15:14.571] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:14.571] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:14.572] [INFO] upgrade-dependencies-task-success: Updated package versions in package.json files
+[21:15:14.572] [INFO] detect-automigrations-task-start: Detecting automigrations...
+[21:15:14.572] [DEBUG] Starting automigration collection across 1 projects and 19 fixes...
+[21:15:14.572] [INFO] detect-automigrations-task: Checking automigrations for D:/WORK/ng-components/.storybook...
+[21:15:14.573] [DEBUG] Processing project: D:/WORK/ng-components/.storybook
+[21:15:14.573] [DEBUG] Checking fix eslintPlugin for project D:/WORK/ng-components/.storybook...
+[21:15:14.573] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:14.573] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:14.573] [DEBUG] Checking fix addon-mdx-gfm-remove for project D:/WORK/ng-components/.storybook...
+[21:15:14.573] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:14.573] [DEBUG] Checking fix addon-storysource-code-panel for project D:/WORK/ng-components/.storybook...
+[21:15:14.573] [DEBUG] Checking fix upgrade-storybook-related-dependencies for project D:/WORK/ng-components/.storybook...
+[21:15:14.573] [DEBUG] Checking for incompatible storybook packages...
+[21:15:14.573] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:14.575] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:14.576] [DEBUG] Getting installed version for @nx/storybook...
+[21:15:14.576] [DEBUG] Getting installed version for @storybook/addon-mdx-gfm...
+[21:15:14.576] [DEBUG] Getting installed version for @storybook/core-server...
+[21:15:14.576] [DEBUG] Getting installed version for @storybook/test...
+[21:15:14.576] [DEBUG] Getting installed version for @chromatic-com/storybook...
+[21:15:14.576] [DEBUG] Executing command: npm ls --json --depth=99 2>NUL
+[21:15:14.578] [DEBUG] Executing command: npm ls --json --depth=99 2>NUL
+[21:15:14.581] [DEBUG] Executing command: npm ls --json --depth=99 2>NUL
+[21:15:14.584] [DEBUG] Executing command: npm ls --json --depth=99 2>NUL
+[21:15:14.587] [DEBUG] Executing command: npm ls --json --depth=99 2>NUL
+[21:15:16.728] [DEBUG] Executing command: npm ls --json --depth=0 2>NUL
+[21:15:16.737] [DEBUG] Executing command: npm ls --json --depth=0 2>NUL
+[21:15:16.745] [DEBUG] Executing command: npm ls --json --depth=0 2>NUL
+[21:15:16.758] [DEBUG] Executing command: npm ls --json --depth=0 2>NUL
+[21:15:16.772] [DEBUG] Executing command: npm ls --json --depth=0 2>NUL
+[21:15:19.265] [DEBUG] Error finding installations for @storybook/test: ExecaError: Command failed with exit code 1: npm.cmd ls --json "--depth=0" "2>NUL"
+
+npm error code EINVALIDTAGNAME
+npm error Invalid tag name "2>NUL" of package "2>NUL": Tags may not have any characters that encodeURIComponent encodes.
+npm error A complete log of this run can be found in: C:\Users\fclmm\AppData\Local\npm-cache\_logs\2026-04-30T17_15_16_830Z-debug-0.log
+
+{
+  "error": {
+    "code": "EINVALIDTAGNAME",
+    "summary": "Invalid tag name \"2>NUL\" of package \"2>NUL\": Tags may not have any characters that encodeURIComponent encodes.",
+    "detail": ""
+  }
+}
+[21:15:19.265] [DEBUG] No installations found for @storybook/test
+[21:15:19.265] [DEBUG] Getting CLI versions from NPM for @storybook/test...
+[21:15:19.265] [DEBUG] Executing command: npm info @storybook/test version
+[21:15:19.292] [DEBUG] Error finding installations for @storybook/addon-mdx-gfm: ExecaError: Command failed with exit code 1: npm.cmd ls --json "--depth=0" "2>NUL"
+
+npm error code EINVALIDTAGNAME
+npm error Invalid tag name "2>NUL" of package "2>NUL": Tags may not have any characters that encodeURIComponent encodes.
+npm error A complete log of this run can be found in: C:\Users\fclmm\AppData\Local\npm-cache\_logs\2026-04-30T17_15_16_842Z-debug-0.log
+
+{
+  "error": {
+    "code": "EINVALIDTAGNAME",
+    "summary": "Invalid tag name \"2>NUL\" of package \"2>NUL\": Tags may not have any characters that encodeURIComponent encodes.",
+    "detail": ""
+  }
+}
+[21:15:19.292] [DEBUG] No installations found for @storybook/addon-mdx-gfm
+[21:15:19.292] [DEBUG] Getting CLI versions from NPM for @storybook/addon-mdx-gfm...
+[21:15:19.292] [DEBUG] Executing command: npm info @storybook/addon-mdx-gfm version
+[21:15:19.328] [DEBUG] Error finding installations for @nx/storybook: ExecaError: Command failed with exit code 1: npm.cmd ls --json "--depth=0" "2>NUL"
+
+npm error code EINVALIDTAGNAME
+npm error Invalid tag name "2>NUL" of package "2>NUL": Tags may not have any characters that encodeURIComponent encodes.
+npm error A complete log of this run can be found in: C:\Users\fclmm\AppData\Local\npm-cache\_logs\2026-04-30T17_15_16_835Z-debug-0.log
+
+{
+  "error": {
+    "code": "EINVALIDTAGNAME",
+    "summary": "Invalid tag name \"2>NUL\" of package \"2>NUL\": Tags may not have any characters that encodeURIComponent encodes.",
+    "detail": ""
+  }
+}
+[21:15:19.328] [DEBUG] No installations found for @nx/storybook
+[21:15:19.328] [DEBUG] Getting CLI versions from NPM for @nx/storybook...
+[21:15:19.328] [DEBUG] Executing command: npm info @nx/storybook version
+[21:15:19.339] [DEBUG] Error finding installations for @storybook/core-server: ExecaError: Command failed with exit code 1: npm.cmd ls --json "--depth=0" "2>NUL"
+
+npm error code EINVALIDTAGNAME
+npm error Invalid tag name "2>NUL" of package "2>NUL": Tags may not have any characters that encodeURIComponent encodes.
+npm error A complete log of this run can be found in: C:\Users\fclmm\AppData\Local\npm-cache\_logs\2026-04-30T17_15_16_873Z-debug-0.log
+
+{
+  "error": {
+    "code": "EINVALIDTAGNAME",
+    "summary": "Invalid tag name \"2>NUL\" of package \"2>NUL\": Tags may not have any characters that encodeURIComponent encodes.",
+    "detail": ""
+  }
+}
+[21:15:19.339] [DEBUG] No installations found for @storybook/core-server
+[21:15:19.339] [DEBUG] Getting CLI versions from NPM for @storybook/core-server...
+[21:15:19.339] [DEBUG] Executing command: npm info @storybook/core-server version
+[21:15:19.351] [DEBUG] Error finding installations for @chromatic-com/storybook: ExecaError: Command failed with exit code 1: npm.cmd ls --json "--depth=0" "2>NUL"
+
+npm error code EINVALIDTAGNAME
+npm error Invalid tag name "2>NUL" of package "2>NUL": Tags may not have any characters that encodeURIComponent encodes.
+npm error A complete log of this run can be found in: C:\Users\fclmm\AppData\Local\npm-cache\_logs\2026-04-30T17_15_16_859Z-debug-0.log
+
+{
+  "error": {
+    "code": "EINVALIDTAGNAME",
+    "summary": "Invalid tag name \"2>NUL\" of package \"2>NUL\": Tags may not have any characters that encodeURIComponent encodes.",
+    "detail": ""
+  }
+}
+[21:15:19.351] [DEBUG] No installations found for @chromatic-com/storybook
+[21:15:19.351] [DEBUG] Using cached version for @chromatic-com/storybook...
+[21:15:20.983] [DEBUG] Checking fix initial-globals for project D:/WORK/ng-components/.storybook...
+[21:15:20.989] [DEBUG] Checking fix addon-globals-api for project D:/WORK/ng-components/.storybook...
+[21:15:20.992] [DEBUG] Checking fix addon-a11y-addon-test for project D:/WORK/ng-components/.storybook...
+[21:15:20.993] [DEBUG] Checking fix consolidated-imports for project D:/WORK/ng-components/.storybook...
+[21:15:20.993] [DEBUG] Checking fix addon-experimental-test for project D:/WORK/ng-components/.storybook...
+[21:15:20.993] [DEBUG] Using cached installed version for @storybook/experimental-addon-test...
+[21:15:20.993] [DEBUG] Checking fix rnstorybook-config for project D:/WORK/ng-components/.storybook...
+[21:15:20.993] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:20.993] [DEBUG] Checking fix migrate-addon-console for project D:/WORK/ng-components/.storybook...
+[21:15:20.993] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:20.993] [DEBUG] Checking fix nextjs-to-nextjs-vite for project D:/WORK/ng-components/.storybook...
+[21:15:20.993] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:20.993] [DEBUG] Checking fix remove-addon-interactions for project D:/WORK/ng-components/.storybook...
+[21:15:20.993] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:20.993] [DEBUG] Checking fix renderer-to-framework for project D:/WORK/ng-components/.storybook...
+[21:15:20.994] [DEBUG] Checking fix remove-essential-addons for project D:/WORK/ng-components/.storybook...
+[21:15:20.994] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:20.994] [DEBUG] Checking fix addon-a11y-parameters for project D:/WORK/ng-components/.storybook...
+[21:15:20.994] [DEBUG] Checking fix remove-docs-autodocs for project D:/WORK/ng-components/.storybook...
+[21:15:20.996] [DEBUG] Checking fix wrap-getAbsolutePath for project D:/WORK/ng-components/.storybook...
+[21:15:20.997] [DEBUG] Checking fix fix-faux-esm-require for project D:/WORK/ng-components/.storybook...
+[21:15:20.998] [INFO] detect-automigrations-task: 
+Automigrations detected:
+[21:15:21.001] [INFO] detect-automigrations-task: [32m[32m✔[32m eslintPlugin[39m
+[21:15:21.001] [INFO] detect-automigrations-task: [32m[32m✔[32m addon-mdx-gfm-remove[39m
+[21:15:21.002] [INFO] detect-automigrations-task: [32m[32m✔[32m consolidated-imports[39m
+[21:15:21.002] [INFO] detect-automigrations-task: [32m[32m✔[32m remove-addon-interactions[39m
+[21:15:21.002] [INFO] detect-automigrations-task: [32m[32m✔[32m remove-essential-addons[39m
+[21:15:21.002] [INFO] detect-automigrations-task: [32m[32m✔[32m wrap-getAbsolutePath[39m
+[21:15:21.002] [INFO] detect-automigrations-task-success: 6 automigration(s) detected
+[21:15:21.003] [INFO] Running all detected automigrations:
+[21:15:21.003] [INFO]   - eslintPlugin (D:/WORK/ng-components/.storybook)
+[21:15:21.003] [INFO]   - addon-mdx-gfm-remove (D:/WORK/ng-components/.storybook)
+[21:15:21.003] [INFO]   - consolidated-imports (D:/WORK/ng-components/.storybook)
+[21:15:21.003] [INFO]   - remove-addon-interactions (D:/WORK/ng-components/.storybook)
+[21:15:21.003] [INFO]   - remove-essential-addons (D:/WORK/ng-components/.storybook)
+[21:15:21.003] [INFO]   - wrap-getAbsolutePath (D:/WORK/ng-components/.storybook)
+[21:15:21.004] [INFO] automigrate-D:/WORK/ng-components/.storybook-task-start: Running automigrations for D:/WORK/ng-components/.storybook
+[21:15:21.004] [DEBUG] Adding dependencies: eslint-plugin-storybook@10.3.6
+[21:15:21.004] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:21.004] [DEBUG] Getting CLI versions from NPM for eslint-plugin-storybook...
+[21:15:21.004] [DEBUG] Executing command: npm info eslint-plugin-storybook version
+[21:15:21.739] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:21.739] [DEBUG] Detected JSON config at D:\WORK\ng-components\.eslintrc.json
+[21:15:21.742] [INFO] automigrate-D:/WORK/ng-components/.storybook-task: [32m[32m✔[32m eslintPlugin[39m
+[21:15:21.743] [DEBUG] Uninstalling @storybook/addon-mdx-gfm
+[21:15:21.743] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:21.743] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:21.743] [DEBUG] Removing '@storybook/addon-mdx-gfm' from main.js addons field.
+[21:15:21.748] [INFO] automigrate-D:/WORK/ng-components/.storybook-task: [32m[32m✔[32m addon-mdx-gfm-remove[39m
+[21:15:21.763] [INFO] automigrate-D:/WORK/ng-components/.storybook-task: [32m[32m✔[32m consolidated-imports[39m
+[21:15:21.764] [DEBUG] Uninstalling @storybook/addon-interactions
+[21:15:21.764] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:21.764] [DEBUG] Removing '@storybook/addon-interactions' from main.js addons field.
+[21:15:21.765] [INFO] automigrate-D:/WORK/ng-components/.storybook-task: [32m[32m✔[32m remove-addon-interactions[39m
+[21:15:21.766] [DEBUG] Uninstalling @storybook/addon-essentials
+[21:15:21.766] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:21.766] [DEBUG] Removing '@storybook/addon-essentials' from main.js addons field.
+[21:15:21.771] [DEBUG] Getting Storybook info...
+[21:15:21.774] [DEBUG] Loading main config...
+[21:15:21.774] [DEBUG] Getting stories paths...
+[21:15:21.774] [DEBUG] Getting package manager...
+[21:15:21.787] [DEBUG] Getting package.json info for D:/WORK/ng-components/package.json...
+[21:15:21.787] [DEBUG] Getting Storybook version...
+[21:15:21.787] [DEBUG] Detecting CSF factory usage...
+[21:15:21.792] [INFO] Verifying @storybook/addon-docs
+[21:15:21.792] [DEBUG] Getting dependency version for storybook...
+[21:15:21.792] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:21.792] [INFO] Installing @storybook/addon-docs@10.3.6
+[21:15:21.792] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:21.792] [DEBUG] Getting CLI versions from NPM for @storybook/addon-docs...
+[21:15:21.792] [DEBUG] Executing command: npm info @storybook/addon-docs version
+[21:15:22.921] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:15:22.921] [INFO] Adding '@storybook/addon-docs' to the "addons" field in D:\WORK\ng-components\.storybook\main.ts
+[21:15:22.966] [INFO] automigrate-D:/WORK/ng-components/.storybook-task: [32m[32m✔[32m remove-essential-addons[39m
+[21:15:22.971] [INFO] automigrate-D:/WORK/ng-components/.storybook-task: [32m[32m✔[32m wrap-getAbsolutePath[39m
+[21:15:22.972] [INFO] automigrate-D:/WORK/ng-components/.storybook-task-success: Completed automigrations for D:/WORK/ng-components/.storybook
+[21:15:22.972] [INFO] Installing dependencies...
+[21:15:22.972] [INFO] install-dependencies-spinner-start: Installing dependencies...
+[21:15:22.973] [DEBUG] Executing command: npm install --force
+[21:16:41.130] [INFO] Installing dependencies...: 
+added 54 packages, removed 310 packages, changed 86 packages, and audited 3048 packages in 1m
+
+[21:16:41.130] [INFO] install-dependencies-spinner: Installing dependencies...: added 54 packages, remove
+[21:16:41.131] [INFO] Installing dependencies...: 
+482 packages are looking for funding
+  run `npm fund` for details
+
+[21:16:41.131] [INFO] install-dependencies-spinner: Installing dependencies...: 482 packages are looking 
+[21:16:42.031] [INFO] Installing dependencies...: 
+52 vulnerabilities (2 low, 32 moderate, 18 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+[21:16:42.031] [INFO] install-dependencies-spinner: Installing dependencies...: 52 vulnerabilities (2 low
+[21:16:42.094] [INFO] Dependencies installed
+[21:16:42.094] [INFO] install-dependencies-spinner-stop: Dependencies installed
+[21:16:42.095] [WARN] Since you are in a monorepo, we advise you to deduplicate your dependencies. We can do this for you but it might take some time.
+[21:16:42.096] [INFO] Deduplicating dependencies...
+[21:16:42.096] [INFO] Deduplicating dependencies...
+[21:16:42.097] [DEBUG] Executing command: npm dedupe --force
+[21:24:56.600] [INFO] added 77 packages, removed 290 packages, changed 134 packages, and audited 2835 packages in 8m
+[21:24:56.600] [INFO] added 77 packages, removed 290 packages, changed 134 packages, and audited 2835 packages in 8m
+[21:24:56.601] [INFO] 453 packages are looking for funding
+  run `npm fund` for details
+[21:24:56.601] [INFO] 453 packages are looking for funding
+  run `npm fund` for details
+[21:24:57.248] [INFO] 49 vulnerabilities (1 low, 31 moderate, 17 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[21:24:57.248] [INFO] 49 vulnerabilities (1 low, 31 moderate, 17 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[21:24:57.301] [INFO] Dependencies deduplicated
+[21:24:57.301] [INFO] [32mDependencies deduplicated[39m
+[21:24:57.301] [INFO] Checking the health of your project(s)..
+[21:24:57.302] [DEBUG] Using cached package.json for D:\WORK\ng-components\package.json...
+[21:24:57.305] [DEBUG] Executing command: npm ls --json --depth=99 2>NUL
+[21:24:58.160] [DEBUG] Executing command: npm ls --json --depth=0 2>NUL
+[21:24:58.976] [DEBUG] Error finding installations for @storybook/*, storybook: ExecaError: Command failed with exit code 1: npm.cmd ls --json "--depth=0" "2>NUL"
+
+npm error code EINVALIDTAGNAME
+npm error Invalid tag name "2>NUL" of package "2>NUL": Tags may not have any characters that encodeURIComponent encodes.
+npm error A complete log of this run can be found in: C:\Users\fclmm\AppData\Local\npm-cache\_logs\2026-04-30T17_24_58_244Z-debug-0.log
+
+{
+  "error": {
+    "code": "EINVALIDTAGNAME",
+    "summary": "Invalid tag name \"2>NUL\" of package \"2>NUL\": Tags may not have any characters that encodeURIComponent encodes.",
+    "detail": ""
+  }
+}
+[21:24:58.976] [WARN] D:/WORK/ng-components/.storybook: 1 issue found
+[21:24:58.977] [INFO] You are currently using Storybook [1m10.3.6[22m but you have packages which are incompatible with it:
+
+- @storybook/core-server@8.6.11 which depends on ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
+ Repo: https://github.com/storybookjs/storybook/tree/next/code/lib/core-server
+- @storybook/test@8.5.7 which depends on 8.5.7
+ Repo: https://github.com/storybookjs/storybook/tree/next/code/lib/test
+
+Please consider updating your packages or contacting the maintainers for compatibility details.
+
+For more details on compatibility guidance, see:
+https://github.com/storybookjs/storybook/issues/32836
+[21:24:58.979] [INFO] Storybook doctor is complete!
+[21:24:58.979] [INFO] You can always recheck the health of your project(s) by running:
+[36mnpx storybook doctor[39m
+[21:24:58.981] [INFO] [33mYour project(s) have been upgraded successfully, but some issues were found which need your attention, please check Storybook doctor logs above.[39m
+[21:24:58.982] [INFO] If you want to learn more about the automigrations that executed in your project(s), please check the following links:
+• ]8;;https://storybook.js.org/docs/configure/integration/eslint-plugineslintPlugin]8;;
+• ]8;;https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mdx-gfm-addon-removedaddon-mdx-gfm-remove]8;;
+• ]8;;https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#dropped-support-for-legacy-packagesconsolidated-imports]8;;
+• ]8;;https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#essentials-addon-viewport-controls-interactions-and-actions-moved-to-coreremove-addon-interactions]8;;
+• ]8;;https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#essentials-addon-viewport-controls-interactions-and-actions-moved-to-coreremove-essential-addons]8;;
+• ]8;;https://storybook.js.org/docs/faq#how-do-i-fix-module-resolution-in-special-environmentswrap-getAbsolutePath]8;;
+[21:24:58.983] [INFO] For a full list of changes, please check our migration guide: [36mhttps://storybook.js.org/docs/releases/migration-guide?ref=upgrade[39m
+[21:24:58.985] [INFO] Storybook collects completely anonymous usage telemetry. We use it to shape Storybook's roadmap and prioritize features. You can learn more, including how to opt out, at https://storybook.js.org/telemetry
+[21:25:00.314] [INFO] Storybook upgrade completed!

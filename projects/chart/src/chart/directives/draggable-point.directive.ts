@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, inject, Input, Output } from '@angular/core';
 import { DragPointType } from '../model/enum/drag-point-type';
 
 @Directive({
@@ -7,6 +7,8 @@ import { DragPointType } from '../model/enum/drag-point-type';
   standalone: true,
 })
 export class DraggablePointDirective {
+  private _elementRef = inject(ElementRef);
+
   @Input() tetaDraggablePoint: boolean;
   @Input() dragDirection: DragPointType;
   @Input() allowDrag: (point: { x: number; y: number; deltaX: number; deltaY: number }) => boolean;
@@ -20,8 +22,6 @@ export class DraggablePointDirective {
     x: number;
     y: number;
   };
-
-  constructor(private _elementRef: ElementRef) {}
 
   @Output() moveStart = new EventEmitter<{
     x: number;
@@ -44,7 +44,8 @@ export class DraggablePointDirective {
 
   @HostListener('mousedown', ['$event'])
   @HostListener('touchstart', ['$event'])
-  mouseDown(event: MouseEvent) {
+  mouseDown(event: MouseEvent | TouchEvent) {
+    event = event as MouseEvent;
     if (!this.tetaDraggablePoint) {
       return;
     }
@@ -59,7 +60,8 @@ export class DraggablePointDirective {
 
   @HostListener('window:mouseup', ['$event'])
   @HostListener('window:touchend', ['$event'])
-  mouseUp(event: MouseEvent) {
+  mouseUp(event: MouseEvent | TouchEvent) {
+    event = event as MouseEvent;
     if (this.startPosition !== null && this.startPosition !== undefined) {
       let deltaX = event.x - this.startPosition.x;
       let deltaY = event.y - this.startPosition.y;
@@ -102,7 +104,8 @@ export class DraggablePointDirective {
 
   @HostListener('window:mousemove', ['$event'])
   @HostListener('window:touchmove', ['$event'])
-  mouseMove(event: MouseEvent) {
+  mouseMove(event: MouseEvent | TouchEvent) {
+    event = event as MouseEvent;
     if (this.startPosition) {
       let deltaX = event.x - this.startPosition.x;
       let deltaY = event.y - this.startPosition.y;

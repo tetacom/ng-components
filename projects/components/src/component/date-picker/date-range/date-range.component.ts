@@ -1,7 +1,6 @@
 import { DatePipe, NgClass, AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -22,16 +21,14 @@ import { VerticalAlign } from '../../../common/enum/vertical-align.enum';
 import { viewType } from '../../../common/model/view-type.model';
 import { BasePicker } from '../base-picker';
 import { DateFromToModel } from '../model/from-to.model';
-import { TetaConfigService } from '../../../locale/teta-config.service';
 import { TetaLocalisation } from '../../../locale/teta-localisation';
-import { ruLocale } from '../../../locale/ru';
 import { RangeCalendarComponent } from './range-calendar/range-calendar.component';
 import { DropdownContentDirective } from '../../dropdown/dropdown-content.directive';
 import { IconComponent } from '../../icon/icon/icon.component';
-import { MaskitoModule } from '@maskito/angular';
 import { InputComponent } from '../../input/input/input.component';
 import { DropdownHeadDirective } from '../../dropdown/dropdown-head.directive';
 import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
+import { MaskitoDirective } from '@maskito/angular';
 
 export const DATE_Range_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -40,23 +37,23 @@ export const DATE_Range_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-    selector: 'teta-date-range',
-    templateUrl: './date-range.component.html',
-    styleUrls: ['./date-range.component.scss'],
-    providers: [DATE_Range_CONTROL_VALUE_ACCESSOR, DatePipe],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        DropdownComponent,
-        DropdownHeadDirective,
-        NgClass,
-        InputComponent,
-        FormsModule,
-        MaskitoModule,
-        IconComponent,
-        DropdownContentDirective,
-        RangeCalendarComponent,
-        AsyncPipe,
-    ]
+  selector: 'teta-date-range',
+  templateUrl: './date-range.component.html',
+  styleUrls: ['./date-range.component.scss'],
+  providers: [DATE_Range_CONTROL_VALUE_ACCESSOR, DatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    DropdownComponent,
+    DropdownHeadDirective,
+    NgClass,
+    InputComponent,
+    FormsModule,
+    IconComponent,
+    DropdownContentDirective,
+    RangeCalendarComponent,
+    AsyncPipe,
+    MaskitoDirective,
+  ],
 })
 export class DateRangeComponent extends BasePicker implements OnInit, ControlValueAccessor {
   @Input() date: DateFromToModel = { from: null, to: null };
@@ -76,14 +73,9 @@ export class DateRangeComponent extends BasePicker implements OnInit, ControlVal
   @Output() selectDate: EventEmitter<DateFromToModel> = new EventEmitter<DateFromToModel>();
   public mask = '';
   public selectedDate: ReplaySubject<DateFromToModel> = new ReplaySubject<DateFromToModel>(1);
-  @HostBinding('class.daterange') private readonly classDaterange = true;
-  constructor(
-    override _cdr: ChangeDetectorRef,
-    override _elementRef: ElementRef,
-    override datePipe: DatePipe,
-    private localeService: TetaConfigService,
-  ) {
-    super(_elementRef, _cdr, datePipe);
+  @HostBinding('class.daterange') readonly classDaterange = true;
+  constructor() {
+    super();
     this.locale = this.localeService.locale;
   }
 

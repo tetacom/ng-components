@@ -1,36 +1,27 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Host,
-  HostBinding,
-  HostListener,
-  Inject,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, HostListener, inject, Input, OnInit } from '@angular/core';
 import { AccordionItemComponent } from '../accordion-item/accordion-item.component';
 import { IconComponent } from '../../icon/icon/icon.component';
 
 @Component({
-    selector: 'teta-accordion-head',
-    templateUrl: './accordion-head.component.html',
-    styleUrls: ['./accordion-head.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [IconComponent]
+  selector: 'teta-accordion-head',
+  templateUrl: './accordion-head.component.html',
+  styleUrls: ['./accordion-head.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [IconComponent],
 })
 export class AccordionHeadComponent implements OnInit {
-  @HostBinding('class.accordion-head') private readonly accordionHeadClass = true;
+  accordionItem = inject(AccordionItemComponent, {
+    host: true,
+  });
+
+  @HostBinding('class.accordion-head') readonly accordionHeadClass = true;
 
   @Input() showToggle = true;
 
   private readonly accordionItem$: AccordionItemComponent;
 
-  constructor(
-    @Host()
-    @Inject(AccordionItemComponent)
-    accordionItem: AccordionItemComponent,
-  ) {
-    this.accordionItem$ = accordionItem;
+  constructor() {
+    this.accordionItem$ = this.accordionItem;
   }
 
   @HostListener('click')

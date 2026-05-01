@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { CellComponentBase } from '../../base/cell-component-base';
 import { ICellCoordinates } from '../../contract/i-cell-coordinates';
-import { TableService } from '../../service/table.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxComponent } from '../../../checkbox/checkbox/checkbox.component';
 import { FormsUtil } from '../../../../util/forms-util';
@@ -17,13 +16,6 @@ import { FormsUtil } from '../../../../util/forms-util';
 })
 export class BooleanCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: ElementRef;
-
-  constructor(
-    public override svc: TableService<T>,
-    public override cdr: ChangeDetectorRef,
-  ) {
-    super(svc, cdr);
-  }
 
   override ngOnInit(): void {
     super.ngOnInit();

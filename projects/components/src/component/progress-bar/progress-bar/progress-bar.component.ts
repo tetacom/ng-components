@@ -6,9 +6,8 @@ import {
   forwardRef,
   HostBinding,
   HostListener,
-  Inject,
+  inject,
   Input,
-  OnInit,
   Renderer2,
   ViewChild,
 } from '@angular/core';
@@ -29,14 +28,19 @@ export const SLIDER_CONTROL_VALUE_ACCESSOR: any = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class ProgressBarComponent implements OnInit, ControlValueAccessor {
+export class ProgressBarComponent implements ControlValueAccessor {
+  private _elementRef = inject(ElementRef);
+  private _renderer = inject(Renderer2);
+  private _cdr = inject(ChangeDetectorRef);
+  private _document = inject(DOCUMENT);
+
   @Input() min = 0;
   @Input() max = 100;
   @Input() step = 0;
 
   @ViewChild('progressSlider', { static: true })
   private readonly slider: ElementRef;
-  @HostBinding('class.progress') private readonly progressBar = true;
+  @HostBinding('class.progress') readonly progressBar = true;
 
   percent: number;
   moving: boolean;
@@ -58,14 +62,7 @@ export class ProgressBarComponent implements OnInit, ControlValueAccessor {
 
   private _value;
 
-  constructor(
-    private _elementRef: ElementRef,
-    private _renderer: Renderer2,
-    private _cdr: ChangeDetectorRef,
-    @Inject(DOCUMENT) private _document: any,
-  ) {}
-
-  @HostListener('document:mouseup', ['$event']) mouseup() {
+  @HostListener('document:mouseup') mouseup() {
     this.moving = false;
     this.restoreGlobalMouseEvents();
     this.removeListener();
@@ -98,8 +95,6 @@ export class ProgressBarComponent implements OnInit, ControlValueAccessor {
     this.preventGlobalMouseEvents();
     this.addListener();
   };
-
-  ngOnInit(): void {}
 
   private mousemove = (event: MouseEvent) => {
     event.preventDefault();

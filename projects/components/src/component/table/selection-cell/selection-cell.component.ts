@@ -22,7 +22,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class SelectionCellComponent<T> {
   row = input.required<T>();
 
-  @HostBinding('class.cell') private readonly tableCellClass = true;
+  @HostBinding('class.cell') readonly tableCellClass = true;
 
   selectedRows: Signal<T[]>;
 

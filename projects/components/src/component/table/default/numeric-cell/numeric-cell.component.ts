@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { FormsUtil } from '../../../../util/forms-util';
 import { CellComponentBase } from '../../base/cell-component-base';
 import { ICellCoordinates } from '../../contract/i-cell-coordinates';
-import { TableService } from '../../service/table.service';
 import { NumberPipe } from '../../../../pipe/number-pipe/number.pipe';
 import { OnlyNumberDirective } from '../../../../directive/only-number/only-number.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,13 +17,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 })
 export class NumericCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: ElementRef;
-
-  constructor(
-    protected override svc: TableService<T>,
-    protected override cdr: ChangeDetectorRef,
-  ) {
-    super(svc, cdr);
-  }
 
   override ngOnInit(): void {
     super.ngOnInit();

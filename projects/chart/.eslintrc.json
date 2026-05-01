@@ -10,7 +10,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "ngComponents",
+            "prefix": ["ngComponents", "teta"],
             "style": "camelCase"
           }
         ],

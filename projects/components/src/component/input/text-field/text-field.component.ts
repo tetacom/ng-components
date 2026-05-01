@@ -6,6 +6,7 @@ import {
   forwardRef,
   HostBinding,
   HostListener,
+  inject,
   Input,
   ViewChild,
 } from '@angular/core';
@@ -16,20 +17,21 @@ import { OnlyNumberDirective } from '../../../directive/only-number/only-number.
 import { IconComponent } from '../../icon/icon/icon.component';
 
 @Component({
-    selector: 'teta-text-field',
-    templateUrl: './text-field.component.html',
-    styleUrls: ['./text-field.component.scss'],
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => TextFieldComponent),
-            multi: true,
-        },
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [IconComponent, FormsModule, OnlyNumberDirective, NgClass, NumberPipe]
+  selector: 'teta-text-field',
+  templateUrl: './text-field.component.html',
+  styleUrls: ['./text-field.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => TextFieldComponent),
+      multi: true,
+    },
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [IconComponent, FormsModule, OnlyNumberDirective, NgClass, NumberPipe],
 })
 export class TextFieldComponent implements ControlValueAccessor {
+  private _cdr = inject(ChangeDetectorRef);
   @Input() placeholder = '';
   @Input() leftIconName?: string;
   @HostBinding('class.text-field_disabled')
@@ -43,10 +45,8 @@ export class TextFieldComponent implements ControlValueAccessor {
   @ViewChild('input', { static: false }) input: ElementRef;
   inputFocused: boolean;
   @HostBinding('class.text-field')
-  private readonly textField = true;
+  readonly textField = true;
   value = '';
-
-  constructor(private _cdr: ChangeDetectorRef) {}
 
   @HostListener('click') onFocus() {
     if (this.disabled) {

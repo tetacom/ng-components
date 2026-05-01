@@ -1,7 +1,6 @@
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { FormsModule } from '@angular/forms';
 
-import { MaskitoModule } from '@maskito/angular';
 import { applicationConfig, Meta } from '@storybook/angular';
 import { provideHttpClient } from '@angular/common/http';
 import { IconSpriteDirective } from '../icon/icon-sprite.directive';
@@ -36,34 +35,34 @@ export default {
   },
   component: DatePickerComponent,
   moduleMetadata: {
-    imports: [FormsModule, MaskitoModule],
+    imports: [FormsModule],
   },
 } as Meta;
 
 export const baseDatepicker = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, MaskitoModule, IconSpriteDirective],
+    imports: [FormsModule, IconSpriteDirective],
   },
   props: { ...args, date: new Date() },
   template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [date]="date" [minDate]="minDate" [maxDate]="maxDate" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
 });
 export const disabledDatepicker = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, MaskitoModule, IconSpriteDirective],
+    imports: [FormsModule, IconSpriteDirective],
   },
   props: { ...args, date: new Date() },
   template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [disabled]="true" [date]="date" [minDate]="min" [maxDate]="max" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
 });
 export const invalidDatepicker = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, MaskitoModule, IconSpriteDirective],
+    imports: [FormsModule, IconSpriteDirective],
   },
   props: { ...args, date: new Date() },
   template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker [invalid]="true" [date]="date" [minDate]="min"  [maxDate]="max" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,
 });
 export const datepickerWithTime = (args) => ({
   moduleMetadata: {
-    imports: [FormsModule, MaskitoModule, IconSpriteDirective],
+    imports: [FormsModule, IconSpriteDirective],
   },
   props: { ...args, date: new Date() },
   template: `<div [tetaIconSprite]="'assets/icons.svg'"><teta-date-picker style="width: 250px" [date]="date" [minDate]="minDate" [showTime]="true" [maxDate]="maxDate" [viewType]="viewType" [allowNull]="allowNull"></teta-date-picker></div>`,

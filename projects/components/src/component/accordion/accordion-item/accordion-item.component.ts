@@ -4,9 +4,8 @@ import {
   Component,
   ContentChild,
   HostBinding,
-  Inject,
+  inject,
   Input,
-  Optional,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 
@@ -15,13 +14,18 @@ import { AccordionContentDirective } from '../accordion-content.directive';
 import { viewType } from '../../../common/model/view-type.model';
 
 @Component({
-    selector: 'teta-accordion-item',
-    templateUrl: './accordion-item.component.html',
-    styleUrls: ['./accordion-item.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgTemplateOutlet]
+  selector: 'teta-accordion-item',
+  templateUrl: './accordion-item.component.html',
+  styleUrls: ['./accordion-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgTemplateOutlet],
 })
 export class AccordionItemComponent {
+  accordion = inject(AccordionComponent, {
+    optional: true,
+  });
+  private cdr$ = inject(ChangeDetectorRef);
+
   @ContentChild(AccordionContentDirective, { static: false })
   content?: AccordionContentDirective;
 
@@ -30,10 +34,10 @@ export class AccordionItemComponent {
   open = false;
   @Input()
   disabled = false;
-  @HostBinding('class.accordion-item') private readonly accordionItemClass = true;
+  @HostBinding('class.accordion-item') readonly accordionItemClass = true;
 
   @Input()
-  divider: boolean = false;
+  divider = false;
   @HostBinding('class.accordion-item_divider') get dividerClass() {
     return this.divider;
   }
@@ -47,11 +51,8 @@ export class AccordionItemComponent {
 
   private readonly accordion$: AccordionComponent;
 
-  constructor(
-    @Optional() @Inject(AccordionComponent) accordion: AccordionComponent,
-    private cdr$: ChangeDetectorRef,
-  ) {
-    this.accordion$ = accordion;
+  constructor() {
+    this.accordion$ = this.accordion;
   }
 
   toggle() {

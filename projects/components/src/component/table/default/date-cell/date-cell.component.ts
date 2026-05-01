@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, signal, ViewChild } from '@angular/core';
 
 import { DatePickerComponent } from '../../../date-picker/date-picker/date-picker.component';
 import { CellComponentBase } from '../../base/cell-component-base';
 import { ICellCoordinates } from '../../contract/i-cell-coordinates';
-import { TableService } from '../../service/table.service';
 import { DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormsUtil } from '../../../../util/forms-util';
@@ -19,13 +18,6 @@ import { FormsUtil } from '../../../../util/forms-util';
 export class DateCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: DatePickerComponent;
   open = signal(false);
-
-  constructor(
-    protected override svc: TableService<T>,
-    protected override cdr: ChangeDetectorRef,
-  ) {
-    super(svc, cdr);
-  }
 
   override ngOnInit(): void {
     super.ngOnInit();

@@ -1,9 +1,9 @@
 import {
   Directive,
   ElementRef,
-  Host,
   HostBinding,
   HostListener,
+  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -17,21 +17,19 @@ import { DragSortContainerDirective } from './drag-sort-container.directive';
   standalone: true,
 })
 export class DragSortItemDirective<T> implements OnInit, OnDestroy {
+  private readonly _container = inject<DragSortContainerDirective<T>>(DragSortContainerDirective, { host: true });
+  private readonly _elementRef = inject(ElementRef);
+  private readonly _renderer = inject(Renderer2);
+
   @Input() tetaDragSortItem!: T;
   @Input() dragSortDirection: 'horizontal' | 'vertical' = 'horizontal';
 
-  @HostBinding('attr.draggable') private readonly draggable = true;
-  @HostBinding('class.position-relative') private readonly relative = true;
+  @HostBinding('attr.draggable') readonly draggable = true;
+  @HostBinding('class.position-relative') readonly relative = true;
 
   private _dragElement!: HTMLElement;
 
   private rect: any;
-
-  constructor(
-    @Host() private _container: DragSortContainerDirective<T>,
-    private _elementRef: ElementRef,
-    private _renderer: Renderer2,
-  ) {}
 
   @HostListener('dragstart', ['$event']) dragstart(event: DragEvent): void {
     this._container.setDragItem(this.tetaDragSortItem);

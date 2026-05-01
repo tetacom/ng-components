@@ -10,7 +10,9 @@
     "preserveSymlinks": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,
-    "strictNullChecks":false
+    "strictNullChecks": false,
+    "module": "preserve",
+    "moduleResolution": "bundler"
   },
   "files": [],
   "include": [],

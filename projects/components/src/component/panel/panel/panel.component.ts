@@ -25,8 +25,8 @@ export class PanelComponent implements OnInit {
     };
   }
 
-  @HostBinding('class.column') private readonly column = true;
-  @HostBinding('class.column_fixed') private readonly auto = true;
+  @HostBinding('class.column') readonly column = true;
+  @HostBinding('class.column_fixed') readonly auto = true;
 
   constructor() {}
 

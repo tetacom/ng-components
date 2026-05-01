@@ -1,22 +1,8 @@
-import { DOCUMENT } from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Directive,
-  ElementRef,
-  HostListener,
-  Inject,
-  Injector,
-  Input,
-  NgZone,
-  OnDestroy,
-  TemplateRef,
-  Type,
-} from '@angular/core';
+import { Directive, HostListener, Input, OnDestroy, TemplateRef, Type } from '@angular/core';
 
 import { Align } from '../../common/enum/align.enum';
 import { VerticalAlign } from '../../common/enum/vertical-align.enum';
 import { viewType } from '../../common/model/view-type.model';
-import { DynamicComponentService } from '../../common/service/dynamic-component.service';
 import { ArrayUtil } from '../../common/util/array-util';
 import { DomUtil } from '../../common/util/dom-util';
 import { PositionUtil } from '../../common/util/position-util';
@@ -44,19 +30,11 @@ export class HintDirective extends DynamicContentBaseDirective implements OnDest
   private _timeout?: any;
   private _componentRect: any;
 
-  constructor(
-    @Inject(DOCUMENT)
-    protected override _document: any,
-    protected override _elementRef: ElementRef,
-    protected override _service: DynamicComponentService,
-    protected override _injector: Injector,
-    protected override _zone: NgZone,
-    protected override _cdr: ChangeDetectorRef,
-  ) {
-    super(_document, _elementRef, _service, _injector, _zone, _cdr);
+  constructor() {
+    super();
   }
 
-  @HostListener('mouseenter', ['$event'])
+  @HostListener('mouseenter')
   mouseenter(): void {
     clearTimeout(this._timeout);
     this._timeout = setTimeout(() => {
@@ -64,7 +42,7 @@ export class HintDirective extends DynamicContentBaseDirective implements OnDest
     }, this.delay);
   }
 
-  @HostListener('mouseleave', ['$event'])
+  @HostListener('mouseleave')
   mouseleave(): void {
     clearTimeout(this._timeout);
     if (this._open && this._componentRef) {
