@@ -11,7 +11,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           cache: npm
-          node-version: 22
+          node-version: 24
       - name: Install & Build
         run: npm install && npx nx build components
       - name: Publish
