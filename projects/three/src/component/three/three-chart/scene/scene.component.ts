@@ -21,19 +21,19 @@ import { Chart3dService } from '../service/chart-3d.service';
 import { injectStore } from 'angular-three';
 
 @Component({
-    selector: 'teta-scene',
-    templateUrl: './scene.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        NgtsOrbitControls,
-        CommonModule,
-        Area3dComponent,
-        Line3dComponent,
-        Axes3dComponent,
-        Block3dComponent,
-        Series3dHost,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  selector: 'teta-scene',
+  templateUrl: './scene.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgtsOrbitControls,
+    CommonModule,
+    Area3dComponent,
+    Line3dComponent,
+    Axes3dComponent,
+    Block3dComponent,
+    Series3dHost,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SceneComponent implements OnInit {
   public data: Observable<I3dChartConfig>;
@@ -50,11 +50,11 @@ export class SceneComponent implements OnInit {
   setRotation() {
     this.rotation = null;
     this._cdr.detectChanges();
-    this.rotation = this.store.get('camera').rotation;
+    this.rotation = this.store().camera.rotation;
     this._cdr.detectChanges();
   }
 
   ngOnInit(): void {
-    this.rotation = this.store.get('camera').rotation;
+    this.rotation = this.store().camera.rotation;
   }
 }

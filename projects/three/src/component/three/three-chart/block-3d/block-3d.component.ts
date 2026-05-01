@@ -7,17 +7,16 @@ import { Texture } from 'three';
 
 import { Base3dSeriesComponent } from '../base-3d-series/base3d-series.component';
 import { Block3dPoint } from '../model/block3d-point';
-import { Chart3dService } from '../service/chart-3d.service';
 import { AsyncPipe } from '@angular/common';
 
 extend(THREE);
 
 @Component({
-    selector: 'teta-block-3d',
-    templateUrl: './block-3d.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgtArgs, NgtsText, AsyncPipe],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  selector: 'teta-block-3d',
+  templateUrl: './block-3d.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgtArgs, NgtsText, AsyncPipe],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class Block3dComponent<T extends Block3dPoint> extends Base3dSeriesComponent<T> implements OnDestroy {
   public blocks: Observable<
@@ -29,10 +28,8 @@ export class Block3dComponent<T extends Block3dPoint> extends Base3dSeriesCompon
   private _alive = true;
   protected readonly Math = Math;
 
-  constructor(
-    override svc: Chart3dService,
-  ) {
-    super(svc);
+  constructor() {
+    super();
     this.blocks = this.svc.scales.pipe(
       takeWhile(() => this._alive),
       map((scales) => {

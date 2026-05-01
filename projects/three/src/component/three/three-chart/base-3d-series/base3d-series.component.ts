@@ -1,18 +1,20 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chart3dService } from '../service/chart-3d.service';
 import { Base3dThreePoint } from '../model/base-3d-three-point';
 import { Base3dSeries } from '../model/base-3d-series';
-import { injectStore} from 'angular-three';
+import { injectStore } from 'angular-three';
 
 @Component({
-    selector: 'teta-base3d-series',
-    imports: [CommonModule],
-    templateUrl: './base3d-series.component.html',
-    styleUrls: ['./base3d-series.component.scss']
+  selector: 'teta-base3d-series',
+  imports: [CommonModule],
+  templateUrl: './base3d-series.component.html',
+  styleUrls: ['./base3d-series.component.scss'],
 })
 export class Base3dSeriesComponent<T extends Base3dThreePoint> {
+  protected svc = inject(Chart3dService);
   protected ngtStore = injectStore();
+
   @Input()
   set series(series: Base3dSeries<T>) {
     this._series = series;
@@ -21,9 +23,6 @@ export class Base3dSeriesComponent<T extends Base3dThreePoint> {
   get series() {
     return this._series;
   }
-  protected _series: Base3dSeries<T>;
-  constructor(
-    protected svc: Chart3dService,
 
-  ) {}
+  protected _series: Base3dSeries<T>;
 }
