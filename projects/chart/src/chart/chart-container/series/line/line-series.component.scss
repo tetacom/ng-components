@@ -1,6 +1,9 @@
 .draggable-marker {
   cursor: move;
 }
+.draggable-path {
+  cursor: ew-resize;
+}
 .active {
   stroke-opacity: 0.5;
 }

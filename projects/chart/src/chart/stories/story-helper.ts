@@ -93,6 +93,26 @@ export const createDragSeries = (size: number): Series<BasePoint> => {
   };
 };
 
+export const createPathDragSeries = (size: number): Series<BasePoint> => {
+  return {
+    id: 'path-drag',
+    type: SeriesType.line,
+    name: faker.address.cityName(),
+    yAxisIndex: 0,
+    xAxisIndex: 0,
+    color: cssColorNames[randomColor()].toLowerCase(),
+    fillType: FillType.gradient,
+    draggablePath: true,
+    pathDragType: DragPointType.x,
+    data: Array.from(Array(size).keys()).map((key, index) => {
+      return {
+        x: index,
+        y: faker.datatype.number({ min: 0, max: 200 }),
+      };
+    }),
+  };
+};
+
 export const createBandSeries = (size: number): Series<BasePoint> => {
   return {
     id: 'index',
@@ -212,6 +232,31 @@ export const createDragChart = (size: number): IChartConfig => {
       enable: false,
     },
     series: [createDragSeries(size)],
+  };
+};
+
+export const createPathDragChart = (size: number): IChartConfig => {
+  return {
+    id: 'path-drag-chart',
+    name: 'path-drag-chart',
+    tooltip: {
+      tracking: TooltipTracking.x,
+    },
+    bounds: new ChartBounds({}),
+    xAxis: [
+      {
+        niceTicks: false,
+      },
+    ],
+    yAxis: [{}],
+    zoom: {
+      enable: false,
+      type: ZoomType.x,
+    },
+    legend: {
+      enable: false,
+    },
+    series: [createPathDragSeries(size)],
   };
 };
 

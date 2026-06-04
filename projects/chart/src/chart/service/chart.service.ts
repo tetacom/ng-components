@@ -23,6 +23,7 @@ import { IChartConfig } from '../model/i-chart-config';
 import { IChartEvent } from '../model/i-chart-event';
 import { IDisplayTooltip } from '../model/i-display-tooltip';
 import { IPointMove } from '../model/i-point-move';
+import { ISeriesOffsetMove } from '../model/i-series-offset-move';
 import { PlotBand } from '../model/plot-band';
 import { PlotLine } from '../model/plot-line';
 import { Series } from '../model/series';
@@ -43,6 +44,7 @@ export class ChartService {
   public plotBandClick: Observable<IChartEvent<PlotBand>>;
   public plotBandContextMenu: Observable<IChartEvent<PlotBand>>;
   public pointMove: Observable<IChartEvent<IPointMove>>;
+  public seriesOffsetMove: Observable<IChartEvent<ISeriesOffsetMove>>;
   public annotationMove: Observable<IChartEvent<Annotation>>;
   public annotationClick: Observable<IChartEvent<Annotation>>;
   public annotationContextMenu: Observable<IChartEvent<Annotation>>;
@@ -58,6 +60,7 @@ export class ChartService {
   private plotBandEvent$ = new Subject<IChartEvent<PlotBand>>();
   private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();
   private pointMove$ = new Subject<IChartEvent<IPointMove>>();
+  private seriesOffsetMove$ = new Subject<IChartEvent<ISeriesOffsetMove>>();
   private chartClick$ = new Subject<IChartEvent<BasePoint>>();
   private chartContextMenu$ = new Subject<IChartEvent<BasePoint>>();
   private annotationEvent$ = new Subject<IChartEvent<Annotation>>();
@@ -98,6 +101,7 @@ export class ChartService {
     this.plotBandEvent = this.plotBandEvent$.asObservable();
     this.plotLineMove = this.plotLineMove$.asObservable();
     this.pointMove = this.pointMove$.asObservable();
+    this.seriesOffsetMove = this.seriesOffsetMove$.asObservable();
     this.chartClick = this.chartClick$.asObservable();
     this.chartContextMenu = this.chartContextMenu$.asObservable();
     this.annotationClick = this.annotationEvent$.asObservable().pipe(filter((_) => _?.event?.type === 'click'));
@@ -188,6 +192,10 @@ export class ChartService {
 
   public emitPoint(event: IChartEvent<IPointMove>) {
     this.pointMove$.next(event);
+  }
+
+  public emitSeriesOffset(event: IChartEvent<ISeriesOffsetMove>) {
+    this.seriesOffsetMove$.next(event);
   }
 
   public emitChartClick(event: IChartEvent<BasePoint>) {

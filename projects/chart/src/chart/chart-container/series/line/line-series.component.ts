@@ -3,17 +3,30 @@ import { BasePoint } from '../../../model/base-point';
 import { LinearSeriesBaseComponent } from '../linear-series-base.component';
 import { AsyncPipe } from '@angular/common';
 import { DraggablePointDirective } from '../../../directives/draggable-point.directive';
+import { DraggableSeriesDirective, SeriesDragEvent } from '../../../directives/draggable-series.directive';
 
 @Component({
   selector: 'svg:svg[teta-line-series]',
   templateUrl: './line-series.component.html',
   styleUrls: ['./line-series.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, DraggablePointDirective],
+  imports: [AsyncPipe, DraggablePointDirective, DraggableSeriesDirective],
 })
 export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseComponent<T> implements OnDestroy {
   private start: { x: number; y: number };
   private labelStart: { dx: number; dy: number };
+
+  seriesMoveStart(event: SeriesDragEvent) {
+    this.emitSeriesOffset('start', event);
+  }
+
+  seriesMoveProcess(event: SeriesDragEvent) {
+    this.emitSeriesOffset('drag', event);
+  }
+
+  seriesMoveEnd(event: SeriesDragEvent) {
+    this.emitSeriesOffset('end', event);
+  }
 
   moveStart(event, point) {
     this.start = { x: point.x, y: point.y };
@@ -87,4 +100,37 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
       return true;
     };
   };
+
+  private emitSeriesOffset(type: 'start' | 'drag' | 'end', event: SeriesDragEvent) {
+    this.svc.emitSeriesOffset({
+      event: {
+        type,
+        sourceEvent: event,
+      },
+      target: {
+        series: this.series(),
+        offsetPx: {
+          x: event.deltaX,
+          y: event.deltaY,
+        },
+        offsetValue: {
+          x: this.getScaleOffset(this.x(), event.deltaX),
+          y: this.getScaleOffset(this.y(), event.deltaY),
+        },
+      },
+    });
+  }
+
+  private getScaleOffset(scale: any, offsetPx: number): number {
+    if (!scale?.invert || !scale?.domain) {
+      return null;
+    }
+
+    const [domainStart] = scale.domain();
+    const startValue = domainStart instanceof Date ? domainStart.getTime() : domainStart;
+    const nextValue = scale.invert(scale(domainStart) + offsetPx);
+    const normalizedNextValue = nextValue instanceof Date ? nextValue.getTime() : nextValue;
+
+    return normalizedNextValue - startValue;
+  }
 }
