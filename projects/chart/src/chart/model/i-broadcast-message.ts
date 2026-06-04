@@ -22,7 +22,7 @@ export class ZoomMessage {
     eventType: 'start' | 'zoom' | 'end' | string;
     element?: ElementRef;
     axis?: TargetAxis;
-    domain?: [number, number];
+    domain?: [number, number] | null;
     chartId: string;
     style?: TransformStyle;
   }) {
