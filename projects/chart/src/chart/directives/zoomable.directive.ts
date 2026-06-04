@@ -95,7 +95,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit, OnInit {
             this.axis.orientation === AxisOrientation.x ? scales.x.get(this.axis.index) : scales.y.get(this.axis.index);
           const scale = axis.scale.copy().domain(this.axis.originDomain);
           let transform;
-          if (zoomed.domain === null) {
+          if (zoomed.domain === null || zoomed.domain === undefined) {
             transform = zoomIdentity;
           } else {
             transform = this.zoomService.getD3Transform(
