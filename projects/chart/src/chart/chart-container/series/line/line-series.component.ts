@@ -160,6 +160,10 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
     return normalizedNextValue - startValue;
   }
 
+  protected override getClipOffset() {
+    return this.seriesOffsetValue();
+  }
+
   private getOffsetPixels(scale: any, offsetValue: number): number {
     if (!scale || !scale?.domain || offsetValue === null || offsetValue === undefined) {
       return 0;

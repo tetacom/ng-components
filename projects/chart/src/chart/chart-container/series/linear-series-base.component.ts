@@ -55,6 +55,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
       .y((point) => this.y()(point.y));
 
     let filteredData = this.series().data;
+    const clipOffset = this.getClipOffset();
 
     if (this.series().clipPointsDirection === ClipPointsDirection.x) {
       let [min, max] = this.x().domain();
@@ -62,7 +63,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
       min = min instanceof Date ? min.getTime() : min;
       max = max instanceof Date ? max.getTime() : max;
 
-      filteredData = filteredData?.filter(filter(min, max));
+      filteredData = filteredData?.filter(filter(min - clipOffset.x, max - clipOffset.x));
     }
 
     if (this.series().clipPointsDirection === ClipPointsDirection.y) {
@@ -71,13 +72,17 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
       min = min instanceof Date ? min.getTime() : min;
       max = max instanceof Date ? max.getTime() : max;
 
-      filteredData = filteredData?.filter(filter(min, max));
+      filteredData = filteredData?.filter(filter(min - clipOffset.y, max - clipOffset.y));
     }
 
     return line(filteredData);
   });
 
   protected update = signal<unknown>(null);
+
+  protected getClipOffset() {
+    return { x: 0, y: 0 };
+  }
 
   constructor() {
     super();
