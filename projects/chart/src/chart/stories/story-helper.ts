@@ -100,7 +100,7 @@ export const createPathDragSeries = (size: number): Series<BasePoint> => {
     name: faker.address.cityName(),
     yAxisIndex: 0,
     xAxisIndex: 0,
-    color: cssColorNames[randomColor()].toLowerCase(),
+    color: 'green',
     fillType: FillType.gradient,
     draggablePath: true,
     pathDragType: DragPointType.x,

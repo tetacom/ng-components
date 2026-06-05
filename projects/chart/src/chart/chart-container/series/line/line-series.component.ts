@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, OnDestroy, signal } from '@angular/core';
 import { BasePoint } from '../../../model/base-point';
 import { LinearSeriesBaseComponent } from '../linear-series-base.component';
 import { AsyncPipe } from '@angular/common';
@@ -15,16 +15,33 @@ import { DraggableSeriesDirective, SeriesDragEvent } from '../../../directives/d
 export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseComponent<T> implements OnDestroy {
   private start: { x: number; y: number };
   private labelStart: { dx: number; dy: number };
+  private seriesDragStartOffsetValue = { x: 0, y: 0 };
+  private seriesOffsetValue = signal({ x: 0, y: 0 });
+
+  seriesPathTransform = computed(() => {
+    const offset = this.seriesOffsetValue();
+    const offsetX = this.getOffsetPixels(this.x(), offset.x);
+    const offsetY = this.getOffsetPixels(this.y(), offset.y);
+
+    if (!offsetX && !offsetY) {
+      return null;
+    }
+
+    return `translate(${offsetX}, ${offsetY})`;
+  });
 
   seriesMoveStart(event: SeriesDragEvent) {
+    this.seriesDragStartOffsetValue = { ...this.seriesOffsetValue() };
     this.emitSeriesOffset('start', event);
   }
 
   seriesMoveProcess(event: SeriesDragEvent) {
+    this.updateSeriesOffset(event);
     this.emitSeriesOffset('drag', event);
   }
 
   seriesMoveEnd(event: SeriesDragEvent) {
+    this.updateSeriesOffset(event);
     this.emitSeriesOffset('end', event);
   }
 
@@ -102,6 +119,8 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
   };
 
   private emitSeriesOffset(type: 'start' | 'drag' | 'end', event: SeriesDragEvent) {
+    const offsetValue = this.seriesOffsetValue();
+
     this.svc.emitSeriesOffset({
       event: {
         type,
@@ -110,20 +129,27 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
       target: {
         series: this.series(),
         offsetPx: {
-          x: event.deltaX,
-          y: event.deltaY,
+          x: this.getOffsetPixels(this.x(), offsetValue.x),
+          y: this.getOffsetPixels(this.y(), offsetValue.y),
         },
         offsetValue: {
-          x: this.getScaleOffset(this.x(), event.deltaX),
-          y: this.getScaleOffset(this.y(), event.deltaY),
+          x: offsetValue.x,
+          y: offsetValue.y,
         },
       },
     });
   }
 
+  private updateSeriesOffset(event: SeriesDragEvent) {
+    this.seriesOffsetValue.set({
+      x: this.seriesDragStartOffsetValue.x + this.getScaleOffset(this.x(), event.deltaX),
+      y: this.seriesDragStartOffsetValue.y + this.getScaleOffset(this.y(), event.deltaY),
+    });
+  }
+
   private getScaleOffset(scale: any, offsetPx: number): number {
     if (!scale?.invert || !scale?.domain) {
-      return null;
+      return 0;
     }
 
     const [domainStart] = scale.domain();
@@ -132,5 +158,17 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
     const normalizedNextValue = nextValue instanceof Date ? nextValue.getTime() : nextValue;
 
     return normalizedNextValue - startValue;
+  }
+
+  private getOffsetPixels(scale: any, offsetValue: number): number {
+    if (!scale || !scale?.domain || offsetValue === null || offsetValue === undefined) {
+      return 0;
+    }
+
+    const [domainStart] = scale.domain();
+    const startValue = domainStart instanceof Date ? domainStart.getTime() : domainStart;
+    const nextValue = domainStart instanceof Date ? new Date(startValue + offsetValue) : startValue + offsetValue;
+
+    return scale(nextValue) - scale(domainStart);
   }
 }

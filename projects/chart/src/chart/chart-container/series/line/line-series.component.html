@@ -2,6 +2,7 @@
   <svg:g
     [tetaDraggableSeries]="series.draggablePath"
     [dragDirection]="series.pathDragType"
+    [attr.transform]="seriesPathTransform()"
     [class.draggable-path]="series.draggablePath"
     (moveStart)="seriesMoveStart($event)"
     (moveProcess)="seriesMoveProcess($event)"
