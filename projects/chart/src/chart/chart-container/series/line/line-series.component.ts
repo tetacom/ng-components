@@ -6,6 +6,7 @@ import { AsyncPipe } from '@angular/common';
 import { DraggablePointDirective } from '../../../directives/draggable-point.directive';
 import { DraggableSeriesDirective, SeriesDragEvent } from '../../../directives/draggable-series.directive';
 import { Series } from '../../../model/series';
+import { DragPointType } from '../../../model/enum/drag-point-type';
 
 @Component({
   selector: 'svg:svg[teta-line-series]',
@@ -23,6 +24,7 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
   private seriesDragMoved = false;
 
   private seriesOffsetValue = computed(() => {
+    console.log('seriesPathOffsets', this.seriesPathOffsets());
     return this.seriesPathOffsets().get(this.series().id) ?? { x: 0, y: 0 };
   });
 
@@ -61,6 +63,7 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
   }
 
   seriesPathClick(event: MouseEvent) {
+    console.log('AAAA');
     if (this.seriesDragMoved) {
       event.stopPropagation();
       event.preventDefault();
@@ -78,7 +81,7 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
 
     event.stopPropagation();
     event.preventDefault();
-
+    console.log('BBBB');
     this.series().selectedForPathDrag = !this.series().selectedForPathDrag;
     this.cdr.markForCheck();
   }
@@ -244,8 +247,9 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
         series.draggablePath &&
         series.visible !== false &&
         series.enabled !== false &&
-        series.xAxisIndex === currentSeries.xAxisIndex &&
-        series.yAxisIndex === currentSeries.yAxisIndex
+        series.pathDragType === currentSeries.pathDragType &&
+        ((currentSeries.pathDragType === DragPointType.x && series.xAxisIndex === currentSeries.xAxisIndex) ||
+          (currentSeries.pathDragType === DragPointType.y && series.yAxisIndex === currentSeries.yAxisIndex))
       );
     });
 

@@ -137,6 +137,13 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
     const mouse = [event?.offsetX, event?.offsetY];
 
     const tooltipTracking = this.config()?.tooltip?.tracking;
+    const clipOffset = this.getClipOffset();
+    const addOffset = (value: any, offset: number) => {
+      return value instanceof Date ? new Date(value.getTime() + offset) : value + offset;
+    };
+    const subtractOffset = (value: any, offset: number) => {
+      return value instanceof Date ? value.getTime() - offset : value - offset;
+    };
 
     const lineIntersection = (
       p0_x: number,
@@ -175,6 +182,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
       if (x0 instanceof Date) {
         x0 = x0.getTime();
       }
+      x0 = subtractOffset(x0, clipOffset.x);
       const rightId = bisect(
         [...this.series().data].sort((a, b) => a.x - b.x),
         x0,
@@ -187,10 +195,10 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
         range[0],
         pointer,
         Number.MAX_SAFE_INTEGER,
-        scaleX(sortedData[rightId - 1]?.x),
-        scaleY(sortedData[rightId - 1]?.y),
-        scaleX(sortedData[rightId]?.x),
-        scaleY(sortedData[rightId]?.y),
+        scaleX(addOffset(sortedData[rightId - 1]?.x, clipOffset.x)),
+        scaleY(addOffset(sortedData[rightId - 1]?.y, clipOffset.y)),
+        scaleX(addOffset(sortedData[rightId]?.x, clipOffset.x)),
+        scaleY(addOffset(sortedData[rightId]?.y, clipOffset.y)),
       );
       const x = scaleX.invert(intersect.x);
       const y = scaleY.invert(intersect.y);
@@ -225,6 +233,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
       if (y0 instanceof Date) {
         y0 = y0.getTime();
       }
+      y0 = subtractOffset(y0, clipOffset.y);
       const rightId = bisect(sortedData, y0);
 
       const range = scaleX.range();
@@ -234,10 +243,10 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
         mouse[1],
         Number.MAX_SAFE_INTEGER,
         mouse[1],
-        scaleX(sortedData[rightId - 1]?.x),
-        scaleY(sortedData[rightId - 1]?.y),
-        scaleX(sortedData[rightId]?.x),
-        scaleY(sortedData[rightId]?.y),
+        scaleX(addOffset(sortedData[rightId - 1]?.x, clipOffset.x)),
+        scaleY(addOffset(sortedData[rightId - 1]?.y, clipOffset.y)),
+        scaleX(addOffset(sortedData[rightId]?.x, clipOffset.x)),
+        scaleY(addOffset(sortedData[rightId]?.y, clipOffset.y)),
       );
 
       const x = scaleX.invert(intersect.x);
