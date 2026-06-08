@@ -93,6 +93,27 @@ export const createDragSeries = (size: number): Series<BasePoint> => {
   };
 };
 
+export const createPathDragSeries = (size: number, seriesIndex = 0, selectedForPathDrag = false): Series<BasePoint> => {
+  return {
+    id: `path-drag-${seriesIndex}`,
+    type: SeriesType.line,
+    name: `Path drag ${seriesIndex + 1}`,
+    yAxisIndex: 0,
+    xAxisIndex: 0,
+    color: cssColorNames[randomColor()].toLowerCase(),
+    fillType: FillType.gradient,
+    draggablePath: true,
+    pathDragType: DragPointType.x,
+    selectedForPathDrag,
+    data: Array.from(Array(size).keys()).map((key, pointIndex) => {
+      return {
+        x: pointIndex,
+        y: faker.datatype.number({ min: 0, max: 60 }) + seriesIndex * 70,
+      };
+    }),
+  };
+};
+
 export const createBandSeries = (size: number): Series<BasePoint> => {
   return {
     id: 'index',
@@ -212,6 +233,56 @@ export const createDragChart = (size: number): IChartConfig => {
       enable: false,
     },
     series: [createDragSeries(size)],
+  };
+};
+
+export const createPathDragChart = (size: number): IChartConfig => {
+  return {
+    id: 'path-drag-chart',
+    name: 'path-drag-chart',
+    tooltip: {
+      tracking: TooltipTracking.x,
+    },
+    bounds: new ChartBounds({}),
+    xAxis: [
+      {
+        niceTicks: false,
+      },
+    ],
+    yAxis: [{}],
+    zoom: {
+      enable: false,
+      type: ZoomType.x,
+    },
+    legend: {
+      enable: false,
+    },
+    series: [createPathDragSeries(size)],
+  };
+};
+
+export const createMultiPathDragChart = (size: number): IChartConfig => {
+  return {
+    id: 'multi-path-drag-chart',
+    name: 'multi-path-drag-chart',
+    tooltip: {
+      tracking: TooltipTracking.x,
+    },
+    bounds: new ChartBounds({}),
+    xAxis: [
+      {
+        niceTicks: false,
+      },
+    ],
+    yAxis: [{}],
+    zoom: {
+      enable: false,
+      type: ZoomType.x,
+    },
+    legend: {
+      enable: true,
+    },
+    series: [createPathDragSeries(size, 0), createPathDragSeries(size, 1), createPathDragSeries(size, 2, false)],
   };
 };
 

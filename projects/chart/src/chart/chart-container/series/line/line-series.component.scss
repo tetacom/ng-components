@@ -1,6 +1,18 @@
 .draggable-marker {
   cursor: move;
 }
+.draggable-path {
+  cursor: ew-resize;
+}
+.selected-path {
+  cursor: ew-resize;
+}
+.selected-path:active {
+  cursor: ew-resize;
+}
+.line-selected {
+  filter: drop-shadow(0 0 3px var(--series-color));
+}
 .active {
   stroke-opacity: 0.5;
 }

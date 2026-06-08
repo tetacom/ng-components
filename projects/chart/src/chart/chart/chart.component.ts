@@ -8,6 +8,7 @@ import { TooltipTracking } from '../model/enum/tooltip-tracking';
 import { IChartConfig } from '../model/i-chart-config';
 import { IChartEvent } from '../model/i-chart-event';
 import { IPointMove } from '../model/i-point-move';
+import { ISeriesOffsetMove } from '../model/i-series-offset-move';
 import { IScalesMap } from '../model/i-scales-map';
 import { PlotBand } from '../model/plot-band';
 import { PlotLine } from '../model/plot-line';
@@ -47,6 +48,9 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   @Output()
   pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<IChartEvent<IPointMove>>();
+
+  @Output()
+  seriesOffsetMove: EventEmitter<IChartEvent<ISeriesOffsetMove>> = new EventEmitter<IChartEvent<ISeriesOffsetMove>>();
 
   @Output()
   chartClick: EventEmitter<IChartEvent<BasePoint>> = new EventEmitter<IChartEvent<BasePoint>>();
@@ -144,6 +148,10 @@ export class ChartComponent implements OnInit, OnDestroy {
 
     this.chartService.pointMove.pipe(takeWhile(() => this._alive)).subscribe((_) => {
       this.pointMove.emit(_);
+    });
+
+    this.chartService.seriesOffsetMove.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.seriesOffsetMove.emit(_);
     });
 
     this.chartService.chartClick.pipe(takeWhile(() => this._alive)).subscribe((_) => {

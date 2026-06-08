@@ -1,19 +1,87 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, OnDestroy } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { BasePoint } from '../../../model/base-point';
 import { LinearSeriesBaseComponent } from '../linear-series-base.component';
 import { AsyncPipe } from '@angular/common';
 import { DraggablePointDirective } from '../../../directives/draggable-point.directive';
+import { DraggableSeriesDirective, SeriesDragEvent } from '../../../directives/draggable-series.directive';
+import { Series } from '../../../model/series';
 
 @Component({
   selector: 'svg:svg[teta-line-series]',
   templateUrl: './line-series.component.html',
   styleUrls: ['./line-series.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, DraggablePointDirective],
+  imports: [AsyncPipe, DraggablePointDirective, DraggableSeriesDirective],
 })
 export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseComponent<T> implements OnDestroy {
   private start: { x: number; y: number };
   private labelStart: { dx: number; dy: number };
+  private seriesPathOffsets = toSignal(this.svc.seriesPathOffsets, { initialValue: new Map() });
+  private seriesDragStartOffsets = new Map<number | string, { x: number; y: number }>();
+  private seriesDragGroup: Series<BasePoint>[] = [];
+  private seriesDragMoved = false;
+
+  private seriesOffsetValue = computed(() => {
+    return this.seriesPathOffsets().get(this.series().id) ?? { x: 0, y: 0 };
+  });
+
+  seriesPathTransform = computed(() => {
+    const offset = this.seriesOffsetValue();
+    const offsetX = this.getOffsetPixels(this.x(), offset.x);
+    const offsetY = this.getOffsetPixels(this.y(), offset.y);
+
+    if (!offsetX && !offsetY) {
+      return null;
+    }
+
+    return `translate(${offsetX}, ${offsetY})`;
+  });
+
+  seriesMoveStart(event: SeriesDragEvent) {
+    this.seriesDragMoved = false;
+    this.seriesDragGroup = this.getPathDragSeriesGroup();
+    this.seriesDragStartOffsets = new Map(
+      this.seriesDragGroup.map((series) => {
+        return [series.id, this.svc.getSeriesPathOffsets().get(series.id) ?? { x: 0, y: 0 }];
+      }),
+    );
+    this.emitSeriesOffset('start', event);
+  }
+
+  seriesMoveProcess(event: SeriesDragEvent) {
+    this.seriesDragMoved = this.seriesDragMoved || Math.abs(event.deltaX) > 3 || Math.abs(event.deltaY) > 3;
+    this.updateSeriesOffset(event);
+    this.emitSeriesOffset('drag', event);
+  }
+
+  seriesMoveEnd(event: SeriesDragEvent) {
+    this.updateSeriesOffset(event);
+    this.emitSeriesOffset('end', event);
+  }
+
+  seriesPathClick(event: MouseEvent) {
+    if (this.seriesDragMoved) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.seriesDragMoved = false;
+      return;
+    }
+
+    if (!event.ctrlKey && !event.metaKey) {
+      return;
+    }
+
+    if (!this.series().draggablePath) {
+      return;
+    }
+
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.series().selectedForPathDrag = !this.series().selectedForPathDrag;
+    this.cdr.markForCheck();
+  }
 
   moveStart(event, point) {
     this.start = { x: point.x, y: point.y };
@@ -87,4 +155,112 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
       return true;
     };
   };
+
+  private emitSeriesOffset(type: 'start' | 'drag' | 'end', event: SeriesDragEvent) {
+    const offsetValue = this.seriesOffsetValue();
+    const seriesList = this.seriesDragGroup.length ? this.seriesDragGroup : [this.series()];
+
+    this.svc.emitSeriesOffset({
+      event: {
+        type,
+        sourceEvent: event,
+      },
+      target: {
+        series: this.series(),
+        seriesList,
+        seriesIds: seriesList.map((series) => series.id),
+        offsets: seriesList.map((series) => {
+          const seriesOffsetValue = this.svc.getSeriesPathOffsets().get(series.id) ?? { x: 0, y: 0 };
+
+          return {
+            series,
+            seriesId: series.id,
+            offsetPx: {
+              x: this.getOffsetPixels(this.x(), seriesOffsetValue.x),
+              y: this.getOffsetPixels(this.y(), seriesOffsetValue.y),
+            },
+            offsetValue: seriesOffsetValue,
+          };
+        }),
+        offsetPx: {
+          x: this.getOffsetPixels(this.x(), offsetValue.x),
+          y: this.getOffsetPixels(this.y(), offsetValue.y),
+        },
+        offsetValue: {
+          x: offsetValue.x,
+          y: offsetValue.y,
+        },
+      },
+    });
+  }
+
+  private updateSeriesOffset(event: SeriesDragEvent) {
+    const dragOffset = {
+      x: this.getScaleOffset(this.x(), event.deltaX),
+      y: this.getScaleOffset(this.y(), event.deltaY),
+    };
+    const offsets = new Map(this.svc.getSeriesPathOffsets());
+    const seriesList = this.seriesDragGroup.length ? this.seriesDragGroup : [this.series()];
+
+    seriesList.forEach((series) => {
+      const startOffset = this.seriesDragStartOffsets.get(series.id) ?? { x: 0, y: 0 };
+
+      offsets.set(series.id, {
+        x: startOffset.x + dragOffset.x,
+        y: startOffset.y + dragOffset.y,
+      });
+    });
+
+    this.svc.setSeriesPathOffsets(offsets);
+  }
+
+  private getScaleOffset(scale: any, offsetPx: number): number {
+    if (!scale?.invert || !scale?.domain) {
+      return 0;
+    }
+
+    const [domainStart] = scale.domain();
+    const startValue = domainStart instanceof Date ? domainStart.getTime() : domainStart;
+    const nextValue = scale.invert(scale(domainStart) + offsetPx);
+    const normalizedNextValue = nextValue instanceof Date ? nextValue.getTime() : nextValue;
+
+    return normalizedNextValue - startValue;
+  }
+
+  protected override getClipOffset() {
+    return this.seriesOffsetValue();
+  }
+
+  private getPathDragSeriesGroup(): Series<BasePoint>[] {
+    const currentSeries = this.series();
+
+    if (!currentSeries.selectedForPathDrag) {
+      return [currentSeries];
+    }
+
+    const selectedSeries = this.config()?.series?.filter((series) => {
+      return (
+        series.selectedForPathDrag &&
+        series.draggablePath &&
+        series.visible !== false &&
+        series.enabled !== false &&
+        series.xAxisIndex === currentSeries.xAxisIndex &&
+        series.yAxisIndex === currentSeries.yAxisIndex
+      );
+    });
+
+    return selectedSeries?.length ? selectedSeries : [currentSeries];
+  }
+
+  private getOffsetPixels(scale: any, offsetValue: number): number {
+    if (!scale || !scale?.domain || offsetValue === null || offsetValue === undefined) {
+      return 0;
+    }
+
+    const [domainStart] = scale.domain();
+    const startValue = domainStart instanceof Date ? domainStart.getTime() : domainStart;
+    const nextValue = domainStart instanceof Date ? new Date(startValue + offsetValue) : startValue + offsetValue;
+
+    return scale(nextValue) - scale(domainStart);
+  }
 }

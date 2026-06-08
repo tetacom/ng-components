@@ -5,6 +5,7 @@ import { SvgAttributes } from './svg-attributes';
 import { FillDirection, FillType } from './enum/fill-type';
 
 import { ClipPointsDirection } from './enum/clip-points-direction';
+import { DragPointType } from './enum/drag-point-type';
 
 export interface Series<T extends BasePoint> {
   id?: number | string;
@@ -24,4 +25,7 @@ export interface Series<T extends BasePoint> {
   showInControls?: boolean;
   style?: SvgAttributes;
   clipPointsDirection?: ClipPointsDirection;
+  draggablePath?: boolean;
+  pathDragType?: DragPointType;
+  selectedForPathDrag?: boolean;
 }
