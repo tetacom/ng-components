@@ -23,7 +23,7 @@ import { IChartConfig } from '../model/i-chart-config';
 import { IChartEvent } from '../model/i-chart-event';
 import { IDisplayTooltip } from '../model/i-display-tooltip';
 import { IPointMove } from '../model/i-point-move';
-import { ISeriesOffset, ISeriesOffsetMove } from '../model/i-series-offset-move';
+import { ISeriesMove, ISeriesOffset } from '../model/i-series-move';
 import { PlotBand } from '../model/plot-band';
 import { PlotLine } from '../model/plot-line';
 import { Series } from '../model/series';
@@ -44,8 +44,9 @@ export class ChartService {
   public plotBandClick: Observable<IChartEvent<PlotBand>>;
   public plotBandContextMenu: Observable<IChartEvent<PlotBand>>;
   public pointMove: Observable<IChartEvent<IPointMove>>;
-  public seriesOffsetMove: Observable<IChartEvent<ISeriesOffsetMove>>;
+  public seriesMove: Observable<IChartEvent<ISeriesMove>>;
   public seriesPathOffsets: Observable<Map<number | string, ISeriesOffset>>;
+  public selectedSeriesIds: Observable<Array<number | string>>;
   public annotationMove: Observable<IChartEvent<Annotation>>;
   public annotationClick: Observable<IChartEvent<Annotation>>;
   public annotationContextMenu: Observable<IChartEvent<Annotation>>;
@@ -61,8 +62,9 @@ export class ChartService {
   private plotBandEvent$ = new Subject<IChartEvent<PlotBand>>();
   private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();
   private pointMove$ = new Subject<IChartEvent<IPointMove>>();
-  private seriesOffsetMove$ = new Subject<IChartEvent<ISeriesOffsetMove>>();
+  private seriesMove$ = new Subject<IChartEvent<ISeriesMove>>();
   private seriesPathOffsets$ = new BehaviorSubject<Map<number | string, ISeriesOffset>>(new Map());
+  private selectedSeriesIds$ = new BehaviorSubject<Array<number | string>>([]);
   private chartClick$ = new Subject<IChartEvent<BasePoint>>();
   private chartContextMenu$ = new Subject<IChartEvent<BasePoint>>();
   private annotationEvent$ = new Subject<IChartEvent<Annotation>>();
@@ -103,8 +105,9 @@ export class ChartService {
     this.plotBandEvent = this.plotBandEvent$.asObservable();
     this.plotLineMove = this.plotLineMove$.asObservable();
     this.pointMove = this.pointMove$.asObservable();
-    this.seriesOffsetMove = this.seriesOffsetMove$.asObservable();
+    this.seriesMove = this.seriesMove$.asObservable();
     this.seriesPathOffsets = this.seriesPathOffsets$.asObservable();
+    this.selectedSeriesIds = this.selectedSeriesIds$.asObservable();
     this.chartClick = this.chartClick$.asObservable();
     this.chartContextMenu = this.chartContextMenu$.asObservable();
     this.annotationClick = this.annotationEvent$.asObservable().pipe(filter((_) => _?.event?.type === 'click'));
@@ -197,8 +200,8 @@ export class ChartService {
     this.pointMove$.next(event);
   }
 
-  public emitSeriesOffset(event: IChartEvent<ISeriesOffsetMove>) {
-    this.seriesOffsetMove$.next(event);
+  public emitSeriesMove(event: IChartEvent<ISeriesMove>) {
+    this.seriesMove$.next(event);
   }
 
   public getSeriesPathOffsets() {
@@ -207,6 +210,35 @@ export class ChartService {
 
   public setSeriesPathOffsets(offsets: Map<number | string, ISeriesOffset>) {
     this.seriesPathOffsets$.next(new Map(offsets));
+  }
+
+  public getSelectedSeriesIds() {
+    return this.selectedSeriesIds$.value;
+  }
+
+  public setSelectedSeriesIds(seriesIds: Array<number | string>) {
+    const nextSeriesIds = [...(seriesIds ?? [])];
+
+    if (this.areSeriesIdsEqual(this.selectedSeriesIds$.value, nextSeriesIds)) {
+      return;
+    }
+
+    this.selectedSeriesIds$.next(nextSeriesIds);
+  }
+
+  public toggleSelectedSeriesId(seriesId: number | string) {
+    const selectedIds = this.selectedSeriesIds$.value;
+
+    if (selectedIds.includes(seriesId)) {
+      this.setSelectedSeriesIds(selectedIds.filter((id) => id !== seriesId));
+      return;
+    }
+
+    this.setSelectedSeriesIds([...selectedIds, seriesId]);
+  }
+
+  private areSeriesIdsEqual(first: Array<number | string>, second: Array<number | string>) {
+    return first.length === second.length && first.every((id, index) => id === second[index]);
   }
 
   public emitChartClick(event: IChartEvent<BasePoint>) {

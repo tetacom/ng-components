@@ -27,5 +27,4 @@ export interface Series<T extends BasePoint> {
   clipPointsDirection?: ClipPointsDirection;
   draggablePath?: boolean;
   pathDragType?: DragPointType;
-  selectedForPathDrag?: boolean;
 }
