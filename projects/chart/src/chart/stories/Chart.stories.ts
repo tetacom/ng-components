@@ -1,5 +1,11 @@
 import { ChartComponent } from '../chart/chart.component';
-import { createBandChart, createChart, createDragChart, createPathDragChart } from './story-helper';
+import {
+  createBandChart,
+  createChart,
+  createDragChart,
+  createMultiPathDragChart,
+  createPathDragChart,
+} from './story-helper';
 import { applicationConfig, Meta } from '@storybook/angular';
 import { provideHttpClient } from '@angular/common/http';
 import { IconSpriteDirective, ButtonComponent } from '@tetacom/ng-components';
@@ -98,6 +104,34 @@ export const draggablePathChart = () => ({
             <teta-svg-chart
               [config]="config"
               (seriesOffsetMove)="dragType = $event.event.type; offsetPx = $event.target.offsetPx.x; offsetValue = $event.target.offsetValue.x"
+              class="bg-global-bgcard row_6 border border-text-50"></teta-svg-chart>
+        </div>
+      </div>`,
+});
+
+export const multiDraggablePathChart = () => ({
+  moduleMetadata: {
+    imports: [ChartComponent, IconSpriteDirective, ButtonComponent],
+  },
+
+  props: {
+    config: createMultiPathDragChart(80),
+    offsetPx: 0,
+    offsetValue: 0,
+    dragType: '',
+    seriesIds: '',
+  },
+  template: `
+      <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']"
+            class="font-body-3 padding-3 bg-global-bgmain column gap"
+            style="width: 100%; height: 100vh">
+        <div class="color-text-90">
+          {{ dragType }} selected: {{ seriesIds }} offset: {{ offsetPx | number:'1.0-2' }}px / {{ offsetValue | number:'1.0-2' }}
+        </div>
+        <div class="row row_auto gap">
+            <teta-svg-chart
+              [config]="config"
+              (seriesOffsetMove)="dragType = $event.event.type; seriesIds = $event.target.seriesIds.join(', '); offsetPx = $event.target.offsetPx.x; offsetValue = $event.target.offsetValue.x"
               class="bg-global-bgcard row_6 border border-text-50"></teta-svg-chart>
         </div>
       </div>`,

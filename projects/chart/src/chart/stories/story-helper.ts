@@ -93,21 +93,22 @@ export const createDragSeries = (size: number): Series<BasePoint> => {
   };
 };
 
-export const createPathDragSeries = (size: number): Series<BasePoint> => {
+export const createPathDragSeries = (size: number, seriesIndex = 0, selectedForPathDrag = false): Series<BasePoint> => {
   return {
-    id: 'path-drag',
+    id: `path-drag-${seriesIndex}`,
     type: SeriesType.line,
-    name: faker.address.cityName(),
+    name: `Path drag ${seriesIndex + 1}`,
     yAxisIndex: 0,
     xAxisIndex: 0,
-    color: 'green',
+    color: cssColorNames[randomColor()].toLowerCase(),
     fillType: FillType.gradient,
     draggablePath: true,
     pathDragType: DragPointType.x,
-    data: Array.from(Array(size).keys()).map((key, index) => {
+    selectedForPathDrag,
+    data: Array.from(Array(size).keys()).map((key, pointIndex) => {
       return {
-        x: index,
-        y: faker.datatype.number({ min: 0, max: 200 }),
+        x: pointIndex,
+        y: faker.datatype.number({ min: 0, max: 60 }) + seriesIndex * 70,
       };
     }),
   };
@@ -257,6 +258,35 @@ export const createPathDragChart = (size: number): IChartConfig => {
       enable: false,
     },
     series: [createPathDragSeries(size)],
+  };
+};
+
+export const createMultiPathDragChart = (size: number): IChartConfig => {
+  return {
+    id: 'multi-path-drag-chart',
+    name: 'multi-path-drag-chart',
+    tooltip: {
+      tracking: TooltipTracking.x,
+    },
+    bounds: new ChartBounds({}),
+    xAxis: [
+      {
+        niceTicks: false,
+      },
+    ],
+    yAxis: [{}],
+    zoom: {
+      enable: false,
+      type: ZoomType.x,
+    },
+    legend: {
+      enable: true,
+    },
+    series: [
+      createPathDragSeries(size, 0, true),
+      createPathDragSeries(size, 1, true),
+      createPathDragSeries(size, 2, false),
+    ],
   };
 };
 

@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, OnDestroy, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, OnDestroy } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { BasePoint } from '../../../model/base-point';
 import { LinearSeriesBaseComponent } from '../linear-series-base.component';
 import { AsyncPipe } from '@angular/common';
 import { DraggablePointDirective } from '../../../directives/draggable-point.directive';
 import { DraggableSeriesDirective, SeriesDragEvent } from '../../../directives/draggable-series.directive';
+import { Series } from '../../../model/series';
 
 @Component({
   selector: 'svg:svg[teta-line-series]',
@@ -15,8 +17,13 @@ import { DraggableSeriesDirective, SeriesDragEvent } from '../../../directives/d
 export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseComponent<T> implements OnDestroy {
   private start: { x: number; y: number };
   private labelStart: { dx: number; dy: number };
-  private seriesDragStartOffsetValue = { x: 0, y: 0 };
-  private seriesOffsetValue = signal({ x: 0, y: 0 });
+  private seriesPathOffsets = toSignal(this.svc.seriesPathOffsets, { initialValue: new Map() });
+  private seriesDragStartOffsets = new Map<number | string, { x: number; y: number }>();
+  private seriesDragGroup: Series<BasePoint>[] = [];
+
+  private seriesOffsetValue = computed(() => {
+    return this.seriesPathOffsets().get(this.series().id) ?? { x: 0, y: 0 };
+  });
 
   seriesPathTransform = computed(() => {
     const offset = this.seriesOffsetValue();
@@ -31,7 +38,12 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
   });
 
   seriesMoveStart(event: SeriesDragEvent) {
-    this.seriesDragStartOffsetValue = { ...this.seriesOffsetValue() };
+    this.seriesDragGroup = this.getPathDragSeriesGroup();
+    this.seriesDragStartOffsets = new Map(
+      this.seriesDragGroup.map((series) => {
+        return [series.id, this.svc.getSeriesPathOffsets().get(series.id) ?? { x: 0, y: 0 }];
+      }),
+    );
     this.emitSeriesOffset('start', event);
   }
 
@@ -120,6 +132,7 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
 
   private emitSeriesOffset(type: 'start' | 'drag' | 'end', event: SeriesDragEvent) {
     const offsetValue = this.seriesOffsetValue();
+    const seriesList = this.seriesDragGroup.length ? this.seriesDragGroup : [this.series()];
 
     this.svc.emitSeriesOffset({
       event: {
@@ -128,6 +141,21 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
       },
       target: {
         series: this.series(),
+        seriesList,
+        seriesIds: seriesList.map((series) => series.id),
+        offsets: seriesList.map((series) => {
+          const seriesOffsetValue = this.svc.getSeriesPathOffsets().get(series.id) ?? { x: 0, y: 0 };
+
+          return {
+            series,
+            seriesId: series.id,
+            offsetPx: {
+              x: this.getOffsetPixels(this.x(), seriesOffsetValue.x),
+              y: this.getOffsetPixels(this.y(), seriesOffsetValue.y),
+            },
+            offsetValue: seriesOffsetValue,
+          };
+        }),
         offsetPx: {
           x: this.getOffsetPixels(this.x(), offsetValue.x),
           y: this.getOffsetPixels(this.y(), offsetValue.y),
@@ -141,10 +169,23 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
   }
 
   private updateSeriesOffset(event: SeriesDragEvent) {
-    this.seriesOffsetValue.set({
-      x: this.seriesDragStartOffsetValue.x + this.getScaleOffset(this.x(), event.deltaX),
-      y: this.seriesDragStartOffsetValue.y + this.getScaleOffset(this.y(), event.deltaY),
+    const dragOffset = {
+      x: this.getScaleOffset(this.x(), event.deltaX),
+      y: this.getScaleOffset(this.y(), event.deltaY),
+    };
+    const offsets = new Map(this.svc.getSeriesPathOffsets());
+    const seriesList = this.seriesDragGroup.length ? this.seriesDragGroup : [this.series()];
+
+    seriesList.forEach((series) => {
+      const startOffset = this.seriesDragStartOffsets.get(series.id) ?? { x: 0, y: 0 };
+
+      offsets.set(series.id, {
+        x: startOffset.x + dragOffset.x,
+        y: startOffset.y + dragOffset.y,
+      });
     });
+
+    this.svc.setSeriesPathOffsets(offsets);
   }
 
   private getScaleOffset(scale: any, offsetPx: number): number {
@@ -162,6 +203,27 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
 
   protected override getClipOffset() {
     return this.seriesOffsetValue();
+  }
+
+  private getPathDragSeriesGroup(): Series<BasePoint>[] {
+    const currentSeries = this.series();
+
+    if (!currentSeries.selectedForPathDrag) {
+      return [currentSeries];
+    }
+
+    const selectedSeries = this.config()?.series?.filter((series) => {
+      return (
+        series.selectedForPathDrag &&
+        series.draggablePath &&
+        series.visible !== false &&
+        series.enabled !== false &&
+        series.xAxisIndex === currentSeries.xAxisIndex &&
+        series.yAxisIndex === currentSeries.yAxisIndex
+      );
+    });
+
+    return selectedSeries?.length ? selectedSeries : [currentSeries];
   }
 
   private getOffsetPixels(scale: any, offsetValue: number): number {

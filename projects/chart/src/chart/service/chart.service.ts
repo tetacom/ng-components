@@ -23,7 +23,7 @@ import { IChartConfig } from '../model/i-chart-config';
 import { IChartEvent } from '../model/i-chart-event';
 import { IDisplayTooltip } from '../model/i-display-tooltip';
 import { IPointMove } from '../model/i-point-move';
-import { ISeriesOffsetMove } from '../model/i-series-offset-move';
+import { ISeriesOffset, ISeriesOffsetMove } from '../model/i-series-offset-move';
 import { PlotBand } from '../model/plot-band';
 import { PlotLine } from '../model/plot-line';
 import { Series } from '../model/series';
@@ -45,6 +45,7 @@ export class ChartService {
   public plotBandContextMenu: Observable<IChartEvent<PlotBand>>;
   public pointMove: Observable<IChartEvent<IPointMove>>;
   public seriesOffsetMove: Observable<IChartEvent<ISeriesOffsetMove>>;
+  public seriesPathOffsets: Observable<Map<number | string, ISeriesOffset>>;
   public annotationMove: Observable<IChartEvent<Annotation>>;
   public annotationClick: Observable<IChartEvent<Annotation>>;
   public annotationContextMenu: Observable<IChartEvent<Annotation>>;
@@ -61,6 +62,7 @@ export class ChartService {
   private plotLineMove$ = new Subject<IChartEvent<PlotLine>>();
   private pointMove$ = new Subject<IChartEvent<IPointMove>>();
   private seriesOffsetMove$ = new Subject<IChartEvent<ISeriesOffsetMove>>();
+  private seriesPathOffsets$ = new BehaviorSubject<Map<number | string, ISeriesOffset>>(new Map());
   private chartClick$ = new Subject<IChartEvent<BasePoint>>();
   private chartContextMenu$ = new Subject<IChartEvent<BasePoint>>();
   private annotationEvent$ = new Subject<IChartEvent<Annotation>>();
@@ -102,6 +104,7 @@ export class ChartService {
     this.plotLineMove = this.plotLineMove$.asObservable();
     this.pointMove = this.pointMove$.asObservable();
     this.seriesOffsetMove = this.seriesOffsetMove$.asObservable();
+    this.seriesPathOffsets = this.seriesPathOffsets$.asObservable();
     this.chartClick = this.chartClick$.asObservable();
     this.chartContextMenu = this.chartContextMenu$.asObservable();
     this.annotationClick = this.annotationEvent$.asObservable().pipe(filter((_) => _?.event?.type === 'click'));
@@ -196,6 +199,14 @@ export class ChartService {
 
   public emitSeriesOffset(event: IChartEvent<ISeriesOffsetMove>) {
     this.seriesOffsetMove$.next(event);
+  }
+
+  public getSeriesPathOffsets() {
+    return this.seriesPathOffsets$.value;
+  }
+
+  public setSeriesPathOffsets(offsets: Map<number | string, ISeriesOffset>) {
+    this.seriesPathOffsets$.next(new Map(offsets));
   }
 
   public emitChartClick(event: IChartEvent<BasePoint>) {
