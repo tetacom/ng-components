@@ -4,6 +4,16 @@
 .draggable-path {
   cursor: ew-resize;
 }
+.selected-path {
+  cursor: ew-resize;
+}
+.selected-path:active {
+  cursor: ew-resize;
+}
+.line-selection {
+  opacity: 0.2;
+  pointer-events: none;
+}
 .active {
   stroke-opacity: 0.5;
 }

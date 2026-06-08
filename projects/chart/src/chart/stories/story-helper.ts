@@ -282,11 +282,7 @@ export const createMultiPathDragChart = (size: number): IChartConfig => {
     legend: {
       enable: true,
     },
-    series: [
-      createPathDragSeries(size, 0, true),
-      createPathDragSeries(size, 1, true),
-      createPathDragSeries(size, 2, false),
-    ],
+    series: [createPathDragSeries(size, 0), createPathDragSeries(size, 1), createPathDragSeries(size, 2, false)],
   };
 };
 

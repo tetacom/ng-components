@@ -20,6 +20,7 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
   private seriesPathOffsets = toSignal(this.svc.seriesPathOffsets, { initialValue: new Map() });
   private seriesDragStartOffsets = new Map<number | string, { x: number; y: number }>();
   private seriesDragGroup: Series<BasePoint>[] = [];
+  private seriesDragMoved = false;
 
   private seriesOffsetValue = computed(() => {
     return this.seriesPathOffsets().get(this.series().id) ?? { x: 0, y: 0 };
@@ -38,6 +39,7 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
   });
 
   seriesMoveStart(event: SeriesDragEvent) {
+    this.seriesDragMoved = false;
     this.seriesDragGroup = this.getPathDragSeriesGroup();
     this.seriesDragStartOffsets = new Map(
       this.seriesDragGroup.map((series) => {
@@ -48,6 +50,7 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
   }
 
   seriesMoveProcess(event: SeriesDragEvent) {
+    this.seriesDragMoved = this.seriesDragMoved || Math.abs(event.deltaX) > 3 || Math.abs(event.deltaY) > 3;
     this.updateSeriesOffset(event);
     this.emitSeriesOffset('drag', event);
   }
@@ -55,6 +58,29 @@ export class LineSeriesComponent<T extends BasePoint> extends LinearSeriesBaseCo
   seriesMoveEnd(event: SeriesDragEvent) {
     this.updateSeriesOffset(event);
     this.emitSeriesOffset('end', event);
+  }
+
+  seriesPathClick(event: MouseEvent) {
+    if (this.seriesDragMoved) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.seriesDragMoved = false;
+      return;
+    }
+
+    if (!event.ctrlKey && !event.metaKey) {
+      return;
+    }
+
+    if (!this.series().draggablePath) {
+      return;
+    }
+
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.series().selectedForPathDrag = !this.series().selectedForPathDrag;
+    this.cdr.markForCheck();
   }
 
   moveStart(event, point) {

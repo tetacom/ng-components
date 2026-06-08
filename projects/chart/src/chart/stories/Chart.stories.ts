@@ -120,6 +120,21 @@ export const multiDraggablePathChart = () => ({
     offsetValue: 0,
     dragType: '',
     seriesIds: '',
+    onSeriesOffsetMove: function (event) {
+      this.dragType = event.event.type;
+      this.seriesIds = event.target.seriesIds.join(', ');
+      this.offsetPx = event.target.offsetPx.x;
+      this.offsetValue = event.target.offsetValue.x;
+      console.log('seriesOffsetMove', {
+        type: event.event.type,
+        sourceSeriesId: event.target.series.id,
+        seriesIds: event.target.seriesIds,
+        offsetPx: event.target.offsetPx,
+        offsetValue: event.target.offsetValue,
+        offsets: event.target.offsets,
+        event,
+      });
+    },
   },
   template: `
       <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']"
@@ -131,7 +146,7 @@ export const multiDraggablePathChart = () => ({
         <div class="row row_auto gap">
             <teta-svg-chart
               [config]="config"
-              (seriesOffsetMove)="dragType = $event.event.type; seriesIds = $event.target.seriesIds.join(', '); offsetPx = $event.target.offsetPx.x; offsetValue = $event.target.offsetValue.x"
+              (seriesOffsetMove)="onSeriesOffsetMove($event)"
               class="bg-global-bgcard row_6 border border-text-50"></teta-svg-chart>
         </div>
       </div>`,
