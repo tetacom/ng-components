@@ -10,9 +10,8 @@
 .selected-path:active {
   cursor: ew-resize;
 }
-.line-selection {
-  opacity: 0.2;
-  pointer-events: none;
+.line-selected {
+  filter: drop-shadow(0 0 3px var(--series-color));
 }
 .active {
   stroke-opacity: 0.5;
