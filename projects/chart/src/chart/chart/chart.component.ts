@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { map, Observable, takeWhile, withLatestFrom } from 'rxjs';
+import { distinctUntilChanged, map, Observable, takeWhile, withLatestFrom } from 'rxjs';
 
 import { Annotation } from '../model/annotation';
 import { BasePoint } from '../model/base-point';
@@ -8,7 +8,7 @@ import { TooltipTracking } from '../model/enum/tooltip-tracking';
 import { IChartConfig } from '../model/i-chart-config';
 import { IChartEvent } from '../model/i-chart-event';
 import { IPointMove } from '../model/i-point-move';
-import { ISeriesOffsetMove } from '../model/i-series-offset-move';
+import { ISeriesMove } from '../model/i-series-move';
 import { IScalesMap } from '../model/i-scales-map';
 import { PlotBand } from '../model/plot-band';
 import { PlotLine } from '../model/plot-line';
@@ -50,7 +50,10 @@ export class ChartComponent implements OnInit, OnDestroy {
   pointMove: EventEmitter<IChartEvent<IPointMove>> = new EventEmitter<IChartEvent<IPointMove>>();
 
   @Output()
-  seriesOffsetMove: EventEmitter<IChartEvent<ISeriesOffsetMove>> = new EventEmitter<IChartEvent<ISeriesOffsetMove>>();
+  seriesMove: EventEmitter<IChartEvent<ISeriesMove>> = new EventEmitter<IChartEvent<ISeriesMove>>();
+
+  @Output()
+  selectedSeriesIdsChange: EventEmitter<Array<number | string>> = new EventEmitter<Array<number | string>>();
 
   @Output()
   chartClick: EventEmitter<IChartEvent<BasePoint>> = new EventEmitter<IChartEvent<BasePoint>>();
@@ -79,6 +82,10 @@ export class ChartComponent implements OnInit, OnDestroy {
   @Input() set config(config: IChartConfig) {
     this.chartService.setConfig(config);
     this.zoomService.setBroadcastChannel(config?.zoom?.syncChannel);
+  }
+
+  @Input() set selectedSeriesIds(seriesIds: Array<number | string>) {
+    this.chartService.setSelectedSeriesIds(seriesIds ?? []);
   }
 
   private _alive = true;
@@ -150,9 +157,18 @@ export class ChartComponent implements OnInit, OnDestroy {
       this.pointMove.emit(_);
     });
 
-    this.chartService.seriesOffsetMove.pipe(takeWhile(() => this._alive)).subscribe((_) => {
-      this.seriesOffsetMove.emit(_);
+    this.chartService.seriesMove.pipe(takeWhile(() => this._alive)).subscribe((_) => {
+      this.seriesMove.emit(_);
     });
+
+    this.chartService.selectedSeriesIds
+      .pipe(
+        takeWhile(() => this._alive),
+        distinctUntilChanged((prev, next) => this.areSeriesIdsEqual(prev, next)),
+      )
+      .subscribe((_) => {
+        this.selectedSeriesIdsChange.emit(_);
+      });
 
     this.chartService.chartClick.pipe(takeWhile(() => this._alive)).subscribe((_) => {
       this.chartClick.emit(_);
@@ -189,5 +205,9 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this._alive = false;
+  }
+
+  private areSeriesIdsEqual(first: Array<number | string>, second: Array<number | string>) {
+    return first.length === second.length && first.every((id, index) => id === second[index]);
   }
 }

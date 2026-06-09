@@ -93,7 +93,7 @@ export const createDragSeries = (size: number): Series<BasePoint> => {
   };
 };
 
-export const createPathDragSeries = (size: number, seriesIndex = 0, selectedForPathDrag = false): Series<BasePoint> => {
+export const createPathDragSeries = (size: number, seriesIndex = 0): Series<BasePoint> => {
   return {
     id: `path-drag-${seriesIndex}`,
     type: SeriesType.line,
@@ -104,7 +104,6 @@ export const createPathDragSeries = (size: number, seriesIndex = 0, selectedForP
     fillType: FillType.gradient,
     draggablePath: true,
     pathDragType: DragPointType.x,
-    selectedForPathDrag,
     data: Array.from(Array(size).keys()).map((key, pointIndex) => {
       return {
         x: pointIndex,
@@ -282,7 +281,7 @@ export const createMultiPathDragChart = (size: number): IChartConfig => {
     legend: {
       enable: true,
     },
-    series: [createPathDragSeries(size, 0), createPathDragSeries(size, 1), createPathDragSeries(size, 2, false)],
+    series: [createPathDragSeries(size, 0), createPathDragSeries(size, 1), createPathDragSeries(size, 2)],
   };
 };
 

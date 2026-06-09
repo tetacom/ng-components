@@ -4,7 +4,7 @@
     [dragDirection]="series.pathDragType"
     [attr.transform]="seriesPathTransform()"
     [class.draggable-path]="series.draggablePath"
-    [class.selected-path]="series.selectedForPathDrag"
+    [class.selected-path]="seriesSelectedForPathDrag()"
     (click)="seriesPathClick($event)"
     (moveStart)="seriesMoveStart($event)"
     (moveProcess)="seriesMoveProcess($event)"
@@ -12,7 +12,7 @@
   >
     <svg:path
       class="line"
-      [class.line-selected]="series.selectedForPathDrag"
+      [class.line-selected]="seriesSelectedForPathDrag()"
       [attr.d]="path()"
       [attr.stroke]="series.color"
       [attr.stroke-dasharray]="series.style?.strokeDasharray"

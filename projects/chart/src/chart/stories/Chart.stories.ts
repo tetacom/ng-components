@@ -103,7 +103,7 @@ export const draggablePathChart = () => ({
         <div class="row row_auto gap">
             <teta-svg-chart
               [config]="config"
-              (seriesOffsetMove)="dragType = $event.event.type; offsetPx = $event.target.offsetPx.x; offsetValue = $event.target.offsetValue.x"
+              (seriesMove)="dragType = $event.event.type; offsetPx = $event.target.offsetPx.x; offsetValue = $event.target.offsetValue.x"
               class="bg-global-bgcard row_6 border border-text-50"></teta-svg-chart>
         </div>
       </div>`,
@@ -116,16 +116,21 @@ export const multiDraggablePathChart = () => ({
 
   props: {
     config: createMultiPathDragChart(80),
+    selectedSeriesIds: [],
     offsetPx: 0,
     offsetValue: 0,
     dragType: '',
     seriesIds: '',
-    onSeriesOffsetMove: function (event) {
+    onSelectedSeriesIdsChange: function (seriesIds) {
+      this.selectedSeriesIds = seriesIds;
+      console.log('selectedSeriesIdsChange', seriesIds);
+    },
+    onSeriesMove: function (event) {
       this.dragType = event.event.type;
       this.seriesIds = event.target.seriesIds.join(', ');
       this.offsetPx = event.target.offsetPx.x;
       this.offsetValue = event.target.offsetValue.x;
-      console.log('seriesOffsetMove', {
+      console.log('seriesMove', {
         type: event.event.type,
         sourceSeriesId: event.target.series.id,
         seriesIds: event.target.seriesIds,
@@ -141,12 +146,14 @@ export const multiDraggablePathChart = () => ({
             class="font-body-3 padding-3 bg-global-bgmain column gap"
             style="width: 100%; height: 100vh">
         <div class="color-text-90">
-          {{ dragType }} selected: {{ seriesIds }} offset: {{ offsetPx | number:'1.0-2' }}px / {{ offsetValue | number:'1.0-2' }}
+          {{ dragType }} selected: {{ selectedSeriesIds.join(', ') }} dragged: {{ seriesIds }} offset: {{ offsetPx | number:'1.0-2' }}px / {{ offsetValue | number:'1.0-2' }}
         </div>
         <div class="row row_auto gap">
             <teta-svg-chart
               [config]="config"
-              (seriesOffsetMove)="onSeriesOffsetMove($event)"
+              [selectedSeriesIds]="selectedSeriesIds"
+              (selectedSeriesIdsChange)="onSelectedSeriesIdsChange($event)"
+              (seriesMove)="onSeriesMove($event)"
               class="bg-global-bgcard row_6 border border-text-50"></teta-svg-chart>
         </div>
       </div>`,

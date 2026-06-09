@@ -13,7 +13,7 @@ export interface ISeriesOffsetItem {
   offsetValue: ISeriesOffset;
 }
 
-export interface ISeriesOffsetMove {
+export interface ISeriesMove {
   series: Series<BasePoint>;
   seriesList?: Series<BasePoint>[];
   seriesIds?: Array<number | string>;
