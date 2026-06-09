@@ -127,6 +127,7 @@ export class ChartService {
 
   public setConfig(config: IChartConfig) {
     this.clearTooltips();
+    this.clearSeriesPathOffsets();
     this.config$.next(config);
   }
 
@@ -210,6 +211,10 @@ export class ChartService {
 
   public setSeriesPathOffsets(offsets: Map<number | string, ISeriesOffset>) {
     this.seriesPathOffsets$.next(new Map(offsets));
+  }
+
+  public clearSeriesPathOffsets() {
+    this.seriesPathOffsets$.next(new Map());
   }
 
   public getSelectedSeriesIds() {
