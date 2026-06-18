@@ -115,7 +115,7 @@ export const multiDraggablePathChart = () => ({
   },
 
   props: {
-    config: createMultiPathDragChart(80),
+    config: createMultiPathDragChart(50, 5000),
     selectedSeriesIds: [],
     offsetPx: 0,
     offsetValue: 0,
