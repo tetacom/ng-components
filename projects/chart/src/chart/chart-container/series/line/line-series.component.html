@@ -41,9 +41,10 @@
     }
   }
   @if (markers(); as draggablePoints) {
-    @if (x() && y()) {
-      @for (point of draggablePoints; track point) {
-        <svg:g [attr.transform]="'translate(' + x()(point.x) + ',' + y()(point.y) + ')'">
+    @if ({ x: x(), y: y() }; as scales) {
+      @if (scales.x && scales.y) {
+        @for (point of draggablePoints; track point) {
+          <svg:g [attr.transform]="'translate(' + scales.x(point.x) + ',' + scales.y(point.y) + ')'">
           <svg:g
             [tetaDraggablePoint]="point.marker.draggable"
             [dragDirection]="point.marker.dragType"
@@ -100,7 +101,8 @@
               </svg:foreignObject>
             }
           </svg:g>
-        </svg:g>
+          </svg:g>
+        }
       }
     }
   }

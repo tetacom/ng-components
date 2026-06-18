@@ -34,7 +34,10 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
 
   path = computed(() => {
     this.update();
-    if (!this.x() || !this.y()) {
+    const x = this.x();
+    const y = this.y();
+
+    if (!x || !y) {
       return '';
     }
 
@@ -51,14 +54,14 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
           !isNaN(point.x) &&
           !isNaN(point.y),
       )
-      .x((point) => this.x()(point.x))
-      .y((point) => this.y()(point.y));
+      .x((point) => x(point.x))
+      .y((point) => y(point.y));
 
     let filteredData = this.series().data;
     const clipOffset = this.getClipOffset();
 
     if (this.series().clipPointsDirection === ClipPointsDirection.x) {
-      let [min, max] = this.x().domain();
+      let [min, max] = x.domain();
 
       min = min instanceof Date ? min.getTime() : min;
       max = max instanceof Date ? max.getTime() : max;
@@ -67,7 +70,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
     }
 
     if (this.series().clipPointsDirection === ClipPointsDirection.y) {
-      let [min, max] = this.y().domain();
+      let [min, max] = y.domain();
 
       min = min instanceof Date ? min.getTime() : min;
       max = max instanceof Date ? max.getTime() : max;

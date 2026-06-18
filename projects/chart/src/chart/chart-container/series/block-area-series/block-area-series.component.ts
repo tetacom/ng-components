@@ -12,13 +12,16 @@ import { FillType } from '../../../model/enum/fill-type';
 })
 export class BlockAreaSeriesComponent<T extends BasePoint> extends SeriesBaseComponent<T> {
   displayPoints = computed(() => {
-    const domain = this.config().inverted ? this.y().domain() : this.x().domain();
+    const config = this.config();
+    const series = this.series();
+    const domain = config.inverted ? this.y().domain() : this.x().domain();
     const [min, max] = domain;
-    return this.series().data.filter((point, index, arr) => {
+
+    return series.data.filter((point, index, arr) => {
       const next = arr[index + 1];
       const secondNext = arr[index + 2];
 
-      if (this.config().inverted) {
+      if (config.inverted) {
         if (point.y1 === null || point.y1 === undefined) {
           point.y1 = next?.y ?? point.y;
         }

@@ -12,16 +12,19 @@ import * as d3 from 'd3';
 })
 export class BarSeriesComponent<T extends BasePoint> extends SeriesBaseComponent<T> {
   x1 = computed(() => {
-    const x = this.xScales().get(this.series().xAxisIndex)?.scale;
+    const series = this.series();
+    const x = this.xScales().get(series.xAxisIndex)?.scale;
     const range = x.range();
-    const domain = this.series().data.map((_) => _.x);
+    const domain = series.data.map((_) => _.x);
 
     return d3.scaleBand<number>().range([0, range[1]]).domain(domain).padding(0.1);
   });
 
   barSeriesCount = computed(() => {
-    const count = this.config().series.filter(
-      (_) => _.type === SeriesType.bar && _.xAxisIndex === this.series().xAxisIndex,
+    const config = this.config();
+    const series = this.series();
+    const count = config.series.filter(
+      (_) => _.type === SeriesType.bar && _.xAxisIndex === series.xAxisIndex,
     );
     return count.length;
   });

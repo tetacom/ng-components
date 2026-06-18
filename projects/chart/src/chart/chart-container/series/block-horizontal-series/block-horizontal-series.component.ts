@@ -14,8 +14,10 @@ import { NgStyle } from '@angular/common';
 })
 export class BlockHorizontalSeriesComponent<T extends BasePoint> extends SeriesBaseComponent<T> {
   displayPoints = computed(() => {
+    const x = this.x();
+    const [min, max] = x.domain();
+
     return this.series().data.filter((point, index, arr) => {
-      const [min, max] = this.x().domain();
       return (
         (point.x >= min || point.x1 >= min || arr[index + 1]?.x >= min || arr[index + 1]?.x1 >= min) &&
         (point.x <= max || point.x1 <= max || arr[index - 1]?.x <= max || arr[index - 1]?.x1 <= max)
