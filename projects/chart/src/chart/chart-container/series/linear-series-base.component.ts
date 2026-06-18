@@ -32,6 +32,17 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
     );
   });
 
+  private sortedTooltipData = computed(() => {
+    this.update();
+
+    const data = [...this.series().data];
+    const tooltipTracking = this.config()?.tooltip?.tracking;
+
+    return data.sort(
+      tooltipTracking === TooltipTracking.y ? (a, b) => a.y - b.y : (a, b) => a.x - b.x,
+    );
+  });
+
   path = computed(() => {
     this.update();
     const x = this.x();
@@ -176,7 +187,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
     };
 
     if (tooltipTracking === TooltipTracking.x) {
-      const sortedData = [...this.series().data].sort((a, b) => a.x - b.x);
+      const sortedData = this.sortedTooltipData();
 
       const bisect = d3.bisector((_: BasePoint) => _.x).right;
       const pointer = mouse[0];
@@ -186,10 +197,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
         x0 = x0.getTime();
       }
       x0 = subtractOffset(x0, clipOffset.x);
-      const rightId = bisect(
-        [...this.series().data].sort((a, b) => a.x - b.x),
-        x0,
-      );
+      const rightId = bisect(sortedData, x0);
 
       const range = scaleY.range();
 
@@ -227,7 +235,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
     }
 
     if (tooltipTracking === TooltipTracking.y) {
-      const sortedData = [...this.series().data].sort((a, b) => a.y - b.y);
+      const sortedData = this.sortedTooltipData();
 
       const bisect = d3.bisector((_: BasePoint) => _.y).right;
 
