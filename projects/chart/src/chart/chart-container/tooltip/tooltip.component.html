@@ -1,11 +1,11 @@
-@if ({ p: position | async }; as data) {
+@if ({ p: position() }; as data) {
   @if (tooltips | async; as t) {
     @if (t.length > 0) {
       <div
         class="chart-tooltip color-text-90 bg-global-bgcard shadow-2"
         #tooltip
         [style.position]="'fixed'"
-        [style.opacity]="display | async"
+        [style.opacity]="display()"
         [hidden]="!data.p"
         style="pointer-events: none; min-width: 200px"
         [style.left.px]="data.p?.left"
