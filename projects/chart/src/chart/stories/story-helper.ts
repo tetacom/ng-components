@@ -260,7 +260,7 @@ export const createPathDragChart = (size: number): IChartConfig => {
   };
 };
 
-export const createMultiPathDragChart = (size: number): IChartConfig => {
+export const createMultiPathDragChart = (seriesCount: number, size: number): IChartConfig => {
   return {
     id: 'multi-path-drag-chart',
     name: 'multi-path-drag-chart',
@@ -281,7 +281,7 @@ export const createMultiPathDragChart = (size: number): IChartConfig => {
     legend: {
       enable: true,
     },
-    series: [createPathDragSeries(size, 0), createPathDragSeries(size, 1), createPathDragSeries(size, 2)],
+    series: Array.from(Array(seriesCount).keys()).map((item, index) => createPathDragSeries(size, index)),
   };
 };
 

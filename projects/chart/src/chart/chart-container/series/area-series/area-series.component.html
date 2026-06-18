@@ -32,17 +32,19 @@
                 [attr.transform]="'translate(' + t.x + ', ' + t.y + ')'"></svg:circle>
   }
 }
-@if (markers(); as draggablePoints) {
-  @for (point of draggablePoints; track point) {
-    <svg:circle class="marker"
-                [class.draggable-marker]="point?.marker?.draggable"
-                [attr.r]="point.marker.style?.radius ?? 5"
-                [attr.fill]="point.marker.style?.fill ?? 'transparent'"
-                [attr.stroke]="point.marker.style?.stroke ?? 'none'"
-                [attr.stroke-width]="point.marker.style?.strokeWidth"
-                [attr.stroke-dasharray]="point.marker.style?.strokeDasharray"
-                [attr.cx]="x()(point.x)"
-                [attr.cy]="y()(point.y)"
-    ></svg:circle>
+@if ({ points: markers(), x: x(), y: y() }; as data) {
+  @if (data.x && data.y) {
+    @for (point of data.points; track point) {
+      <svg:circle class="marker"
+                  [class.draggable-marker]="point?.marker?.draggable"
+                  [attr.r]="point.marker.style?.radius ?? 5"
+                  [attr.fill]="point.marker.style?.fill ?? 'transparent'"
+                  [attr.stroke]="point.marker.style?.stroke ?? 'none'"
+                  [attr.stroke-width]="point.marker.style?.strokeWidth"
+                  [attr.stroke-dasharray]="point.marker.style?.strokeDasharray"
+                  [attr.cx]="data.x(point.x)"
+                  [attr.cy]="data.y(point.y)"
+      ></svg:circle>
+    }
   }
 }

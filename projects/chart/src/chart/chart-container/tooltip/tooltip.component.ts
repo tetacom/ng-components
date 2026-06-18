@@ -1,85 +1,66 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  computed,
   ElementRef,
+  inject,
   Input,
-  NgZone,
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as d3 from 'd3';
-import { filter, map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { IChartConfig } from '../../model/i-chart-config';
 import { IDisplayTooltip } from '../../model/i-display-tooltip';
 import { Series } from '../../model/series';
 import { ChartService } from '../../service/chart.service';
-import { ZoomService } from '../../service/zoom.service';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { PositionUtil } from '../../core/utils/position-util';
 import { Align } from '../../model/enum/align.enum';
 import { VerticalAlign } from '../../model/enum/vertical-align.enum';
 
 @Component({
-    selector: 'teta-tooltip',
-    templateUrl: './tooltip.component.html',
-    styleUrls: ['./tooltip.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [AsyncPipe, NgTemplateOutlet]
+  selector: 'teta-tooltip',
+  templateUrl: './tooltip.component.html',
+  styleUrls: ['./tooltip.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [AsyncPipe, NgTemplateOutlet],
 })
 export class TooltipComponent implements OnInit {
+  private svc = inject(ChartService);
+  private sanitizer = inject(DomSanitizer);
+
   @Input() size: DOMRect;
   @Input() config: IChartConfig;
 
   @ViewChild('tooltip', { static: false, read: ElementRef })
   tooltip: ElementRef;
 
-  position: Observable<{
-    left?: number;
-    top?: number;
-    bottom?: number;
-    right?: number;
-  }>;
+  private pointerMove = toSignal(this.svc.pointerMove);
+  display = computed(() => (this.pointerMove()?.type === 'mousemove' ? 1 : 0));
+
+  position = computed(() => {
+    const event = this.pointerMove();
+    if (!this.display() || !event) {
+      return null;
+    }
+    return this.getPosition(event);
+  });
 
   displayTooltips: Observable<SafeHtml>;
-  display: Observable<number>;
+
   tooltips: Observable<IDisplayTooltip[]>;
 
-  constructor(
-    private svc: ChartService,
-    private cdr: ChangeDetectorRef,
-    private zoomService: ZoomService,
-    private sanitizer: DomSanitizer,
-    private _zone: NgZone,
-    private _elementRef: ElementRef,
-  ) {
+  constructor() {
     this.tooltips = this.svc.tooltips.pipe(map((_) => [..._.values()]));
   }
   getImplicit(t) {
     return { $implicit: t } as any;
   }
   ngOnInit(): void {
-    this.display = this.svc.pointerMove.pipe(
-      map((event: PointerEvent) => {
-        return event.type === 'mousemove' ? 1 : 0;
-      }),
-      tap(() => {
-        setTimeout(() => {
-          this.cdr.detectChanges();
-        });
-      }),
-    );
-
-    this.position = this.svc.pointerMove.pipe(
-      filter((event) => !!event),
-      map((_) => {
-        return this.getPosition(_);
-      }),
-      tap(() => this.cdr.detectChanges()),
-    );
-
     const transformHtml = (html): SafeHtml => {
       return this.sanitizer.bypassSecurityTrustHtml(html);
     };
@@ -110,8 +91,7 @@ export class TooltipComponent implements OnInit {
         if (tooltipList?.length < 1) {
           return '';
         }
-        const formatted = formatter ? transformHtml(formatter(tooltipList)) : defaultFormatter(tooltipList);
-        return formatted;
+        return formatter ? transformHtml(formatter(tooltipList)) : defaultFormatter(tooltipList);
       }),
     );
   }

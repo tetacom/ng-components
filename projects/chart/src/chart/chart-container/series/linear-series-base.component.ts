@@ -32,9 +32,23 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
     );
   });
 
+  private sortedTooltipData = computed(() => {
+    this.update();
+
+    const data = [...this.series().data];
+    const tooltipTracking = this.config()?.tooltip?.tracking;
+
+    return data.sort(
+      tooltipTracking === TooltipTracking.y ? (a, b) => a.y - b.y : (a, b) => a.x - b.x,
+    );
+  });
+
   path = computed(() => {
     this.update();
-    if (!this.x() || !this.y()) {
+    const x = this.x();
+    const y = this.y();
+
+    if (!x || !y) {
       return '';
     }
 
@@ -51,14 +65,14 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
           !isNaN(point.x) &&
           !isNaN(point.y),
       )
-      .x((point) => this.x()(point.x))
-      .y((point) => this.y()(point.y));
+      .x((point) => x(point.x))
+      .y((point) => y(point.y));
 
     let filteredData = this.series().data;
     const clipOffset = this.getClipOffset();
 
     if (this.series().clipPointsDirection === ClipPointsDirection.x) {
-      let [min, max] = this.x().domain();
+      let [min, max] = x.domain();
 
       min = min instanceof Date ? min.getTime() : min;
       max = max instanceof Date ? max.getTime() : max;
@@ -67,7 +81,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
     }
 
     if (this.series().clipPointsDirection === ClipPointsDirection.y) {
-      let [min, max] = this.y().domain();
+      let [min, max] = y.domain();
 
       min = min instanceof Date ? min.getTime() : min;
       max = max instanceof Date ? max.getTime() : max;
@@ -173,7 +187,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
     };
 
     if (tooltipTracking === TooltipTracking.x) {
-      const sortedData = [...this.series().data].sort((a, b) => a.x - b.x);
+      const sortedData = this.sortedTooltipData();
 
       const bisect = d3.bisector((_: BasePoint) => _.x).right;
       const pointer = mouse[0];
@@ -183,10 +197,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
         x0 = x0.getTime();
       }
       x0 = subtractOffset(x0, clipOffset.x);
-      const rightId = bisect(
-        [...this.series().data].sort((a, b) => a.x - b.x),
-        x0,
-      );
+      const rightId = bisect(sortedData, x0);
 
       const range = scaleY.range();
 
@@ -224,7 +235,7 @@ export class LinearSeriesBaseComponent<T extends BasePoint> extends SeriesBaseCo
     }
 
     if (tooltipTracking === TooltipTracking.y) {
-      const sortedData = [...this.series().data].sort((a, b) => a.y - b.y);
+      const sortedData = this.sortedTooltipData();
 
       const bisect = d3.bisector((_: BasePoint) => _.y).right;
 
