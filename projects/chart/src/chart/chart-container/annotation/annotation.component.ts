@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   HostListener,
+  inject,
   Input,
   OnDestroy,
   ViewChild,
@@ -16,13 +17,17 @@ import { ChartService } from '../../service/chart.service';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 
 @Component({
-    selector: '[teta-annotation]',
-    templateUrl: './annotation.component.html',
-    styleUrls: ['./annotation.component.scss'],
-    imports: [NgTemplateOutlet, AsyncPipe],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: '[teta-annotation]',
+  templateUrl: './annotation.component.html',
+  styleUrls: ['./annotation.component.scss'],
+  imports: [NgTemplateOutlet, AsyncPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnnotationComponent implements OnDestroy {
+  private scaleService = inject(ScaleService);
+  private cdr = inject(ChangeDetectorRef);
+  private chartService = inject(ChartService);
+
   @Input() visibleRect: DOMRect;
 
   @Input() set annotation(annotation: Annotation) {
@@ -51,11 +56,7 @@ export class AnnotationComponent implements OnDestroy {
   private _annotation: Annotation;
   private _node: ElementRef;
 
-  constructor(
-    private scaleService: ScaleService,
-    private cdr: ChangeDetectorRef,
-    private chartService: ChartService,
-  ) {
+  constructor() {
     this.x = this.scaleService.scales.pipe(map((_) => _.x.get(this.annotation.xAxisIndex ?? 0)?.scale));
     this.y = this.scaleService.scales.pipe(map((_) => _.y.get(this.annotation.yAxisIndex ?? 0)?.scale));
     this.drag = d3.drag();
@@ -80,6 +81,9 @@ export class AnnotationComponent implements OnDestroy {
   }
 
   private init() {
+    if (!this.node) {
+      return;
+    }
     d3.select(this.node.nativeElement).datum(this.annotation);
 
     const offsetPx = 10;

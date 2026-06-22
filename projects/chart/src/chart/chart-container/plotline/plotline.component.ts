@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -10,8 +11,6 @@ import {
 import { PlotLine } from '../../model/plot-line';
 import { Axis } from '../../core/axis/axis';
 import { AxisOrientation } from '../../model/enum/axis-orientation';
-import { ZoomService } from '../../service/zoom.service';
-import { ScaleService } from '../../service/scale.service';
 import * as d3 from 'd3';
 import { IChartEvent } from '../../model/i-chart-event';
 import { ChartService } from '../../service/chart.service';
@@ -24,6 +23,10 @@ import { ChartService } from '../../service/chart.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlotlineComponent implements OnInit, OnDestroy {
+  private cdr = inject(ChangeDetectorRef);
+  private chartService = inject(ChartService);
+  private element = inject(ElementRef);
+
   @Input() plotLine: PlotLine;
   @Input() size: DOMRect;
   @Input() axis: Axis;
@@ -32,14 +35,6 @@ export class PlotlineComponent implements OnInit, OnDestroy {
   dragElements: any;
 
   private _domain: number[];
-
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private zoomService: ZoomService,
-    private scaleService: ScaleService,
-    private chartService: ChartService,
-    private element: ElementRef,
-  ) {}
 
   ngOnInit(): void {
     this._domain = this.scale.domain();

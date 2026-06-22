@@ -1,5 +1,5 @@
 @if ({ x: x | async, y: y | async }; as data) {
-  @if (data.x && data.y) {
+  @if (data.x && data.y && annotation.point.x !== null && annotation.point.x !== undefined && annotation.point.y !== null && annotation.point.y !== undefined) {
     <svg:circle
       [attr.r]="annotation.style?.radius ?? 5"
       [attr.cx]="data.x(annotation.point.x)"
