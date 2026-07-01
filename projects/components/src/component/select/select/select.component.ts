@@ -291,4 +291,14 @@ export class SelectComponent implements ControlValueAccessor {
       this.value = this.options && this.options?.find((option) => this.getValue(option) === value);
     }
   }
+
+  trackOption(item: any, index: number) {
+    if (typeof item === 'object' && item['id'] !== null && item['id'] !== undefined) {
+      return item['id'];
+    }
+    if (typeof item === 'string' || typeof item === 'number') {
+      return item;
+    }
+    return index;
+  }
 }
