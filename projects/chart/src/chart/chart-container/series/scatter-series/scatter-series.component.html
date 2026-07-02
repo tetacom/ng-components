@@ -1,6 +1,6 @@
 @if ({ y: y(), x: x() }; as scales) {
   @if (scales.x && scales.y) {
-    @for (point of series().data; track point) {
+    @for (point of series().data; track $index) {
       <svg:circle
         class="line"
         (mouseenter)="mouseenter(point)"
