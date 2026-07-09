@@ -3,6 +3,7 @@
   #input
   [name]="column.name"
   [disabled]="!editable"
-  (blur)="setValue()"
-  [ngModel]="getHexColor(row.data[column.name])"
-  (ngModelChange)="row.data[column.name] = $event" />
+  [value]="getHexColor(control?.value) || '#000000'"
+  (input)="setControlValue($event)"
+  (change)="commitValue($event)"
+  (blur)="stopEditDeferred()" />

@@ -10,14 +10,16 @@ import {
 import { CellComponentBase } from '../../base/cell-component-base';
 import { ICellCoordinates } from '../../contract/i-cell-coordinates';
 import { ColorUtil } from '../../util/color-util';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsUtil } from '../../../../util/forms-util';
 
 @Component({
   selector: 'teta-color-cell',
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './color-cell.component.html',
   styleUrl: './color-cell.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [FormsUtil.formProvider],
 })
 export class ColorCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: ElementRef;
@@ -33,8 +35,21 @@ export class ColorCellComponent<T> extends CellComponentBase<T> implements OnIni
     });
   }
 
-  setValue(): void {
+  setControlValue(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+
+    if (this.control?.value !== value) {
+      this.control?.setValue(value);
+    }
+  }
+
+  commitValue(event: Event): void {
+    this.setControlValue(event);
     this.svc.startEditCell(null);
+  }
+
+  stopEditDeferred(): void {
+    setTimeout(() => this.svc.startEditCell(null));
   }
 
   startEdit(initiator: ICellCoordinates, type: 'cell' | 'row'): void {
