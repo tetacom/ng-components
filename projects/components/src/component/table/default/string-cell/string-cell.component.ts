@@ -13,6 +13,7 @@ import { FormsUtil } from '../../../../util/forms-util';
   styleUrls: ['./string-cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [FormsUtil.formProvider],
+  hostDirectives: [HintDirective],
   imports: [HintDirective, FormsModule, ReactiveFormsModule],
 })
 export class StringCellComponent<T> extends CellComponentBase<T> implements OnInit {

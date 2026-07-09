@@ -6,6 +6,7 @@ import { ICellCoordinates } from '../../contract/i-cell-coordinates';
 import { DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormsUtil } from '../../../../util/forms-util';
+import { HintDirective } from '../../../../directive/hint/hint.directive';
 
 @Component({
   selector: 'teta-date-cell',
@@ -13,6 +14,7 @@ import { FormsUtil } from '../../../../util/forms-util';
   styleUrls: ['./date-cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [FormsUtil.formProvider],
+  hostDirectives: [HintDirective],
   imports: [DatePickerComponent, FormsModule, ReactiveFormsModule, DatePipe],
 })
 export class DateCellComponent<T> extends CellComponentBase<T> implements OnInit {

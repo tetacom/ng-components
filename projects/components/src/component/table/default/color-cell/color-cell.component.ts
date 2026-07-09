@@ -11,6 +11,7 @@ import { CellComponentBase } from '../../base/cell-component-base';
 import { ICellCoordinates } from '../../contract/i-cell-coordinates';
 import { ColorUtil } from '../../util/color-util';
 import { FormsModule } from '@angular/forms';
+import { HintDirective } from '../../../../directive/hint/hint.directive';
 
 @Component({
   selector: 'teta-color-cell',
@@ -18,6 +19,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './color-cell.component.html',
   styleUrl: './color-cell.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [HintDirective],
 })
 export class ColorCellComponent<T> extends CellComponentBase<T> implements OnInit {
   @ViewChild('input', { static: false }) input: ElementRef;
