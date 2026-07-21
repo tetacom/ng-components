@@ -1,28 +1,29 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   HostBinding,
   HostListener,
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { ColorInputComponent } from '../../../input/color-input/color-input.component';
 import { CellComponentBase } from '../../base/cell-component-base';
 import { ICellCoordinates } from '../../contract/i-cell-coordinates';
-import { ColorUtil } from '../../util/color-util';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsUtil } from '../../../../util/forms-util';
 import { HintDirective } from '../../../../directive/hint/hint.directive';
 
 @Component({
   selector: 'teta-color-cell',
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule, ColorInputComponent],
   templateUrl: './color-cell.component.html',
   styleUrl: './color-cell.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [FormsUtil.formProvider],
   hostDirectives: [HintDirective],
 })
 export class ColorCellComponent<T> extends CellComponentBase<T> implements OnInit {
-  @ViewChild('input', { static: false }) input: ElementRef;
+  @ViewChild('input', { static: false }) input: ColorInputComponent;
   @HostBinding('attr.tabindex') readonly tabindex = 0;
 
   @HostListener('focus', ['$event'])
@@ -35,24 +36,20 @@ export class ColorCellComponent<T> extends CellComponentBase<T> implements OnIni
     });
   }
 
-  setValue(): void {
-    this.svc.startEditCell(null);
+  stopEditDeferred(): void {
+    setTimeout(() => this.svc.startEditCell(null));
   }
 
   startEdit(initiator: ICellCoordinates, type: 'cell' | 'row'): void {
     if (initiator?.column === this.column.name) {
       this.cdr.detectChanges();
-      this.input.nativeElement?.focus();
-      this.input.nativeElement?.click();
+      this.input.input.nativeElement?.focus();
+      this.input.input.nativeElement?.click();
     }
   }
 
   stopEdit(): void {
     this.cdr.detectChanges();
-  }
-
-  getHexColor(color: string) {
-    return ColorUtil.getHexColor(color);
   }
 
   override ngOnInit(): void {

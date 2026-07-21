@@ -3,7 +3,6 @@
   #input
   [disabled]="disabled"
   (blur)="emitBlur()"
-  [ngModel]="getHexColor(value)"
-  (ngModelChange)="value = $event; onChange($event)"
-  [ngModelOptions]="{ updateOn: 'blur' }"
+  [value]="getHexColor(value) || '#000000'"
+  (input)="setValue($event)"
 />

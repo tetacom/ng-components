@@ -1,8 +1,5 @@
-<input
-  type="color"
+<teta-color-input
   #input
-  [name]="column.name"
-  [disabled]="!editable"
-  (blur)="setValue()"
-  [ngModel]="getHexColor(row.data[column.name])"
-  (ngModelChange)="row.data[column.name] = $event" />
+  [formControl]="control"
+  (focusout)="stopEditDeferred()"
+></teta-color-input>
