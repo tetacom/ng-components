@@ -1,9 +1,5 @@
-<input
-  type="color"
+<teta-color-input
   #input
-  [name]="column.name"
-  [disabled]="!editable"
-  [value]="getHexColor(control?.value) || '#000000'"
-  (input)="setControlValue($event)"
-  (change)="commitValue($event)"
-  (blur)="stopEditDeferred()" />
+  [formControl]="control"
+  (focusout)="stopEditDeferred()"
+></teta-color-input>

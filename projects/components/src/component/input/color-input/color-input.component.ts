@@ -9,7 +9,7 @@ import {
   Input,
   ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'teta-color-input',
@@ -23,7 +23,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/f
     },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule],
 })
 export class ColorInputComponent implements ControlValueAccessor {
   private elementRef = inject(ElementRef);
@@ -44,6 +43,11 @@ export class ColorInputComponent implements ControlValueAccessor {
     this.onTouched();
   }
 
+  setValue(event: Event): void {
+    this.value = (event.target as HTMLInputElement).value;
+    this.onChange(this.value);
+  }
+
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
@@ -59,7 +63,7 @@ export class ColorInputComponent implements ControlValueAccessor {
 
   writeValue(input: string): void {
     this.value = input;
-    this._cdr.detectChanges();
+    this._cdr.markForCheck();
   }
 
   onChange(input: string): void {}

@@ -1,28 +1,27 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   HostBinding,
   HostListener,
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { ColorInputComponent } from '../../../input/color-input/color-input.component';
 import { CellComponentBase } from '../../base/cell-component-base';
 import { ICellCoordinates } from '../../contract/i-cell-coordinates';
-import { ColorUtil } from '../../util/color-util';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsUtil } from '../../../../util/forms-util';
 
 @Component({
   selector: 'teta-color-cell',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ColorInputComponent],
   templateUrl: './color-cell.component.html',
   styleUrl: './color-cell.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [FormsUtil.formProvider],
 })
 export class ColorCellComponent<T> extends CellComponentBase<T> implements OnInit {
-  @ViewChild('input', { static: false }) input: ElementRef;
+  @ViewChild('input', { static: false }) input: ColorInputComponent;
   @HostBinding('attr.tabindex') readonly tabindex = 0;
 
   @HostListener('focus', ['$event'])
@@ -35,19 +34,6 @@ export class ColorCellComponent<T> extends CellComponentBase<T> implements OnIni
     });
   }
 
-  setControlValue(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-
-    if (this.control?.value !== value) {
-      this.control?.setValue(value);
-    }
-  }
-
-  commitValue(event: Event): void {
-    this.setControlValue(event);
-    this.svc.startEditCell(null);
-  }
-
   stopEditDeferred(): void {
     setTimeout(() => this.svc.startEditCell(null));
   }
@@ -55,17 +41,13 @@ export class ColorCellComponent<T> extends CellComponentBase<T> implements OnIni
   startEdit(initiator: ICellCoordinates, type: 'cell' | 'row'): void {
     if (initiator?.column === this.column.name) {
       this.cdr.detectChanges();
-      this.input.nativeElement?.focus();
-      this.input.nativeElement?.click();
+      this.input.input.nativeElement?.focus();
+      this.input.input.nativeElement?.click();
     }
   }
 
   stopEdit(): void {
     this.cdr.detectChanges();
-  }
-
-  getHexColor(color: string) {
-    return ColorUtil.getHexColor(color);
   }
 
   override ngOnInit(): void {
