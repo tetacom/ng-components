@@ -1,9 +1,12 @@
 import { ChangeDetectorRef, Component, HostBinding, inject, OnDestroy, OnInit } from '@angular/core';
 import { ControlContainer, FormControl, FormGroup, NgForm } from '@angular/forms';
+import { TranslocoService } from '@jsverse/transloco';
 import { takeWhile } from 'rxjs/operators';
 
 import { IDictionary } from '../../../common/contract/i-dictionary';
 import { IIdName } from '../../../common/contract/i-id-name';
+import { Align } from '../../../common/enum/align.enum';
+import { HintDirective } from '../../../directive/hint/hint.directive';
 import { boolOrFuncCallback } from '../../../util/bool-or-func';
 import { FormsUtil } from '../../../util/forms-util';
 import { ICellCoordinates } from '../contract/i-cell-coordinates';
@@ -19,6 +22,8 @@ import { TableService } from '../service/table.service';
 export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   protected svc = inject<TableService<T>>(TableService);
   protected cdr = inject(ChangeDetectorRef);
+  private transloco = inject(TranslocoService, { optional: true });
+  private hint = inject(HintDirective, { optional: true });
   private _formGroup = inject(ControlContainer, {
     optional: true,
   });
@@ -35,6 +40,10 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
 
   get control(): FormControl {
     return this.formGroup?.get(this.column?.name) as FormControl;
+  }
+
+  get validationHint(): string | null {
+    return this.getValidationHint();
   }
 
   protected _column: TableColumn;
@@ -95,16 +104,22 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.setupValidationHint();
     this.init();
 
     this.formGroup?.controls[this.column.name]?.valueChanges.pipe(takeWhile(() => this._alive)).subscribe((value) => {
       this.formGroup.updateValueAndValidity();
       this.row.valid = this.formGroup?.valid;
       this.row.data[this.column.name] = this.control.value;
+      this.updateValidationHint();
       this.svc.changeValue({
         column: this.column.name,
         row: this.index,
       });
+    });
+
+    this.control?.statusChanges.pipe(takeWhile(() => this._alive)).subscribe(() => {
+      this.updateValidationHint();
     });
   }
 
@@ -141,6 +156,7 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
 
         this.formGroup.updateValueAndValidity();
         this.row.valid = this.formGroup.valid;
+        this.updateValidationHint();
         this.cdr.detectChanges();
         this.cdr.markForCheck();
       }
@@ -169,6 +185,7 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
         this.control.disable({ emitEvent: false });
       }
     }
+    this.updateValidationHint();
   }
 
   private start(initiator: ICellCoordinates, type: 'cell' | 'row') {
@@ -181,7 +198,66 @@ export abstract class CellComponentBase<T> implements OnInit, OnDestroy {
     this._edit = false;
     this.formGroup.updateValueAndValidity();
     this.row.valid = this.formGroup?.valid;
+    this.updateValidationHint();
     this.stopEdit();
     this.cdr.markForCheck();
+  }
+
+  private setupValidationHint(): void {
+    if (!this.hint) {
+      return;
+    }
+    this.hint.appendToBody = true;
+    this.hint.align = Align.auto;
+    this.hint.className = 'hint_error';
+    this.updateValidationHint();
+  }
+
+  private updateValidationHint(): void {
+    if (this.hint) {
+      this.hint.tetaHint = this.getValidationHint();
+    }
+  }
+
+  private getValidationHint(): string | null {
+    const control = this.control;
+    if (!control?.invalid || !control.errors) {
+      return null;
+    }
+    if (control.hasError('required')) {
+      return this.translate('errors.field_is_required', 'Field is required');
+    }
+    if (control.hasError('min')) {
+      const value = this.column?.minValue ?? control.getError('min')?.min;
+      return this.translate('errors.min_value', `Minimum value: ${value}`, {
+        value,
+      });
+    }
+    if (control.hasError('max')) {
+      const value = this.column?.maxValue ?? control.getError('max')?.max;
+      return this.translate('errors.max_value', `Maximum value: ${value}`, {
+        value,
+      });
+    }
+    if (control.hasError('maxlength')) {
+      const value = this.column?.maxLength ?? control.getError('maxlength')?.requiredLength;
+      return this.translate('errors.max_length', `Maximum length: ${value}`, {
+        value,
+      });
+    }
+
+    const error = Object.values(control.errors)[0];
+    if (typeof error === 'string') {
+      return error;
+    }
+    if (error && typeof error === 'object' && 'message' in error) {
+      return `${error.message}`;
+    }
+    return null;
+  }
+
+  private translate(key: string, fallback: string, params?: Record<string, unknown>): string {
+    const result = this.transloco?.translate(key, params);
+    return result && result !== key ? result : fallback;
   }
 }

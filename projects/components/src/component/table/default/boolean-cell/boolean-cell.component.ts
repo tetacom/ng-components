@@ -5,6 +5,7 @@ import { ICellCoordinates } from '../../contract/i-cell-coordinates';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxComponent } from '../../../checkbox/checkbox/checkbox.component';
 import { FormsUtil } from '../../../../util/forms-util';
+import { HintDirective } from '../../../../directive/hint/hint.directive';
 
 @Component({
   selector: 'teta-boolean-cell',
@@ -12,6 +13,7 @@ import { FormsUtil } from '../../../../util/forms-util';
   styleUrls: ['./boolean-cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [FormsUtil.formProvider],
+  hostDirectives: [HintDirective],
   imports: [CheckboxComponent, FormsModule, ReactiveFormsModule],
 })
 export class BooleanCellComponent<T> extends CellComponentBase<T> implements OnInit {

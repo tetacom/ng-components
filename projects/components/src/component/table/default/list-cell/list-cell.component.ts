@@ -8,6 +8,7 @@ import { ICellCoordinates } from '../../contract/i-cell-coordinates';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IconComponent } from '../../../icon/icon/icon.component';
 import { FormsUtil } from '../../../../util/forms-util';
+import { HintDirective } from '../../../../directive/hint/hint.directive';
 
 @Component({
   selector: 'teta-list-cell',
@@ -15,6 +16,7 @@ import { FormsUtil } from '../../../../util/forms-util';
   styleUrls: ['./list-cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [FormsUtil.formProvider],
+  hostDirectives: [HintDirective],
   imports: [SelectComponent, FormsModule, ReactiveFormsModule, IconComponent],
 })
 export class ListCellComponent<T> extends CellComponentBase<T> implements OnInit {

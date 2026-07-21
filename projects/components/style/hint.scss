@@ -13,4 +13,9 @@
   border-radius: 8px;
   pointer-events: none;
   @include getView('base');
+
+  &_error {
+    background-color: var(--color-red-50);
+    color: var(--color-global-white);
+  }
 }

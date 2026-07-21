@@ -6,6 +6,7 @@ import { ICellCoordinates } from '../../contract/i-cell-coordinates';
 import { NumberPipe } from '../../../../pipe/number-pipe/number.pipe';
 import { OnlyNumberDirective } from '../../../../directive/only-number/only-number.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HintDirective } from '../../../../directive/hint/hint.directive';
 
 @Component({
   selector: 'teta-numeric-cell',
@@ -13,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   styleUrls: ['./numeric-cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [FormsUtil.formProvider],
+  hostDirectives: [HintDirective],
   imports: [FormsModule, OnlyNumberDirective, ReactiveFormsModule, NumberPipe],
 })
 export class NumericCellComponent<T> extends CellComponentBase<T> implements OnInit {
