@@ -89,7 +89,7 @@ export class PropertyGridComponent<T> {
   getEditable(column: TableColumn) {
     return boolOrFuncCallback(column.editable)({
       column: column,
-      row: this.formGroup?.getRawValue(),
+      row: this.item(),
     });
   }
 
