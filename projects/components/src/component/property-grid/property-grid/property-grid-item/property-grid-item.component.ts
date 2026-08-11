@@ -76,9 +76,11 @@ export class PropertyGridItemComponent<T> implements OnDestroy, OnChanges {
   }
 
   editable = computed(() => {
-    return boolOrFuncCallback(this.column().editable)({
-      column: this.column(),
-      row: this.formGroup?.getRawValue(),
+    const column = this.column();
+
+    return boolOrFuncCallback(column.editable)({
+      column,
+      row: this.item(),
     });
   });
 
