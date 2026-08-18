@@ -15,6 +15,7 @@
     &_disabled {
       filter: grayscale(50%);
       color: var(--color-text-40);
+      cursor: not-allowed;
     }
 
     &-icon {
