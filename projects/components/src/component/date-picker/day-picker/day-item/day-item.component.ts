@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DayModel } from '../../model/day-model';
 
 @Component({
@@ -8,8 +8,6 @@ import { DayModel } from '../../model/day-model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class DayItemComponent implements OnInit {
+export class DayItemComponent {
   @Input() day: DayModel;
-
-  ngOnInit(): void {}
 }

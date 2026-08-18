@@ -10,7 +10,6 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
@@ -30,7 +29,6 @@ import { IconComponent } from '../../icon/icon/icon.component';
 import { InputComponent } from '../../input/input/input.component';
 import { DropdownHeadDirective } from '../../dropdown/dropdown-head.directive';
 import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
-import { DateUtil } from '../../../util/date-util';
 import { MaskitoDirective } from '@maskito/angular';
 
 export const DATE_PICKER_CONTROL_VALUE_ACCESSOR: any = {
@@ -144,9 +142,10 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
   }
 
   onBlur(event?: FocusEvent) {
-    if ((event?.target as HTMLInputElement)?.value === DateUtil.toShortString(this.date as Date)) {
+    if ((event?.target as HTMLInputElement)?.value === this.getLocaleString(this.date)) {
       return;
     }
+
     if (this.allowNull && this.inputText.trim() === '') {
       this.setDate(null);
       this.emitValue(null);
@@ -207,7 +206,7 @@ export class DatePickerComponent extends BasePicker implements OnInit, ControlVa
     this.disabled = isDisabled;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.prepareInput(false);
   }
 
