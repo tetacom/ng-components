@@ -2527,7 +2527,7 @@ a {
   grid-gap: 8px;
 }
 .checkbox_disabled {
-  cursor: default !important;
+  cursor: not-allowed !important;
   fill: var(--color-text-5) !important;
   color: var(--color-text-50) !important;
 }
@@ -4405,6 +4405,7 @@ body {
 .radio-button_disabled {
   filter: grayscale(50%);
   color: var(--color-text-40);
+  cursor: not-allowed;
 }
 .radio-button-icon {
   height: 16px;
@@ -6205,6 +6206,9 @@ body {
   align-items: center;
   grid-gap: 8px;
   flex-grow: 1;
+}
+.toggle_disabled {
+  cursor: not-allowed;
 }
 .toggle_disabled .toggle-button {
   background: var(--color-text-5) !important;
