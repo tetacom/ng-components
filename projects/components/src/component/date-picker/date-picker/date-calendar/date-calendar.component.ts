@@ -7,7 +7,6 @@ import {
   OnChanges,
   OnDestroy,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import dayjs from 'dayjs';
 import { combineLatest, filter, map, takeWhile } from 'rxjs';
@@ -24,11 +23,11 @@ import { IconComponent } from '../../../icon/icon/icon.component';
 import { ButtonComponent } from '../../../button/button/button.component';
 
 @Component({
-    selector: 'teta-date-calendar',
-    templateUrl: './date-calendar.component.html',
-    styleUrls: ['./date-calendar.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [ButtonComponent, IconComponent, DayPickerComponent, MonthPickerComponent, YearPickerComponent, AsyncPipe]
+  selector: 'teta-date-calendar',
+  templateUrl: './date-calendar.component.html',
+  styleUrls: ['./date-calendar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ButtonComponent, IconComponent, DayPickerComponent, MonthPickerComponent, YearPickerComponent, AsyncPipe],
 })
 export class DateCalendarComponent extends BaseCalendar implements OnChanges, OnDestroy {
   @Input() selectedDate: Date | string | number = new Date();

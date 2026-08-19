@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { DayModel } from '../model/day-model';
 import { DateFromToModel } from '../model/from-to.model';
 import dayjs from 'dayjs';
@@ -16,11 +8,11 @@ import { DayItemComponent } from './day-item/day-item.component';
 import { NgClass } from '@angular/common';
 
 @Component({
-    selector: 'teta-day-picker',
-    templateUrl: './day-picker.component.html',
-    styleUrls: ['./day-picker.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, DayItemComponent]
+  selector: 'teta-day-picker',
+  templateUrl: './day-picker.component.html',
+  styleUrls: ['./day-picker.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgClass, DayItemComponent],
 })
 export class DayPickerComponent implements OnChanges {
   @Input() date: Date | string | number = new Date();
@@ -34,7 +26,9 @@ export class DayPickerComponent implements OnChanges {
   @Output() hoveredDateChange?: EventEmitter<Date> = new EventEmitter<Date>();
   @Output() selectDate: EventEmitter<Date> = new EventEmitter<Date>();
   public dayOrder: string[];
-  constructor() {}
+  constructor() {
+    //
+  }
 
   isInRange(day: DayModel, from: Date | number | string, to: Date | number | string) {
     const matchesMinDate = dayjs(new Date(from)).startOf('date').toDate() <= day.date;
@@ -119,7 +113,7 @@ export class DayPickerComponent implements OnChanges {
     return '';
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     const arr = [...this.locale.daysShort];
     arr.push(arr.shift());
     this.dayOrder = arr;
