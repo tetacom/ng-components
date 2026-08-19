@@ -8,6 +8,10 @@
   grid-gap: 8px;
   flex-grow: 1;
 
+  &_disabled {
+    cursor: not-allowed;
+  }
+
   &_disabled &-button {
     background: var(--color-text-5) !important;
   }

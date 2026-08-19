@@ -8,7 +8,7 @@
   grid-gap: 8px;
 
   &_disabled {
-    cursor: default !important;
+    cursor: not-allowed !important;
     fill: var(--color-text-5) !important;
     color: var(--color-text-50) !important;
   }
