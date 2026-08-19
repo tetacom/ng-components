@@ -37,6 +37,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit, OnInit {
   private _element: d3.Selection<SVGElement, any, any, any>;
   private zoom: ZoomBehavior<any, any>;
   private alive = true;
+  private scaleRange: [number, number];
 
   @HostListener('mouseenter')
   mouseenter() {
@@ -85,14 +86,21 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit, OnInit {
       .pipe(takeWhile(() => this.alive))
       .subscribe((data) => {
         const [scales, zoomed] = data;
+        if (!this._element) {
+          return;
+        }
+
+        const axis =
+          this.axis.orientation === AxisOrientation.x ? scales.x.get(this.axis.index) : scales.y.get(this.axis.index);
+        const [rangeStart, rangeEnd] = axis.scale.range();
+        const scaleRangeChanged = this.scaleRange?.[0] !== rangeStart || this.scaleRange?.[1] !== rangeEnd;
+        this.scaleRange = [rangeStart, rangeEnd];
+
         if (
-          this._element &&
-          this.elementRef !== zoomed?.element &&
+          (this.elementRef !== zoomed?.element || scaleRangeChanged) &&
           zoomed?.axis?.index === this.axis.index &&
           zoomed?.axis?.orientation === this.axis.orientation
         ) {
-          const axis =
-            this.axis.orientation === AxisOrientation.x ? scales.x.get(this.axis.index) : scales.y.get(this.axis.index);
           const scale = axis.scale.copy().domain(this.axis.originDomain);
           let transform;
           if (zoomed.domain === null || zoomed.domain === undefined) {
@@ -121,7 +129,7 @@ export class ZoomableDirective implements OnDestroy, AfterViewInit, OnInit {
     }
 
     this._element = d3.select(this.elementRef.nativeElement);
-    this.zoom = d3.zoom().extent([
+    this.zoom = d3.zoom().extent(() => [
       [0, 0],
       [this.size.width, this.size.height],
     ]);
