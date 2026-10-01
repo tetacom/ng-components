@@ -48,7 +48,7 @@ export class DropdownBase {
   }
 
   get container() {
-    return this.appendToBody ? this._document.body : this._elementRef.nativeElement;
+    return this.appendToBody ? (document.fullscreenElement ?? this._document.body) : this._elementRef.nativeElement;
   }
 
   @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
