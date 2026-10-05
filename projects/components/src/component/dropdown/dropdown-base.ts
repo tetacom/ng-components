@@ -142,7 +142,13 @@ export class DropdownBase {
   }
 
   private scrollListener = (event) => {
-    if (this.open && !this._body.contains(event.target) && this._body !== event.target) {
+    if (
+      this.open &&
+      !this._body.contains(event.target) &&
+      this._body !== event.target &&
+      event.target instanceof Element &&
+      event.target.contains(this._elementRef.nativeElement)
+    ) {
       this.closeDropdown();
     }
   };
