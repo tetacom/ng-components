@@ -1,0 +1,11 @@
+.tabs {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.tabs-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}

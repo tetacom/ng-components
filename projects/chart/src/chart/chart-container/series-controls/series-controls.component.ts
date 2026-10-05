@@ -17,6 +17,10 @@ import {
   SelectComponent,
   SelectOptionDirective,
   SelectValueDirective,
+  TabComponent,
+  TabContentDirective,
+  TabsComponent,
+  TabTitleDirective,
   TetaSize,
 } from '@tetacom/ng-components';
 import { Series } from '../../model/series';
@@ -28,6 +32,8 @@ import { SeriesType } from '../../model/enum/series-type';
 import { defaultSeriesTypeMapping } from '../../default/defaultSeriesTypeMapping';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { FillType } from '../../model/enum/fill-type';
+import { ScaleService } from '../../service/scale.service';
+import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'teta-series-controls',
@@ -49,6 +55,12 @@ import { FillType } from '../../model/enum/fill-type';
     ScrollableComponent,
     TranslocoPipe,
     InputComponent,
+    TabsComponent,
+    NgTemplateOutlet,
+    TabComponent,
+    TabContentDirective,
+    TabTitleDirective,
+    KeyValuePipe,
   ],
   templateUrl: './series-controls.component.html',
   styleUrl: './series-controls.component.css',
@@ -56,6 +68,7 @@ import { FillType } from '../../model/enum/fill-type';
 })
 export class SeriesControlsComponent {
   private chartService = inject(ChartService);
+  private scaleService = inject(ScaleService);
   private dialogService = inject(DialogService);
   private translocoService = inject(TranslocoService);
   protected readonly Align = Align;
@@ -72,6 +85,24 @@ export class SeriesControlsComponent {
 
   disabledSeries = computed(() => {
     return this.availableSeries()?.filter((item) => !item.enabled) ?? [];
+  });
+
+  groupedSeries = computed(() => {
+    const groupedSeries = this.disabledSeries().filter((item) => !!item.group) ?? [];
+    const result = new Map<string, Series<BasePoint>[]>();
+    groupedSeries.forEach((item) => {
+      let group = result.get(item.group);
+      if (!group) {
+        group = [];
+        result.set(item.group, group);
+      }
+      group.push(item);
+    });
+    return result;
+  });
+
+  flatSeries = computed(() => {
+    return this.disabledSeries().filter((item) => !item.group) ?? [];
   });
 
   strokeWidth = [
@@ -153,6 +184,10 @@ export class SeriesControlsComponent {
           this.chartService.clearSeriesSettings();
         }
       });
+  }
+
+  resetZoom() {
+    this.scaleService.resetZoom();
   }
 
   protected readonly TetaSize = TetaSize;
