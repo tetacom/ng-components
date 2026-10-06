@@ -67,5 +67,7 @@ export class ChartControls {
     this.scaleService.resetZoom();
   }
 
+  download() {}
+
   protected readonly TetaSize = TetaSize;
 }

@@ -30,7 +30,7 @@
         </ng-template>
       </teta-tab>
     </teta-tabs>
-    <div class="row padding-3">
+    <div class="row gap-8 padding-3">
       <button teta-button
               [palette]="'red'"
               [view]="'ghost'"
@@ -39,14 +39,22 @@
         <teta-icon [name]="'erase'"></teta-icon>
         {{ 'charts.reset' | transloco }}
       </button>
-      <teta-button
+      <button teta-button
         [palette]="'text'"
         [view]="'ghost'"
         [square]="true"
         [size]="TetaSize.S"
         (click)="resetZoom(); dropdown.open = false;">
         <teta-icon [name]="'autoscale'"></teta-icon>
-      </teta-button>
+      </button>
+      <button teta-button
+              [palette]="'text'"
+              [view]="'ghost'"
+              [square]="true"
+              [size]="TetaSize.S"
+              (click)="download(); dropdown.open = false;">
+        <teta-icon [name]="'image'"></teta-icon>
+      </button>
     </div>
   </div>
 </teta-dropdown>
