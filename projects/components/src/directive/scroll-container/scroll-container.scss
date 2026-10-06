@@ -62,9 +62,6 @@
   min-width: 0;
   min-height: 0;
   overflow: auto;
-  // Overflow alone does not clip fixed descendants (nested scrollbar layers).
-  // A clip path clips them too without creating a fixed containing block.
-  clip-path: inset(0);
   scrollbar-width: none;
   anchor-name: --teta-scroll-container;
   anchor-scope: --teta-scroll-container;

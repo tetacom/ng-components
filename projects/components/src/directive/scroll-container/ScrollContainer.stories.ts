@@ -112,6 +112,12 @@ class ScrollContainerExamples {
     await settle();
     check('No content wrapper', box.firstElementChild.tagName === 'DIV' && box.children.length === 2);
     check('Overlay consumes no width', box.clientWidth === 320);
+    const popup = document.createElement('div');
+    popup.style.cssText = 'position:fixed;left:400px;top:20px;width:80px;height:30px;z-index:100;background:#8ad';
+    box.appendChild(popup);
+    await settle();
+    check('Fixed popup outside host remains visible', document.elementFromPoint(410, 25) === popup);
+    popup.remove();
     const startRect = bars(box).getBoundingClientRect();
     check(
       'Bars match viewport',
@@ -190,6 +196,10 @@ class ScrollContainerExamples {
       outsideY > 0 &&
         outsideY < outer.getBoundingClientRect().top &&
         !bars(inner).contains(document.elementFromPoint(outsideX, outsideY)),
+    );
+    check(
+      'Visible nested track remains interactive',
+      bars(inner).contains(document.elementFromPoint(outsideX, outer.getBoundingClientRect().top + 10)),
     );
     outer.scrollTop = 160;
     await settle();

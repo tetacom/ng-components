@@ -161,6 +161,55 @@ describe('ScrollContainer', () => {
     pointer(thumb, 'pointermove', 0, 40);
     expect(scrollTo).not.toHaveBeenCalled();
   });
+
+  it('clips only the scrollbar layer along the axes clipped by an ancestor', () => {
+    jest.useFakeTimers();
+    try {
+      const parent = fixture.nativeElement as HTMLElement;
+      parent.style.overflowY = 'hidden';
+      parent.style.overflowX = 'visible';
+      Object.defineProperties(parent, {
+        clientWidth: { value: 50 },
+        clientHeight: { value: 100 },
+      });
+      jest.spyOn(parent, 'getBoundingClientRect').mockReturnValue({
+        top: 25,
+        left: 0,
+        right: 50,
+        bottom: 125,
+        width: 50,
+        height: 100,
+      } as DOMRect);
+      const layer = container.querySelector('.teta-scroll-bars') as HTMLElement;
+      jest.spyOn(layer, 'getBoundingClientRect').mockReturnValue({
+        top: 0,
+        left: 0,
+        right: 100,
+        bottom: 100,
+        width: 100,
+        height: 100,
+      } as DOMRect);
+      window.dispatchEvent(new Event('resize'));
+      jest.advanceTimersByTime(20);
+      expect(layer.style.clipPath).toBe('inset(25% 0% 0% 0%)');
+      expect(container.style.clipPath).toBe('');
+      parent.style.overflowX = 'hidden';
+      window.dispatchEvent(new Event('resize'));
+      jest.advanceTimersByTime(20);
+      expect(layer.style.clipPath).toBe('inset(25% 50% 0% 0%)');
+    } finally {
+      fixture.destroy();
+      jest.useRealTimers();
+    }
+  });
+
+  it('cancels scheduled clipping when the container is destroyed', () => {
+    const cancel = jest.spyOn(window, 'cancelAnimationFrame');
+    window.dispatchEvent(new Event('resize'));
+    fixture.destroy();
+    expect(cancel).toHaveBeenCalled();
+    cancel.mockRestore();
+  });
 });
 
 describe('ScrollContainer on the server', () => {
