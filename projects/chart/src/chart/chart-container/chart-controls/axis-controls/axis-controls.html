@@ -1,0 +1,66 @@
+<teta-scrollable class="column column_auto" [contentClass]="'column'">
+  <teta-accordion>
+    @for (axis of xAxis(); track $index; let index = $index) {
+      <teta-accordion-item [viewType]="'rounded'" [divider]="true">
+        <teta-accordion-head style="padding: 2px 8px">
+          <div class="list-item">
+            {{ axis.title || 'X ' + (index + 1) }}
+          </div>
+        </teta-accordion-head>
+        <ng-template tetaAccordionContent>
+          <div class="column gap-8">
+            <teta-input label="Min">
+              <input
+                class="input"
+                [tetaOnlyNumber]="true"
+                [ngModel]="axis.min"
+                (ngModelChange)="setAxisBound(AxisOrientation.x, index, 'min', $event)"
+                [ngModelOptions]="{updateOn: 'blur'}"
+              />
+            </teta-input>
+            <teta-input label="Max">
+              <input
+                class="input"
+                [tetaOnlyNumber]="true"
+                [ngModel]="axis.max"
+                (ngModelChange)="setAxisBound(AxisOrientation.x, index, 'max', $event)"
+                [ngModelOptions]="{updateOn: 'blur'}"
+              />
+            </teta-input>
+          </div>
+        </ng-template>
+      </teta-accordion-item>
+    }
+    @for (axis of yAxis(); track $index; let index = $index) {
+      <teta-accordion-item [viewType]="'rounded'" [divider]="true">
+        <teta-accordion-head style="padding: 2px 8px">
+          <div class="list-item">
+            {{ axis.title || 'Y ' + (index + 1) }}
+          </div>
+        </teta-accordion-head>
+        <ng-template tetaAccordionContent>
+          <div class="column gap-8">
+            <teta-input label="Min">
+              <input
+                class="input"
+                [tetaOnlyNumber]="true"
+                [ngModel]="axis.min"
+                (ngModelChange)="setAxisBound(AxisOrientation.y, index, 'min', $event)"
+                [ngModelOptions]="{updateOn: 'blur'}"
+              />
+            </teta-input>
+            <teta-input label="Max">
+              <input
+                class="input"
+                [tetaOnlyNumber]="true"
+                [ngModel]="axis.max"
+                (ngModelChange)="setAxisBound(AxisOrientation.y, index, 'max', $event)"
+                [ngModelOptions]="{updateOn: 'blur'}"
+              />
+            </teta-input>
+          </div>
+        </ng-template>
+      </teta-accordion-item>
+    }
+  </teta-accordion>
+</teta-scrollable>

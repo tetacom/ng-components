@@ -1,14 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy } from '@angular/core';
-import {
-  animationFrameScheduler,
-  combineLatest,
-  map,
-  Observable,
-  observeOn,
-  shareReplay,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { animationFrameScheduler, combineLatest, map, Observable, observeOn, shareReplay, withLatestFrom } from 'rxjs';
 
 import { Axis } from '../core/axis/axis';
 import { AxisOrientation } from '../model/enum/axis-orientation';
@@ -31,7 +22,7 @@ import { PlotlineComponent } from './plotline/plotline.component';
 import { AnnotationComponent } from './annotation/annotation.component';
 import { CrosshairComponent } from './crosshair/crosshair.component';
 import { BrushableDirective } from '../directives/brushable.directive';
-import { SeriesControlsComponent } from './series-controls/series-controls.component';
+import { ChartControls } from './chart-controls/chart-controls';
 
 type Opposite = boolean;
 type DisplayPlotBand = {
@@ -57,7 +48,7 @@ type DisplayPlotBand = {
     AnnotationComponent,
     CrosshairComponent,
     BrushableDirective,
-    SeriesControlsComponent,
+    ChartControls,
   ],
 })
 export class ChartContainerComponent implements AfterViewInit, OnDestroy {

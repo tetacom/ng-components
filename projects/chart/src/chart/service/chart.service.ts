@@ -28,6 +28,9 @@ import { PlotBand } from '../model/plot-band';
 import { PlotLine } from '../model/plot-line';
 import { Series } from '../model/series';
 import { chartConfigPostfix } from '../const/chart-config-postfix';
+import { AxisOrientation } from '../model/enum/axis-orientation';
+
+const axisConfigPostfix = 'axis_config';
 
 @Injectable({
   providedIn: 'root',
@@ -173,10 +176,27 @@ export class ChartService {
     }
   }
 
+  public async updateAxisBound(orientation: AxisOrientation, index: number, bound: 'min' | 'max', value?: number) {
+    const currentConfig = await lastValueFrom(this.config.pipe(take(1)));
+    const key = orientation === AxisOrientation.x ? 'xAxis' : 'yAxis';
+    if (!currentConfig[key][index]) return;
+
+    const config = {
+      ...currentConfig,
+      [key]: currentConfig[key].map((axis, axisIndex) => (axisIndex === index ? { ...axis, [bound]: value } : axis)),
+    };
+    try {
+      this.saveAxisSettings(config);
+    } finally {
+      this.configUpdates$.next(config);
+    }
+  }
+
   public async clearSeriesSettings() {
     const config = await lastValueFrom(this.initialConfig.pipe(take(1)));
     if (!config.name) return;
     localStorage.removeItem(`${config.name}_${chartConfigPostfix}`);
+    localStorage.removeItem(`${config.name}_${axisConfigPostfix}`);
     this.configUpdates$.next(null);
     this.config$.next({ ...config });
   }
@@ -260,6 +280,16 @@ export class ChartService {
     localStorage.setItem(`${config.name}_${chartConfigPostfix}`, seriesConfig);
   }
 
+  private saveAxisSettings(config: IChartConfig) {
+    if (!config.name) return;
+    const bounds = (axes: IChartConfig['xAxis']) =>
+      axes.map((axis) => ({ min: axis.min ?? null, max: axis.max ?? null }));
+    localStorage.setItem(
+      `${config.name}_${axisConfigPostfix}`,
+      JSON.stringify({ xAxis: bounds(config.xAxis), yAxis: bounds(config.yAxis) }),
+    );
+  }
+
   private getConfigString(config: IChartConfig) {
     const series = config?.series?.map((_: Series<BasePoint>) => {
       return {
@@ -278,6 +308,20 @@ export class ChartService {
 
   private restoreLocalStorage(config: IChartConfig): IChartConfig {
     if (!config.name) return config;
+
+    const savedAxes = localStorage.getItem(`${config.name}_${axisConfigPostfix}`);
+    if (savedAxes) {
+      const axes = JSON.parse(savedAxes) as {
+        xAxis?: Array<{ min: number | null; max: number | null }>;
+        yAxis?: Array<{ min: number | null; max: number | null }>;
+      };
+      for (const key of ['xAxis', 'yAxis'] as const) {
+        config[key] = config[key].map((axis, index) => {
+          const saved = axes[key]?.[index];
+          return saved ? { ...axis, min: saved.min ?? undefined, max: saved.max ?? undefined } : axis;
+        });
+      }
+    }
 
     const seriesConfig = localStorage.getItem(`${config.name}_${chartConfigPostfix}`);
     if (seriesConfig) {

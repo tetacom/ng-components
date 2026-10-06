@@ -7,7 +7,6 @@ import {
   Align,
   ButtonComponent,
   ColorInputComponent,
-  DialogService,
   DropdownComponent,
   DropdownContentDirective,
   DropdownHeadDirective,
@@ -17,50 +16,40 @@ import {
   SelectComponent,
   SelectOptionDirective,
   SelectValueDirective,
-  TabComponent,
-  TabContentDirective,
-  TabsComponent,
-  TabTitleDirective,
   TetaSize,
 } from '@tetacom/ng-components';
-import { Series } from '../../model/series';
-import { BasePoint } from '../../model/base-point';
+import { KeyValuePipe } from '@angular/common';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { BasePoint } from '../../../model/base-point';
+import { Series } from '../../../model/series';
+import { SeriesType } from '../../../model/enum/series-type';
+import { ChartService } from '../../../service/chart.service';
+import { FillType } from '../../../model/enum/fill-type';
+import { defaultSeriesTypeMapping } from '../../../default/defaultSeriesTypeMapping';
+import { LineSeriesComponent } from '../../series/line/line-series.component';
 import { FormsModule } from '@angular/forms';
-import { ChartService } from '../../service/chart.service';
-import { LineSeriesComponent } from '../series/line/line-series.component';
-import { SeriesType } from '../../model/enum/series-type';
-import { defaultSeriesTypeMapping } from '../../default/defaultSeriesTypeMapping';
-import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { FillType } from '../../model/enum/fill-type';
-import { ScaleService } from '../../service/scale.service';
-import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'teta-series-controls',
   imports: [
+    AccordionComponent,
+    AccordionContentDirective,
+    AccordionHeadComponent,
+    AccordionItemComponent,
     ButtonComponent,
+    ColorInputComponent,
     DropdownComponent,
     DropdownContentDirective,
     DropdownHeadDirective,
     IconComponent,
-    AccordionComponent,
-    AccordionHeadComponent,
-    AccordionItemComponent,
-    AccordionContentDirective,
-    ColorInputComponent,
-    FormsModule,
+    InputComponent,
+    KeyValuePipe,
+    ScrollableComponent,
     SelectComponent,
     SelectOptionDirective,
     SelectValueDirective,
-    ScrollableComponent,
     TranslocoPipe,
-    InputComponent,
-    TabsComponent,
-    NgTemplateOutlet,
-    TabComponent,
-    TabContentDirective,
-    TabTitleDirective,
-    KeyValuePipe,
+    FormsModule,
   ],
   templateUrl: './series-controls.component.html',
   styleUrl: './series-controls.component.css',
@@ -68,10 +57,6 @@ import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 })
 export class SeriesControlsComponent {
   private chartService = inject(ChartService);
-  private scaleService = inject(ScaleService);
-  private dialogService = inject(DialogService);
-  private translocoService = inject(TranslocoService);
-  protected readonly Align = Align;
 
   series = input<Series<BasePoint>[]>();
 
@@ -174,23 +159,8 @@ export class SeriesControlsComponent {
     this.chartService.updateSeries(series);
   }
 
-  clear() {
-    this.dialogService
-      .confirm({
-        title: this.translocoService.translate('charts.confirm_settings_reset'),
-      })
-      .subscribe((result) => {
-        if (result) {
-          this.chartService.clearSeriesSettings();
-        }
-      });
-  }
-
-  resetZoom() {
-    this.scaleService.resetZoom();
-  }
-
-  protected readonly TetaSize = TetaSize;
   protected readonly SeriesType = SeriesType;
   protected readonly FillType = FillType;
+  protected readonly Align = Align;
+  protected readonly TetaSize = TetaSize;
 }

@@ -131,12 +131,12 @@
       }
     </svg>
     @if (data.config.controls?.enable) {
-      <teta-series-controls [series]="data.config.series"
-                            class="position-absolute"
-                            style="transform: translateX(-100%)"
-                            [style.top.px]="4"
-                            [style.left.px]="data.visibleRect.x+data.visibleRect.width">
-      </teta-series-controls>
+      <teta-chart-controls [config]="data.config"
+                           class="position-absolute"
+                           style="transform: translateX(-100%)"
+                           [style.top.px]="4"
+                           [style.left.px]="data.visibleRect.x+data.visibleRect.width">
+      </teta-chart-controls>
     }
   }
 }

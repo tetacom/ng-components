@@ -1,0 +1,130 @@
+@if (disabledSeries().length > 0) {
+  <div class="row padding-h-3 padding-top-3">
+    <teta-dropdown [align]="Align.left" [appendToBody]="true">
+      <button teta-button
+              tetaDropdownHead
+              [size]="TetaSize.S"
+              [palette]="'primary'">
+        <teta-icon [name]="'add'"></teta-icon>
+        {{ 'charts.add_curve' | transloco }}
+      </button>
+      <div tetaDropdownContent class="column shadow-2" style="min-width: 200px;"
+           (click)="$event.stopPropagation();">
+        <teta-scrollable class="column column_auto" [contentClass]="['column', 'list']">
+          @if (groupedSeries().size > 0) {
+            <teta-accordion style="padding:0;">
+              @for (group of groupedSeries() | keyvalue; track group.key) {
+                <teta-accordion-item [viewType]="'rounded'" [divider]="true">
+                  <teta-accordion-head style="padding: 2px 8px">
+                    <div class="list-item">
+                      {{ group.key }}
+                    </div>
+                  </teta-accordion-head>
+                  <ng-template tetaAccordionContent>
+                    <div class="list gap-8">
+                      @for (seriesItem of group.value; track seriesItem.id) {
+                        <div class="list-item list-item_interactive"
+                             (click)="$event.stopPropagation();setSeriesEnabled(seriesItem, true)">
+                          {{ seriesItem.name }}
+                        </div>
+                      }
+                    </div>
+                  </ng-template>
+                </teta-accordion-item>
+              }
+            </teta-accordion>
+          }
+          @for (seriesItem of flatSeries(); track seriesItem.id) {
+            <div class="list-item list-item_interactive"
+                 (click)="$event.stopPropagation();setSeriesEnabled(seriesItem, true)">
+              {{ seriesItem.name }}
+            </div>
+          }
+        </teta-scrollable>
+      </div>
+    </teta-dropdown>
+  </div>
+}
+<teta-scrollable class="column column_auto" [contentClass]="'column'">
+  <teta-accordion>
+    @for (seriesItem of enabledSeries(); track seriesItem.id) {
+      <teta-accordion-item [viewType]="'rounded'" [divider]="true">
+        <teta-accordion-head style="padding: 2px 8px">
+          <div class="row align-center gap-12">
+            <div class="row align-center gap-8" (click)="$event.stopPropagation()">
+              <teta-button (click)="setSeriesEnabled(seriesItem, false)"
+                           [palette]="'text'"
+                           [view]="'ghost'"
+                           [square]="true">
+                <teta-icon [name]="'delete'" [palette]="'red'"></teta-icon>
+              </teta-button>
+              <teta-color-input [ngModel]="seriesItem.color"
+                                (ngModelChange)="setSeriesColor(seriesItem, $event)"></teta-color-input>
+            </div>
+            {{ seriesItem.name }}
+          </div>
+        </teta-accordion-head>
+        <ng-template tetaAccordionContent>
+          <div class="column gap-8">
+            <teta-input [label]="'charts.line_width' | transloco">
+              <teta-select [options]="strokeWidth"
+                           [ngModel]="seriesItem.style?.strokeWidth ?? 1"
+                           [valueRef]="'id'"
+                           (ngModelChange)="setSeriesStrokeWidth(seriesItem, $event)"
+                           [allowNull]="false">
+                <ng-template tetaSelectOption let-option>
+                  <div style="width: 50px;"
+                       [style.height.px]="option.id"
+                       [style.background-color]="seriesItem.color"></div>
+                </ng-template>
+                <ng-template tetaSelectValue let-value>
+                  <div style="width: 50px;"
+                       [style.height.px]="value?.id"
+                       [style.background-color]="seriesItem.color"></div>
+                </ng-template>
+              </teta-select>
+            </teta-input>
+            <teta-input [label]="'charts.line_style' | transloco">
+              <teta-select [options]="strokeArray"
+                           [ngModel]="seriesItem.style?.strokeDasharray ?? ''"
+                           [valueRef]="'id'"
+                           (ngModelChange)="setSeriesStrokeDasharray(seriesItem, $event)"
+                           [allowNull]="false">
+                <ng-template tetaSelectOption let-option>
+                  <div style="width: 50px;border:0;border-top: 2px;"
+                       [style.border-style]="option.value"
+                       [style.border-color]="seriesItem.color"></div>
+                </ng-template>
+                <ng-template tetaSelectValue let-value>
+                  <div style="width: 50px;border:0;border-top: 2px;"
+                       [style.border-style]="value?.value"
+                       [style.border-color]="seriesItem.color"></div>
+                </ng-template>
+              </teta-select>
+            </teta-input>
+            <teta-input [label]="'charts.chart_type' | transloco">
+              <teta-select [options]="seriesType"
+                           [ngModel]="seriesItem.type ?? SeriesType.line"
+                           [valueRef]="'id'"
+                           [textRef]="'value'"
+                           (ngModelChange)="setSeriesType(seriesItem, $event)"
+                           [allowNull]="false">
+              </teta-select>
+            </teta-input>
+            @if (seriesItem.type === SeriesType.area || seriesItem.type === SeriesType.blockArea || seriesItem.type === SeriesType.block) {
+              <teta-input [label]="'charts.fill_type' | transloco">
+                <teta-select [options]="fillType"
+                             [ngModel]="seriesItem.fillType ?? FillType.default"
+                             [valueRef]="'id'"
+                             [textRef]="'value'"
+                             (ngModelChange)="setSeriesFillType(seriesItem, $event)"
+                             [allowNull]="false">
+                </teta-select>
+              </teta-input>
+            }
+          </div>
+        </ng-template>
+      </teta-accordion-item>
+    }
+  </teta-accordion>
+</teta-scrollable>

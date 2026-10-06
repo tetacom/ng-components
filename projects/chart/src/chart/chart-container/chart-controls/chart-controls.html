@@ -1,0 +1,52 @@
+<teta-dropdown [align]="Align.right"
+               #dropdown="dropdown"
+               [appendToBody]="true">
+  <button teta-button
+          tetaDropdownHead
+          [class.active]="dropdown.open"
+          [palette]="'text'"
+          [square]="true"
+          [view]="'ghost'">
+    <teta-icon [name]="'gear'"></teta-icon>
+  </button>
+  <div tetaDropdownContent class="column shadow-2" style="min-width: 200px;">
+    <teta-tabs>
+      <teta-tab>
+        <ng-template tetaTabTitle>
+          <teta-icon [name]="'isoline'" [palette]="'text'"></teta-icon>
+          {{ 'charts.series' | transloco }}
+        </ng-template>
+        <ng-template tetaTabContent>
+          <teta-series-controls [series]="config().series"></teta-series-controls>
+        </ng-template>
+      </teta-tab>
+      <teta-tab>
+        <ng-template tetaTabTitle>
+          <teta-icon [name]="'3dView'" [palette]="'text'"></teta-icon>
+          {{ 'charts.axes' | transloco }}
+        </ng-template>
+        <ng-template tetaTabContent>
+            <teta-axis-controls [xAxis]="config().xAxis" [yAxis]="config().yAxis"></teta-axis-controls>
+        </ng-template>
+      </teta-tab>
+    </teta-tabs>
+    <div class="row padding-3">
+      <button teta-button
+              [palette]="'red'"
+              [view]="'ghost'"
+              [size]="TetaSize.S"
+              (click)="clear(); dropdown.open = false;">
+        <teta-icon [name]="'erase'"></teta-icon>
+        {{ 'charts.reset' | transloco }}
+      </button>
+      <teta-button
+        [palette]="'text'"
+        [view]="'ghost'"
+        [square]="true"
+        [size]="TetaSize.S"
+        (click)="resetZoom(); dropdown.open = false;">
+        <teta-icon [name]="'autoscale'"></teta-icon>
+      </teta-button>
+    </div>
+  </div>
+</teta-dropdown>
