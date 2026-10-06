@@ -7,7 +7,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { DropdownHeadDirective } from './dropdown-head.directive';
 import { DropdownContentDirective } from './dropdown-content.directive';
-import { ScrollableComponent } from '../../directive/scrollable/scrollable/scrollable.component';
+import { ScrollContainerComponent } from '../../directive/scroll-container/scroll-container.component';
 import { DropdownDirective } from './dropdown.directive';
 import { ButtonComponent } from '../button/button/button.component';
 import { IconSpriteDirective } from '../icon/icon-sprite.directive';
@@ -82,7 +82,7 @@ export const baseDropdown = (args) => ({
       DropdownComponent,
       DropdownHeadDirective,
       DropdownContentDirective,
-      ScrollableComponent,
+      ScrollContainerComponent,
       DropdownDirective,
       ButtonComponent,
       IconSpriteDirective,
@@ -96,7 +96,7 @@ export const baseDropdown = (args) => ({
                   [style.margin]="transform ? '' : '100px 100px'"
                   [tetaIconSprite]="'assets/icons.svg'">
 
-    <teta-scrollable tetaDropdown
+    <div tetaDropdown
           class="margin-right-4"
           [viewType]="viewType"
           [open]="true"
@@ -107,7 +107,7 @@ export const baseDropdown = (args) => ({
           <button  tetaDropdownHead teta-button [viewType]="viewType" [palette]="'primary'">
         {{verticalAlign}}
       </button>
-      <div tetaDropdownContent class="list">
+      <teta-scroll-container tetaDropdownContent class="list">
         @for(i of [1,2,3]; track i;) {
           <div class="list-item">
             <teta-icon [name]="'user'" [palette]="'text'" class="margin-right-2"></teta-icon>Jerome Bell
@@ -125,8 +125,8 @@ export const baseDropdown = (args) => ({
             <teta-icon [name]="'map'" [palette]="'text'" class="margin-right-2"></teta-icon>Marvin McKinney
           </div>
         }
-      </div>
-    </teta-scrollable>
+      </teta-scroll-container>
+    </div>
   </div>`,
 });
 export const disabledDropdown = (args) => ({
@@ -135,7 +135,7 @@ export const disabledDropdown = (args) => ({
       DropdownComponent,
       DropdownHeadDirective,
       DropdownContentDirective,
-      ScrollableComponent,
+      ScrollContainerComponent,
       DropdownDirective,
       ButtonComponent,
       IconSpriteDirective,
@@ -149,7 +149,7 @@ export const disabledDropdown = (args) => ({
                   [style.margin]="transform ? '' : '100px 100px'"
                   [tetaIconSprite]="'assets/icons.svg'">
 
-    <teta-scrollable tetaDropdown
+    <div tetaDropdown
           class="margin-right-4"
           [disabled]="true"
           [viewType]="viewType"
@@ -161,7 +161,7 @@ export const disabledDropdown = (args) => ({
           <button  tetaDropdownHead teta-button [viewType]="viewType" [palette]="'text'">
         {{verticalAlign}}
       </button>
-      <div tetaDropdownContent class="list">
+      <teta-scroll-container tetaDropdownContent class="list">
         @for(i of [1,2,3]; track i;) {
             <div class="list-item">
               <teta-icon [name]="'user'" [palette]="'text'" class="margin-right-2"></teta-icon>Jerome Bell
@@ -179,7 +179,7 @@ export const disabledDropdown = (args) => ({
               <teta-icon [name]="'map'" [palette]="'text'" class="margin-right-2"></teta-icon>Marvin McKinney
             </div>
         }
-      </div>
-    </teta-scrollable>
+      </teta-scroll-container>
+    </div>
   </div>`,
 });

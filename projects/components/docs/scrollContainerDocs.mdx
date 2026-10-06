@@ -1,0 +1,112 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as ScrollContainerStories from '../src/directive/scroll-container/ScrollContainer.stories';
+
+<Meta of={ScrollContainerStories} />
+
+# Контейнер с overlay-скроллбарами
+
+`ScrollContainerComponent` (`teta-scroll-container`) прокручивает сам host. Содержимое
+проецируется непосредственно в него, без обёртки. Полосы располагаются поверх
+контента и не занимают место. Их геометрией управляют CSS scroll-driven animations;
+JavaScript используется для перетаскивания ползунков.
+
+## Использование
+
+```html
+<teta-scroll-container style="max-height: 300px">
+  <!-- обычный контент: контейнер растёт до max-height, затем прокручивается -->
+</teta-scroll-container>
+```
+
+Layout и ограничения размеров задаются на самом контейнере. Компонент по умолчанию
+имеет `display: block`. Для flex/grid используйте собственные классы. Flex-элементы,
+которые должны сохранять высоту, задавайте с `flex-shrink: 0`.
+
+```html
+<teta-scroll-container class="column column_auto" [showScrollbars]="true" (scroll)="onScroll($event)">
+  <!-- содержимое -->
+</teta-scroll-container>
+```
+
+`scroll` — настоящее DOM-событие; `event.target` — контейнер. Полосы видны при hover,
+фокусе внутри, перетаскивании или `showScrollbars=true`. На устройствах без hover
+полосы видны постоянно, если есть переполнение. Фокус с клавиатуры доступен через
+`tabindex=0`; явно заданный `tabindex` сохраняется.
+
+Клик по свободной части трека переносит центр ползунка к указателю; после нажатия
+можно сразу продолжить перетаскивание. Это режим перехода к указанному месту,
+а не постраничная прокрутка, используемая некоторыми нативными скроллбарами.
+
+Контейнер обрезает также fixed-слои вложенных полос по своим границам. Всплывающие
+меню внутри прокручиваемого содержимого, которым нужно выходить за эти границы,
+открывайте через `appendToBody`.
+
+## Существующий viewport
+
+`ScrollContainerDirective` (`tetaScrollContainer`) применяется непосредственно к
+существующему элементу. Не оборачивайте CDK viewport ещё одним скролл-контейнером.
+
+```html
+<cdk-virtual-scroll-viewport tetaScrollContainer class="column_auto" [itemSize]="28" [showScrollbars]="true">
+  <div *cdkVirtualFor="let item of items" style="height: 28px">{{ item.name }}</div>
+</cdk-virtual-scroll-viewport>
+```
+
+Viewport должен иметь ограниченную высоту, заданную родительским layout или явно.
+Геометрия CDK, `scrollToIndex` и его события остаются у viewport.
+
+Слой полос использует `position: fixed` с CSS-якорем на viewport. Сам scroll host
+не должен создавать содержащий блок для fixed-элементов через `transform`,
+`filter` или layout/paint containment; такие эффекты можно задавать родителю.
+Для CDK новая директива отключает `translateZ(0)` на host и оставляет
+`contain: size style` вместо `strict`. Transform виртуального содержимого
+сохраняется.
+
+## Настройка полос
+
+CSS-переменные задаются на контейнере:
+
+| Переменная                     | По умолчанию                    |
+| ------------------------------ | ------------------------------- |
+| `--teta-scrollbar-size`        | `12px`                          |
+| `--teta-scrollbar-min-thumb`   | `24px`                          |
+| `--teta-scrollbar-color`       | `var(--color-text-10, #8888)`   |
+| `--teta-scrollbar-hover-color` | `var(--color-primary-50, #888)` |
+
+```html
+<teta-scroll-container style="max-height: 300px; --teta-scrollbar-color: #888">
+  <!-- содержимое -->
+</teta-scroll-container>
+```
+
+## Переход со старого компонента
+
+| Старый API                                           | Новый API                                         |
+| ---------------------------------------------------- | ------------------------------------------------- |
+| `teta-scrollable`                                    | `teta-scroll-container`                           |
+| `contentClass`                                       | классы непосредственно на host                    |
+| `direction="column"`                                 | `class="column"` или собственный `flex-direction` |
+| `showScrollbars`                                     | `showScrollbars`                                  |
+| `(scroll)`                                           | нативное `(scroll)`                               |
+| `teta-scrollable` вокруг viewport с `tetaScrollable` | только `tetaScrollContainer` на viewport          |
+
+Старый `teta-scrollable` и директива `tetaScrollable` сохраняются для совместимости.
+В новых компонентах используйте новый API. Внешние проекты могут мигрировать
+постепенно; старые экспорты и поведение не изменены.
+
+## Браузеры и проверка
+
+Нужны CSS anchor positioning (включая `anchor-scope`), named scroll timelines,
+`timeline-scope`, `animation-range`, `@property` и size container units.
+Целевые браузеры: Chrome/Edge 131+ и Safari 26+. Стабильный Firefox пока не входит
+в поддерживаемый набор. JS-фолбэк и нативный режим не предусмотрены.
+
+В сценарии **Examples** кнопка **Run browser checks** проверяет геометрию полос,
+естественный рост/уменьшение, отсутствие резервирования ширины, минимальный
+ползунок, RTL, вложенность и CDK. Перетаскивание, hover, клавиатуру и touch следует
+проверить вручную в целевых браузерах.
+
+В сценарии **Dynamic Dropdown** сначала откройте **Dropdown**, затем кнопкой
+**Toggle content** меняйте число элементов
+в уже открытом dropdown: `3 → 30 → 3`. Проверьте рост, появление прокрутки и
+уменьшение высоты без закрытия dropdown.

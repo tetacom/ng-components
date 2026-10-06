@@ -1,7 +1,7 @@
 <div class="padding-2">
   <teta-text-field [(ngModel)]="search"></teta-text-field>
 </div>
-<teta-scrollable class="column column_auto" [contentClass]="['list', 'padding-v-2']">
+<teta-scroll-container class="column column_auto list padding-v-2">
   <div class="list-item">
     <teta-checkbox [binary]="true" [allowNull]="true" [ngModel]="all()" (ngModelChange)="setAll($event)">
       {{ (locale | async)?.all }}
@@ -15,4 +15,4 @@
       </teta-checkbox>
     </div>
   }
-</teta-scrollable>
+</teta-scroll-container>

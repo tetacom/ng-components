@@ -51,66 +51,62 @@
           }
           @if (virtual) {
             <div class="column column_auto padding-v-2" style="height: 50vh">
-              <teta-scrollable class="column column_auto" [contentClass]="['column', 'column_auto']">
-                <cdk-virtual-scroll-viewport
-                  tetaScrollable
-                  [itemSize]="28"
-                  minBufferPx="200"
-                  maxBufferPx="600"
-                  style="flex-grow: 1"
+              <cdk-virtual-scroll-viewport
+                tetaScrollContainer
+                [itemSize]="28"
+                minBufferPx="200"
+                maxBufferPx="600"
+                class="column_auto"
+              >
+                <div
+                  [class]="'margin-h-2 list-item list-item_interactive justify-content-between select_' + viewType"
+                  style="display: flex"
+                  *cdkVirtualFor="let option of visibleOptions; templateCacheSize: 0"
+                  [class.list-item_active]="itemSelected(option)"
+                  [class.list-item_disabled]="option.disabled === true"
+                  [tetaHighlight]="searchText"
+                  [style.height.px]="28"
+                  (click)="clickOption(option, $event)"
                 >
-                  <div
-                    [class]="'margin-h-2 list-item list-item_interactive justify-content-between select_' + viewType"
-                    style="display: flex"
-                    *cdkVirtualFor="let option of visibleOptions; templateCacheSize: 0"
-                    [class.list-item_active]="itemSelected(option)"
-                    [class.list-item_disabled]="option.disabled === true"
-                    [tetaHighlight]="searchText"
-                    [style.height.px]="28"
-                    (click)="clickOption(option, $event)"
-                  >
-                    <div [tetaHighlight]="searchText">
-                      <ng-container
-                        *ngTemplateOutlet="
-                          optionDirective ? optionDirective.template : optionDefault;
-                          context: { $implicit: option, option: option }
-                        "
-                      >
-                      </ng-container>
-                    </div>
-                    @if (itemSelected(option)) {
-                      <teta-icon [name]="'tick'" [palette]="'text'" class="margin-left-2"></teta-icon>
-                    }
+                  <div [tetaHighlight]="searchText">
+                    <ng-container
+                      *ngTemplateOutlet="
+                        optionDirective ? optionDirective.template : optionDefault;
+                        context: { $implicit: option, option: option }
+                      "
+                    >
+                    </ng-container>
                   </div>
-                </cdk-virtual-scroll-viewport>
-              </teta-scrollable>
+                  @if (itemSelected(option)) {
+                    <teta-icon [name]="'tick'" [palette]="'text'" class="margin-left-2"></teta-icon>
+                  }
+                </div>
+              </cdk-virtual-scroll-viewport>
             </div>
           } @else {
-            <teta-scrollable class="column column_auto" [contentClass]="['column', 'column_auto']">
-              <div class="list">
-                @for (option of visibleOptions; track trackOption(option, $index)) {
-                  <div
-                    [class]="'list-item list-item_interactive justify-content-between  select_' + viewType"
-                    [class.list-item_active]="itemSelected(option)"
-                    [class.list-item_disabled]="option.disabled === true"
-                    (click)="clickOption(option, $event)"
-                  >
-                    <span [tetaHighlight]="searchText">
-                      <ng-container
-                        *ngTemplateOutlet="
-                          optionDirective ? optionDirective.template : optionDefault;
-                          context: { $implicit: option, option: option }
-                        "
-                      >
-                      </ng-container>
-                    </span>
-                    @if (itemSelected(option) && multiple) {
-                      <teta-icon [name]="'tick'" [palette]="'text'"></teta-icon>
-                    }
-                  </div>
-                }
-              </div>
-            </teta-scrollable>
+            <teta-scroll-container class="column column_auto list">
+              @for (option of visibleOptions; track trackOption(option, $index)) {
+                <div
+                  [class]="'list-item list-item_interactive justify-content-between  select_' + viewType"
+                  [class.list-item_active]="itemSelected(option)"
+                  [class.list-item_disabled]="option.disabled === true"
+                  (click)="clickOption(option, $event)"
+                >
+                  <span [tetaHighlight]="searchText">
+                    <ng-container
+                      *ngTemplateOutlet="
+                        optionDirective ? optionDirective.template : optionDefault;
+                        context: { $implicit: option, option: option }
+                      "
+                    >
+                    </ng-container>
+                  </span>
+                  @if (itemSelected(option) && multiple) {
+                    <teta-icon [name]="'tick'" [palette]="'text'"></teta-icon>
+                  }
+                </div>
+              }
+            </teta-scroll-container>
           }
         } @else {
           <p class="padding-h-3 text-overflow-ellipsis overflow-hidden select-not-found-option">

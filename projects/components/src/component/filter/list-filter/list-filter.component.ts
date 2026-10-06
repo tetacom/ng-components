@@ -19,16 +19,16 @@ import { TetaLocalisation } from '../../../locale/teta-localisation';
 import { TetaConfigService } from '../../../locale/teta-config.service';
 import { AsyncPipe } from '@angular/common';
 import { CheckboxComponent } from '../../checkbox/checkbox/checkbox.component';
-import { ScrollableComponent } from '../../../directive/scrollable/scrollable/scrollable.component';
+import { ScrollContainerComponent } from '../../../directive/scroll-container/scroll-container.component';
 import { FormsModule } from '@angular/forms';
 import { TextFieldComponent } from '../../input/text-field/text-field.component';
 
 @Component({
-    selector: 'teta-list-filter',
-    templateUrl: './list-filter.component.html',
-    styleUrls: ['./list-filter.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TextFieldComponent, FormsModule, ScrollableComponent, CheckboxComponent, AsyncPipe]
+  selector: 'teta-list-filter',
+  templateUrl: './list-filter.component.html',
+  styleUrls: ['./list-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TextFieldComponent, FormsModule, ScrollContainerComponent, CheckboxComponent, AsyncPipe],
 })
 export class ListFilterComponent<T> extends FilterComponentBase<T> implements OnInit {
   @Input() column: FilterItem;
