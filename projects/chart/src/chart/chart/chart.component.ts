@@ -1,4 +1,17 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChartImageExportOptions, exportChartImage } from '@tetacom/ng-components';
+import { CHART_IMAGE_EXPORTER } from '../model/chart-image-exporter';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { distinctUntilChanged, map, Observable, takeWhile, withLatestFrom } from 'rxjs';
 
 import { Annotation } from '../model/annotation';
@@ -24,7 +37,13 @@ import { LegendComponent } from '../legend/legend.component';
   selector: 'teta-svg-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
-  providers: [ChartService, ZoomService, ScaleService, BrushService],
+  providers: [
+    ChartService,
+    ZoomService,
+    ScaleService,
+    BrushService,
+    { provide: CHART_IMAGE_EXPORTER, useExisting: forwardRef(() => ChartComponent) },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ChartContainerComponent, AsyncPipe, LegendComponent],
 })
@@ -89,6 +108,10 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   private _alive = true;
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly imageExportAbort = new AbortController();
+  private imageExportQueue: Promise<unknown> = Promise.resolve();
+  private hasImageData = false;
 
   constructor(
     public chartService: ChartService,
@@ -98,8 +121,28 @@ export class ChartComponent implements OnInit, OnDestroy {
   ) {
     this.svcConfig = this.chartService.config;
     this.hasSeriesData = this.svcConfig.pipe(
-      map((_) => _.series?.length > 0 && _.series?.some((_) => _.data?.length > 0)),
+      map((_) => {
+        this.hasImageData = _.series?.length > 0 && _.series?.some((_) => _.data?.length > 0);
+        return this.hasImageData;
+      }),
     );
+  }
+
+  exportImage(options: ChartImageExportOptions = {}): Promise<Blob> {
+    const result = this.imageExportQueue.then(() =>
+      exportChartImage(this.elementRef.nativeElement, options, {
+        signal: this.imageExportAbort.signal,
+        isReady: () =>
+          !this.hasImageData || !!this.elementRef.nativeElement.querySelector('svg path, svg line, svg text, svg rect'),
+        filter: (node) =>
+          typeof node.matches !== 'function' ||
+          !node.matches(
+            'teta-chart-controls, teta-series-controls, teta-tooltip, .crosshair, [teta-crosshair], rect.selection, rect.handle, rect.overlay',
+          ),
+      }),
+    );
+    this.imageExportQueue = result.catch(() => undefined);
+    return result;
   }
 
   resetZoom() {
@@ -204,6 +247,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.imageExportAbort.abort();
     this._alive = false;
   }
 

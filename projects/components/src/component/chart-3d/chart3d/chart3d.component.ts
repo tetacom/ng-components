@@ -1,3 +1,4 @@
+import { ChartImageExportOptions, exportChartImage } from '../../../util/export-chart-image';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -44,6 +45,8 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
   private axesColor: any;
 
   private _alive = true;
+  private readonly imageExportAbort = new AbortController();
+  private imageExportQueue: Promise<unknown> = Promise.resolve();
 
   // Tooltip properties
   tooltipVisible = true;
@@ -104,10 +107,41 @@ export class Chart3dComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.imageExportAbort.abort();
     this._alive = false;
     this.removeResizeObserver();
     this.removeMouseListeners();
     this.disposeThreeResources();
+  }
+
+  exportImage(options: ChartImageExportOptions = {}): Promise<Blob> {
+    const result = this.imageExportQueue.then(() =>
+      exportChartImage(this._elementRef.nativeElement, options, {
+        signal: this.imageExportAbort.signal,
+        isReady: () =>
+          !!this._scene &&
+          !!this._camera &&
+          !!this._renderer &&
+          !!this._config &&
+          this.canvas.width > 0 &&
+          this.canvas.height > 0,
+        filter: (node) => typeof node.matches !== 'function' || !node.matches('.tooltip'),
+        snapshotCanvas: (canvas) => {
+          const marker = this._tooltipMarker;
+          const visible = marker?.visible;
+          try {
+            if (marker) marker.visible = false;
+            this.render();
+            return canvas.toDataURL('image/png');
+          } finally {
+            if (marker) marker.visible = visible;
+            if (this._alive) this.render();
+          }
+        },
+      }),
+    );
+    this.imageExportQueue = result.catch(() => undefined);
+    return result;
   }
 
   private init() {

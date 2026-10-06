@@ -26,7 +26,7 @@
           {{ 'charts.axes' | transloco }}
         </ng-template>
         <ng-template tetaTabContent>
-            <teta-axis-controls [xAxis]="config().xAxis" [yAxis]="config().yAxis"></teta-axis-controls>
+          <teta-axis-controls [xAxis]="config().xAxis" [yAxis]="config().yAxis"></teta-axis-controls>
         </ng-template>
       </teta-tab>
     </teta-tabs>
@@ -40,11 +40,12 @@
         {{ 'charts.reset' | transloco }}
       </button>
       <button teta-button
-        [palette]="'text'"
-        [view]="'ghost'"
-        [square]="true"
-        [size]="TetaSize.S"
-        (click)="resetZoom(); dropdown.open = false;">
+              class="margin-left-auto"
+              [palette]="'text'"
+              [view]="'ghost'"
+              [square]="true"
+              [size]="TetaSize.S"
+              (click)="resetZoom(); dropdown.open = false;">
         <teta-icon [name]="'autoscale'"></teta-icon>
       </button>
       <button teta-button
@@ -52,6 +53,7 @@
               [view]="'ghost'"
               [square]="true"
               [size]="TetaSize.S"
+              [disabled]="downloading()"
               (click)="download(); dropdown.open = false;">
         <teta-icon [name]="'image'"></teta-icon>
       </button>

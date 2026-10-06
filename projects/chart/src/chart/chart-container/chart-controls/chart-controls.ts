@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { CHART_IMAGE_EXPORTER } from '../../model/chart-image-exporter';
+import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
 import {
   Align,
   ButtonComponent,
@@ -50,6 +51,8 @@ export class ChartControls {
   protected readonly AxisOrientation = AxisOrientation;
 
   config = input<IChartConfig>();
+  downloading = signal(false);
+  private imageExporter = inject(CHART_IMAGE_EXPORTER);
 
   clear() {
     this.dialogService
@@ -67,7 +70,29 @@ export class ChartControls {
     this.scaleService.resetZoom();
   }
 
-  download() {}
+  async download() {
+    if (this.downloading()) return;
+    this.downloading.set(true);
+    let url: string | undefined;
+    try {
+      const blob = await this.imageExporter.exportImage();
+      url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = 'chart.png';
+      document.body.appendChild(anchor);
+      try {
+        anchor.click();
+      } finally {
+        anchor.remove();
+      }
+    } catch (error) {
+      console.error('Failed to download chart image', error);
+    } finally {
+      if (url) setTimeout(() => URL.revokeObjectURL(url), 0);
+      this.downloading.set(false);
+    }
+  }
 
   protected readonly TetaSize = TetaSize;
 }
