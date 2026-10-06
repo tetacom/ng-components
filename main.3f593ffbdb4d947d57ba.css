@@ -6010,6 +6010,10 @@ body {
   line-height: 16px;
   text-decoration: none;
 }
+.table-body .cdk-virtual-scroll-orientation-vertical > .cdk-virtual-scroll-content-wrapper {
+  width: 100%;
+  contain: style;
+}
 .table-body-container {
   flex-grow: 1;
 }
