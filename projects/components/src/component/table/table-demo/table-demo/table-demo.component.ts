@@ -97,22 +97,18 @@ export class TableDemoComponent implements OnInit {
       new TableColumn({
         name: 'color',
         filterType: FilterType.color,
-        locked: true,
         editable: true,
       }),
       new TableColumn({
         name: 'date',
-        locked: true,
         filterType: FilterType.date,
       }),
       new TableColumn({
         name: 'long',
-        locked: true,
         filterType: FilterType.list,
       }),
       new TableColumn({
         name: 'value',
-        locked: true,
         filterType: FilterType.number,
       }),
       new TableColumn({

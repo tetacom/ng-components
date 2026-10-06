@@ -22,9 +22,9 @@ import { TetaLocalisation } from '../../../locale/teta-localisation';
 import { SelectOptionDirective } from '../select-option.directive';
 import { SelectValueDirective } from '../select-value.directive';
 import { HighlightDirective } from '../../../directive/highlight/highlight.directive';
-import { ScrollableDirective } from '../../../directive/scrollable/scrollable.directive';
+import { ScrollContainerDirective } from '../../../directive/scroll-container/scroll-container.directive';
 import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
-import { ScrollableComponent } from '../../../directive/scrollable/scrollable/scrollable.component';
+import { ScrollContainerComponent } from '../../../directive/scroll-container/scroll-container.component';
 import { TextFieldComponent } from '../../input/text-field/text-field.component';
 import { DropdownContentDirective } from '../../dropdown/dropdown-content.directive';
 import { NgTemplateOutlet, AsyncPipe } from '@angular/common';
@@ -52,10 +52,10 @@ import { DropdownComponent } from '../../dropdown/dropdown/dropdown.component';
     DropdownContentDirective,
     TextFieldComponent,
     FormsModule,
-    ScrollableComponent,
+    ScrollContainerComponent,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
-    ScrollableDirective,
+    ScrollContainerDirective,
     CdkVirtualForOf,
     HighlightDirective,
     AsyncPipe,

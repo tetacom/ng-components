@@ -53,7 +53,7 @@ export const basicTable = (args) => ({
   props: { ...args, selectTypeMap, editEventMap, editTypeMap },
   template: `<div [tetaIconSprite]="['assets/icons.svg', 'assets/color-icons.svg']"
                   class="bg-panel-0 padding-10"
-                  style="display: flex; width: 1200px; height: 600px;">
+                  style="display: flex; width: 900px; height: 600px;">
                 <teta-table-demo [size]="50"
                                   [editEvent]="editEventMap.get(editEvent)"
                                   [editType]="editTypeMap.get(editType)"
@@ -69,7 +69,7 @@ export const virtualTable = (args) => ({
   props: { ...args, selectTypeMap, editEventMap, editTypeMap },
   template: `<div [tetaIconSprite]="['assets/icons.svg', 'assets/color-icons.svg']"
                   class="bg-panel-0 padding-10"
-                  style="display: flex; width: 1200px; height: 600px;">
+                  style="display: flex; width: 900px; height: 600px;">
                 <teta-table-demo [size]="100"
                                   [editEvent]="editEvent"
                                   [editType]="editType"

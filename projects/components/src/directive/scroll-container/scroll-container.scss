@@ -1,0 +1,219 @@
+@property --teta-scroll-start {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --teta-scroll-end {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@keyframes teta-scroll-start {
+  from {
+    --teta-scroll-start: 1;
+  }
+  to {
+    --teta-scroll-start: 0;
+  }
+}
+
+@keyframes teta-scroll-end {
+  from {
+    --teta-scroll-end: 0;
+  }
+  to {
+    --teta-scroll-end: 1;
+  }
+}
+
+@keyframes teta-scroll-overflow {
+  from,
+  to {
+    opacity: 1;
+    --teta-scroll-events: auto;
+  }
+}
+
+@keyframes teta-scroll-gap-x {
+  from,
+  to {
+    --teta-scroll-gap-x: var(--teta-scrollbar-size);
+  }
+}
+
+@keyframes teta-scroll-gap-y {
+  from,
+  to {
+    --teta-scroll-gap-y: var(--teta-scrollbar-size);
+  }
+}
+
+:where(teta-scroll-container) {
+  display: block;
+}
+
+.teta-scroll-container {
+  --teta-scrollbar-size: 12px;
+  --teta-scrollbar-min-thumb: 24px;
+  --teta-scrollbar-color: var(--color-text-10, #8888);
+  --teta-scrollbar-hover-color: var(--color-primary-50, #888);
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  // Overflow alone does not clip fixed descendants (nested scrollbar layers).
+  // A clip path clips them too without creating a fixed containing block.
+  clip-path: inset(0);
+  scrollbar-width: none;
+  anchor-name: --teta-scroll-container;
+  anchor-scope: --teta-scroll-container;
+  scroll-timeline:
+    --teta-scroll-y y,
+    --teta-scroll-x inline;
+  timeline-scope: --teta-scroll-y, --teta-scroll-x;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &:hover > .teta-scroll-bars,
+  &:focus-within > .teta-scroll-bars,
+  &.teta-scroll-container-always > .teta-scroll-bars,
+  &.teta-scroll-container-dragging > .teta-scroll-bars {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.teta-scroll-bars {
+  --teta-scroll-gap-x: 0px;
+  --teta-scroll-gap-y: 0px;
+  // The scroller cannot also be the containing block of its anchored layer.
+  // Fixed positioning keeps positioned scroll hosts eligible as anchors.
+  position: fixed;
+  position-anchor: --teta-scroll-container;
+  inset: anchor(top) anchor(right) anchor(bottom) anchor(left);
+  container-type: size;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 2;
+  transition:
+    opacity 150ms,
+    visibility 150ms;
+  animation:
+    teta-scroll-gap-x linear both,
+    teta-scroll-gap-y linear both;
+  animation-timeline: --teta-scroll-x, --teta-scroll-y;
+}
+
+// CDK's strict containment creates a fixed-position containing block. Keep its
+// size/style isolation while allowing the decoration to anchor to the viewport.
+.cdk-virtual-scroll-viewport.teta-scroll-container {
+  contain: size style;
+  // CDK promotes the host with translateZ(0); that also traps fixed children.
+  // The translated virtual content wrapper is left untouched.
+  transform: none;
+}
+
+.teta-scroll-track {
+  --teta-scroll-events: none;
+  position: absolute;
+  pointer-events: var(--teta-scroll-events);
+  touch-action: none;
+  animation: teta-scroll-overflow linear both;
+}
+
+.teta-scroll-thumb {
+  // Derive the proportion and progress from the two extended animation ranges.
+  // Moving through the remaining track keeps minimum-sized thumbs linear too.
+  --teta-scroll-progress: calc(
+    (1 - var(--teta-scroll-start)) / max(0.000001, 2 - var(--teta-scroll-start) - var(--teta-scroll-end))
+  );
+  --teta-scroll-events: none;
+  position: absolute;
+  box-sizing: border-box;
+  background: var(--teta-scrollbar-color);
+  background-clip: padding-box;
+  border: 4px solid transparent;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: var(--teta-scroll-events);
+  touch-action: none;
+  user-select: none;
+  animation-name: teta-scroll-start, teta-scroll-end, teta-scroll-overflow;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+
+  &:hover {
+    background-color: var(--teta-scrollbar-hover-color);
+    border-width: 2px;
+  }
+}
+
+.teta-scroll-track-y {
+  animation-timeline: --teta-scroll-y;
+  inset-block: 0 var(--teta-scroll-gap-x);
+  inset-inline-end: 0;
+  width: var(--teta-scrollbar-size);
+
+  > .teta-scroll-thumb {
+    width: 100%;
+    --teta-scroll-thumb-size: clamp(
+      min(var(--teta-scrollbar-min-thumb), 100%),
+      calc((var(--teta-scroll-start) + var(--teta-scroll-end) - 1) * 100%),
+      100%
+    );
+    height: var(--teta-scroll-thumb-size);
+    top: calc(var(--teta-scroll-progress) * (100% - var(--teta-scroll-thumb-size)));
+    animation-timeline: --teta-scroll-y;
+    animation-range:
+      0% calc(100% + 100cqh),
+      calc(0% - 100cqh) 100%,
+      normal;
+  }
+}
+
+.teta-scroll-track-x {
+  animation-timeline: --teta-scroll-x;
+  inset-inline: 0 var(--teta-scroll-gap-y);
+  inset-block-end: 0;
+  height: var(--teta-scrollbar-size);
+
+  > .teta-scroll-thumb {
+    height: 100%;
+    --teta-scroll-thumb-size: clamp(
+      min(var(--teta-scrollbar-min-thumb), 100%),
+      calc((var(--teta-scroll-start) + var(--teta-scroll-end) - 1) * 100%),
+      100%
+    );
+    width: var(--teta-scroll-thumb-size);
+    inset-inline-start: calc(var(--teta-scroll-progress) * (100% - var(--teta-scroll-thumb-size)));
+    animation-timeline: --teta-scroll-x;
+    animation-range:
+      0% calc(100% + 100cqw),
+      calc(0% - 100cqw) 100%,
+      normal;
+  }
+}
+
+@media (hover: none) {
+  .teta-scroll-container > .teta-scroll-bars {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teta-scroll-bars {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .teta-scroll-thumb {
+    background-color: CanvasText;
+    forced-color-adjust: none;
+  }
+}

@@ -15,7 +15,7 @@ import { ToolbarComponent } from '../../../toolbar/toolbar/toolbar.component';
 import { TreeItemToggleComponent } from '../../../tree/tree-item-toggle/tree-item-toggle.component';
 import { TetaTemplateDirective } from '../../../../directive/teta-template/teta-template.directive';
 import { TreeComponent } from '../../../tree/tree/tree.component';
-import { ScrollableComponent } from '../../../../directive/scrollable/scrollable/scrollable.component';
+import { ScrollContainerComponent } from '../../../../directive/scroll-container/scroll-container.component';
 import { FormsModule } from '@angular/forms';
 import { CheckboxComponent } from '../../../checkbox/checkbox/checkbox.component';
 
@@ -27,7 +27,7 @@ import { CheckboxComponent } from '../../../checkbox/checkbox/checkbox.component
   imports: [
     CheckboxComponent,
     FormsModule,
-    ScrollableComponent,
+    ScrollContainerComponent,
     TreeComponent,
     TetaTemplateDirective,
     TreeItemToggleComponent,

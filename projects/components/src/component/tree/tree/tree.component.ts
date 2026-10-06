@@ -25,8 +25,8 @@ import { TetaTemplateDirective } from '../../../directive/teta-template/teta-tem
 import { filter, takeWhile } from 'rxjs/operators';
 import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
 import { TreeItemComponent } from '../tree-item/tree-item.component';
-import { ScrollableDirective } from '../../../directive/scrollable/scrollable.directive';
-import { ScrollableComponent } from '../../../directive/scrollable/scrollable/scrollable.component';
+import { ScrollContainerDirective } from '../../../directive/scroll-container/scroll-container.directive';
+import { ScrollContainerComponent } from '../../../directive/scroll-container/scroll-container.component';
 
 @Component({
   selector: 'teta-tree',
@@ -35,10 +35,10 @@ import { ScrollableComponent } from '../../../directive/scrollable/scrollable/sc
   providers: [TreeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    ScrollableComponent,
+    ScrollContainerComponent,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
-    ScrollableDirective,
+    ScrollContainerDirective,
     CdkVirtualForOf,
     TreeItemComponent,
   ],

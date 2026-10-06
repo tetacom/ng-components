@@ -6,7 +6,7 @@ import {
   AccordionItemComponent,
   InputComponent,
   OnlyNumberDirective,
-  ScrollableComponent,
+  ScrollContainerComponent,
 } from '@tetacom/ng-components';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChartService } from '../../../service/chart.service';
@@ -22,7 +22,7 @@ import { AxisOrientation } from '../../../model/enum/axis-orientation';
     AccordionItemComponent,
     InputComponent,
     ReactiveFormsModule,
-    ScrollableComponent,
+    ScrollContainerComponent,
     OnlyNumberDirective,
     FormsModule,
   ],

@@ -164,6 +164,13 @@
     overflow: hidden;
     @include getFont($fonts, 'body-3');
 
+    .cdk-virtual-scroll-orientation-vertical > .cdk-virtual-scroll-content-wrapper {
+      // Match the header width instead of sizing virtual rows by their content.
+      width: 100%;
+      // Let rows wider than the viewport contribute to horizontal scrolling.
+      contain: style;
+    }
+
     &-container {
       flex-grow: 1;
     }

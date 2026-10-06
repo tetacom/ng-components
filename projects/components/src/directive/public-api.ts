@@ -18,4 +18,5 @@ export * from './no-autofill/public-api';
 export * from './resize-drag/public-api';
 export * from './let/public-api';
 export * from './scrollable/public-api';
+export * from './scroll-container/public-api';
 export * from './scroll-into-view/public-api';
