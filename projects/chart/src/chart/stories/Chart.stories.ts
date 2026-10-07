@@ -10,6 +10,8 @@ import { applicationConfig, Meta } from '@storybook/angular';
 import { provideHttpClient } from '@angular/common/http';
 import { IconSpriteDirective, ButtonComponent } from '@tetacom/ng-components';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { IChartConfig } from '../model/i-chart-config';
+import { SeriesType } from '../model/enum/series-type';
 
 export default {
   title: 'Component/Chart',
@@ -23,6 +25,56 @@ export default {
     imports: [ChartComponent],
   },
 } as Meta;
+
+export const nestedSeriesGroups = () => {
+  const curves = [
+    { name: 'Обзор', group: 'Измерения', enabled: true },
+    { name: 'Давление на устье', group: 'Давление', parentGroup: 'Измерения' },
+    { name: 'Давление на забое', group: 'Забой', parentGroup: 'Давление' },
+    { name: 'Расчётное давление', group: 'Расчёт', parentGroup: 'Забой' },
+    { name: 'Замер давления', group: 'Расчёт', parentGroup: 'Забой' },
+    { name: 'Расход жидкости', group: 'Расход', parentGroup: 'Измерения' },
+    { name: 'Температура', group: 'Температура' },
+    { name: 'Контрольная кривая' },
+  ];
+  const colors = ['#1976d2', '#e53935', '#8e24aa', '#00897b', '#f4511e', '#3949ab', '#c0a000', '#546e7a'];
+  const config: IChartConfig = {
+    id: 'nested-series-groups',
+    controls: { enable: true },
+    xAxis: [{ min: 0, max: 50 }],
+    yAxis: [{ min: 0, max: 100 }],
+    series: curves.map((curve, index) => ({
+      ...curve,
+      id: `nested-curve-${index}`,
+      type: SeriesType.line,
+      enabled: curve.enabled ?? false,
+      color: colors[index],
+      data: Array.from({ length: 51 }, (_, x) => ({
+        x,
+        y: 15 + index * 9 + Math.sin(x / 5 + index) * 8,
+      })),
+    })),
+  };
+
+  return {
+    moduleMetadata: {
+      imports: [ChartComponent, IconSpriteDirective, TranslocoDirective],
+    },
+    props: { config },
+    template: `
+      <ng-container *transloco="let t; scope: 'charts';">
+        <div [tetaIconSprite]="['assets/icons.svg', 'assets/lithotype-icons.svg']"
+             class="font-body-3 column padding-3 gap-12 bg-global-bgmain"
+             style="width: 100%; height: 100vh">
+          <div>В настройках кривых нажмите «Добавить кривую» и раскройте
+            Измерения → Давление → Забой → Расчёт. Добавьте кривую, затем удалите её,
+            чтобы вернуть в группу. Также доступны соседние группы и кривая без группы.</div>
+          <teta-svg-chart [config]="config"
+                          class="bg-global-bgcard column_auto border border-text-50"></teta-svg-chart>
+        </div>
+      </ng-container>`,
+  };
+};
 
 export const basicChart = () => ({
   moduleMetadata: {

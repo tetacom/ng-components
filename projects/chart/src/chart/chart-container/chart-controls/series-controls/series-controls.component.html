@@ -7,31 +7,7 @@
       </button>
       <div tetaDropdownContent class="column shadow-2" style="min-width: 200px" (click)="$event.stopPropagation()">
         <teta-scroll-container class="column column_auto list">
-          @if (groupedSeries().size > 0) {
-            <teta-accordion style="padding: 0">
-              @for (group of groupedSeries() | keyvalue; track group.key) {
-                <teta-accordion-item [viewType]="'rounded'" [divider]="true">
-                  <teta-accordion-head style="padding: 2px 8px">
-                    <div class="list-item">
-                      {{ group.key }}
-                    </div>
-                  </teta-accordion-head>
-                  <ng-template tetaAccordionContent>
-                    <div class="list gap-8">
-                      @for (seriesItem of group.value; track seriesItem.id) {
-                        <div
-                          class="list-item list-item_interactive"
-                          (click)="$event.stopPropagation(); setSeriesEnabled(seriesItem, true)"
-                        >
-                          {{ seriesItem.name }}
-                        </div>
-                      }
-                    </div>
-                  </ng-template>
-                </teta-accordion-item>
-              }
-            </teta-accordion>
-          }
+          <ng-container *ngTemplateOutlet="groupList; context: { $implicit: groupedSeries() }"></ng-container>
           @for (seriesItem of flatSeries(); track seriesItem.id) {
             <div
               class="list-item list-item_interactive"
@@ -45,6 +21,32 @@
     </teta-dropdown>
   </div>
 }
+<ng-template #groupList let-groups>
+  @if (groups.length > 0) {
+    <teta-accordion style="padding: 0">
+      @for (group of groups; track group.name) {
+        <teta-accordion-item [viewType]="'rounded'" [divider]="true">
+          <teta-accordion-head style="padding: 2px 8px">
+            <div class="list-item">{{ group.name }}</div>
+          </teta-accordion-head>
+          <ng-template tetaAccordionContent>
+            <div class="list gap-8">
+              @for (seriesItem of group.series; track seriesItem.id) {
+                <div
+                  class="list-item list-item_interactive"
+                  (click)="$event.stopPropagation(); setSeriesEnabled(seriesItem, true)"
+                >
+                  {{ seriesItem.name }}
+                </div>
+              }
+              <ng-container *ngTemplateOutlet="groupList; context: { $implicit: group.children }"></ng-container>
+            </div>
+          </ng-template>
+        </teta-accordion-item>
+      }
+    </teta-accordion>
+  }
+</ng-template>
 <teta-scroll-container class="column column_auto">
   <teta-accordion>
     @for (seriesItem of enabledSeries(); track seriesItem.id) {

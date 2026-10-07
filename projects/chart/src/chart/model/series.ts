@@ -28,4 +28,5 @@ export interface Series<T extends BasePoint> {
   draggablePath?: boolean;
   pathDragType?: DragPointType;
   group?: string;
+  parentGroup?: string;
 }

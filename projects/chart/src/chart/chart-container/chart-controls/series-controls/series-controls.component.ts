@@ -18,7 +18,7 @@ import {
   SelectValueDirective,
   TetaSize,
 } from '@tetacom/ng-components';
-import { KeyValuePipe } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { BasePoint } from '../../../model/base-point';
 import { Series } from '../../../model/series';
@@ -28,6 +28,12 @@ import { FillType } from '../../../model/enum/fill-type';
 import { defaultSeriesTypeMapping } from '../../../default/defaultSeriesTypeMapping';
 import { LineSeriesComponent } from '../../series/line/line-series.component';
 import { FormsModule } from '@angular/forms';
+
+interface SeriesControlGroup {
+  name: string;
+  series: Series<BasePoint>[];
+  children: SeriesControlGroup[];
+}
 
 @Component({
   selector: 'teta-series-controls',
@@ -43,7 +49,7 @@ import { FormsModule } from '@angular/forms';
     DropdownHeadDirective,
     IconComponent,
     InputComponent,
-    KeyValuePipe,
+    NgTemplateOutlet,
     ScrollContainerComponent,
     SelectComponent,
     SelectOptionDirective,
@@ -73,17 +79,55 @@ export class SeriesControlsComponent {
   });
 
   groupedSeries = computed(() => {
-    const groupedSeries = this.disabledSeries().filter((item) => !!item.group) ?? [];
-    const result = new Map<string, Series<BasePoint>[]>();
-    groupedSeries.forEach((item) => {
-      let group = result.get(item.group);
-      if (!group) {
-        group = [];
-        result.set(item.group, group);
+    // Enabled curves still define the hierarchy of groups in the add menu.
+    const parents = new Map<string, string>();
+    for (const item of this.availableSeries()) {
+      if (item.group && item.parentGroup && !parents.has(item.group)) {
+        parents.set(item.group, item.parentGroup);
       }
-      group.push(item);
-    });
-    return result;
+    }
+
+    const groups = new Map<string, SeriesControlGroup>();
+    const getGroup = (name: string) => {
+      if (!groups.has(name)) {
+        groups.set(name, { name, series: [], children: [] });
+      }
+      return groups.get(name)!;
+    };
+
+    for (const item of this.disabledSeries()) {
+      if (!item.group) {
+        continue;
+      }
+      getGroup(item.group).series.push(item);
+      const visited = new Set<string>([item.group]);
+      let parent = parents.get(item.group);
+      while (parent && !visited.has(parent)) {
+        visited.add(parent);
+        getGroup(parent);
+        parent = parents.get(parent);
+      }
+    }
+
+    const roots: SeriesControlGroup[] = [];
+    // Keep the alphabetical ordering previously supplied by KeyValuePipe.
+    const sortedGroups = [...groups.values()].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+    for (const group of sortedGroups) {
+      const parent = groups.get(parents.get(group.name));
+      // Invalid cyclic references must not hide curves or recurse indefinitely.
+      const visited = new Set<string>([group.name]);
+      let ancestor = parent?.name;
+      while (ancestor && !visited.has(ancestor)) {
+        visited.add(ancestor);
+        ancestor = parents.get(ancestor);
+      }
+      if (parent && !ancestor) {
+        parent.children.push(group);
+      } else {
+        roots.push(group);
+      }
+    }
+    return roots;
   });
 
   flatSeries = computed(() => {
