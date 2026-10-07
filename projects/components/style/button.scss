@@ -14,6 +14,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   height: var(--teta-button-size);
+  min-height: var(--teta-button-size);
 
   @include getView('btn');
 
