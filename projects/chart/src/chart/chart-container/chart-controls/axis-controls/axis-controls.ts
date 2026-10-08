@@ -10,8 +10,8 @@ import {
 } from '@tetacom/ng-components';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChartService } from '../../../service/chart.service';
-import { AxisOptions } from '../../../model/axis-options';
 import { AxisOrientation } from '../../../model/enum/axis-orientation';
+import { IScalesMap } from '../../../model/i-scales-map';
 
 @Component({
   selector: 'teta-axis-controls',
@@ -33,8 +33,7 @@ import { AxisOrientation } from '../../../model/enum/axis-orientation';
 export class AxisControls {
   private chartService = inject(ChartService);
 
-  xAxis = input<AxisOptions[]>();
-  yAxis = input<AxisOptions[]>();
+  scales = input<IScalesMap>();
 
   setAxisBound(orientation: AxisOrientation, index: number, bound: 'min' | 'max', value: string | number) {
     value = Number(value);

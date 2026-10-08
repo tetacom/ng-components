@@ -19,6 +19,7 @@ import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { ScaleService } from '../../service/scale.service';
 import { AxisOrientation } from '../../model/enum/axis-orientation';
 import { IChartConfig } from '../../model/i-chart-config';
+import { IScalesMap } from '../../model/i-scales-map';
 import { SeriesControlsComponent } from './series-controls/series-controls.component';
 import { AxisControls } from './axis-controls/axis-controls';
 
@@ -51,6 +52,7 @@ export class ChartControls {
   protected readonly AxisOrientation = AxisOrientation;
 
   config = input<IChartConfig>();
+  scales = input<IScalesMap>();
   downloading = signal(false);
   private imageExporter = inject(CHART_IMAGE_EXPORTER);
 

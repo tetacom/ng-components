@@ -132,6 +132,7 @@
     </svg>
     @if (data.config.controls?.enable) {
       <teta-chart-controls [config]="data.config"
+                           [scales]="data.scales"
                            class="position-absolute"
                            style="transform: translateX(-100%)"
                            [style.top.px]="4"
