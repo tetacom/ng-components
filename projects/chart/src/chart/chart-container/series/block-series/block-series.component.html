@@ -50,6 +50,8 @@
             x2="100%"
             [attr.y1]="data.y(point.y)"
             [attr.y2]="data.y(point.y)"
+            [attr.stroke-width]="series().style?.strokeWidth"
+            [attr.stroke-dasharray]="series().style?.strokeDasharray"
             [attr.stroke]="point.iconId ? 'var(--color-text-10)' : (point.color ?? series().style?.stroke ?? series().color)"
           ></svg:line>
           <svg:line
@@ -57,6 +59,8 @@
             x2="100%"
             [attr.y1]="data.y(point.y1)"
             [attr.y2]="data.y(point.y1)"
+            [attr.stroke-width]="series().style?.strokeWidth"
+            [attr.stroke-dasharray]="series().style?.strokeDasharray"
             [attr.stroke]="point.iconId ? 'var(--color-text-10)' : (point.color ?? series().style?.stroke ?? series().color)"
           ></svg:line>
         </svg:g>
@@ -94,6 +98,8 @@
             y2="100%"
             [attr.x1]="data.x(point.x)"
             [attr.x2]="data.x(point.x)"
+            [attr.stroke-width]="series().style?.strokeWidth"
+            [attr.stroke-dasharray]="series().style?.strokeDasharray"
             [attr.stroke]="point.iconId ? 'var(--color-text-10)' : (point.color ?? series().style?.stroke ?? series().color)"
           ></svg:line>
           <svg:line
@@ -101,6 +107,8 @@
             y2="100%"
             [attr.x1]="data.x(point.x1)"
             [attr.x2]="data.x(point.x1)"
+            [attr.stroke-width]="series().style?.strokeWidth"
+            [attr.stroke-dasharray]="series().style?.strokeDasharray"
             [attr.stroke]="point.iconId ? 'var(--color-text-10)' : (point.color ?? series().style?.stroke ?? series().color)"
           ></svg:line>
         </svg:g>
